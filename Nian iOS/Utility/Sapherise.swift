@@ -14,6 +14,7 @@ let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字
 let BarColor:UIColor = UIColor(red:0.11, green:0.15,blue:0.19,alpha: 1)   //底栏黑
 let BlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
 let LineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 1)   //线条
+let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
 
 func SAJson(SAUrl:String)->AnyObject!{
 var url = NSURL(string:SAUrl)

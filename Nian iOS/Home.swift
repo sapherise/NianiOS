@@ -8,10 +8,23 @@
 
 import UIKit
 
+protocol CountUpDelegate {      //😍       我拥有一个代理公司
+    func segmentedControlSelected()
+    func hellochild()
+    var currentViewController: UIViewController? { get set }
+    var currentIndex: Int? { get set }
+    var viewControllers: Array<UIViewController> { get set }
+}
+
 class HomeViewController: UITabBarController{
     
+    var sadelegate: CountUpDelegate?  //😍    设定这个代理公司
     var myTabbar :UIView?
     var slider :UIView?
+    var currentViewController: UIViewController?
+    var currentIndex: Int?
+    var seg:UISegmentedControl = UISegmentedControl(frame: CGRectMake(30, 5, 140, 27))
+    //RootViewController: ACSSegmentedViewController
     
     
     let itemArray = ["关注","发现","念","消息","设置"]
@@ -27,6 +40,11 @@ class HomeViewController: UITabBarController{
     func setupViews()
     {
         self.automaticallyAdjustsScrollViewInsets = false
+        
+//        self.moreNavigationController.navigationController.navigationBarHidden=YES
+//        self.navigationController.navigationBarHidden=YES;
+//        self.moreNavigationController.navigationBarHidden=YES
+        
         
 //        tabbar.selectedIndex  = xx;
         
@@ -85,19 +103,17 @@ class HomeViewController: UITabBarController{
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         
-        var ExploreDreamStoryBoard:UIStoryboard = UIStoryboard(name: "ExploreDream", bundle: nil)
-        var ExploreDreamViewController:UIViewController = ExploreDreamStoryBoard.instantiateViewControllerWithIdentifier("ExploreDreamViewController") as UIViewController
         
         var SettingsStoryBoard:UIStoryboard = UIStoryboard(name: "SettingsViewController", bundle: nil)
         var SettingsViewController:UIViewController = SettingsStoryBoard.instantiateViewControllerWithIdentifier("SettingsViewController") as UIViewController
         
         var vc1 = FollowViewController()
-        var vc2 = ExploreViewController()
+        var vc2 = UINavigationController(rootViewController: RootViewController(nibName: nil,bundle: nil))
         var vc3 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController
-        var vc6 = ExploreDreamViewController
-        self.viewControllers = [vc1, vc2, vc3, vc4, vc5, vc6]
+        self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
+        self.customizableViewControllers = nil
     }
     
     //底部的按钮按下去
@@ -120,15 +136,14 @@ class HomeViewController: UITabBarController{
         
         //标题
         if(index == 101){
-            var seg:UISegmentedControl = UISegmentedControl(frame: CGRectMake(30, 5, 140, 27))
             seg.multipleTouchEnabled = false
             seg.tintColor = LineColor
             seg.insertSegmentWithTitle("话题", atIndex: 0, animated: false)
             seg.insertSegmentWithTitle("梦想", atIndex: 1, animated: false)
+            seg.exclusiveTouch = true // 只响应单点触摸
             seg.addTarget(self, action: "explore:", forControlEvents: UIControlEvents.ValueChanged)
             seg.selectedSegmentIndex = 0
             self.navigationItem.titleView = seg
-            
         }else{
             var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
             titleLabel.textColor = IconColor
@@ -166,10 +181,13 @@ class HomeViewController: UITabBarController{
         var vc2 = ExploreViewController()
         if x == 0 {
             println("话题")
-            self.selectedIndex = 1
+            sadelegate?.hellochild()
+            sadelegate?.segmentedControlSelected()
+            
         }else if x == 1 {
             println("梦想")
-            self.selectedIndex = 5
+            sadelegate?.hellochild()
+            sadelegate?.segmentedControlSelected()
         }
     }
     

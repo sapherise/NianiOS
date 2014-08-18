@@ -11,15 +11,16 @@ import UIKit
 
 class ExploreDreamViewController: UIViewController, AddDelegate{
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var scrollView:UIScrollView!
     var dataArray = NSMutableArray()
     var page :Int = 0
     //  @IBOutlet strong var View: UIView
     
     override func viewDidLoad() {
         setupViews()
-        //  setupRefresh()
         //   self.View?.headerBeginRefreshing()
         loadData()
+        setupRefresh()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -29,10 +30,8 @@ class ExploreDreamViewController: UIViewController, AddDelegate{
         var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight)) as UIVisualEffectView
         visualEffectView.layer.borderWidth = 1.0
         collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = BGColor
         self.extendedLayoutIncludesOpaqueBars = true
-        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 140, 0)
-        self.navigationController.navigationBarHidden = true;
+        collectionView.contentInset = UIEdgeInsetsMake(10, 0, 20, 0)
     }
     
     func loadData(){
@@ -79,9 +78,14 @@ class ExploreDreamViewController: UIViewController, AddDelegate{
         var data = self.dataArray[index] as NSDictionary
         var title = data.stringAttributeForKey("title")
         var img = data.stringAttributeForKey("img")
+        var promo = data.stringAttributeForKey("promo")
         var imgURL = "http://img.nian.so/dream/\(img)!dream" as NSString
         var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("MediaCell", forIndexPath: indexPath) as MediaCell
-        mediaCell.label.textColor = IconColor
+        if(promo=="1"){
+            mediaCell.label.textColor = GoldColor
+        }else{
+            mediaCell.label.textColor = IconColor
+        }
         mediaCell.label.text = "\(title)"
         mediaCell.imageView.setImage(imgURL, placeHolder: SAColorImg(IconColor))
         mediaCell.imageView.layer.cornerRadius = 6
@@ -106,11 +110,5 @@ class ExploreDreamViewController: UIViewController, AddDelegate{
     
     
     func setupRefresh(){
-        //        self.View!.addHeaderWithCallback({
-        //            self.loadData()
-        //            })
-        //        self.View!.addFooterWithCallback({
-        //            self.loadData()
-        //            })
     }
 }

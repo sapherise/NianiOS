@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		1217A3EC198D359400959AD2 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1217A3EB198D359400959AD2 /* SettingsViewController.storyboard */; };
+		1224C58319A0D197002F4321 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224C58219A0D197002F4321 /* RootViewController.swift */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
 		122D73EC197EB8FB00310C6B /* AddDreamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122D73EB197EB8FB00310C6B /* AddDreamController.xib */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
@@ -65,6 +66,7 @@
 /* Begin PBXFileReference section */
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1217A3EB198D359400959AD2 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
+		1224C58219A0D197002F4321 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		122D73EB197EB8FB00310C6B /* AddDreamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddDreamController.xib; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,14 @@
 				12E4939C19953DD600F8DF32 /* 回应 */,
 			);
 			name = "梦想";
+			sourceTree = "<group>";
+		};
+		1224C57F19A0D10E002F4321 /* 导航 */ = {
+			isa = PBXGroup;
+			children = (
+				1224C58219A0D197002F4321 /* RootViewController.swift */,
+			);
+			name = "导航";
 			sourceTree = "<group>";
 		};
 		122D73E8197EB8CD00310C6B /* 更新梦想 */ = {
@@ -261,6 +271,7 @@
 				123CB05119785B610062BB8A /* 首页 */,
 				12E4938719951CA300F8DF32 /* 发现 */,
 				12D6A576199B96CA00B839A1 /* 发现梦想 */,
+				1224C57F19A0D10E002F4321 /* 导航 */,
 				12FB48A5196AE76E0026DD51 /* Images.xcassets */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
@@ -451,6 +462,7 @@
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
+				1224C58319A0D197002F4321 /* RootViewController.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
