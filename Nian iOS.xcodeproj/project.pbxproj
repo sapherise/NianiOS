@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		1217A3EC198D359400959AD2 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1217A3EB198D359400959AD2 /* SettingsViewController.storyboard */; };
-		1224C58319A0D197002F4321 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224C58219A0D197002F4321 /* RootViewController.swift */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
 		122D73EC197EB8FB00310C6B /* AddDreamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122D73EB197EB8FB00310C6B /* AddDreamController.xib */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
@@ -31,11 +30,6 @@
 		12A65642197199EE004F530B /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A65641197199EE004F530B /* YLGIFImage.swift */; };
 		12CE6A2A196EFBAA00F308FF /* AddstepController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE6A29196EFBAA00F308FF /* AddstepController.xib */; };
 		12CE6A2C196EFBB900F308FF /* AddstepController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE6A2B196EFBB900F308FF /* AddstepController.swift */; };
-		12D6A578199B96FA00B839A1 /* ExploreDream1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D6A577199B96FA00B839A1 /* ExploreDream1.swift */; };
-		12D6A57A199B970A00B839A1 /* ExploreDream1.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12D6A579199B970A00B839A1 /* ExploreDream1.storyboard */; };
-		12E4938B1995201600F8DF32 /* Explore1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4938A1995201600F8DF32 /* Explore1.swift */; };
-		12E4938D1995203000F8DF32 /* ExploreCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4938C1995203000F8DF32 /* ExploreCell1.swift */; };
-		12E493911995204B00F8DF32 /* ExploreCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E493901995204B00F8DF32 /* ExploreCell1.xib */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
 		12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FD19A37FC900FCB2D1 /* Explore.swift */; };
@@ -73,7 +67,6 @@
 /* Begin PBXFileReference section */
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1217A3EB198D359400959AD2 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
-		1224C58219A0D197002F4321 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		122D73EB197EB8FB00310C6B /* AddDreamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddDreamController.xib; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
@@ -95,11 +88,6 @@
 		12A65641197199EE004F530B /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
 		12CE6A29196EFBAA00F308FF /* AddstepController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddstepController.xib; sourceTree = "<group>"; };
 		12CE6A2B196EFBB900F308FF /* AddstepController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddstepController.swift; sourceTree = "<group>"; };
-		12D6A577199B96FA00B839A1 /* ExploreDream1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDream1.swift; sourceTree = "<group>"; };
-		12D6A579199B970A00B839A1 /* ExploreDream1.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExploreDream1.storyboard; sourceTree = "<group>"; };
-		12E4938A1995201600F8DF32 /* Explore1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore1.swift; sourceTree = "<group>"; };
-		12E4938C1995203000F8DF32 /* ExploreCell1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell1.swift; sourceTree = "<group>"; };
-		12E493901995204B00F8DF32 /* ExploreCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreCell1.xib; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		12E553FD19A37FC900FCB2D1 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
@@ -157,14 +145,6 @@
 				12E4939C19953DD600F8DF32 /* 回应 */,
 			);
 			name = "梦想";
-			sourceTree = "<group>";
-		};
-		1224C57F19A0D10E002F4321 /* 导航 */ = {
-			isa = PBXGroup;
-			children = (
-				1224C58219A0D197002F4321 /* RootViewController.swift */,
-			);
-			name = "导航";
 			sourceTree = "<group>";
 		};
 		122D73E8197EB8CD00310C6B /* 更新梦想 */ = {
@@ -237,25 +217,6 @@
 			name = "发现";
 			sourceTree = "<group>";
 		};
-		12D6A576199B96CA00B839A1 /* 发现梦想 */ = {
-			isa = PBXGroup;
-			children = (
-				12D6A577199B96FA00B839A1 /* ExploreDream1.swift */,
-				12D6A579199B970A00B839A1 /* ExploreDream1.storyboard */,
-			);
-			name = "发现梦想";
-			sourceTree = "<group>";
-		};
-		12E4938719951CA300F8DF32 /* 发现 */ = {
-			isa = PBXGroup;
-			children = (
-				12E4938A1995201600F8DF32 /* Explore1.swift */,
-				12E4938C1995203000F8DF32 /* ExploreCell1.swift */,
-				12E493901995204B00F8DF32 /* ExploreCell1.xib */,
-			);
-			name = "发现";
-			sourceTree = "<group>";
-		};
 		12E4939C19953DD600F8DF32 /* 回应 */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,9 +266,6 @@
 				12A49109198EB550000B6D5E /* 消息 */,
 				12A6564519719BAC004F530B /* 设置 */,
 				123CB05119785B610062BB8A /* 首页 */,
-				12E4938719951CA300F8DF32 /* 发现 */,
-				12D6A576199B96CA00B839A1 /* 发现梦想 */,
-				1224C57F19A0D10E002F4321 /* 导航 */,
 				12D222F819A2677F0027284E /* 发现 */,
 				12FB48A5196AE76E0026DD51 /* Images.xcassets */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
@@ -451,13 +409,11 @@
 			files = (
 				1217A3EC198D359400959AD2 /* SettingsViewController.storyboard in Resources */,
 				12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */,
-				12E493911995204B00F8DF32 /* ExploreCell1.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
-				12D6A57A199B970A00B839A1 /* ExploreDream1.storyboard in Resources */,
 				12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */,
 				12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */,
 				12FB48A6196AE76E0026DD51 /* Images.xcassets in Resources */,
@@ -482,7 +438,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
-				12D6A578199B96FA00B839A1 /* ExploreDream1.swift in Sources */,
 				12E5540019A3813B00FCB2D1 /* ExploreTop.swift in Sources */,
 				12E5540419A395B500FCB2D1 /* GroupCell.swift in Sources */,
 				12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */,
@@ -494,7 +449,6 @@
 				12CE6A2C196EFBB900F308FF /* AddstepController.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
-				12E4938B1995201600F8DF32 /* Explore1.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
@@ -505,7 +459,6 @@
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
-				1224C58319A0D197002F4321 /* RootViewController.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
@@ -515,7 +468,6 @@
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
-				12E4938D1995203000F8DF32 /* ExploreCell1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
