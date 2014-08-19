@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
         mainViewController.selectedIndex = 2
-        mainViewController.sadelegate = RootViewController(nibName: nil,bundle: nil)
         
         //导航栏的颜色
         var navigationViewController = UINavigationController(rootViewController: mainViewController)

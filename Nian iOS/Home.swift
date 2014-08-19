@@ -9,11 +9,7 @@
 import UIKit
 
 protocol CountUpDelegate {      //😍       我拥有一个代理公司
-    func segmentedControlSelected()
-    func hellochild()
-    var currentViewController: UIViewController? { get set }
-    var currentIndex: Int? { get set }
-    var viewControllers: Array<UIViewController> { get set }
+    func countUp()
 }
 
 class HomeViewController: UITabBarController{
@@ -108,7 +104,7 @@ class HomeViewController: UITabBarController{
         var SettingsViewController:UIViewController = SettingsStoryBoard.instantiateViewControllerWithIdentifier("SettingsViewController") as UIViewController
         
         var vc1 = FollowViewController()
-        var vc2 = UINavigationController(rootViewController: RootViewController(nibName: nil,bundle: nil))
+        var vc2 = ExploreController()
         var vc3 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController
@@ -135,22 +131,11 @@ class HomeViewController: UITabBarController{
         println("\(index-100)")
         
         //标题
-        if(index == 101){
-            seg.multipleTouchEnabled = false
-            seg.tintColor = LineColor
-            seg.insertSegmentWithTitle("话题", atIndex: 0, animated: false)
-            seg.insertSegmentWithTitle("梦想", atIndex: 1, animated: false)
-            seg.exclusiveTouch = true // 只响应单点触摸
-            seg.addTarget(self, action: "explore:", forControlEvents: UIControlEvents.ValueChanged)
-            seg.selectedSegmentIndex = 0
-            self.navigationItem.titleView = seg
-        }else{
             var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
             titleLabel.textColor = IconColor
             titleLabel.text = itemArray[index-100] as String
             titleLabel.textAlignment = NSTextAlignment.Center
             self.navigationItem.titleView = titleLabel
-        }
         
         
         if(index != 102){
@@ -173,22 +158,6 @@ class HomeViewController: UITabBarController{
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
-    }
-    
-    func explore(sender: AnyObject){
-        var control:UISegmentedControl = sender as UISegmentedControl
-        var x = control.selectedSegmentIndex
-        var vc2 = ExploreViewController()
-        if x == 0 {
-            println("话题")
-            sadelegate?.hellochild()
-            sadelegate?.segmentedControlSelected()
-            
-        }else if x == 1 {
-            println("梦想")
-            sadelegate?.hellochild()
-            sadelegate?.segmentedControlSelected()
-        }
     }
     
     

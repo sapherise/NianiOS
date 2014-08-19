@@ -31,13 +31,20 @@
 		12A65642197199EE004F530B /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A65641197199EE004F530B /* YLGIFImage.swift */; };
 		12CE6A2A196EFBAA00F308FF /* AddstepController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE6A29196EFBAA00F308FF /* AddstepController.xib */; };
 		12CE6A2C196EFBB900F308FF /* AddstepController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE6A2B196EFBB900F308FF /* AddstepController.swift */; };
-		12D6A578199B96FA00B839A1 /* ExploreDream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D6A577199B96FA00B839A1 /* ExploreDream.swift */; };
-		12D6A57A199B970A00B839A1 /* ExploreDream.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12D6A579199B970A00B839A1 /* ExploreDream.storyboard */; };
-		12E4938B1995201600F8DF32 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4938A1995201600F8DF32 /* Explore.swift */; };
-		12E4938D1995203000F8DF32 /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4938C1995203000F8DF32 /* ExploreCell.swift */; };
-		12E493911995204B00F8DF32 /* ExploreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E493901995204B00F8DF32 /* ExploreCell.xib */; };
+		12D6A578199B96FA00B839A1 /* ExploreDream1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D6A577199B96FA00B839A1 /* ExploreDream1.swift */; };
+		12D6A57A199B970A00B839A1 /* ExploreDream1.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12D6A579199B970A00B839A1 /* ExploreDream1.storyboard */; };
+		12E4938B1995201600F8DF32 /* Explore1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4938A1995201600F8DF32 /* Explore1.swift */; };
+		12E4938D1995203000F8DF32 /* ExploreCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4938C1995203000F8DF32 /* ExploreCell1.swift */; };
+		12E493911995204B00F8DF32 /* ExploreCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E493901995204B00F8DF32 /* ExploreCell1.xib */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
+		12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FD19A37FC900FCB2D1 /* Explore.swift */; };
+		12E5540019A3813B00FCB2D1 /* ExploreTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */; };
+		12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E5540119A3814400FCB2D1 /* ExploreTop.xib */; };
+		12E5540419A395B500FCB2D1 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E5540319A395B500FCB2D1 /* GroupCell.swift */; };
+		12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E5540519A395BF00FCB2D1 /* GroupCell.xib */; };
+		12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E5540819A399CF00FCB2D1 /* ExploreDreamCell.swift */; };
+		12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E5540A19A399D900FCB2D1 /* ExploreDreamCell.xib */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48A6196AE76E0026DD51 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12FB48A5196AE76E0026DD51 /* Images.xcassets */; };
 		12FB48B2196AE76E0026DD51 /* Nian_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48B1196AE76E0026DD51 /* Nian_iOSTests.swift */; };
@@ -88,13 +95,20 @@
 		12A65641197199EE004F530B /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
 		12CE6A29196EFBAA00F308FF /* AddstepController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddstepController.xib; sourceTree = "<group>"; };
 		12CE6A2B196EFBB900F308FF /* AddstepController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddstepController.swift; sourceTree = "<group>"; };
-		12D6A577199B96FA00B839A1 /* ExploreDream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDream.swift; sourceTree = "<group>"; };
-		12D6A579199B970A00B839A1 /* ExploreDream.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExploreDream.storyboard; sourceTree = "<group>"; };
-		12E4938A1995201600F8DF32 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
-		12E4938C1995203000F8DF32 /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
-		12E493901995204B00F8DF32 /* ExploreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreCell.xib; sourceTree = "<group>"; };
+		12D6A577199B96FA00B839A1 /* ExploreDream1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDream1.swift; sourceTree = "<group>"; };
+		12D6A579199B970A00B839A1 /* ExploreDream1.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExploreDream1.storyboard; sourceTree = "<group>"; };
+		12E4938A1995201600F8DF32 /* Explore1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore1.swift; sourceTree = "<group>"; };
+		12E4938C1995203000F8DF32 /* ExploreCell1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell1.swift; sourceTree = "<group>"; };
+		12E493901995204B00F8DF32 /* ExploreCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreCell1.xib; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		12E553FD19A37FC900FCB2D1 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
+		12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreTop.swift; sourceTree = "<group>"; };
+		12E5540119A3814400FCB2D1 /* ExploreTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreTop.xib; sourceTree = "<group>"; };
+		12E5540319A395B500FCB2D1 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		12E5540519A395BF00FCB2D1 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
+		12E5540819A399CF00FCB2D1 /* ExploreDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDreamCell.swift; sourceTree = "<group>"; };
+		12E5540A19A399D900FCB2D1 /* ExploreDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ExploreDreamCell.xib; path = "Nian iOS/ExploreDreamCell.xib"; sourceTree = SOURCE_ROOT; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -210,11 +224,24 @@
 			name = "更新进展";
 			sourceTree = "<group>";
 		};
+		12D222F819A2677F0027284E /* 发现 */ = {
+			isa = PBXGroup;
+			children = (
+				12E553FD19A37FC900FCB2D1 /* Explore.swift */,
+				12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */,
+				12E5540119A3814400FCB2D1 /* ExploreTop.xib */,
+				12E5540319A395B500FCB2D1 /* GroupCell.swift */,
+				12E5540519A395BF00FCB2D1 /* GroupCell.xib */,
+				12E5540719A399B800FCB2D1 /* 所有梦想 */,
+			);
+			name = "发现";
+			sourceTree = "<group>";
+		};
 		12D6A576199B96CA00B839A1 /* 发现梦想 */ = {
 			isa = PBXGroup;
 			children = (
-				12D6A577199B96FA00B839A1 /* ExploreDream.swift */,
-				12D6A579199B970A00B839A1 /* ExploreDream.storyboard */,
+				12D6A577199B96FA00B839A1 /* ExploreDream1.swift */,
+				12D6A579199B970A00B839A1 /* ExploreDream1.storyboard */,
 			);
 			name = "发现梦想";
 			sourceTree = "<group>";
@@ -222,9 +249,9 @@
 		12E4938719951CA300F8DF32 /* 发现 */ = {
 			isa = PBXGroup;
 			children = (
-				12E4938A1995201600F8DF32 /* Explore.swift */,
-				12E4938C1995203000F8DF32 /* ExploreCell.swift */,
-				12E493901995204B00F8DF32 /* ExploreCell.xib */,
+				12E4938A1995201600F8DF32 /* Explore1.swift */,
+				12E4938C1995203000F8DF32 /* ExploreCell1.swift */,
+				12E493901995204B00F8DF32 /* ExploreCell1.xib */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -236,6 +263,15 @@
 				12E4939819953DBB00F8DF32 /* CommentCell.xib */,
 			);
 			name = "回应";
+			sourceTree = "<group>";
+		};
+		12E5540719A399B800FCB2D1 /* 所有梦想 */ = {
+			isa = PBXGroup;
+			children = (
+				12E5540819A399CF00FCB2D1 /* ExploreDreamCell.swift */,
+				12E5540A19A399D900FCB2D1 /* ExploreDreamCell.xib */,
+			);
+			name = "所有梦想";
 			sourceTree = "<group>";
 		};
 		12FB4890196AE76E0026DD51 = {
@@ -272,6 +308,7 @@
 				12E4938719951CA300F8DF32 /* 发现 */,
 				12D6A576199B96CA00B839A1 /* 发现梦想 */,
 				1224C57F19A0D10E002F4321 /* 导航 */,
+				12D222F819A2677F0027284E /* 发现 */,
 				12FB48A5196AE76E0026DD51 /* Images.xcassets */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
@@ -413,13 +450,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1217A3EC198D359400959AD2 /* SettingsViewController.storyboard in Resources */,
-				12E493911995204B00F8DF32 /* ExploreCell.xib in Resources */,
+				12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */,
+				12E493911995204B00F8DF32 /* ExploreCell1.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
+				12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
-				12D6A57A199B970A00B839A1 /* ExploreDream.storyboard in Resources */,
+				12D6A57A199B970A00B839A1 /* ExploreDream1.storyboard in Resources */,
 				12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */,
+				12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */,
 				12FB48A6196AE76E0026DD51 /* Images.xcassets in Resources */,
 				122D73EC197EB8FB00310C6B /* AddDreamController.xib in Resources */,
 				12CE6A2A196EFBAA00F308FF /* AddstepController.xib in Resources */,
@@ -442,16 +482,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
-				12D6A578199B96FA00B839A1 /* ExploreDream.swift in Sources */,
+				12D6A578199B96FA00B839A1 /* ExploreDream1.swift in Sources */,
+				12E5540019A3813B00FCB2D1 /* ExploreTop.swift in Sources */,
+				12E5540419A395B500FCB2D1 /* GroupCell.swift in Sources */,
 				12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
+				12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */,
 				12CE6A2C196EFBB900F308FF /* AddstepController.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
-				12E4938B1995201600F8DF32 /* Explore.swift in Sources */,
+				12E4938B1995201600F8DF32 /* Explore1.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
@@ -470,8 +513,9 @@
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
+				12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
-				12E4938D1995203000F8DF32 /* ExploreCell.swift in Sources */,
+				12E4938D1995203000F8DF32 /* ExploreCell1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
