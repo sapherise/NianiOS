@@ -8,7 +8,7 @@
 import UIKit
 
 
-let RefreshViewHeight:CFloat = 64.0
+let RefreshViewHeight:CGFloat = 64.0
 let RefreshSlowAnimationDuration:NSTimeInterval = 0.3
 let RefreshFooterPullToRefresh:NSString = "上拉加载"
 let RefreshFooterReleaseToRefresh:NSString =  "松开加载"
@@ -95,7 +95,7 @@ class RefreshBaseView: UIView {
     
     
     //控件初始化
-    init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
        
         
@@ -123,12 +123,16 @@ class RefreshBaseView: UIView {
         //设置默认状态
         self.State = RefreshState.Normal;
     }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func layoutSubviews() {
         super.layoutSubviews()
          //箭头
-        let arrowX:CFloat = self.frame.size.width * 0.5 - 50
+        let arrowX:CGFloat = self.frame.size.width * 0.5 - 50
         self.arrowImage.center = CGPointMake(arrowX, self.frame.size.height * 0.5 + 10.0)
         //指示器
         self.activityView.center = self.arrowImage.center
@@ -139,12 +143,11 @@ class RefreshBaseView: UIView {
         super.willMoveToSuperview(newSuperview)
         // 旧的父控件
          
-        if self.superview {
-            self.superview.removeObserver(self,forKeyPath:RefreshContentSize,context: nil)
-            
-            }
+//        if (self.superview != nil) {
+//            self.superview.removeObserver(self,forKeyPath:RefreshContentSize,context: nil)
+//            }
         // 新的父控件
-        if newSuperview {
+        if (newSuperview != nil) {
             newSuperview.addObserver(self, forKeyPath: RefreshContentOffset, options: NSKeyValueObservingOptions.New, context: nil)
             var rect:CGRect = self.frame
             // 设置宽度   位置
@@ -158,12 +161,12 @@ class RefreshBaseView: UIView {
     }
     
     //显示到屏幕上
-    override func drawRect(rect: CGRect) {
-        superview.drawRect(rect)
-        if self.State == RefreshState.WillRefreshing {
-            self.State = RefreshState.Refreshing
-        }
-    }
+//    override func drawRect(rect: CGRect) {
+//        superview.drawRect(rect)
+//        if self.State == RefreshState.WillRefreshing {
+//            self.State = RefreshState.Refreshing
+//        }
+//    }
     
     // 刷新相关
     // 是否正在刷新
@@ -174,7 +177,7 @@ class RefreshBaseView: UIView {
     // 开始刷新
     func beginRefreshing(){
         // self.State = RefreshState.Refreshing;
-        if self.window {
+        if (self.window != nil) {
             self.State = RefreshState.Refreshing;
         } else {
             //不能调用set方法

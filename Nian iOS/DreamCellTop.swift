@@ -9,10 +9,11 @@
 import UIKit
 
 class DreamCellTop: UITableViewCell{
+
     @IBOutlet var nickLabel:UILabel?
     @IBOutlet var dreamhead:UIImageView?
     @IBOutlet var View:UIView?
-    @IBOutlet var Seg: UISegmentedControl
+    @IBOutlet var Seg: UISegmentedControl?
     var segSelected:String = ""
     var dreamid:String = ""
     

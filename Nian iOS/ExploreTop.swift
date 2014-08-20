@@ -10,7 +10,7 @@ import UIKit
 
 class ExploreTop: UITableViewCell{
     @IBOutlet var View:UIView?
-    @IBOutlet var Seg: UISegmentedControl
+    @IBOutlet var Seg: UISegmentedControl?
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -27,7 +27,7 @@ class RefreshFooterView: RefreshBaseView {
         
         self.statusLabel.backgroundColor =  UIColor.clearColor()
         
-        let arrowX:CFloat = self.frame.size.width * 0.5 - 50
+        let arrowX:CGFloat = self.frame.size.width * 0.5 - 50
         self.arrowImage.center = CGPointMake(arrowX, self.frame.size.height * 0.5 - 10.0)
         //指示器
         self.activityView.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5 - 10.0)
@@ -35,10 +35,10 @@ class RefreshFooterView: RefreshBaseView {
     
     override func willMoveToSuperview(newSuperview: UIView!) {
         super.willMoveToSuperview(newSuperview)
-        if self.superview{
-           self.superview.removeObserver(self, forKeyPath: RefreshContentSize, context: nil)
+        if (self.superview != nil){
+     //      self.superview.removeObserver(self, forKeyPath: RefreshContentSize, context: nil)
         }
-        if newSuperview  {
+        if (newSuperview != nil)  {
             newSuperview.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.New, context: nil)
             // 重新调整frame
            adjustFrameWithContentSize()
@@ -55,21 +55,20 @@ class RefreshFooterView: RefreshBaseView {
     }
  
     //监听UIScrollView的属性
-    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafePointer<()>) {
-        if (!self.userInteractionEnabled || self.hidden){
-            return
-        }
-        if RefreshContentSize.isEqualToString(keyPath){
-            adjustFrameWithContentSize()
-        }else if RefreshContentOffset.isEqualToString(keyPath) {
-            if self.State == RefreshState.Refreshing{
-                return
-            }
-            adjustStateWithContentOffset()
-        }
-    
+    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
+                if (!self.userInteractionEnabled || self.hidden){
+                    return
+                }
+                if RefreshContentSize.isEqualToString(keyPath){
+                    adjustFrameWithContentSize()
+                }else if RefreshContentOffset.isEqualToString(keyPath) {
+                    if self.State == RefreshState.Refreshing{
+                        return
+                    }
+                    adjustStateWithContentOffset()
+                }
     }
-     
+    
     
     func adjustStateWithContentOffset()
     {

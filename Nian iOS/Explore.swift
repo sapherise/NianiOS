@@ -68,8 +68,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.righttableView?.registerNib(nib3, forCellReuseIdentifier: identifier3)
         self.righttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
         
-        self.view.addSubview(self.lefttableView)
-        self.view.addSubview(self.righttableView)
+        self.view.addSubview(self.lefttableView!)
+        self.view.addSubview(self.righttableView!)
         
         var rightButton = UIBarButtonItem(title: "更新", style: .Plain, target: self, action: "addStepButton")
         self.navigationItem.rightBarButtonItem = rightButton;

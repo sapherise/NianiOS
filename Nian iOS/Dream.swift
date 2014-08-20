@@ -67,8 +67,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.righttableView?.registerNib(nib3, forCellReuseIdentifier: identifier3)
         self.righttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
-        self.view.addSubview(self.lefttableView)
-        self.view.addSubview(self.righttableView)
+        self.view.addSubview(self.lefttableView!)
+        self.view.addSubview(self.righttableView!)
         
         var rightButton = UIBarButtonItem(title: "更新", style: .Plain, target: self, action: "addStepButton")
         self.navigationItem.rightBarButtonItem = rightButton;
@@ -257,10 +257,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     
     func addStepButton(){
-        var AddstepVC = AddstepController()
-        AddstepVC.Id = self.Id
-        AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(AddstepVC, animated: true)
+      //  var AddstepVC = AddstepController()
+      //  AddstepVC.Id = self.Id
+      //  AddstepVC.delegate = self    //😍
+        
+        
+        var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        var addStepVC:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("AddStepController") as UIViewController
+        
+        self.navigationController.pushViewController(addStepVC, animated: true)
     }
     
     func countUp() {      //😍

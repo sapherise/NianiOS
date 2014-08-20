@@ -11,17 +11,17 @@ import UIKit
 
 
 class SettingsViewController: UIViewController{
-    @IBOutlet var scrollView:UIScrollView
-    @IBOutlet var head:UIImageView
-    @IBOutlet var name:UIView
-    @IBOutlet var email:UIView
-    @IBOutlet var exp:UIView
-    @IBOutlet var glory:UIView
-    @IBOutlet var lab:UIView
-    @IBOutlet var logout:UIView
-    @IBOutlet var label1:UILabel
-    @IBOutlet var label2:UILabel
-    @IBOutlet var label3:UILabel
+    @IBOutlet var scrollView:UIScrollView!
+    @IBOutlet var head:UIImageView!
+    @IBOutlet var name:UIView!
+    @IBOutlet var email:UIView!
+    @IBOutlet var exp:UIView!
+    @IBOutlet var glory:UIView!
+    @IBOutlet var lab:UIView!
+    @IBOutlet var logout:UIView!
+    @IBOutlet var label1:UILabel!
+    @IBOutlet var label2:UILabel!
+    @IBOutlet var label3:UILabel!
     
     override func viewDidLoad(){
         setupViews()

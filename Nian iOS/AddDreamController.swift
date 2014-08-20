@@ -14,13 +14,13 @@ protocol AddDelegate {   //😍
 }
 class AddDreamController: UIViewController {
     
-    @IBOutlet var Line1: UIView
-    @IBOutlet var Line2: UIView
-    @IBOutlet var uploadButton: UIButton
-    @IBOutlet var uploadWait: UIActivityIndicatorView
-    @IBOutlet var uploadDone: UIImageView
-    @IBOutlet var field1:UITextField
-    @IBOutlet var field2:UITextField
+    @IBOutlet var Line1: UIView?
+    @IBOutlet var Line2: UIView?
+    @IBOutlet var uploadButton: UIButton?
+    @IBOutlet var uploadWait: UIActivityIndicatorView?
+    @IBOutlet var uploadDone: UIImageView?
+    @IBOutlet var field1:UITextField?
+    @IBOutlet var field2:UITextField?
     var delegate: AddDelegate?      //😍
     
     var toggle:Int = 0
@@ -49,15 +49,15 @@ class AddDreamController: UIViewController {
     }
     func setupViews(){
         self.view.backgroundColor = BGColor
-        self.Line1.backgroundColor = LineColor
-        self.Line2.backgroundColor = LineColor
-        self.field1.textColor = IconColor
-        self.field2.textColor = IconColor
-        self.field1.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
-        self.field2.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
+        self.Line1?.backgroundColor = LineColor
+        self.Line2?.backgroundColor = LineColor
+        self.field1?.textColor = IconColor
+        self.field2?.textColor = IconColor
+        self.field1?.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
+        self.field2?.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
         
-        self.uploadWait!.hidden = true
-        self.uploadDone!.hidden = true
+        self.uploadWait?.hidden = true
+        self.uploadDone?.hidden = true
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
         rightButton.image = UIImage(named:"ok")
@@ -76,10 +76,10 @@ class AddDreamController: UIViewController {
     }
     
     func addDreamOK(){
-        var title = self.field1.text
-        var content = self.field2.text
-        title = SAEncode(SAHtml(title))
-        content = SAEncode(SAHtml(content))
+        var title = self.field1?.text
+        var content = self.field2?.text
+        title = SAEncode(SAHtml(title!))
+        content = SAEncode(SAHtml(content!))
         var sa = SAPost("uid=1&&content=\(content)&&title=\(title)", "http://nian.so/api/add_query.php")
         if(sa == "1"){
             self.navigationController.popViewControllerAnimated(true)

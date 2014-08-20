@@ -67,7 +67,7 @@ class FollowCell: UITableViewCell {
 //        self.holder!.layer.borderColor = BorderColor.CGColor
 //        self.holder!.layer.borderWidth = 1
         
-        if img.length == 0{
+        if img0 == 0.0 {
             self.imageholder!.hidden = true
             self.holder!.setHeight(height+86+15)
             var imgHeight:Float = 0.0
@@ -75,7 +75,6 @@ class FollowCell: UITableViewCell {
             var imgHeight:Float = img1 * 250 / img0
             var ImageURL = "http://img.nian.so/step/\(img)!iosfo" as NSString
             self.imageholder!.setImage(ImageURL,placeHolder: UIImage(named: "1.jpg"))
-            //var imgHeight = imgHeight as CGFloat
             self.imageholder!.setHeight(CGFloat(imgHeight))
             self.imageholder!.hidden = false
             self.holder!.setHeight(height+86+30+self.imageholder!.frame.size.height)
@@ -92,10 +91,10 @@ class FollowCell: UITableViewCell {
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(17,width:280)
-        if(img1 == 0.0){
+        if img1 == 0.0 {
             return 59.0 + height + 40.0 + 15.0
         }else{
-            return CGFloat(Int(59.0 + height + 40.0 + 30.0 + img1*250/img0))
+            return 59.0 + height + 40.0 + 30.0 + CGFloat(img1*250/img0)
         }
     }
     

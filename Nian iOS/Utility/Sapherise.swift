@@ -26,7 +26,7 @@ return "\(sa)"
 
 func SAPost(postString:String, urlString:String)->String{
     var request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL.URLWithString(urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding))
+    request!.URL = NSURL.URLWithString(urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
     request!.HTTPMethod = "POST"
     request!.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
@@ -56,7 +56,7 @@ func SAHtml(var content:String)->String{
 
 func SAEncode(var content:String)->String{
     var customAllowedSet = NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-    content = content.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+    content = content.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
     return content
 }
 

@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 class MediaCell: UICollectionViewCell {
-    @IBOutlet var label: UILabel
-    @IBOutlet var imageView: UIImageView
+    @IBOutlet var label: UILabel!
+    @IBOutlet var imageView: UIImageView!
 }
 
 class NianViewController: UIViewController, AddDelegate{

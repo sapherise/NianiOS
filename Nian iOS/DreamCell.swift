@@ -65,7 +65,7 @@ class DreamCell: UITableViewCell {
         self.holder!.layer.cornerRadius = 4;
         self.holder!.layer.masksToBounds = true;
         
-        if img.length == 0{
+        if img0 == 0.0 {
             self.imageholder!.hidden = true
             self.holder!.setHeight(height+86+15)
         }else{
@@ -89,10 +89,10 @@ class DreamCell: UITableViewCell {
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(17,width:280)
-        if(img0 == 0){
+        if(img0 == 0.0){
             return 59.0 + height + 40.0 + 15.0
         }else{
-            return 59.0 + height + 40.0 + 30.0 + img1*250/img0
+            return 59.0 + height + 40.0 + 30.0 + CGFloat(img1*250/img0)
         }
     }
     

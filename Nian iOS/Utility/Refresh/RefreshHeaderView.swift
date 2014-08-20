@@ -13,8 +13,12 @@ class RefreshHeaderView: RefreshBaseView {
         return footer
     }
     
-    init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
@@ -38,19 +42,17 @@ class RefreshHeaderView: RefreshBaseView {
     }
     
     //监听UIScrollView的contentOffset属性
-    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafePointer<()>) {
-        if (!self.userInteractionEnabled || self.hidden){
-            return
-        }
-        if (self.State == RefreshState.Refreshing) {
-            return
-        }
-        if RefreshContentOffset.isEqualToString(keyPath){
-            self.adjustStateWithContentOffset()
-        }
-    
+    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
+                if (!self.userInteractionEnabled || self.hidden){
+                    return
+                }
+                if (self.State == RefreshState.Refreshing) {
+                    return
+                }
+                if RefreshContentOffset.isEqualToString(keyPath){
+                    self.adjustStateWithContentOffset()
+                }
     }
-    
    
     
     //调整状态

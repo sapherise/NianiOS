@@ -55,7 +55,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, 320, 10))
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, 320, 20))
-        self.view.addSubview(self.tableView)
+        self.view.addSubview(self.tableView!)
         
     }
     

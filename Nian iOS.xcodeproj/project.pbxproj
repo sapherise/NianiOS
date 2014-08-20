@@ -10,7 +10,6 @@
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		1217A3EC198D359400959AD2 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1217A3EB198D359400959AD2 /* SettingsViewController.storyboard */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
-		122D73EC197EB8FB00310C6B /* AddDreamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122D73EB197EB8FB00310C6B /* AddDreamController.xib */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
 		1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6131975729100F55389 /* RefreshBaseView.swift */; };
@@ -28,8 +27,8 @@
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
 		12A65640197199DC004F530B /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6563F197199DC004F530B /* YLImageView.swift */; };
 		12A65642197199EE004F530B /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A65641197199EE004F530B /* YLGIFImage.swift */; };
-		12CE6A2A196EFBAA00F308FF /* AddstepController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE6A29196EFBAA00F308FF /* AddstepController.xib */; };
 		12CE6A2C196EFBB900F308FF /* AddstepController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE6A2B196EFBB900F308FF /* AddstepController.swift */; };
+		12E234CC19A4E78F0070040C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12E234CB19A4E78F0070040C /* Main.storyboard */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
 		12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FD19A37FC900FCB2D1 /* Explore.swift */; };
@@ -68,7 +67,6 @@
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1217A3EB198D359400959AD2 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
-		122D73EB197EB8FB00310C6B /* AddDreamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddDreamController.xib; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
 		1251D6131975729100F55389 /* RefreshBaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshBaseView.swift; sourceTree = "<group>"; };
@@ -86,8 +84,8 @@
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
 		12A6563F197199DC004F530B /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
 		12A65641197199EE004F530B /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
-		12CE6A29196EFBAA00F308FF /* AddstepController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddstepController.xib; sourceTree = "<group>"; };
 		12CE6A2B196EFBB900F308FF /* AddstepController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddstepController.swift; sourceTree = "<group>"; };
+		12E234CB19A4E78F0070040C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		12E553FD19A37FC900FCB2D1 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				122D73E9197EB8EB00310C6B /* AddDreamController.swift */,
-				122D73EB197EB8FB00310C6B /* AddDreamController.xib */,
 			);
 			name = "更新梦想";
 			sourceTree = "<group>";
@@ -199,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				12CE6A2B196EFBB900F308FF /* AddstepController.swift */,
-				12CE6A29196EFBAA00F308FF /* AddstepController.xib */,
 			);
 			name = "更新进展";
 			sourceTree = "<group>";
@@ -259,6 +255,7 @@
 			children = (
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
+				12E234CB19A4E78F0070040C /* Main.storyboard */,
 				1205298C196B186B00E7509D /* 梦想 */,
 				12FB48D2196AEAA10026DD51 /* 关注 */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
@@ -414,11 +411,10 @@
 				12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
+				12E234CC19A4E78F0070040C /* Main.storyboard in Resources */,
 				12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */,
 				12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */,
 				12FB48A6196AE76E0026DD51 /* Images.xcassets in Resources */,
-				122D73EC197EB8FB00310C6B /* AddDreamController.xib in Resources */,
-				12CE6A2A196EFBAA00F308FF /* AddstepController.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -65,8 +65,8 @@ class HomeViewController: UITabBarController{
         self.myTabbar!.backgroundColor = BarColor  //底部的背景色
         self.slider = UIView(frame:CGRectMake(0,0,64,49))
         
-        self.myTabbar!.addSubview(self.slider)
-        self.view.addSubview(self.myTabbar)
+        self.myTabbar!.addSubview(self.slider!)
+        self.view.addSubview(self.myTabbar!)
         
         //底部按钮
         var count = self.itemArray.count
@@ -148,9 +148,14 @@ class HomeViewController: UITabBarController{
     }
     
     func addDreamButton(){
-        var addDreamVC = AddDreamController()
+        //var addDreamVC = AddDreamController()
         var NianVC = NianViewController()
-        addDreamVC.delegate = NianVC    //😍
+      //  addDreamVC.delegate = NianVC    //😍
+        
+        var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        var addDreamVC:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("AddDreamController") as UIViewController
+        
+        
         self.navigationController.pushViewController(addDreamVC, animated: true)
     }
     

@@ -28,7 +28,7 @@ extension UIImageView
             var req = NSURLRequest(URL: url)
             var queue = NSOperationQueue();
             NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-                if error
+                if (error != nil)
                 {
                     dispatch_async(dispatch_get_main_queue(),
                         {
@@ -41,7 +41,7 @@ extension UIImageView
                     dispatch_async(dispatch_get_main_queue(),
                         {
                             
-                            var image = UIImage(data: data)
+                            var image:UIImage? = UIImage(data: data)
                             if image == nil
                             {
                                 self.image = placeHolder

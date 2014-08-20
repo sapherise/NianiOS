@@ -14,11 +14,11 @@ protocol AddStepDelegate {   //😍
 
 class AddstepController: UIViewController {
     
-    @IBOutlet var TextView:UITextView
-    @IBOutlet var Line: UIView
-    @IBOutlet var uploadButton: UIButton?
-    @IBOutlet var uploadWait: UIActivityIndicatorView?
-    @IBOutlet var uploadDone: UIImageView?
+    @IBOutlet var TextView:UITextView!
+    @IBOutlet var Line: UIView!
+    @IBOutlet var uploadButton: UIButton!
+    @IBOutlet var uploadWait: UIActivityIndicatorView!
+    @IBOutlet var uploadDone: UIImageView!
     var toggle:Int = 0
     var Id:String = ""
     var delegate: AddStepDelegate?      //😍

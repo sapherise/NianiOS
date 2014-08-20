@@ -11,13 +11,13 @@ import UIKit
 
 class ExploreDreamCell: UITableViewCell {
     
-    @IBOutlet var head1: UIImageView
-    @IBOutlet var head2: UIImageView
-    @IBOutlet var head3: UIImageView
-    @IBOutlet var title1: UILabel
-    @IBOutlet var title2: UILabel
-    @IBOutlet var title3: UILabel
-    @IBOutlet var View: UIView
+    @IBOutlet var head1: UIImageView!
+    @IBOutlet var head2: UIImageView!
+    @IBOutlet var head3: UIImageView!
+    @IBOutlet var title1: UILabel!
+    @IBOutlet var title2: UILabel!
+    @IBOutlet var title3: UILabel!
+    @IBOutlet var View: UIView!
     var data1 :NSDictionary!
     var data2 :NSDictionary!
     var data3 :NSDictionary!
