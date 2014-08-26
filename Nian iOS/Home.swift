@@ -20,6 +20,8 @@ class HomeViewController: UITabBarController{
     var currentViewController: UIViewController?
     var currentIndex: Int?
     var seg:UISegmentedControl = UISegmentedControl(frame: CGRectMake(30, 5, 140, 27))
+    
+    var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     //RootViewController: ACSSegmentedViewController
     
     
@@ -100,8 +102,7 @@ class HomeViewController: UITabBarController{
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         
         
-        var SettingsStoryBoard:UIStoryboard = UIStoryboard(name: "SettingsViewController", bundle: nil)
-        var SettingsViewController:UIViewController = SettingsStoryBoard.instantiateViewControllerWithIdentifier("SettingsViewController") as UIViewController
+        var SettingsViewController:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("SettingsViewController") as UIViewController
         
         var vc1 = FollowViewController()
         var vc2 = ExploreController()
@@ -151,11 +152,7 @@ class HomeViewController: UITabBarController{
         //var addDreamVC = AddDreamController()
         var NianVC = NianViewController()
       //  addDreamVC.delegate = NianVC    //😍
-        
-        var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         var addDreamVC:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("AddDreamController") as UIViewController
-        
-        
         self.navigationController.pushViewController(addDreamVC, animated: true)
     }
     

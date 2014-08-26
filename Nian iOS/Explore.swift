@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddStepDelegate{     //😍
+class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource{     //😍
     
     let identifier = "group"
     let identifier2 = "exploretop"
@@ -71,8 +71,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.view.addSubview(self.lefttableView!)
         self.view.addSubview(self.righttableView!)
         
-        var rightButton = UIBarButtonItem(title: "更新", style: .Plain, target: self, action: "addStepButton")
-        self.navigationItem.rightBarButtonItem = rightButton;
+//        var rightButton = UIBarButtonItem(title: "更新", style: .Plain, target: self, action: "addStepButton")
+//        self.navigationItem.rightBarButtonItem = rightButton;
         
         //标题颜色
         self.navigationController.navigationBar.tintColor = IconColor
@@ -266,14 +266,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             DreamVC.Id = "1"
             self.navigationController.pushViewController(DreamVC, animated: true)
         }
-    }
-    
-    
-    func addStepButton(){
-        var AddstepVC = AddstepController()
-        AddstepVC.Id = self.Id
-        AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(AddstepVC, animated: true)
     }
     
     func countUp() {      //😍

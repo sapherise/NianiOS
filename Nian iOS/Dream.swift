@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddStepDelegate{     //😍
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddstepDelegate, EditstepDelegate{     //😍
     
     let identifier = "dream"
     let identifier2 = "dreamtop"
@@ -70,8 +70,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.view.addSubview(self.lefttableView!)
         self.view.addSubview(self.righttableView!)
         
-        var rightButton = UIBarButtonItem(title: "更新", style: .Plain, target: self, action: "addStepButton")
+        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
+        rightButton.image = UIImage(named:"add")
         self.navigationItem.rightBarButtonItem = rightButton;
+        
         
         //标题颜色
         self.navigationController.navigationBar.tintColor = IconColor
@@ -220,6 +222,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var index = indexPath!.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
+                c!.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
+                c!.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 cell = c!
             }else{
                 var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? CommentCell
@@ -257,18 +261,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     
     func addStepButton(){
-      //  var AddstepVC = AddstepController()
-      //  AddstepVC.Id = self.Id
-      //  AddstepVC.delegate = self    //😍
-        
-        
-        var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        var addStepVC:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("AddStepController") as UIViewController
-        
-        self.navigationController.pushViewController(addStepVC, animated: true)
+        var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        AddstepVC.Id = self.Id
+        AddstepVC.delegate = self    //😍
+        self.navigationController.pushViewController(AddstepVC, animated: true)
     }
     
     func countUp() {      //😍
+        self.SAReloadData()
+    }
+    
+    
+    func Editstep() {      //😍
         self.SAReloadData()
     }
     
@@ -310,6 +314,76 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
             SARightReloadData()
+        }
+    }
+    func SAedit(sender:UIButton){
+        var tag = sender.tag
+        println(tag)
+        
+        var EditVC = EditStepViewController(nibName: "EditStepViewController", bundle: nil)
+        EditVC.sid = "\(sender.tag)"
+        EditVC.delegate = self
+//        AddstepVC.Id = self.Id
+//        AddstepVC.delegate = self    //😍
+        self.navigationController.pushViewController(EditVC, animated: true)
+        
+//        var button:UIButton = self.lefttableView!.viewWithTag(sender.tag) as UIButton
+//        button.hidden = true
+//        var theview:UIView? = button.superview?.superview as UIView?
+//        theview?.backgroundColor = BlueColor
+//        theview.
+//        var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
+//        var indexPath = self.lefttableView!.indexPathForCell(cell)
+//        self.dataArray.removeObjectAtIndex(indexPath.row)
+//        self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    func SAdelete(sender:UIButton){
+        println("删除")
+        if NSClassFromString("UIAlertController") != nil {
+            var alertController = UIAlertController(title: "再见", message: "进展 #\(sender.tag)", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            var deleteConfirm = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default){ action in
+                var sa = SAPost("sa=223&&uid=1&sid=\(sender.tag)", "http://nian.so/api/delete_step.php")
+                if(sa == "1"){
+                    var button:UIButton = self.lefttableView!.viewWithTag(sender.tag) as UIButton
+                    var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
+                    var indexPath = self.lefttableView!.indexPathForCell(cell)
+                    self.dataArray.removeObjectAtIndex(indexPath.row)
+                    self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            }       //这是删除按钮
+            alertController.addAction(deleteConfirm)
+            alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))   //取消按钮
+            self.presentViewController(alertController, animated: true, completion:nil)
+        } else {
+            var alertTest = UIAlertView()
+            alertTest.delegate = self
+            alertTest.title = "再见"
+            alertTest.message = "进展 #\(sender.tag)"
+            alertTest.tag = sender.tag
+            alertTest.addButtonWithTitle("确认")
+            alertTest.addButtonWithTitle("取消")
+            alertTest.show()
+        }
+    }
+    func alertView(alertView: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
+        switch buttonIndex{
+        case 0:
+            println("确定")
+            var sa = SAPost("sa=223&uid=1&sid=\(alertView.tag)", "http://nian.so/api/delete_step.php")
+            var tag = alertView.tag
+            println(tag)
+            if(sa == "1"){
+                var button:UIButton = self.lefttableView!.viewWithTag(alertView.tag) as UIButton
+                var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
+//                cell.hidden = true
+                var indexPath = self.lefttableView!.indexPathForCell(cell)
+                self.dataArray.removeObjectAtIndex(indexPath.row)
+                self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+            }
+        case 1:
+            println("取消")
+        default:
+            println("错误")
         }
     }
     

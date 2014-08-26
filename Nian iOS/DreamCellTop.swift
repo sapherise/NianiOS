@@ -37,12 +37,6 @@ class DreamCellTop: UITableViewCell{
         var userImageURL = "http://img.nian.so/dream/\(img)!head"
         self.dreamhead!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
         self.View!.backgroundColor = BGColor
-        //        self.button!.layer.cornerRadius = 4;
-        //        self.button!.layer.backgroundColor = BlueColor.CGColor
-        //        self.button!.layer.masksToBounds = true;
-        //        self.button!.setTitle("更新", forState: UIControlState.Normal)
-        //        self.button!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        
         self.Seg!.tintColor = LineColor
         self.selectionStyle = UITableViewCellSelectionStyle.None
     }

@@ -8,20 +8,20 @@
 
 import UIKit
 
-protocol AddStepDelegate {   //😍
+protocol AddstepDelegate {   //😍
     func countUp()
 }
 
-class AddstepController: UIViewController {
+class AddStepViewController: UIViewController {
     
-    @IBOutlet var TextView:UITextView!
-    @IBOutlet var Line: UIView!
     @IBOutlet var uploadButton: UIButton!
     @IBOutlet var uploadWait: UIActivityIndicatorView!
     @IBOutlet var uploadDone: UIImageView!
+    @IBOutlet var TextView:UITextView!
+    @IBOutlet var Line: UIView!
     var toggle:Int = 0
     var Id:String = ""
-    var delegate: AddStepDelegate?      //😍
+    var delegate: AddstepDelegate?      //😍
     
     @IBAction func uploadClick(sender: AnyObject) {
         if(toggle == 0){    //uploading
@@ -37,16 +37,18 @@ class AddstepController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        // Custom initialization
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     func setupViews(){
-        self.title = "新进展！"
+        println(self.Id)
+        self.uploadWait.hidden = true
         self.view.backgroundColor = BGColor
         self.TextView.backgroundColor = BGColor
         self.Line.backgroundColor = LineColor
@@ -69,6 +71,15 @@ class AddstepController: UIViewController {
         self.navigationItem.titleView = titleLabel
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
     func addStep(){
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
@@ -83,8 +94,4 @@ class AddstepController: UIViewController {
     func back(){
         self.navigationController.popViewControllerAnimated(true)
     }
-    
-    
-    
-    
 }

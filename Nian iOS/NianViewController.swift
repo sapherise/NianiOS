@@ -30,8 +30,8 @@ class NianViewController: UIViewController, AddDelegate{
     }
     
     func setupViews(){
-        var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight)) as UIVisualEffectView
-        visualEffectView.layer.borderWidth = 1.0
+     //   var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight)) as UIVisualEffectView
+     //   visualEffectView.layer.borderWidth = 1.0
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = BGColor
         self.extendedLayoutIncludesOpaqueBars = true
