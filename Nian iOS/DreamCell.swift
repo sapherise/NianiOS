@@ -25,6 +25,11 @@ class DreamCell: UITableViewCell {
     var largeImageURL:String = ""
     var data :NSDictionary!
     var imgHeight:Float = 0.0
+    var content:String = ""
+    var img:String = ""
+    var img0:Float = 0.0
+    var img1:Float = 0.0
+    var ImageURL:String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -50,10 +55,10 @@ class DreamCell: UITableViewCell {
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate")
-        var content = self.data.stringAttributeForKey("content")
-        var img = self.data.stringAttributeForKey("img") as NSString
-        var img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
-        var img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
+        content = self.data.stringAttributeForKey("content")
+        img = self.data.stringAttributeForKey("img") as NSString
+        img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
+        img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
         var like = self.data.stringAttributeForKey("like") as NSString
         
         self.nickLabel!.text = user
@@ -73,6 +78,9 @@ class DreamCell: UITableViewCell {
         self.holder!.layer.masksToBounds = true;
         self.goodbye.tag = sid.toInt()!
         self.edit.tag = sid.toInt()!
+        self.share.tag = sid.toInt()!
+        
+        self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
@@ -81,12 +89,18 @@ class DreamCell: UITableViewCell {
             self.menuHolder!.setY(self.contentLabel!.bottom()+10)
         }else{
             imgHeight = img1 * 250 / img0
-            var ImageURL = "http://img.nian.so/step/\(img)!iosfo" as NSString
+            ImageURL = "http://img.nian.so/step/\(img)!iosfo" as NSString
+            largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
             self.imageholder!.setImage(ImageURL,placeHolder: UIImage(named: "1.jpg"))
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
             self.holder!.setHeight(height+126+30+sapherise)
+            
+            
+            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
+            self.imageholder!.addGestureRecognizer(tap)
+            self.imageholder!.userInteractionEnabled = true
             
             self.imageholder!.setY(self.contentLabel!.bottom()+10)
             self.menuHolder!.setY(self.imageholder!.bottom()+10)
@@ -99,7 +113,16 @@ class DreamCell: UITableViewCell {
         }
     }
     
-    
+    func SAshare(){
+        if img0 == 0.0 {
+        NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "" ])
+        }else{
+            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, ImageURL ])
+        }
+    }
+    func DreamimageViewTapped(sender:UITapGestureRecognizer){
+        NSNotificationCenter.defaultCenter().postNotificationName("DreamimageViewTapped", object:largeImageURL)
+    }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {

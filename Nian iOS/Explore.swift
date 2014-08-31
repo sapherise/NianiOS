@@ -259,13 +259,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
     {
-        if indexPath.section != 0{
-            var index = indexPath!.row
-            var data = self.dataArray[index] as NSDictionary
-            var DreamVC = DreamViewController()
-            DreamVC.Id = "1"
-            self.navigationController.pushViewController(DreamVC, animated: true)
-        }
     }
     
     func countUp() {      //😍

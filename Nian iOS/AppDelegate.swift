@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationViewController.navigationBar.tintColor = IconColor
         navigationViewController.navigationBar.translucent = false
         
+    //    [[UINavigationBar appearance] setBarTintColor:[UIColor yellowColor]];
+        
         self.window!.rootViewController = navigationViewController
         
         

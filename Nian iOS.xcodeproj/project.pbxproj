@@ -68,6 +68,11 @@
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
 		12A65640197199DC004F530B /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6563F197199DC004F530B /* YLImageView.swift */; };
 		12A65642197199EE004F530B /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A65641197199EE004F530B /* YLGIFImage.swift */; };
+		12CDE5C919AC796E002E793F /* bbsthing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5C819AC796E002E793F /* bbsthing.swift */; };
+		12CDE5CB19AC798C002E793F /* bbsthing.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CDE5CA19AC798C002E793F /* bbsthing.xib */; };
+		12CDE5CD19AC79CA002E793F /* bbsthingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CC19AC79CA002E793F /* bbsthingCell.swift */; };
+		12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */; };
+		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
 		12E234CC19A4E78F0070040C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12E234CB19A4E78F0070040C /* Main.storyboard */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
@@ -164,6 +169,11 @@
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
 		12A6563F197199DC004F530B /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
 		12A65641197199EE004F530B /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
+		12CDE5C819AC796E002E793F /* bbsthing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bbsthing.swift; sourceTree = "<group>"; };
+		12CDE5CA19AC798C002E793F /* bbsthing.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = bbsthing.xib; sourceTree = "<group>"; };
+		12CDE5CC19AC79CA002E793F /* bbsthingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bbsthingCell.swift; sourceTree = "<group>"; };
+		12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageViewController.swift; sourceTree = "<group>"; };
+		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
 		12E234CB19A4E78F0070040C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -330,6 +340,25 @@
 			name = "设置";
 			sourceTree = "<group>";
 		};
+		12CDE5C719AC794F002E793F /* 话题 */ = {
+			isa = PBXGroup;
+			children = (
+				12CDE5C819AC796E002E793F /* bbsthing.swift */,
+				12CDE5CC19AC79CA002E793F /* bbsthingCell.swift */,
+				12CDE5CA19AC798C002E793F /* bbsthing.xib */,
+			);
+			name = "话题";
+			sourceTree = "<group>";
+		};
+		12CDE5CE19AC9FB4002E793F /* 图片 */ = {
+			isa = PBXGroup;
+			children = (
+				12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */,
+				12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */,
+			);
+			name = "图片";
+			sourceTree = "<group>";
+		};
 		12CE6A20196EEDA500F308FF /* 更新进展 */ = {
 			isa = PBXGroup;
 			children = (
@@ -407,6 +436,8 @@
 				123CB05119785B610062BB8A /* 首页 */,
 				12D222F819A2677F0027284E /* 发现 */,
 				1283E2B919AB81CD00A0FB1C /* 测试 */,
+				12CDE5C719AC794F002E793F /* 话题 */,
+				12CDE5CE19AC9FB4002E793F /* 图片 */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
 			path = "Nian iOS";
@@ -560,6 +591,7 @@
 				1275E4B019A8CB9B00E2FC4C /* upload_ok@2x.png in Resources */,
 				1275E4A919A8CB9B00E2FC4C /* right.png in Resources */,
 				1275E49D19A8CB9B00E2FC4C /* fo@2x.png in Resources */,
+				12CDE5CB19AC798C002E793F /* bbsthing.xib in Resources */,
 				1275E4A019A8CB9B00E2FC4C /* img@2x.png in Resources */,
 				1275E48F19A8CB9B00E2FC4C /* back@2x.png in Resources */,
 				12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */,
@@ -615,6 +647,8 @@
 			files = (
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12E5540019A3813B00FCB2D1 /* ExploreTop.swift in Sources */,
+				12CDE5CD19AC79CA002E793F /* bbsthingCell.swift in Sources */,
+				12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */,
 				12E5540419A395B500FCB2D1 /* GroupCell.swift in Sources */,
 				12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
@@ -624,6 +658,7 @@
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
 				12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
+				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
@@ -642,6 +677,7 @@
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
+				12CDE5C919AC796E002E793F /* bbsthing.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
@@ -752,7 +788,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				New_Setting = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -768,7 +804,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				New_Setting = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

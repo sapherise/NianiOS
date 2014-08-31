@@ -74,4 +74,3 @@ func SAColorImg(theColor:UIColor)->UIImage{
 
 
 
-

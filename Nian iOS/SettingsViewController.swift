@@ -50,5 +50,10 @@ class SettingsViewController: UIViewController{
         self.label2.textColor = BlueColor
         self.label3.textColor = BlueColor
         
+        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tap")
+        self.head?.addGestureRecognizer(tap)
+        self.head?.userInteractionEnabled = true
     }
+
+    func tap(){}
 }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-class FollowViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class bbsthingViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
-    let identifier = "follow"
+    let identifier = "bbsthing"
     var tableView:UITableView?
     var dataArray = NSMutableArray()
     var page :Int = 0
@@ -50,7 +50,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"FollowCell", bundle: nil)
+        var nib = UINib(nibName:"bbsthingCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, 320, 10))
@@ -60,22 +60,22 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     
-func loadData(){
+    func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-        if data as NSObject == NSNull(){
+            if data as NSObject == NSNull(){
                 UIView.showAlertView("提示",message:"加载失败")
                 return
-        }
-        var arr = data["items"] as NSArray
-        for data : AnyObject  in arr{
+            }
+            var arr = data["items"] as NSArray
+            for data : AnyObject  in arr{
                 self.dataArray.addObject(data)
-       }
+            }
             self.tableView!.reloadData()
             self.tableView!.footerEndRefreshing()
             self.page++
-       })
-}
+        })
+    }
     func SAReloadData(){
         self.page = 0
         var url = urlString()
@@ -92,12 +92,12 @@ func loadData(){
             self.tableView!.reloadData()
             self.tableView!.headerEndRefreshing()
             self.page++
-            })
+        })
     }
     
     
     func urlString()->String{
-            return "http://nian.so/api/explore_fo.php?page=\(page)&uid=1"
+        return "http://nian.so/api/explore_fo.php?page=\(page)&uid=1"
     }
     
     override func didReceiveMemoryWarning() {
@@ -115,25 +115,18 @@ func loadData(){
     
     func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? FollowCell
+        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? bbsthingCell
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         return cell
     }
     
-    func imageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
-    }
-    
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
     {
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
-        return  FollowCell.cellHeightByData(data)
+        return  bbsthingCell.cellHeightByData(data)
     }
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
     {
@@ -144,11 +137,19 @@ func loadData(){
         self.navigationController.pushViewController(DreamVC, animated: true)
     }
     
+    func imageViewTapped(noti:NSNotification)
+    {
+        //        var imageURL = noti.object as String
+        //        var imgVC = YRImageViewController(nibName: nil, bundle: nil)
+        //        imgVC.imageURL = imageURL
+        //        self.navigationController.pushViewController(imgVC, animated: true)
+    }
+    
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
-            })
+        })
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })

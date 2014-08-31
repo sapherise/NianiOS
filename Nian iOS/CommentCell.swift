@@ -58,9 +58,16 @@ class CommentCell: UITableViewCell {
         self.contentLabel!.text = content
         self.Line!.backgroundColor = LineColor
         self.Line!.setY(self.contentLabel!.bottom()+16)
+        self.avatarView?.userInteractionEnabled = true
+        self.avatarView?.tag = uid.toInt()!
+        
+        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
+        self.imageholder!.addGestureRecognizer(tap)
+        self.imageholder!.userInteractionEnabled = true
     }
-    
-    
+    func DreamimageViewTapped(sender:UITapGestureRecognizer){
+        NSNotificationCenter.defaultCenter().postNotificationName("DreamimageViewTapped", object:largeImageURL)
+    }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {

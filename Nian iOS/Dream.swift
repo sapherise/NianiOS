@@ -32,13 +32,37 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     override func viewWillDisappear(animated: Bool)
     {
         super.viewWillDisappear(animated)
-        //        [[self navigationController] setNavigationBarHidden:YES];
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "DreamimageViewTapped", object:nil)
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "DreamimageViewTapped:", name: "DreamimageViewTapped", object: nil)
     }
     
+    func ShareContent(noti:NSNotification){
+        var content:AnyObject = noti.object
+        println(content)
+        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
+        if content[1] as NSString != "" {
+        var theimgurl:String = content[1] as String
+        var imgurl = NSURL.URLWithString(theimgurl)
+        var cacheFilename = imgurl.lastPathComponent
+        var cachePath = FileUtility.cachePath(cacheFilename)
+        var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
+        let activityViewController = UIActivityViewController(
+                activityItems: [ content[0], url, image ],
+            applicationActivities: nil)
+            self.presentViewController(activityViewController, animated: true, completion: nil)
+        }else{
+            let activityViewController = UIActivityViewController(
+                activityItems: [ content[0], url ],
+                applicationActivities: nil)
+            self.presentViewController(activityViewController, animated: true, completion: nil)
+        }
+    }
     
     func setupViews()
     {
@@ -85,14 +109,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
         leftButton.image = UIImage(named:"back")
         self.navigationItem.leftBarButtonItem = leftButton;
-        
-        
-        //        AFImageViewer* afView = [[AFImageViewer alloc] initWithFrame:CGRectMake(0,0, 320, 200)];
-        //        afView.backgroundColor=[UIColor blackColor];
-        //        [afView setContentMode:UIViewContentModeScaleAspectFill];
-        //        afView.delegate=self;
-        //        contentTableView.tableHeaderView = afView;
-        //UILabel(frame: CGRectMake(0, 0, 200, 40))
     }
     
     
@@ -230,10 +246,23 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var index = indexPath!.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
+                var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "SAreply:")
+                c!.avatarView!.addGestureRecognizer(tap)
                 cell = c!
             }
         }
         return cell
+    }
+    
+    func imageViewTapped(noti:NSNotification){
+        var imageURL = noti.object as String
+        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
+        imgVC.imageURL = "\(imageURL)"
+        self.navigationController.pushViewController(imgVC, animated: true)
+    }
+    
+    func SAreply(sender:UITapGestureRecognizer){
+        println(sender.view.tag)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -255,8 +284,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
     {
-        if indexPath.section != 0{
-        }
     }
     
     
@@ -274,14 +301,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func Editstep() {      //😍
         self.SAReloadData()
-    }
-    
-    func imageViewTapped(noti:NSNotification)
-    {
-        //        var imageURL = noti.object as String
-        //        var imgVC = YRImageViewController(nibName: nil, bundle: nil)
-        //        imgVC.imageURL = imageURL
-        //        self.navigationController.pushViewController(imgVC, animated: true)
     }
     func setupRefresh(){
         self.lefttableView!.addHeaderWithCallback({
@@ -386,5 +405,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             println("错误")
         }
     }
+    
+    
+    func DreamimageViewTapped(noti:NSNotification){
+        var imageURL = noti.object as String
+        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
+        imgVC.imageURL = "\(imageURL)"
+        self.navigationController.pushViewController(imgVC, animated: true)
+    }
+
     
 }

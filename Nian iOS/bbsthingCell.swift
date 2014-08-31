@@ -9,7 +9,7 @@
 import UIKit
 
 
-class FollowCell: UITableViewCell {
+class bbsthingCell: UITableViewCell {
     
     @IBOutlet var avatarView:UIImageView?
     @IBOutlet var nickLabel:UILabel?
@@ -18,9 +18,8 @@ class FollowCell: UITableViewCell {
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var imageholder:UIImageView?
     @IBOutlet var View:UIView?
-    var LargeImgURL:String = ""
+    var largeImageURL:String = ""
     var data :NSDictionary!
-    var user:String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,7 +42,7 @@ class FollowCell: UITableViewCell {
         
         super.layoutSubviews()
         var uid = self.data.stringAttributeForKey("uid")
-        user = self.data.stringAttributeForKey("user")
+        var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
         var img = self.data.stringAttributeForKey("img") as NSString
@@ -65,8 +64,8 @@ class FollowCell: UITableViewCell {
         self.contentLabel!.text = content
         self.holder!.layer.cornerRadius = 4;
         self.holder!.layer.masksToBounds = true;
-//        self.holder!.layer.borderColor = BorderColor.CGColor
-//        self.holder!.layer.borderWidth = 1
+        //        self.holder!.layer.borderColor = BorderColor.CGColor
+        //        self.holder!.layer.borderWidth = 1
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
@@ -75,21 +74,13 @@ class FollowCell: UITableViewCell {
         }else{
             var imgHeight:Float = img1 * 250 / img0
             var ImageURL = "http://img.nian.so/step/\(img)!iosfo" as NSString
-            LargeImgURL = "http://img.nian.so/step/\(img)!large" as NSString
             self.imageholder!.setImage(ImageURL,placeHolder: UIImage(named: "1.jpg"))
             self.imageholder!.setHeight(CGFloat(imgHeight))
             self.imageholder!.hidden = false
             self.holder!.setHeight(height+86+30+self.imageholder!.frame.size.height)
         }
         
-        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-        self.imageholder!.addGestureRecognizer(tap)
-        self.imageholder!.userInteractionEnabled = true
         self.imageholder!.setY(self.contentLabel!.bottom()+10)
-    }
-    
-    func imageViewTapped(sender:UITapGestureRecognizer){
-        NSNotificationCenter.defaultCenter().postNotificationName("imageViewTapped", object:LargeImgURL)
     }
     
     
