@@ -80,7 +80,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.righttableView!.backgroundColor = BGColor
         self.righttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         self.righttableView!.hidden = true
-        
         var nib = UINib(nibName:"DreamCell", bundle: nil)
         var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         var nib3 = UINib(nibName:"CommentCell", bundle: nil)
@@ -147,7 +146,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             
             for data : AnyObject  in arr
             {
-                self.dataArray.addObject(data)
+                self.dataArray2.addObject(data)
             }
             self.righttableView!.reloadData()
             self.righttableView!.footerEndRefreshing()
@@ -181,9 +180,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 return
             }
             var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
+            self.dataArray2.removeAllObjects()
             for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
+                self.dataArray2.addObject(data)
             }
             self.righttableView!.reloadData()
             self.righttableView!.headerEndRefreshing()
@@ -212,7 +211,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         if section==0{
             return 1
         }else{
+            if tableView == lefttableView {
             return self.dataArray.count
+            }else{
+            return self.dataArray2.count
+            }
         }
     }
     
@@ -244,10 +247,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }else{
                 var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? CommentCell
                 var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
+                var data = self.dataArray2[index] as NSDictionary
                 c!.data = data
-                var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "SAreply:")
-                c!.avatarView!.addGestureRecognizer(tap)
                 cell = c!
             }
         }
@@ -259,10 +260,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
         self.navigationController.pushViewController(imgVC, animated: true)
-    }
-    
-    func SAreply(sender:UITapGestureRecognizer){
-        println(sender.view.tag)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -277,13 +274,32 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 return  DreamCell.cellHeightByData(data)
             }else{
                 var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
+                var data = self.dataArray2[index] as NSDictionary
                 return  CommentCell.cellHeightByData(data)
             }
         }
     }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
-    {
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!){
+        self.righttableView?.deselectRowAtIndexPath(indexPath, animated: false)
+        if indexPath.section != 0 {
+            if tableView == righttableView {
+                
+                var index = indexPath!.row
+                var data = self.dataArray2[index] as NSDictionary
+                var user = data.stringAttributeForKey("user")
+                
+                var replyalertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+                var replyConfirm = UIAlertAction(title: "回应 @\(user)", style: UIAlertActionStyle.Default){ action in
+                    var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
+                    addCommentVC.content = "@\(user) "
+                    addCommentVC.Id = self.Id
+                    self.navigationController.pushViewController(addCommentVC, animated: true)
+                }
+                replyalertController.addAction(replyConfirm)
+                replyalertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(replyalertController, animated: true, completion:nil)
+            }
+        }
     }
     
     

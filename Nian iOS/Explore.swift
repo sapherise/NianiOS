@@ -130,7 +130,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             
             for data : AnyObject  in arr
             {
-                self.dataArray.addObject(data)
+                self.dataArray2.addObject(data)
             }
             self.righttableView!.reloadData()
             self.righttableView!.footerEndRefreshing()
@@ -164,9 +164,9 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 return
             }
             var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
+            self.dataArray2.removeAllObjects()
             for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
+                self.dataArray2.addObject(data)
             }
             self.righttableView!.reloadData()
             self.righttableView!.headerEndRefreshing()
@@ -199,7 +199,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             if tableView == lefttableView {
             return self.dataArray.count
             }else{
-            return self.dataArray.count/3
+            return self.dataArray2.count/3
             }
         }
     }
@@ -229,16 +229,26 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 var index = indexPath!.row * 3
                 var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? ExploreDreamCell
            //     var index = indexPath!.row
-                var data1 = self.dataArray[index] as NSDictionary
-                var data2 = self.dataArray[index+1] as NSDictionary
-                var data3 = self.dataArray[index+2] as NSDictionary
+                var data1 = self.dataArray2[index] as NSDictionary
+                var data2 = self.dataArray2[index+1] as NSDictionary
+                var data3 = self.dataArray2[index+2] as NSDictionary
                 c!.data1 = data1
                 c!.data2 = data2
                 c!.data3 = data3
+                
+                c!.head1!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
+                c!.head2!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
+                c!.head3!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
                 cell = c!
             }
         }
         return cell
+    }
+    
+    func dreamclick(sender:UITapGestureRecognizer){
+        var DreamVC = DreamViewController()
+        DreamVC.Id = "\(sender.view.tag)"
+        self.navigationController.pushViewController(DreamVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -251,9 +261,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 var data = self.dataArray[index] as NSDictionary
                 return  GroupCell.cellHeightByData(data)
             }else{
-                var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
-                return  120
+                return  140
             }
         }
     }

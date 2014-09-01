@@ -66,6 +66,8 @@ class EditStepViewController: UIViewController {
         self.uploadWait!.hidden = true
         self.uploadDone!.hidden = true
         
+        self.TextView.becomeFirstResponder()
+        
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
         rightButton.image = UIImage(named:"ok")
         self.navigationItem.rightBarButtonItem = rightButton;

@@ -51,10 +51,25 @@ class ExploreDreamCell: UITableViewCell {
         var title1 = self.data1.stringAttributeForKey("title")
         var title2 = self.data2.stringAttributeForKey("title")
         var title3 = self.data3.stringAttributeForKey("title")
+        var promo1 = self.data1.stringAttributeForKey("promo")
+        var promo2 = self.data2.stringAttributeForKey("promo")
+        var promo3 = self.data3.stringAttributeForKey("promo")
         
-        self.title1!.textColor = BlueColor
-        self.title2!.textColor = BlueColor
-        self.title3!.textColor = BlueColor
+        if promo1 == "0" {
+            self.title1!.textColor = BlueColor
+        }else{
+            self.title1!.textColor = GoldColor
+        }
+        if promo2 == "0" {
+            self.title2!.textColor = BlueColor
+        }else{
+            self.title2!.textColor = GoldColor
+        }
+        if promo3 == "0" {
+            self.title3!.textColor = BlueColor
+        }else{
+            self.title3!.textColor = GoldColor
+        }
         self.title1!.text = title1
         self.title2!.text = title2
         self.title3!.text = title3
@@ -69,15 +84,21 @@ class ExploreDreamCell: UITableViewCell {
         self.head2!.layer.cornerRadius = 40;
         self.head3!.layer.cornerRadius = 40;
         
+        self.head1!.tag = id1.toInt()!
+        self.head2!.tag = id2.toInt()!
+        self.head3!.tag = id3.toInt()!
+        
         self.head1!.layer.masksToBounds = true;
         self.head2!.layer.masksToBounds = true;
         self.head3!.layer.masksToBounds = true;
         
+        self.head1!.userInteractionEnabled = true
+        self.head2!.userInteractionEnabled = true
+        self.head3!.userInteractionEnabled = true
+        
         self.View.backgroundColor = BGColor
         
     }
-    
-    
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {

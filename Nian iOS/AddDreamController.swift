@@ -55,6 +55,7 @@ class AddDreamController: UIViewController {
         self.field2?.textColor = IconColor
         self.field1?.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
         self.field2?.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
+        self.field1?.becomeFirstResponder()
         
         self.uploadWait?.hidden = true
         self.uploadDone?.hidden = true
