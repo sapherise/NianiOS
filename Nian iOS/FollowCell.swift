@@ -56,6 +56,8 @@ class FollowCell: UITableViewCell {
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
         self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
+        self.avatarView!.userInteractionEnabled = true
+        self.avatarView!.tag = uid.toInt()!
         
         var height = content.stringHeightWith(17,width:280)
         

@@ -75,14 +75,14 @@ class ExploreDreamCell: UITableViewCell {
         self.title3!.text = title3
         
         var imgholder = SAColorImg(IconColor)
-        self.head1!.setImage("http://img.nian.so/dream/\(img1)!dream",placeHolder: imgholder)
-        self.head2!.setImage("http://img.nian.so/dream/\(img2)!dream",placeHolder: imgholder)
-        self.head3!.setImage("http://img.nian.so/dream/\(img3)!dream",placeHolder: imgholder)
+        self.head1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: imgholder)
+        self.head2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: imgholder)
+        self.head3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: imgholder)
         
         
-        self.head1!.layer.cornerRadius = 40;
-        self.head2!.layer.cornerRadius = 40;
-        self.head3!.layer.cornerRadius = 40;
+        self.head1!.layer.cornerRadius = 4;
+        self.head2!.layer.cornerRadius = 4;
+        self.head3!.layer.cornerRadius = 4;
         
         self.head1!.tag = id1.toInt()!
         self.head2!.tag = id2.toInt()!

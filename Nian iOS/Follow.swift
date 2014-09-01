@@ -119,7 +119,15 @@ func loadData(){
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
+        var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
+        cell!.avatarView?.addGestureRecognizer(userclick)
         return cell
+    }
+    
+    func userclick(sender:UITapGestureRecognizer){
+        var UserVC = UserViewController()
+        UserVC.Id = "\(sender.view.tag)"
+        self.navigationController.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
