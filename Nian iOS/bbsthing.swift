@@ -24,7 +24,6 @@ class bbsthingViewController: UIViewController,UITableViewDelegate,UITableViewDa
         setupRefresh()
         self.tableView!.headerBeginRefreshing()
         SAReloadData()
-        println(Id)
     }
     
     override func viewWillDisappear(animated: Bool)

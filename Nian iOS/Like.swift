@@ -8,9 +8,9 @@
 
 import UIKit
 
-class FollowViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
-    let identifier = "follow"
+    let identifier = "like"
     var tableView:UITableView?
     var dataArray = NSMutableArray()
     var page :Int = 0
@@ -30,34 +30,12 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "imageViewTapped", object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
         
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "imageViewTapped:", name: "imageViewTapped", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
-    }
-    func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
-        if content[1] as NSString != "" {
-            var theimgurl:String = content[1] as String
-            var imgurl = NSURL.URLWithString(theimgurl)
-            var cacheFilename = imgurl.lastPathComponent
-            var cachePath = FileUtility.cachePath(cacheFilename)
-            var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
-            let activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url, image ],
-                applicationActivities: nil)
-            self.presentViewController(activityViewController, animated: true, completion: nil)
-        }else{
-            let activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url ],
-                applicationActivities: nil)
-            self.presentViewController(activityViewController, animated: true, completion: nil)
-        }
     }
     
     
@@ -66,37 +44,46 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     {
         var width = self.view.frame.size.width
         var height = self.view.frame.size.height - 64
-        self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
+        self.tableView = UITableView(frame:CGRectMake(0,0,width,height))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"FollowCell", bundle: nil)
+        var nib = UINib(nibName:"LikeCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, 320, 10))
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, 320, 20))
         self.view.addSubview(self.tableView!)
         
+        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
+        leftButton.image = UIImage(named:"back")
+        self.navigationItem.leftBarButtonItem = leftButton;
+        
+        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        titleLabel.textColor = IconColor
+        titleLabel.text = "赞过你"
+        titleLabel.textAlignment = NSTextAlignment.Center
+        self.navigationItem.titleView = titleLabel
     }
     
     
-func loadData(){
+    func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-        if data as NSObject == NSNull(){
+            if data as NSObject == NSNull(){
                 UIView.showAlertView("提示",message:"加载失败")
                 return
-        }
-        var arr = data["items"] as NSArray
-        for data : AnyObject  in arr{
+            }
+            var arr = data["items"] as NSArray
+            for data : AnyObject  in arr{
                 self.dataArray.addObject(data)
-       }
+            }
             self.tableView!.reloadData()
             self.tableView!.footerEndRefreshing()
             self.page++
-       })
-}
+        })
+    }
     func SAReloadData(){
         self.page = 0
         var url = urlString()
@@ -113,12 +100,12 @@ func loadData(){
             self.tableView!.reloadData()
             self.tableView!.headerEndRefreshing()
             self.page++
-            })
+        })
     }
     
     
     func urlString()->String{
-            return "http://nian.so/api/explore_fo.php?page=\(page)&uid=1"
+        return "http://nian.so/api/like.php?page=\(page)&id=\(Id)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -136,20 +123,13 @@ func loadData(){
     
     func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? FollowCell
+        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
         cell!.avatarView?.addGestureRecognizer(userclick)
-        cell!.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
         return cell
-    }
-    
-    func likeclick(sender:UITapGestureRecognizer){
-        var LikeVC = LikeViewController()
-        LikeVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(LikeVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
@@ -167,27 +147,24 @@ func loadData(){
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
     {
-        var index = indexPath!.row
-        var data = self.dataArray[index] as NSDictionary
-        return  FollowCell.cellHeightByData(data)
+        return  80
     }
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
     {
-        var index = indexPath!.row
-        var data = self.dataArray[index] as NSDictionary
-        var DreamVC = DreamViewController()
-        DreamVC.Id = data.stringAttributeForKey("id")
-        self.navigationController.pushViewController(DreamVC, animated: true)
     }
     
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
-            })
+        })
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })
+    }
+    
+    func back(){
+        self.navigationController.popViewControllerAnimated(true)
     }
     
 }

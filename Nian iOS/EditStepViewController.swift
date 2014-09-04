@@ -97,16 +97,12 @@ class EditStepViewController: UIViewController {
     }
     
     func editStep(){
-        println(self.sid)
-        println("更新成功")
-        
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
         var sa=SAPost("sid=\(sid)&&uid=1&&content=\(content)", "http://nian.so/api/editstep_query.php")
         if(sa == "1"){
             delegate?.Editstep()
             self.navigationController.popViewControllerAnimated(true)
-            println("太棒辣")
         }
     }
 }

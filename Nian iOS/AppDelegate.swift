@@ -19,19 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
         mainViewController.selectedIndex = 2
-        
-        //导航栏的颜色
         var navigationViewController = UINavigationController(rootViewController: mainViewController)
         navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BarColor), forBarMetrics: UIBarMetrics.Default)
         navigationViewController.navigationBar.tintColor = IconColor
         navigationViewController.navigationBar.translucent = false
-        
-    //    [[UINavigationBar appearance] setBarTintColor:[UIColor yellowColor]];
-        
         self.window!.rootViewController = navigationViewController
-        
-        
         self.window!.makeKeyAndVisible()
+        
+   //     println(Sa.objectForKey("uid"))
+        
         return true
     }
     

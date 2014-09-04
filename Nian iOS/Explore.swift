@@ -179,7 +179,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func urlString()->String
     {
-        //return "http://nian.so/api/step.php?page=\(page)&id=\(Id)"
         return "http://nian.so/api/bbs.php?page=\(page)"
     }
     

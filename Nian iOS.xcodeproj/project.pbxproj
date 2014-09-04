@@ -24,6 +24,9 @@
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
 		1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6161975729100F55389 /* RefreshHeaderView.swift */; };
 		1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6171975729100F55389 /* UIScrollView+Refresh.swift */; };
+		1257833519B5F19F008A1B3B /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833419B5F19F008A1B3B /* Like.swift */; };
+		1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833619B5F1A8008A1B3B /* LikeCell.swift */; };
+		1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1257833819B5F1B1008A1B3B /* LikeCell.xib */; };
 		1265282E196C6460005765D2 /* Dream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282D196C6460005765D2 /* Dream.swift */; };
 		12652830196C6468005765D2 /* DreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282F196C6468005765D2 /* DreamCell.swift */; };
 		12652832196C6474005765D2 /* DreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12652831196C6474005765D2 /* DreamCell.xib */; };
@@ -134,6 +137,9 @@
 		1251D6151975729100F55389 /* RefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshFooterView.swift; sourceTree = "<group>"; };
 		1251D6161975729100F55389 /* RefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHeaderView.swift; sourceTree = "<group>"; };
 		1251D6171975729100F55389 /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
+		1257833419B5F19F008A1B3B /* Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
+		1257833619B5F1A8008A1B3B /* LikeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
+		1257833819B5F1B1008A1B3B /* LikeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LikeCell.xib; sourceTree = "<group>"; };
 		1265282D196C6460005765D2 /* Dream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dream.swift; sourceTree = "<group>"; };
 		1265282F196C6468005765D2 /* DreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCell.swift; sourceTree = "<group>"; };
 		12652831196C6474005765D2 /* DreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamCell.xib; sourceTree = "<group>"; };
@@ -247,6 +253,7 @@
 				12652835196C673A005765D2 /* DreamCellTop.swift */,
 				12652833196C671E005765D2 /* DreamCellTop.xib */,
 				12E4939C19953DD600F8DF32 /* 回应 */,
+				1257833319B5F183008A1B3B /* 点赞 */,
 			);
 			name = "梦想";
 			sourceTree = "<group>";
@@ -276,18 +283,18 @@
 				1231A07519B461FC00BD425F /* UserCellTop.xib */,
 				1231A07719B463DA00BD425F /* UserCell.swift */,
 				1231A07919B463E400BD425F /* UserCell.xib */,
-				1231A07B19B4649000BD425F /* 用户进展 */,
+				1231A07B19B4649000BD425F /* 用户梦想 */,
 			);
 			name = "用户";
 			sourceTree = "<group>";
 		};
-		1231A07B19B4649000BD425F /* 用户进展 */ = {
+		1231A07B19B4649000BD425F /* 用户梦想 */ = {
 			isa = PBXGroup;
 			children = (
 				1231A07C19B464AD00BD425F /* StepCell.swift */,
 				1231A07E19B464B500BD425F /* StepCell.xib */,
 			);
-			name = "用户进展";
+			name = "用户梦想";
 			sourceTree = "<group>";
 		};
 		123CB05119785B610062BB8A /* 首页 */ = {
@@ -308,6 +315,16 @@
 				1251D6171975729100F55389 /* UIScrollView+Refresh.swift */,
 			);
 			path = Refresh;
+			sourceTree = "<group>";
+		};
+		1257833319B5F183008A1B3B /* 点赞 */ = {
+			isa = PBXGroup;
+			children = (
+				1257833419B5F19F008A1B3B /* Like.swift */,
+				1257833619B5F1A8008A1B3B /* LikeCell.swift */,
+				1257833819B5F1B1008A1B3B /* LikeCell.xib */,
+			);
+			name = "点赞";
 			sourceTree = "<group>";
 		};
 		1275E46419A8CB9B00E2FC4C /* images */ = {
@@ -654,6 +671,7 @@
 				1275E49F19A8CB9B00E2FC4C /* img.png in Resources */,
 				1275E4A619A8CB9B00E2FC4C /* more@2x.png in Resources */,
 				1275E49619A8CB9B00E2FC4C /* dream.png in Resources */,
+				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				1275E49E19A8CB9B00E2FC4C /* goodbye.png in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
 				1275E48E19A8CB9B00E2FC4C /* back.png in Resources */,
@@ -712,6 +730,7 @@
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				1231A07419B461F100BD425F /* UserCellTop.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
+				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				1231A07219B45F3A00BD425F /* User.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12A65642197199EE004F530B /* YLGIFImage.swift in Sources */,
@@ -728,6 +747,7 @@
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
+				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
 				12CDE5C919AC796E002E793F /* bbsthing.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,

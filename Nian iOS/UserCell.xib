@@ -89,6 +89,26 @@
                                 <color key="textColor" red="0.64313727617263794" green="0.64313727617263794" blue="0.64313727617263794" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1FT-Js-tfd">
+                                <rect key="frame" x="236" y="0.0" width="30" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="liked">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nolikeClick:" destination="Nxi-zM-L6x" eventType="touchUpInside" id="7U0-AI-U9X"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="cr7-4a-qgG">
+                                <rect key="frame" x="236" y="0.0" width="30" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="like">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="likeClick:" destination="Nxi-zM-L6x" eventType="touchUpInside" id="2mY-uj-gEi"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
@@ -105,6 +125,8 @@
                 <outlet property="imageholder" destination="Q6N-Zz-AKw" id="Xe6-0U-irc"/>
                 <outlet property="lastdate" destination="OO1-kA-hFx" id="Fug-tw-qrL"/>
                 <outlet property="like" destination="VRe-0O-EcS" id="iNs-9V-e4m"/>
+                <outlet property="likebutton" destination="cr7-4a-qgG" id="3hm-4e-h7Q"/>
+                <outlet property="likedbutton" destination="1FT-Js-tfd" id="f3f-9F-r4I"/>
                 <outlet property="menuHolder" destination="GPc-10-oYe" id="z7m-0T-310"/>
                 <outlet property="nickLabel" destination="RaU-Rm-cQH" id="s9x-PH-ssd"/>
                 <outlet property="share" destination="l8C-pG-vns" id="AIu-pQ-yVr"/>
@@ -115,6 +137,8 @@
     <resources>
         <image name="edit" width="21" height="21"/>
         <image name="goodbye" width="21" height="21"/>
+        <image name="like" width="21" height="18"/>
+        <image name="liked" width="21" height="18"/>
         <image name="share" width="21" height="21"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

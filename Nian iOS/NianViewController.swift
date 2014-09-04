@@ -36,6 +36,8 @@ class NianViewController: UIViewController, AddDelegate{
         collectionView.backgroundColor = BGColor
         self.extendedLayoutIncludesOpaqueBars = true
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 140, 0)
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        println(Sa.objectForKey("uid"))
     }
     
     func loadData(){
@@ -103,7 +105,6 @@ class NianViewController: UIViewController, AddDelegate{
     
     
     func countUp() {      //😍
-        println("1")
     }
     
     

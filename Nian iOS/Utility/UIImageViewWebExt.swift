@@ -18,7 +18,6 @@ extension UIImageView
         var cacheFilename = url.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFilename)
         var image : AnyObject = FileUtility.imageDataFromPath(cachePath)
-      //  println(cachePath)
         if image as NSObject != NSNull()
         {
             self.image = image as UIImage

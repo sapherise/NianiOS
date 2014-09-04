@@ -39,12 +39,10 @@ class HomeViewController: UITabBarController{
     {
         self.automaticallyAdjustsScrollViewInsets = false
         
-//        self.moreNavigationController.navigationController.navigationBarHidden=YES
-//        self.navigationController.navigationBarHidden=YES;
-//        self.moreNavigationController.navigationBarHidden=YES
-        
-        
-//        tabbar.selectedIndex  = xx;
+        //数据持久化
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        Sa.setObject("1", forKey: "uid")
+        Sa.synchronize()
         
         //标题
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -129,7 +127,6 @@ class HomeViewController: UITabBarController{
                 self.slider!.frame = CGRectMake(CGFloat(index-100)*64,0,64,49)
             })
         self.selectedIndex = index-100
-        println("\(index-100)")
         
         //标题
             var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))

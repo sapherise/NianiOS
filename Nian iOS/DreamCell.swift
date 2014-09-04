@@ -22,6 +22,8 @@ class DreamCell: UITableViewCell {
     @IBOutlet weak var share: UIButton!
     @IBOutlet weak var goodbye: UIButton!
     @IBOutlet weak var edit: UIButton!
+    @IBOutlet weak var likebutton:UIButton!
+    @IBOutlet weak var liked:UIButton!
     var largeImageURL:String = ""
     var data :NSDictionary!
     var imgHeight:Float = 0.0
@@ -30,6 +32,51 @@ class DreamCell: UITableViewCell {
     var img0:Float = 0.0
     var img1:Float = 0.0
     var ImageURL:String = ""
+    
+    @IBAction func nolikeClick(sender: AnyObject) { //取消赞
+        self.liked!.hidden = true
+        self.likebutton!.hidden = false
+        if self.like!.text == "" {
+            self.like!.text = "0 赞"
+            self.data.setValue("0", forKey: "like")
+            self.like!.hidden = true
+        }else{
+            var likenumber = SAReplace(self.like!.text, " 赞", "") as String
+            var likenewnumber = likenumber.toInt()! - 1
+            self.like!.text = "\(likenewnumber) 赞"
+            self.data.setValue("\(likenewnumber)", forKey: "like")
+            if likenewnumber == 0 {
+                self.like!.hidden = true
+            }else{
+                self.like!.hidden = false
+            }
+        }
+        self.data.setValue("0", forKey: "liked")
+        var sid = self.data.stringAttributeForKey("sid")
+        var sa = SAPost("step=\(sid)&&uid=1&&like=0", "http://nian.so/api/like_query.php")
+        if sa == "1" {
+        }
+    }
+    @IBAction func likeClick(sender: AnyObject) {   //赞
+        self.likebutton!.hidden = true
+        self.liked!.hidden = false
+        if self.like!.text == "" {
+            self.like!.text = "1 赞"
+            self.data.setValue("1", forKey: "like")
+        }else{
+            var likenumber = SAReplace(self.like!.text, " 赞", "") as String
+            var likenewnumber = likenumber.toInt()! + 1
+            self.like!.text = "\(likenewnumber) 赞"
+            self.data.setValue("\(likenewnumber)", forKey: "like")
+        }
+        self.data.setValue("1", forKey: "liked")
+        self.like!.hidden = false
+        
+        var sid = self.data.stringAttributeForKey("sid")
+        var sa = SAPost("step=\(sid)&&uid=1&&like=1", "http://nian.so/api/like_query.php")
+        if sa == "1" {
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,13 +95,12 @@ class DreamCell: UITableViewCell {
     
     override func layoutSubviews()
     {
-        
-        
         super.layoutSubviews()
         var sid = self.data.stringAttributeForKey("sid")
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate")
+        var liked = self.data.stringAttributeForKey("liked")
         content = self.data.stringAttributeForKey("content")
         img = self.data.stringAttributeForKey("img") as NSString
         img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
@@ -67,6 +113,11 @@ class DreamCell: UITableViewCell {
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
         self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
+        self.avatarView!.userInteractionEnabled = true
+        self.avatarView!.tag = uid.toInt()!
+        
+        self.like!.userInteractionEnabled = true
+        self.like!.tag = sid.toInt()!
         
         var height = content.stringHeightWith(17,width:280)
         
@@ -84,9 +135,9 @@ class DreamCell: UITableViewCell {
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
-            self.holder!.setHeight(height+126+15)
+            self.holder!.setHeight(height+136)
             imgHeight = 0
-            self.menuHolder!.setY(self.contentLabel!.bottom()+10)
+            self.menuHolder!.setY(self.contentLabel!.bottom())
         }else{
             imgHeight = img1 * 250 / img0
             ImageURL = "http://img.nian.so/step/\(img)!iosfo" as NSString
@@ -95,7 +146,7 @@ class DreamCell: UITableViewCell {
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
-            self.holder!.setHeight(height+126+30+sapherise)
+            self.holder!.setHeight(height+156+sapherise)
             
             
             var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
@@ -107,9 +158,31 @@ class DreamCell: UITableViewCell {
         }
         
         if like == "0" {
-        self.like!.hidden = true
+            self.like!.hidden = true
         }else{
-        self.like!.text = "\(like) 赞"
+            self.like!.hidden = false
+            self.like!.text = "\(like) 赞"
+        }
+        
+        
+        //主人
+        var Sa = NSUserDefaults.standardUserDefaults()
+        var cookieuid: String = Sa.objectForKey("uid") as String
+        
+        if cookieuid == uid {
+            self.likebutton!.hidden = true
+            self.liked!.hidden = true
+        }else{
+            self.goodbye!.hidden = true
+            self.edit!.hidden = true
+            self.share!.setX(186)
+            if liked == "0" {
+                self.likebutton!.hidden = false
+                self.liked!.hidden = true
+            }else{
+                self.likebutton!.hidden = true
+                self.liked!.hidden = false
+            }
         }
     }
     
@@ -131,9 +204,9 @@ class DreamCell: UITableViewCell {
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(17,width:280)
         if(img0 == 0.0){
-            return 60.0 + height + 80.0 + 15.0
+            return height + 151
         }else{
-            return 60.0 + height + 80.0 + 30.0 + CGFloat(img1*250/img0)
+            return height + 171 + CGFloat(img1*250/img0)
         }
     }
     

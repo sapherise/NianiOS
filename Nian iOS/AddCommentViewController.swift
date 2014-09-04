@@ -31,7 +31,6 @@ class AddCommentViewController: UIViewController {
     }
     
     func setupViews(){
-        println(self.Id)
         self.view.backgroundColor = BGColor
         self.TextView.backgroundColor = BGColor
         self.Line.backgroundColor = LineColor
@@ -70,14 +69,6 @@ class AddCommentViewController: UIViewController {
         if sa == "1" {
             self.navigationController.popViewControllerAnimated(true)
         }
-//        var content = self.TextView.text
-//        content = SAEncode(SAHtml(content))
-//        var sa=SAPost("dream=\(Id)&&uid=1&&content=\(content)", "http://nian.so/api/addstep_query.php")
-//        if(sa == "1"){
-//            println("\(Id)")
-//            self.navigationController.popViewControllerAnimated(true)
-//            delegate?.countUp()
-//        }
     }
     
     func back(){

@@ -47,7 +47,6 @@ class AddStepViewController: UIViewController {
     }
     
     func setupViews(){
-        println(self.Id)
         self.uploadWait.hidden = true
         self.view.backgroundColor = BGColor
         self.TextView.backgroundColor = BGColor
@@ -86,7 +85,6 @@ class AddStepViewController: UIViewController {
         content = SAEncode(SAHtml(content))
         var sa=SAPost("dream=\(Id)&&uid=1&&content=\(content)", "http://nian.so/api/addstep_query.php")
         if(sa == "1"){
-            println("\(Id)")
             self.navigationController.popViewControllerAnimated(true)
             delegate?.countUp()
         }

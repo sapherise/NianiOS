@@ -28,12 +28,6 @@ class StepCell: UITableViewCell {
         var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
     override func layoutSubviews()
     {
         
@@ -56,31 +50,37 @@ class StepCell: UITableViewCell {
             self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: UIImage(named: "1.jpg"))
             self.img1?.userInteractionEnabled = true
             self.img1?.tag = id1.toInt()!
+            self.img1!.userInteractionEnabled = true
         }else{
             self.title1?.hidden = true
             self.img1?.hidden = true
+            self.img1?.tag = 1
         }
         
         if(id2 != ""){
-        self.title2!.text = title2
-        self.title2!.textColor = BlueColor
-        self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: UIImage(named: "1.jpg"))
-        self.img2?.userInteractionEnabled = true
-        self.img2?.tag = id2.toInt()!
+            self.title2!.text = title2
+            self.title2!.textColor = BlueColor
+            self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: UIImage(named: "1.jpg"))
+            self.img2?.userInteractionEnabled = true
+            self.img2?.tag = id2.toInt()!
+            self.img2!.userInteractionEnabled = true
         }else{
             self.title2?.hidden = true
             self.img2?.hidden = true
+            self.img2?.tag = 1
         }
         
         if(id3 != ""){
-        self.title3!.text = title3
-        self.title3!.textColor = BlueColor
-        self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: UIImage(named: "1.jpg"))
-        self.img3?.userInteractionEnabled = true
-        self.img3?.tag = id3.toInt()!
+            self.title3!.text = title3
+            self.title3!.textColor = BlueColor
+            self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: UIImage(named: "1.jpg"))
+            self.img3?.userInteractionEnabled = true
+            self.img3?.tag = id3.toInt()!
+            self.img3!.userInteractionEnabled = true
         }else{
             self.title3?.hidden = true
             self.img3?.hidden = true
+            self.img3?.tag = 1
         }
         
         self.img1!.layer.cornerRadius = 4;

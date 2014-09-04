@@ -20,9 +20,6 @@ class SAImageZoomingView: UIScrollView,UIScrollViewDelegate {
         self.delegate = self
         
         self.imageView = UIImageView(frame:self.bounds)
-    //    self.imageView = UIImageView(frame: CGRectMake(0, -300, self.bounds.width, self.bounds.height))
-//        println("高度是\(self.bounds.height)")
-//        println("宽度是\(self.bounds.width)")
         self.imageView!.contentMode = .ScaleAspectFit
         self.addSubview(self.imageView!)
         self.showsHorizontalScrollIndicator = false

@@ -24,7 +24,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         setupRefresh()
         self.tableView!.headerBeginRefreshing()
         SAReloadData()
-        println(Id)
     }
     
     override func viewWillDisappear(animated: Bool)

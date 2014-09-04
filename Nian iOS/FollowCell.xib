@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6185.7" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6181.2"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FollowViewController" customModule="Nian_iOS" customModuleProvider="target"/>
@@ -14,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a5Q-aE-acw">
-                        <rect key="frame" x="20" y="10" width="280" height="357"/>
+                        <rect key="frame" x="20" y="10" width="280" height="407"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -56,6 +57,47 @@
                         <rect key="frame" x="35" y="127" width="250" height="221"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
+                    <view contentMode="scaleToFill" id="aCU-oY-vx8">
+                        <rect key="frame" x="20" y="367" width="280" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZxT-94-Qog">
+                                <rect key="frame" x="236" y="0.0" width="30" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="liked">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nolikeClick:" destination="Nxi-zM-L6x" eventType="touchUpInside" id="MMF-0t-c5d"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="sm2-Fr-vav">
+                                <rect key="frame" x="236" y="0.0" width="30" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="like">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="likeClick:" destination="Nxi-zM-L6x" eventType="touchUpInside" id="g5Q-Hn-HaO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BGC-I7-qWc">
+                                <rect key="frame" x="186" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="share">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b5N-fE-1IA">
+                                <rect key="frame" x="15" y="0.0" width="88" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.64313727620000005" green="0.64313727620000005" blue="0.64313727620000005" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" red="0.13725490870000001" green="0.18431372939999999" blue="0.22745099660000001" alpha="1" colorSpace="deviceRGB"/>
             </tableViewCellContentView>
@@ -66,11 +108,21 @@
                 <outlet property="holder" destination="a5Q-aE-acw" id="qFM-Lh-nq7"/>
                 <outlet property="imageholder" destination="Q6N-Zz-AKw" id="Xe6-0U-irc"/>
                 <outlet property="lastdate" destination="OO1-kA-hFx" id="Fug-tw-qrL"/>
+                <outlet property="like" destination="b5N-fE-1IA" id="uqR-eA-Vwv"/>
+                <outlet property="likebutton" destination="sm2-Fr-vav" id="MPN-QG-KWo"/>
+                <outlet property="likedbutton" destination="ZxT-94-Qog" id="ek2-Lt-uku"/>
+                <outlet property="menuHolder" destination="aCU-oY-vx8" id="50C-7W-5NN"/>
                 <outlet property="nickLabel" destination="RaU-Rm-cQH" id="s9x-PH-ssd"/>
+                <outlet property="share" destination="BGC-I7-qWc" id="2f9-Qo-K7O"/>
             </connections>
-            <point key="canvasLocation" x="212" y="312"/>
+            <point key="canvasLocation" x="333" y="163"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="like" width="21" height="18"/>
+        <image name="liked" width="21" height="18"/>
+        <image name="share" width="21" height="21"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
