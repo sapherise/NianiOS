@@ -8,13 +8,7 @@
 
 import UIKit
 
-protocol CountUpDelegate {      //😍       我拥有一个代理公司
-    func countUp()
-}
-
 class HomeViewController: UITabBarController{
-    
-    var sadelegate: CountUpDelegate?  //😍    设定这个代理公司
     var myTabbar :UIView?
     var slider :UIView?
     var currentViewController: UIViewController?
@@ -22,27 +16,22 @@ class HomeViewController: UITabBarController{
     var seg:UISegmentedControl = UISegmentedControl(frame: CGRectMake(30, 5, 140, 27))
     
     var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-    //RootViewController: ACSSegmentedViewController
-    
     
     let itemArray = ["关注","发现","念","消息","设置"]
     let imageArray = ["explore","bbs","dream","me","settings"]
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         initViewControllers()
     }
     
+    override func viewDidAppear(animated: Bool) {
+    }
+    
     func setupViews()
     {
         self.automaticallyAdjustsScrollViewInsets = false
-        
-        //数据持久化
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        Sa.setObject("1", forKey: "uid")
-        Sa.synchronize()
         
         //标题
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -100,16 +89,17 @@ class HomeViewController: UITabBarController{
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         
         
-        var SettingsViewController:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("SettingsViewController") as UIViewController
+      //  var SettingsViewController:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("SettingsViewController") as UIViewController
         
         var vc1 = FollowViewController()
         var vc2 = ExploreController()
         var vc3 = NianViewController
         var vc4 = MeViewController()
-        var vc5 = SettingsViewController
+        var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
     }
+    
     
     //底部的按钮按下去
     func tabBarButtonClicked(sender:UIButton)

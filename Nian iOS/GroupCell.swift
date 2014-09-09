@@ -52,7 +52,7 @@ class GroupCell: UITableViewCell {
         self.reply!.text = "\(reply) 回应"
         self.View!.backgroundColor = BGColor
         
-        var height = title.stringHeightWith(17,width:280)
+        var height = title.stringHeightWith(17,width:242)
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = title
         self.holder!.layer.cornerRadius = 4;
@@ -74,7 +74,7 @@ class GroupCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var title = data.stringAttributeForKey("title")
-        var height = title.stringHeightWith(17,width:280)
+        var height = title.stringHeightWith(17,width:242)
             return height + 62.0 + 15.0
     }
     

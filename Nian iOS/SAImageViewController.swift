@@ -47,6 +47,11 @@ class SAImageViewController: UIViewController {
         theview.addSubview(self.imageZoongView)
         self.view.backgroundColor = BGColor
         
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
+        
+        
 //        
         var longTap = UILongPressGestureRecognizer(target: self, action: "longTapped:")
         longTap.minimumPressDuration = 0.5

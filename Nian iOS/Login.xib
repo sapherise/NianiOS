@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="Nian_iOS" customModuleProvider="target">
+            <connections>
+                <outlet property="holder" destination="Ptj-Ez-G5g" id="c3H-VD-OHd"/>
+                <outlet property="inputEmail" destination="EYQ-b2-Z8c" id="xbp-a2-o8x"/>
+                <outlet property="inputPassword" destination="GC6-xU-aVL" id="66K-XX-S0B"/>
+                <outlet property="loginButton" destination="ZK0-sF-mAf" id="4JR-Z9-bKd"/>
+                <outlet property="loginButtonBorder" destination="Owj-BH-NvY" id="eMA-pb-Tf3"/>
+                <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Ipu-sz-w8p">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ptj-Ez-G5g">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EYQ-b2-Z8c">
+                            <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                            <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <variation key="widthClass=compact" fixedFrame="YES">
+                                <rect key="frame" x="35" y="7" width="200" height="40"/>
+                            </variation>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GC6-xU-aVL">
+                            <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                            <color key="backgroundColor" red="0.054901960784313725" green="0.050980392156862744" blue="0.062745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            <variation key="widthClass=compact" fixedFrame="YES">
+                                <rect key="frame" x="35" y="51" width="200" height="40"/>
+                            </variation>
+                        </textField>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Owj-BH-NvY">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <subviews>
+                                <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginarrow" translatesAutoresizingMaskIntoConstraints="NO" id="ZK0-sF-mAf">
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                    <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <variation key="widthClass=compact" fixedFrame="YES">
+                                        <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                    </variation>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" red="0.14117647059999999" green="0.18823529410000001" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                            <variation key="default">
+                                <mask key="subviews">
+                                    <exclude reference="ZK0-sF-mAf"/>
+                                </mask>
+                            </variation>
+                            <variation key="widthClass=compact" fixedFrame="YES">
+                                <rect key="frame" x="210" y="24" width="50" height="50"/>
+                                <mask key="subviews">
+                                    <include reference="ZK0-sF-mAf"/>
+                                </mask>
+                            </variation>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="EYQ-b2-Z8c"/>
+                            <exclude reference="GC6-xU-aVL"/>
+                            <exclude reference="Owj-BH-NvY"/>
+                        </mask>
+                    </variation>
+                    <variation key="widthClass=compact" fixedFrame="YES">
+                        <rect key="frame" x="20" y="124" width="280" height="98"/>
+                        <mask key="subviews">
+                            <include reference="EYQ-b2-Z8c"/>
+                            <include reference="GC6-xU-aVL"/>
+                            <include reference="Owj-BH-NvY"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="Ptj-Ez-G5g"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=compact">
+                <mask key="subviews">
+                    <include reference="Ptj-Ez-G5g"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="242" y="238"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="loginarrow" width="7" height="13"/>
+    </resources>
+</document>

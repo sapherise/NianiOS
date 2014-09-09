@@ -111,7 +111,7 @@ class FollowCell: UITableViewCell {
         self.avatarView!.userInteractionEnabled = true
         self.avatarView!.tag = uid.toInt()!
         
-        var height = content.stringHeightWith(17,width:280)
+        var height = content.stringHeightWith(17,width:242)
         
         
         
@@ -184,7 +184,7 @@ class FollowCell: UITableViewCell {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(17,width:280)
+        var height = content.stringHeightWith(17,width:242)
         if img1 == 0.0 {
             return height + 151
         }else{

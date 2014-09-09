@@ -123,6 +123,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             println("不是主人！")
         }
         
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
+        
     }
     
     
@@ -368,14 +372,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func back(){
         self.navigationController.popViewControllerAnimated(true)
     }
-    func hello(sender: AnyObject){
-        var control:UISegmentedControl = sender as UISegmentedControl
-        var x = control.selectedSegmentIndex
+    func hello(sender: UISegmentedControl){
+        var x = sender.selectedSegmentIndex
         if x == 0 {
+            sender.selectedSegmentIndex = 1
             self.righttableView!.hidden = true
             self.lefttableView!.hidden = false
             SAReloadData()
         }else if x == 1 {
+            sender.selectedSegmentIndex = 0
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
             SARightReloadData()

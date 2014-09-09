@@ -9,19 +9,17 @@
 import Foundation
 import UIKit
 
+protocol LogoutDelegate {      //😍       我拥有一个代理公司
+    func SALogout()
+}
 
 class SettingsViewController: UIViewController{
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var head:UIImageView!
-    @IBOutlet var name:UIView!
-    @IBOutlet var email:UIView!
-    @IBOutlet var exp:UIView!
-    @IBOutlet var glory:UIView!
-    @IBOutlet var lab:UIView!
     @IBOutlet var logout:UIView!
-    @IBOutlet var label1:UILabel!
-    @IBOutlet var label2:UILabel!
-    @IBOutlet var label3:UILabel!
+    var delegate: LogoutDelegate?  //😍    设定这个代理公司
+    @IBOutlet var inputName:UITextField!
+    @IBOutlet var inputEmail:UITextField!
     
     override func viewDidLoad(){
         setupViews()
@@ -30,30 +28,45 @@ class SettingsViewController: UIViewController{
     override func viewWillAppear(animated: Bool) {
     }
     
+//    10 - (void)viewDidAppear:(BOOL)animated
+//    11 {
+//    12  [super viewDidAppear:animated];
+//    13  self.scrollView.contentSize = self.imageView.image.size;
+//    14  self.imageView.frame = CGRectMake(0, 0,
+//    15    self.imageView.image.size.width, self.imageView.image.size.height);
+//    16 }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        self.scrollView.contentSize = CGSizeMake(320, 700)
+    }
+    
     
     func setupViews(){
         self.view.backgroundColor = BGColor
-        self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height + 170)
-        
         var img = "1.jpg"
         var userImageURL = "http://img.nian.so/head/\(img)!head"
         self.head.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
         
-        self.name.backgroundColor = BGColor
-        self.email.backgroundColor = BGColor
-        self.exp.backgroundColor = BGColor
-        self.glory.backgroundColor = BGColor
-        self.lab.backgroundColor = BGColor
-        self.logout.backgroundColor = BGColor
-        
-        self.label1.textColor = BlueColor
-        self.label2.textColor = BlueColor
-        self.label3.textColor = BlueColor
-        
-        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tap")
-        self.head?.addGestureRecognizer(tap)
-        self.head?.userInteractionEnabled = true
+        self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
     }
-
-    func tap(){}
+    
+    func dismissKeyboard(sender:UITapGestureRecognizer){
+        inputName.resignFirstResponder()
+        inputEmail.resignFirstResponder()
+    }
+    
+    func SAlogout(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        Sa.removeObjectForKey("uid")
+        Sa.synchronize()
+        delegate?.SALogout()
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func back(sender:UISwipeGestureRecognizer){
+        self.navigationController.popViewControllerAnimated(true)
+    }
 }

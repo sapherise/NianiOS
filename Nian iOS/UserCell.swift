@@ -53,9 +53,9 @@ class UserCell: UITableViewCell {
         }
         self.data.setValue("0", forKey: "liked")
         var sid = self.data.stringAttributeForKey("sid")
-//        var sa = SAPost("step=\(sid)&&uid=1&&like=0", "http://nian.so/api/like_query.php")
-//        if sa == "1" {
-//        }
+        var sa = SAPost("step=\(sid)&&uid=1&&like=0", "http://nian.so/api/like_query.php")
+        if sa == "1" {
+        }
     }
     @IBAction func likeClick(sender: AnyObject) {   //赞
         self.likebutton!.hidden = true
@@ -72,9 +72,9 @@ class UserCell: UITableViewCell {
         self.data.setValue("1", forKey: "liked")
         self.like!.hidden = false
         var sid = self.data.stringAttributeForKey("sid")
-//        var sa = SAPost("step=\(sid)&&uid=1&&like=1", "http://nian.so/api/like_query.php")
-//        if sa == "1" {
-//        }
+        var sa = SAPost("step=\(sid)&&uid=1&&like=1", "http://nian.so/api/like_query.php")
+        if sa == "1" {
+        }
     }
     
     override func awakeFromNib() {
@@ -121,7 +121,7 @@ class UserCell: UITableViewCell {
         self.like!.userInteractionEnabled = true
         self.like!.tag = sid.toInt()!
         
-        var height = content.stringHeightWith(17,width:280)
+        var height = content.stringHeightWith(17,width:242)
         
         
         
@@ -202,7 +202,7 @@ class UserCell: UITableViewCell {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(17,width:280)
+        var height = content.stringHeightWith(17,width:242)
         if(img0 == 0.0){
             return 60.0 + height + 80.0 + 15.0
         }else{

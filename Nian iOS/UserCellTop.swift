@@ -39,5 +39,4 @@ class UserCellTop: UITableViewCell{
         self.Seg!.tintColor = LineColor
         self.selectionStyle = UITableViewCellSelectionStyle.None
     }
-    
 }

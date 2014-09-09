@@ -69,6 +69,10 @@ class AddStepViewController: UIViewController {
         titleLabel.text = "新进展！"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
     }
     
     override func viewDidLoad() {

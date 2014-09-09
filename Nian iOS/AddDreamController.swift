@@ -74,6 +74,10 @@ class AddDreamController: UIViewController {
         titleLabel.text = "新梦想！"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
     }
     
     func addDreamOK(){

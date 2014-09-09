@@ -266,6 +266,20 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
     {
+        if indexPath.section == 0 {
+        }else{
+            if tableView == lefttableView {
+                var index = indexPath!.row
+                var data = self.dataArray[index] as NSDictionary
+                var BBSVC = BBSViewController()
+                BBSVC.Id = data.stringAttributeForKey("id")
+                BBSVC.topcontent = data.stringAttributeForKey("content")
+                BBSVC.topuid = data.stringAttributeForKey("uid")
+                BBSVC.topuser = data.stringAttributeForKey("user")
+                BBSVC.toplastdate = data.stringAttributeForKey("lastdate")
+                self.navigationController.pushViewController(BBSVC, animated: true)
+            }
+        }
     }
     
     func countUp() {      //😍
@@ -299,14 +313,15 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func back(){
         self.navigationController.popViewControllerAnimated(true)
     }
-    func hello(sender: AnyObject){
-        var control:UISegmentedControl = sender as UISegmentedControl
-        var x = control.selectedSegmentIndex
+    func hello(sender: UISegmentedControl){
+        var x = sender.selectedSegmentIndex
         if x == 0 {
+            sender.selectedSegmentIndex = 1
             self.righttableView!.hidden = true
             self.lefttableView!.hidden = false
             SAReloadData()
         }else if x == 1 {
+            sender.selectedSegmentIndex = 0
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
             SARightReloadData()

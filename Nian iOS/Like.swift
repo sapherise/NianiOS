@@ -62,9 +62,13 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
-        titleLabel.text = "赞过你"
+        titleLabel.text = "赞过"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
     }
     
     

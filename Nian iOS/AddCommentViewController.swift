@@ -51,6 +51,10 @@ class AddCommentViewController: UIViewController {
         
         self.TextView.text = content
         self.TextView.becomeFirstResponder()
+        
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
     }
     
     override func viewDidLoad() {

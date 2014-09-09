@@ -107,6 +107,10 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
         leftButton.image = UIImage(named:"back")
         self.navigationItem.leftBarButtonItem = leftButton;
+        
+        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        self.view.addGestureRecognizer(swipe)
     }
     
     
@@ -357,14 +361,15 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func back(){
         self.navigationController.popViewControllerAnimated(true)
     }
-    func hello(sender: AnyObject){
-        var control:UISegmentedControl = sender as UISegmentedControl
-        var x = control.selectedSegmentIndex
+    func hello(sender: UISegmentedControl){
+        var x = sender.selectedSegmentIndex
         if x == 0 {
+            sender.selectedSegmentIndex = 1
             self.righttableView!.hidden = true
             self.lefttableView!.hidden = false
             SAReloadData()
         }else if x == 1 {
+            sender.selectedSegmentIndex = 0
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
             SARightReloadData()
@@ -378,16 +383,6 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         //        AddstepVC.Id = self.Id
         //        AddstepVC.delegate = self    //😍
         self.navigationController.pushViewController(EditVC, animated: true)
-        
-        //        var button:UIButton = self.lefttableView!.viewWithTag(sender.tag) as UIButton
-        //        button.hidden = true
-        //        var theview:UIView? = button.superview?.superview as UIView?
-        //        theview?.backgroundColor = BlueColor
-        //        theview.
-        //        var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
-        //        var indexPath = self.lefttableView!.indexPathForCell(cell)
-        //        self.dataArray.removeObjectAtIndex(indexPath.row)
-        //        self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
     }
     func SAdelete(sender:UIButton){
         if NSClassFromString("UIAlertController") != nil {

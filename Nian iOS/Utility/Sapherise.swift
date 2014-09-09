@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Foundation
+
 
 let IconColor:UIColor = UIColor(red:0.71, green:0.71,blue:0.71,alpha: 1)    //字体灰
 let BGColor:UIColor = UIColor(red:0.14, green:0.19,blue:0.24,alpha: 1)   //背景白
@@ -14,6 +16,7 @@ let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字
 let BarColor:UIColor = UIColor(red:0.11, green:0.15,blue:0.19,alpha: 1)   //底栏黑
 let BlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
 let LineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 1)   //线条
+let LittleLineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 0.2)   //线条
 let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
 
 func SAJson(SAUrl:String)->AnyObject!{
@@ -70,7 +73,3 @@ func SAColorImg(theColor:UIColor)->UIImage{
     UIGraphicsEndImageContext()
     return theImage
 }
-
-
-
-
