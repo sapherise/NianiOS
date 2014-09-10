@@ -87,14 +87,18 @@ class AddStepViewController: UIViewController {
     func addStep(){
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
-        var sa=SAPost("dream=\(Id)&&uid=1&&content=\(content)", "http://nian.so/api/addstep_query.php")
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var sa=SAPost("dream=\(Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/addstep_query.php")
         if(sa == "1"){
-            self.navigationController.popViewControllerAnimated(true)
+            self.navigationController!.popViewControllerAnimated(true)
             delegate?.countUp()
         }
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
 }

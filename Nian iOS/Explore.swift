@@ -75,7 +75,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
 //        self.navigationItem.rightBarButtonItem = rightButton;
         
         //标题颜色
-        self.navigationController.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = IconColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -208,7 +208,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var cell:UITableViewCell
         
         if indexPath!.section==0{
-            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? ExploreTop
+            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath!) as? ExploreTop
             var index = indexPath!.row
             if tableView == lefttableView {
                 c!.Seg!.selectedSegmentIndex = 0
@@ -219,14 +219,14 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             cell = c!
         }else{
             if tableView == lefttableView {
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? GroupCell
                 var index = indexPath!.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
                 cell = c!
             }else{
                 var index = indexPath!.row * 3
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? ExploreDreamCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath!) as? ExploreDreamCell
            //     var index = indexPath!.row
                 var data1 = self.dataArray2[index] as NSDictionary
                 var data2 = self.dataArray2[index+1] as NSDictionary
@@ -246,8 +246,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func dreamclick(sender:UITapGestureRecognizer){
         var DreamVC = DreamViewController()
-        DreamVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(DreamVC, animated: true)
+        DreamVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -277,7 +277,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 BBSVC.topuid = data.stringAttributeForKey("uid")
                 BBSVC.topuser = data.stringAttributeForKey("user")
                 BBSVC.toplastdate = data.stringAttributeForKey("lastdate")
-                self.navigationController.pushViewController(BBSVC, animated: true)
+                self.navigationController!.pushViewController(BBSVC, animated: true)
             }
         }
     }
@@ -311,7 +311,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             })
     }
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     func hello(sender: UISegmentedControl){
         var x = sender.selectedSegmentIndex

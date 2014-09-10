@@ -29,7 +29,7 @@ class SAImageViewController: UIViewController {
     
     func setupViews()
     {
-        self.navigationController.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = IconColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.text = "图片"
         titleLabel.textColor = IconColor
@@ -100,6 +100,6 @@ class SAImageViewController: UIViewController {
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
 }

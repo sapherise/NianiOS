@@ -83,8 +83,6 @@
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
-		12A65640197199DC004F530B /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6563F197199DC004F530B /* YLImageView.swift */; };
-		12A65642197199EE004F530B /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A65641197199EE004F530B /* YLGIFImage.swift */; };
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
@@ -206,8 +204,6 @@
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
-		12A6563F197199DC004F530B /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
-		12A65641197199EE004F530B /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		12BF5FF919BB479900DE0ABE /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
@@ -587,8 +583,6 @@
 			children = (
 				1251D6101975729100F55389 /* Refresh */,
 				12652837196C6755005765D2 /* Sapherise.swift */,
-				12A6563F197199DC004F530B /* YLImageView.swift */,
-				12A65641197199EE004F530B /* YLGIFImage.swift */,
 				12FB48BE196AE8010026DD51 /* FileUtility.swift */,
 				12FB48BF196AE8010026DD51 /* NSDictionaryExt.swift */,
 				12FB48C0196AE8010026DD51 /* NSStringExt.swift */,
@@ -801,8 +795,6 @@
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				1231A07219B45F3A00BD425F /* User.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
-				12A65642197199EE004F530B /* YLGIFImage.swift in Sources */,
-				12A65640197199DC004F530B /* YLImageView.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
@@ -849,7 +841,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -892,7 +884,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -928,13 +920,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				New_Setting = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -949,13 +945,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				New_Setting = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

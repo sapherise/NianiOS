@@ -69,13 +69,17 @@ class AddCommentViewController: UIViewController {
     func addReply(){
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
-        var sa = SAPost("id=\(Id)&&uid=1&&content=\(content)", "http://nian.so/api/comment_query.php")
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var sa = SAPost("id=\(Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
         if sa == "1" {
-            self.navigationController.popViewControllerAnimated(true)
+            self.navigationController!.popViewControllerAnimated(true)
         }
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
 }

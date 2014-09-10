@@ -64,7 +64,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         
         //标题颜色
-        self.navigationController.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = IconColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -103,7 +103,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func SAReloadData(){
-        var url = "http://nian.so/api/bbs_comment.php?page=0&id=\(Id)&uid=1"
+        var url = "http://nian.so/api/bbs_comment.php?page=0&id=\(Id)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject == NSNull(){
                 UIView.showAlertView("提示",message:"加载失败")
@@ -122,7 +122,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func urlString()->String
     {
-        return "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)&uid=1"
+        return "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -147,14 +147,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var cell:UITableViewCell
         
         if indexPath!.section==0{
-            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? BBSCellTop
+            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath!) as? BBSCellTop
             c!.topcontent = topcontent
             c!.topuid = topuid
             c!.toplastdate = toplastdate
             c!.topuser = topuser
             cell = c!
         }else{
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BBSCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? BBSCell
                 var index = indexPath!.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
@@ -166,15 +166,15 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = UserViewController()
-        UserVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(UserVC, animated: true)
+        UserVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -196,7 +196,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         AddstepVC.Id = self.Id
         AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(AddstepVC, animated: true)
+        self.navigationController!.pushViewController(AddstepVC, animated: true)
     }
     
     func countUp() {      //😍
@@ -217,6 +217,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         })
     }
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
 }

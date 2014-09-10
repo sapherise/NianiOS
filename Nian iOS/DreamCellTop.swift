@@ -25,8 +25,11 @@ class DreamCellTop: UITableViewCell{
     override func layoutSubviews()
     {
         super.layoutSubviews()
+        var Sa = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var url = NSURL(string:"http://nian.so/api/dream.php?id=\(dreamid)&uid=\(safeuid)&shell=\(safeshell)")
         
-        var url = NSURL(string:"http://nian.so/api/dream.php?id=\(dreamid)")
         var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
         var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
         var sa: AnyObject! = json.objectForKey("dream")

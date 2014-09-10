@@ -48,7 +48,10 @@ class EditStepViewController: UIViewController {
     
     func setupViews(){
         
-        var url = NSURL(string:"http://nian.so/api/editstep.php?sid=\(sid)")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var url = NSURL(string:"http://nian.so/api/editstep.php?sid=\(sid)&uid=\(safeuid)&shell=\(safeshell)")
         var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
         var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
         var sa: AnyObject! = json.objectForKey("dream")
@@ -97,16 +100,20 @@ class EditStepViewController: UIViewController {
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func editStep(){
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
-        var sa=SAPost("sid=\(sid)&&uid=1&&content=\(content)", "http://nian.so/api/editstep_query.php")
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var sa=SAPost("sid=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/editstep_query.php")
         if(sa == "1"){
             delegate?.Editstep()
-            self.navigationController.popViewControllerAnimated(true)
+            self.navigationController!.popViewControllerAnimated(true)
         }
     }
 }

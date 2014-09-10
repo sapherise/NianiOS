@@ -127,7 +127,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
+        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? LikeCell
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
@@ -138,15 +138,15 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = UserViewController()
-        UserVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(UserVC, animated: true)
+        UserVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -168,7 +168,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     
 }

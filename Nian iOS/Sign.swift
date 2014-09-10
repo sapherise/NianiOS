@@ -52,7 +52,7 @@ class SignViewController: UIViewController {
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func checkName(){
@@ -69,7 +69,7 @@ class SignViewController: UIViewController {
                     })
             })
         }else{
-            self.navigationController.pushViewController(SignNextController(nibName: "SignNext", bundle: nil), animated: true)
+            self.navigationController!.pushViewController(SignNextController(nibName: "SignNext", bundle: nil), animated: true)
         }
     }
     override func viewDidAppear(animated: Bool) {

@@ -85,15 +85,20 @@ class AddDreamController: UIViewController {
         var content = self.field2?.text
         title = SAEncode(SAHtml(title!))
         content = SAEncode(SAHtml(content!))
-        var sa = SAPost("uid=1&&content=\(content)&&title=\(title)", "http://nian.so/api/add_query.php")
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        
+        var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&title=\(title)", "http://nian.so/api/add_query.php")
         if(sa == "1"){
-            self.navigationController.popViewControllerAnimated(true)
+            self.navigationController!.popViewControllerAnimated(true)
             delegate?.SAReloadData()        //debug
         }
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     
     

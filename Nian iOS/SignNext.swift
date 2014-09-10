@@ -63,7 +63,7 @@ class SignNextController: UIViewController {
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func loginAlert(){

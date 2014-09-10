@@ -43,7 +43,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object
+        var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
         if content[1] as NSString != "" {
         var theimgurl:String = content[1] as String
@@ -98,7 +98,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         
         //标题颜色
-        self.navigationController.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = IconColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -112,7 +112,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var Sa = NSUserDefaults.standardUserDefaults()
         var cookieuid: String = Sa.objectForKey("uid") as String
         
-        var url = NSURL(string:"http://nian.so/api/dream.php?id=\(Id)")
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var url = NSURL(string:"http://nian.so/api/dream.php?id=\(Id)&uid=\(safeuid)&shell=\(safeshell)")
         var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
         var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
         var sa: AnyObject! = json.objectForKey("dream")
@@ -175,7 +177,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     
     func SAReloadData(){
-        var url = "http://nian.so/api/step.php?page=0&id=\(Id)&uid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var url = "http://nian.so/api/step.php?page=0&id=\(Id)&uid=\(safeuid)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject == NSNull(){
                 UIView.showAlertView("提示",message:"加载失败")
@@ -214,7 +219,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func urlString()->String
     {
-        return "http://nian.so/api/step.php?page=\(page)&id=\(Id)&uid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        return "http://nian.so/api/step.php?page=\(page)&id=\(Id)&uid=\(safeuid)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -243,7 +251,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var cell:UITableViewCell
         
         if indexPath!.section==0{
-            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? DreamCellTop
+            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath!) as? DreamCellTop
             var index = indexPath!.row
             var dreamid = Id
             c!.dreamid = dreamid
@@ -256,7 +264,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             cell = c!
         }else{
             if tableView == lefttableView {
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? DreamCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? DreamCell
                 var index = indexPath!.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
@@ -266,7 +274,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 c!.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 cell = c!
             }else{
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? CommentCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath!) as? CommentCell
                 var index = indexPath!.row
                 var data = self.dataArray2[index] as NSDictionary
                 c!.data = data
@@ -279,21 +287,21 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func likeclick(sender:UITapGestureRecognizer){
         var LikeVC = LikeViewController()
-        LikeVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(LikeVC, animated: true)
+        LikeVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = UserViewController()
-        UserVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(UserVC, animated: true)
+        UserVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -327,7 +335,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
                     addCommentVC.content = "@\(user) "
                     addCommentVC.Id = self.Id
-                    self.navigationController.pushViewController(addCommentVC, animated: true)
+                    self.navigationController!.pushViewController(addCommentVC, animated: true)
                 }
                 replyalertController.addAction(replyConfirm)
                 replyalertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
@@ -341,7 +349,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         AddstepVC.Id = self.Id
         AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(AddstepVC, animated: true)
+        self.navigationController!.pushViewController(AddstepVC, animated: true)
     }
     
     func countUp() {      //😍
@@ -370,7 +378,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             })
     }
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     func hello(sender: UISegmentedControl){
         var x = sender.selectedSegmentIndex
@@ -393,19 +401,22 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         EditVC.delegate = self
 //        AddstepVC.Id = self.Id
 //        AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(EditVC, animated: true)
+        self.navigationController!.pushViewController(EditVC, animated: true)
     }
     func SAdelete(sender:UIButton){
         if NSClassFromString("UIAlertController") != nil {
             var alertController = UIAlertController(title: "再见", message: "进展 #\(sender.tag)", preferredStyle: UIAlertControllerStyle.ActionSheet)
             var deleteConfirm = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default){ action in
-                var sa = SAPost("sa=223&&uid=1&sid=\(sender.tag)", "http://nian.so/api/delete_step.php")
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(sender.tag)", "http://nian.so/api/delete_step.php")
                 if(sa == "1"){
                     var button:UIButton = self.lefttableView!.viewWithTag(sender.tag) as UIButton
                     var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
                     var indexPath = self.lefttableView!.indexPathForCell(cell)
-                    self.dataArray.removeObjectAtIndex(indexPath.row)
-                    self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.dataArray.removeObjectAtIndex(indexPath!.row)
+                    self.lefttableView!.deleteRowsAtIndexPaths([ indexPath! ], withRowAnimation: UITableViewRowAnimation.Fade)
                 }
             }       //这是删除按钮
             alertController.addAction(deleteConfirm)
@@ -425,15 +436,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func alertView(alertView: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
         switch buttonIndex{
         case 0:
-            var sa = SAPost("sa=223&uid=1&sid=\(alertView.tag)", "http://nian.so/api/delete_step.php")
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(alertView.tag)", "http://nian.so/api/delete_step.php")
             var tag = alertView.tag
             if(sa == "1"){
                 var button:UIButton = self.lefttableView!.viewWithTag(alertView.tag) as UIButton
                 var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
 //                cell.hidden = true
                 var indexPath = self.lefttableView!.indexPathForCell(cell)
-                self.dataArray.removeObjectAtIndex(indexPath.row)
-                self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.dataArray.removeObjectAtIndex(indexPath!.row)
+                self.lefttableView!.deleteRowsAtIndexPaths([ indexPath! ], withRowAnimation: UITableViewRowAnimation.Fade)
             }
         case 1:
             println("取消")
@@ -447,7 +461,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
 
     

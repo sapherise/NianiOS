@@ -43,7 +43,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object
+        var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
@@ -98,7 +98,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         
         //标题颜色
-        self.navigationController.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = IconColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -159,7 +159,10 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     func SAReloadData(){
-        var url = "http://nian.so/api/user_active.php?page=0&uid=\(Id)&myuid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var url = "http://nian.so/api/user_active.php?page=0&uid=\(Id)&myuid=\(safeuid)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject == NSNull(){
                 UIView.showAlertView("提示",message:"加载失败")
@@ -198,7 +201,10 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func urlString()->String
     {
-        return "http://nian.so/api/user_active.php?page=\(page)&uid=\(Id)&myuid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        return "http://nian.so/api/user_active.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -233,7 +239,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var cell:UITableViewCell
         
         if indexPath!.section==0{
-            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? UserCellTop
+            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath!) as? UserCellTop
             var index = indexPath!.row
             c!.userid = Id
             if tableView == lefttableView {
@@ -245,7 +251,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             cell = c!
         }else{
             if tableView == lefttableView {
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? UserCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? UserCell
                 var index = indexPath!.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
@@ -255,7 +261,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 c!.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 cell = c!
             }else{
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? StepCell
+                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath!) as? StepCell
                 var dictionary:Dictionary<String, String> = ["id":"", "title":"", "img":"", "percent":""]
                 var index = indexPath!.row * 3
                 if index<self.dataArray2.count {
@@ -284,27 +290,27 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func likeclick(sender:UITapGestureRecognizer){
         var LikeVC = LikeViewController()
-        LikeVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(LikeVC, animated: true)
+        LikeVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = UserViewController()
-        UserVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(UserVC, animated: true)
+        UserVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func dreamclick(sender:UITapGestureRecognizer){
         var DreamVC = DreamViewController()
-        DreamVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(DreamVC, animated: true)
+        DreamVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -330,7 +336,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         AddstepVC.Id = self.Id
         AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(AddstepVC, animated: true)
+        self.navigationController!.pushViewController(AddstepVC, animated: true)
     }
     
     func countUp() {      //😍
@@ -359,7 +365,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         })
     }
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     func hello(sender: UISegmentedControl){
         var x = sender.selectedSegmentIndex
@@ -382,19 +388,23 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         EditVC.delegate = self
         //        AddstepVC.Id = self.Id
         //        AddstepVC.delegate = self    //😍
-        self.navigationController.pushViewController(EditVC, animated: true)
+        self.navigationController!.pushViewController(EditVC, animated: true)
     }
     func SAdelete(sender:UIButton){
         if NSClassFromString("UIAlertController") != nil {
             var alertController = UIAlertController(title: "再见", message: "进展 #\(sender.tag)", preferredStyle: UIAlertControllerStyle.ActionSheet)
             var deleteConfirm = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default){ action in
-                var sa = SAPost("sa=223&&uid=1&sid=\(sender.tag)", "http://nian.so/api/delete_step.php")
+                
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(sender.tag)", "http://nian.so/api/delete_step.php")
                 if(sa == "1"){
                     var button:UIButton = self.lefttableView!.viewWithTag(sender.tag) as UIButton
                     var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
                     var indexPath = self.lefttableView!.indexPathForCell(cell)
-                    self.dataArray.removeObjectAtIndex(indexPath.row)
-                    self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.dataArray.removeObjectAtIndex(indexPath!.row)
+                    self.lefttableView!.deleteRowsAtIndexPaths([ indexPath! ], withRowAnimation: UITableViewRowAnimation.Fade)
                 }
             }       //这是删除按钮
             alertController.addAction(deleteConfirm)
@@ -414,15 +424,18 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func alertView(alertView: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
         switch buttonIndex{
         case 0:
-            var sa = SAPost("sa=223&uid=1&sid=\(alertView.tag)", "http://nian.so/api/delete_step.php")
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(alertView.tag)", "http://nian.so/api/delete_step.php")
             var tag = alertView.tag
             if(sa == "1"){
                 var button:UIButton = self.lefttableView!.viewWithTag(alertView.tag) as UIButton
                 var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
                 //                cell.hidden = true
                 var indexPath = self.lefttableView!.indexPathForCell(cell)
-                self.dataArray.removeObjectAtIndex(indexPath.row)
-                self.lefttableView!.deleteRowsAtIndexPaths([ indexPath ], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.dataArray.removeObjectAtIndex(indexPath!.row)
+                self.lefttableView!.deleteRowsAtIndexPaths([ indexPath! ], withRowAnimation: UITableViewRowAnimation.Fade)
             }
         case 1:
             println("取消")
@@ -436,7 +449,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     

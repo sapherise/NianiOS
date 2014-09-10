@@ -20,6 +20,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad()
     {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         setupViews()
         setupRefresh()
         self.tableView!.headerBeginRefreshing()
@@ -43,7 +46,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func setupViews()
     {
         var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
+        var height = self.view.frame.size.height
         self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
@@ -96,7 +99,10 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     
     func urlString()->String{
-        return "http://nian.so/api/me.php?page=\(page)&uid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        return "http://nian.so/api/me.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -114,7 +120,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
+        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? MeCell
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
@@ -133,7 +139,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var data = self.dataArray[index] as NSDictionary
         var DreamVC = DreamViewController()
         DreamVC.Id = data.stringAttributeForKey("id")
-        self.navigationController.pushViewController(DreamVC, animated: true)
+        self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification)

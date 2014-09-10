@@ -20,13 +20,14 @@ class NianViewController: UIViewController, AddDelegate{
   //  @IBOutlet strong var View: UIView
     
     override func viewDidLoad() {
-        setupViews()
-      //  setupRefresh()
-     //   self.View?.headerBeginRefreshing()
-        loadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
     }
     
     override func viewWillAppear(animated: Bool) {
+        setupViews()
+        SAReloadData()
     }
     
     func setupViews(){
@@ -36,21 +37,6 @@ class NianViewController: UIViewController, AddDelegate{
         collectionView.backgroundColor = BGColor
         self.extendedLayoutIncludesOpaqueBars = true
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 140, 0)
-    }
-    
-    func loadData(){
-        var url = urlString()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.collectionView!.reloadData()
-            })
     }
     func SAReloadData(){
         var url = urlString()
@@ -68,7 +54,10 @@ class NianViewController: UIViewController, AddDelegate{
             })
     }
     func urlString()->String{
-        return "http://nian.so/api/nian.php?uid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        return "http://nian.so/api/nian.php?uid=\(safeuid)&shell=\(safeshell)"
     }
     
     func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
@@ -92,13 +81,13 @@ class NianViewController: UIViewController, AddDelegate{
     }
     
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!){
-        var controllers = self.navigationController.viewControllers
+        var controllers = self.navigationController!.viewControllers
         self.navigationController.viewControllers = controllers
         var DreamVC = DreamViewController()
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         DreamVC.Id = data.stringAttributeForKey("id")
-        self.navigationController.pushViewController(DreamVC, animated: true)
+        self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     

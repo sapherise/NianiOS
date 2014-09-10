@@ -20,6 +20,9 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     override func viewDidLoad()
     {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         setupViews()
         setupRefresh()
         self.tableView!.headerBeginRefreshing()
@@ -40,7 +43,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
     }
     func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object
+        var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
@@ -65,7 +68,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupViews()
     {
         var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
+        var height = self.view.frame.size.height
         self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
@@ -118,7 +121,10 @@ func loadData(){
     
     
     func urlString()->String{
-            return "http://nian.so/api/explore_fo.php?page=\(page)&uid=1"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        return "http://nian.so/api/explore_fo.php?page=\(page)&uid=\(safeuid)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -136,7 +142,7 @@ func loadData(){
     
     func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? FollowCell
+        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? FollowCell
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
@@ -148,21 +154,21 @@ func loadData(){
     
     func likeclick(sender:UITapGestureRecognizer){
         var LikeVC = LikeViewController()
-        LikeVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(LikeVC, animated: true)
+        LikeVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = UserViewController()
-        UserVC.Id = "\(sender.view.tag)"
-        self.navigationController.pushViewController(UserVC, animated: true)
+        UserVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController.pushViewController(imgVC, animated: true)
+        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
@@ -177,7 +183,7 @@ func loadData(){
         var data = self.dataArray[index] as NSDictionary
         var DreamVC = DreamViewController()
         DreamVC.Id = data.stringAttributeForKey("id")
-        self.navigationController.pushViewController(DreamVC, animated: true)
+        self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     

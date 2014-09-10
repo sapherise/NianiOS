@@ -25,7 +25,7 @@ class WelcomeViewController: UIViewController {
         login.layer.borderColor = LineColor.CGColor
         login.layer.borderWidth = 1
         login.addTarget(self, action: "login", forControlEvents: UIControlEvents.TouchUpInside)
-        login.titleLabel.font = UIFont(name: "system", size: 17)
+        login.titleLabel!.font = UIFont(name: "system", size: 17)
         login.setTitleColor(IconColor, forState: UIControlState.Normal)
         
         var sign:UIButton = UIButton(frame: CGRectMake(20, height-48-64-20-47, 280, 48))
@@ -33,7 +33,7 @@ class WelcomeViewController: UIViewController {
         sign.layer.borderColor = LineColor.CGColor
         sign.layer.borderWidth = 1
         sign.addTarget(self, action: "sign", forControlEvents: UIControlEvents.TouchUpInside)
-        sign.titleLabel.font = UIFont(name: "system", size: 17)
+        sign.titleLabel!.font = UIFont(name: "system", size: 17)
         sign.setTitleColor(IconColor, forState: UIControlState.Normal)
         
         self.view.addSubview(login)
@@ -51,10 +51,10 @@ class WelcomeViewController: UIViewController {
     }
     
     func login(){
-        self.navigationController.pushViewController(LoginViewController(nibName: "Login", bundle: nil), animated: true)
+        self.navigationController!.pushViewController(LoginViewController(nibName: "Login", bundle: nil), animated: true)
     }
     func sign(){
-        self.navigationController.pushViewController(SignViewController(nibName: "Sign", bundle: nil), animated: true)
+        self.navigationController!.pushViewController(SignViewController(nibName: "Sign", bundle: nil), animated: true)
     }
     
     override func viewDidLoad() {

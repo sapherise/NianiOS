@@ -24,14 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         navigationViewController.navigationBar.clipsToBounds = true
         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         
-            
-//        [[UINavigationBar appearance] setTitleTextAttributes:
-//        [NSDictionary dictionaryWithObjectsAndKeys:
-//        [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0],
-//        UITextAttributeTextShadowColor,
-//        [NSValue valueWithUIOffset:UIOffsetMake(0, 0)],
-//        UITextAttributeTextShadowOffset,
-//        nil]];
         self.window!.rootViewController = navigationViewController
         
         //数据持久化

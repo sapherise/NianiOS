@@ -28,14 +28,6 @@ class SettingsViewController: UIViewController{
     override func viewWillAppear(animated: Bool) {
     }
     
-//    10 - (void)viewDidAppear:(BOOL)animated
-//    11 {
-//    12  [super viewDidAppear:animated];
-//    13  self.scrollView.contentSize = self.imageView.image.size;
-//    14  self.imageView.frame = CGRectMake(0, 0,
-//    15    self.imageView.image.size.width, self.imageView.image.size.height);
-//    16 }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         self.scrollView.contentSize = CGSizeMake(320, 700)
@@ -60,6 +52,7 @@ class SettingsViewController: UIViewController{
     func SAlogout(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         Sa.removeObjectForKey("uid")
+        Sa.removeObjectForKey("shell")
         Sa.synchronize()
         delegate?.SALogout()
         
@@ -67,6 +60,6 @@ class SettingsViewController: UIViewController{
     }
     
     func back(sender:UISwipeGestureRecognizer){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
 }

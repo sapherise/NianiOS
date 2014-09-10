@@ -63,23 +63,38 @@ class LoginViewController: UIViewController {
     }
     
     func back(){
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func loginAlert(){
-        if self.inputEmail.text == "" {
-            shakeAnimation(self.holder)
-        }else{
-            var email = SAEncode(SAHtml(self.inputEmail.text))
-            var password = SAEncode(SAHtml(self.inputPassword.text))
-            var sa = SAPost("em=\(email)&&pw=\(password)", "http://nian.so/api/login.php")
-//            if sa == "1" {
-//                self.navigationController.popViewControllerAnimated(true)
+//        if self.inputEmail.text == "" || self.inputPassword.text == "" {
+//            shakeAnimation(self.holder)
+//        }else{
+//            var email = SAEncode(SAHtml(self.inputEmail.text))
+//            var password = "n*A\(SAEncode(SAHtml(self.inputPassword.text)))"
+//            var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
+//            if sa == "NO" {
+//                //self.navigationController.popViewControllerAnimated(true)
+//                shakeAnimation(self.holder)
+//            }else{
+//                var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+//                mainViewController.selectedIndex = 2
+//                var navigationViewController = UINavigationController(rootViewController: mainViewController)
+//                navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
+//                navigationViewController.navigationBar.tintColor = IconColor
+//                navigationViewController.navigationBar.translucent = false
+//                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+//                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+//                navigationViewController.navigationBar.clipsToBounds = true
+//                var shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
+//                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//                Sa.setObject(sa, forKey: "uid")
+//                Sa.setObject(shell, forKey: "shell")
+//                Sa.synchronize()
+//                self.presentViewController(navigationViewController, animated: true) { () -> Void in
+//                }
 //            }
-            println(email)
-            println(password)
-            println(sa)
-        }
+//        }
     }
 
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -102,22 +117,6 @@ class LoginViewController: UIViewController {
     }
     
     func login(){
-        var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-        mainViewController.selectedIndex = 2
-        var navigationViewController = UINavigationController(rootViewController: mainViewController)
-        navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
-        navigationViewController.navigationBar.tintColor = IconColor
-        navigationViewController.navigationBar.translucent = false
-        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-        navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-        navigationViewController.navigationBar.clipsToBounds = true
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        Sa.setObject("1", forKey: "uid")
-        Sa.synchronize()
-        
-        self.presentViewController(navigationViewController, animated: true) { () -> Void in
-            println("哈哈")
-        }
     }
     
     override func viewDidLoad() {

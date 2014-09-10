@@ -35,7 +35,7 @@ class FollowCell: UITableViewCell {
             self.data.setValue("0", forKey: "like")
             self.like!.hidden = true
         }else{
-            var likenumber = SAReplace(self.like!.text, " 赞", "") as String
+            var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
             var likenewnumber = likenumber.toInt()! - 1
             self.like!.text = "\(likenewnumber) 赞"
             self.data.setValue("\(likenewnumber)", forKey: "like")
@@ -47,7 +47,10 @@ class FollowCell: UITableViewCell {
         }
         self.data.setValue("0", forKey: "liked")
         var sid = self.data.stringAttributeForKey("sid")
-        var sa = SAPost("step=\(sid)&&uid=1&&like=0", "http://nian.so/api/like_query.php")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=0", "http://nian.so/api/like_query.php")
         if sa == "1" {
         }
     }
@@ -58,7 +61,7 @@ class FollowCell: UITableViewCell {
             self.like!.text = "1 赞"
             self.data.setValue("1", forKey: "like")
         }else{
-            var likenumber = SAReplace(self.like!.text, " 赞", "") as String
+            var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
             var likenewnumber = likenumber.toInt()! + 1
             self.like!.text = "\(likenewnumber) 赞"
             self.data.setValue("\(likenewnumber)", forKey: "like")
@@ -66,7 +69,10 @@ class FollowCell: UITableViewCell {
         self.data.setValue("1", forKey: "liked")
         self.like!.hidden = false        
         var sid = self.data.stringAttributeForKey("sid")
-        var sa = SAPost("step=\(sid)&&uid=1&&like=1", "http://nian.so/api/like_query.php")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=1", "http://nian.so/api/like_query.php")
        if sa == "1" {
         }
     }

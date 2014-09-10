@@ -34,7 +34,7 @@ func SAPost(postString:String, urlString:String)->String{
     request!.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
     var error : NSError?
-    var returnData : NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+    var returnData : NSData? = NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response, error: &error)
     var strRet:NSString? = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
     return strRet!
 }
@@ -73,3 +73,23 @@ func SAColorImg(theColor:UIColor)->UIImage{
     UIGraphicsEndImageContext()
     return theImage
 }
+
+//extension String  {
+//    var md5: String! {
+//        let str = self.cStringUsingEncoding(NSUTF8StringEncoding)
+//        let strLen = CC_LONG(self.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+//        let digestLen = Int(CC_MD5_DIGEST_LENGTH)
+//        let result = UnsafeMutablePointer<CUnsignedChar>.alloc(digestLen)
+//
+//        CC_MD5(str!, strLen, result)
+//
+//        var hash = NSMutableString()
+//        for i in 0..<digestLen {
+//            hash.appendFormat("%02x", result[i])
+//        }
+//
+//        result.destroy()
+//
+//        return String(format: hash)
+//    }
+// }

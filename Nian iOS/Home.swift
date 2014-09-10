@@ -44,7 +44,7 @@ class HomeViewController: UITabBarController{
         self.navigationItem.rightBarButtonItem = rightButton;
         
         //总的
-        self.view!.backgroundColor = BGColor
+        self.view.backgroundColor = BGColor
         self.tabBar.hidden = true
         var width = self.view.frame.size.width  //宽度
         var height = self.view.frame.size.height - 64   //高度
@@ -140,7 +140,7 @@ class HomeViewController: UITabBarController{
         var NianVC = NianViewController()
       //  addDreamVC.delegate = NianVC    //😍
         var addDreamVC:UIViewController = MainStoryBoard.instantiateViewControllerWithIdentifier("AddDreamController") as UIViewController
-        self.navigationController.pushViewController(addDreamVC, animated: true)
+        self.navigationController!.pushViewController(addDreamVC, animated: true)
     }
     
     
