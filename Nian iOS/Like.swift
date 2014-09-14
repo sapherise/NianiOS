@@ -121,19 +121,19 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         return 1
     }
     
-    func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     
-    func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? LikeCell
-        var index = indexPath!.row
+        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
         cell!.avatarView?.addGestureRecognizer(userclick)
-        return cell
+        return cell!
     }
     
     func userclick(sender:UITapGestureRecognizer){
@@ -149,11 +149,11 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
         return  80
     }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
     }
     

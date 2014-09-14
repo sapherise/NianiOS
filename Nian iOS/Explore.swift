@@ -25,15 +25,9 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        self.lefttableView!.headerBeginRefreshing()
         SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        //        [[self navigationController] setNavigationBarHidden:YES];
-    }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
@@ -71,9 +65,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.view.addSubview(self.lefttableView!)
         self.view.addSubview(self.righttableView!)
         
-//        var rightButton = UIBarButtonItem(title: "更新", style: .Plain, target: self, action: "addStepButton")
-//        self.navigationItem.rightBarButtonItem = rightButton;
-        
         //标题颜色
         self.navigationController!.navigationBar.tintColor = IconColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -84,14 +75,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
         leftButton.image = UIImage(named:"back")
         self.navigationItem.leftBarButtonItem = leftButton;
-        
-        
-        //        AFImageViewer* afView = [[AFImageViewer alloc] initWithFrame:CGRectMake(0,0, 320, 200)];
-        //        afView.backgroundColor=[UIColor blackColor];
-        //        [afView setContentMode:UIViewContentModeScaleAspectFill];
-        //        afView.delegate=self;
-        //        contentTableView.tableHeaderView = afView;
-        //UILabel(frame: CGRectMake(0, 0, 200, 40))
     }
     
     
@@ -187,11 +170,11 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section==0{
             return 1
         }else{
@@ -204,12 +187,12 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     
-    func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
         
-        if indexPath!.section==0{
-            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath!) as? ExploreTop
-            var index = indexPath!.row
+        if indexPath.section==0{
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? ExploreTop
+            var index = indexPath.row
             if tableView == lefttableView {
                 c!.Seg!.selectedSegmentIndex = 0
             }else{
@@ -219,14 +202,14 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             cell = c!
         }else{
             if tableView == lefttableView {
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? GroupCell
-                var index = indexPath!.row
+                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
+                var index = indexPath.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
                 cell = c!
             }else{
-                var index = indexPath!.row * 3
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath!) as? ExploreDreamCell
+                var index = indexPath.row * 3
+                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? ExploreDreamCell
            //     var index = indexPath!.row
                 var data1 = self.dataArray2[index] as NSDictionary
                 var data2 = self.dataArray2[index+1] as NSDictionary
@@ -277,6 +260,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 BBSVC.topuid = data.stringAttributeForKey("uid")
                 BBSVC.topuser = data.stringAttributeForKey("user")
                 BBSVC.toplastdate = data.stringAttributeForKey("lastdate")
+                BBSVC.toptitle = data.stringAttributeForKey("title")
                 self.navigationController!.pushViewController(BBSVC, animated: true)
             }
         }

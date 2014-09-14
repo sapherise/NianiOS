@@ -8,12 +8,13 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController{
+class HomeViewController: UITabBarController, UIApplicationDelegate{
     var myTabbar :UIView?
     var slider :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
-    var seg:UISegmentedControl = UISegmentedControl(frame: CGRectMake(30, 5, 140, 27))
+    var dot:UILabel!
+    var timer:NSTimer?
     
     var MainStoryBoard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     
@@ -27,6 +28,33 @@ class HomeViewController: UITabBarController{
     }
     
     override func viewDidAppear(animated: Bool) {
+        noticeDot()
+    }
+    
+    func noticeDot() {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var noticenumber = SAPost("uid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/dot.php")
+        self.dot.text = ""
+        if noticenumber == "0" {
+            dot.hidden = true
+        }else{
+            dot.hidden = false
+            UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                self.dot.frame = CGRectMake(228, 8, 20, 17)
+                }, completion: { (complete: Bool) in
+                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                        self.dot.frame = CGRectMake(228, 10, 20, 15)
+                        }, completion: { (complete: Bool) in
+                            self.dot.text = noticenumber
+                    })
+            })
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.dot.hidden = true
     }
     
     func setupViews()
@@ -52,15 +80,11 @@ class HomeViewController: UITabBarController{
         //底部
         self.myTabbar = UIView(frame: CGRectMake(0,height-49,width,49)) //x，y，宽度，高度
         self.myTabbar!.backgroundColor = BarColor  //底部的背景色
-        self.slider = UIView(frame:CGRectMake(0,0,64,49))
-        
-        self.myTabbar!.addSubview(self.slider!)
         self.view.addSubview(self.myTabbar!)
         
         //底部按钮
         var count = self.itemArray.count
-        for var index = 0; index < count; index++
-        {
+        for var index = 0; index < count; index++ {
             var btnWidth = (CGFloat)(index*64)
             var button  = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
             button.frame = CGRectMake(btnWidth, 1,64,49)
@@ -75,11 +99,27 @@ class HomeViewController: UITabBarController{
             button.clipsToBounds = true
             button.addTarget(self, action: "tabBarButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
             self.myTabbar?.addSubview(button)
-            if index == 2
-            {
+            if index == 2 {
                 button.selected = true
             }
         }
+        
+        self.slider = UIView(frame:CGRectMake(128,46,64,3))
+        self.slider!.backgroundColor = BlueColor
+        self.myTabbar!.addSubview(self.slider!)
+        
+        
+        
+        
+        self.dot = UILabel(frame: CGRectMake(228, 10, 20, 15))
+        self.dot.textColor = UIColor.whiteColor()
+        self.dot.font = UIFont.systemFontOfSize(10)
+        self.dot.textAlignment = NSTextAlignment.Center
+        self.dot.backgroundColor = BlueColor
+        self.dot.layer.cornerRadius = 5
+        self.dot.layer.masksToBounds = true
+        noticeDot()
+        self.myTabbar!.addSubview(dot!)
     }
     
     //每个按钮跳转到哪个页面
@@ -113,8 +153,8 @@ class HomeViewController: UITabBarController{
                 button.selected = false
             }
         }
-        UIView.animateWithDuration( 0.3,{
-                self.slider!.frame = CGRectMake(CGFloat(index-100)*64,0,64,49)
+        UIView.animateWithDuration( 0.1,{
+                self.slider!.frame = CGRectMake(CGFloat(index-100)*64,46,64,3)
             })
         self.selectedIndex = index-100
         
@@ -126,12 +166,14 @@ class HomeViewController: UITabBarController{
             self.navigationItem.titleView = titleLabel
         
         
-        if(index != 102){
-            self.navigationItem.rightBarButtonItem = nil
-        }else{
+        if(index == 102){
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamButton")
             rightButton.image = UIImage(named:"add")
-            self.navigationItem.rightBarButtonItem = rightButton;
+            self.navigationItem.rightBarButtonItem = rightButton
+        }else if index == 103 {
+            self.dot!.hidden = true
+        }else{
+            self.navigationItem.rightBarButtonItem = nil
         }
     }
     

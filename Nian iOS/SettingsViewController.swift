@@ -20,6 +20,8 @@ class SettingsViewController: UIViewController{
     var delegate: LogoutDelegate?  //😍    设定这个代理公司
     @IBOutlet var inputName:UITextField!
     @IBOutlet var inputEmail:UITextField!
+    @IBOutlet var coinNumber:UILabel?
+    @IBOutlet var helpView:UIView?
     
     override func viewDidLoad(){
         setupViews()
@@ -35,13 +37,34 @@ class SettingsViewController: UIViewController{
     
     
     func setupViews(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var safename = Sa.objectForKey("user") as String
         self.view.backgroundColor = BGColor
-        var img = "1.jpg"
-        var userImageURL = "http://img.nian.so/head/\(img)!head"
+        var userImageURL = "http://img.nian.so/head/\(safeuid).jpg!head"
         self.head.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
         
+        
+        var url = NSURL(string:"http://nian.so/api/user.php?uid=\(safeuid)")
+        var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+        var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+        var sa: AnyObject! = json.objectForKey("user")
+        var email: AnyObject! = sa.objectForKey("email") as String
+        var coin: AnyObject! = sa.objectForKey("coin") as String
+        
+        self.inputName.text = safename
+        self.inputEmail.text = "\(email)"
+        self.coinNumber!.text = "\(coin)"
+        
+        self.helpView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
         self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+    }
+    
+    func SAhelp(){
+        var helpVC = HelpViewController()
+        self.navigationController?.pushViewController(helpVC, animated: true)
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -53,9 +76,10 @@ class SettingsViewController: UIViewController{
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         Sa.removeObjectForKey("uid")
         Sa.removeObjectForKey("shell")
+        Sa.removeObjectForKey("followData")
+        Sa.removeObjectForKey("user")
         Sa.synchronize()
         delegate?.SALogout()
-        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

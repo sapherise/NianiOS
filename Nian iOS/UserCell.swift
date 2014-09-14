@@ -18,6 +18,7 @@ class UserCell: UITableViewCell {
     @IBOutlet var imageholder:UIImageView?
     @IBOutlet var View:UIView?
     @IBOutlet var menuHolder:UIView?
+    @IBOutlet var fromDream:UILabel?
     @IBOutlet weak var like: UILabel!
     @IBOutlet weak var share: UIButton!
     @IBOutlet weak var goodbye: UIButton!
@@ -107,6 +108,7 @@ class UserCell: UITableViewCell {
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate")
+        var dreamtitle = self.data.stringAttributeForKey("dreamtitle")
         content = self.data.stringAttributeForKey("content")
         var title = self.data.stringAttributeForKey("title") as NSString
         img = self.data.stringAttributeForKey("img") as NSString
@@ -118,6 +120,8 @@ class UserCell: UITableViewCell {
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         self.View!.backgroundColor = BGColor
+        
+        self.fromDream!.text = dreamtitle
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
         self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))

@@ -17,24 +17,29 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     var Id:String = ""
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad(){
         super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
         setupViews()
         setupRefresh()
-        self.tableView!.headerBeginRefreshing()
-        SAReloadData()
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if Sa.objectForKey("followData") != nil {
+            SAReloadCache()
+            println("不为空")
+        }else{
+            self.tableView!.headerBeginRefreshing()
+            SAReloadData()
+            println("是空的")
+        }
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
+    override func viewDidAppear(animated: Bool){
+    }
+    
+    override func viewWillDisappear(animated: Bool){
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "imageViewTapped", object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
-        
     }
     override func viewWillAppear(animated: Bool)
     {
@@ -68,7 +73,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupViews()
     {
         var width = self.view.frame.size.width
-        var height = self.view.frame.size.height
+        var height = self.view.frame.size.height - 64
         self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
@@ -109,14 +114,31 @@ func loadData(){
                 return
             }
             var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
+            self.dataArray = NSMutableArray()
+//            for var i = 0; i < self.dataArray.count; i++ {
+//                self.dataArray.removeObjectAtIndex(i)
+//            }
             for data : AnyObject  in arr{
                 self.dataArray.addObject(data)
             }
+            
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            Sa.setObject(self.dataArray, forKey: "followData")
+            Sa.synchronize()
             self.tableView!.reloadData()
             self.tableView!.headerEndRefreshing()
             self.page++
             })
+    }
+    func SAReloadCache(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if Sa.objectForKey("followData") != nil {
+            self.page = 0
+            self.dataArray = Sa.objectForKey("followData") as NSMutableArray
+            self.tableView!.reloadData()
+            self.tableView!.headerEndRefreshing()
+            self.page++
+        }
     }
     
     
@@ -132,24 +154,24 @@ func loadData(){
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     
-    func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? FollowCell
-        var index = indexPath!.row
+        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? FollowCell
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
         cell!.avatarView?.addGestureRecognizer(userclick)
         cell!.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-        return cell
+        return cell!
     }
     
     func likeclick(sender:UITapGestureRecognizer){
@@ -171,15 +193,15 @@ func loadData(){
         self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        var index = indexPath!.row
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         return  FollowCell.cellHeightByData(data)
     }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var index = indexPath!.row
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         var DreamVC = DreamViewController()
         DreamVC.Id = data.stringAttributeForKey("id")

@@ -20,7 +20,7 @@ extension UIImageView
         var image : AnyObject = FileUtility.imageDataFromPath(cachePath)
         if image as NSObject != NSNull()
         {
-            self.image = image as UIImage
+            self.image = image as? UIImage
         }
         else
         {

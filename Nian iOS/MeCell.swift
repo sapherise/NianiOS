@@ -38,16 +38,6 @@ class MeCell: UITableViewCell {
     
     override func layoutSubviews()
     {
-        
-//        "cuid": "<?=$row[0]?>",
-//        "cname": "<?=user($row[0])?>",
-//        "content": "<?=$row[2]?>",
-//        "dreamtitle": "<?=$row[3]?>",
-//        "dream": "<?=$row[4]?>",
-//        "type": "<?=$row[5]?>",
-//        "lastdate": "<?=timetoarr($row[6])?>",
-//        "cid": "<?=$row[7]?>"
-        
         super.layoutSubviews()
         var uid = self.data.stringAttributeForKey("cuid")
         var user = self.data.stringAttributeForKey("cname")
@@ -61,11 +51,14 @@ class MeCell: UITableViewCell {
         case "0": word = "在「\(dreamtitle)」留言"
         case "1": word = "在「\(dreamtitle)」提到你"
         case "2": word = "赞了你的梦想「\(dreamtitle)」"
+            content = "「\(dreamtitle)」"
         case "3": word = "关注了你"
+            content = "去看看对方"
         case "4": word = "参与你的话题「\(dreamtitle)」"
         case "5": word = "在「\(dreamtitle)」提到你"
         case "6": word = "为你的梦想「\(dreamtitle)」更新了"
         case "7": word = "添加你为「\(dreamtitle)」的伙伴"
+            content = "「\(dreamtitle)」"
         case "8": word = "赞了你的进展"
             content = dreamtitle
         default: word = "与你互动了"
@@ -78,6 +71,7 @@ class MeCell: UITableViewCell {
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
         self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
+        self.avatarView!.tag = uid.toInt()!
         
         var height = content.stringHeightWith(17,width:242)
         

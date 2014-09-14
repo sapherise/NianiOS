@@ -40,6 +40,19 @@ func SAPost(postString:String, urlString:String)->String{
 }
 
 
+func SAGet(getString:String, urlString:String)->String{
+    var request : NSMutableURLRequest? = NSMutableURLRequest()
+    request!.URL = NSURL.URLWithString(urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    request!.HTTPMethod = "GET"
+    request!.HTTPBody = getString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
+    var response : NSURLResponse?
+    var error : NSError?
+    var returnData : NSData? = NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response, error: &error)
+    var strRet:NSString? = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
+    return strRet!
+}
+
+
 //替换，用法：var sa = SAReplace("This is my string", " ", "___")
 func SAReplace(word:String, before:String, after:String)->NSString{
     return word.stringByReplacingOccurrencesOfString(before, withString: after, options: nil, range: nil)
@@ -74,22 +87,22 @@ func SAColorImg(theColor:UIColor)->UIImage{
     return theImage
 }
 
-//extension String  {
-//    var md5: String! {
-//        let str = self.cStringUsingEncoding(NSUTF8StringEncoding)
-//        let strLen = CC_LONG(self.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
-//        let digestLen = Int(CC_MD5_DIGEST_LENGTH)
-//        let result = UnsafeMutablePointer<CUnsignedChar>.alloc(digestLen)
-//
-//        CC_MD5(str!, strLen, result)
-//
-//        var hash = NSMutableString()
-//        for i in 0..<digestLen {
-//            hash.appendFormat("%02x", result[i])
-//        }
-//
-//        result.destroy()
-//
-//        return String(format: hash)
-//    }
-// }
+extension String  {
+    var md5: String! {
+        let str = self.cStringUsingEncoding(NSUTF8StringEncoding)
+        let strLen = CC_LONG(self.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+        let digestLen = Int(CC_MD5_DIGEST_LENGTH)
+        let result = UnsafeMutablePointer<CUnsignedChar>.alloc(digestLen)
+
+        CC_MD5(str!, strLen, result)
+
+        var hash = NSMutableString()
+        for i in 0..<digestLen {
+            hash.appendFormat("%02x", result[i])
+        }
+
+        result.destroy()
+
+        return String(format: hash)
+    }
+ }

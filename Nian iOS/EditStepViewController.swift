@@ -10,6 +10,8 @@ import UIKit
 
 protocol EditstepDelegate {   //😍
     func Editstep()
+    var EditId:Int { get set }
+    var EditContent:String { get set }
 }
 
 class EditStepViewController: UIViewController {
@@ -22,6 +24,7 @@ class EditStepViewController: UIViewController {
     var toggle:Int = 0
     var sid:String = ""
     var delegate: EditstepDelegate?      //😍
+    var pushEditId:Int = 0
     
     @IBAction func uploadClick(sender: AnyObject) {
         if(toggle == 0){    //uploading
@@ -112,6 +115,8 @@ class EditStepViewController: UIViewController {
         var safeshell = Sa.objectForKey("shell") as String
         var sa=SAPost("sid=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/editstep_query.php")
         if(sa == "1"){
+            delegate?.EditId = self.pushEditId
+            delegate?.EditContent = self.TextView.text
             delegate?.Editstep()
             self.navigationController!.popViewControllerAnimated(true)
         }

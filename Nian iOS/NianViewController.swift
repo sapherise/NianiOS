@@ -82,7 +82,7 @@ class NianViewController: UIViewController, AddDelegate{
     
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!){
         var controllers = self.navigationController!.viewControllers
-        self.navigationController.viewControllers = controllers
+        self.navigationController!.viewControllers = controllers
         var DreamVC = DreamViewController()
         var index = indexPath!.row
         var data = self.dataArray[index] as NSDictionary

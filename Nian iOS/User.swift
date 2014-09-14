@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddstepDelegate, EditstepDelegate{     //😍
+class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddstepDelegate, EditstepDelegate, UIActionSheetDelegate{     //😍
     
     let identifier = "user"
     let identifier2 = "usertop"
@@ -19,14 +19,23 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var dataArray2 = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
+    var deleteSheet:UIActionSheet?
+    var deleteId:Int = 0        //删除按钮的tag，进展编号
+    var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
+    
+    var EditId:Int = 0
+    var EditContent:String = ""
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        self.lefttableView!.headerBeginRefreshing()
-        SAReloadData()
+    }
+    override func viewDidAppear(animated: Bool) {
+        if EditId == 0 {
+            SAReloadData()
+        }
     }
     
     override func viewWillDisappear(animated: Bool)
@@ -212,11 +221,11 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section==0{
             return 1
         }else{
@@ -235,12 +244,12 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     
-    func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
         
-        if indexPath!.section==0{
-            var c = tableView?.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath!) as? UserCellTop
-            var index = indexPath!.row
+        if indexPath.section==0{
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? UserCellTop
+            var index = indexPath.row
             c!.userid = Id
             if tableView == lefttableView {
                 c!.Seg!.selectedSegmentIndex = 0
@@ -251,19 +260,20 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             cell = c!
         }else{
             if tableView == lefttableView {
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? UserCell
-                var index = indexPath!.row
+                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? UserCell
+                var index = indexPath.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
                 c!.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
                 c!.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c!.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+                c!.tag = index + 10
                 cell = c!
             }else{
-                var c = tableView?.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath!) as? StepCell
+                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? StepCell
                 var dictionary:Dictionary<String, String> = ["id":"", "title":"", "img":"", "percent":""]
-                var index = indexPath!.row * 3
+                var index = indexPath.row * 3
                 if index<self.dataArray2.count {
                     c!.data1 = self.dataArray2[index] as NSDictionary
                     c!.img1?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
@@ -313,14 +323,14 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
         
         if indexPath.section==0{
             return  190
         }else{
             if tableView == lefttableView {
-                var index = indexPath!.row
+                var index = indexPath.row
                 var data = self.dataArray[index] as NSDictionary
                 return  UserCell.cellHeightByData(data)
             }else{
@@ -328,7 +338,18 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             }
         }
     }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!){
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        if indexPath.section != 0 {
+            self.lefttableView!.deselectRowAtIndexPath(indexPath, animated: false)
+            var index = indexPath.row
+            var data = self.dataArray[index] as NSDictionary
+            var dream = data.stringAttributeForKey("dream")
+            if tableView == lefttableView {
+                var DreamVC = DreamViewController()
+                DreamVC.Id = dream
+                self.navigationController!.pushViewController(DreamVC, animated: true)
+            }
+        }
     }
     
     
@@ -344,9 +365,15 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     
+    
     func Editstep() {      //😍
-        self.SAReloadData()
+        println("改好了")
+        var newid = self.EditId - 10
+        self.dataArray[newid].setObject(self.EditContent, forKey: "content")
+        var newpath = NSIndexPath(forRow: newid, inSection: 1)
+        self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
+    
     func setupRefresh(){
         self.lefttableView!.addHeaderWithCallback({
             self.SAReloadData()
@@ -381,66 +408,58 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             SARightReloadData()
         }
     }
+
     func SAedit(sender:UIButton){
         var tag = sender.tag
+        var cell:AnyObject
         var EditVC = EditStepViewController(nibName: "EditStepViewController", bundle: nil)
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1){
+            cell = sender.superview!.superview!.superview!.superview! as UITableViewCell
+            EditVC.pushEditId = cell.tag
+        }else{
+            cell = sender.superview!.superview!.superview! as UITableViewCell
+            EditVC.pushEditId = cell.tag
+        }
         EditVC.sid = "\(sender.tag)"
+        println("测试编号是\(sender.tag)")
         EditVC.delegate = self
-        //        AddstepVC.Id = self.Id
-        //        AddstepVC.delegate = self    //😍
         self.navigationController!.pushViewController(EditVC, animated: true)
     }
+    
     func SAdelete(sender:UIButton){
-        if NSClassFromString("UIAlertController") != nil {
-            var alertController = UIAlertController(title: "再见", message: "进展 #\(sender.tag)", preferredStyle: UIAlertControllerStyle.ActionSheet)
-            var deleteConfirm = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default){ action in
-                
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                var safeshell = Sa.objectForKey("shell") as String
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(sender.tag)", "http://nian.so/api/delete_step.php")
-                if(sa == "1"){
-                    var button:UIButton = self.lefttableView!.viewWithTag(sender.tag) as UIButton
-                    var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
-                    var indexPath = self.lefttableView!.indexPathForCell(cell)
-                    self.dataArray.removeObjectAtIndex(indexPath!.row)
-                    self.lefttableView!.deleteRowsAtIndexPaths([ indexPath! ], withRowAnimation: UITableViewRowAnimation.Fade)
-                }
-            }       //这是删除按钮
-            alertController.addAction(deleteConfirm)
-            alertController.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))   //取消按钮
-            self.presentViewController(alertController, animated: true, completion:nil)
-        } else {
-            var alertTest = UIAlertView()
-            alertTest.delegate = self
-            alertTest.title = "再见"
-            alertTest.message = "进展 #\(sender.tag)"
-            alertTest.tag = sender.tag
-            alertTest.addButtonWithTitle("确认")
-            alertTest.addButtonWithTitle("取消")
-            alertTest.show()
+        self.deleteId = sender.tag
+        var cell:AnyObject
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1){
+            cell = sender.superview!.superview!.superview!.superview! as UITableViewCell
+            self.deleteViewId = cell.tag
+        }else{
+            cell = sender.superview!.superview!.superview! as UITableViewCell
+            self.deleteViewId = cell.tag
         }
+        self.deleteSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.deleteSheet!.addButtonWithTitle("确定")
+        self.deleteSheet!.addButtonWithTitle("取消")
+        self.deleteSheet!.cancelButtonIndex = 1
+        self.deleteSheet!.showInView(self.view)
     }
-    func alertView(alertView: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
-        switch buttonIndex{
-        case 0:
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             var safeshell = Sa.objectForKey("shell") as String
-            var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(alertView.tag)", "http://nian.so/api/delete_step.php")
-            var tag = alertView.tag
-            if(sa == "1"){
-                var button:UIButton = self.lefttableView!.viewWithTag(alertView.tag) as UIButton
-                var cell:UITableViewCell = button.superview?.superview?.superview as UITableViewCell
-                //                cell.hidden = true
-                var indexPath = self.lefttableView!.indexPathForCell(cell)
-                self.dataArray.removeObjectAtIndex(indexPath!.row)
-                self.lefttableView!.deleteRowsAtIndexPaths([ indexPath! ], withRowAnimation: UITableViewRowAnimation.Fade)
+            var visibleCells:NSArray = self.lefttableView!.visibleCells()
+            for cell  in visibleCells {
+                if cell.tag == self.deleteViewId {
+                    var newpath = self.lefttableView!.indexPathForCell(cell as UITableViewCell)
+                    self.dataArray.removeObjectAtIndex(newpath!.row)
+                    self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                    break
+                }
             }
-        case 1:
-            println("取消")
-        default:
-            println("错误")
+            var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
+            if(sa == "1"){
+            }
         }
     }
     

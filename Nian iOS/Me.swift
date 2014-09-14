@@ -20,25 +20,22 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        setupViews()
+        setupRefresh()
     }
     
     override func viewDidAppear(animated: Bool) {
-        setupViews()
-        setupRefresh()
-        self.tableView!.headerBeginRefreshing()
         SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool)
     {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "imageViewTapped", object:nil)
         
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "imageViewTapped:", name: "imageViewTapped", object: nil)
     }
     
     
@@ -46,7 +43,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func setupViews()
     {
         var width = self.view.frame.size.width
-        var height = self.view.frame.size.height
+        var height = self.view.frame.size.height - 64
         self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
@@ -110,44 +107,87 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     
-    func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView?.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath!) as? MeCell
-        var index = indexPath!.row
+        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
-        return cell
+        cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        return cell!
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
+    func userclick(sender:UITapGestureRecognizer){
+        var UserVC = UserViewController()
+        UserVC.Id = "\(sender.view!.tag)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        var index = indexPath!.row
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         return  MeCell.cellHeightByData(data)
     }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var index = indexPath!.row
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
+        var cid = data.stringAttributeForKey("cid")
+        var uid = data.stringAttributeForKey("cuid")
+        var user = data.stringAttributeForKey("cname")
+        var lastdate = data.stringAttributeForKey("lastdate")
+        var dreamtitle = data.stringAttributeForKey("dreamtitle")
+        var content = data.stringAttributeForKey("content")
+        var dream = data.stringAttributeForKey("dream")
+        var type = data.stringAttributeForKey("type")
+        
         var DreamVC = DreamViewController()
-        DreamVC.Id = data.stringAttributeForKey("id")
-        self.navigationController!.pushViewController(DreamVC, animated: true)
-    }
-    
-    func imageViewTapped(noti:NSNotification)
-    {
-        //        var imageURL = noti.object as String
-        //        var imgVC = YRImageViewController(nibName: nil, bundle: nil)
-        //        imgVC.imageURL = imageURL
-        //        self.navigationController.pushViewController(imgVC, animated: true)
+        var UserVC = UserViewController()
+        var BBSVC = BBSViewController()
+        println(type)
+        if type == "0" {    //在你的梦想留言
+            DreamVC.Id = dream
+            DreamVC.toggle = "1"
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }else if type == "1" {  //在某个梦想提及你
+            DreamVC.Id = dream
+            DreamVC.toggle = "1"
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }else if type == "2" {  //赞了你的梦想
+            DreamVC.Id = dream
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }else if type == "3" {  //关注了你
+            UserVC.Id = uid
+            self.navigationController!.pushViewController(UserVC, animated: true)
+        }else if type == "4" {  //参与了你的话题
+            BBSVC.Id = dream
+            BBSVC.getContent = "1"
+            self.navigationController!.pushViewController(BBSVC, animated: true)
+        }else if type == "5" {  //在某个话题提及你
+            BBSVC.Id = dream
+            BBSVC.getContent = "1"
+            self.navigationController!.pushViewController(BBSVC, animated: true)
+            //BBS要倒叙
+        }else if type == "6" {  //为你更新了梦想
+            DreamVC.Id = dream
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+            //头像不对哦
+        }else if type == "7" {  //添加你为小伙伴
+            DreamVC.Id = dream
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }else if type == "8" {  //赞了你的进展
+            DreamVC.Id = dream
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }
     }
     
     

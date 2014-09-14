@@ -8,9 +8,12 @@
 
 import UIKit
 
-//protocol AddstepDelegate {   //😍
-//    func countUp()
-//}
+protocol AddCommentDelegate {   //😍
+    var ReturnReplyRow:Int { get set }
+    var ReturnReplyContent:String { get set }
+    var ReturnReplyId:String { get set }
+    func commentFinish()
+}
 
 class AddCommentViewController: UIViewController {
     
@@ -19,7 +22,8 @@ class AddCommentViewController: UIViewController {
     var toggle:Int = 0
     var Id:String = ""
     var content:String = ""
-//    var delegate: AddstepDelegate?      //😍
+    var Row:Int = 0
+    var delegate: AddCommentDelegate?      //😍
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -69,12 +73,15 @@ class AddCommentViewController: UIViewController {
     func addReply(){
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         var sa = SAPost("id=\(Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
-        if sa == "1" {
+        if sa != "" {
+            delegate?.ReturnReplyRow = self.Row
+            delegate?.ReturnReplyContent = self.TextView.text
+            delegate?.ReturnReplyId = sa
+            delegate?.commentFinish()
             self.navigationController!.popViewControllerAnimated(true)
         }
     }

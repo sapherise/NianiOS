@@ -16,11 +16,15 @@ class BBSCellTop: UITableViewCell{
     @IBOutlet var contentLabel:UILabel?
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var Line:UIView?
+    @IBOutlet var BBStitle:UILabel?
     
+    var Id:String = ""
     var topcontent:String = ""
     var topuid:String = ""
     var toplastdate:String = ""
     var topuser:String = ""
+    var toptitle:String = ""
+    var getContent:String = "0" //为0时是传值，1时是自力更生去拉取数据
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,10 +34,29 @@ class BBSCellTop: UITableViewCell{
     override func layoutSubviews()
     {
         super.layoutSubviews()
+        
+        if getContent == "1" {
+            var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(Id)")
+            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var sa: AnyObject! = json.objectForKey("bbstop")
+            toptitle = sa.objectForKey("title") as String
+            topcontent = sa.objectForKey("content") as String
+            topuid = sa.objectForKey("uid") as String
+            toplastdate = sa.objectForKey("lastdate") as String
+            topuser = sa.objectForKey("user") as String
+        }
+        
+        self.BBStitle!.text = "\(self.toptitle)"
+        var titleHeight = self.toptitle.stringHeightWith(17,width:280)
+        self.BBStitle!.setHeight(titleHeight)
+        
         self.nickLabel!.text = "\(topuser)"
         self.lastdate!.text = "\(toplastdate)"
         var userImageURL = "http://img.nian.so/head/\(topuid).jpg!head"
         self.dreamhead!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
+        self.dreamhead!.tag = topuid.toInt()!
+        
         self.View!.backgroundColor = BGColor
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.contentLabel?.text = "\(topcontent)"
@@ -41,13 +64,18 @@ class BBSCellTop: UITableViewCell{
         var height = topcontent.stringHeightWith(17,width:225)
         self.contentLabel!.setHeight(height)
         
+        self.dreamhead!.setY(self.BBStitle!.bottom()+20)
+        self.nickLabel!.setY(self.BBStitle!.bottom()+20)
+        self.lastdate!.setY(self.BBStitle!.bottom()+39)
+        self.contentLabel!.setY(self.BBStitle!.bottom()+68)
+        
         self.Line!.backgroundColor = LittleLineColor
         self.Line!.setY(self.contentLabel!.bottom()+16)
     }
-    class func cellHeightByData(topcontent:String)->CGFloat
-    {
+    class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
         var height = topcontent.stringHeightWith(17,width:225)
-        return height + 80
+        var titleHeight = toptitle.stringHeightWith(17,width:280)
+        return height + 105 + titleHeight
     }
     
 }
