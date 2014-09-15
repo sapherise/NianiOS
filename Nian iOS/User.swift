@@ -101,10 +101,6 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.view.addSubview(self.lefttableView!)
         self.view.addSubview(self.righttableView!)
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
-        rightButton.image = UIImage(named:"add")
-        self.navigationItem.rightBarButtonItem = rightButton;
-        
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = IconColor
@@ -117,11 +113,51 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         leftButton.image = UIImage(named:"back")
         self.navigationItem.leftBarButtonItem = leftButton;
         
+        var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: self, action: nil)
+        spaceButton.width = -8
+        var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
+        rightButtonView.backgroundColor = BlueColor
+        rightButtonView.layer.cornerRadius = 3
+        rightButtonView.layer.masksToBounds = true
+        rightButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAfo"))
+        var imageView = UIImageView(frame: CGRectMake(12, 6, 16, 20))
+        imageView.image = UIImage(named: "fo")
+        rightButtonView.addSubview(imageView)
+        var rightButton = UIBarButtonItem(customView: rightButtonView)
+        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
+        
         var swipe = UISwipeGestureRecognizer(target: self, action: "back")
         swipe.direction = UISwipeGestureRecognizerDirection.Right
         self.view.addGestureRecognizer(swipe)
     }
     
+    func SAfo(){
+        println("关注了！")
+        var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: self, action: nil)
+        spaceButton.width = -8
+        var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
+        rightButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAunfo"))
+        var imageView = UIImageView(frame: CGRectMake(12, 6, 16.5, 20))
+        imageView.image = UIImage(named: "unfo")
+        rightButtonView.addSubview(imageView)
+        var rightButton = UIBarButtonItem(customView: rightButtonView)
+        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
+    }
+    
+    func SAunfo(){
+        var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: self, action: nil)
+        spaceButton.width = -8
+        var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
+        rightButtonView.backgroundColor = BlueColor
+        rightButtonView.layer.cornerRadius = 3
+        rightButtonView.layer.masksToBounds = true
+        rightButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAfo"))
+        var imageView = UIImageView(frame: CGRectMake(12, 6, 16, 20))
+        imageView.image = UIImage(named: "fo")
+        rightButtonView.addSubview(imageView)
+        var rightButton = UIBarButtonItem(customView: rightButtonView)
+        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
+    }
     
     func loadData()
     {
@@ -327,7 +363,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     {
         
         if indexPath.section==0{
-            return  190
+            return  220
         }else{
             if tableView == lefttableView {
                 var index = indexPath.row
