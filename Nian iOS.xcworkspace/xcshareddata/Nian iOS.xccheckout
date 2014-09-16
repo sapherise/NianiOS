@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>33178876-2901-4986-A39A-F68F34DAE83B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Nian iOS</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D</key>
+		<string>https://coding.net/sap/Nian_iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Nian iOS.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://coding.net/sap/Nian_iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Nian%20iOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>

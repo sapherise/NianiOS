@@ -71,6 +71,8 @@
 		1275E4B119A8CB9B00E2FC4C /* wait.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1275E48A19A8CB9B00E2FC4C /* wait.gif */; };
 		1275E4B219A8CB9B00E2FC4C /* wait@2x.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1275E48B19A8CB9B00E2FC4C /* wait@2x.gif */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
+		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
+		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
 		1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */; };
 		1283E2C119AB924000A0FB1C /* EditStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2C019AB924000A0FB1C /* EditStepViewController.swift */; };
@@ -118,6 +120,7 @@
 		12FB48CB196AE9670026DD51 /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48CA196AE9670026DD51 /* Follow.swift */; };
 		12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FB48D3196AEAB90026DD51 /* FollowCell.xib */; };
 		12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48D5196AEAC50026DD51 /* FollowCell.swift */; };
+		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,6 +199,11 @@
 		1275E48A19A8CB9B00E2FC4C /* wait.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = wait.gif; sourceTree = "<group>"; };
 		1275E48B19A8CB9B00E2FC4C /* wait@2x.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "wait@2x.gif"; sourceTree = "<group>"; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
+		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
+		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
+		1282230819C7E6710002937D /* UpYunSDK2.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UpYunSDK2.0-Prefix.pch"; sourceTree = "<group>"; };
+		1282230B19C7E6710002937D /* NSData+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Utils.h"; sourceTree = "<group>"; };
+		1282230C19C7E6710002937D /* NSData+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Utils.m"; sourceTree = "<group>"; };
 		1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepViewController.swift; sourceTree = "<group>"; };
 		1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepViewController.xib; sourceTree = "<group>"; };
 		1283E2C019AB924000A0FB1C /* EditStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditStepViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +255,8 @@
 		12FB48CA196AE9670026DD51 /* Follow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
 		12FB48D3196AEAB90026DD51 /* FollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowCell.xib; sourceTree = "<group>"; };
 		12FB48D5196AEAC50026DD51 /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
+		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C48C5D02F4C145FDB6622FE5 /* Pods-Nian iOS.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.xcconfig"; path = "Pods/Pods-Nian iOS.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +264,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +405,34 @@
 			path = "Nian iOS/images";
 			sourceTree = "<group>";
 		};
+		1282230519C7E6710002937D /* upyun */ = {
+			isa = PBXGroup;
+			children = (
+				1282230619C7E6710002937D /* UpYun.h */,
+				1282230719C7E6710002937D /* UpYun.m */,
+				1282230819C7E6710002937D /* UpYunSDK2.0-Prefix.pch */,
+				1282230919C7E6710002937D /* Utils */,
+			);
+			path = upyun;
+			sourceTree = "<group>";
+		};
+		1282230919C7E6710002937D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1282230A19C7E6710002937D /* Data */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1282230A19C7E6710002937D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1282230B19C7E6710002937D /* NSData+Utils.h */,
+				1282230C19C7E6710002937D /* NSData+Utils.m */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		1283E2BF19AB921F00A0FB1C /* 编辑进展 */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,12 +563,15 @@
 		12FB4890196AE76E0026DD51 = {
 			isa = PBXGroup;
 			children = (
+				1282230519C7E6710002937D /* upyun */,
 				1275E4B319A8D02600E2FC4C /* Images.xcassets */,
 				12FB489B196AE76E0026DD51 /* Nian iOS */,
 				12FB48AE196AE76E0026DD51 /* Nian iOSTests */,
 				12FB489A196AE76E0026DD51 /* Products */,
 				1275E46419A8CB9B00E2FC4C /* images */,
 				12FB48BD196AE8010026DD51 /* Utility */,
+				C48C5D02F4C145FDB6622FE5 /* Pods-Nian iOS.xcconfig */,
+				B63CD37464934379B52680E0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -623,6 +665,14 @@
 			name = "关注";
 			sourceTree = "<group>";
 		};
+		B63CD37464934379B52680E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -630,9 +680,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12FB48B5196AE76E0026DD51 /* Build configuration list for PBXNativeTarget "Nian iOS" */;
 			buildPhases = (
+				5F62FD8C96C648A1983462AD /* Check Pods Manifest.lock */,
 				12FB4895196AE76E0026DD51 /* Sources */,
 				12FB4896196AE76E0026DD51 /* Frameworks */,
 				12FB4897196AE76E0026DD51 /* Resources */,
+				A03E82B98D764E7A98CDF854 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -783,6 +835,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5F62FD8C96C648A1983462AD /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A03E82B98D764E7A98CDF854 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-Nian iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		12FB4895196AE76E0026DD51 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -828,11 +913,13 @@
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
+				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
+				1282230D19C7E6710002937D /* UpYun.m in Sources */,
 				12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */,
 				12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
@@ -939,6 +1026,7 @@
 		};
 		12FB48B6196AE76E0026DD51 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C48C5D02F4C145FDB6622FE5 /* Pods-Nian iOS.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -964,6 +1052,7 @@
 		};
 		12FB48B7196AE76E0026DD51 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C48C5D02F4C145FDB6622FE5 /* Pods-Nian iOS.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

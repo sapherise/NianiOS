@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'UpYunSDK2.0' target in the 'UpYunSDK2.0' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

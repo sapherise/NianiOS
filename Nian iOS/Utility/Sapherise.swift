@@ -106,3 +106,23 @@ extension String  {
         return String(format: hash)
     }
  }
+
+
+func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
+    var width = initalImage.size.width
+    var height = initalImage.size.height
+    var newheight:CGFloat = 0
+    if width != 0 {
+        newheight = height * newWidth / width
+    }
+    var newImage:UIImage
+    if width >= newWidth {
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newheight))
+        initalImage.drawInRect(CGRectMake(0, 0, newWidth, newheight))
+        newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+    }else{
+        newImage = initalImage
+    }
+    return newImage
+}
