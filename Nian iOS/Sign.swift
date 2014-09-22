@@ -9,11 +9,12 @@
 import UIKit
 
 
-class SignViewController: UIViewController {
+class SignViewController: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet var inputName:UITextField!
     @IBOutlet var holder:UIView!
     @IBOutlet var next:UIButton!
     @IBOutlet var errLabel:UILabel!
+    var isAnimate:Int = 0
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -25,18 +26,13 @@ class SignViewController: UIViewController {
     }
     
     func setupViews(){
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.view.backgroundColor = BGColor
         self.inputName.textColor = BlueColor
         self.inputName.textAlignment = NSTextAlignment.Center
         let attributesDictionary = [NSForegroundColorAttributeName: LineColor]
         self.inputName.attributedPlaceholder = NSAttributedString(string: "昵称", attributes: attributesDictionary)
-        
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
-        
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
@@ -56,9 +52,45 @@ class SignViewController: UIViewController {
     }
     
     func checkName(){
-        if self.inputName.text != "" {
-            shakeAnimation(self.holder)
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        if self.inputName.text == "" {
+            self.SAerr("名字不能是空的...")
+        }else if SAstrlen(self.inputName.text)<4 {
+            self.SAerr("名字有点短...")
+        }else if SAstrlen(self.inputName.text)>30 {
+            self.SAerr("名字太长了...")
+        }else if !self.inputName.text.isValidName() {
+            self.SAerr("名字里有奇怪的字符...")
+        }else{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var name = self.inputName.text
+                name = SAEncode(SAHtml(name))
+                var sa = SAPost("name=\(name)", "http://nian.so/api/sign_checkname.php")
+                if sa != "" && sa != "err" {
+                    if sa == "NO" {
+                        dispatch_async(dispatch_get_main_queue(), {
+                        self.SAerr("有人取这个名字了...")
+                        })
+                    }else if sa == "1" {
+                        dispatch_async(dispatch_get_main_queue(), {
+                        var signNextVC = SignNextController(nibName: "SignNext", bundle: nil)
+                        signNextVC.name = name
+                        self.navigationItem.rightBarButtonItems = []
+                        self.navigationController!.pushViewController(signNextVC, animated: true)
+                        })
+                    }
+                }
+            })
+        }
+    }
+    
+    func SAerr(message:String){
+        self.navigationItem.rightBarButtonItems = []
+        shakeAnimation(self.holder)
+        if self.isAnimate == 0 {
+            self.isAnimate = 1
             UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                self.errLabel.text = message
                 self.errLabel.frame.offset(dx: 0, dy: -5)
                 self.errLabel.alpha = 1
                 }, completion: { (complete: Bool) in
@@ -66,14 +98,10 @@ class SignViewController: UIViewController {
                         self.errLabel.frame.offset(dx: 0, dy: +5)
                         self.errLabel.alpha = 0
                         }, completion: { (complete: Bool) in
+                            self.isAnimate = 0
                     })
             })
-        }else{
-            self.navigationController!.pushViewController(SignNextController(nibName: "SignNext", bundle: nil), animated: true)
         }
-    }
-    override func viewDidAppear(animated: Bool) {
-        self.inputName.becomeFirstResponder()
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -97,6 +125,13 @@ class SignViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.inputName!.becomeFirstResponder()
+            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        })
     }
     
     override func didReceiveMemoryWarning() {

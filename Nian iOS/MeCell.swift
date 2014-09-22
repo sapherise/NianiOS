@@ -23,17 +23,10 @@ class MeCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.selectionStyle = .None
-        
-        
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.View!.backgroundColor = BGColor
+        self.holder!.layer.cornerRadius = 4;
+        self.holder!.layer.masksToBounds = true;
     }
     
     override func layoutSubviews()
@@ -67,22 +60,17 @@ class MeCell: UITableViewCell {
         self.nickLabel!.text = user
         self.wordLabel!.text = word
         self.lastdate!.text = lastdate
-        self.View!.backgroundColor = BGColor
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
-        self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
+        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         
         var height = content.stringHeightWith(17,width:242)
-        
-        
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.holder!.setHeight(height+100)
         self.View!.setHeight(110 + height)
-        self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
         
     }
     

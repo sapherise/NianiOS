@@ -16,37 +16,37 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     var page :Int = 0
     var Id:String = ""
     
+    override func viewDidAppear(animated: Bool) {
+        self.navigationController!.interactivePopGestureRecognizer.enabled = false
+    }
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        if Sa.objectForKey("followData") != nil {
-            SAReloadCache()
-            println("不为空")
-        }else{
-            self.tableView!.headerBeginRefreshing()
-            SAReloadData()
-            println("是空的")
-        }
-    }
-    
-    override func viewDidAppear(animated: Bool){
+        SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool){
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "imageViewTapped", object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "foRefresh", object:nil)
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "imageViewTapped:", name: "imageViewTapped", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "foRefresh:", name: "foRefresh", object: nil)
     }
+    
+    func foRefresh(noti:NSNotification){
+        if noti.object! as Int != 0 {
+            self.tableView!.setContentOffset(CGPointMake(0, 0), animated: true)
+        }
+    }
+    
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
@@ -217,5 +217,4 @@ func loadData(){
             self.loadData()
         })
     }
-    
 }

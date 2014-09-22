@@ -219,53 +219,5 @@
     
     return operation;
 }
-/*- (NSURLSessionTask *)aacreatOperationWithSaveKey:(NSString *)saveKey
-                                                 data:(NSData *)data
-                                             filePath:(NSString *)filePath{
-    //进度回调
-    void(^progress)(NSUInteger bytesWritten,NSInteger totalBytesWritten,NSInteger totalBytesExpectedToWrite) = ^(NSUInteger bytesWritten,NSInteger totalBytesWritten,NSInteger totalBytesExpectedToWrite){
-        CGFloat percent = totalBytesWritten/(float)totalBytesExpectedToWrite;
-        if (_progressBlocker) {
-            _progressBlocker(percent,totalBytesWritten);
-        }
-    };
-    //成功回调
-    void(^success)(NSURLSessionDataTask *operation, id responseObject)= ^(NSURLSessionDataTask *operation, id responseObject){
-        NSDictionary * jsonDic = responseObject;
-        NSString *message = [jsonDic objectForKey:@"message"];
-        if ([@"ok" isEqualToString:message]) {
-            if (_successBlocker) {
-                _successBlocker(jsonDic);
-            }
-        } else {
-            NSError *err = [NSError errorWithDomain:ERROR_DOMAIN
-                                               code:[[jsonDic objectForKey:@"code"] intValue]
-                                           userInfo:jsonDic];
-            if (_failBlocker) {
-                _failBlocker(err);
-            }
-        }
-    };
-    //失败回调
-    void(^fail)(NSURLSessionDataTask * opetation,NSError * error)= ^(NSURLSessionDataTask * opetation,NSError * error){
-        if (_failBlocker) {
-            _failBlocker(error);
-        }
-    };
-    
-    NSString *policy = [self getPolicyWithSaveKey:saveKey];
-    NSString *signature = [self getSignatureWithPolicy:policy];
-    NSDictionary * parameDic = @{@"policy":policy, @"signature":signature};
-    
-    __block UpYun * blockSelf = self;
-    AFHTTPSessionManager *httpManager = [[AFHTTPSessionManager alloc] initWithBaseURL:REQUEST_URL(self.bucket)];
-    httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    NSURLSessionTask *task = [httpManager POST:@"" parameters:parameDic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [blockSelf setData:formData data:data filePath:filePath];
-    } success:success failure:fail];
-    
-    return task;
-}*/
 
 @end

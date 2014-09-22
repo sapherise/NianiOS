@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SAImageViewController: UIViewController {
+class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
     
     var imageURL:String = ""
     var imageZoongView:SAImageZoomingView!
@@ -35,9 +35,6 @@ class SAImageViewController: UIViewController {
         titleLabel.textColor = IconColor
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
         
         var theview:UIView = UIView(frame: CGRectMake(0, 0, 320, 568-64))
         self.view.addSubview(theview)
@@ -47,9 +44,8 @@ class SAImageViewController: UIViewController {
         theview.addSubview(self.imageZoongView)
         self.view.backgroundColor = BGColor
         
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
         
 //        

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddstepDelegate, EditstepDelegate, UIActionSheetDelegate{     //😍
+class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, AddstepDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate{
     
     let identifier = "user"
     let identifier2 = "usertop"
@@ -26,16 +26,16 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var EditId:Int = 0
     var EditContent:String = ""
     
+    //editStepdelegate
+    var editStepRow:Int = 0
+    var editStepData:NSDictionary?
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-    }
-    override func viewDidAppear(animated: Bool) {
-        if EditId == 0 {
-            SAReloadData()
-        }
+        SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool)
@@ -43,12 +43,23 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "DreamimageViewTapped", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "userIsFo", object:nil)
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "DreamimageViewTapped:", name: "DreamimageViewTapped", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userIsFo:", name: "userIsFo", object: nil)
+    }
+    
+    func userIsFo(noti:NSNotification){
+        var content:NSString = noti.object! as NSString
+        if content == "0" {
+            setupFoButton()
+        }else if content == "1" {
+            setupUnfoButton()
+        }
     }
     
     func ShareContent(noti:NSNotification){
@@ -109,32 +120,28 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
+        //关注按钮
         
+        
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+    }
+    
+    func setupFoButton(){
         var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: self, action: nil)
-        spaceButton.width = -8
+        spaceButton.width = -12
         var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
-        rightButtonView.backgroundColor = BlueColor
-        rightButtonView.layer.cornerRadius = 3
-        rightButtonView.layer.masksToBounds = true
         rightButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAfo"))
         var imageView = UIImageView(frame: CGRectMake(12, 6, 16, 20))
         imageView.image = UIImage(named: "fo")
         rightButtonView.addSubview(imageView)
         var rightButton = UIBarButtonItem(customView: rightButtonView)
         self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
-        
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
     }
     
-    func SAfo(){
-        println("关注了！")
+    func setupUnfoButton(){
         var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: self, action: nil)
-        spaceButton.width = -8
+        spaceButton.width = -12
         var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
         rightButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAunfo"))
         var imageView = UIImageView(frame: CGRectMake(12, 6, 16.5, 20))
@@ -144,19 +151,28 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
     }
     
+    func SAfo(){
+        setupUnfoButton()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+            if sa != "" && sa != "err" {
+            }
+        })
+    }
+    
     func SAunfo(){
-        var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: self, action: nil)
-        spaceButton.width = -8
-        var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
-        rightButtonView.backgroundColor = BlueColor
-        rightButtonView.layer.cornerRadius = 3
-        rightButtonView.layer.masksToBounds = true
-        rightButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAfo"))
-        var imageView = UIImageView(frame: CGRectMake(12, 6, 16, 20))
-        imageView.image = UIImage(named: "fo")
-        rightButtonView.addSubview(imageView)
-        var rightButton = UIBarButtonItem(customView: rightButtonView)
-        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
+        setupFoButton()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+            if sa != "" && sa != "err" {
+            }
+        })
     }
     
     func loadData()
@@ -293,6 +309,8 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 c!.Seg!.selectedSegmentIndex = 1
             }
             c!.Seg!.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.ValueChanged)
+            c!.foNumber!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "foVC"))
+            c!.foedNumber!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "foedVC"))
             cell = c!
         }else{
             if tableView == lefttableView {
@@ -300,6 +318,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 var index = indexPath.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
+                c!.indexPathRow = index
                 c!.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
                 c!.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -332,6 +351,19 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             }
         }
         return cell
+    }
+    
+    func foVC(){
+        var LikeVC = LikeViewController()
+        LikeVC.Id = "\(self.Id)"
+        LikeVC.urlIdentify = 1
+        self.navigationController!.pushViewController(LikeVC, animated: true)
+    }
+    func foedVC(){
+        var LikeVC = LikeViewController()
+        LikeVC.Id = "\(self.Id)"
+        LikeVC.urlIdentify = 2
+        self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func likeclick(sender:UITapGestureRecognizer){
@@ -388,25 +420,13 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
     }
     
-    
-    func addStepButton(){
-        var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-        AddstepVC.Id = self.Id
-        AddstepVC.delegate = self    //😍
-        self.navigationController!.pushViewController(AddstepVC, animated: true)
-    }
-    
     func countUp() {      //😍
         self.SAReloadData()
     }
     
-    
-    
     func Editstep() {      //😍
-        println("改好了")
-        var newid = self.EditId - 10
-        self.dataArray[newid].setObject(self.EditContent, forKey: "content")
-        var newpath = NSIndexPath(forRow: newid, inSection: 1)
+        self.dataArray[self.editStepRow] = self.editStepData!
+        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
         self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
@@ -436,30 +456,27 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             sender.selectedSegmentIndex = 1
             self.righttableView!.hidden = true
             self.lefttableView!.hidden = false
+            var y = self.righttableView!.contentOffset.y
+            self.lefttableView!.setContentOffset(CGPointMake(0, y), animated: false)
             SAReloadData()
         }else if x == 1 {
             sender.selectedSegmentIndex = 0
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
+            var y = self.lefttableView!.contentOffset.y
+            self.righttableView!.setContentOffset(CGPointMake(0, y), animated: false)
             SARightReloadData()
         }
     }
-
+    
     func SAedit(sender:UIButton){
-        var tag = sender.tag
-        var cell:AnyObject
-        var EditVC = EditStepViewController(nibName: "EditStepViewController", bundle: nil)
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1){
-            cell = sender.superview!.superview!.superview!.superview! as UITableViewCell
-            EditVC.pushEditId = cell.tag
-        }else{
-            cell = sender.superview!.superview!.superview! as UITableViewCell
-            EditVC.pushEditId = cell.tag
-        }
-        EditVC.sid = "\(sender.tag)"
-        println("测试编号是\(sender.tag)")
-        EditVC.delegate = self
-        self.navigationController!.pushViewController(EditVC, animated: true)
+        var data = self.dataArray[sender.tag] as NSDictionary
+        var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        addstepVC.isEdit = 1
+        addstepVC.data = data
+        addstepVC.row = sender.tag
+        addstepVC.delegate = self
+        self.navigationController!.pushViewController(addstepVC, animated: true)
     }
     
     func SAdelete(sender:UIButton){
@@ -490,12 +507,15 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                     var newpath = self.lefttableView!.indexPathForCell(cell as UITableViewCell)
                     self.dataArray.removeObjectAtIndex(newpath!.row)
                     self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.lefttableView!.reloadData()
                     break
                 }
             }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
             if(sa == "1"){
             }
+            })
         }
     }
     

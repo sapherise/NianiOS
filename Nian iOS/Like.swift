@@ -8,13 +8,14 @@
 
 import UIKit
 
-class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
     
     let identifier = "like"
     var tableView:UITableView?
     var dataArray = NSMutableArray()
     var page :Int = 0
     var Id:String = ""
+    var urlIdentify:Int = 0
     
     
     override func viewDidLoad()
@@ -56,19 +57,20 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, 320, 20))
         self.view.addSubview(self.tableView!)
         
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
-        
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
-        titleLabel.text = "赞过"
+        if self.urlIdentify == 0 {
+            titleLabel.text = "赞过"
+        }else if self.urlIdentify == 1 {
+            titleLabel.text = "关注"
+        }else{
+            titleLabel.text = "听众"
+        }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
     }
     
     
@@ -109,7 +111,13 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     func urlString()->String{
-        return "http://nian.so/api/like.php?page=\(page)&id=\(Id)"
+        if self.urlIdentify == 0 {
+            return "http://nian.so/api/like.php?page=\(page)&id=\(Id)"
+        }else if self.urlIdentify == 1 {
+            return "http://nian.so/api/user_fo_list.php?page=\(page)&uid=\(Id)"
+        }else{
+            return "http://nian.so/api/user_foed_list.php?page=\(page)&uid=\(Id)"
+        }
     }
     
     override func didReceiveMemoryWarning() {

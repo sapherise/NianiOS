@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource{     //😍
+class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
     
     let identifier = "group"
     let identifier2 = "exploretop"
@@ -19,6 +19,11 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var dataArray2 = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
+    var toggle:Int = 0
+    
+    override func viewDidAppear(animated: Bool) {
+        self.navigationController!.interactivePopGestureRecognizer.enabled = false
+    }
     
     override func viewDidLoad()
     {
@@ -28,11 +33,30 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         SAReloadData()
     }
     
+    override func viewWillDisappear(animated: Bool){
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "bbsRefresh", object:nil)
+    }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "bbsRefresh:", name: "bbsRefresh", object: nil)
+        if globalWillBBSReload == 1 {
+            self.SAReloadData()
+            globalWillBBSReload = 0
+            println("重载了")
+        }
     }
     
+    func bbsRefresh(noti:NSNotification){
+        if noti.object! as Int != 0 {
+            if self.toggle == 0 {
+                self.lefttableView!.setContentOffset(CGPointMake(0, 0), animated: true)
+            }else{
+                self.righttableView!.setContentOffset(CGPointMake(0, 0), animated: true)
+            }
+        }
+    }
     
     func setupViews()
     {
@@ -72,9 +96,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
     }
     
     
@@ -303,13 +324,18 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             sender.selectedSegmentIndex = 1
             self.righttableView!.hidden = true
             self.lefttableView!.hidden = false
+            self.toggle = 0
+            var y = self.righttableView!.contentOffset.y
+            self.lefttableView!.setContentOffset(CGPointMake(0, y), animated: false)
             SAReloadData()
         }else if x == 1 {
             sender.selectedSegmentIndex = 0
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
+            self.toggle = 1
             SARightReloadData()
+            var y = self.lefttableView!.contentOffset.y
+            self.righttableView!.setContentOffset(CGPointMake(0, y), animated: false)
         }
     }
-    
 }

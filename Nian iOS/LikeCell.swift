@@ -21,36 +21,21 @@ class LikeCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.selectionStyle = .None
-        
-        
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.View!.backgroundColor = BGColor
+        self.holder!.layer.cornerRadius = 4;
+        self.holder!.layer.masksToBounds = true;
     }
     
     override func layoutSubviews()
     {
-        
-        
         super.layoutSubviews()
         var uid = self.data.stringAttributeForKey("uid")
         user = self.data.stringAttributeForKey("user")
-        
         self.nickLabel!.text = user
-        self.View!.backgroundColor = BGColor
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
-        self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
-        self.avatarView!.userInteractionEnabled = true
+        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
-        
-        self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
     }
 }

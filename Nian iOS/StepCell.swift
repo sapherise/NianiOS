@@ -25,13 +25,26 @@ class StepCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
+        self.title1?.hidden = true
+        self.img1?.hidden = true
+        self.title2?.hidden = true
+        self.img2?.hidden = true
+        self.title3?.hidden = true
+        self.img3?.hidden = true
+        self.title1!.textColor = BlueColor
+        self.title2!.textColor = BlueColor
+        self.title3!.textColor = BlueColor
+        self.img1!.layer.cornerRadius = 4;
+        self.img2!.layer.cornerRadius = 4;
+        self.img3!.layer.cornerRadius = 4;
+        self.img1!.layer.masksToBounds = true;
+        self.img2!.layer.masksToBounds = true;
+        self.img3!.layer.masksToBounds = true;
+        self.View!.backgroundColor = BGColor
     }
     
     override func layoutSubviews()
     {
-        
-        
         super.layoutSubviews()
         var id1 = self.data1.stringAttributeForKey("id")
         var title1 = self.data1.stringAttributeForKey("title")
@@ -46,51 +59,34 @@ class StepCell: UITableViewCell {
         
         if(id1 != ""){
             self.title1!.text = title1
-            self.title1!.textColor = BlueColor
-            self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: UIImage(named: "1.jpg"))
-            self.img1?.userInteractionEnabled = true
+            self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: IconColor)
             self.img1?.tag = id1.toInt()!
-            self.img1!.userInteractionEnabled = true
+            self.title1?.hidden = false
+            self.img1?.hidden = false
         }else{
-            self.title1?.hidden = true
-            self.img1?.hidden = true
             self.img1?.tag = 1
         }
         
         if(id2 != ""){
             self.title2!.text = title2
-            self.title2!.textColor = BlueColor
-            self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: UIImage(named: "1.jpg"))
-            self.img2?.userInteractionEnabled = true
+            self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: IconColor)
             self.img2?.tag = id2.toInt()!
-            self.img2!.userInteractionEnabled = true
+            self.title2?.hidden = false
+            self.img2?.hidden = false
         }else{
-            self.title2?.hidden = true
-            self.img2?.hidden = true
             self.img2?.tag = 1
         }
         
         if(id3 != ""){
             self.title3!.text = title3
-            self.title3!.textColor = BlueColor
-            self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: UIImage(named: "1.jpg"))
-            self.img3?.userInteractionEnabled = true
+            self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: IconColor)
             self.img3?.tag = id3.toInt()!
-            self.img3!.userInteractionEnabled = true
+            self.title3?.hidden = false
+            self.img3?.hidden = false
         }else{
-            self.title3?.hidden = true
-            self.img3?.hidden = true
             self.img3?.tag = 1
         }
         
-        self.img1!.layer.cornerRadius = 4;
-        self.img2!.layer.cornerRadius = 4;
-        self.img3!.layer.cornerRadius = 4;
-        self.img1!.layer.masksToBounds = true;
-        self.img2!.layer.masksToBounds = true;
-        self.img3!.layer.masksToBounds = true;
-        
-        self.View!.backgroundColor = BGColor
         
     }
 }

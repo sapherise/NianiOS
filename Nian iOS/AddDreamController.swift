@@ -8,11 +8,7 @@
 
 import UIKit
 
-
-protocol AddDelegate {   //😍
-    func SAReloadData()
-}
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate{
     
     @IBOutlet var Line1: UIView?
     @IBOutlet var Line2: UIView?
@@ -23,7 +19,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var field2:UITextField?
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
-    var delegate: AddDelegate?      //😍
+    
+    var uploadUrl:String = ""
+    
+    var isEdit:Int = 0
+    var editId:String = ""
+    var editTitle:String = ""
+    var editContent:String = ""
+    var editImage:String = ""
+    var editPrivate:String = ""
     
     @IBAction func uploadClick(sender: AnyObject) {
         self.field1!.resignFirstResponder()
@@ -53,30 +57,24 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.uploadFile(image)
     }
     
-    func getSaveKey() -> NSString{
-        var date = NSDate().timeIntervalSince1970
-        var string = NSString.stringWithString("/test/\(Int(date)).png")
-        return string
-    }
-    
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
         self.uploadWait!.startAnimating()
         self.uploadDone!.hidden = true
         var uy = UpYun()
-        var data:AnyObject
         uy.successBlocker = ({(data:AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
             self.uploadDone!.hidden = false
-            println(data)
+            self.uploadUrl = data.objectForKey("url") as String
+            self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
         })
         uy.failBlocker = ({(error:NSError!) in
-            println("失败了！")
+            self.uploadWait!.hidden = true
+            self.uploadWait!.stopAnimating()
+            self.uploadDone!.hidden = true
         })
-      //  var finalImage = resizedImage(img)
-        var finalImage = resizedImage(img, 200)
-        uy.uploadImage(finalImage, savekey: self.getSaveKey())
+        uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png"))
     }
     
     override func viewDidLoad() {
@@ -87,24 +85,36 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         super.didReceiveMemoryWarning()
     }
     func setupViews(){
+        self.view.backgroundColor = BGColor
         self.Line1!.backgroundColor = LineColor
         self.Line2!.backgroundColor = LineColor
         self.field1!.textColor = IconColor
         self.field2!.textColor = IconColor
         self.field1!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
         self.field2!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
-        self.field1!.becomeFirstResponder()
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            self.field1!.becomeFirstResponder()
+            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        })
+        
+        if self.isEdit == 1 {
+            self.field1!.text = self.editTitle
+            self.field2!.text = self.editContent
+            self.uploadUrl = self.editImage
+            
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
+            rightButton.image = UIImage(named:"ok")
+            self.navigationItem.rightBarButtonItems = [rightButton];
+        }else{
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
+            rightButton.image = UIImage(named:"ok")
+            self.navigationItem.rightBarButtonItems = [rightButton];
+        }
         
         self.uploadWait!.hidden = true
         self.uploadDone!.hidden = true
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
-        rightButton.image = UIImage(named:"ok")
-        self.navigationItem.rightBarButtonItem = rightButton;
-        
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
         
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -113,11 +123,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
-        
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        dispatch_async(dispatch_get_main_queue(), {
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker!.delegate = self
+            self.imagePicker!.allowsEditing = false
+        })
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -126,6 +138,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func addDreamOK(){
+        self.navigationItem.rightBarButtonItems = buttonArray()
         var title = self.field1?.text
         var content = self.field2?.text
         title = SAEncode(SAHtml(title!))
@@ -134,22 +147,40 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)", "http://nian.so/api/add_query.php")
+            if(sa == "1"){
+                dispatch_async(dispatch_get_main_queue(), {
+                    globalWillNianReload = 1
+                    self.navigationController!.popViewControllerAnimated(true)
+                })
+            }
+        })
+    }
+    
+    func editDreamOK(){
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        var title = self.field1?.text
+        var content = self.field2?.text
+        title = SAEncode(SAHtml(title!))
+        content = SAEncode(SAHtml(content!))
         
-        var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&title=\(title)", "http://nian.so/api/add_query.php")
-        if(sa == "1"){
-            self.navigationController!.popViewControllerAnimated(true)
-            delegate?.SAReloadData()        //debug
-        }
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.editPrivate)&&id=\(self.editId)", "http://nian.so/api/editdream.php")
+            if(sa == "1"){
+                dispatch_async(dispatch_get_main_queue(), {
+                    globalWillNianReload = 1
+                    self.navigationController!.popViewControllerAnimated(true)
+                })
+            }
+        })
     }
     
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker!.delegate = self
-        self.imagePicker!.allowsEditing = false
     }
     
     

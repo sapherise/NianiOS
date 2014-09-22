@@ -22,18 +22,13 @@ class CommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.View!.backgroundColor = BGColor
+        self.nickLabel!.textColor = BlueColor
+        self.Line!.backgroundColor = LineColor
     }
     
     override func layoutSubviews()
     {
-        
-        
         super.layoutSubviews()
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
@@ -41,20 +36,16 @@ class CommentCell: UITableViewCell {
         var content = self.data.stringAttributeForKey("content")
         
         self.nickLabel!.text = user
-        self.nickLabel!.textColor = BlueColor
         self.lastdate!.text = lastdate
-        self.View!.backgroundColor = BGColor
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
-        self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
+        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         
         var height = content.stringHeightWith(17,width:225)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.Line!.backgroundColor = LineColor
         self.Line!.setY(self.contentLabel!.bottom()+16)
-        self.avatarView?.userInteractionEnabled = true
         self.avatarView?.tag = uid.toInt()!
     }
     

@@ -14,15 +14,15 @@ class ExploreTop: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.View!.backgroundColor = BGColor
+        self.Seg!.tintColor = LineColor
+        self.selectionStyle = UITableViewCellSelectionStyle.None
     }
     
     
     override func layoutSubviews()
     {
         super.layoutSubviews()
-        self.View!.backgroundColor = BGColor
-        self.Seg!.tintColor = LineColor
-        self.selectionStyle = UITableViewCellSelectionStyle.None
     }
     
 }

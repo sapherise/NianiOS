@@ -8,13 +8,11 @@
 
 import UIKit
 
-
 class WelcomeViewController: UIViewController {
     
     func setupViews(){
         var width = self.view.frame.size.width  //宽度
         var height = self.view.frame.size.height   //高度
-        println(height)
         
         self.view.hidden = true
         self.view.backgroundColor = BGColor
@@ -48,6 +46,28 @@ class WelcomeViewController: UIViewController {
         des.textAlignment = NSTextAlignment.Center
         des.textColor = IconColor
         self.view.addSubview(des)
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var cookieuid: String? = Sa.objectForKey("uid") as? String
+        if cookieuid == nil {       //如果没登录
+            self.view.hidden = false
+        }else{      //如果登录了
+            dispatch_async(dispatch_get_main_queue(), {
+                var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
+                navigationViewController.navigationBar.tintColor = IconColor
+                navigationViewController.navigationBar.translucent = false
+                navigationViewController.navigationBar.clipsToBounds = true
+                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                delay(0.3, {
+                    self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
+                        self.view.hidden = false
+                    })
+                })
+            })
+        }
     }
     
     func login(){
@@ -63,23 +83,7 @@ class WelcomeViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var cookieuid: String? = Sa.objectForKey("uid") as? String
-        if cookieuid == nil {
-            self.view.hidden = false
-        }else{
-            var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-            mainViewController.selectedIndex = 2
-            var navigationViewController = UINavigationController(rootViewController: mainViewController)
-            navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
-            navigationViewController.navigationBar.tintColor = IconColor
-            navigationViewController.navigationBar.translucent = false
-            navigationViewController.navigationBar.clipsToBounds = true
-            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-            self.presentViewController(navigationViewController, animated: false, completion: nil)
-        }
+        self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
     override func didReceiveMemoryWarning() {

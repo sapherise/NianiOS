@@ -21,17 +21,9 @@ class BBSCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.selectionStyle = .None
-        
-        
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.View!.backgroundColor = BGColor
+        self.Line!.backgroundColor = LittleLineColor
     }
     
     override func layoutSubviews()
@@ -44,20 +36,15 @@ class BBSCell: UITableViewCell {
         content = self.data.stringAttributeForKey("content")
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
-        self.View!.backgroundColor = BGColor
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
-        self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
-        self.avatarView!.userInteractionEnabled = true
+        self.avatarView!.setImage(userImageURL, placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         
         var height = content.stringHeightWith(17,width:225)
         
-        
-        
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.Line!.backgroundColor = LittleLineColor
         self.Line!.setY(self.contentLabel!.bottom()+16)
         
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,  UIActionSheetDelegate, AddBBSCommentDelegate{     //😍
+class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,  UIActionSheetDelegate, AddBBSCommentDelegate, UIGestureRecognizerDelegate{
     
     let identifier = "bbs"
     let identifier2 = "bbstop"
@@ -40,17 +40,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         setupViews()
         setupRefresh()
         SAReloadData()
-    }
-    override func viewDidAppear(animated: Bool) {
-    }
-    
-    override func viewWillDisappear(animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-    }
-    override func viewWillAppear(animated: Bool)
-    {
-        super.viewWillAppear(animated)
     }
     
     func setupViews()
@@ -84,13 +73,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
-        
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
     }
     
     
@@ -162,15 +146,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         if indexPath.section==0{
             var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? BBSCellTop
-            c!.topcontent = topcontent
-            c!.topuid = topuid
-            c!.toplastdate = toplastdate
-            c!.topuser = topuser
-            c!.Id = "\(Id)"
-            c!.getContent = getContent
-            c!.toptitle = toptitle
+            c!.topcontent = self.topcontent
+            c!.topuid = self.topuid
+            c!.toplastdate = self.toplastdate
+            c!.topuser = self.topuser
+            c!.Id = "\(self.Id)"
+            c!.getContent = self.getContent
+            c!.toptitle = self.toptitle
             c!.dreamhead?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-          //  self.dreamhead!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             cell = c!
         }else{
                 var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BBSCell
@@ -203,13 +186,13 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             if getContent == "0" {
                 return  BBSCellTop.cellHeightByData(topcontent, toptitle: toptitle)
             }else{
-                var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(Id)")
+                var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
                 var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
                 var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
                 var sa: AnyObject! = json.objectForKey("bbstop")
-                toptitle = sa.objectForKey("title") as String
-                topcontent = sa.objectForKey("content") as String
-                return  BBSCellTop.cellHeightByData(topcontent, toptitle: toptitle)
+                self.toptitle = sa.objectForKey("title") as String
+                self.topcontent = sa.objectForKey("content") as String
+                return  BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
             }
         }else{
                 var index = indexPath.row
@@ -289,9 +272,12 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
                 self.lefttableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.lefttableView!.reloadData()
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_bbscomment.php")
                 if(sa == "1"){
                 }
+                })
             }
         }
     }

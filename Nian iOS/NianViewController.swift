@@ -14,25 +14,16 @@ class MediaCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
 }
 
-class NianViewController: UIViewController, AddDelegate{
+class NianViewController: UIViewController{
     @IBOutlet var collectionView: UICollectionView!
     var dataArray = NSMutableArray()
-  //  @IBOutlet strong var View: UIView
     
     override func viewDidLoad() {
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-    }
-    
-    override func viewWillAppear(animated: Bool) {
         setupViews()
         SAReloadData()
     }
     
     func setupViews(){
-     //   var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight)) as UIVisualEffectView
-     //   visualEffectView.layer.borderWidth = 1.0
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = BGColor
         self.extendedLayoutIncludesOpaqueBars = true
@@ -69,12 +60,12 @@ class NianViewController: UIViewController, AddDelegate{
         var data = self.dataArray[index] as NSDictionary
         var title = data.stringAttributeForKey("title")
         var img = data.stringAttributeForKey("img")
-        var imgURL = "http://img.nian.so/dream/\(img)!dream" as NSString
+        var imgURL = "http://img.nian.so/dream/\(img)!step" as NSString
         var percent = data.stringAttributeForKey("percent")
         var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("MediaCell", forIndexPath: indexPath) as MediaCell
         mediaCell.label.textColor = IconColor
         mediaCell.label.text = "\(title)"
-        mediaCell.imageView.setImage(imgURL, placeHolder: SAColorImg(IconColor))
+        mediaCell.imageView.setImage(imgURL, placeHolder: LessBlueColor)
         mediaCell.imageView.layer.cornerRadius = 6
         mediaCell.imageView.layer.masksToBounds = true
         return mediaCell
@@ -90,11 +81,6 @@ class NianViewController: UIViewController, AddDelegate{
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
-    
-    func countUp() {      //😍
-    }
-    
-    
     func setupRefresh(){
 //        self.View!.addHeaderWithCallback({
 //            self.loadData()
@@ -103,4 +89,14 @@ class NianViewController: UIViewController, AddDelegate{
 //            self.loadData()
 //            })
     }
+    
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        if globalWillNianReload == 1 {
+            self.SAReloadData()
+            globalWillNianReload = 0
+        }
+    }
+    
 }

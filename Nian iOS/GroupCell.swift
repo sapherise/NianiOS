@@ -25,42 +25,10 @@ class GroupCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.selectionStyle = .None
-        
-        
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
-    override func layoutSubviews()
-    {
-        
-        
-        super.layoutSubviews()
-        var id = self.data.stringAttributeForKey("id")
-        var title = self.data.stringAttributeForKey("title")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
-        var reply = self.data.stringAttributeForKey("reply")
-        
-        self.lastdate!.text = lastdate
-        self.reply!.text = "\(reply) 回应"
         self.View!.backgroundColor = BGColor
-        
-        var height = title.stringHeightWith(17,width:242)
-        self.contentLabel!.setHeight(height)
-        self.contentLabel!.text = title
         self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
-        
-        self.holder!.setHeight(height+62)
-        
-        self.line!.setY(self.contentLabel!.bottom()+15)
+        self.holder!.layer.masksToBounds = true
         //半圆角
         let maskPath = UIBezierPath(roundedRect: self.line!.bounds, byRoundingCorners: ( UIRectCorner.BottomRight | UIRectCorner.BottomLeft ), cornerRadii: CGSizeMake(4, 4))
         var maskLayer = CAShapeLayer()
@@ -69,7 +37,21 @@ class GroupCell: UITableViewCell {
         self.line!.layer.mask = maskLayer;
     }
     
-    
+    override func layoutSubviews()
+    {
+        super.layoutSubviews()
+        var id = self.data.stringAttributeForKey("id")
+        var title = self.data.stringAttributeForKey("title")
+        var lastdate = self.data.stringAttributeForKey("lastdate")
+        var reply = self.data.stringAttributeForKey("reply")
+        self.lastdate!.text = lastdate
+        self.reply!.text = "\(reply) 回应"
+        var height = title.stringHeightWith(17,width:242)
+        self.contentLabel!.setHeight(height)
+        self.contentLabel!.text = title
+        self.holder!.setHeight(height+62)
+        self.line!.setY(self.contentLabel!.bottom()+15)
+    }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {

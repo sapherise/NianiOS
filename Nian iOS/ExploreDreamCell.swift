@@ -24,23 +24,18 @@ class ExploreDreamCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.selectionStyle = .None
-        
-        
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.head1!.layer.cornerRadius = 4;
+        self.head2!.layer.cornerRadius = 4;
+        self.head3!.layer.cornerRadius = 4;
+        self.head1!.layer.masksToBounds = true;
+        self.head2!.layer.masksToBounds = true;
+        self.head3!.layer.masksToBounds = true;
+        self.View.backgroundColor = BGColor
     }
     
     override func layoutSubviews()
     {
-        
-        
         super.layoutSubviews()
         var id1 = self.data1.stringAttributeForKey("id")
         var id2 = self.data2.stringAttributeForKey("id")
@@ -55,49 +50,32 @@ class ExploreDreamCell: UITableViewCell {
         var promo2 = self.data2.stringAttributeForKey("promo")
         var promo3 = self.data3.stringAttributeForKey("promo")
         
-        if promo1 == "0" {
-            self.title1!.textColor = BlueColor
-        }else{
+        if promo1 == "1" {
             self.title1!.textColor = GoldColor
-        }
-        if promo2 == "0" {
-            self.title2!.textColor = BlueColor
         }else{
+            self.title1!.textColor = BlueColor
+        }
+        if promo2 == "1" {
             self.title2!.textColor = GoldColor
-        }
-        if promo3 == "0" {
-            self.title3!.textColor = BlueColor
         }else{
+            self.title2!.textColor = BlueColor
+        }
+        if promo3 == "1" {
             self.title3!.textColor = GoldColor
+        }else{
+            self.title3!.textColor = BlueColor
         }
         self.title1!.text = title1
         self.title2!.text = title2
         self.title3!.text = title3
         
-        var imgholder = SAColorImg(IconColor)
-        self.head1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: imgholder)
-        self.head2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: imgholder)
-        self.head3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: imgholder)
-        
-        
-        self.head1!.layer.cornerRadius = 4;
-        self.head2!.layer.cornerRadius = 4;
-        self.head3!.layer.cornerRadius = 4;
+        self.head1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: LessBlueColor)
+        self.head2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: LessBlueColor)
+        self.head3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: LessBlueColor)
         
         self.head1!.tag = id1.toInt()!
         self.head2!.tag = id2.toInt()!
         self.head3!.tag = id3.toInt()!
-        
-        self.head1!.layer.masksToBounds = true;
-        self.head2!.layer.masksToBounds = true;
-        self.head3!.layer.masksToBounds = true;
-        
-        self.head1!.userInteractionEnabled = true
-        self.head2!.userInteractionEnabled = true
-        self.head3!.userInteractionEnabled = true
-        
-        self.View.backgroundColor = BGColor
-        
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat

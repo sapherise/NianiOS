@@ -13,7 +13,6 @@ class SAImageZoomingView: UIScrollView,UIScrollViewDelegate {
     
     var imageView:UIImageView?
     var imageURL:String!
-    let placeHolder:UIImage = UIImage(named:"back")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,6 +56,6 @@ class SAImageZoomingView: UIScrollView,UIScrollViewDelegate {
     override func layoutSubviews()
     {
         super.layoutSubviews()
-        self.imageView!.setImage(self.imageURL,placeHolder:placeHolder)
+        self.imageView!.setImage(self.imageURL,placeHolder: IconColor)
     }
 }

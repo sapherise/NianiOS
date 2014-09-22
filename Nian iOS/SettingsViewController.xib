@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingsViewController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
+                <outlet property="ImageSwitch" destination="D6H-fM-Lgs" id="4nj-kC-XQ7"/>
+                <outlet property="cacheActivity" destination="nJR-6R-oRr" id="Job-aO-aTZ"/>
+                <outlet property="cacheView" destination="7Hx-iU-SaN" id="5fU-sA-GGp"/>
                 <outlet property="coinNumber" destination="1DU-Bs-y77" id="zZX-n7-R33"/>
                 <outlet property="head" destination="BGM-Ps-9vm" id="AKT-9e-N4k"/>
                 <outlet property="helpView" destination="BMF-dN-NR5" id="dxl-nN-MB5"/>
@@ -13,63 +17,69 @@
                 <outlet property="inputName" destination="8SV-MJ-XFo" id="HnW-Ij-VPz"/>
                 <outlet property="logout" destination="Hp1-66-DX9" id="Lzd-cS-h6d"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
+                <outlet property="storeView" destination="oXz-wz-Ufn" id="kyx-3x-GsD"/>
+                <outlet property="version" destination="cZc-2c-cvJ" id="1PE-s0-JBy"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Ipu-sz-w8p">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N3v-mf-nWx">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="N3v-mf-nWx">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="580"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BGM-Ps-9vm">
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="BGM-Ps-9vm">
                             <rect key="frame" x="135" y="42" width="50" height="50"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="帮助" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="817-0e-vNw">
-                            <rect key="frame" x="20" y="282" width="70" height="32"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="支持" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="817-0e-vNw">
+                            <rect key="frame" x="20" y="336" width="70" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.68235294120000001" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="20" y="336" width="70" height="32"/>
-                            </variation>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="设定" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-dV-AFB">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="资料" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I6b-dV-AFB">
                             <rect key="frame" x="20" y="122" width="70" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.68235294117647061" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="账户" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OM3-IN-m5k">
-                            <rect key="frame" x="20" y="490" width="70" height="32"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账户" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OM3-IN-m5k">
+                            <rect key="frame" x="20" y="548" width="70" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.68235294120000001" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="20" y="454" width="70" height="32"/>
-                            </variation>
                         </label>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wyF-pE-T7f">
+                        <view contentMode="scaleToFill" id="wyF-pE-T7f">
                             <rect key="frame" x="0.0" y="162" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Sa" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8SV-MJ-XFo">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" id="8SV-MJ-XFo">
                                     <rect key="frame" x="111" y="9" width="189" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Fu-Pa-9o8">
+                                <view contentMode="scaleToFill" id="3Fu-Pa-9o8">
                                     <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xwi-hd-Zj9">
+                                <view contentMode="scaleToFill" id="Xwi-hd-Zj9">
                                     <rect key="frame" x="0.0" y="1" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="昵称" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQK-5z-Kgw">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="昵称" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tQK-5z-Kgw">
                                     <rect key="frame" x="20" y="13" width="34" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
@@ -77,21 +87,25 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LLu-QK-cZf">
+                        <view contentMode="scaleToFill" id="LLu-QK-cZf">
                             <rect key="frame" x="0.0" y="210" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="sa@nian.so" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xXP-za-jew">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" id="xXP-za-jew">
                                     <rect key="frame" x="111" y="9" width="189" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3qF-6G-WLq">
+                                <view contentMode="scaleToFill" id="3qF-6G-WLq">
                                     <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="邮箱" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oET-YV-eQC">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邮箱" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oET-YV-eQC">
                                     <rect key="frame" x="20" y="13" width="34" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
@@ -99,114 +113,146 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BMF-dN-NR5">
-                            <rect key="frame" x="0.0" y="322" width="320" height="48"/>
+                        <view contentMode="scaleToFill" id="BMF-dN-NR5">
+                            <rect key="frame" x="0.0" y="376" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S5v-dj-dLd">
+                                <view contentMode="scaleToFill" id="S5v-dj-dLd">
                                     <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L9w-c5-dJh">
+                                <view contentMode="scaleToFill" id="L9w-c5-dJh">
                                     <rect key="frame" x="0.0" y="1" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="攻略" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WQu-kh-gCq">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="攻略" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WQu-kh-gCq">
                                     <rect key="frame" x="20" y="13" width="34" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="0.0" y="376" width="320" height="48"/>
-                            </variation>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hp1-66-DX9">
-                            <rect key="frame" x="0.0" y="530" width="320" height="48"/>
+                        <view contentMode="scaleToFill" id="Hp1-66-DX9">
+                            <rect key="frame" x="0.0" y="588" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RTn-Xn-QFx">
+                                <view contentMode="scaleToFill" id="RTn-Xn-QFx">
                                     <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPm-UO-3cc">
+                                <view contentMode="scaleToFill" id="IPm-UO-3cc">
                                     <rect key="frame" x="0.0" y="1" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="登出" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrd-04-lHG">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="登出" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Wrd-04-lHG">
                                     <rect key="frame" x="20" y="13" width="34" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="0.0" y="494" width="320" height="48"/>
-                            </variation>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oXz-wz-Ufn">
-                            <rect key="frame" x="0.0" y="210" width="320" height="48"/>
+                        <view userInteractionEnabled="NO" contentMode="scaleToFill" id="oXz-wz-Ufn">
+                            <rect key="frame" x="0.0" y="258" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LwY-0X-INI">
+                                <view contentMode="scaleToFill" id="LwY-0X-INI">
                                     <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="念币" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMG-Ql-09F">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="念币" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kMG-Ql-09F">
                                     <rect key="frame" x="20" y="13" width="34" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="70" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1DU-Bs-y77">
-                                    <rect key="frame" x="20" y="13" width="34" height="21"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1DU-Bs-y77">
+                                    <rect key="frame" x="169" y="13" width="131" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
                                     <nil key="highlightedColor"/>
-                                    <variation key="widthClass=compact" fixedFrame="YES">
-                                        <rect key="frame" x="169" y="13" width="131" height="21"/>
-                                    </variation>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <variation key="default">
-                                <mask key="subviews">
-                                    <exclude reference="1DU-Bs-y77"/>
-                                </mask>
-                            </variation>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="0.0" y="258" width="320" height="48"/>
-                                <mask key="subviews">
-                                    <include reference="1DU-Bs-y77"/>
-                                </mask>
-                            </variation>
                         </view>
+                        <view contentMode="scaleToFill" id="7Hx-iU-SaN">
+                            <rect key="frame" x="0.0" y="424" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" id="CDA-LC-OTt">
+                                    <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
+                                </view>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="清除缓存" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d23-nW-VM2">
+                                    <rect key="frame" x="20" y="13" width="68" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="nJR-6R-oRr">
+                                    <rect key="frame" x="280" y="14" width="20" height="20"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="color" red="0.0" green="0.68235294120000001" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <view contentMode="scaleToFill" id="O6t-xI-3I2">
+                            <rect key="frame" x="0.0" y="472" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" id="x3f-dy-1zr">
+                                    <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.30196079609999998" green="0.34509804840000002" blue="0.40000003579999999" alpha="1" colorSpace="deviceRGB"/>
+                                </view>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="省流量模式" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pev-rb-pPL">
+                                    <rect key="frame" x="20" y="13" width="85" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.70588237050000002" green="0.70588237050000002" blue="0.70588237050000002" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="D6H-fM-Lgs">
+                                    <rect key="frame" x="258" y="8" width="51" height="31"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="onTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </switch>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="念 V2.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cZc-2c-cvJ">
+                            <rect key="frame" x="125" y="675" width="71" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
-                    <variation key="default">
-                        <mask key="subviews">
-                            <exclude reference="oXz-wz-Ufn"/>
-                        </mask>
-                    </variation>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
-                        <mask key="subviews">
-                            <include reference="oXz-wz-Ufn"/>
-                        </mask>
-                    </variation>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="N3v-mf-nWx"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="subviews">
-                    <include reference="N3v-mf-nWx"/>
-                </mask>
-            </variation>
             <point key="canvasLocation" x="242" y="238"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

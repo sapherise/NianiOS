@@ -9,54 +9,43 @@
 import UIKit
 import Foundation
 
-extension UIImageView
-{
-    func setImage(urlString:String,placeHolder:UIImage!)
-    {
-    
+extension UIImageView{
+    func setImage(urlString: String,placeHolder: UIColor!) {
         var url = NSURL.URLWithString(urlString)
-        var cacheFilename = url.lastPathComponent
-        var cachePath = FileUtility.cachePath(cacheFilename)
-        var image : AnyObject = FileUtility.imageDataFromPath(cachePath)
-        if image as NSObject != NSNull()
-        {
+        var cacheFileName = url.lastPathComponent
+        var cachePath = FileUtility.cachePath(cacheFileName)
+        var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
+        if image as NSObject != NSNull() {
             self.image = image as? UIImage
-        }
-        else
-        {
-            var req = NSURLRequest(URL: url)
-            var queue = NSOperationQueue();
-            NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-                if (error != nil)
-                {
-                    dispatch_async(dispatch_get_main_queue(),
-                        {
-                            println(error)
-                            self.image = placeHolder
-                        })
-                }
-                else
-                {
-                    dispatch_async(dispatch_get_main_queue(),
-                        {
-                            
+        }else {
+            dispatch_async(dispatch_get_main_queue(), {
+                var nilImage:UIImage = SAColorImg(placeHolder)
+                self.image = nilImage
+            })
+            var networkStatus = checkNetworkStatus()
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var saveMode: String? = Sa.objectForKey("saveMode") as? String
+            if saveMode == "1" && networkStatus != 2 {   //如果是开启了同时是在2G下
+            }else{
+                var req = NSURLRequest(URL: url)
+                var queue = NSOperationQueue();
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
+                        if (error == nil){
                             var image:UIImage? = UIImage(data: data)
-                            if image == nil
-                            {
-                                self.image = placeHolder
+                            if (image != nil) {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.image = image
+                                    FileUtility.imageCacheToPath(cachePath,image:data)
+                                })
                             }
-                            else
-                            {
-                                self.image = image
-                                FileUtility.imageCacheToPath(cachePath,image:data)
-                            }
-                        })
-                }
+                        }
+                    })
                 })
-
+            }
         }
-        
     }
 }
+
 
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignNextController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
+                <outlet property="errLabel" destination="qUM-WZ-cF8" id="hTd-zJ-6Pr"/>
                 <outlet property="holder" destination="Ptj-Ez-G5g" id="c3H-VD-OHd"/>
                 <outlet property="inputEmail" destination="EYQ-b2-Z8c" id="xbp-a2-o8x"/>
                 <outlet property="inputPassword" destination="GC6-xU-aVL" id="66K-XX-S0B"/>
@@ -27,7 +28,7 @@
                             <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                             <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             <variation key="widthClass=compact" fixedFrame="YES">
                                 <rect key="frame" x="35" y="7" width="200" height="40"/>
                             </variation>
@@ -41,6 +42,15 @@
                                 <rect key="frame" x="35" y="51" width="200" height="40"/>
                             </variation>
                         </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUM-WZ-cF8">
+                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <variation key="widthClass=compact" fixedFrame="YES">
+                                <rect key="frame" x="40" y="111" width="200" height="21"/>
+                            </variation>
+                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Owj-BH-NvY">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <subviews>
@@ -72,14 +82,16 @@
                         <mask key="subviews">
                             <exclude reference="EYQ-b2-Z8c"/>
                             <exclude reference="GC6-xU-aVL"/>
+                            <exclude reference="qUM-WZ-cF8"/>
                             <exclude reference="Owj-BH-NvY"/>
                         </mask>
                     </variation>
                     <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="20" y="124" width="280" height="98"/>
+                        <rect key="frame" x="20" y="72" width="280" height="141"/>
                         <mask key="subviews">
                             <include reference="EYQ-b2-Z8c"/>
                             <include reference="GC6-xU-aVL"/>
+                            <include reference="qUM-WZ-cF8"/>
                             <include reference="Owj-BH-NvY"/>
                         </mask>
                     </variation>

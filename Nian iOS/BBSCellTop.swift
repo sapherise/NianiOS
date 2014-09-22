@@ -28,37 +28,36 @@ class BBSCellTop: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.View!.backgroundColor = BGColor
+        self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.Line!.backgroundColor = LittleLineColor
     }
     
     
-    override func layoutSubviews()
-    {
+    override func layoutSubviews(){
         super.layoutSubviews()
-        
         if getContent == "1" {
-            var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(Id)")
+            var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
             var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
             var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var sa: AnyObject! = json.objectForKey("bbstop")
-            toptitle = sa.objectForKey("title") as String
-            topcontent = sa.objectForKey("content") as String
-            topuid = sa.objectForKey("uid") as String
-            toplastdate = sa.objectForKey("lastdate") as String
-            topuser = sa.objectForKey("user") as String
+            self.toptitle = sa.objectForKey("title") as String
+            self.topcontent = sa.objectForKey("content") as String
+            self.topuid = sa.objectForKey("uid") as String
+            self.toplastdate = sa.objectForKey("lastdate") as String
+            self.topuser = sa.objectForKey("user") as String
         }
         
         self.BBStitle!.text = "\(self.toptitle)"
         var titleHeight = self.toptitle.stringHeightWith(17,width:280)
         self.BBStitle!.setHeight(titleHeight)
         
-        self.nickLabel!.text = "\(topuser)"
-        self.lastdate!.text = "\(toplastdate)"
-        var userImageURL = "http://img.nian.so/head/\(topuid).jpg!head"
-        self.dreamhead!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
-        self.dreamhead!.tag = topuid.toInt()!
+        self.nickLabel!.text = "\(self.topuser)"
+        self.lastdate!.text = "\(self.toplastdate)"
+        var userImageURL = "http://img.nian.so/head/\(self.topuid).jpg!head"
+        self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
+        self.dreamhead!.tag = self.topuid.toInt()!
         
-        self.View!.backgroundColor = BGColor
-        self.selectionStyle = UITableViewCellSelectionStyle.None
         self.contentLabel?.text = "\(topcontent)"
         
         var height = topcontent.stringHeightWith(17,width:225)
@@ -69,7 +68,6 @@ class BBSCellTop: UITableViewCell{
         self.lastdate!.setY(self.BBStitle!.bottom()+39)
         self.contentLabel!.setY(self.BBStitle!.bottom()+68)
         
-        self.Line!.backgroundColor = LittleLineColor
         self.Line!.setY(self.contentLabel!.bottom()+16)
     }
     class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{

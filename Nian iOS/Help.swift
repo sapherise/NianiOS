@@ -9,7 +9,7 @@
 import UIKit
 
 
-class HelpViewController: UIViewController {
+class HelpViewController: UIViewController, UIGestureRecognizerDelegate{
     
     func setupViews(){
         var width = self.view.frame.size.width  //宽度
@@ -155,13 +155,8 @@ class HelpViewController: UIViewController {
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
-        
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
     }
     override func viewDidLoad() {
         super.viewDidLoad()

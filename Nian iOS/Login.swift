@@ -9,7 +9,7 @@
 import UIKit
 
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet var loginButton:UIImageView!
     @IBOutlet var loginButtonBorder:UIView!
     @IBOutlet var inputEmail:UITextField!
@@ -26,6 +26,9 @@ class LoginViewController: UIViewController {
     }
     
     func setupViews(){
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        
         self.view.backgroundColor = BGColor
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
@@ -45,21 +48,17 @@ class LoginViewController: UIViewController {
         self.inputPassword.attributedPlaceholder = NSAttributedString(string: "密码", attributes: attributesDictionary)
         
         self.loginButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginAlert"))
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.text = "登录"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        self.inputEmail.becomeFirstResponder()
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            self.inputEmail.becomeFirstResponder()
+            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        })
     }
     
     func back(){
@@ -70,34 +69,44 @@ class LoginViewController: UIViewController {
         if self.inputEmail.text == "" || self.inputPassword.text == "" {
             shakeAnimation(self.holder)
         }else{
+            self.navigationItem.rightBarButtonItems = buttonArray()
             var email = SAEncode(SAHtml(self.inputEmail.text))
             var password = "n*A\(SAEncode(SAHtml(self.inputPassword.text)))"
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
-            if sa == "NO" {
-                //self.navigationController.popViewControllerAnimated(true)
-                shakeAnimation(self.holder)
-            }else{
-                    var shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
-                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                
-                    var username = SAPost("uid=\(sa)", "http://nian.so/api/username.php")
-                    Sa.setObject(sa, forKey: "uid")
-                    Sa.setObject(shell, forKey: "shell")
-                    Sa.setObject(username, forKey:"user")
-                    Sa.synchronize()
-                    var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                    mainViewController.selectedIndex = 2
-                    var navigationViewController = UINavigationController(rootViewController: mainViewController)
-                    navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
-                    navigationViewController.navigationBar.tintColor = IconColor
-                    navigationViewController.navigationBar.translucent = false
-                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                    navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                    navigationViewController.navigationBar.clipsToBounds = true
-                    self.presentViewController(navigationViewController, animated: true) { () -> Void in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if sa == "err"{
+                        self.navigationItem.rightBarButtonItems = []
+                    }else if sa == "NO" {
+                        //self.navigationController.popViewControllerAnimated(true)
+                        self.shakeAnimation(self.holder)
+                        self.navigationItem.rightBarButtonItems = []
+                    }else{
+                        self.navigationItem.rightBarButtonItems = buttonArray()
+                        var shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
+                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        
+                        var username = SAPost("uid=\(sa)", "http://nian.so/api/username.php")
+                        Sa.setObject(sa, forKey: "uid")
+                        Sa.setObject(shell, forKey: "shell")
+                        Sa.setObject(username, forKey:"user")
+                        Sa.synchronize()
+                        var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                        var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                        navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
+                        navigationViewController.navigationBar.tintColor = IconColor
+                        navigationViewController.navigationBar.translucent = false
+                        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                        navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                        navigationViewController.navigationBar.clipsToBounds = true
+                        self.presentViewController(navigationViewController, animated: true, completion: {
+                            self.navigationItem.rightBarButtonItems = []
+                        })
                     }
-                }
-            }
+                })
+            })
+        }
     }
 
     func dismissKeyboard(sender:UITapGestureRecognizer){

@@ -16,29 +16,27 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var page :Int = 0
     var Id:String = ""
     
+    func noticeShare(noti:NSNotification){
+        self.tableView!.headerBeginRefreshing()
+    }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
         SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool)
     {
         super.viewWillDisappear(animated)
-        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare:", name: "noticeShare", object: nil)
     }
-    
-    
     
     func setupViews()
     {
@@ -55,7 +53,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, 320, 10))
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, 320, 20))
         self.view.addSubview(self.tableView!)
-        
     }
     
     
@@ -153,7 +150,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var DreamVC = DreamViewController()
         var UserVC = UserViewController()
         var BBSVC = BBSViewController()
-        println(type)
         if type == "0" {    //在你的梦想留言
             DreamVC.Id = dream
             DreamVC.toggle = "1"
@@ -198,6 +194,10 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView!.addFooterWithCallback({
             self.loadData()
             })
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
 }

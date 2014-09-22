@@ -15,7 +15,7 @@ protocol AddCommentDelegate {   //😍
     func commentFinish()
 }
 
-class AddCommentViewController: UIViewController {
+class AddCommentViewController: UIViewController, UIGestureRecognizerDelegate{
     
     @IBOutlet var TextView:UITextView!
     @IBOutlet var Line: UIView!
@@ -41,24 +41,26 @@ class AddCommentViewController: UIViewController {
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addReply")
         rightButton.image = UIImage(named:"ok")
-        self.navigationItem.rightBarButtonItem = rightButton;
-        
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
+        self.navigationItem.rightBarButtonItems = [rightButton];
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.text = "回应"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        self.TextView.text = self.content
         
-        self.TextView.text = content
-        self.TextView.becomeFirstResponder()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.TextView.becomeFirstResponder()
+            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        })
         
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+    }
+    
+    func dismissKeyboard(sender:UITapGestureRecognizer){
+        self.TextView!.resignFirstResponder()
     }
     
     override func viewDidLoad() {
@@ -71,19 +73,24 @@ class AddCommentViewController: UIViewController {
     }
     
     func addReply(){
+        self.navigationItem.rightBarButtonItems = buttonArray()
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-        var sa = SAPost("id=\(Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
-        if sa != "" {
-            delegate?.ReturnReplyRow = self.Row
-            delegate?.ReturnReplyContent = self.TextView.text
-            delegate?.ReturnReplyId = sa
-            delegate?.commentFinish()
-            self.navigationController!.popViewControllerAnimated(true)
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
+            if sa != "" && sa != "err" {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.delegate?.ReturnReplyRow = self.Row
+                    self.delegate?.ReturnReplyContent = self.TextView.text
+                    self.delegate?.ReturnReplyId = sa
+                    self.delegate?.commentFinish()
+                    self.navigationController!.popViewControllerAnimated(true)
+                })
+            }
+        })
     }
     
     func back(){

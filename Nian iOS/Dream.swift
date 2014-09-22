@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, EditstepDelegate, AddCommentDelegate{     //😍
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, AddCommentDelegate, UIGestureRecognizerDelegate{
     
     let identifier = "dream"
     let identifier2 = "dreamtop"
@@ -22,7 +22,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var toggle:String = "0"
     var deleteSheet:UIActionSheet?
     var replySheet:UIActionSheet?
+    var ownerMoreSheet:UIActionSheet?
+    var guestMoreSheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
+    var deleteDreamSheet:UIActionSheet?
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     
@@ -35,22 +38,31 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var ReplyRow:Int = 0
     var ReturnReplyRow:Int = 0
     var ReplyCid:String = ""
+    var activityViewController:UIActivityViewController?
     
     var ReturnReplyContent:String = ""
     var ReturnReplyId:String = ""
+
+    var titleJson: String = ""
+    var percentJson: String = ""
+    var followJson: String = ""
+    var likeJson: String = ""
+    var imgJson: String = ""
+    var privateJson: String = ""
+    var contentJson: String = ""
+    
+    //editStepdelegate
+    var editStepRow:Int = 0
+    var editStepData:NSDictionary?
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-    }
-    override func viewDidAppear(animated: Bool) {
-        if EditId == 0 {
-            if toggle == "0" {
-                SAReloadData()
-            }else{
-                SARightReloadData()
-            }
+        if toggle == "0" {
+            SAReloadData()
+        }else{
+            SARightReloadData()
         }
     }
     
@@ -76,20 +88,31 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var cacheFilename = imgurl.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename)
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
-            let activityViewController = UIActivityViewController(
+            self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
                 applicationActivities: nil)
-            self.presentViewController(activityViewController, animated: true, completion: nil)
+            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }else{
-            let activityViewController = UIActivityViewController(
+            self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
                 applicationActivities: nil)
-            self.presentViewController(activityViewController, animated: true, completion: nil)
+            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }
+    }
+    
+    func ShareDream(){
+        var url:NSURL = NSURL(string: "http://nian.so/dream/\(self.Id)")
+        let activityViewController = UIActivityViewController(
+            activityItems: [ "喜欢念上的这个梦想！「\(self.titleJson)」", url ],
+            applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     func setupViews()
     {
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        
         var width = self.view.frame.size.width
         var height = self.view.frame.size.height - 64
         self.lefttableView = UITableView(frame:CGRectMake(0,0,width,height))
@@ -115,18 +138,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.righttableView!.hidden = false
         }
         
-        
-        self.title = "梦想"
         self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
         self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.righttableView?.registerNib(nib3, forCellReuseIdentifier: identifier3)
         self.righttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.view.addSubview(self.lefttableView!)
         self.view.addSubview(self.righttableView!)
-        
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
-        rightButton.image = UIImage(named:"add")
-        self.navigationItem.rightBarButtonItem = rightButton;
         
         
         //标题颜色
@@ -136,28 +153,79 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
-        leftButton.image = UIImage(named:"back")
-        self.navigationItem.leftBarButtonItem = leftButton;
-        
         //主人
-        var Sa = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var url = NSURL(string:"http://nian.so/api/dream.php?id=\(Id)&uid=\(safeuid)&shell=\(safeshell)")
-        var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-        var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-        var dream: AnyObject! = json.objectForKey("dream")
-        var owneruid: String = dream.objectForKey("uid") as String
-        if safeuid == owneruid {
-            self.dreamowner = 1
-        }else{
-            self.dreamowner = 0
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var Sa = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.Id)&uid=\(safeuid)&shell=\(safeshell)")
+            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var dream: AnyObject! = json.objectForKey("dream")
+            var owneruid: String = dream.objectForKey("uid") as String
+            self.titleJson = dream.objectForKey("title") as String
+            self.percentJson = dream.objectForKey("percent") as String
+            self.followJson = dream.objectForKey("follow") as String
+            self.likeJson = dream.objectForKey("like") as String
+            self.imgJson = dream.objectForKey("img") as String
+            self.privateJson = dream.objectForKey("private") as String
+            self.contentJson = dream.objectForKey("content") as String
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                if safeuid == owneruid {
+                    self.dreamowner = 1
+                    var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
+                    rightButton.image = UIImage(named:"add")
+                    var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
+                    moreButton.image = UIImage(named:"more")
+                    self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
+                }else{
+                    self.dreamowner = 0
+                    var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "commentVC")
+                    rightButton.image = UIImage(named:"bbs_add")
+                    var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
+                    moreButton.image = UIImage(named:"more")
+                    self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
+                }
+            })
+        })
         
-        var swipe = UISwipeGestureRecognizer(target: self, action: "back")
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(swipe)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.activityViewController = UIActivityViewController()
+        })
+    }
+    
+    func ownerMore(){
+        self.ownerMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.ownerMoreSheet!.addButtonWithTitle("编辑梦想")
+        if self.percentJson == "1" {
+            self.ownerMoreSheet!.addButtonWithTitle("还未完成梦想")
+        }else if self.percentJson == "0" {
+            self.ownerMoreSheet!.addButtonWithTitle("完成梦想")
+        }
+        self.ownerMoreSheet!.addButtonWithTitle("分享梦想")
+        self.ownerMoreSheet!.addButtonWithTitle("删除梦想")
+        self.ownerMoreSheet!.addButtonWithTitle("取消")
+        self.ownerMoreSheet!.cancelButtonIndex = 4
+        self.ownerMoreSheet!.showInView(self.view)
+    }
+    
+    func guestMore(){
+        self.guestMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        if self.followJson == "1" {
+            self.guestMoreSheet!.addButtonWithTitle("取消关注梦想")
+        }else if self.followJson == "0" {
+            self.guestMoreSheet!.addButtonWithTitle("关注梦想")
+        }
+        if self.likeJson == "1" {
+            self.guestMoreSheet!.addButtonWithTitle("取消赞")
+        }else if self.likeJson == "0" {
+            self.guestMoreSheet!.addButtonWithTitle("赞梦想")
+        }
+        self.guestMoreSheet!.addButtonWithTitle("分享梦想")
+        self.guestMoreSheet!.addButtonWithTitle("取消")
+        self.guestMoreSheet!.cancelButtonIndex = 3
+        self.guestMoreSheet!.showInView(self.view)
     }
     
     
@@ -285,6 +353,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var index = indexPath.row
                 var data = self.dataArray[index] as NSDictionary
                 c!.data = data
+                c!.indexPathRow = index
                 c!.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
                 c!.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -322,9 +391,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
-    {
-        
+    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
             return  190
         }else{
@@ -340,7 +407,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        if indexPath.section != 0 {
+        if tableView == righttableView {
+            if indexPath.section != 0 {
             self.righttableView!.deselectRowAtIndexPath(indexPath, animated: false)
             var index = indexPath.row
             var data = self.dataArray2[index] as NSDictionary
@@ -348,7 +416,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var uid = data.stringAttributeForKey("uid")
             var content = data.stringAttributeForKey("content")
             var cid = data.stringAttributeForKey("id")
-            if tableView == righttableView {
                 self.ReplyUser = "\(user)"
                 self.ReplyRow = index
                 self.ReplyContent = "\(content)"
@@ -360,6 +427,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     self.replySheet!.addButtonWithTitle("删除")
                     self.replySheet!.addButtonWithTitle("取消")
                     self.replySheet!.cancelButtonIndex = 3
+                    self.replySheet!.showInView(self.view)
                 }else{  //不是主人
                     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                     var safeuid = Sa.objectForKey("uid") as String
@@ -369,14 +437,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                         self.replySheet!.addButtonWithTitle("删除")
                         self.replySheet!.addButtonWithTitle("取消")
                         self.replySheet!.cancelButtonIndex = 3
+                        self.replySheet!.showInView(self.view)
                     }else{
                         self.replySheet!.addButtonWithTitle("回应@\(user)")
                         self.replySheet!.addButtonWithTitle("复制")
                         self.replySheet!.addButtonWithTitle("取消")
                         self.replySheet!.cancelButtonIndex = 2
+                        self.replySheet!.showInView(self.view)
                     }
                 }
-                self.replySheet!.showInView(self.view)
             }
         }
     }
@@ -395,10 +464,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     
     func Editstep() {      //😍
-        println("改好了")
-        var newid = self.EditId - 10
-        self.dataArray[newid].setObject(self.EditContent, forKey: "content")
-        var newpath = NSIndexPath(forRow: newid, inSection: 1)
+        self.dataArray[self.editStepRow] = self.editStepData!
+        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
         self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     func setupRefresh(){
@@ -427,28 +494,26 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             sender.selectedSegmentIndex = 1
             self.righttableView!.hidden = true
             self.lefttableView!.hidden = false
+            var y = self.righttableView!.contentOffset.y
+            self.lefttableView!.setContentOffset(CGPointMake(0, y), animated: false)
             SAReloadData()
         }else if x == 1 {
             sender.selectedSegmentIndex = 0
             self.lefttableView!.hidden = true
             self.righttableView!.hidden = false
+            var y = self.lefttableView!.contentOffset.y
+            self.righttableView!.setContentOffset(CGPointMake(0, y), animated: false)
             SARightReloadData()
         }
     }
     func SAedit(sender:UIButton){
-        var tag = sender.tag
-        var cell:AnyObject
-        var EditVC = EditStepViewController(nibName: "EditStepViewController", bundle: nil)
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1){
-            cell = sender.superview!.superview!.superview!.superview! as UITableViewCell
-            EditVC.pushEditId = cell.tag
-        }else{
-            cell = sender.superview!.superview!.superview! as UITableViewCell
-            EditVC.pushEditId = cell.tag
-        }
-        EditVC.sid = "\(sender.tag)"
-        EditVC.delegate = self
-        self.navigationController!.pushViewController(EditVC, animated: true)
+        var data = self.dataArray[sender.tag] as NSDictionary
+        var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        addstepVC.isEdit = 1
+        addstepVC.data = data
+        addstepVC.row = sender.tag
+        addstepVC.delegate = self
+        self.navigationController!.pushViewController(addstepVC, animated: true)
     }
     
     func SAdelete(sender:UIButton){
@@ -472,52 +537,135 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-            if actionSheet == self.deleteSheet {
-                if buttonIndex == 0 {
+        if actionSheet == self.deleteSheet {
+            if buttonIndex == 0 {
                 var visibleCells:NSArray = self.lefttableView!.visibleCells()
                 for cell  in visibleCells {
                     if cell.tag == self.deleteViewId {
                         var newpath = self.lefttableView!.indexPathForCell(cell as UITableViewCell)
                         self.dataArray.removeObjectAtIndex(newpath!.row)
                         self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                        self.lefttableView!.reloadData()
                         break
                     }
                 }
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
                     if(sa == "1"){
                     }
+                })
+            }
+        }else if actionSheet == self.replySheet {
+            if buttonIndex == 0 {
+                self.commentVC()
+            }else if buttonIndex == 1 { //复制
+                var pasteBoard = UIPasteboard.generalPasteboard()
+                pasteBoard.string = self.ReplyContent
+            }else if buttonIndex == 2 {
+                if buttonIndex != self.replySheet!.cancelButtonIndex{
+                    self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                    self.deleteCommentSheet!.addButtonWithTitle("确定删除")
+                    self.deleteCommentSheet!.addButtonWithTitle("取消")
+                    self.deleteCommentSheet!.cancelButtonIndex = 1
+                    self.deleteCommentSheet!.showInView(self.view)
                 }
-            }else if actionSheet == self.replySheet {
-                if buttonIndex == 0 {
-                    var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
-                    addCommentVC.delegate = self
-                    addCommentVC.content = "@\(self.ReplyUser) "
-                    addCommentVC.Id = self.Id
-                    addCommentVC.Row = self.ReplyRow
-                    self.navigationController!.pushViewController(addCommentVC, animated: true)
-                }else if buttonIndex == 1 { //复制
-                    var pasteBoard = UIPasteboard.generalPasteboard()
-                    pasteBoard.string = self.ReplyContent
-                }else if buttonIndex == 2 {
-                    if buttonIndex != self.replySheet!.cancelButtonIndex{
-                        self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                        self.deleteCommentSheet!.addButtonWithTitle("确定删除")
-                        self.deleteCommentSheet!.addButtonWithTitle("取消")
-                        self.deleteCommentSheet!.cancelButtonIndex = 1
-                        self.deleteCommentSheet!.showInView(self.view)
-                    }
-                }
+            }
         }else if actionSheet == self.deleteCommentSheet {
-                if buttonIndex == 0 {
-                    self.dataArray2.removeObjectAtIndex(self.ReplyRow)
-                    var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
-                    self.righttableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            if buttonIndex == 0 {
+                self.dataArray2.removeObjectAtIndex(self.ReplyRow)
+                var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
+                self.righttableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.righttableView!.reloadData()
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
-                    println(self.ReplyCid)
                     if(sa == "1"){
                     }
+                })
+            }
+        }else if actionSheet == self.deleteDreamSheet {
+            if buttonIndex == 0 {       //删除梦想
+                self.navigationItem.rightBarButtonItems = buttonArray()
+                //          NSNotificationCenter.defaultCenter().postNotificationName("restartDream", object:"1")
+                globalWillNianReload = 1
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.Id)", "http://nian.so/api/delete_dream.php")
+                    if(sa == "1"){
+                        dispatch_async(dispatch_get_main_queue(), {
+                        self.back()
+                        })
+                    }
+                })
+            }
+        }else if actionSheet == self.ownerMoreSheet {
+            if buttonIndex == 0 {   //编辑梦想
+                var editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+                editdreamVC.isEdit = 1
+                editdreamVC.editId = self.Id
+                editdreamVC.editTitle = self.titleJson
+                editdreamVC.editContent = self.contentJson
+                editdreamVC.editImage = self.imgJson
+                editdreamVC.editPrivate = self.privateJson
+                self.navigationController!.pushViewController(editdreamVC, animated: true)
+            }else if buttonIndex == 1 { //完成梦想
+                if self.percentJson == "1" {
+                    self.percentJson = "0"
+                }else if self.percentJson == "0" {
+                    self.percentJson = "1"
                 }
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&percent=\(self.percentJson)", "http://nian.so/api/dream_complete_query.php")
+                    if sa != "" && sa != "err" {
+                    }
+                })
+            }else if buttonIndex == 2 {     //分享梦想
+                ShareDream()
+            }else if buttonIndex == 3 {     //删除梦想
+                self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                self.deleteDreamSheet!.addButtonWithTitle("确定删除")
+                self.deleteDreamSheet!.addButtonWithTitle("取消")
+                self.deleteDreamSheet!.cancelButtonIndex = 1
+                self.deleteDreamSheet!.showInView(self.view)
+            }
+        }else if actionSheet == self.guestMoreSheet {
+            if buttonIndex == 0 {   //关注梦想
+                if self.followJson == "1" {
+                    self.followJson = "0"
+                }else if self.followJson == "0" {
+                    self.followJson = "1"
+                }
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&fo=\(self.followJson)", "http://nian.so/api/dream_fo_query.php")
+                    if sa != "" && sa != "err" {
+                    }
+                })
+            }else if buttonIndex == 1 {     //赞梦想
+                if self.likeJson == "1" {
+                    self.likeJson = "0"
+                }else if self.likeJson == "0" {
+                    self.likeJson = "1"
+                }
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&cool=\(self.likeJson)", "http://nian.so/api/dream_cool_query.php")
+                    if sa != "" && sa != "err" {
+                    }
+                })
+            }else if buttonIndex == 2 { //分享梦想
+                ShareDream()
+            }
         }
+    }
+    
+    func commentVC(){
+        var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
+        addCommentVC.delegate = self
+        if self.ReplyUser != "" {
+            addCommentVC.content = "@\(self.ReplyUser) "
+        }else{
+            addCommentVC.content = ""
+        }
+        addCommentVC.Id = self.Id
+        addCommentVC.Row = self.ReplyRow
+        self.navigationController!.pushViewController(addCommentVC, animated: true)
     }
     
     func commentFinish(){

@@ -19,28 +19,29 @@ class DreamCellTop: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
-    }
-    
-    
-    override func layoutSubviews()
-    {
-        super.layoutSubviews()
+        self.Seg!.tintColor = LineColor
         var Sa = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-        var url = NSURL(string:"http://nian.so/api/dream.php?id=\(dreamid)&uid=\(safeuid)&shell=\(safeshell)")
-        var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-        var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-        var sa: AnyObject! = json.objectForKey("dream")
-        var title: AnyObject! = sa.objectForKey("title")
-        var img: AnyObject! = sa.objectForKey("img")
-        
-        self.nickLabel!.text = "\(title)"
-        var userImageURL = "http://img.nian.so/dream/\(img)!head"
-        self.dreamhead!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
-        self.View!.backgroundColor = BGColor
-        self.Seg!.tintColor = LineColor
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        dispatch_async(dispatch_get_main_queue(), {
+            var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.dreamid)&uid=\(safeuid)&shell=\(safeshell)")
+            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var sa: AnyObject! = json.objectForKey("dream")
+            var title: AnyObject! = sa.objectForKey("title")
+            var img: AnyObject! = sa.objectForKey("img")
+            
+            self.nickLabel!.text = "\(title)"
+            var userImageURL = "http://img.nian.so/dream/\(img)!head"
+            self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
+            self.View!.backgroundColor = BGColor
+            self.selectionStyle = UITableViewCellSelectionStyle.None
+        })
+    }
+    
+    
+    override func layoutSubviews(){
+        super.layoutSubviews()
     }
     
 }

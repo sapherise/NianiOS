@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="念" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nuw-w3-McK">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nuw-w3-McK">
                         <rect key="frame" x="39" y="99" width="242" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -35,14 +35,14 @@
                         </segments>
                         <color key="tintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </segmentedControl>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2049 关注" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jXv-Eo-e7d">
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jXv-Eo-e7d">
                         <rect key="frame" x="28" y="134" width="120" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.64313727620000005" green="0.64313727620000005" blue="0.64313727620000005" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2049 听众" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E64-2B-0cH">
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E64-2B-0cH">
                         <rect key="frame" x="172" y="134" width="120" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -56,6 +56,8 @@
                 <outlet property="Seg" destination="bKM-Ev-MIt" id="Is9-Ro-nDr"/>
                 <outlet property="View" destination="UFJ-PO-mG4" id="T0T-rY-mKq"/>
                 <outlet property="dreamhead" destination="kgP-Gy-L6a" id="6he-ex-mip"/>
+                <outlet property="foNumber" destination="jXv-Eo-e7d" id="Vfu-Q6-l94"/>
+                <outlet property="foedNumber" destination="E64-2B-0cH" id="v3q-Dt-HjH"/>
                 <outlet property="nickLabel" destination="nuw-w3-McK" id="ouk-me-wyU"/>
             </connections>
             <point key="canvasLocation" x="328" y="172"/>

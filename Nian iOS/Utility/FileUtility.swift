@@ -21,7 +21,7 @@ class FileUtility: NSObject {
     
     class func imageCacheToPath(path:String,image:NSData)->Bool
     {
-       return image.writeToFile(path, atomically: true)
+        return image.writeToFile(path, atomically: true)
     }
     
     class func imageDataFromPath(path:String)->AnyObject

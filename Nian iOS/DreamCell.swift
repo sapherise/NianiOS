@@ -32,15 +32,11 @@ class DreamCell: UITableViewCell {
     var img0:Float = 0.0
     var img1:Float = 0.0
     var ImageURL:String = ""
+    var indexPathRow:Int = 0
     
     @IBAction func nolikeClick(sender: AnyObject) { //取消赞
         self.liked!.hidden = true
         self.likebutton!.hidden = false
-        if self.like!.text == "" {
-            self.like!.text = "0 赞"
-            self.data.setValue("0", forKey: "like")
-            self.like!.hidden = true
-        }else{
             var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
             var likenewnumber = likenumber.toInt()! - 1
             self.like!.text = "\(likenewnumber) 赞"
@@ -50,28 +46,25 @@ class DreamCell: UITableViewCell {
             }else{
                 self.like!.hidden = false
             }
-        }
         self.data.setValue("0", forKey: "liked")
         var sid = self.data.stringAttributeForKey("sid")
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
         var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=0", "http://nian.so/api/like_query.php")
         if sa == "1" {
         }
+        })
     }
     @IBAction func likeClick(sender: AnyObject) {   //赞
         self.likebutton!.hidden = true
         self.liked!.hidden = false
-        if self.like!.text == "" {
-            self.like!.text = "1 赞"
-            self.data.setValue("1", forKey: "like")
-        }else{
             var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
             var likenewnumber = likenumber.toInt()! + 1
             self.like!.text = "\(likenewnumber) 赞"
             self.data.setValue("\(likenewnumber)", forKey: "like")
-        }
         self.data.setValue("1", forKey: "liked")
         self.like!.hidden = false
         
@@ -79,26 +72,22 @@ class DreamCell: UITableViewCell {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
         var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=1", "http://nian.so/api/like_query.php")
-        
-        
         if sa == "1" {
         }
+        })
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.selectionStyle = .None
-        
-        
-        var tap = UITapGestureRecognizer(target: self, action: "imageViewTapped:")
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+        self.View!.backgroundColor = BGColor
+        self.holder!.layer.cornerRadius = 4;
+        self.holder!.layer.masksToBounds = true;
+        self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
+        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
+        self.imageholder!.addGestureRecognizer(tap)
     }
     
     override func layoutSubviews()
@@ -117,29 +106,20 @@ class DreamCell: UITableViewCell {
         
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
-        self.View!.backgroundColor = BGColor
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
-        self.avatarView!.setImage(userImageURL,placeHolder: UIImage(named: "1.jpg"))
-        self.avatarView!.userInteractionEnabled = true
+        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         
-        self.like!.userInteractionEnabled = true
         self.like!.tag = sid.toInt()!
         
         var height = content.stringHeightWith(17,width:242)
-        
-        
-        
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
         self.goodbye.tag = sid.toInt()!
-        self.edit.tag = sid.toInt()!
+        self.edit.tag = self.indexPathRow
         self.share.tag = sid.toInt()!
         
-        self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
@@ -148,28 +128,23 @@ class DreamCell: UITableViewCell {
             self.menuHolder!.setY(self.contentLabel!.bottom())
         }else{
             imgHeight = img1 * 250 / img0
-            ImageURL = "http://img.nian.so/step/\(img)!iosfo" as NSString
+            ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
             largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
-            self.imageholder!.setImage(ImageURL,placeHolder: UIImage(named: "1.jpg"))
+            self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
             self.holder!.setHeight(height+156+sapherise)
             
-            
-            var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
-            self.imageholder!.addGestureRecognizer(tap)
-            self.imageholder!.userInteractionEnabled = true
-            
             self.imageholder!.setY(self.contentLabel!.bottom()+10)
             self.menuHolder!.setY(self.imageholder!.bottom()+10)
         }
         
+        self.like!.text = "\(like) 赞"
         if like == "0" {
             self.like!.hidden = true
         }else{
             self.like!.hidden = false
-            self.like!.text = "\(like) 赞"
         }
         
         
