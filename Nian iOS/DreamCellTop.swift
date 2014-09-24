@@ -30,9 +30,26 @@ class DreamCellTop: UITableViewCell{
             var sa: AnyObject! = json.objectForKey("dream")
             var title: AnyObject! = sa.objectForKey("title")
             var img: AnyObject! = sa.objectForKey("img")
+            var percent: String! = sa.objectForKey("percent") as String
+            var isPrivate: String! = sa.objectForKey("private") as String
             
-            self.nickLabel!.text = "\(title)"
-            var userImageURL = "http://img.nian.so/dream/\(img)!head"
+            
+            if isPrivate == "1" {
+                var string = NSMutableAttributedString(string: "\(title)（私密）")
+                var len = string.length
+                string.addAttribute(NSForegroundColorAttributeName, value: UIColor.whiteColor(), range: NSMakeRange(0, len-4))
+                string.addAttribute(NSForegroundColorAttributeName, value: BlueColor, range: NSMakeRange(len-4, 4))
+                self.nickLabel!.attributedText = string
+            }else if percent == "1" {
+                var string = NSMutableAttributedString(string: "\(title)（已完成）")
+                var len = string.length
+                string.addAttribute(NSForegroundColorAttributeName, value: UIColor.whiteColor(), range: NSMakeRange(0, len-5))
+                string.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(len-5, 5))
+                self.nickLabel!.attributedText = string
+            }else{
+                self.nickLabel!.text = "\(title)"
+            }
+            var userImageURL = "http://img.nian.so/dream/\(img)!dream"
             self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
             self.View!.backgroundColor = BGColor
             self.selectionStyle = UITableViewCellSelectionStyle.None

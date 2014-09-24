@@ -178,7 +178,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     rightButton.image = UIImage(named:"add")
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
                     moreButton.image = UIImage(named:"more")
-                    self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
+                    if self.percentJson == "0" {
+                        self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
+                    }else{
+                        self.navigationItem.rightBarButtonItems = [ moreButton]
+                    }
                 }else{
                     self.dreamowner = 0
                     var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "commentVC")
@@ -607,10 +611,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 editdreamVC.editPrivate = self.privateJson
                 self.navigationController!.pushViewController(editdreamVC, animated: true)
             }else if buttonIndex == 1 { //完成梦想
+                var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
+                rightButton.image = UIImage(named:"add")
+                var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
+                moreButton.image = UIImage(named:"more")
                 if self.percentJson == "1" {
                     self.percentJson = "0"
+                    self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
                 }else if self.percentJson == "0" {
                     self.percentJson = "1"
+                    self.navigationItem.rightBarButtonItems = [ moreButton]
                 }
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&percent=\(self.percentJson)", "http://nian.so/api/dream_complete_query.php")

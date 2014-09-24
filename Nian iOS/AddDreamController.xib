@@ -11,6 +11,7 @@
                 <outlet property="Line2" destination="KFV-U2-nEr" id="KRg-Di-BX6"/>
                 <outlet property="field1" destination="0Vp-AT-Ln0" id="bg3-w8-GJ2"/>
                 <outlet property="field2" destination="tFp-dA-Zk0" id="9cu-LU-S0c"/>
+                <outlet property="setButton" destination="4rf-m6-K7b" id="DZp-Te-hYE"/>
                 <outlet property="uploadButton" destination="uid-Rn-Feb" id="zxZ-ph-gkj"/>
                 <outlet property="uploadDone" destination="6J2-CU-uTP" id="7Yb-dU-kOC"/>
                 <outlet property="uploadWait" destination="RiO-AG-ogK" id="NPV-d2-LcI"/>
@@ -18,7 +19,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" fixedFrame="YES" id="GFo-cZ-YNp">
+        <view contentMode="scaleToFill" id="GFo-cZ-YNp">
             <rect key="frame" x="-140" y="-16" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>

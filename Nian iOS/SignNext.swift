@@ -113,6 +113,12 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate{
                                 self.presentViewController(navigationViewController, animated: true, completion: {
                                     self.navigationItem.rightBarButtonItems = []
                                 })
+                                var DeviceToken = Sa.objectForKey("DeviceToken") as? String
+                                if DeviceToken != nil {
+                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                                        var sa = SAPost("devicetoken=\(DeviceToken!)&&uid=\(sa)&&shell=\(shell!)&&type=1", "http://nian.so/api/user_update.php")
+                                    })
+                                }
                             })
                         }
                     }

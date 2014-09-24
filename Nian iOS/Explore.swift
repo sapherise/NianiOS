@@ -44,7 +44,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         if globalWillBBSReload == 1 {
             self.SAReloadData()
             globalWillBBSReload = 0
-            println("重载了")
         }
     }
     

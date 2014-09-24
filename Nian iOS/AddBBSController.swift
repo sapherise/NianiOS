@@ -70,8 +70,6 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate{
                 if(sa == "1"){
                     globalWillBBSReload = 1
                     self.navigationController!.popViewControllerAnimated(true)
-                println(title)
-                println(content)
                 }
             })
         }

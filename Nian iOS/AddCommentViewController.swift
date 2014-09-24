@@ -79,6 +79,7 @@ class AddCommentViewController: UIViewController, UIGestureRecognizerDelegate{
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        var safeuser = Sa.objectForKey("user") as String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
             if sa != "" && sa != "err" {
@@ -89,6 +90,12 @@ class AddCommentViewController: UIViewController, UIGestureRecognizerDelegate{
                     self.delegate?.commentFinish()
                     self.navigationController!.popViewControllerAnimated(true)
                 })
+            }
+        })
+        //推送通知
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(safeuid)", "http://nian.so/push/push_mobile.php")
+            if sa != "" && sa != "err" {
             }
         })
     }

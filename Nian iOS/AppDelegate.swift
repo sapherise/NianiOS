@@ -25,6 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
         
+        
+        let types: UIUserNotificationType = .Badge | .Sound | .Alert
+        let pushSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(pushSettings)
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
         return true
     }
     
@@ -43,6 +49,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     func applicationWillTerminate(application: UIApplication) {
     }
     
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var newDeviceToken = SAReplace("\(deviceToken)", "<", "")
+            newDeviceToken = SAReplace("\(newDeviceToken)", ">", "")
+            newDeviceToken = SAReplace("\(newDeviceToken)", " ", "")
+            Sa.setObject(newDeviceToken, forKey:"DeviceToken")
+            Sa.synchronize()
+        })
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    }
+    
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    }
+    
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    }
     
 }
 

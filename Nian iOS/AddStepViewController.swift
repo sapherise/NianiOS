@@ -44,6 +44,9 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker!.delegate = self
+        self.imagePicker!.allowsEditing = false
         if buttonIndex == 0 {
             self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
@@ -136,12 +139,6 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = false
-        })
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){

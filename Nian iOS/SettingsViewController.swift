@@ -13,7 +13,7 @@ protocol NiceDelegate {      //😍       我拥有一个代理公司
     func niceShow(text:String)
 }
 
-class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate {
+class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate {
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var head:UIImageView!
     @IBOutlet var logout:UIView!
@@ -26,12 +26,16 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var cacheView:UIView?
     @IBOutlet var cacheActivity:UIActivityIndicatorView!
     @IBOutlet var ImageSwitch:UISwitch!
+    @IBOutlet var CareSwitch:UISwitch!
     @IBOutlet var version:UILabel!
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""
     var uploadWidth:Int = 0
     var uploadHeight:Int = 0
+    
+    var accountName:String = ""
+    var accountEmail:String = ""
     
     override func viewDidLoad(){
         setupViews()
@@ -117,9 +121,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         return string
     }
     
-    
     func setupViews(){
-        self.scrollView.contentSize = CGSizeMake(320, 900)
+        self.scrollView.frame = CGRectMake(0, 0, 320, 455)
+        self.scrollView.contentSize = CGSizeMake(320, 960)
         self.cacheActivity.hidden = true
         self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -131,13 +135,16 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.head!.setImage(userImageURL,placeHolder: IconColor)
         self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick:"))
         
-        self.storeView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "storeClick:"))
+        self.inputName!.delegate = self
+        self.inputEmail!.delegate = self
         
+        self.storeView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "storeClick:"))
         
         self.helpView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
         self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
+        //节省流量模式
         self.ImageSwitch.addTarget(self, action: "switchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.ImageSwitch.layer.cornerRadius = 16
         var saveMode: String? = Sa.objectForKey("saveMode") as? String
@@ -146,11 +153,22 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             }else{
                 self.switchSetup(false)
             }
+        
+        //每日推送模式
+        self.CareSwitch.addTarget(self, action: "pushSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
+        self.CareSwitch.layer.cornerRadius = 16
+        var pushMode: String? = Sa.objectForKey("pushMode") as? String
+        if pushMode == "1" {
+            self.pushSwitchSetup(true)
+        }else{
+            self.pushSwitchSetup(false)
+        }
+        
         var longTap = UILongPressGestureRecognizer(target: self, action: "niceTry")
         longTap.minimumPressDuration = 0.5
         self.version.addGestureRecognizer(longTap)
         
-        dispatch_async(dispatch_get_main_queue(), {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             var safename = Sa.objectForKey("user") as String
@@ -160,10 +178,87 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var sa: AnyObject! = json.objectForKey("user")
             var email: AnyObject! = sa.objectForKey("email") as String
             var coin: AnyObject! = sa.objectForKey("coin") as String
-            self.inputName.text = safename
-            self.inputEmail.text = "\(email)"
-            self.coinNumber!.text = "\(coin)"
+            dispatch_async(dispatch_get_main_queue(), {
+                self.inputName.text = safename
+                self.inputEmail.text = "\(email)"
+                self.coinNumber!.text = "\(coin)"
+                self.accountName = safename
+                self.accountEmail = "\(email)"
+            })
         })
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        if textField == self.inputName {
+            if (textField.text != "") & (textField.text != self.accountName){
+                self.navigationItem.rightBarButtonItems = buttonArray()
+                if SAstrlen(self.inputName.text)>30 {
+                    self.niceDeletgate?.niceShow("昵称太长了...")
+                    textField.text = self.accountName
+                }else if !self.inputName.text.isValidName() {
+                    self.niceDeletgate?.niceShow("名字里有奇怪的字符...")
+                    textField.text = self.accountName
+                }else{
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var name = self.inputName.text
+                        name = SAEncode(SAHtml(name))
+                        var sa = SAPost("newname=\(name)&&uid=\(safeuid)&&shell=\(safeshell)&&type=2", "http://nian.so/api/user_update.php")
+                        if sa != "" && sa != "err" {
+                            if sa == "NO" {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.niceDeletgate?.niceShow("有人取这个名字了...")
+                                    textField.text = self.accountName
+                                })
+                            }else if sa == "1" {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.navigationItem.rightBarButtonItems = []
+                                    self.accountName = self.inputName.text
+                                    self.niceDeletgate?.niceShow("昵称改好啦")
+                                })
+                            }
+                        }
+                    })
+                }
+            }else{
+                textField.text = self.accountName
+            }
+        }else if textField == self.inputEmail {
+            if (textField.text != "") & (textField.text != self.accountEmail){
+                self.navigationItem.rightBarButtonItems = buttonArray()
+                if SAstrlen(self.inputEmail.text)>50 {
+                    self.niceDeletgate?.niceShow("邮箱太长了")
+                    textField.text = self.accountEmail
+                }else if !self.inputEmail.text.isValidEmail() {
+                    self.niceDeletgate?.niceShow("不是地球上的邮箱")
+                    textField.text = self.accountEmail
+                }else{
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var email = self.inputEmail.text
+                        email = SAEncode(SAHtml(email))
+                        var sa = SAPost("newemail=\(email)&&uid=\(safeuid)&&shell=\(safeshell)&&type=3", "http://nian.so/api/user_update.php")
+                        if sa != "" && sa != "err" {
+                            if sa == "NO" {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.niceDeletgate?.niceShow("有人用这个邮箱了...")
+                                    textField.text = self.accountEmail
+                                })
+                            }else if sa == "1" {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.navigationItem.rightBarButtonItems = []
+                                    self.accountEmail = self.inputEmail.text
+                                    self.niceDeletgate?.niceShow("邮箱改好啦")
+                                })
+                            }
+                        }
+                    })
+                }
+            }else{
+                textField.text = self.accountName
+            }
+        }
     }
     
     func switchAction(sender:UISwitch){
@@ -171,6 +266,35 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             self.switchSetup(true)
         }else{
             self.switchSetup(false)
+        }
+    }
+    func pushSwitchAction(sender:UISwitch){
+        if sender.on {
+            self.pushSwitchSetup(true)
+            delay(0.3, {
+                var CareVC = CareViewController()
+                self.navigationController!.pushViewController(CareVC, animated: true)
+            })
+        }else{
+            self.pushSwitchSetup(false)
+        }
+    }
+    
+    func pushSwitchSetup(bool:Bool){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if bool {
+            self.CareSwitch.thumbTintColor = UIColor.whiteColor()
+            self.CareSwitch.onTintColor = BlueColor
+            self.CareSwitch.tintColor = BlueColor
+            self.CareSwitch.setOn(true, animated: true)
+        }else{
+            self.CareSwitch.thumbTintColor = BGColor
+            self.CareSwitch.backgroundColor = IconColor
+            self.CareSwitch.tintColor = IconColor
+            self.CareSwitch.setOn(false, animated: true)
+            Sa.setObject("0", forKey:"pushMode")
+            Sa.synchronize()
+            UIApplication.sharedApplication().cancelAllLocalNotifications()
         }
     }
     
@@ -224,7 +348,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func niceTry(){
-        println("彩蛋1")
         self.niceDeletgate?.niceShow("念 爱 你")
     }
     
@@ -245,6 +368,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func SAlogout(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as? String
+        var safeshell = Sa.objectForKey("shell") as? String
+        if (safeuid != nil) & (safeshell != nil) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("devicetoken=&&uid=\(safeuid!)&&shell=\(safeshell!)&&type=1", "http://nian.so/api/user_update.php")
+            })
+        }
         Sa.removeObjectForKey("uid")
         Sa.removeObjectForKey("shell")
         Sa.removeObjectForKey("followData")
@@ -261,4 +391,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var pushMode: String? = Sa.objectForKey("pushMode") as? String
+        if pushMode != "1" {
+                self.pushSwitchSetup(false)
+        }
+    }
 }

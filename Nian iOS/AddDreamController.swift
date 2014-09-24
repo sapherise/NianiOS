@@ -17,7 +17,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var uploadDone: UIImageView?
     @IBOutlet var field1:UITextField?
     @IBOutlet var field2:UITextField?
+    @IBOutlet var setButton: UIButton!
     var actionSheet:UIActionSheet?
+    var setDreamActionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     
     var uploadUrl:String = ""
@@ -28,6 +30,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var editContent:String = ""
     var editImage:String = ""
     var editPrivate:String = ""
+    
+    var isPrivate:Int = 0
     
     @IBAction func uploadClick(sender: AnyObject) {
         self.field1!.resignFirstResponder()
@@ -41,6 +45,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.actionSheet {
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker!.delegate = self
+        self.imagePicker!.allowsEditing = false
         if buttonIndex == 0 {
             self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
@@ -48,6 +56,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            }
+        }
+        }else if actionSheet == self.setDreamActionSheet {
+            if buttonIndex == 0 {
+                self.isPrivate = 0
+                self.editPrivate = "0"
+                println("变为公开")
+            }else if buttonIndex == 1 {
+                self.isPrivate = 1
+                self.editPrivate = "1"
+                println("变为私密")
             }
         }
     }
@@ -119,17 +138,31 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
-        titleLabel.text = "新梦想！"
+        if self.isEdit == 1 {
+            titleLabel.text = "编辑梦想"
+        }else{
+            titleLabel.text = "新梦想！"
+        }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
-        dispatch_async(dispatch_get_main_queue(), {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = false
-        })
+        
+        self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    func setDream(){
+        self.field1!.resignFirstResponder()
+        self.field2!.resignFirstResponder()
+        
+        self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.setDreamActionSheet!.addButtonWithTitle("设为公开")
+        self.setDreamActionSheet!.addButtonWithTitle("设为私密")
+        self.setDreamActionSheet!.addButtonWithTitle("取消")
+        self.setDreamActionSheet!.cancelButtonIndex = 2
+        self.setDreamActionSheet!.showInView(self.view)
+        
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -148,7 +181,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)", "http://nian.so/api/add_query.php")
+            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.isPrivate)", "http://nian.so/api/add_query.php")
             if(sa == "1"){
                 dispatch_async(dispatch_get_main_queue(), {
                     globalWillNianReload = 1

@@ -60,6 +60,7 @@
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
 		12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */; };
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
+		12DE696519D130940006B5B5 /* Care.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE696419D130940006B5B5 /* Care.swift */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
 		12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FD19A37FC900FCB2D1 /* Explore.swift */; };
@@ -157,6 +158,8 @@
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageViewController.swift; sourceTree = "<group>"; };
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
+		12DE696419D130940006B5B5 /* Care.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Care.swift; sourceTree = "<group>"; };
+		12DE699419D198C40006B5B5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		12E553FD19A37FC900FCB2D1 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
@@ -375,6 +378,7 @@
 			children = (
 				1217A3E9198D358600959AD2 /* SettingsViewController.swift */,
 				12BE103E19C6055300370348 /* Help.swift */,
+				12DE696419D130940006B5B5 /* Care.swift */,
 				12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */,
 			);
 			name = "设置";
@@ -492,12 +496,12 @@
 				12ECFC9719B8B56300CF1F98 /* 话题 */,
 				12BE103919C5EBCB00370348 /* 更新广场评论 */,
 				12D222F819A2677F0027284E /* 发现 */,
+				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
 				1231A06B19B36B6200BD425F /* 更新回应 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
 				1231A07019B45A9E00BD425F /* 用户 */,
 				12FB48D2196AEAA10026DD51 /* 关注 */,
-				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 				129419FF19CFA8480008B274 /* 更新广场 */,
 				12A49109198EB550000B6D5E /* 消息 */,
 				12A6564519719BAC004F530B /* 设置 */,
@@ -559,6 +563,7 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12DE699419D198C40006B5B5 /* CoreText.framework */,
 				12063C6119C9B2FE00E54003 /* StoreKit.framework */,
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
@@ -755,6 +760,7 @@
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
+				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12FECE2719CA7999007EF159 /* Reachability.m in Sources */,
 				1231A07219B45F3A00BD425F /* User.swift in Sources */,
 				12063C5E19C9A6C500E54003 /* Store.swift in Sources */,
