@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
@@ -7,14 +7,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddDreamController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="Line1" destination="wbI-G2-Ihn" id="B8X-GX-Rky"/>
-                <outlet property="Line2" destination="KFV-U2-nEr" id="KRg-Di-BX6"/>
-                <outlet property="field1" destination="0Vp-AT-Ln0" id="bg3-w8-GJ2"/>
-                <outlet property="field2" destination="tFp-dA-Zk0" id="9cu-LU-S0c"/>
-                <outlet property="setButton" destination="4rf-m6-K7b" id="DZp-Te-hYE"/>
-                <outlet property="uploadButton" destination="uid-Rn-Feb" id="zxZ-ph-gkj"/>
-                <outlet property="uploadDone" destination="6J2-CU-uTP" id="7Yb-dU-kOC"/>
-                <outlet property="uploadWait" destination="RiO-AG-ogK" id="NPV-d2-LcI"/>
+                <outlet property="Line1" destination="Zpu-tE-yyA" id="nyF-Y8-k6n"/>
+                <outlet property="Line2" destination="URX-iz-Jb4" id="yfd-V0-gmu"/>
+                <outlet property="field1" destination="ajJ-rB-DZh" id="6oY-om-2T4"/>
+                <outlet property="field2" destination="3bh-3z-RqQ" id="TLT-c9-iAi"/>
+                <outlet property="setButton" destination="SwB-hi-tuv" id="uN5-hI-eXq"/>
+                <outlet property="uploadButton" destination="cy6-PQ-0IE" id="OLx-oh-hhs"/>
+                <outlet property="uploadDone" destination="lgb-Su-87b" id="tDn-S0-nI6"/>
+                <outlet property="uploadWait" destination="EpE-9Z-isw" id="Yx8-jb-d8r"/>
                 <outlet property="view" destination="GFo-cZ-YNp" id="B3b-Fz-IGk"/>
             </connections>
         </placeholder>
@@ -23,22 +23,38 @@
             <rect key="frame" x="-140" y="-16" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wbI-G2-Ihn">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ajJ-rB-DZh">
+                    <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <variation key="widthClass=compact" fixedFrame="YES">
+                        <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                    </variation>
+                </textField>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zpu-tE-yyA">
+                    <rect key="frame" x="0.0" y="50" width="320" height="1"/>
                     <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="0.0" y="50" width="320" height="1"/>
                     </variation>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KFV-U2-nEr">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="简介（可选）" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3bh-3z-RqQ">
+                    <rect key="frame" x="20" y="51" width="280" height="50"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <variation key="widthClass=compact" fixedFrame="YES">
+                        <rect key="frame" x="20" y="51" width="280" height="50"/>
+                    </variation>
+                </textField>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="URX-iz-Jb4">
+                    <rect key="frame" x="0.0" y="101" width="320" height="1"/>
                     <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="0.0" y="101" width="320" height="1"/>
                     </variation>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uid-Rn-Feb">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cy6-PQ-0IE">
+                    <rect key="frame" x="11" y="116" width="38" height="34"/>
                     <state key="normal" image="img">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -46,11 +62,18 @@
                         <rect key="frame" x="11" y="116" width="38" height="34"/>
                     </variation>
                     <connections>
-                        <action selector="uploadClick:" destination="-1" eventType="touchUpInside" id="wat-AF-BCe"/>
+                        <action selector="uploadClick:" destination="-1" eventType="touchUpInside" id="SbA-Xd-mZp"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4rf-m6-K7b">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="EpE-9Z-isw">
+                    <rect key="frame" x="55" y="123" width="20" height="20"/>
+                    <color key="color" red="0.0" green="0.68235296010000002" blue="0.93725496529999996" alpha="1" colorSpace="deviceRGB"/>
+                    <variation key="widthClass=compact" fixedFrame="YES">
+                        <rect key="frame" x="55" y="123" width="20" height="20"/>
+                    </variation>
+                </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwB-hi-tuv">
+                    <rect key="frame" x="271" y="116" width="38" height="34"/>
                     <state key="normal" image="settings">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -58,61 +81,14 @@
                         <rect key="frame" x="271" y="116" width="38" height="34"/>
                     </variation>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upload_ok" translatesAutoresizingMaskIntoConstraints="NO" id="6J2-CU-uTP">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="upload_ok" translatesAutoresizingMaskIntoConstraints="NO" id="lgb-Su-87b">
+                    <rect key="frame" x="58" y="125" width="15" height="15"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="60" y="125" width="15" height="15"/>
                     </variation>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Vp-AT-Ln0">
-                    <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="20" y="0.0" width="280" height="50"/>
-                    </variation>
-                </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="简介（可选）" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tFp-dA-Zk0">
-                    <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="20" y="51" width="280" height="50"/>
-                    </variation>
-                </textField>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RiO-AG-ogK">
-                    <rect key="frame" x="-10" y="-10" width="20" height="20"/>
-                    <color key="color" red="0.0" green="0.68235296010000002" blue="0.93725496529999996" alpha="1" colorSpace="deviceRGB"/>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="55" y="123" width="20" height="20"/>
-                    </variation>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.14117647059999999" green="0.18823529410000001" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="wbI-G2-Ihn"/>
-                    <exclude reference="KFV-U2-nEr"/>
-                    <exclude reference="uid-Rn-Feb"/>
-                    <exclude reference="4rf-m6-K7b"/>
-                    <exclude reference="6J2-CU-uTP"/>
-                    <exclude reference="0Vp-AT-Ln0"/>
-                    <exclude reference="tFp-dA-Zk0"/>
-                    <exclude reference="RiO-AG-ogK"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="subviews">
-                    <include reference="wbI-G2-Ihn"/>
-                    <include reference="KFV-U2-nEr"/>
-                    <include reference="uid-Rn-Feb"/>
-                    <include reference="4rf-m6-K7b"/>
-                    <include reference="6J2-CU-uTP"/>
-                    <include reference="0Vp-AT-Ln0"/>
-                    <include reference="tFp-dA-Zk0"/>
-                    <include reference="RiO-AG-ogK"/>
-                </mask>
-            </variation>
         </view>
     </objects>
     <resources>

@@ -24,6 +24,9 @@ let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金
 var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
 
+var globalWidth = UIScreen.mainScreen().bounds.width
+var globalHeight = UIScreen.mainScreen().bounds.height
+
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""
     var request : NSMutableURLRequest? = NSMutableURLRequest()

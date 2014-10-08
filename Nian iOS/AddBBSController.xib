@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
@@ -7,10 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddBBSController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="Line1" destination="wbI-G2-Ihn" id="B8X-GX-Rky"/>
-                <outlet property="Line2" destination="KFV-U2-nEr" id="KRg-Di-BX6"/>
-                <outlet property="field1" destination="0Vp-AT-Ln0" id="bg3-w8-GJ2"/>
-                <outlet property="field2" destination="tny-Jt-Pg1" id="zvs-xv-iEd"/>
+                <outlet property="Line1" destination="s6q-kY-OPa" id="ql3-0Z-pV8"/>
+                <outlet property="Line2" destination="hV5-np-Q4L" id="Hmp-3L-NWF"/>
+                <outlet property="field1" destination="pFS-d3-Jdc" id="lEh-Th-k2b"/>
+                <outlet property="field2" destination="oxA-8f-YOe" id="Ioh-2G-iae"/>
                 <outlet property="view" destination="GFo-cZ-YNp" id="B3b-Fz-IGk"/>
             </connections>
         </placeholder>
@@ -19,30 +19,30 @@
             <rect key="frame" x="-140" y="-16" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wbI-G2-Ihn">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6q-kY-OPa">
+                    <rect key="frame" x="0.0" y="50" width="320" height="1"/>
                     <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="0.0" y="50" width="320" height="1"/>
                     </variation>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KFV-U2-nEr">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hV5-np-Q4L">
+                    <rect key="frame" x="0.0" y="181" width="320" height="1"/>
                     <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="0.0" y="181" width="320" height="1"/>
                     </variation>
                 </view>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Vp-AT-Ln0">
-                    <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pFS-d3-Jdc">
+                    <rect key="frame" x="20" y="0.0" width="280" height="50"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="20" y="0.0" width="280" height="50"/>
                     </variation>
                 </textField>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tny-Jt-Pg1">
-                    <rect key="frame" x="10" y="10" width="300" height="130"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oxA-8f-YOe">
+                    <rect key="frame" x="15" y="61" width="290" height="110"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="textColor" red="0.96078437569999997" green="0.96078437569999997" blue="0.96078437569999997" alpha="1" colorSpace="deviceRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -53,22 +53,6 @@
                 </textView>
             </subviews>
             <color key="backgroundColor" red="0.14117647059999999" green="0.18823529410000001" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="wbI-G2-Ihn"/>
-                    <exclude reference="KFV-U2-nEr"/>
-                    <exclude reference="0Vp-AT-Ln0"/>
-                    <exclude reference="tny-Jt-Pg1"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="subviews">
-                    <include reference="wbI-G2-Ihn"/>
-                    <include reference="KFV-U2-nEr"/>
-                    <include reference="0Vp-AT-Ln0"/>
-                    <include reference="tny-Jt-Pg1"/>
-                </mask>
-            </variation>
         </view>
     </objects>
 </document>

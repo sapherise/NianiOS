@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		12063C5E19C9A6C500E54003 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12063C5D19C9A6C500E54003 /* Store.swift */; };
 		12063C6019C9A6D200E54003 /* Store.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12063C5F19C9A6D200E54003 /* Store.xib */; };
-		12063C6219C9B2FE00E54003 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12063C6119C9B2FE00E54003 /* StoreKit.framework */; };
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
 		1231A06D19B36B7B00BD425F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */; };
@@ -103,7 +102,6 @@
 /* Begin PBXFileReference section */
 		12063C5D19C9A6C500E54003 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		12063C5F19C9A6D200E54003 /* Store.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Store.xib; sourceTree = "<group>"; };
-		12063C6119C9B2FE00E54003 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
@@ -200,7 +198,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
-				12063C6219C9B2FE00E54003 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,7 +561,6 @@
 			isa = PBXGroup;
 			children = (
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
-				12063C6119C9B2FE00E54003 /* StoreKit.framework */,
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
 			name = Frameworks;
@@ -624,7 +620,7 @@
 						DevelopmentTeam = 59CQC84C9S;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};

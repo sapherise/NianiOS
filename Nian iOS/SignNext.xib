@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
@@ -7,12 +7,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignNextController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="errLabel" destination="qUM-WZ-cF8" id="hTd-zJ-6Pr"/>
-                <outlet property="holder" destination="Ptj-Ez-G5g" id="c3H-VD-OHd"/>
-                <outlet property="inputEmail" destination="EYQ-b2-Z8c" id="xbp-a2-o8x"/>
-                <outlet property="inputPassword" destination="GC6-xU-aVL" id="66K-XX-S0B"/>
-                <outlet property="loginButton" destination="ZK0-sF-mAf" id="4JR-Z9-bKd"/>
-                <outlet property="loginButtonBorder" destination="Owj-BH-NvY" id="eMA-pb-Tf3"/>
+                <outlet property="errLabel" destination="FiC-zR-Dvo" id="g3d-TB-r84"/>
+                <outlet property="holder" destination="3Wb-dQ-8aE" id="E2g-Cj-9zk"/>
+                <outlet property="inputEmail" destination="Isa-I6-3u5" id="wYb-pJ-26H"/>
+                <outlet property="inputPassword" destination="oZw-z9-vJt" id="CvO-6U-nqW"/>
+                <outlet property="loginButton" destination="6tU-jn-hGO" id="R9N-r8-Urh"/>
+                <outlet property="loginButtonBorder" destination="web-WA-p5R" id="Eb0-eV-hDx"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
             </connections>
         </placeholder>
@@ -21,11 +21,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ptj-Ez-G5g">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Wb-dQ-8aE">
+                    <rect key="frame" x="20" y="40" width="280" height="141"/>
                     <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EYQ-b2-Z8c">
-                            <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Isa-I6-3u5">
+                            <rect key="frame" x="40" y="8" width="200" height="40"/>
                             <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
@@ -33,17 +33,17 @@
                                 <rect key="frame" x="35" y="7" width="200" height="40"/>
                             </variation>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GC6-xU-aVL">
-                            <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
-                            <color key="backgroundColor" red="0.054901960784313725" green="0.050980392156862744" blue="0.062745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oZw-z9-vJt">
+                            <rect key="frame" x="40" y="52" width="200" height="40"/>
+                            <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             <variation key="widthClass=compact" fixedFrame="YES">
                                 <rect key="frame" x="35" y="51" width="200" height="40"/>
                             </variation>
                         </textField>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUM-WZ-cF8">
-                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FiC-zR-Dvo">
+                            <rect key="frame" x="40" y="111" width="200" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -51,11 +51,11 @@
                                 <rect key="frame" x="40" y="111" width="200" height="21"/>
                             </variation>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Owj-BH-NvY">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="web-WA-p5R">
+                            <rect key="frame" x="215" y="25" width="50" height="50"/>
                             <subviews>
-                                <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginarrow" translatesAutoresizingMaskIntoConstraints="NO" id="ZK0-sF-mAf">
-                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loginarrow" translatesAutoresizingMaskIntoConstraints="NO" id="6tU-jn-hGO">
+                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
                                     <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <variation key="widthClass=compact" fixedFrame="YES">
                                         <rect key="frame" x="5" y="5" width="40" height="40"/>
@@ -64,50 +64,18 @@
                             </subviews>
                             <color key="backgroundColor" red="0.14117647059999999" green="0.18823529410000001" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                            <variation key="default">
-                                <mask key="subviews">
-                                    <exclude reference="ZK0-sF-mAf"/>
-                                </mask>
-                            </variation>
                             <variation key="widthClass=compact" fixedFrame="YES">
                                 <rect key="frame" x="210" y="24" width="50" height="50"/>
-                                <mask key="subviews">
-                                    <include reference="ZK0-sF-mAf"/>
-                                </mask>
                             </variation>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <variation key="default">
-                        <mask key="subviews">
-                            <exclude reference="EYQ-b2-Z8c"/>
-                            <exclude reference="GC6-xU-aVL"/>
-                            <exclude reference="qUM-WZ-cF8"/>
-                            <exclude reference="Owj-BH-NvY"/>
-                        </mask>
-                    </variation>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="20" y="72" width="280" height="141"/>
-                        <mask key="subviews">
-                            <include reference="EYQ-b2-Z8c"/>
-                            <include reference="GC6-xU-aVL"/>
-                            <include reference="qUM-WZ-cF8"/>
-                            <include reference="Owj-BH-NvY"/>
-                        </mask>
                     </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="Ptj-Ez-G5g"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="subviews">
-                    <include reference="Ptj-Ez-G5g"/>
-                </mask>
-            </variation>
             <point key="canvasLocation" x="242" y="238"/>
         </view>
     </objects>
