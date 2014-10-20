@@ -44,7 +44,6 @@ func SAPost(postString:String, urlString:String)->String{
     return strRet!
 }
 
-
 func SAGet(getString:String, urlString:String)->String{
     var request : NSMutableURLRequest? = NSMutableURLRequest()
     request!.URL = NSURL.URLWithString(urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
@@ -56,7 +55,6 @@ func SAGet(getString:String, urlString:String)->String{
     var strRet:NSString? = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
     return strRet!
 }
-
 
 //替换，用法：var sa = SAReplace("This is my string", " ", "___")
 func SAReplace(word:String, before:String, after:String)->NSString{

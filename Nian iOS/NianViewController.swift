@@ -14,20 +14,27 @@ class MediaCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
 }
 
-class NianViewController: UIViewController{
+class MySupplementaryView : UICollectionReusableView {
+    @IBOutlet var coinButton:UIButton!
+    @IBOutlet var levelButton:UIButton!
+}
+
+class NianViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate{
     @IBOutlet var collectionView: UICollectionView!
     var dataArray = NSMutableArray()
     
     override func viewDidLoad() {
         setupViews()
         SAReloadData()
+        setupRefresh()
     }
     
     func setupViews(){
-        collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = BGColor
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.alwaysBounceVertical = true
+        self.collectionView.contentInset.bottom = 60
         self.extendedLayoutIncludesOpaqueBars = true
-        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 140, 0)
     }
     func SAReloadData(){
         var url = urlString()
@@ -41,7 +48,8 @@ class NianViewController: UIViewController{
             for data2 : AnyObject  in arr{
                 self.dataArray.addObject(data2)
             }
-            self.collectionView?.reloadData()
+            self.collectionView.reloadData()
+            self.collectionView.headerEndRefreshing()
             })
     }
     func urlString()->String{
@@ -51,12 +59,34 @@ class NianViewController: UIViewController{
         return "http://nian.so/api/nian.php?uid=\(safeuid)&shell=\(safeshell)"
     }
     
-    func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     
-    func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
-        var index = indexPath!.row
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        var header : MySupplementaryView? = nil
+        if (kind == UICollectionElementKindSectionHeader) {
+            header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "NianHeader", forIndexPath: indexPath)
+                as? MySupplementaryView
+            header?.coinButton.backgroundColor = LineColor
+            header?.levelButton.backgroundColor = LineColor
+            header?.coinButton.setTitleColor(BGColor, forState: UIControlState.Normal)
+            header?.levelButton.setTitleColor(BGColor, forState: UIControlState.Normal)
+            header?.coinButton.layer.cornerRadius = 4
+            header?.levelButton.layer.cornerRadius = 4
+            
+            header?.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
+        }
+        return header!
+    }
+    
+    func levelClick(){
+        var levelVC = LevelViewController(nibName: "Level", bundle: nil)
+        self.navigationController!.pushViewController(levelVC, animated: true)
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         var title = data.stringAttributeForKey("title")
         var img = data.stringAttributeForKey("img")
@@ -81,13 +111,11 @@ class NianViewController: UIViewController{
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
+    
     func setupRefresh(){
-//        self.View!.addHeaderWithCallback({
-//            self.loadData()
-//            })
-//        self.View!.addFooterWithCallback({
-//            self.loadData()
-//            })
+        self.collectionView.addHeaderWithCallback{
+            self.SAReloadData()
+        }
     }
     
     override func viewWillAppear(animated: Bool)

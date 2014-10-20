@@ -123,7 +123,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func setupViews(){
         self.scrollView.frame = CGRectMake(0, 0, 320, 455)
-        self.scrollView.contentSize = CGSizeMake(320, 960)
+        self.scrollView.contentSize = CGSizeMake(320, 820)
         self.cacheActivity.hidden = true
         self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -256,7 +256,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     })
                 }
             }else{
-                textField.text = self.accountName
+                textField.text = self.accountEmail
             }
         }
     }
