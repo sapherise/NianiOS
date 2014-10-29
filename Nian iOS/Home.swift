@@ -293,6 +293,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         var vc1 = FollowViewController()
         var vc2 = ExploreController()
+        //var vc2 = ChatViewController()
         var vc3 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)

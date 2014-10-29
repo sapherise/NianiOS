@@ -68,14 +68,14 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
         if (kind == UICollectionElementKindSectionHeader) {
             header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "NianHeader", forIndexPath: indexPath)
                 as? MySupplementaryView
-            header?.coinButton.backgroundColor = LineColor
-            header?.levelButton.backgroundColor = LineColor
-            header?.coinButton.setTitleColor(BGColor, forState: UIControlState.Normal)
-            header?.levelButton.setTitleColor(BGColor, forState: UIControlState.Normal)
-            header?.coinButton.layer.cornerRadius = 4
-            header?.levelButton.layer.cornerRadius = 4
-            
-            header?.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
+//            header?.coinButton.backgroundColor = LineColor
+//            header?.levelButton.backgroundColor = LineColor
+//            header?.coinButton.setTitleColor(BGColor, forState: UIControlState.Normal)
+//            header?.levelButton.setTitleColor(BGColor, forState: UIControlState.Normal)
+//            header?.coinButton.layer.cornerRadius = 4
+//            header?.levelButton.layer.cornerRadius = 4
+//            
+//            header?.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
         }
         return header!
     }

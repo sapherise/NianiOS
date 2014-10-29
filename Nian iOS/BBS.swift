@@ -24,6 +24,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var toptitle:String = ""
     var sheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
+    var reportSheet:UIActionSheet?
     var ReplyUser:String = ""
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
@@ -63,7 +64,18 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
         rightButton.image = UIImage(named:"bbs_add")
-        self.navigationItem.rightBarButtonItem = rightButton;
+        
+        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "bbsMore")
+        moreButton.image = UIImage(named:"more")
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        if safeuid == self.topuid {
+            self.navigationItem.rightBarButtonItems = [ rightButton ]
+        }else{
+            self.navigationItem.rightBarButtonItems = [ rightButton,moreButton ]
+        }
+        
         
         
         //标题颜色
@@ -234,8 +246,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 }else{
                     self.sheet!.addButtonWithTitle("回应@\(user)")
                     self.sheet!.addButtonWithTitle("复制")
+                    self.sheet!.addButtonWithTitle("标记为不合适")
                     self.sheet!.addButtonWithTitle("取消")
-                    self.sheet!.cancelButtonIndex = 2
+                    self.sheet!.cancelButtonIndex = 3
                 }
             }
             self.sheet!.showInView(self.view)
@@ -247,6 +260,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        var data = self.dataArray[self.ReplyRow] as NSDictionary
+        var uid = data.stringAttributeForKey("uid")
         if actionSheet == self.sheet {
             if buttonIndex == 0 {
                 var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
@@ -259,12 +274,21 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
-                if buttonIndex != self.sheet!.cancelButtonIndex{
+                if (( uid == safeuid ) || ( self.topuid == safeuid )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                     self.deleteCommentSheet!.addButtonWithTitle("确定删除")
                     self.deleteCommentSheet!.addButtonWithTitle("取消")
                     self.deleteCommentSheet!.cancelButtonIndex = 1
                     self.deleteCommentSheet!.showInView(self.view)
+                }else{
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
+                        if(sa == "1"){
+                            dispatch_async(dispatch_get_main_queue(), {
+                                UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                            })
+                        }
+                    })
                 }
             }
         }else if actionSheet == self.deleteCommentSheet {
@@ -277,6 +301,17 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_bbscomment.php")
                 if(sa == "1"){
                 }
+                })
+            }
+        }else if actionSheet == self.reportSheet {
+            if buttonIndex == 0 {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=1", "http://nian.so/api/a.php")
+                    if(sa == "1"){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            UIView.showAlertView("谢谢", message: "如果这个话题不合适，我们会将其移除。")
+                        })
+                    }
                 })
             }
         }
@@ -301,6 +336,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         addVC.Id = self.Id
         addVC.Row = self.ReplyRow
         self.navigationController!.pushViewController(addVC, animated: true)
+    }
+    
+    func bbsMore(){
+        self.reportSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.reportSheet!.addButtonWithTitle("标记为不合适")
+        self.reportSheet!.addButtonWithTitle("取消")
+        self.reportSheet!.cancelButtonIndex = 1
+        self.reportSheet!.showInView(self.view)
     }
     
     func countUp() {      //😍

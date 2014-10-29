@@ -227,8 +227,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.guestMoreSheet!.addButtonWithTitle("赞梦想")
         }
         self.guestMoreSheet!.addButtonWithTitle("分享梦想")
+        self.guestMoreSheet!.addButtonWithTitle("标记为不合适")
         self.guestMoreSheet!.addButtonWithTitle("取消")
-        self.guestMoreSheet!.cancelButtonIndex = 3
+        self.guestMoreSheet!.cancelButtonIndex = 4
         self.guestMoreSheet!.showInView(self.view)
     }
     
@@ -445,8 +446,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     }else{
                         self.replySheet!.addButtonWithTitle("回应@\(user)")
                         self.replySheet!.addButtonWithTitle("复制")
+                        self.replySheet!.addButtonWithTitle("标记为不合适")
                         self.replySheet!.addButtonWithTitle("取消")
-                        self.replySheet!.cancelButtonIndex = 2
+                        self.replySheet!.cancelButtonIndex = 3
                         self.replySheet!.showInView(self.view)
                     }
                 }
@@ -566,12 +568,23 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
-                if buttonIndex != self.replySheet!.cancelButtonIndex{
+                var data = self.dataArray2[self.ReplyRow] as NSDictionary
+                var uid = data.stringAttributeForKey("uid")
+                if (( uid == safeuid ) || ( self.dreamowner == 1 )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                     self.deleteCommentSheet!.addButtonWithTitle("确定删除")
                     self.deleteCommentSheet!.addButtonWithTitle("取消")
                     self.deleteCommentSheet!.cancelButtonIndex = 1
                     self.deleteCommentSheet!.showInView(self.view)
+                }else{
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
+                        if(sa == "1"){
+                            dispatch_async(dispatch_get_main_queue(), {
+                                UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                            })
+                        }
+                    })
                 }
             }
         }else if actionSheet == self.deleteCommentSheet {
@@ -661,6 +674,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 })
             }else if buttonIndex == 2 { //分享梦想
                 ShareDream()
+            }else if buttonIndex == 3 { //不合适
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/a.php")
+                    if(sa == "1"){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            UIView.showAlertView("谢谢", message: "如果这个梦想不合适，我们会将其移除。")
+                        })
+                    }
+                })
             }
         }
     }

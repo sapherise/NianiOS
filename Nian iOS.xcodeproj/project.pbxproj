@@ -57,6 +57,9 @@
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
+		12CCA2F919F9EDE10098EF3D /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CCA2F819F9EDE10098EF3D /* Chat.swift */; };
+		12CCA2FB19F9EDE80098EF3D /* ChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CCA2FA19F9EDE80098EF3D /* ChatCell.xib */; };
+		12CCA2FE19F9EE0D0098EF3D /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CCA2FD19F9EE0D0098EF3D /* ChatCell.swift */; };
 		12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */; };
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
@@ -156,6 +159,9 @@
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		12BF5FF919BB479900DE0ABE /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		12CCA2F819F9EDE10098EF3D /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		12CCA2FA19F9EDE80098EF3D /* ChatCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatCell.xib; sourceTree = "<group>"; };
+		12CCA2FD19F9EE0D0098EF3D /* ChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageViewController.swift; sourceTree = "<group>"; };
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
 		12D1048C19F3387600E65B54 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
@@ -403,6 +409,16 @@
 			name = "登录";
 			sourceTree = "<group>";
 		};
+		12CCA2FC19F9EDF20098EF3D /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				12CCA2F819F9EDE10098EF3D /* Chat.swift */,
+				12CCA2FD19F9EE0D0098EF3D /* ChatCell.swift */,
+				12CCA2FA19F9EDE80098EF3D /* ChatCell.xib */,
+			);
+			name = Chat;
+			sourceTree = "<group>";
+		};
 		12CDE5CE19AC9FB4002E793F /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,6 +522,7 @@
 				12ECFC9719B8B56300CF1F98 /* 话题 */,
 				12D1049019F3388500E65B54 /* 等级 */,
 				12BE103919C5EBCB00370348 /* 更新广场评论 */,
+				12CCA2FC19F9EDF20098EF3D /* Chat */,
 				12D222F819A2677F0027284E /* 发现 */,
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
@@ -685,6 +702,7 @@
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
+				12CCA2FB19F9EDE80098EF3D /* ChatCell.xib in Resources */,
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
@@ -770,9 +788,11 @@
 				1231A07419B461F100BD425F /* UserCellTop.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
+				12CCA2FE19F9EE0D0098EF3D /* ChatCell.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12FECE2719CA7999007EF159 /* Reachability.m in Sources */,
+				12CCA2F919F9EDE10098EF3D /* Chat.swift in Sources */,
 				1231A07219B45F3A00BD425F /* User.swift in Sources */,
 				12063C5E19C9A6C500E54003 /* Store.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
