@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate{
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate {
     
     @IBOutlet var Line1: UIView?
     @IBOutlet var Line2: UIView?
@@ -18,6 +18,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var field1:UITextField?
     @IBOutlet var field2:UITextField?
     @IBOutlet var setButton: UIButton!
+    @IBOutlet var labelTag: UILabel?
     var actionSheet:UIActionSheet?
     var setDreamActionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
@@ -154,6 +155,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
         self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
+        self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
+        self.labelTag!.userInteractionEnabled = true
+    }
+    
+    func onTagClick(){
+        var storyboard = UIStoryboard(name: "DreamTagViewController", bundle: nil)
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("DreamTagViewController") as DreamTagViewController
+        viewController.dreamTagDelegate = self
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func setDream(){
@@ -220,8 +230,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.popViewControllerAnimated(true)
     }
     
-    
-    
-    
-    
+    func onTagSelected(tag: String) {
+        self.labelTag?.text = tag
+    }
 }

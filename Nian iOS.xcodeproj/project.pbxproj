@@ -91,6 +91,8 @@
 		12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FB48D3196AEAB90026DD51 /* FollowCell.xib */; };
 		12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48D5196AEAC50026DD51 /* FollowCell.swift */; };
 		12FECE2719CA7999007EF159 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FECE2619CA7999007EF159 /* Reachability.m */; };
+		326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */; };
+		326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -198,6 +200,8 @@
 		12FB48D5196AEAC50026DD51 /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		12FECE2519CA7990007EF159 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		12FECE2619CA7999007EF159 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamTagViewController.swift; sourceTree = "<group>"; };
+		326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DreamTagViewController.storyboard; sourceTree = "<group>"; };
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C48C5D02F4C145FDB6622FE5 /* Pods-Nian iOS.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.xcconfig"; path = "../Pods/Pods-Nian iOS.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -512,6 +516,7 @@
 		12FB489B196AE76E0026DD51 /* Nian iOS */ = {
 			isa = PBXGroup;
 			children = (
+				326A3E711A0719F400AA92F9 /* 标签 */,
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
@@ -586,6 +591,15 @@
 			);
 			name = Reachability;
 			path = Refresh;
+			sourceTree = "<group>";
+		};
+		326A3E711A0719F400AA92F9 /* 标签 */ = {
+			isa = PBXGroup;
+			children = (
+				326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */,
+				326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */,
+			);
+			name = "标签";
 			sourceTree = "<group>";
 		};
 		B63CD37464934379B52680E0 /* Frameworks */ = {
@@ -713,6 +727,7 @@
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
 				12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
+				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +813,7 @@
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
+				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
