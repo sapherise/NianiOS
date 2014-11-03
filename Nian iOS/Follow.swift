@@ -49,11 +49,11 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
+        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
-            var imgurl = NSURL.URLWithString(theimgurl)
-            var cacheFilename = imgurl.lastPathComponent
+            var imgurl = NSURL(string: theimgurl)
+            var cacheFilename = imgurl!.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename)
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             let activityViewController = UIActivityViewController(
@@ -72,9 +72,11 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func setupViews()
     {
-        var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
-        self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64 - 49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor

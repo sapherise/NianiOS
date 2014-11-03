@@ -59,15 +59,17 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func setupViews()
     {
-        var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
-        self.lefttableView = UITableView(frame:CGRectMake(0,0,width,height - 49))
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
+        self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
         self.lefttableView!.delegate = self;
         self.lefttableView!.dataSource = self;
         self.lefttableView!.backgroundColor = BGColor
         self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        self.righttableView = UITableView(frame:CGRectMake(0,0,width,height - 49))
+        self.righttableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
         self.righttableView!.delegate = self;
         self.righttableView!.dataSource = self;
         self.righttableView!.backgroundColor = BGColor

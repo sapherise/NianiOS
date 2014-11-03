@@ -104,6 +104,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         super.didReceiveMemoryWarning()
     }
     func setupViews(){
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
         self.view.backgroundColor = BGColor
         self.Line1!.backgroundColor = LineColor
         self.Line2!.backgroundColor = LineColor

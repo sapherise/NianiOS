@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddDreamController" customModule="Nian_iOS" customModuleProvider="target">
@@ -24,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ajJ-rB-DZh">
-                    <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                    <rect key="frame" x="20" y="64" width="280" height="50"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
@@ -32,14 +32,14 @@
                     </variation>
                 </textField>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zpu-tE-yyA">
-                    <rect key="frame" x="0.0" y="50" width="320" height="1"/>
+                    <rect key="frame" x="0.0" y="114" width="320" height="1"/>
                     <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="0.0" y="50" width="320" height="1"/>
                     </variation>
                 </view>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="简介（可选）" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3bh-3z-RqQ">
-                    <rect key="frame" x="20" y="51" width="280" height="50"/>
+                    <rect key="frame" x="20" y="115" width="280" height="50"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
@@ -47,14 +47,14 @@
                     </variation>
                 </textField>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="URX-iz-Jb4">
-                    <rect key="frame" x="0.0" y="101" width="320" height="1"/>
+                    <rect key="frame" x="0.0" y="165" width="320" height="1"/>
                     <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="0.0" y="101" width="320" height="1"/>
                     </variation>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cy6-PQ-0IE">
-                    <rect key="frame" x="11" y="116" width="38" height="34"/>
+                    <rect key="frame" x="11" y="180" width="38" height="34"/>
                     <state key="normal" image="img">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -66,14 +66,14 @@
                     </connections>
                 </button>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="EpE-9Z-isw">
-                    <rect key="frame" x="55" y="123" width="20" height="20"/>
+                    <rect key="frame" x="55" y="187" width="20" height="20"/>
                     <color key="color" red="0.0" green="0.68235296010000002" blue="0.93725496529999996" alpha="1" colorSpace="deviceRGB"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="55" y="123" width="20" height="20"/>
                     </variation>
                 </activityIndicatorView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwB-hi-tuv">
-                    <rect key="frame" x="271" y="116" width="38" height="34"/>
+                    <rect key="frame" x="271" y="180" width="38" height="34"/>
                     <state key="normal" image="settings">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -82,7 +82,7 @@
                     </variation>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="upload_ok" translatesAutoresizingMaskIntoConstraints="NO" id="lgb-Su-87b">
-                    <rect key="frame" x="58" y="125" width="15" height="15"/>
+                    <rect key="frame" x="58" y="189" width="15" height="15"/>
                     <variation key="widthClass=compact" fixedFrame="YES">
                         <rect key="frame" x="60" y="125" width="15" height="15"/>
                     </variation>

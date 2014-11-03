@@ -40,9 +40,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func setupViews()
     {
-        var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
-        self.tableView = UITableView(frame:CGRectMake(0,0,width,height-49))
+        
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
@@ -50,8 +53,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var nib = UINib(nibName:"MeCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, 320, 10))
-        self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, 320, 20))
+        self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
+        self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
     }
     

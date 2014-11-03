@@ -199,8 +199,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 return  BBSCellTop.cellHeightByData(topcontent, toptitle: toptitle)
             }else{
                 var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
-                var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
                 var sa: AnyObject! = json.objectForKey("bbstop")
                 self.toptitle = sa.objectForKey("title") as String
                 self.topcontent = sa.objectForKey("content") as String

@@ -86,7 +86,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var userImageURL = "http://img.nian.so/headtmp/\(self.uploadUrl)!head"
             var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
             var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
-            var req = NSURLRequest(URL: NSURL.URLWithString(userImageURL))
+            var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
             var queue = NSOperationQueue();
             NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
                 dispatch_async(dispatch_get_main_queue(),{
@@ -117,13 +117,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     func getSaveKeyPrivate(title:NSString) -> NSString{
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
-        var string = NSString.stringWithString("/\(title)/\(safeuid).jpg")
+        var string = NSString(string: "/\(title)/\(safeuid).jpg")
         return string
     }
     
     func setupViews(){
-        self.scrollView.frame = CGRectMake(0, 0, 320, 455)
-        self.scrollView.contentSize = CGSizeMake(320, 820)
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
+        self.scrollView.frame = CGRectMake(0, 64, globalWidth, globalHeight - 49 - 64)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 820)
         self.cacheActivity.hidden = true
         self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -173,8 +177,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var safeuid = Sa.objectForKey("uid") as String
             var safename = Sa.objectForKey("user") as String
             var url = NSURL(string:"http://nian.so/api/user.php?uid=\(safeuid)&myuid=\(safeuid)")
-            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var sa: AnyObject! = json.objectForKey("user")
             var email: AnyObject! = sa.objectForKey("email") as String
             var coin: AnyObject! = sa.objectForKey("coin") as String

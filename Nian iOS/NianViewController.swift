@@ -17,6 +17,7 @@ class MediaCell: UICollectionViewCell {
 class MySupplementaryView : UICollectionReusableView {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
+    @IBOutlet var UserHead:UIImageView!
 }
 
 class NianViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate{
@@ -68,14 +69,25 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
         if (kind == UICollectionElementKindSectionHeader) {
             header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "NianHeader", forIndexPath: indexPath)
                 as? MySupplementaryView
-//            header?.coinButton.backgroundColor = LineColor
-//            header?.levelButton.backgroundColor = LineColor
-//            header?.coinButton.setTitleColor(BGColor, forState: UIControlState.Normal)
-//            header?.levelButton.setTitleColor(BGColor, forState: UIControlState.Normal)
-//            header?.coinButton.layer.cornerRadius = 4
-//            header?.levelButton.layer.cornerRadius = 4
-//            
-//            header?.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
+            header?.coinButton.layer.cornerRadius = 4
+            header?.coinButton.layer.borderWidth = 1
+            header?.coinButton.layer.borderColor = SeaColor.CGColor
+            header?.levelButton.layer.cornerRadius = 4
+            header?.levelButton.layer.borderWidth = 1
+            header?.levelButton.layer.borderColor = SeaColor.CGColor
+            
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safename = Sa.objectForKey("user") as String
+            var url = NSURL(string:"http://nian.so/api/user.php?uid=\(safeuid)&myuid=\(safeuid)")
+            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var sa: AnyObject! = json.objectForKey("user")
+            var email: AnyObject! = sa.objectForKey("email") as String
+            var coin: AnyObject! = sa.objectForKey("coin") as String
+            
+            
+            header?.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
         }
         return header!
     }
@@ -93,11 +105,11 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
         var imgURL = "http://img.nian.so/dream/\(img)!step" as NSString
         var percent = data.stringAttributeForKey("percent")
         var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("MediaCell", forIndexPath: indexPath) as MediaCell
-        mediaCell.label.textColor = IconColor
+//        mediaCell.label.textColor = IconColor
         mediaCell.label.text = "\(title)"
         mediaCell.imageView.setImage(imgURL, placeHolder: LessBlueColor)
-        mediaCell.imageView.layer.cornerRadius = 6
-        mediaCell.imageView.layer.masksToBounds = true
+//        mediaCell.imageView.layer.cornerRadius = 6
+//        mediaCell.imageView.layer.masksToBounds = true
         return mediaCell
     }
     

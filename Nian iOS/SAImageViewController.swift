@@ -56,8 +56,8 @@ class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
     
     func longTapped(sender:UILongPressGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Began {
-            var url = NSURL.URLWithString(imageURL)
-            var cacheFilename = url.lastPathComponent
+            var url = NSURL(string: imageURL)
+            var cacheFilename = url!.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename)
             var image : AnyObject = FileUtility.imageDataFromPath(cachePath)
             let activityViewController = UIActivityViewController(

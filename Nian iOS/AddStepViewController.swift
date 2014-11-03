@@ -98,6 +98,11 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     }
     
     func setupViews(){
+        
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
         self.uploadWait.hidden = true
         self.view.backgroundColor = BGColor
         self.TextView.backgroundColor = BGColor

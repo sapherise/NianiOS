@@ -49,11 +49,11 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
+        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
-            var imgurl = NSURL.URLWithString(theimgurl)
-            var cacheFilename = imgurl.lastPathComponent
+            var imgurl = NSURL(string: theimgurl)
+            var cacheFilename = imgurl!.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename)
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             let activityViewController = UIActivityViewController(

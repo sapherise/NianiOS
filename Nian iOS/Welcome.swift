@@ -55,9 +55,10 @@ class WelcomeViewController: UIViewController {
             dispatch_async(dispatch_get_main_queue(), {
                 var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                 var navigationViewController = UINavigationController(rootViewController: mainViewController)
-                navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
+                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
                 navigationViewController.navigationBar.tintColor = IconColor
-                navigationViewController.navigationBar.translucent = false
+                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                
                 navigationViewController.navigationBar.clipsToBounds = true
                 navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                 navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent

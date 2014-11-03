@@ -16,9 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = BGColor
         var navigationViewController = UINavigationController(rootViewController: WelcomeViewController())
-        navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
+        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navigationViewController.navigationBar.tintColor = IconColor
-        navigationViewController.navigationBar.translucent = false
         navigationViewController.navigationBar.clipsToBounds = true
         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         
@@ -30,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         let pushSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(pushSettings)
         UIApplication.sharedApplication().registerForRemoteNotifications()
+//        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.BlackOpaque, animated: true)
+        
+//        self.window!.frame =  CGRectMake(0,20,self.window!.frame.size.width,self.window!.frame.size.height-20);
+//        self.window!.bounds = CGRectMake(0, 120, self.window!.frame.size.width, self.window!.frame.height)
         
         return true
     }

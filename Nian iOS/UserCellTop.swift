@@ -26,8 +26,8 @@ class UserCellTop: UITableViewCell{
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             var url = NSURL(string:"http://nian.so/api/user.php?uid=\(self.userid)&myuid=\(safeuid)")
-            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var sa: AnyObject! = json.objectForKey("user")
             var name: AnyObject! = sa.objectForKey("name")
             var fo: NSString! = sa.objectForKey("fo") as NSString

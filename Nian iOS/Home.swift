@@ -27,7 +27,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     var gameoverCoin:String = ""
     var gameoverTitle:String = ""
     
-    let itemArray = ["关注","发现","念","消息","设置"]
+    let itemArray = ["关注","发现","","消息","设置"]
     let imageArray = ["explore","bbs","dream","me","settings"]
     
     override func viewDidLoad(){
@@ -92,12 +92,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         
-        //标题
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
-        titleLabel.text = "念"
-        titleLabel.textAlignment = NSTextAlignment.Center
-        self.navigationItem.titleView = titleLabel
+//        //标题
+//        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+//        titleLabel.textColor = IconColor
+//        titleLabel.text = "念"
+//        titleLabel.textAlignment = NSTextAlignment.Center
+//        self.navigationItem.titleView = titleLabel
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamButton")
         rightButton.image = UIImage(named:"add")
@@ -106,11 +106,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         //总的
         self.view.backgroundColor = BGColor
         self.tabBar.hidden = true
-        var width = self.view.frame.size.width  //宽度
-        var height = UIScreen.mainScreen().bounds.height - 64
         
         //底部
-        self.myTabbar = UIView(frame: CGRectMake(0,height-49,width,49)) //x，y，宽度，高度
+        self.myTabbar = UIView(frame: CGRectMake(0,globalHeight-49,globalWidth,49)) //x，y，宽度，高度
         self.myTabbar!.backgroundColor = BarColor  //底部的背景色
         self.view.addSubview(self.myTabbar!)
         
@@ -173,11 +171,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         self.gameoverCoin = gameoverdata.objectForKey("coin") as String
         self.gameoverHead = gameoverdata.objectForKey("image") as String
         
-        var height = UIScreen.mainScreen().bounds.height - 64
-        self.GameOverView = UIView(frame: CGRectMake(0, 0, 320, height))
+        self.GameOverView = UIView(frame: CGRectMake(0, 0, 320, globalHeight))
         self.GameOverView!.backgroundColor = BGColor
         
-        var holder = UIView(frame: CGRectMake(40, height / 2 - 175 - 32, 240, 350))
+        var holder = UIView(frame: CGRectMake(40, globalHeight / 2 - 175, 240, 350))
+        holder.backgroundColor = UIColor.redColor()
         var gameoverHead = UIImageView(frame: CGRectMake(95, 0, 50, 50))
         gameoverHead.setImage("http://img.nian.so/dream/\(self.gameoverHead)!head", placeHolder: IconColor)
         var gameoverLabel = UILabel(frame: CGRectMake(30, 70, 180, 210))

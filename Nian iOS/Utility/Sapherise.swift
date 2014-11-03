@@ -11,15 +11,17 @@ import Foundation
 
 
 let IconColor:UIColor = UIColor(red:0.71, green:0.71,blue:0.71,alpha: 1)    //字体灰
-let BGColor:UIColor = UIColor(red:0.14, green:0.18,blue:0.24,alpha: 1)   //背景白
+let BGColor:UIColor = UIColor(red:0.14, green:0.18, blue:0.24, alpha:1)
 let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
-let BarColor:UIColor = UIColor(red:0.11, green:0.15,blue:0.19,alpha: 1)   //底栏黑
-let BlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
-let LightBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 0.7)   //念蓝
+let BarColor:UIColor = UIColor(red:0.09, green:0.09, blue:0.09, alpha:1)   //底栏黑
+let BlueColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1)   //念蓝
+let LightBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
 let LessBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 0.2)   //念蓝
 let LineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 1)   //线条
 let LittleLineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 0.2)   //线条
 let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
+let NavColor:UIColor = UIColor(red:0.14, green:0.18, blue:0.24, alpha:1)
+let SeaColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1) //深海蓝
 
 var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
@@ -30,7 +32,7 @@ var globalHeight = UIScreen.mainScreen().bounds.height
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""
     var request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL.URLWithString(urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    request!.URL = NSURL(string: urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
     request!.HTTPMethod = "POST"
     request!.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
@@ -46,7 +48,7 @@ func SAPost(postString:String, urlString:String)->String{
 
 func SAGet(getString:String, urlString:String)->String{
     var request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL.URLWithString(urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    request!.URL = NSURL(string: urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
     request!.HTTPMethod = "GET"
     request!.HTTPBody = getString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
@@ -112,13 +114,13 @@ extension String  {
     func isValidEmail()->Bool {
         let regex :String = "[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", regex)
-        return emailTest.evaluateWithObject(self)
+        return emailTest!.evaluateWithObject(self)
     }
     
     func isValidName()->Bool {
         var regex = "^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$"
         var nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
-        return nameTest.evaluateWithObject(self)
+        return nameTest!.evaluateWithObject(self)
     }
  }
 
@@ -146,14 +148,14 @@ func getSaveKey(title:NSString, png:NSString) -> NSString{
     var date = NSDate().timeIntervalSince1970
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as String
-    var string = NSString.stringWithString("/\(title)/\(safeuid)_\(Int(date)).\(png)")
+    var string = NSString(string: "/\(title)/\(safeuid)_\(Int(date)).\(png)")
     return string
 }
 
 func checkNetworkStatus() -> Int{
     let reachability: Reachability = Reachability.reachabilityForInternetConnection()
     let networkStatus: NetworkStatus = reachability.currentReachabilityStatus()
-    return networkStatus.toRaw()    //0 无网络，1 流量，2 WIFI
+    return networkStatus.rawValue    //0 无网络，1 流量，2 WIFI
 }
 
 func buttonArray()->[UIBarButtonItem]{

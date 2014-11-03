@@ -93,9 +93,9 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
                         Sa.synchronize()
                         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                         var navigationViewController = UINavigationController(rootViewController: mainViewController)
-                        navigationViewController.navigationBar.setBackgroundImage(SAColorImg(BGColor), forBarMetrics: UIBarMetrics.Default)
+                        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
                         navigationViewController.navigationBar.tintColor = IconColor
-                        navigationViewController.navigationBar.translucent = false
+                        navigationViewController.navigationBar.translucent = true
                         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                         navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                         navigationViewController.navigationBar.clipsToBounds = true

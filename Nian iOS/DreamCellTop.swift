@@ -25,8 +25,8 @@ class DreamCellTop: UITableViewCell{
         var safeshell = Sa.objectForKey("shell") as String
         dispatch_async(dispatch_get_main_queue(), {
             var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.dreamid)&uid=\(safeuid)&shell=\(safeshell)")
-            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var sa: AnyObject! = json.objectForKey("dream")
             var title: AnyObject! = sa.objectForKey("title")
             var img: AnyObject! = sa.objectForKey("img")

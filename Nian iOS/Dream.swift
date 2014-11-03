@@ -81,10 +81,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")
+        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
-            var imgurl = NSURL.URLWithString(theimgurl)
+            var imgurl = NSURL(string: theimgurl)!
             var cacheFilename = imgurl.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename)
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
@@ -101,7 +101,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func ShareDream(){
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(self.Id)")
+        var url:NSURL = NSURL(string: "http://nian.so/dream/\(self.Id)")!
         let activityViewController = UIActivityViewController(
             activityItems: [ "喜欢念上的这个梦想！「\(self.titleJson)」", url ],
             applicationActivities: nil)
@@ -113,15 +113,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
-        var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
-        self.lefttableView = UITableView(frame:CGRectMake(0,0,width,height))
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        
+        self.lefttableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64))
         self.lefttableView!.delegate = self;
         self.lefttableView!.dataSource = self;
         self.lefttableView!.backgroundColor = BGColor
         self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        self.righttableView = UITableView(frame:CGRectMake(0,0,width,height))
+        self.righttableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64))
         self.righttableView!.delegate = self;
         self.righttableView!.dataSource = self;
         self.righttableView!.backgroundColor = BGColor
@@ -159,8 +161,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var safeuid = Sa.objectForKey("uid") as String
             var safeshell = Sa.objectForKey("shell") as String
             var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.Id)&uid=\(safeuid)&shell=\(safeshell)")
-            var data = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var dream: AnyObject! = json.objectForKey("dream")
             var owneruid: String = dream.objectForKey("uid") as String
             self.titleJson = dream.objectForKey("title") as String
