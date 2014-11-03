@@ -11,9 +11,8 @@
                 <outlet property="Line2" destination="URX-iz-Jb4" id="yfd-V0-gmu"/>
                 <outlet property="field1" destination="ajJ-rB-DZh" id="6oY-om-2T4"/>
                 <outlet property="field2" destination="3bh-3z-RqQ" id="TLT-c9-iAi"/>
-                <outlet property="labelTag" destination="1AZ-LC-DDn" id="sGp-Ez-eCp"/>
+                <outlet property="labelTag" destination="057-D4-Yx5" id="zIf-az-bHR"/>
                 <outlet property="setButton" destination="SwB-hi-tuv" id="uN5-hI-eXq"/>
-                <outlet property="tagLabel" destination="057-D4-Yx5" id="XLx-ab-Vil"/>
                 <outlet property="uploadButton" destination="cy6-PQ-0IE" id="OLx-oh-hhs"/>
                 <outlet property="uploadDone" destination="lgb-Su-87b" id="tDn-S0-nI6"/>
                 <outlet property="uploadWait" destination="EpE-9Z-isw" id="Yx8-jb-d8r"/>
@@ -89,13 +88,8 @@
                         <rect key="frame" x="60" y="125" width="15" height="15"/>
                     </variation>
                 </imageView>
-<<<<<<< HEAD
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1AZ-LC-DDn">
-                    <rect key="frame" x="93" y="189" width="42" height="21"/>
-=======
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="057-D4-Yx5">
                     <rect key="frame" x="105" y="187" width="42" height="21"/>
->>>>>>> Sa
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
