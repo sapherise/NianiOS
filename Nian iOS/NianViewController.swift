@@ -18,6 +18,8 @@ class MySupplementaryView : UICollectionReusableView {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
+    @IBOutlet var UserName:UILabel!
+    @IBOutlet var UserStep:UILabel!
 }
 
 class NianViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate{
@@ -83,18 +85,43 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
             var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var sa: AnyObject! = json.objectForKey("user")
+            var name: AnyObject! = sa.objectForKey("name") as String
             var email: AnyObject! = sa.objectForKey("email") as String
             var coin: AnyObject! = sa.objectForKey("coin") as String
+            var dream: AnyObject! = sa.objectForKey("dream") as String
+            var step: AnyObject! = sa.objectForKey("step") as String
+            var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
             
+            header?.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
+            header?.levelButton.setTitle("等级 \(coin)", forState: UIControlState.Normal)
             
+            header?.UserName.text = "\(name)"
+            header?.UserHead.setImage(imgURL, placeHolder: LessBlueColor)
+            
+            header?.UserStep.text = "\(dream)个梦想, \(step)个进展"
+            header?.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
             header?.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
+            header?.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         }
         return header!
+    }
+    
+    func stepClick(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var userVC = UserViewController()
+        userVC.Id = "\(safeuid)"
+        self.navigationController!.pushViewController(userVC, animated: true)
     }
     
     func levelClick(){
         var levelVC = LevelViewController(nibName: "Level", bundle: nil)
         self.navigationController!.pushViewController(levelVC, animated: true)
+    }
+    
+    func coinClick(){
+        var coinVC = LevelViewController(nibName: "Coin", bundle: nil)
+        self.navigationController!.pushViewController(coinVC, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

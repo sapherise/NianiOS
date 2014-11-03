@@ -79,6 +79,8 @@
 		12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */; };
 		12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */; };
 		12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */; };
+		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
+		12F7A4E41A07407900F16F99 /* Coin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F7A4E31A07407900F16F99 /* Coin.xib */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -184,6 +186,8 @@
 		12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCell.swift; sourceTree = "<group>"; };
 		12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCellTop.swift; sourceTree = "<group>"; };
 		12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCellTop.xib; sourceTree = "<group>"; };
+		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
+		12F7A4E31A07407900F16F99 /* Coin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Coin.xib; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -493,6 +497,15 @@
 			name = "话题";
 			sourceTree = "<group>";
 		};
+		12F7A4E01A07405A00F16F99 /* 念币 */ = {
+			isa = PBXGroup;
+			children = (
+				12F7A4E11A07406F00F16F99 /* Coin.swift */,
+				12F7A4E31A07407900F16F99 /* Coin.xib */,
+			);
+			name = "念币";
+			sourceTree = "<group>";
+		};
 		12FB4890196AE76E0026DD51 = {
 			isa = PBXGroup;
 			children = (
@@ -526,6 +539,7 @@
 				123CB05119785B610062BB8A /* 首页 */,
 				12ECFC9719B8B56300CF1F98 /* 话题 */,
 				12D1049019F3388500E65B54 /* 等级 */,
+				12F7A4E01A07405A00F16F99 /* 念币 */,
 				12BE103919C5EBCB00370348 /* 更新广场评论 */,
 				12CCA2FC19F9EDF20098EF3D /* Chat */,
 				12D222F819A2677F0027284E /* 发现 */,
@@ -703,6 +717,7 @@
 				12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
+				12F7A4E41A07407900F16F99 /* Coin.xib in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				1231A07619B461FC00BD425F /* UserCellTop.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
@@ -821,6 +836,7 @@
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
+				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,

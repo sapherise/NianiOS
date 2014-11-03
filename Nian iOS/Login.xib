@@ -27,7 +27,7 @@
                             <rect key="frame" x="40" y="8" width="200" height="40"/>
                             <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             <variation key="widthClass=compact" fixedFrame="YES">
                                 <rect key="frame" x="35" y="7" width="200" height="40"/>
                             </variation>
