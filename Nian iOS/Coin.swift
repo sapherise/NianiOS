@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class LevelViewController: UIViewController, UIGestureRecognizerDelegate{
+class CoinViewController: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet var scrollView:UIScrollView!
     
     override func viewDidLoad(){
