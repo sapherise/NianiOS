@@ -17,6 +17,7 @@ if git checkout master; then
 if git merge $brc; then
 git push
 echo "completed"
+git checkout $brc
 fi
 fi
 fi
