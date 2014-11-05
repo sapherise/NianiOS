@@ -13,7 +13,7 @@ echo "commit to $brc"
 if git add .; then
 if git commit -a -m $msg; then
 echo "merge to master"
-if git branch master; then
+if git checkout master; then
 if git merge $brc; then
 git push
 echo "completed"
