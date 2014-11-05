@@ -13,7 +13,6 @@ class DreamCell: UITableViewCell {
     @IBOutlet var avatarView:UIImageView?
     @IBOutlet var nickLabel:UILabel?
     @IBOutlet var contentLabel:UILabel?
-    @IBOutlet var holder:UILabel?
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var imageholder:UIImageView?
     @IBOutlet var View:UIView?
@@ -82,9 +81,6 @@ class DreamCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.View!.backgroundColor = BGColor
-        self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
         var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
         self.imageholder!.addGestureRecognizer(tap)
@@ -113,7 +109,7 @@ class DreamCell: UITableViewCell {
         
         self.like!.tag = sid.toInt()!
         
-        var height = content.stringHeightWith(17,width:242)
+        var height = content.stringHeightWith(17,width:290)
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.goodbye.tag = sid.toInt()!
@@ -123,18 +119,18 @@ class DreamCell: UITableViewCell {
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
-            self.holder!.setHeight(height+136)
+      //      self.holder!.setHeight(height+136)
             imgHeight = 0
             self.menuHolder!.setY(self.contentLabel!.bottom())
         }else{
-            imgHeight = img1 * 250 / img0
+            imgHeight = img1 * 320 / img0
             ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
             largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
             self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
-            self.holder!.setHeight(height+156+sapherise)
+      //      self.holder!.setHeight(height+156+sapherise)
             
             self.imageholder!.setY(self.contentLabel!.bottom()+10)
             self.menuHolder!.setY(self.imageholder!.bottom()+10)
@@ -185,11 +181,11 @@ class DreamCell: UITableViewCell {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(17,width:242)
+        var height = content.stringHeightWith(17,width:290)
         if(img0 == 0.0){
             return height + 151
         }else{
-            return height + 171 + CGFloat(img1*250/img0)
+            return height + 171 + CGFloat(img1*320/img0)
         }
     }
     

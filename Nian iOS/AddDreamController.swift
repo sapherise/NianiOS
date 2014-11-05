@@ -49,7 +49,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if actionSheet == self.actionSheet {
         self.imagePicker = UIImagePickerController()
         self.imagePicker!.delegate = self
-        self.imagePicker!.allowsEditing = false
+        self.imagePicker!.allowsEditing = true
         if buttonIndex == 0 {
             self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)

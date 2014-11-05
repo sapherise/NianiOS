@@ -41,9 +41,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         setupViews()
     }
     
-    override func viewWillLayoutSubviews() {
-    }
-    
     func uploadClick(sender: AnyObject) {
         self.inputName!.resignFirstResponder()
         self.inputEmail!.resignFirstResponder()
@@ -59,13 +56,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         if buttonIndex == 0 {
             self.imagePicker = UIImagePickerController()
             self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = false
+            self.imagePicker!.allowsEditing = true
             self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
         }else if buttonIndex == 1 {
             self.imagePicker = UIImagePickerController()
             self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = false
+            self.imagePicker!.allowsEditing = true
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)

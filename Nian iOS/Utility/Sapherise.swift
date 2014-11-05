@@ -193,3 +193,19 @@ func SAstrlen(stremp:NSString)->Int{
     var da:NSData = stremp.dataUsingEncoding(gbkEncoding)!
     return da.length
 }
+
+extension UIVisualEffectView {
+    override public func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, withEvent: event)
+        return view == self ? nil : view
+    }
+}
+
+class fakeView:UIView{
+    override internal func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, withEvent: event)
+        return view == self ? nil : view
+    }
+}
+
+

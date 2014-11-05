@@ -104,6 +104,7 @@ class RefreshHeaderView: RefreshBaseView {
             }
             break
         case .Pulling:
+            // 在这里
             self.statusLabel.text = RefreshHeaderReleaseToRefresh
             UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
                  self.arrowImage.transform = CGAffineTransformMakeRotation(CGFloat(M_PI ))

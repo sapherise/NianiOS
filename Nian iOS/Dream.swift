@@ -120,13 +120,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.lefttableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64))
         self.lefttableView!.delegate = self;
         self.lefttableView!.dataSource = self;
-        self.lefttableView!.backgroundColor = BGColor
         self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
         self.righttableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64))
         self.righttableView!.delegate = self;
         self.righttableView!.dataSource = self;
-        self.righttableView!.backgroundColor = BGColor
         self.righttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"DreamCell", bundle: nil)
         var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
