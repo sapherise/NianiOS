@@ -14,8 +14,10 @@ if git add .; then
 if git commit -a -m $msg; then
 echo "merge to master"
 if git checkout master; then
+git pull
 if git merge $brc; then
 git push
+git checkout $brc
 echo "completed"
 fi
 fi
