@@ -15,7 +15,7 @@ if git commit -a -m $msg; then
 echo "merge to master"
 if git checkout master; then
 git pull
-if git merge $brc; then
+if git merge $brc --no-edi; then
 git push
 git checkout $brc
 git merge master
