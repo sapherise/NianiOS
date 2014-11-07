@@ -316,7 +316,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         }
         UIView.animateWithDuration( 0.1,{
                 self.slider!.frame = CGRectMake(CGFloat(index-100)*64,46,64,3)
-            })
+        })
         self.selectedIndex = index-100
         
         //标题

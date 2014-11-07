@@ -11,14 +11,12 @@ import UIKit
 class WelcomeViewController: UIViewController {
     
     func setupViews(){
-        var width = self.view.frame.size.width  //宽度
-        var height = self.view.frame.size.height   //高度
         
         self.view.hidden = true
         self.view.backgroundColor = BGColor
         
         
-        var login:UIButton = UIButton(frame: CGRectMake(20, height-48-64-20, 280, 48))
+        var login:UIButton = UIButton(frame: CGRectMake(20, globalHeight-48-30-40, 280, 48))
         login.setTitle("登录", forState: UIControlState.Normal)
         login.layer.borderColor = LineColor.CGColor
         login.layer.borderWidth = 1
@@ -26,7 +24,7 @@ class WelcomeViewController: UIViewController {
         login.titleLabel!.font = UIFont(name: "system", size: 17)
         login.setTitleColor(IconColor, forState: UIControlState.Normal)
         
-        var sign:UIButton = UIButton(frame: CGRectMake(20, height-48-64-20-47, 280, 48))
+        var sign:UIButton = UIButton(frame: CGRectMake(20, globalHeight-48-30-47-40, 280, 48))
         sign.setTitle("注册", forState: UIControlState.Normal)
         sign.layer.borderColor = LineColor.CGColor
         sign.layer.borderWidth = 1
@@ -34,10 +32,20 @@ class WelcomeViewController: UIViewController {
         sign.titleLabel!.font = UIFont(name: "system", size: 17)
         sign.setTitleColor(IconColor, forState: UIControlState.Normal)
         
+        var privacy = UILabel(frame: CGRectMake(80, globalHeight - 60, 160, 30))
+        privacy.text = "使用念，就表示你同意\n念的使用条款和隐私政策。"
+        privacy.font = UIFont.systemFontOfSize(9)
+        privacy.textColor = LineColor
+        privacy.textAlignment = NSTextAlignment.Center
+        privacy.numberOfLines = 2
+        privacy.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPrivacyClick"))
+        privacy.userInteractionEnabled = true
+        self.view.addSubview(privacy)
+        
         self.view.addSubview(login)
         self.view.addSubview(sign)
         
-        var des:UILabel = UILabel(frame: CGRectMake(20, 80, width-40, 128))
+        var des:UILabel = UILabel(frame: CGRectMake(20, 80, globalWidth-40, 128))
         var content:String = "在这个宇宙最残酷\n记梦应用里，\n只有每天坚持\n更新你的梦想，\n才不会被停用账号。"
         des.font = UIFont.systemFontOfSize(14)
         des.setHeight(128)
@@ -69,6 +77,10 @@ class WelcomeViewController: UIViewController {
                 })
             })
         }
+    }
+    
+    func onPrivacyClick(){
+        self.navigationController!.pushViewController(WebViewController(), animated: true)
     }
     
     func login(){

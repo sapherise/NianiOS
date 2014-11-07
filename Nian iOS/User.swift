@@ -20,6 +20,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var page :Int = 0
     var Id:String = "1"
     var deleteSheet:UIActionSheet?
+    var userMoreSheet:UIActionSheet!
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     
@@ -65,6 +66,24 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
+        var customActivity = SAActivity()
+        customActivity.saActivityTitle = "举报"
+        customActivity.saActivityImage = UIImage(named: "goodbye")!
+        customActivity.saActivityFunction = {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
+                if(sa == "1"){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                    })
+                }else{
+                    println(sa)
+                }
+            })
+        }
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
             var imgurl = NSURL(string: theimgurl)
@@ -73,12 +92,12 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
-                applicationActivities: nil)
+                applicationActivities: [ customActivity ])
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }else{
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
-                applicationActivities: nil)
+                applicationActivities: [ customActivity ])
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }
     }
@@ -138,7 +157,9 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         imageView.image = UIImage(named: "fo")
         rightButtonView.addSubview(imageView)
         var rightButton = UIBarButtonItem(customView: rightButtonView)
-        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
+        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "userMore")
+        moreButton.image = UIImage(named:"more")
+        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton, moreButton ]
     }
     
     func setupUnfoButton(){
@@ -150,7 +171,9 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         imageView.image = UIImage(named: "unfo")
         rightButtonView.addSubview(imageView)
         var rightButton = UIBarButtonItem(customView: rightButtonView)
-        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton ]
+        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "userMore")
+        moreButton.image = UIImage(named:"more")
+        self.navigationItem.rightBarButtonItems = [ spaceButton, rightButton, moreButton ]
     }
     
     func SAfo(){
@@ -175,6 +198,14 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             if sa != "" && sa != "err" {
             }
         })
+    }
+    
+    func userMore(){
+        self.userMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.userMoreSheet.addButtonWithTitle("拖进小黑屋")
+        self.userMoreSheet.addButtonWithTitle("取消")
+        self.userMoreSheet.cancelButtonIndex = 1
+        self.userMoreSheet.showInView(self.view)
     }
     
     func loadData()
@@ -499,6 +530,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.deleteSheet {
         if buttonIndex == 0 {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -518,6 +550,21 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             if(sa == "1"){
             }
             })
+        }
+        }else if actionSheet == self.userMoreSheet {
+            if buttonIndex == 0 {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/ban.php")
+                    if sa == "1" {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            UIView.showAlertView("好了", message: "拖进小黑屋了...")
+                        })
+                    }
+                })
+            }
         }
     }
     

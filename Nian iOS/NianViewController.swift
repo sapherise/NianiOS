@@ -80,10 +80,8 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         if coverURL == "" {
             showBorder(true)
-            println(coverURL)
         }else{
             showBorder(false)
-            println(coverURL)
         }
     }
     
@@ -323,12 +321,6 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
                             self.showBorder(false)
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                                 var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&cover=\(self.uploadUrl)", "http://nian.so/api/change_cover.php")
-                                dispatch_async(dispatch_get_main_queue(),{
-                                    println(sa)
-                                    println(safeuid)
-                                    println(safeshell)
-                                    println(self.uploadUrl)
-                                })
                             })
                         }
                     })

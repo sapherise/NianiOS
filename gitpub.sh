@@ -10,7 +10,7 @@ elif [ "$#" == "2" ]; then
 fi
 
 echo "commit to $brc"
-if git add .; then
+if git add --all; then
 if git commit -a -m $msg; then
 echo "merge to master"
 if git checkout master; then
@@ -18,8 +18,8 @@ git pull
 if git merge $brc; then
 git push
 git checkout $brc
+git merge master
 echo "completed"
-git checkout $brc
 fi
 fi
 fi

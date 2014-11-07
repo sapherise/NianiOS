@@ -23,6 +23,7 @@ class DreamCell: UITableViewCell {
     @IBOutlet weak var edit: UIButton!
     @IBOutlet weak var likebutton:UIButton!
     @IBOutlet weak var liked:UIButton!
+    @IBOutlet var labelComment:UILabel!
     var largeImageURL:String = ""
     var data :NSDictionary!
     var imgHeight:Float = 0.0
@@ -84,6 +85,12 @@ class DreamCell: UITableViewCell {
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
         var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
         self.imageholder!.addGestureRecognizer(tap)
+        
+        self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
+    }
+    
+    func onCommentClick(){
+        println("1")
     }
     
     override func layoutSubviews()
@@ -116,12 +123,12 @@ class DreamCell: UITableViewCell {
         self.edit.tag = self.indexPathRow
         self.share.tag = sid.toInt()!
         
-        
         if img0 == 0.0 {
             self.imageholder!.hidden = true
       //      self.holder!.setHeight(height+136)
             imgHeight = 0
-            self.menuHolder!.setY(self.contentLabel!.bottom())
+            self.contentLabel!.setY(70)
+            self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }else{
             imgHeight = img1 * 320 / img0
             ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
@@ -132,8 +139,8 @@ class DreamCell: UITableViewCell {
             self.imageholder!.hidden = false
       //      self.holder!.setHeight(height+156+sapherise)
             
-            self.imageholder!.setY(self.contentLabel!.bottom()+10)
-            self.menuHolder!.setY(self.imageholder!.bottom()+10)
+            self.contentLabel!.setY(self.imageholder!.bottom()+15)
+            self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }
         
         self.like!.text = "\(like) 赞"
@@ -154,7 +161,7 @@ class DreamCell: UITableViewCell {
         }else{
             self.goodbye!.hidden = true
             self.edit!.hidden = true
-            self.share!.setX(186)
+            self.share!.setX(230)
             if liked == "0" {
                 self.likebutton!.hidden = false
                 self.liked!.hidden = true

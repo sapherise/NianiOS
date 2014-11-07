@@ -28,6 +28,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var deleteDreamSheet:UIActionSheet?
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
+    var navView:UIView!
     
     var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
     
@@ -51,9 +52,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var privateJson: String = ""
     var contentJson: String = ""
     
+    var desHeight:CGFloat = 0
+    
     //editStepdelegate
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
+    var topCell:DreamCellTop!
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -82,6 +86,26 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
+        
+        var customActivity = SAActivity()
+        customActivity.saActivityTitle = "举报"
+        customActivity.saActivityImage = UIImage(named: "goodbye")!
+        customActivity.saActivityFunction = {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
+                if(sa == "1"){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                    })
+                }else{
+                    println(sa)
+                }
+            })
+        }
+        
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
             var imgurl = NSURL(string: theimgurl)!
@@ -90,12 +114,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
-                applicationActivities: nil)
+                applicationActivities: [ customActivity ])
             self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }else{
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
-                applicationActivities: nil)
+                applicationActivities: [ customActivity ])
             self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }
     }
@@ -111,13 +135,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func setupViews()
     {
         viewBack(self)
+        
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
+        
+        self.view.backgroundColor = UIColor.blackColor()
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
-        self.view.addSubview(navView)
-        
-        self.lefttableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64))
+        self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.lefttableView!.delegate = self;
         self.lefttableView!.dataSource = self;
         self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -147,7 +173,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = IconColor
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -170,6 +196,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.imgJson = dream.objectForKey("img") as String
             self.privateJson = dream.objectForKey("private") as String
             self.contentJson = dream.objectForKey("content") as String
+            
+            
+            self.desHeight = self.contentJson.stringHeightWith(11,width:200)
             
             dispatch_async(dispatch_get_main_queue(), {
                 if safeuid == owneruid {
@@ -341,37 +370,35 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var cell:UITableViewCell
         
         if indexPath.section==0{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? DreamCellTop
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as DreamCellTop
             var index = indexPath.row
             var dreamid = Id
-            c!.dreamid = dreamid
-            if tableView == lefttableView {
-                c!.Seg!.selectedSegmentIndex = 0
-            }else{
-                c!.Seg!.selectedSegmentIndex = 1
-            }
-            c!.Seg!.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.ValueChanged)
-            cell = c!
+            c.dreamid = dreamid
+            c.menuLeft.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.menuMiddle.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.menuRight.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+            self.topCell = c
+            cell = c
         }else{
             if tableView == lefttableView {
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? DreamCell
+                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
                 var index = indexPath.row
                 var data = self.dataArray[index] as NSDictionary
-                c!.data = data
-                c!.indexPathRow = index
-                c!.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
-                c!.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
-                c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c!.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-                c!.tag = index + 10
-                cell = c!
+                c.data = data
+                c.indexPathRow = index
+                c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
+                c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
+                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+                c.tag = index + 10
+                cell = c
             }else{
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? CommentCell
+                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as CommentCell
                 var index = indexPath.row
                 var data = self.dataArray2[index] as NSDictionary
-                c!.data = data
-                c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                cell = c!
+                c.data = data
+                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                cell = c
             }
         }
         return cell
@@ -398,7 +425,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
-            return  190
+            return  312
         }else{
             if tableView == lefttableView {
                 var index = indexPath!.row
@@ -493,24 +520,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
-    }
-    func hello(sender: UISegmentedControl){
-        var x = sender.selectedSegmentIndex
-        if x == 0 {
-            sender.selectedSegmentIndex = 1
-            self.righttableView!.hidden = true
-            self.lefttableView!.hidden = false
-            var y = self.righttableView!.contentOffset.y
-            self.lefttableView!.setContentOffset(CGPointMake(0, y), animated: false)
-            SAReloadData()
-        }else if x == 1 {
-            sender.selectedSegmentIndex = 0
-            self.lefttableView!.hidden = true
-            self.righttableView!.hidden = false
-            var y = self.lefttableView!.contentOffset.y
-            self.righttableView!.setContentOffset(CGPointMake(0, y), animated: false)
-            SARightReloadData()
-        }
     }
     func SAedit(sender:UIButton){
         var data = self.dataArray[sender.tag] as NSDictionary
@@ -724,7 +733,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
-    
     func DreamimageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
@@ -732,5 +740,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
+    func hello(sender: UIButton){
+        self.topCell.menuLeft.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        self.topCell.menuMiddle.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        self.topCell.menuRight.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+        UIView.animateWithDuration(0.1, animations: {
+            self.topCell.menuSlider.frame.origin.x = sender.frame.origin.x
+            
+        })
+    }
     
 }
+

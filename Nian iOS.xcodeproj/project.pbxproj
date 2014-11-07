@@ -26,6 +26,7 @@
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
 		1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6161975729100F55389 /* RefreshHeaderView.swift */; };
 		1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6171975729100F55389 /* UIScrollView+Refresh.swift */; };
+		1255785C1A0CD434005E56D7 /* Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1255785B1A0CD434005E56D7 /* Web.swift */; };
 		1257833519B5F19F008A1B3B /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833419B5F19F008A1B3B /* Like.swift */; };
 		1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833619B5F1A8008A1B3B /* LikeCell.swift */; };
 		1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1257833819B5F1B1008A1B3B /* LikeCell.xib */; };
@@ -128,6 +129,7 @@
 		1251D6151975729100F55389 /* RefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshFooterView.swift; sourceTree = "<group>"; };
 		1251D6161975729100F55389 /* RefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHeaderView.swift; sourceTree = "<group>"; };
 		1251D6171975729100F55389 /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
+		1255785B1A0CD434005E56D7 /* Web.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web.swift; sourceTree = "<group>"; };
 		1257833419B5F19F008A1B3B /* Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		1257833619B5F1A8008A1B3B /* LikeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
 		1257833819B5F1B1008A1B3B /* LikeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LikeCell.xib; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 			children = (
 				1217A3E9198D358600959AD2 /* SettingsViewController.swift */,
 				12BE103E19C6055300370348 /* Help.swift */,
+				1255785B1A0CD434005E56D7 /* Web.swift */,
 				12DE696419D130940006B5B5 /* Care.swift */,
 				12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */,
 			);
@@ -813,6 +816,7 @@
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
+				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				1231A06D19B36B7B00BD425F /* AddCommentViewController.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				1231A07419B461F100BD425F /* UserCellTop.swift in Sources */,

@@ -11,7 +11,7 @@ import Foundation
 
 
 let IconColor:UIColor = UIColor(red:0.71, green:0.71,blue:0.71,alpha: 1)    //字体灰
-let BGColor:UIColor = UIColor(red:0.14, green:0.18, blue:0.24, alpha:1)
+let BGColor:UIColor = UIColor.whiteColor()
 let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
 let BarColor:UIColor = UIColor(red:0.09, green:0.09, blue:0.09, alpha:1)   //底栏黑
 let BlueColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1)   //念蓝
@@ -20,7 +20,7 @@ let LessBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 0.2)  
 let LineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 1)   //线条
 let LittleLineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 0.2)   //线条
 let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
-let NavColor:UIColor = UIColor(red:0.14, green:0.18, blue:0.24, alpha:1)
+let NavColor:UIColor = UIColor(red:0, green:0, blue:0, alpha:1)
 let SeaColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1) //深海蓝
 
 var globalWillNianReload:Int = 0
@@ -205,6 +205,27 @@ class fakeView:UIView{
     override internal func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, withEvent: event)
         return view == self ? nil : view
+    }
+}
+
+class SAActivity: UIActivity {
+    var saActivityTitle:String = ""
+    var saActivityImage:UIImage! = UIImage()
+    var saActivityFunction: (() -> Void)?
+    override func activityType() -> String {
+        return ""
+    }
+    override func activityTitle() -> String  {
+        return saActivityTitle
+    }
+    override func activityImage() -> UIImage {
+        return saActivityImage
+    }
+    override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
+        return true
+    }
+    override func prepareWithActivityItems(activityItems: [AnyObject]) {
+        saActivityFunction!()
     }
 }
 
