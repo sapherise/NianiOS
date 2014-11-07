@@ -81,7 +81,6 @@
 		12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */; };
 		12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */; };
 		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
-		12F7A4E41A07407900F16F99 /* Coin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F7A4E31A07407900F16F99 /* Coin.xib */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -94,8 +93,14 @@
 		12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FB48D3196AEAB90026DD51 /* FollowCell.xib */; };
 		12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48D5196AEAC50026DD51 /* FollowCell.swift */; };
 		12FECE2719CA7999007EF159 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FECE2619CA7999007EF159 /* Reachability.m */; };
+		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
+		3257F7711A077B69005475BB /* Coin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3257F7701A077B69005475BB /* Coin.storyboard */; };
 		326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */; };
 		326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */; };
+		328181E71A08CE2700768D7D /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328181E61A08CE2700768D7D /* CoinCell.swift */; };
+		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
+		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
+		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -189,7 +194,6 @@
 		12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCellTop.swift; sourceTree = "<group>"; };
 		12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCellTop.xib; sourceTree = "<group>"; };
 		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
-		12F7A4E31A07407900F16F99 /* Coin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Coin.xib; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -206,8 +210,14 @@
 		12FB48D5196AEAC50026DD51 /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		12FECE2519CA7990007EF159 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		12FECE2619CA7999007EF159 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		3257F7701A077B69005475BB /* Coin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Coin.storyboard; sourceTree = "<group>"; };
 		326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamTagViewController.swift; sourceTree = "<group>"; };
 		326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DreamTagViewController.storyboard; sourceTree = "<group>"; };
+		328181E61A08CE2700768D7D /* CoinCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
+		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
+		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
+		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C48C5D02F4C145FDB6622FE5 /* Pods-Nian iOS.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.xcconfig"; path = "../Pods/Pods-Nian iOS.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -503,8 +513,10 @@
 		12F7A4E01A07405A00F16F99 /* 念币 */ = {
 			isa = PBXGroup;
 			children = (
+				326BB93B1A0B6E21007E12B4 /* 详情 */,
 				12F7A4E11A07406F00F16F99 /* Coin.swift */,
-				12F7A4E31A07407900F16F99 /* Coin.xib */,
+				3257F7701A077B69005475BB /* Coin.storyboard */,
+				328181E61A08CE2700768D7D /* CoinCell.swift */,
 			);
 			name = "念币";
 			sourceTree = "<group>";
@@ -532,7 +544,6 @@
 		12FB489B196AE76E0026DD51 /* Nian iOS */ = {
 			isa = PBXGroup;
 			children = (
-				326A3E711A0719F400AA92F9 /* 标签 */,
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
@@ -547,6 +558,7 @@
 				12CCA2FC19F9EDF20098EF3D /* Chat */,
 				12D222F819A2677F0027284E /* 发现 */,
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
+				326A3E711A0719F400AA92F9 /* 标签 */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
 				1231A06B19B36B6200BD425F /* 更新回应 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
@@ -585,6 +597,7 @@
 				12FB48C2196AE8010026DD51 /* UIViewExt.swift */,
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
+				322DB94B1A0C9E95005FD6AE /* Api.swift */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";
@@ -617,6 +630,16 @@
 				326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */,
 			);
 			name = "标签";
+			sourceTree = "<group>";
+		};
+		326BB93B1A0B6E21007E12B4 /* 详情 */ = {
+			isa = PBXGroup;
+			children = (
+				32AA49201A0BAA4900570B95 /* CoinDetail.swift */,
+				32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */,
+				32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */,
+			);
+			name = "详情";
 			sourceTree = "<group>";
 		};
 		B63CD37464934379B52680E0 /* Frameworks */ = {
@@ -720,7 +743,7 @@
 				12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
-				12F7A4E41A07407900F16F99 /* Coin.xib in Resources */,
+				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				1231A07619B461FC00BD425F /* UserCellTop.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
@@ -740,6 +763,7 @@
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
+				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */,
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
@@ -811,6 +835,7 @@
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
+				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
 				12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
@@ -821,6 +846,7 @@
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				1231A07419B461F100BD425F /* UserCellTop.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
+				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				12CCA2FE19F9EE0D0098EF3D /* ChatCell.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
@@ -840,11 +866,13 @@
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
+				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
+				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
