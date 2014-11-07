@@ -39,6 +39,7 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.collectionView.contentInset.bottom = 60
         self.extendedLayoutIncludesOpaqueBars = true
     }
+    
     func SAReloadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
@@ -48,7 +49,7 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
             }
             var arr = data["items"] as NSArray
             self.dataArray.removeAllObjects()
-            for data2 : AnyObject  in arr{
+            for data2 : AnyObject  in arr {
                 self.dataArray.addObject(data2)
             }
             self.collectionView.reloadData()
@@ -120,8 +121,9 @@ class NianViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     func coinClick(){
-        var coinVC = LevelViewController(nibName: "Coin", bundle: nil)
-        self.navigationController!.pushViewController(coinVC, animated: true)
+        var storyboard = UIStoryboard(name: "Coin", bundle: nil)
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") as UIViewController
+        self.navigationController!.pushViewController(viewController, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
