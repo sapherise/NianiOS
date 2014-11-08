@@ -68,7 +68,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "goodbye")!
+        customActivity.saActivityImage = UIImage(named: "flag")!
         customActivity.saActivityFunction = {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -77,10 +77,8 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
                 if(sa == "1"){
                     dispatch_async(dispatch_get_main_queue(), {
-                        UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                        UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
                     })
-                }else{
-                    println(sa)
                 }
             })
         }
@@ -93,11 +91,17 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
                 applicationActivities: [ customActivity ])
+            activityViewController.excludedActivityTypes = [
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+            ]
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }else{
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
                 applicationActivities: [ customActivity ])
+            activityViewController.excludedActivityTypes = [
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+            ]
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }
     }

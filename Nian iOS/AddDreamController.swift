@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol editDreamDelegate {
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String)
+}
+
 class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate {
     
     @IBOutlet var Line1: UIView?
@@ -22,6 +26,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var actionSheet:UIActionSheet?
     var setDreamActionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
+    var delegate:editDreamDelegate?
     
     var uploadUrl:String = ""
     
@@ -218,6 +223,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 dispatch_async(dispatch_get_main_queue(), {
                     globalWillNianReload = 1
                     self.navigationController!.popViewControllerAnimated(true)
+                    self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2?.text)!, editImage:self.uploadUrl)
                 })
             }
         })

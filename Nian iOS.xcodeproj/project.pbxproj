@@ -66,6 +66,7 @@
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
 		12D1048F19F3387F00E65B54 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1048E19F3387F00E65B54 /* Level.swift */; };
 		12DE696519D130940006B5B5 /* Care.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE696419D130940006B5B5 /* Care.swift */; };
+		12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1E5241A0EBBFD0005B129 /* DreamComment.swift */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
 		12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FD19A37FC900FCB2D1 /* Explore.swift */; };
@@ -179,6 +180,7 @@
 		12D1048E19F3387F00E65B54 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		12DE696419D130940006B5B5 /* Care.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Care.swift; sourceTree = "<group>"; };
 		12DE699419D198C40006B5B5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		12E1E5241A0EBBFD0005B129 /* DreamComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamComment.swift; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		12E553FD19A37FC900FCB2D1 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 			children = (
 				12E4939A19953DCC00F8DF32 /* CommentCell.swift */,
 				12E4939819953DBB00F8DF32 /* CommentCell.xib */,
+				12E1E5241A0EBBFD0005B129 /* DreamComment.swift */,
 			);
 			name = "回应";
 			sourceTree = "<group>";
@@ -861,6 +864,7 @@
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
+				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,

@@ -85,12 +85,6 @@ class DreamCell: UITableViewCell {
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
         var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
         self.imageholder!.addGestureRecognizer(tap)
-        
-        self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
-    }
-    
-    func onCommentClick(){
-        println("1")
     }
     
     override func layoutSubviews()
@@ -105,7 +99,8 @@ class DreamCell: UITableViewCell {
         img = self.data.stringAttributeForKey("img") as NSString
         img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
         img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
-        var like = self.data.stringAttributeForKey("like") as NSString
+        var like = self.data.stringAttributeForKey("like") as String
+        var comment = self.data.stringAttributeForKey("comment") as String
         
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
@@ -122,6 +117,24 @@ class DreamCell: UITableViewCell {
         self.goodbye.tag = sid.toInt()!
         self.edit.tag = self.indexPathRow
         self.share.tag = sid.toInt()!
+        if comment != "0" {
+            comment = "\(comment) 评论"
+        }else{
+            comment = "评论"
+        }
+        if like == "0" {
+            self.like.hidden = true
+        }else{
+            self.like.hidden = false
+        }
+        like = "\(like) 赞"
+        self.like.text = like
+        var likeWidth = like.stringWidthWith(13, height: 30) + 17
+        self.like.setWidth(likeWidth)
+        self.labelComment.text = comment
+        var commentWidth = comment.stringWidthWith(13, height: 30) + 17
+        self.labelComment.setWidth(commentWidth)
+        self.like.setX(commentWidth+23)
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
@@ -143,12 +156,6 @@ class DreamCell: UITableViewCell {
             self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }
         
-        self.like!.text = "\(like) 赞"
-        if like == "0" {
-            self.like!.hidden = true
-        }else{
-            self.like!.hidden = false
-        }
         
         
         //主人

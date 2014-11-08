@@ -45,10 +45,6 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
         return true
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        println(error)
-    }
-    
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
     }

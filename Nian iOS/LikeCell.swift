@@ -11,31 +11,83 @@ import UIKit
 
 class LikeCell: UITableViewCell {
     
-    @IBOutlet var avatarView:UIImageView?
-    @IBOutlet var nickLabel:UILabel?
-    @IBOutlet var holder:UILabel?
-    @IBOutlet var View:UIView?
+    @IBOutlet var avatarView:UIImageView!
+    @IBOutlet var nickLabel:UILabel!
+    @IBOutlet var View:UIView!
+    @IBOutlet var btnFollow:UIButton!
     var LargeImgURL:String = ""
     var data :NSDictionary!
     var user:String = ""
+    var uid:String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.View!.backgroundColor = BGColor
-        self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
+        self.avatarView.layer.cornerRadius = 20
+        self.avatarView.layer.masksToBounds = true
+        self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     override func layoutSubviews()
     {
         super.layoutSubviews()
-        var uid = self.data.stringAttributeForKey("uid")
+        self.uid = self.data.stringAttributeForKey("uid") as String
+        var follow = self.data.stringAttributeForKey("follow") as String
         user = self.data.stringAttributeForKey("user")
         self.nickLabel!.text = user
-        
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
+        self.avatarView.tag = self.uid.toInt()!
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
-        self.avatarView!.tag = uid.toInt()!
+        
+        if follow == "0" {
+            self.btnFollow.tag = 100
+            self.btnFollow.layer.borderColor = SeaColor.CGColor
+            self.btnFollow.layer.borderWidth = 1
+            self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
+            self.btnFollow.backgroundColor = UIColor.whiteColor()
+            self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
+        }else{
+            self.btnFollow.tag = 200
+            self.btnFollow.layer.borderWidth = 0
+            self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            self.btnFollow.backgroundColor = SeaColor
+            self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
+        }
+    }
+    
+    func onFollowClick(sender:UIButton){
+        var tag = sender.tag
+        if tag == 100 {     //没有关注
+            self.data.setValue("1", forKey: "follow")
+            sender.tag = 200
+            sender.layer.borderWidth = 0
+            sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            sender.backgroundColor = SeaColor
+            sender.setTitle("关注中", forState: UIControlState.Normal)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+                if sa != "" && sa != "err" {
+                }
+            })
+        }else if tag == 200 {   //正在关注
+            self.data.setValue("0", forKey: "follow")
+            sender.tag = 100
+            sender.layer.borderColor = SeaColor.CGColor
+            sender.layer.borderWidth = 1
+            sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+            sender.backgroundColor = UIColor.whiteColor()
+            sender.setTitle("关注", forState: UIControlState.Normal)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+                if sa != "" && sa != "err" {
+                }
+            })
+        }
     }
 }

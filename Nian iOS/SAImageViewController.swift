@@ -71,22 +71,6 @@ class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
                 UIActivityTypeMail,
                 UIActivityTypeMessage
             ]
-            //        activityViewController.excludedActivityTypes =  [
-            //            UIActivityTypePostToTwitter,
-            //            UIActivityTypePostToFacebook,
-            //            UIActivityTypePostToWeibo,
-            //            UIActivityTypeMessage,
-            //            UIActivityTypeMail,
-            //            UIActivityTypePrint,
-            //            UIActivityTypeCopyToPasteboard,
-            //            UIActivityTypeAssignToContact,
-            //            UIActivityTypeSaveToCameraRoll,
-            //            UIActivityTypeAddToReadingList,
-            //            UIActivityTypePostToFlickr,
-            //            UIActivityTypePostToVimeo,
-            //            UIActivityTypePostToTencentWeibo
-            //        ]
-            ///
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }
     }

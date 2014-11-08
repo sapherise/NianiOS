@@ -53,7 +53,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "goodbye")!
+        customActivity.saActivityImage = UIImage(named: "flag")!
         customActivity.saActivityFunction = {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -62,10 +62,8 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
                 if(sa == "1"){
                     dispatch_async(dispatch_get_main_queue(), {
-                        UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                        UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
                     })
-                }else{
-                    println(sa)
                 }
             })
         }
@@ -79,11 +77,17 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
                 applicationActivities: [ customActivity ])
+            activityViewController.excludedActivityTypes = [
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+            ]
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }else{
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
                 applicationActivities: [ customActivity ])
+            activityViewController.excludedActivityTypes = [
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+            ]
             self.presentViewController(activityViewController, animated: true, completion: nil)
         }
     }

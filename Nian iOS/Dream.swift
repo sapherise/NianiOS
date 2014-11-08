@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, AddCommentDelegate, UIGestureRecognizerDelegate{
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, AddCommentDelegate, UIGestureRecognizerDelegate, editDreamDelegate{
     
     let identifier = "dream"
     let identifier2 = "dreamtop"
@@ -51,6 +51,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var imgJson: String = ""
     var privateJson: String = ""
     var contentJson: String = ""
+    var owneruid: String = ""
+    var likedreamJson: String = ""
+    var likestepJson: String = ""
+    var liketotalJson: Int = 0
+    var stepJson: String = ""
+    var desJson:String = ""
     
     var desHeight:CGFloat = 0
     
@@ -89,7 +95,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "goodbye")!
+        customActivity.saActivityImage = UIImage(named: "flag")!
         customActivity.saActivityFunction = {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -98,13 +104,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
                 if(sa == "1"){
                     dispatch_async(dispatch_get_main_queue(), {
-                        UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
+                        UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
                     })
-                }else{
-                    println(sa)
                 }
             })
         }
+        
         
         if content[1] as NSString != "" {
             var theimgurl:String = content[1] as String
@@ -115,11 +120,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
                 applicationActivities: [ customActivity ])
+            self.activityViewController?.excludedActivityTypes = [
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+            ]
             self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }else{
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
                 applicationActivities: [ customActivity ])
+            self.activityViewController?.excludedActivityTypes = [
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+            ]
             self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }
     }
@@ -188,7 +199,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
             var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var dream: AnyObject! = json.objectForKey("dream")
-            var owneruid: String = dream.objectForKey("uid") as String
+            self.owneruid = dream.objectForKey("uid") as String
             self.titleJson = dream.objectForKey("title") as String
             self.percentJson = dream.objectForKey("percent") as String
             self.followJson = dream.objectForKey("follow") as String
@@ -196,30 +207,29 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.imgJson = dream.objectForKey("img") as String
             self.privateJson = dream.objectForKey("private") as String
             self.contentJson = dream.objectForKey("content") as String
+            self.desJson = dream.objectForKey("content") as String
             
+            
+            self.likedreamJson = dream.objectForKey("like_dream") as String
+            self.likestepJson = dream.objectForKey("like_step") as String
+            self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
+            self.stepJson = dream.objectForKey("step") as String
             
             self.desHeight = self.contentJson.stringHeightWith(11,width:200)
             
             dispatch_async(dispatch_get_main_queue(), {
-                if safeuid == owneruid {
+                if safeuid == self.owneruid {
                     self.dreamowner = 1
-                    var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
-                    rightButton.image = UIImage(named:"add")
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
                     moreButton.image = UIImage(named:"more")
-                    if self.percentJson == "0" {
-                        self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
-                    }else{
-                        self.navigationItem.rightBarButtonItems = [ moreButton]
-                    }
+                    self.navigationItem.rightBarButtonItems = [ moreButton]
                 }else{
                     self.dreamowner = 0
-                    var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "commentVC")
-                    rightButton.image = UIImage(named:"bbs_add")
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
                     moreButton.image = UIImage(named:"more")
-                    self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
+                    self.navigationItem.rightBarButtonItems = [ moreButton]
                 }
+                self.loadDreamTopcell()
             })
         })
         
@@ -360,6 +370,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         super.didReceiveMemoryWarning()
     }
     
+    func onStepClick(){
+        UIView.animateWithDuration(0.3, animations: {
+            self.lefttableView!.contentOffset.y = 287
+        })
+    }
+    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
@@ -374,9 +390,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var index = indexPath.row
             var dreamid = Id
             c.dreamid = dreamid
-            c.menuLeft.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
-            c.menuMiddle.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
-            c.menuRight.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStepClick"))
+            c.numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeDream"))
+//            UIControlEvents.
+//            c.menuLeft.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+//            c.menuMiddle.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+//            c.menuRight.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
             self.topCell = c
             cell = c
         }else{
@@ -390,6 +409,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+                c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
                 c.tag = index + 10
                 cell = c
             }else{
@@ -402,6 +422,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
         }
         return cell
+    }
+    
+    func onCommentClick(){
+        var DreamVC = DreamCommentViewController()
+        DreamVC.Id = "1"
+        self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     func likeclick(sender:UITapGestureRecognizer){
@@ -425,7 +451,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
-            return  312
+            return  287
         }else{
             if tableView == lefttableView {
                 var index = indexPath!.row
@@ -493,6 +519,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func countUp() {      //😍
         self.SAReloadData()
+        var stepNum = self.topCell.numMiddleNum.text!.toInt()!
+        self.topCell.numMiddleNum.text = "\(stepNum + 1)"
     }
     
     
@@ -561,6 +589,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                         self.dataArray.removeObjectAtIndex(newpath!.row)
                         self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
                         self.lefttableView!.reloadData()
+                        var stepNum = self.topCell.numMiddleNum.text!.toInt()!
+                        self.topCell.numMiddleNum.text = "\(stepNum - 1)"
                         break
                     }
                 }
@@ -625,6 +655,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }else if actionSheet == self.ownerMoreSheet {
             if buttonIndex == 0 {   //编辑梦想
                 var editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+                editdreamVC.delegate = self
                 editdreamVC.isEdit = 1
                 editdreamVC.editId = self.Id
                 editdreamVC.editTitle = self.titleJson
@@ -633,17 +664,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 editdreamVC.editPrivate = self.privateJson
                 self.navigationController!.pushViewController(editdreamVC, animated: true)
             }else if buttonIndex == 1 { //完成梦想
-                var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
-                rightButton.image = UIImage(named:"add")
                 var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
                 moreButton.image = UIImage(named:"more")
                 if self.percentJson == "1" {
                     self.percentJson = "0"
-                    self.navigationItem.rightBarButtonItems = [ rightButton, moreButton]
                 }else if self.percentJson == "0" {
                     self.percentJson = "1"
-                    self.navigationItem.rightBarButtonItems = [ moreButton]
                 }
+                self.navigationItem.rightBarButtonItems = [ moreButton]
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&percent=\(self.percentJson)", "http://nian.so/api/dream_complete_query.php")
                     if sa != "" && sa != "err" {
@@ -671,16 +699,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     }
                 })
             }else if buttonIndex == 1 {     //赞梦想
-                if self.likeJson == "1" {
-                    self.likeJson = "0"
-                }else if self.likeJson == "0" {
-                    self.likeJson = "1"
-                }
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&cool=\(self.likeJson)", "http://nian.so/api/dream_cool_query.php")
-                    if sa != "" && sa != "err" {
-                    }
-                })
+                onDreamLikeClick()
             }else if buttonIndex == 2 { //分享梦想
                 ShareDream()
             }else if buttonIndex == 3 { //不合适
@@ -694,6 +713,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 })
             }
         }
+    }
+    
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String){
+        self.titleJson = editTitle
+        self.privateJson = editPrivate
+        self.contentJson = editDes
+        self.desJson = editDes
+        self.imgJson = editImage
+        loadDreamTopcell()
     }
     
     func commentVC(){
@@ -710,7 +738,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func commentFinish(){
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
@@ -740,14 +767,91 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
-    func hello(sender: UIButton){
-        self.topCell.menuLeft.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        self.topCell.menuMiddle.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        self.topCell.menuRight.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
-        UIView.animateWithDuration(0.1, animations: {
-            self.topCell.menuSlider.frame.origin.x = sender.frame.origin.x
-            
+    func loadDreamTopcell(){
+        if self.privateJson == "1" {
+            var string = NSMutableAttributedString(string: "\(self.titleJson)（私密）")
+            var len = string.length
+            string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-4))
+            string.addAttribute(NSForegroundColorAttributeName, value: BlueColor, range: NSMakeRange(len-4, 4))
+            self.topCell.nickLabel.attributedText = string
+        }else if self.percentJson == "1" {
+            var string = NSMutableAttributedString(string: "\(self.titleJson)（已完成）")
+            var len = string.length
+            string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-5))
+            string.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(len-5, 5))
+            self.topCell.nickLabel.attributedText = string
+        }else{
+            self.topCell.nickLabel.text = "\(self.titleJson)"
+        }
+        
+        var Sa = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        self.topCell.btnMain.hidden = false
+        UIView.animateWithDuration(0.3, animations: {
+            self.topCell.btnMain.alpha = 1
+        })
+        if self.owneruid == safeuid {
+            self.topCell.btnMain.setTitle("更新", forState: UIControlState.Normal)
+            self.topCell.btnMain.addTarget(self, action: "addStepButton", forControlEvents: UIControlEvents.TouchUpInside)
+        }else{
+            if self.likeJson == "0" {
+                self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
+                self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+            }else{
+                self.topCell.btnMain.setTitle("分享", forState: UIControlState.Normal)
+                self.topCell.btnMain.addTarget(self, action: "ShareDream", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+        }
+        
+        self.topCell.numLeftNum.text = "\(self.liketotalJson)"
+        self.topCell.numMiddleNum.text = "\(self.stepJson)"
+        self.topCell.numRightNum.text = "0"
+        
+        
+        if self.desJson == "" {
+            self.desJson = "暂无简介"
+        }
+        
+        self.topCell.labelDes.text = self.desJson
+        var desHeight = self.desJson.stringHeightWith(12,width:200)
+        self.topCell.labelDes.setHeight(desHeight)
+        self.topCell.labelDes.setY( 110 - desHeight / 2 )
+        var userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
+        self.topCell.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
+    }
+    
+    
+    func likeDream(){
+        var LikeVC = LikeViewController()
+        LikeVC.Id = "\(self.Id)"
+        LikeVC.urlIdentify = 3
+        self.navigationController!.pushViewController(LikeVC, animated: true)
+    }
+    
+    func onDreamLikeClick(){
+        if self.likeJson == "1" {
+            self.likeJson = "0"
+            self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
+            self.topCell.btnMain.removeTarget(self, action: "ShareDream", forControlEvents: UIControlEvents.TouchUpInside)
+            self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+            var numLike = self.topCell.numLeftNum.text!.toInt()!
+            self.topCell.numLeftNum.text = "\(numLike - 1)"
+        }else if self.likeJson == "0" {
+            self.likeJson = "1"
+            self.topCell.btnMain.setTitle("已赞", forState: UIControlState.Normal)
+            self.topCell.btnMain.removeTarget(self, action: "ShareDream", forControlEvents: UIControlEvents.TouchUpInside)
+            self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+            var numLike = self.topCell.numLeftNum.text!.toInt()!
+            self.topCell.numLeftNum.text = "\(numLike + 1)"
+        }
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&cool=\(self.likeJson)", "http://nian.so/api/dream_cool_query.php")
+            if sa != "" && sa != "err" {
+            }
         })
     }
     

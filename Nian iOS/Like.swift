@@ -16,6 +16,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var page :Int = 0
     var Id:String = ""
     var urlIdentify:Int = 0
+    var navView:UIView!
     
     
     override func viewDidLoad()
@@ -43,9 +44,11 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func setupViews()
     {
-        var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
-        self.tableView = UITableView(frame:CGRectMake(0,0,width,height))
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
+        
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
@@ -63,8 +66,10 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             titleLabel.text = "赞过"
         }else if self.urlIdentify == 1 {
             titleLabel.text = "关注"
-        }else{
+        }else if self.urlIdentify == 2 {
             titleLabel.text = "听众"
+        }else if self.urlIdentify == 3 {
+            titleLabel.text = "赞过梦想"
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -111,12 +116,16 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     func urlString()->String{
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
         if self.urlIdentify == 0 {
-            return "http://nian.so/api/like.php?page=\(page)&id=\(Id)"
+            return "http://nian.so/api/like.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 1 {
-            return "http://nian.so/api/user_fo_list.php?page=\(page)&uid=\(Id)"
+            return "http://nian.so/api/user_fo_list.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
+        }else if self.urlIdentify == 2 {
+            return "http://nian.so/api/user_foed_list.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
         }else{
-            return "http://nian.so/api/user_foed_list.php?page=\(page)&uid=\(Id)"
+            return "http://nian.so/api/like_dream.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }
     }
     
@@ -159,7 +168,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        return  80
+        return  70
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {

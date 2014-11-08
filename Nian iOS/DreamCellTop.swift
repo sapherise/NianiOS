@@ -10,20 +10,23 @@ import UIKit
 
 class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
 
-    @IBOutlet var nickLabel:UILabel?
-    @IBOutlet var dreamhead:UIImageView?
-    @IBOutlet var View:UIView?
+    @IBOutlet var nickLabel:UILabel!
+    @IBOutlet var dreamhead:UIImageView!
+    @IBOutlet var View:UIView!
     @IBOutlet var labelDes:UILabel!
-    @IBOutlet var viewLine:UIView!
     @IBOutlet var btnMain:UIButton!
     @IBOutlet var viewRight:UIView!
     @IBOutlet var viewLeft:UIView!
     @IBOutlet var dotLeft:UIView!
     @IBOutlet var dotRight:UIView!
-    @IBOutlet var menuLeft:UIButton!
-    @IBOutlet var menuMiddle:UIButton!
-    @IBOutlet var menuRight:UIButton!
-    @IBOutlet var menuSlider:UIView!
+    
+    @IBOutlet var numLeft:UIView!
+    @IBOutlet var numMiddle:UIView!
+    @IBOutlet var numRight:UIView!
+    @IBOutlet var numLeftNum:UILabel!
+    @IBOutlet var numMiddleNum:UILabel!
+    @IBOutlet var numRightNum:UILabel!
+    
     var dreamid:String = ""
     var desHeight:CGFloat = 0
     var panStartPoint:CGPoint!
@@ -36,18 +39,21 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.panGesture.delegate = self
         self.View?.addGestureRecognizer(self.panGesture)
-        
-        self.menuMiddle.setTitleColor(SeaColor, forState: UIControlState.Normal)
-        self.menuMiddle.setTitleColor(UIColor.blackColor(), forState: UIControlState.Highlighted)
-        self.menuMiddle.setTitleColor(UIColor.blackColor(), forState: UIControlState.Selected)
+        self.btnMain.backgroundColor = SeaColor
+        self.btnMain.hidden = true
+        self.btnMain.alpha = 0
+        self.viewLeft.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
+        self.viewRight.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
+        self.selectionStyle = UITableViewCellSelectionStyle.None
     }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let panGesture = gestureRecognizer as UIPanGestureRecognizer
-        let panY = panGesture.locationInView(self).y
-        if panY > 242 {
+        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
             return false
         }
+        
+        let panGesture = gestureRecognizer as UIPanGestureRecognizer
+        let panY = panGesture.locationInView(self).y
         let translation = panGesture.translationInView(self)
         return fabs(translation.y) < fabs(translation.x)
     }
@@ -99,50 +105,5 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     override func layoutSubviews(){
         super.layoutSubviews()
-        
-        var Sa = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.dreamid)&uid=\(safeuid)&shell=\(safeshell)")
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-            var sa: AnyObject! = json.objectForKey("dream")
-            var title: AnyObject! = sa.objectForKey("title")
-            var img: AnyObject! = sa.objectForKey("img")
-            var percent: String! = sa.objectForKey("percent") as String
-            var isPrivate: String! = sa.objectForKey("private") as String
-            var des = sa.objectForKey("content") as String
-            if des == "" {
-                des = "暂无简介"
-            }
-            
-            self.labelDes.text = des
-            self.desHeight = des.stringHeightWith(12,width:200)
-            self.labelDes.setHeight(self.desHeight)
-            self.labelDes.setY( 90 - self.desHeight / 2 )
-            self.viewLeft.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
-            self.viewRight.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
-            self.menuSlider.backgroundColor = SeaColor
-            if isPrivate == "1" {
-                var string = NSMutableAttributedString(string: "\(title)（私密）")
-                var len = string.length
-                string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-4))
-                string.addAttribute(NSForegroundColorAttributeName, value: BlueColor, range: NSMakeRange(len-4, 4))
-                self.nickLabel!.attributedText = string
-            }else if percent == "1" {
-                var string = NSMutableAttributedString(string: "\(title)（已完成）")
-                var len = string.length
-                string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-5))
-                string.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(len-5, 5))
-                self.nickLabel!.attributedText = string
-            }else{
-                self.nickLabel!.text = "\(title)"
-            }
-            var userImageURL = "http://img.nian.so/dream/\(img)!dream"
-            self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
-            self.selectionStyle = UITableViewCellSelectionStyle.None
-        })
     }
 }
