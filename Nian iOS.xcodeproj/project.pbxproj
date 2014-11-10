@@ -93,6 +93,7 @@
 		12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48D5196AEAC50026DD51 /* FollowCell.swift */; };
 		12FECE2719CA7999007EF159 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FECE2619CA7999007EF159 /* Reachability.m */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
+		323F783E1A105C93003C3755 /* V.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323F783D1A105C93003C3755 /* V.swift */; };
 		3257F7711A077B69005475BB /* Coin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3257F7701A077B69005475BB /* Coin.storyboard */; };
 		326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */; };
 		326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */; };
@@ -209,6 +210,7 @@
 		12FECE2519CA7990007EF159 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		12FECE2619CA7999007EF159 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
 		3257F7701A077B69005475BB /* Coin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Coin.storyboard; sourceTree = "<group>"; };
 		326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamTagViewController.swift; sourceTree = "<group>"; };
 		326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DreamTagViewController.storyboard; sourceTree = "<group>"; };
@@ -595,6 +597,7 @@
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 				322DB94B1A0C9E95005FD6AE /* Api.swift */,
+				323F783D1A105C93003C3755 /* V.swift */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";
@@ -840,6 +843,7 @@
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1231A06D19B36B7B00BD425F /* AddCommentViewController.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
+				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				1231A07419B461F100BD425F /* UserCellTop.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,

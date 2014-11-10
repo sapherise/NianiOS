@@ -54,6 +54,12 @@
                                         </view>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="imageIcon" destination="bPN-zg-zaX" id="P2L-7g-I6a"/>
+                                    <outlet property="textDate" destination="ZJ6-FL-d3U" id="NJb-tq-1Cg"/>
+                                    <outlet property="textDetail" destination="gJl-To-mr0" id="VLc-7a-f9q"/>
+                                    <outlet property="textType" destination="V6O-T5-2ra" id="de7-Qe-pV8"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
