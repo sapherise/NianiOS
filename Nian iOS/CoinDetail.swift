@@ -12,12 +12,12 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     
     @IBOutlet var tableView: UITableView!
     
-    var coinDetails = [String]()
+    let things = ["", "更新进展", "解除封号"]
+    
+    var coinDetails = [(String, String, Int, String)]()
+    var page = 0
     
     override func viewDidLoad() {
-        coinDetails.append("")
-        coinDetails.append("")
-        
         setupViews()
         setupRefresh()
     }
@@ -55,15 +55,36 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("CoinDetailCell", forIndexPath: indexPath) as? CoinDetailCell
-        
+        let (icon, coin, thing, lastdate) = self.coinDetails[indexPath.row]
+        cell!.textDetail.text = "\(coin) 念币"
+        cell!.textType.text = "\(things[thing])"
+        cell!.textDate.text = lastdate
         return cell!
     }
     
+    func loadData(forHeader: Bool) {
+        Api.getCoinDetial("\(page++)") { json in
+            let current = (json!.objectForKey("time") as NSString).doubleValue
+            let items = json!.objectForKey("items") as NSArray
+            for item in items {
+                self.coinDetails.append(("", (item.objectForKey("coin") as String), (item.objectForKey("thing") as String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as NSString).doubleValue, current: current)))
+            }
+            self.tableView.reloadData()
+            if forHeader {
+                self.tableView.headerEndRefreshing()
+            } else {
+                self.tableView.footerEndRefreshing()
+            }
+        }
+    }
+    
     func onPullToRefresh() {
-        self.tableView.headerEndRefreshing()
+        page = 0
+        coinDetails.removeAll(keepCapacity: true)
+        loadData(true)
     }
     
     func onPullToLoad() {
-        self.tableView.footerEndRefreshing()
+        loadData(false)
     }
 }
