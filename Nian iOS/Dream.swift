@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, AddCommentDelegate, UIGestureRecognizerDelegate, editDreamDelegate{
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate{
     
     let identifier = "dream"
     let identifier2 = "dreamtop"
@@ -296,7 +296,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func RightloadData()
     {
-        var url = "http://nian.so/api/comment.php?page=\(page)&id=\(Id)"
+        var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(Id)"
         // self.refreshView!.startLoading()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject == NSNull()
@@ -338,7 +338,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         })
     }
     func SARightReloadData(){
-        var url = "http://nian.so/api/comment.php?page=0&id=\(Id)"
+        var url = "http://nian.so/api/comment_step.php?page=0&id=\(Id)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject == NSNull(){
                 UIView.showAlertView("提示",message:"加载失败")
@@ -409,7 +409,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-                c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
+                c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
                 c.tag = index + 10
                 cell = c
             }else{
@@ -424,10 +424,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         return cell
     }
     
-    func onCommentClick(){
-        var DreamVC = DreamCommentViewController()
-        DreamVC.Id = "1"
-        self.navigationController!.pushViewController(DreamVC, animated: true)
+    func onCommentClick(sender:UIGestureRecognizer){
+        var tag = sender.view!.tag
+        var DreamCommentVC = DreamCommentViewController()
+        var totalComment = SAReplace(( sender.view! as UILabel ).text!, " 评论", "") as String
+        if totalComment == "评论" {
+            totalComment = "0"
+        }
+        DreamCommentVC.dataTotal = totalComment.toInt()!
+        DreamCommentVC.dreamID = self.Id.toInt()!
+        DreamCommentVC.stepID = tag
+        DreamCommentVC.dreamowner = self.dreamowner
+        self.navigationController!.pushViewController(DreamCommentVC, animated: true)
     }
     
     func likeclick(sender:UITapGestureRecognizer){
@@ -726,7 +734,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func commentVC(){
         var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
-        addCommentVC.delegate = self
         if self.ReplyUser != "" {
             addCommentVC.content = "@\(self.ReplyUser) "
         }else{

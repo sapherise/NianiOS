@@ -11,20 +11,21 @@ import UIKit
 
 class CommentCell: UITableViewCell {
     
-    @IBOutlet var avatarView:UIImageView?
-    @IBOutlet var nickLabel:UILabel?
-    @IBOutlet var contentLabel:UILabel?
-    @IBOutlet var lastdate:UILabel?
-    @IBOutlet var View:UIView?
-    @IBOutlet var Line:UIView?
+    @IBOutlet var avatarView:UIImageView!
+    @IBOutlet var nickLabel:UILabel!
+    @IBOutlet var contentLabel:UILabel!
+    @IBOutlet var lastdate:UILabel!
+    @IBOutlet var View:UIView!
+    @IBOutlet var imageContent:UIImageView!
     var data :NSDictionary!
+    var contentLabelWidth:CGFloat = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.View!.backgroundColor = BGColor
-        self.nickLabel!.textColor = BlueColor
-        self.Line!.backgroundColor = LineColor
+        self.nickLabel!.textColor = SeaColor
+        self.avatarView.layer.masksToBounds = true
+        self.avatarView.layer.cornerRadius = 20
     }
     
     override func layoutSubviews()
@@ -41,19 +42,57 @@ class CommentCell: UITableViewCell {
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         
-        var height = content.stringHeightWith(17,width:225)
+        var height = content.stringHeightWith(17,width:208)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.Line!.setY(self.contentLabel!.bottom()+16)
         self.avatarView?.tag = uid.toInt()!
+        
+        if floor(height) == 20.0 {      //如果是单行
+            var oneLineWidth = content.stringWidthWith(17, height: 24)
+            self.imageContent.setWidth(oneLineWidth + 27)
+            self.imageContent.setHeight(37)
+            self.contentLabelWidth = content.stringWidthWith(17, height: 24)
+        }else{      //如果是多行
+            self.imageContent.setHeight(height+20)
+            self.imageContent.setWidth(235)
+            self.contentLabelWidth = 208
+        }
+        self.avatarView.setBottom(height + 55)
+        self.nickLabel.setBottom(height + 60)
+        self.nickLabel.setWidth(user.stringWidthWith(11, height: 21))
+        self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
+        self.lastdate.setBottom(height + 60)
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        if uid == safeuid {
+            self.imageContent.image = UIImage(named: "bubble_me")
+            self.contentLabel.textColor = UIColor.blackColor()
+            self.imageContent.setX( globalWidth - 65 - self.imageContent.width())
+            self.avatarView.setX(globalWidth - 15 - 40)
+            self.nickLabel.hidden = true
+            self.lastdate.setX(globalWidth - 75 - lastdate.stringWidthWith(11, height: 21))
+            self.contentLabel.setX(globalWidth - 80 - self.contentLabelWidth)
+        }else{
+            self.imageContent.image = UIImage(named: "bubble")
+            self.contentLabel.textColor = UIColor.whiteColor()
+            self.imageContent.setX(65)
+            self.avatarView.setX(15)
+            self.nickLabel.hidden = false
+            self.lastdate.setX(user.stringWidthWith(11, height: 21)+83)
+            self.contentLabel.setX(80)
+        }
+        
+        
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var content = data.stringAttributeForKey("content")
-        var height = content.stringHeightWith(17,width:225)
-        return height + 80
+        var height = content.stringHeightWith(17,width:208)
+        return height + 60
     }
     
 }
