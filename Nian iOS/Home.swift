@@ -286,12 +286,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     //每个按钮跳转到哪个页面
     func initViewControllers()
     {
-        dispatch_async(dispatch_get_main_queue(), {
-        var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
-        var vc1 = FollowViewController()
+        var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
+        var vc1 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
         var vc2 = ExploreController()
         //var vc2 = ChatViewController()
+        var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
+        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         var vc3 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
@@ -299,9 +299,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 2
-        })
     }
-    
     
     //底部的按钮按下去
     func tabBarButtonClicked(sender:UIButton){
@@ -326,13 +324,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        if index == 100 {       //关注
+        let idExplore = 100
+        let idBBS = 101
+        let idDream = 102
+        let idMe = 103
+        let idSetting = 104
+        
+        if index == idExplore {       //关注
             NSNotificationCenter.defaultCenter().postNotificationName("foRefresh", object: self.foFreshTimes)
             self.foFreshTimes = self.foFreshTimes + 1
             self.bbsFreshTimes = 0
-            self.navigationItem.rightBarButtonItem = nil
             noticeDot()
-        }else if index == 101 {     //广场
+        }else if index == idBBS {     //广场
             NSNotificationCenter.defaultCenter().postNotificationName("bbsRefresh", object: self.bbsFreshTimes)
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
@@ -340,20 +343,20 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
             rightButton.image = UIImage(named:"add")
             self.navigationItem.rightBarButtonItem = rightButton
             noticeDot()
-        }else if index == 102 {     //梦想
+        }else if index == idDream {     //梦想
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamButton")
             rightButton.image = UIImage(named:"add")
             self.navigationItem.rightBarButtonItem = rightButton
             self.foFreshTimes = 0
             self.bbsFreshTimes = 0
             noticeDot()
-        }else if index == 103 {     //消息
+        }else if index == idMe {     //消息
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
             self.foFreshTimes = 0
             self.bbsFreshTimes = 0
             self.navigationItem.rightBarButtonItem = nil
-        }else{      //设置
+        }else if index == idSetting {      //设置
             self.foFreshTimes = 0
             self.bbsFreshTimes = 0
             self.navigationItem.rightBarButtonItem = nil

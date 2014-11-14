@@ -1,342 +1,108 @@
 //
-//  YRJokeTableViewController.swift
-//  JokeClient-Swift
+//  Explore.swift
+//  Nian iOS
 //
-//  Created by YANGReal on 14-6-5.
-//  Copyright (c) 2014年 YANGReal. All rights reserved.
+//  Created by vizee on 14/11/10.
+//  Copyright (c) 2014年 Sa. All rights reserved.
 //
 
 import UIKit
 
-class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
+class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    let identifier = "group"
-    let identifier2 = "exploretop"
-    let identifier3 = "exploreall"
-    var lefttableView:UITableView?
-    var righttableView:UITableView?
-    var dataArray = NSMutableArray()
-    var dataArray2 = NSMutableArray()
-    var page :Int = 0
-    var Id:String = "1"
-    var toggle:Int = 0
+    @IBOutlet var btnFollow: UIButton!
+    @IBOutlet var btnDynamic: UIButton!
+    @IBOutlet var btnHot: UIButton!
+    @IBOutlet var btnNew: UIButton!
+    
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var tableView: UITableView!
+    
+    var current = -1
+    var currentProvider: ExploreProviderDelegate!
+    
+    var buttons: [UIButton]!
+    var data: [ExploreProviderDelegate]!
+    
+    override func viewDidLoad() {
+        self.buttons = [
+            btnFollow,
+            btnDynamic,
+            btnHot,
+            btnNew
+        ]
+        self.data = [
+            ExploreFollowProvider(bindView: tableView),
+            ExploreDynamicProvider(bindView: tableView),
+            ExploreHotProvider(bindView: collectionView),
+            ExploreNewProvider(bindView: collectionView)
+        ]
+        setupViews()
+    }
     
     override func viewDidAppear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
+        self.navigationController!.navigationBar.setY(-44)
     }
     
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-        setupViews()
-        setupRefresh()
-        SAReloadData()
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController!.navigationBar.setY(20)
     }
     
-    override func viewWillDisappear(animated: Bool){
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "bbsRefresh", object:nil)
+    func setupViews() {
+        view.backgroundColor = BGColor
+        collectionView.alwaysBounceVertical = true
+        collectionView.contentInset.bottom = 60
+        tableView.allowsSelection = false
+        btnFollow.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnDynamic.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnHot.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnNew.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        tableView.addHeaderWithCallback(onPullDown)
+        tableView.addFooterWithCallback(onPullUp)
+        collectionView.addHeaderWithCallback(onPullDown)
+        collectionView.addFooterWithCallback(onPullUp)
+        switchTab(0);
     }
-    override func viewWillAppear(animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "bbsRefresh:", name: "bbsRefresh", object: nil)
-        if globalWillBBSReload == 1 {
-            self.SAReloadData()
-            globalWillBBSReload = 0
+    
+    func onPullDown() {
+        self.currentProvider.refreshData()
+    }
+    
+    func onPullUp() {
+        self.currentProvider.loadData()
+    }
+    
+    func switchTab(tab: Int) {
+        if current == tab {
+            return
         }
-    }
-    
-    func bbsRefresh(noti:NSNotification){
-        if noti.object! as Int != 0 {
-            if self.toggle == 0 {
-                self.lefttableView!.setContentOffset(CGPointMake(0, 0), animated: true)
-            }else{
-                self.righttableView!.setContentOffset(CGPointMake(0, 0), animated: true)
-            }
+        if current != -1 {
+            buttons[current].selected = false
         }
-    }
-    
-    func setupViews()
-    {
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
-        self.view.addSubview(navView)
-        
-        self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
-        self.lefttableView!.delegate = self;
-        self.lefttableView!.dataSource = self;
-        self.lefttableView!.backgroundColor = BGColor
-        self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        
-        self.righttableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
-        self.righttableView!.delegate = self;
-        self.righttableView!.dataSource = self;
-        self.righttableView!.backgroundColor = BGColor
-        self.righttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.righttableView!.hidden = true
-        
-        var nib = UINib(nibName:"GroupCell", bundle: nil)
-        var nib2 = UINib(nibName:"ExploreTop", bundle: nil)
-        var nib3 = UINib(nibName:"ExploreDreamCell", bundle: nil)
-        
-        
-        self.title = "梦想"
-        self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
-        self.righttableView?.registerNib(nib3, forCellReuseIdentifier: identifier3)
-        self.righttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
-        
-        self.view.addSubview(self.lefttableView!)
-        self.view.addSubview(self.righttableView!)
-        
-        //标题颜色
-        self.navigationController!.navigationBar.tintColor = IconColor
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
-        titleLabel.textAlignment = NSTextAlignment.Center
-        self.navigationItem.titleView = titleLabel
-        
-    }
-    
-    
-    func loadData()
-    {
-        var url = urlString()
-        // self.refreshView!.startLoading()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray.addObject(data)
-            }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.footerEndRefreshing()
-            self.page++
-            })
-    }
-    func RightloadData()
-    {
-        var url = "http://nian.so/api/explore_all.php?page=\(page)"
-        // self.refreshView!.startLoading()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray2.addObject(data)
-            }
-            self.righttableView!.reloadData()
-            self.righttableView!.footerEndRefreshing()
-            self.page++
-            })
-    }
-    
-    
-    func SAReloadData(){
-        var url = "http://nian.so/api/bbs.php?page=0"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.headerEndRefreshing()
-            self.page = 1
-            })
-    }
-    func SARightReloadData(){
-        var url = "http://nian.so/api/explore_all.php?page=0"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            self.dataArray2.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray2.addObject(data)
-            }
-            self.righttableView!.reloadData()
-            self.righttableView!.headerEndRefreshing()
-            self.page = 1
-            })
-    }
-    
-    
-    
-    
-    func urlString()->String
-    {
-        return "http://nian.so/api/bbs.php?page=\(page)"
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section==0{
-            return 1
-        }else{
-            if tableView == lefttableView {
-            return self.dataArray.count
-            }else{
-            return self.dataArray2.count/3
-            }
+        current = tab
+        currentProvider = self.data[tab]
+        buttons[tab].selected = true
+        if tab < 2 {
+            collectionView.dataSource = nil
+            collectionView.delegate = nil
+            collectionView.hidden = true
+            tableView.delegate = currentProvider as? UITableViewDelegate
+            tableView.dataSource = currentProvider as? UITableViewDataSource
+            tableView.hidden = false
+            tableView.setContentOffset(CGPointZero, animated: true)
+        } else {
+            tableView.dataSource = nil
+            tableView.delegate = nil
+            tableView.hidden = true
+            collectionView.delegate = currentProvider as? UICollectionViewDelegate
+            collectionView.dataSource = currentProvider as? UICollectionViewDataSource
+            collectionView.hidden = false
+            collectionView.setContentOffset(CGPointZero, animated: true)
         }
+        currentProvider.show()
     }
     
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell
-        
-        if indexPath.section==0{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? ExploreTop
-            var index = indexPath.row
-            if tableView == lefttableView {
-                c!.Seg!.selectedSegmentIndex = 0
-            }else{
-                c!.Seg!.selectedSegmentIndex = 1
-            }
-            c!.Seg!.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.ValueChanged)
-            cell = c!
-        }else{
-            if tableView == lefttableView {
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
-                var index = indexPath.row
-                var data = self.dataArray[index] as NSDictionary
-                c!.data = data
-                cell = c!
-            }else{
-                var index = indexPath.row * 3
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? ExploreDreamCell
-           //     var index = indexPath!.row
-                var data1 = self.dataArray2[index] as NSDictionary
-                var data2 = self.dataArray2[index+1] as NSDictionary
-                var data3 = self.dataArray2[index+2] as NSDictionary
-                c!.data1 = data1
-                c!.data2 = data2
-                c!.data3 = data3
-                
-                c!.head1!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
-                c!.head2!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
-                c!.head3!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
-                cell = c!
-            }
-        }
-        return cell
-    }
-    
-    func dreamclick(sender:UITapGestureRecognizer){
-        var DreamVC = DreamViewController()
-        DreamVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(DreamVC, animated: true)
-    }
-    
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
-    {
-        if indexPath.section==0{
-            return  69
-        }else{
-            if tableView == lefttableView {
-                var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
-                return  GroupCell.cellHeightByData(data)
-            }else{
-                return  140
-            }
-        }
-    }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
-    {
-        if indexPath.section == 0 {
-        }else{
-            if tableView == lefttableView {
-                var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
-                var BBSVC = BBSViewController()
-                BBSVC.Id = data.stringAttributeForKey("id")
-                BBSVC.topcontent = data.stringAttributeForKey("content")
-                BBSVC.topuid = data.stringAttributeForKey("uid")
-                BBSVC.topuser = data.stringAttributeForKey("user")
-                BBSVC.toplastdate = data.stringAttributeForKey("lastdate")
-                BBSVC.toptitle = data.stringAttributeForKey("title")
-                self.navigationController!.pushViewController(BBSVC, animated: true)
-            }
-        }
-    }
-    
-    func countUp() {      //😍
-        self.SAReloadData()
-    }
-    
-    func imageViewTapped(noti:NSNotification)
-    {
-        //        var imageURL = noti.object as String
-        //        var imgVC = YRImageViewController(nibName: nil, bundle: nil)
-        //        imgVC.imageURL = imageURL
-        //        self.navigationController.pushViewController(imgVC, animated: true)
-    }
-    func setupRefresh(){
-        self.lefttableView!.addHeaderWithCallback({
-            self.SAReloadData()
-            })
-        
-        self.lefttableView!.addFooterWithCallback({
-            self.loadData()
-            })
-        
-        self.righttableView!.addHeaderWithCallback({
-            self.SARightReloadData()
-            })
-        
-        self.righttableView!.addFooterWithCallback({
-            self.RightloadData()
-            })
-    }
-    func back(){
-        self.navigationController!.popViewControllerAnimated(true)
-    }
-    func hello(sender: UISegmentedControl){
-        var x = sender.selectedSegmentIndex
-        if x == 0 {
-            sender.selectedSegmentIndex = 1
-            self.righttableView!.hidden = true
-            self.lefttableView!.hidden = false
-            self.toggle = 0
-            var y = self.righttableView!.contentOffset.y
-            self.lefttableView!.setContentOffset(CGPointMake(0, y), animated: false)
-            SAReloadData()
-        }else if x == 1 {
-            sender.selectedSegmentIndex = 0
-            self.lefttableView!.hidden = true
-            self.righttableView!.hidden = false
-            self.toggle = 1
-            SARightReloadData()
-            var y = self.lefttableView!.contentOffset.y
-            self.righttableView!.setContentOffset(CGPointMake(0, y), animated: false)
-        }
+    func onTabClick(sender: UIButton) {
+        switchTab(sender.tag - 1100)
     }
 }

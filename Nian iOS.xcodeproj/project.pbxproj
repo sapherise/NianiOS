@@ -69,13 +69,6 @@
 		12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1E5241A0EBBFD0005B129 /* DreamComment.swift */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
-		12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FD19A37FC900FCB2D1 /* Explore.swift */; };
-		12E5540019A3813B00FCB2D1 /* ExploreTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */; };
-		12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E5540119A3814400FCB2D1 /* ExploreTop.xib */; };
-		12E5540419A395B500FCB2D1 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E5540319A395B500FCB2D1 /* GroupCell.swift */; };
-		12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E5540519A395BF00FCB2D1 /* GroupCell.xib */; };
-		12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E5540819A399CF00FCB2D1 /* ExploreDreamCell.swift */; };
-		12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E5540A19A399D900FCB2D1 /* ExploreDreamCell.xib */; };
 		12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9819B8B58B00CF1F98 /* BBS.swift */; };
 		12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */; };
 		12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */; };
@@ -95,11 +88,25 @@
 		12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48D5196AEAC50026DD51 /* FollowCell.swift */; };
 		12FECE2719CA7999007EF159 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FECE2619CA7999007EF159 /* Reachability.m */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
+		323CD2E41A11AF5100FFE3F4 /* ExploreDynamicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2E31A11AF5100FFE3F4 /* ExploreDynamicCell.xib */; };
+		323CD2E61A11D68400FFE3F4 /* ExploreDynamicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2E51A11D68400FFE3F4 /* ExploreDynamicCell.swift */; };
+		323CD2ED1A11EEF300FFE3F4 /* ExploreDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2E81A11EEF300FFE3F4 /* ExploreDreamCell.swift */; };
+		323CD2EE1A11EEF300FFE3F4 /* ExploreDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2E91A11EEF300FFE3F4 /* ExploreDreamCell.xib */; };
+		323CD2EF1A11EEF300FFE3F4 /* ExploreOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EA1A11EEF300FFE3F4 /* ExploreOld.swift */; };
+		323CD2F01A11EEF300FFE3F4 /* ExploreTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EB1A11EEF300FFE3F4 /* ExploreTop.swift */; };
+		323CD2F11A11EEF300FFE3F4 /* ExploreTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2EC1A11EEF300FFE3F4 /* ExploreTop.xib */; };
+		323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */; };
+		323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */; };
+		323CD2F71A11FABF00FFE3F4 /* ExploreProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F61A11FABF00FFE3F4 /* ExploreProvider.swift */; };
 		323F783E1A105C93003C3755 /* V.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323F783D1A105C93003C3755 /* V.swift */; };
+		3252850D1A10C2B600316021 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3252850C1A10C2B600316021 /* Explore.storyboard */; };
+		3252850F1A10C2C300316021 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3252850E1A10C2C300316021 /* Explore.swift */; };
 		3257F7711A077B69005475BB /* Coin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3257F7701A077B69005475BB /* Coin.storyboard */; };
 		326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */; };
 		326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */; };
 		328181E71A08CE2700768D7D /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328181E61A08CE2700768D7D /* CoinCell.swift */; };
+		32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32871D121A14AB0E002C9486 /* ExploreHotCell.xib */; };
+		32871D151A14ABE0002C9486 /* ExploreHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32871D141A14ABE0002C9486 /* ExploreHotCell.swift */; };
 		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
@@ -184,13 +191,6 @@
 		12E1E5241A0EBBFD0005B129 /* DreamComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamComment.swift; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
-		12E553FD19A37FC900FCB2D1 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
-		12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreTop.swift; sourceTree = "<group>"; };
-		12E5540119A3814400FCB2D1 /* ExploreTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreTop.xib; sourceTree = "<group>"; };
-		12E5540319A395B500FCB2D1 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
-		12E5540519A395BF00FCB2D1 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
-		12E5540819A399CF00FCB2D1 /* ExploreDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDreamCell.swift; sourceTree = "<group>"; };
-		12E5540A19A399D900FCB2D1 /* ExploreDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ExploreDreamCell.xib; path = "Nian iOS/ExploreDreamCell.xib"; sourceTree = SOURCE_ROOT; };
 		12ECFC9819B8B58B00CF1F98 /* BBS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBS.swift; sourceTree = "<group>"; };
 		12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCell.xib; sourceTree = "<group>"; };
 		12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCell.swift; sourceTree = "<group>"; };
@@ -214,11 +214,25 @@
 		12FECE2519CA7990007EF159 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		12FECE2619CA7999007EF159 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		323CD2E31A11AF5100FFE3F4 /* ExploreDynamicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicCell.xib; sourceTree = "<group>"; };
+		323CD2E51A11D68400FFE3F4 /* ExploreDynamicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDynamicCell.swift; sourceTree = "<group>"; };
+		323CD2E81A11EEF300FFE3F4 /* ExploreDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDreamCell.swift; sourceTree = "<group>"; };
+		323CD2E91A11EEF300FFE3F4 /* ExploreDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDreamCell.xib; sourceTree = "<group>"; };
+		323CD2EA1A11EEF300FFE3F4 /* ExploreOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreOld.swift; sourceTree = "<group>"; };
+		323CD2EB1A11EEF300FFE3F4 /* ExploreTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreTop.swift; sourceTree = "<group>"; };
+		323CD2EC1A11EEF300FFE3F4 /* ExploreTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreTop.xib; sourceTree = "<group>"; };
+		323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
+		323CD2F61A11FABF00FFE3F4 /* ExploreProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreProvider.swift; sourceTree = "<group>"; };
 		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
+		3252850C1A10C2B600316021 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
+		3252850E1A10C2C300316021 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
 		3257F7701A077B69005475BB /* Coin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Coin.storyboard; sourceTree = "<group>"; };
 		326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamTagViewController.swift; sourceTree = "<group>"; };
 		326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DreamTagViewController.storyboard; sourceTree = "<group>"; };
 		328181E61A08CE2700768D7D /* CoinCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
+		32871D121A14AB0E002C9486 /* ExploreHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreHotCell.xib; sourceTree = "<group>"; };
+		32871D141A14ABE0002C9486 /* ExploreHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHotCell.swift; sourceTree = "<group>"; };
 		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
 		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
 		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
@@ -471,19 +485,6 @@
 			name = "等级";
 			sourceTree = "<group>";
 		};
-		12D222F819A2677F0027284E /* 发现 */ = {
-			isa = PBXGroup;
-			children = (
-				12E553FD19A37FC900FCB2D1 /* Explore.swift */,
-				12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */,
-				12E5540119A3814400FCB2D1 /* ExploreTop.xib */,
-				12E5540319A395B500FCB2D1 /* GroupCell.swift */,
-				12E5540519A395BF00FCB2D1 /* GroupCell.xib */,
-				12E5540719A399B800FCB2D1 /* 所有梦想 */,
-			);
-			name = "发现";
-			sourceTree = "<group>";
-		};
 		12E4939C19953DD600F8DF32 /* 回应 */ = {
 			isa = PBXGroup;
 			children = (
@@ -492,15 +493,6 @@
 				12E1E5241A0EBBFD0005B129 /* DreamComment.swift */,
 			);
 			name = "回应";
-			sourceTree = "<group>";
-		};
-		12E5540719A399B800FCB2D1 /* 所有梦想 */ = {
-			isa = PBXGroup;
-			children = (
-				12E5540819A399CF00FCB2D1 /* ExploreDreamCell.swift */,
-				12E5540A19A399D900FCB2D1 /* ExploreDreamCell.xib */,
-			);
-			name = "所有梦想";
 			sourceTree = "<group>";
 		};
 		12ECFC9719B8B56300CF1F98 /* 话题 */ = {
@@ -556,12 +548,13 @@
 				1291D59619BE0C39009F45F6 /* 欢迎页 */,
 				1205298C196B186B00E7509D /* 梦想 */,
 				123CB05119785B610062BB8A /* 首页 */,
+				3252850B1A10C2A200316021 /* 发现 */,
+				323CD2E71A11EEC400FFE3F4 /* 发现原 */,
 				12ECFC9719B8B56300CF1F98 /* 话题 */,
 				12D1049019F3388500E65B54 /* 等级 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
 				12BE103919C5EBCB00370348 /* 更新广场评论 */,
 				12CCA2FC19F9EDF20098EF3D /* Chat */,
-				12D222F819A2677F0027284E /* 发现 */,
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
@@ -627,6 +620,34 @@
 			);
 			name = Reachability;
 			path = Refresh;
+			sourceTree = "<group>";
+		};
+		323CD2E71A11EEC400FFE3F4 /* 发现原 */ = {
+			isa = PBXGroup;
+			children = (
+				323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */,
+				323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */,
+				323CD2E81A11EEF300FFE3F4 /* ExploreDreamCell.swift */,
+				323CD2E91A11EEF300FFE3F4 /* ExploreDreamCell.xib */,
+				323CD2EA1A11EEF300FFE3F4 /* ExploreOld.swift */,
+				323CD2EB1A11EEF300FFE3F4 /* ExploreTop.swift */,
+				323CD2EC1A11EEF300FFE3F4 /* ExploreTop.xib */,
+			);
+			name = "发现原";
+			sourceTree = "<group>";
+		};
+		3252850B1A10C2A200316021 /* 发现 */ = {
+			isa = PBXGroup;
+			children = (
+				3252850C1A10C2B600316021 /* Explore.storyboard */,
+				3252850E1A10C2C300316021 /* Explore.swift */,
+				323CD2E31A11AF5100FFE3F4 /* ExploreDynamicCell.xib */,
+				323CD2E51A11D68400FFE3F4 /* ExploreDynamicCell.swift */,
+				32871D121A14AB0E002C9486 /* ExploreHotCell.xib */,
+				32871D141A14ABE0002C9486 /* ExploreHotCell.swift */,
+				323CD2F61A11FABF00FFE3F4 /* ExploreProvider.swift */,
+			);
+			name = "发现";
 			sourceTree = "<group>";
 		};
 		326A3E711A0719F400AA92F9 /* 标签 */ = {
@@ -746,8 +767,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
-				12E5540219A3814400FCB2D1 /* ExploreTop.xib in Resources */,
+				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
+				32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
@@ -756,12 +778,14 @@
 				12063C6019C9A6D200E54003 /* Store.xib in Resources */,
 				1231A06F19B36B8F00BD425F /* AddCommentViewController.xib in Resources */,
 				1231A07A19B463E400BD425F /* UserCell.xib in Resources */,
+				323CD2EE1A11EEF300FFE3F4 /* ExploreDreamCell.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
-				12E5540B19A399D900FCB2D1 /* ExploreDreamCell.xib in Resources */,
+				323CD2E41A11AF5100FFE3F4 /* ExploreDynamicCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
+				323CD2F11A11EEF300FFE3F4 /* ExploreTop.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
 				12CCA2FB19F9EDE80098EF3D /* ChatCell.xib in Resources */,
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
@@ -773,9 +797,9 @@
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */,
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
-				12E5540619A395BF00FCB2D1 /* GroupCell.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
+				3252850D1A10C2B600316021 /* Explore.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -827,11 +851,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
-				12E5540019A3813B00FCB2D1 /* ExploreTop.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */,
-				12E5540419A395B500FCB2D1 /* GroupCell.swift in Sources */,
 				12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
@@ -843,7 +865,6 @@
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
-				12E553FE19A37FC900FCB2D1 /* Explore.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
@@ -853,6 +874,7 @@
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				1231A07419B461F100BD425F /* UserCellTop.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
+				323CD2E61A11D68400FFE3F4 /* ExploreDynamicCell.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				12CCA2FE19F9EE0D0098EF3D /* ChatCell.swift in Sources */,
@@ -863,6 +885,7 @@
 				1231A07219B45F3A00BD425F /* User.swift in Sources */,
 				12063C5E19C9A6C500E54003 /* Store.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
+				323CD2F01A11EEF300FFE3F4 /* ExploreTop.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
@@ -883,13 +906,18 @@
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
+				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
+				323CD2EF1A11EEF300FFE3F4 /* ExploreOld.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
+				323CD2F71A11FABF00FFE3F4 /* ExploreProvider.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
+				323CD2ED1A11EEF300FFE3F4 /* ExploreDreamCell.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
+				32871D151A14ABE0002C9486 /* ExploreHotCell.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,
+				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
 				12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */,
-				12E5540919A399CF00FCB2D1 /* ExploreDreamCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

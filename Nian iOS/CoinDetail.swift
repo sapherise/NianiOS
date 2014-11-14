@@ -11,6 +11,7 @@ import UIKit
 class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var tableView: UITableView!
+    var navView: UIView!
     
     let things = ["", "更新进展", "解除封号"]
     
@@ -20,9 +21,13 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     override func viewDidLoad() {
         setupViews()
         setupRefresh()
+        loadData(0);
     }
     
     func setupViews() {
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         var titleLabel:UILabel = UILabel(frame: CGRectZero)
@@ -37,8 +42,14 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
     
     func setupRefresh() {
-        self.tableView.addHeaderWithCallback(onPullToRefresh)
-        self.tableView.addFooterWithCallback(onPullToLoad)
+        self.tableView.addHeaderWithCallback({
+            self.page = 0
+            self.coinDetails.removeAll(keepCapacity: true)
+            self.loadData(1)
+        })
+        self.tableView.addFooterWithCallback({
+            self.loadData(2)
+        })
     }
     
     func back() {
@@ -62,29 +73,26 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
         return cell!
     }
     
-    func loadData(forHeader: Bool) {
+    func loadData(forWhich: Int) {
         Api.getCoinDetial("\(page++)") { json in
-            let current = (json!.objectForKey("time") as NSString).doubleValue
-            let items = json!.objectForKey("items") as NSArray
-            for item in items {
-                self.coinDetails.append(("", (item.objectForKey("coin") as String), (item.objectForKey("thing") as String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as NSString).doubleValue, current: current)))
+            if json != nil {
+                let current = (json!.objectForKey("time") as NSString).doubleValue
+                let items = json!.objectForKey("items") as NSArray
+                for item in items {
+                    self.coinDetails.append(("", (item.objectForKey("coin") as String), (item.objectForKey("thing") as String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as NSString).doubleValue, current: current)))
+                }
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
-            if forHeader {
+            switch forWhich {
+            case 1:
                 self.tableView.headerEndRefreshing()
-            } else {
+                break
+            case 2:
                 self.tableView.footerEndRefreshing()
+                break
+            default:
+                break
             }
         }
-    }
-    
-    func onPullToRefresh() {
-        page = 0
-        coinDetails.removeAll(keepCapacity: true)
-        loadData(true)
-    }
-    
-    func onPullToLoad() {
-        loadData(false)
     }
 }

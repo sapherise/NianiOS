@@ -32,11 +32,16 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     @IBOutlet var tableView: UITableView!
     var headerCoin: UILabel!
     
+    var navView: UIView!
+    
     override func viewDidLoad() {
         setupViews()
     }
     
     func setupViews() {
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
@@ -66,9 +71,11 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         header.addSubview(self.headerCoin)
         self.tableView.tableHeaderView = header
         Api.getUserMe() { json in
-            var sa: AnyObject! = json!.objectForKey("user")
-            var coin: AnyObject! = sa.objectForKey("coin") as String
-            self.setCoin("\(coin)")
+            if json != nil {
+                var sa: AnyObject! = json!.objectForKey("user")
+                var coin: AnyObject! = sa.objectForKey("coin") as String
+                self.setCoin("\(coin)")
+            }
         }
     }
     
