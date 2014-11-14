@@ -502,6 +502,18 @@
 			name = "等级";
 			sourceTree = "<group>";
 		};
+		12E1C81F1A146DCA00453805 /* LabelAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				12E1C8201A146DF300453805 /* LTEasing.swift */,
+				12E1C8221A146E0500453805 /* NSString+LTMorphingLabel.swift */,
+				12E1C8241A146E1500453805 /* LTMorphingLabel.swift */,
+				12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */,
+			);
+			name = LabelAnimation;
+			path = Refresh;
+			sourceTree = "<group>";
+		};
 		12E4939C19953DD600F8DF32 /* 回应 */ = {
 			isa = PBXGroup;
 			children = (
