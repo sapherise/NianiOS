@@ -119,11 +119,11 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         if self.urlIdentify == 0 {
-            return "http://nian.so/api/like.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
+            return "http://nian.so/api/like2.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 1 {
-            return "http://nian.so/api/user_fo_list.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
+            return "http://nian.so/api/user_fo_list2.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 2 {
-            return "http://nian.so/api/user_foed_list.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
+            return "http://nian.so/api/user_foed_list2.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
         }else{
             return "http://nian.so/api/like_dream.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }
