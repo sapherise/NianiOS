@@ -117,6 +117,7 @@ class DreamCell: UITableViewCell {
         self.goodbye.tag = sid.toInt()!
         self.edit.tag = self.indexPathRow
         self.share.tag = sid.toInt()!
+        self.labelComment.tag = sid.toInt()!
         if comment != "0" {
             comment = "\(comment) 评论"
         }else{
