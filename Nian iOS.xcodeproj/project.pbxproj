@@ -502,34 +502,6 @@
 			name = "等级";
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
-=======
-		12D222F819A2677F0027284E /* 发现 */ = {
-			isa = PBXGroup;
-			children = (
-				12E553FD19A37FC900FCB2D1 /* Explore.swift */,
-				12E553FF19A3813B00FCB2D1 /* ExploreTop.swift */,
-				12E5540119A3814400FCB2D1 /* ExploreTop.xib */,
-				12E5540319A395B500FCB2D1 /* GroupCell.swift */,
-				12E5540519A395BF00FCB2D1 /* GroupCell.xib */,
-				12E5540719A399B800FCB2D1 /* 所有梦想 */,
-			);
-			name = "发现";
-			sourceTree = "<group>";
-		};
-		12E1C81F1A146DCA00453805 /* LabelAnimation */ = {
-			isa = PBXGroup;
-			children = (
-				12E1C8201A146DF300453805 /* LTEasing.swift */,
-				12E1C8221A146E0500453805 /* NSString+LTMorphingLabel.swift */,
-				12E1C8241A146E1500453805 /* LTMorphingLabel.swift */,
-				12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */,
-			);
-			name = LabelAnimation;
-			path = Refresh;
-			sourceTree = "<group>";
-		};
->>>>>>> Sa
 		12E4939C19953DD600F8DF32 /* 回应 */ = {
 			isa = PBXGroup;
 			children = (
