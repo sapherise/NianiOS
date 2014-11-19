@@ -197,8 +197,6 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 
                 myB.font = UIFont(name: "Verdana", size: 13)
                 myB.frame = CGRectMake(thePosX, thePosY, 24, 24)
-                println(thePosX)
-                
                 if (strAll == firstDay) {
                     myB.backgroundColor = SeaColor
                     myB.textColor = UIColor.whiteColor()

@@ -78,10 +78,15 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
             if json != nil {
                 let current = (json!.objectForKey("time") as NSString).doubleValue
                 let items = json!.objectForKey("items") as NSArray
+                let success = (items.count != 0)
                 for item in items {
                     self.coinDetails.append(("", (item.objectForKey("coin") as String), (item.objectForKey("thing") as String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as NSString).doubleValue, current: current)))
                 }
-                self.tableView.reloadData()
+                if success {
+                    self.tableView.reloadData()
+                } else {
+                    self.tableView.showTipText("已经到底了", delay: 1)
+                }
             }
             switch forWhich {
             case 1:

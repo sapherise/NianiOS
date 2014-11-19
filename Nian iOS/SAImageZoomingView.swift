@@ -23,30 +23,13 @@ class SAImageZoomingView: UIScrollView,UIScrollViewDelegate {
         self.addSubview(self.imageView!)
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
-        self.minimumZoomScale = 1;
+        self.minimumZoomScale = 0.618;
         self.maximumZoomScale = 3;
-        
-        var doubleTap = UITapGestureRecognizer(target: self, action: "doubleTapped:")
-        doubleTap.numberOfTapsRequired = 2;
-        
-        self.addGestureRecognizer(doubleTap);
-        
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func doubleTapped(sender:UITapGestureRecognizer){
-        if self.zoomScale > 1.0{
-            self.setZoomScale(1.0, animated:true);
-        }else{
-            var point = sender.locationInView(self);
-            self.zoomToRect(CGRectMake(point.x-50, point.y-50, 100, 100), animated:true)
-        }
-    }
-    
-    
     
     func viewForZoomingInScrollView(scrollView: UIScrollView!)->UIView
     {
@@ -56,6 +39,6 @@ class SAImageZoomingView: UIScrollView,UIScrollViewDelegate {
     override func layoutSubviews()
     {
         super.layoutSubviews()
-        self.imageView!.setImage(self.imageURL,placeHolder: BGColor)
+        self.imageView!.setImage(self.imageURL, placeHolder: BGColor)
     }
 }

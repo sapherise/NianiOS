@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Sa. All rights reserved.
 //i
 
-import Foundation
+import UIKit
 
 struct Api {
     
@@ -23,6 +23,11 @@ struct Api {
         }
     }
     
+    static func getCookie() -> (String, String) {
+        loadCookies()
+        return (s_uid, s_shell)
+    }
+    
     static func getUserMe(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/user.php?uid=\(s_uid)&myuid=\(s_uid)", callback: callback)
@@ -36,5 +41,30 @@ struct Api {
     static func getExploreFollow(page: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/explore_fo.php?page=\(page)&uid=\(s_uid)", callback: callback)
+    }
+    
+    static func getExploreDynamic(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/explore_like.php?page=\(page)&uid=\(s_uid)", callback: callback)
+    }
+    
+    static func getExploreHot(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/explore_hot.php", callback: callback)
+    }
+    
+    static func getExploreNew(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/explore_all.php?page=\(page)", callback: callback)
+    }
+    
+    static func postReport(type: String, id: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell\(s_shell)", callback: callback)
+    }
+    
+    static func likeStep(sid: String, like: Int, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback)
     }
 }

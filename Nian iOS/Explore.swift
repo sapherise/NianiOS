@@ -8,6 +8,30 @@
 
 import UIKit
 
+class ExploreProvider: NSObject {
+    
+    func findTableCell(view: UIView?) -> UIView? {
+        for var v = view; v != nil; v = v!.superview {
+            if v! is UITableViewCell {
+                return v
+            }
+        }
+        return nil
+    }
+    
+    func onHide() {
+    }
+    
+    func onShow() {
+    }
+    
+    func onRefresh() {
+    }
+    
+    func onLoad() {
+    }
+}
+
 class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var btnFollow: UIButton!
@@ -19,10 +43,10 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var tableView: UITableView!
     
     var current = -1
-    var currentProvider: ExploreProviderDelegate!
+    var currentProvider: ExploreProvider!
     
     var buttons: [UIButton]!
-    var data: [ExploreProviderDelegate]!
+    var providers: [ExploreProvider]!
     
     override func viewDidLoad() {
         self.buttons = [
@@ -31,13 +55,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             btnHot,
             btnNew
         ]
-        self.data = [
-            ExploreFollowProvider(bindView: tableView),
-            ExploreDynamicProvider(bindView: tableView),
-            ExploreHotProvider(bindView: collectionView),
-            ExploreNewProvider(bindView: collectionView)
-        ]
         setupViews()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController!.navigationBar.setY(-44)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -49,9 +71,18 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setupViews() {
+        self.providers = [
+            ExploreFollowProvider(viewController: self),
+            ExploreDynamicProvider(viewController: self),
+            ExploreHotProvider(viewController: self),
+            ExploreNewProvider(viewController: self)
+        ]
         view.backgroundColor = BGColor
         collectionView.alwaysBounceVertical = true
-        collectionView.contentInset.bottom = 60
+        var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
+        layout.sectionInset.left = 15
+        layout.sectionInset.right = 15
+        collectionView.collectionViewLayout = layout
         tableView.allowsSelection = false
         btnFollow.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
         btnDynamic.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -65,31 +96,28 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func onPullDown() {
-        self.currentProvider.refreshData()
+        self.currentProvider.onRefresh()
     }
     
     func onPullUp() {
-        self.currentProvider.loadData()
+        self.currentProvider.onLoad()
     }
     
     func switchTab(tab: Int) {
-        if current == tab {
-            return
-        }
         if current != -1 {
             buttons[current].selected = false
+            currentProvider.onHide()
         }
         current = tab
-        currentProvider = self.data[tab]
+        currentProvider = self.providers[tab]
         buttons[tab].selected = true
-        if tab < 2 {
+        if tab < 3 {
             collectionView.dataSource = nil
             collectionView.delegate = nil
             collectionView.hidden = true
             tableView.delegate = currentProvider as? UITableViewDelegate
             tableView.dataSource = currentProvider as? UITableViewDataSource
             tableView.hidden = false
-            tableView.setContentOffset(CGPointZero, animated: true)
         } else {
             tableView.dataSource = nil
             tableView.delegate = nil
@@ -97,9 +125,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             collectionView.delegate = currentProvider as? UICollectionViewDelegate
             collectionView.dataSource = currentProvider as? UICollectionViewDataSource
             collectionView.hidden = false
-            collectionView.setContentOffset(CGPointZero, animated: true)
         }
-        currentProvider.show()
+        currentProvider.onShow()
     }
     
     func onTabClick(sender: UIButton) {

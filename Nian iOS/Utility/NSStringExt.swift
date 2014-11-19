@@ -11,8 +11,7 @@ import UIKit
 import Foundation
 
 extension String {
-   
-
+    
     func stringHeightWith(fontSize:CGFloat,width:CGFloat)->CGFloat {
         var font = UIFont.systemFontOfSize(fontSize)
         var size = CGSizeMake(width,CGFloat.max)

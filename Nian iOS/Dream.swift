@@ -135,7 +135,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
-    func ShareDream(){
+    func shareDream(){
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(self.Id)")!
         let activityViewController = UIActivityViewController(
             activityItems: [ "喜欢念上的这个梦想！「\(self.titleJson)」", url ],
@@ -686,7 +686,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     }
                 })
             }else if buttonIndex == 2 {     //分享梦想
-                ShareDream()
+                shareDream()
             }else if buttonIndex == 3 {     //删除梦想
                 self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 self.deleteDreamSheet!.addButtonWithTitle("确定删除")
@@ -709,7 +709,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }else if buttonIndex == 1 {     //赞梦想
                 onDreamLikeClick()
             }else if buttonIndex == 2 { //分享梦想
-                ShareDream()
+                shareDream()
             }else if buttonIndex == 3 { //不合适
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/a.php")

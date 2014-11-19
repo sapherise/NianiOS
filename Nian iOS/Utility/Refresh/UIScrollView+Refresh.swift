@@ -8,9 +8,8 @@
 
 import UIKit
 
-
-
 extension UIScrollView {
+    
     func addHeaderWithCallback( callback:(() -> Void)!){
         var header:RefreshHeaderView = RefreshHeaderView.footer()
         self.addSubview(header)
@@ -20,7 +19,6 @@ extension UIScrollView {
     
     func removeHeader()
     {
-        
         for view : AnyObject in self.subviews{
             if view is RefreshHeaderView{
                 view.removeFromSuperview()
@@ -62,15 +60,14 @@ extension UIScrollView {
         
     }
     
-    func isHeaderHidden()
-    {
+    func isHeaderHidden() -> Bool {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 var view:UIView  = object as UIView
-                view.hidden = hidden
+                return view.hidden
             }
         }
-        
+        return true
     }
     
    func addFooterWithCallback( callback:(() -> Void)!){
@@ -125,18 +122,14 @@ extension UIScrollView {
         
     }
     
-    func isFooterHidden()
-    {
+    func isFooterHidden() -> Bool {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
                 var view:UIView  = object as UIView
-                view.hidden = hidden
+                return view.hidden
             }
         }
-        
+        return true
     }
-  
- 
-
 
 }
