@@ -12,14 +12,17 @@ fi
 echo "commit to $brc with $msg"
 if git add --all; then
 if git commit -a -m "$msg"; then
-echo "merge to master"
 if git checkout master; then
-git pull
+echo "update master"
+if git pull; then
+echo "merge changes"
 if git merge "$brc" --no-edit; then
-git push
+if git push; then
 git checkout "$brc"
 git merge master
 echo "completed"
+fi
+fi
 fi
 fi
 fi
