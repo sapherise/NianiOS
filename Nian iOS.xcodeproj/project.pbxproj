@@ -20,6 +20,7 @@
 		1231A07A19B463E400BD425F /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07919B463E400BD425F /* UserCell.xib */; };
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
+		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
 		1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6131975729100F55389 /* RefreshBaseView.swift */; };
@@ -55,6 +56,8 @@
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
 		12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D6B31A1369B100FB436E /* LevelCircle.swift */; };
+		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
+		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
 		12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BE103C19C5EBF500370348 /* AddBBSComment.xib */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
@@ -68,6 +71,7 @@
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
 		12D1048F19F3387F00E65B54 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1048E19F3387F00E65B54 /* Level.swift */; };
+		12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DA48B51A1C34F7002651EF /* NianCell.xib */; };
 		12DE696519D130940006B5B5 /* Care.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE696419D130940006B5B5 /* Care.swift */; };
 		12E1C8211A146DF300453805 /* LTEasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8201A146DF300453805 /* LTEasing.swift */; };
 		12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8221A146E0500453805 /* NSString+LTMorphingLabel.swift */; };
@@ -148,6 +152,7 @@
 		1231A07919B463E400BD425F /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
+		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
 		1251D6131975729100F55389 /* RefreshBaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshBaseView.swift; sourceTree = "<group>"; };
@@ -187,6 +192,8 @@
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
 		12B4D6B31A1369B100FB436E /* LevelCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelCircle.swift; sourceTree = "<group>"; };
+		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
+		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		12BE103A19C5EBEA00370348 /* AddBBSComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSComment.swift; sourceTree = "<group>"; };
 		12BE103C19C5EBF500370348 /* AddBBSComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSComment.xib; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
@@ -200,6 +207,7 @@
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
 		12D1048C19F3387600E65B54 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
 		12D1048E19F3387F00E65B54 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		12DA48B51A1C34F7002651EF /* NianCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NianCell.xib; sourceTree = "<group>"; };
 		12DE696419D130940006B5B5 /* Care.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Care.swift; sourceTree = "<group>"; };
 		12DE699419D198C40006B5B5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		12E1C8201A146DF300453805 /* LTEasing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTEasing.swift; sourceTree = "<group>"; };
@@ -347,6 +355,8 @@
 			isa = PBXGroup;
 			children = (
 				123CB05219785B780062BB8A /* NianViewController.swift */,
+				1234FDA91A1B33E900AF8A50 /* NianCell.swift */,
+				12DA48B51A1C34F7002651EF /* NianCell.xib */,
 				124F3257197B19EC0070CA4C /* NianViewController.storyboard */,
 			);
 			name = "首页";
@@ -549,6 +559,8 @@
 			children = (
 				326BB93B1A0B6E21007E12B4 /* 详情 */,
 				12F7A4E11A07406F00F16F99 /* Coin.swift */,
+				12BAEB2B1A19F9B90041C7C0 /* Film.xib */,
+				12BAEB2D1A19FA6D0041C7C0 /* Film.swift */,
 				3257F7701A077B69005475BB /* Coin.storyboard */,
 				328181E61A08CE2700768D7D /* CoinCell.swift */,
 			);
@@ -818,9 +830,11 @@
 				1231A07619B461FC00BD425F /* UserCellTop.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				12063C6019C9A6D200E54003 /* Store.xib in Resources */,
+				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				1231A06F19B36B8F00BD425F /* AddCommentViewController.xib in Resources */,
 				1231A07A19B463E400BD425F /* UserCell.xib in Resources */,
 				323CD2EE1A11EEF300FFE3F4 /* ExploreDreamCell.xib in Resources */,
+				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
 				323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
@@ -957,6 +971,8 @@
 				12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
+				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
+				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,

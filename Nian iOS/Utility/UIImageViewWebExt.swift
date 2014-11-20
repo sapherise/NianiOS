@@ -10,17 +10,21 @@ import UIKit
 import Foundation
 
 extension UIImageView{
-    func setImage(urlString: String,placeHolder: UIColor!) {
+    func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true) {
         var url = NSURL(string: urlString)
         var cacheFileName = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFileName)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
         if image as NSObject != NSNull() {
             self.image = image as? UIImage
+            self.contentMode = UIViewContentMode.ScaleAspectFill
         }else {
             dispatch_async(dispatch_get_main_queue(), {
-                var nilImage:UIImage = SAColorImg(placeHolder)
-                self.image = nilImage
+                if bool == true {
+                self.image = UIImage(named: "drop")!
+                }
+                self.backgroundColor = placeHolder
+                self.contentMode = UIViewContentMode.Center
             })
             var networkStatus = checkNetworkStatus()
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -35,7 +39,9 @@ extension UIImageView{
                             var image:UIImage? = UIImage(data: data)
                             if (image != nil) {
                                 dispatch_async(dispatch_get_main_queue(), {
+                                    self.backgroundColor = UIColor.clearColor()
                                     self.image = image
+                                    self.contentMode = UIViewContentMode.ScaleAspectFill
                                     FileUtility.imageCacheToPath(cachePath,image:data)
                                 })
                             }

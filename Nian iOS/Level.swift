@@ -10,46 +10,54 @@ import Foundation
 import UIKit
 import QuartzCore
 
-class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, LTMorphingLabelDelegate{
+class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorphingLabelDelegate{
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var viewCircle: UIView!
     @IBOutlet var viewCalendar: UIView!
-    @IBOutlet var tableview:UITableView!
     @IBOutlet var viewCircleBackground:UIView!
     @IBOutlet var viewTop: UIView!
     @IBOutlet var labelLevel: LTMorphingLabel!
+    @IBOutlet var menuLeft: UILabel!
+    @IBOutlet var menuMiddle: UILabel!
+    @IBOutlet var menuRight: UILabel!
+    @IBOutlet var labelMonthLeft: UILabel!
+    @IBOutlet var labelMonthRight: UILabel!
+//    @IBOutlet var tableview:UITableView!
     var navView:UIView!
     var top:CAShapeLayer!
+    var marks: [Bool] = [Bool](count: 32, repeatedValue: false)
+    var textLeft:Int = 0
+    var textRight:Int = 0
     
-    var margin :CGFloat!
-    var monthH :CGFloat!
-    var today :NSDate = NSDate()
-    
-    var strMonth :NSString! = ""
-    
-    var posX :CGFloat! = 0
-    var daDay :NSDate = NSDate()
     override func viewDidLoad(){
         super.viewDidLoad()
         self.setupViews()
-        self.SACircle(0.7)
     }
     
     func levelLabelCount(totalNumber:Int){
-        for i:Int in 0...totalNumber {
-            var textI = ( i < 10 ) ? "0\(i)" : "\(i)"
-            var f = Double(i) / Double(totalNumber)
-            delay(f, {
-                self.labelLevel.text = textI
-            })
+        var x = Int(floor(Double(totalNumber) / 20) + 1)
+        var y:Double = 0
+        var z = 0
+        for i:Int in 0...20 {
+            z = z + x
+            var j = z + i
+            if j < totalNumber {
+                var textI = ( j < 10 ) ? "0\(j)" : "\(j)"
+                y = y + 0.1
+                delay( y , {
+                    self.labelLevel.text = textI
+                })
+            }else{
+                delay( y + 0.1 , {
+                    var textI = ( totalNumber < 10 ) ? "0\(totalNumber)" : "\(totalNumber)"
+                    self.labelLevel.text = textI
+                })
+                break
+            }
         }
     }
     
     func setupViews(){
-        
-        levelLabelCount(20)
-        
-        
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = NavColor
         self.view.addSubview(navView)
@@ -63,21 +71,13 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 2920)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 720)
         
-        self.margin = 15
-        
-        self.posX = margin
-        self.monthH = (24 * 5)
-        layoutAMonth("11")
-        
-        self.tableview.delegate = self
-        self.tableview.dataSource = self
-        var nib = UINib(nibName:"LevelGame", bundle: nil)
-        self.tableview.registerNib(nib, forCellReuseIdentifier: "GameCell")
-        
-        
-        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
+//        self.tableview.delegate = self
+//        self.tableview.dataSource = self
+//        var nib = UINib(nibName:"LevelGame", bundle: nil)
+//        self.tableview.registerNib(nib, forCellReuseIdentifier: "GameCell")
+//        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         
         self.viewTop.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.viewCircleBackground.layer.cornerRadius = 84
@@ -89,24 +89,54 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.labelLevel.morphingEffect = .Evaporate
         self.labelLevel.delegate = self
         
+        Api.getUserMe() { json in
+            if json != nil {
+                var sa: AnyObject! = json!.objectForKey("user")
+                var foed: String! = sa.objectForKey("foed") as String
+                var like: String! = sa.objectForKey("like") as String
+                var step: String! = sa.objectForKey("step") as String
+                var level: String! = sa.objectForKey("level") as String
+                self.menuLeft.text = like
+                self.menuMiddle.text = step
+                self.menuRight.text = foed
+                var (l, e) = levelCount( (level.toInt()!)*7 )
+                self.levelLabelCount(l)
+                self.SACircle(CGFloat(e))
+            }
+        }
+        
+        Api.getLevelCalendar(){ json in
+            if json != nil {
+                self.marks = [Bool](count: 32, repeatedValue: false)
+                var items = json!.objectForKey("items") as NSArray
+                for item in items {
+                    var lastdate = (item.objectForKey("lastdate") as NSString).doubleValue
+                    var date = V.getDay(lastdate)
+                    self.marks[date.toInt()!] = true
+                }
+                self.layoutAMonth("11", marks: self.marks)
+                self.labelMonthLeft.text = "\(self.textLeft)"
+                self.labelMonthRight.text = "\(self.textRight)"
+            }
+        }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableview.deselectRowAtIndexPath(indexPath, animated: false)
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("GameCell", forIndexPath: indexPath) as GameCell
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
-    }
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        self.tableview.deselectRowAtIndexPath(indexPath, animated: false)
+//    }
+//    
+//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 3
+//    }
+//    
+//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        var cell = tableView.dequeueReusableCellWithIdentifier("GameCell", forIndexPath: indexPath) as GameCell
+//        return cell
+//    }
+//    
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 100
+//    }
     
     
     func SACircle(float:CGFloat){
@@ -130,7 +160,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.top.anchorPoint = CGPointMake(0, 0)
         self.top.position = CGPointZero
         self.top.strokeStart = 0
-        self.top.strokeEnd = 0.005
+        self.top.strokeEnd = 0
         self.top.fillColor = UIColor.clearColor().CGColor
         
         self.top.actions = [
@@ -151,7 +181,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         self.navigationController!.popViewControllerAnimated(true)
     }
     
-    func layoutAMonth(strMonthNum: NSString) {
+    func layoutAMonth(strMonthNum: NSString, marks: [Bool]) {
         let dffd = NSDateFormatter()
         dffd.dateFormat = "MM/dd/yyyy"
         let firstDay :NSDate = dffd.dateFromString("\(strMonthNum)/01/2014")!
@@ -172,11 +202,15 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
         var theDayOfWeek :CGFloat! = CGFloat(i)
         var thePosY :CGFloat! = 40
         
+        let todayD = NSDateFormatter()
+        todayD.dateFormat = "d"
+        let todayDInt = todayD.stringFromDate(NSDate()).toInt()!
+        
         var numDaysInMonth = 31
         
         for index in 1 ... numDaysInMonth {
             
-            var thePosX = (40 * (theDayOfWeek - 1)) + self.margin + 12
+            var thePosX = (40 * (theDayOfWeek - 1)) + 15 + 12
             // -1 because you want the first to be 0
             
             let strAll = "\(strMonthNum)/\(index)/2014"
@@ -192,11 +226,23 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 //make a button
                 let myB = UILabel()
                 myB.text = "\(index)"
-                myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
                 myB.textAlignment = NSTextAlignment.Center
-                
-                myB.font = UIFont(name: "Verdana", size: 13)
+                myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+                myB.font = UIFont(name: "Verdana", size: 11)
                 myB.frame = CGRectMake(thePosX, thePosY, 24, 24)
+                if marks[index] {
+                    myB.textColor = SeaColor
+                    if index <= todayDInt {
+                        self.textLeft = self.textLeft + 1
+                        self.textRight = self.textRight + 1
+                    }
+                }else{
+                    myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+                    if index < todayDInt {
+                        self.textLeft = 0
+                    }
+                }
+                
                 if (strAll == firstDay) {
                     myB.backgroundColor = SeaColor
                     myB.textColor = UIColor.whiteColor()
@@ -209,7 +255,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, UITabl
                 
                 if (theDayOfWeek == 8 ) {
                     theDayOfWeek = 1
-                    thePosX = self.margin
+                    thePosX = 15
                     thePosY = thePosY + 29
                 }
             }
