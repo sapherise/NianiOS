@@ -10,7 +10,6 @@ import UIKit
 
 class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegate, UIActionSheetDelegate{
     var myTabbar :UIView?
-    var slider :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
     var dot:UILabel?
@@ -27,8 +26,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     var gameoverCoin:String = ""
     var gameoverTitle:String = ""
     
-    let itemArray = ["关注","发现","","消息","设置"]
-    let imageArray = ["explore","bbs","dream","me","settings"]
+    let itemArray = ["","","","消息","小组"]
+    let imageArray = ["home","explore","update","letter","bbs"]
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -92,17 +91,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         
-//        //标题
-//        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-//        titleLabel.textColor = IconColor
-//        titleLabel.text = "念"
-//        titleLabel.textAlignment = NSTextAlignment.Center
-//        self.navigationItem.titleView = titleLabel
-        
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamButton")
-        rightButton.image = UIImage(named:"add")
-        self.navigationItem.rightBarButtonItem = rightButton
-        
         //总的
         self.view.backgroundColor = BGColor
         self.tabBar.hidden = true
@@ -131,23 +119,19 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
             button.frame = CGRectMake(btnWidth, 1,64,49)
             button.tag = index+100
             var image = self.imageArray[index]
-            let myImage = UIImage(named:"\(image).png")
-            let myImage2 = SAColorImg(UIColor.blackColor())
+            let myImage = UIImage(named:"\(image)")
+            let myImage2 = UIImage(named:"\(image)S")
             
             button.setImage(myImage, forState: UIControlState.Normal)
-            button.setBackgroundImage(myImage2, forState: UIControlState.Selected)
+            button.setImage(myImage2, forState: UIControlState.Selected)
             
             button.clipsToBounds = true
             button.addTarget(self, action: "tabBarButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
             self.myTabbar?.addSubview(button)
-            if index == 2 {
+            if index == 0 {
                 button.selected = true
             }
         }
-        
-        self.slider = UIView(frame:CGRectMake(128,46,64,3))
-        self.slider!.backgroundColor = BlueColor
-        self.myTabbar!.addSubview(self.slider!)
         
         self.dot = UILabel(frame: CGRectMake(228, 10, 20, 15))
         self.dot!.textColor = UIColor.whiteColor()
@@ -287,18 +271,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     func initViewControllers()
     {
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
-        var vc1 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
-        var vc2 = ExploreController()
-        //var vc2 = ChatViewController()
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
-        var vc3 = NianViewController
+        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
+        var vc3 = ExploreController()
+        var vc1 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         vc5.niceDeletgate = self
-        self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
+        self.viewControllers = [vc1, vc2, vc5, vc4, vc3]
         self.customizableViewControllers = nil
-        self.selectedIndex = 2
+        self.selectedIndex = 0
     }
     
     //底部的按钮按下去
@@ -312,9 +295,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
                 button.selected = false
             }
         }
-        UIView.animateWithDuration( 0.1,{
-                self.slider!.frame = CGRectMake(CGFloat(index-100)*64,46,64,3)
-        })
         self.selectedIndex = index-100
         
         //标题
@@ -324,11 +304,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        let idExplore = 100
-        let idBBS = 101
-        let idDream = 102
+        let idDream = 100
+        let idExplore = 101
+        let idSetting = 102
         let idMe = 103
-        let idSetting = 104
+        let idBBS = 104
         
         if index == idExplore {       //关注
             NSNotificationCenter.defaultCenter().postNotificationName("foRefresh", object: self.foFreshTimes)
@@ -340,15 +320,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSButton")
-            rightButton.image = UIImage(named:"add")
+            rightButton.image = UIImage(named:"plus")
             self.navigationItem.rightBarButtonItem = rightButton
             noticeDot()
         }else if index == idDream {     //梦想
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamButton")
-            rightButton.image = UIImage(named:"add")
-            self.navigationItem.rightBarButtonItem = rightButton
             self.foFreshTimes = 0
             self.bbsFreshTimes = 0
+            self.navigationItem.rightBarButtonItem = nil
             noticeDot()
         }else if index == idMe {     //消息
             self.dot!.hidden = true

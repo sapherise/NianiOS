@@ -17,7 +17,10 @@ struct V {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var url = NSURL(string: requestURL)
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            var json: AnyObject? = nil
+            if data != nil {
+                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            }
             dispatch_async(dispatch_get_main_queue(), {
                 callback(json)
             })
@@ -28,7 +31,10 @@ struct V {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var url = NSURL(string: requestURL)
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var string = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            var string: String?
+            if data != nil {
+                string = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            }
             dispatch_async(dispatch_get_main_queue(), {
                 callback(string)
             })
@@ -70,6 +76,13 @@ struct V {
         } else {
             formatter.dateFormat = "yyyy-MM-dd HH:mm"
         }
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+        return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
+    }
+    
+    static func getDay(time: NSTimeInterval) -> String {
+        var formatter = NSDateFormatter()
+        formatter.dateFormat = "d"
         formatter.timeZone = NSTimeZone.systemTimeZone()
         return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
     }

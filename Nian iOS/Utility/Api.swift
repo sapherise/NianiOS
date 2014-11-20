@@ -37,4 +37,9 @@ struct Api {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/explore_fo.php?page=\(page)&uid=\(s_uid)", callback: callback)
     }
+    
+    static func getLevelCalendar(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/calendar.php?uid=\(s_uid)", callback: callback)
+    }
 }

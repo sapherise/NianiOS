@@ -13,8 +13,9 @@ import Foundation
 let IconColor:UIColor = UIColor(red:0.71, green:0.71,blue:0.71,alpha: 1)    //字体灰
 let BGColor:UIColor = UIColor.whiteColor()
 let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
-let BarColor:UIColor = UIColor(red:0.09, green:0.09, blue:0.09, alpha:1)   //底栏黑
+let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
 let BlueColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1)   //念蓝
+let DarkColor:UIColor = UIColor(red:0.15, green:0.15, blue:0.15, alpha:1)   //图片底色
 let LightBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
 let LessBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 0.2)   //念蓝
 let LineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 1)   //线条
@@ -182,7 +183,7 @@ func delay(delay:Double, closure:()->()) {
 
 func viewBack(VC:UIViewController){
     var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: VC, action: "back")
-    leftButton.image = UIImage(named:"back")
+    leftButton.image = UIImage(named:"newBack")
     VC.navigationItem.leftBarButtonItem = leftButton;
     VC.navigationController!.interactivePopGestureRecognizer.enabled = true
 }

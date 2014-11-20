@@ -14,17 +14,35 @@ class CoinCell : UITableViewCell {
     @IBOutlet var textTitle: UILabel!
     @IBOutlet var textDescription: UILabel!
     @IBOutlet var btnBuy: UIButton!
+    @IBOutlet var viewLine: UIView!
+    @IBOutlet var labelImage: UILabel!
     
-    func setupView(imageURL: String, title: String, description: String, cost: String) {
-        self.backgroundColor = BGColor
+    func setupView(imageURL: String, title: String, description: String, cost: String, sectionNumber: Int) {
+        self.imageIcon.layer.cornerRadius = 20
+        self.imageIcon.layer.masksToBounds = true
         self.textTitle.text = title
         self.btnBuy.setTitle(cost, forState: UIControlState.Normal)
         self.textDescription.numberOfLines = 0
         self.textDescription.text = description
-        self.textDescription.setHeight(CoinCell.getDespHeight(description))
+        self.imageIcon.layer.borderColor = SeaColor.CGColor
+        self.imageIcon.layer.borderWidth = 1
+        if sectionNumber == 0 {
+            self.textDescription.hidden = true
+            self.viewLine.setY(80)
+            self.textTitle.setY(30)
+            self.labelImage.text = imageURL
+            self.labelImage.textColor = SeaColor
+        }else{
+            var height = CoinCell.getDespHeight(description)
+            self.textDescription.setHeight(CoinCell.getDespHeight(description))
+            self.textDescription.hidden = false
+            self.viewLine.setY(self.textDescription.bottom()+20)
+            self.imageIcon.image = UIImage(named: imageURL)
+            self.imageIcon.contentMode = UIViewContentMode.Center
+        }
     }
     
     class func getDespHeight(desp: String) -> CGFloat {
-        return desp.stringHeightWith(14, width: 130)
+        return desp.stringHeightWith(13, width: 155)
     }
 }
