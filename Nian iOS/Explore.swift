@@ -38,10 +38,12 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var btnDynamic: UIButton!
     @IBOutlet var btnHot: UIButton!
     @IBOutlet var btnNew: UIButton!
+    @IBOutlet var btnFriend: UIButton!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
     
+    var appear = false
     var current = -1
     var currentProvider: ExploreProvider!
     
@@ -64,6 +66,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.navigationBar.setY(-44)
+        switchTab(0)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -88,11 +91,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         btnDynamic.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
         btnHot.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
         btnNew.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnFriend.addTarget(self, action: "onFriendClick", forControlEvents: UIControlEvents.TouchUpInside)
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
         collectionView.addHeaderWithCallback(onPullDown)
         collectionView.addFooterWithCallback(onPullUp)
-        switchTab(0);
     }
     
     func onPullDown() {
@@ -131,5 +134,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func onTabClick(sender: UIButton) {
         switchTab(sender.tag - 1100)
+    }
+    
+    func onFriendClick() {
+        var storyboard = UIStoryboard(name: "ExploreFriend", bundle: nil)
+        var vz = storyboard.instantiateViewControllerWithIdentifier("ExploreFriendViewController") as UIViewController
+        self.navigationController!.pushViewController(vz, animated: true)
     }
 }

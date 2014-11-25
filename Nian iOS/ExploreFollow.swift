@@ -72,7 +72,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     override func onShow() {
         bindViewController!.tableView.reloadData()
         if dataSource.isEmpty {
-            self.onRefresh()
+            bindViewController!.tableView.headerBeginRefreshing()
         } else {
             bindViewController!.tableView.setContentOffset(CGPointZero, animated: true)
         }
@@ -178,7 +178,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         }
         var items: [AnyObject] = [ data.content, V.urlShareDream(data.id)]
         if data.img != "" {
-            items.append(FileUtility.imageDataFromPath(V.imageCachePath(V.urlStepImage(data.img, tag: .iOSFo))))
+            items.append(FileUtility.imageDataFromPath(V.imageCachePath(V.urlStepImage(data.img, tag: .Large))))
         }
         sender.popupActivity(items, activities: [ reportActivity ], exclude: [
             UIActivityTypeAddToReadingList,
@@ -221,7 +221,7 @@ class ExploreFollowCell: UITableViewCell {
         if !data.img0.isZero && !data.img1.isZero {
             imageDelta += CGFloat(data.img1 * 320 / data.img0)
         }
-        imageContent.setImage(V.urlStepImage(data.img, tag: .iOSFo), placeHolder: IconColor)
+        imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
         imageContent.setHeight(imageContent.height() + imageDelta)
         labelContent.setY(labelContent.y() + imageDelta)
         var textHeight = data.content.stringHeightWith(17, width: 290)
@@ -266,7 +266,7 @@ class ExploreFollowCell: UITableViewCell {
     }
     
     func onLikeClick() {
-        Api.likeStep(cellData!.sid, like: 1) {
+        Api.postLikeStep(cellData!.sid, like: 1) {
             result in
             if result != nil && result == "1" {
                 self.btnLike.hidden = true
@@ -278,7 +278,7 @@ class ExploreFollowCell: UITableViewCell {
     }
     
     func onUnlikeClick() {
-        Api.likeStep(cellData!.sid, like: 0) {
+        Api.postLikeStep(cellData!.sid, like: 0) {
             result in
             if result != nil && result == "1" {
                 self.btnLike.hidden = false

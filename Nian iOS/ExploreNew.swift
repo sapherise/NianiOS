@@ -55,7 +55,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     override func onShow() {
         bindViewController!.collectionView.reloadData()
         if dataSource.isEmpty {
-            self.onRefresh()
+            bindViewController!.collectionView.headerBeginRefreshing()
         } else {
             var point = bindViewController!.collectionView.contentOffset
             point.y = 0

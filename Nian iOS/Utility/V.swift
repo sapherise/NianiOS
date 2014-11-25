@@ -52,6 +52,50 @@ struct V {
         }
     }
     
+    /*class Downloader: NSObject, NSURLConnectionDataDelegate {
+        
+        private var _connection: NSURLConnection?
+        private var _callback: (Float, AnyObject?) -> Void
+        private var _data: NSMutableData? = nil
+        private var _size: Int = 0
+        
+        init(url: NSURL, callback: (Float, AnyObject?) -> Void) {
+            _callback = callback
+            super.init()
+            var request = NSURLRequest(URL: url)
+            _connection = NSURLConnection(request: request, delegate: self, startImmediately: true)
+        }
+        
+        func cancel() {
+            if _connection != nil {
+                _connection!.cancel()
+                _connection = nil
+            }
+        }
+        
+        func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
+            if response is NSHTTPURLResponse {
+                var httpResponse = response as NSHTTPURLResponse
+                var contentLength = httpResponse.allHeaderFields["Content-Length"] as NSNumber
+                var _size = contentLength.integerValue
+                _data = NSMutableData(capacity: _size)
+                _callback(0.0, contentLength)
+            } else {
+                connection.cancel()
+                _callback(0.0, nil)
+            }
+        }
+        
+        func connection(connection: NSURLConnection, didReceiveData data: NSData) {
+            _data!.appendData(data)
+            _callback(Float(_data!.length) / Float(_size), nil)
+        }
+        
+        func connectionDidFinishLoading(connection: NSURLConnection) {
+            _callback(1.0, _data)
+        }
+    }*/
+    
     typealias StringCallback = String? -> Void
     typealias JsonCallback = AnyObject? -> Void
     
@@ -127,6 +171,13 @@ struct V {
         var cacheFilename = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFilename)
         return cachePath
+    }
+    
+    static func dataFromPath(path: String) -> NSData? {
+        if NSFileManager.defaultManager().fileExistsAtPath(path) {
+            return NSData(contentsOfFile: path)
+        }
+        return nil
     }
     
     static func urlShareDream(did: String) -> String {
@@ -207,22 +258,45 @@ extension UIView {
     }
     
     func showImage(imageURL: String, width: Float, height: Float) {
-        var view = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        view.backgroundColor = UIColor.blackColor()
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageViewClick:"))
-        var imageView = SAImageZoomingView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        imageView.imageURL = imageURL
-        var imageDoubleTap = UITapGestureRecognizer(target: self, action: "onImageViewDoubleTap:")
-        imageDoubleTap.numberOfTapsRequired = 2
-        var imageSingleTap = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
-        imageSingleTap.requireGestureRecognizerToFail(imageDoubleTap)
-        var imageLongPress = UILongPressGestureRecognizer(target: self, action: "onImageViewLongPress:")
-        imageLongPress.minimumPressDuration = 0.5
-        imageView.addGestureRecognizer(imageDoubleTap)
-        imageView.addGestureRecognizer(imageSingleTap)
-        imageView.addGestureRecognizer(imageLongPress)
-        view.addSubview(imageView)
-        self.window!.addSubview(view)
+        if imageURL.pathExtension != "gif!large" {
+            var x: CGFloat = 0
+            var y: CGFloat = 0
+            var w = CGFloat(width)
+            var h = CGFloat(height)
+            if w > globalWidth || h > globalHeight {
+                if w / globalWidth > h / globalHeight {
+                    h = h * globalWidth / w
+                    w = globalWidth
+                } else {
+                    w = w * globalHeight / h
+                    h = globalHeight
+                }
+                x = (globalWidth - w) / 2
+                y = (globalHeight - h) / 2
+            }
+            var imageView = SAImageZoomingView(frame: CGRectMake(0, 0, globalWidth, globalHeight), x: x, y: y, w: w, h: h)
+            imageView.backgroundColor = UIColor.blackColor()
+            imageView.imageURL = imageURL
+            var imageDoubleTap = UITapGestureRecognizer(target: self, action: "onImageViewDoubleTap:")
+            imageDoubleTap.numberOfTapsRequired = 2
+            var imageSingleTap = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
+            imageSingleTap.requireGestureRecognizerToFail(imageDoubleTap)
+            var imageLongPress = UILongPressGestureRecognizer(target: self, action: "onImageViewLongPress:")
+            imageLongPress.minimumPressDuration = 0.5
+            imageView.addGestureRecognizer(imageDoubleTap)
+            imageView.addGestureRecognizer(imageSingleTap)
+            imageView.addGestureRecognizer(imageLongPress)
+            self.window!.addSubview(imageView)
+        } else {
+            var view = GIFPlayer(frame: CGRectMake(0, 0, CGFloat(width), CGFloat(height)))
+            view.play(V.dataFromPath(V.imageCachePath(imageURL))!)
+            view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageViewTap:"))
+            self.window!.addSubview(view)
+        }
+    }
+    
+    func onImageViewTap(sender: UITapGestureRecognizer) {
+        sender.view!.removeFromSuperview()
     }
     
     func onImageViewDoubleTap(sender: UITapGestureRecognizer) {
@@ -232,14 +306,6 @@ extension UIView {
         } else {
             var point = sender.locationInView(self);
             imageView.zoomToRect(CGRectMake(point.x - 50, point.y - 50, 100, 100), animated: true)
-        }
-    }
-    
-    func onImageViewTap(sender: UITapGestureRecognizer) {
-        if sender.view! is SAImageZoomingView {
-            sender.view!.superview!.removeFromSuperview()
-        } else {
-            sender.view!.removeFromSuperview()
         }
     }
     
