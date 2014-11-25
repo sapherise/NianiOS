@@ -10,15 +10,14 @@ import UIKit
 
 extension UIScrollView {
     
-    func addHeaderWithCallback( callback:(() -> Void)!){
+    func addHeaderWithCallback( callback:(() -> Void)!) {
         var header:RefreshHeaderView = RefreshHeaderView.footer()
         self.addSubview(header)
         header.beginRefreshingCallback = callback
         header.addState(RefreshState.Normal)
     }
     
-    func removeHeader()
-    {
+    func removeHeader() {
         for view : AnyObject in self.subviews{
             if view is RefreshHeaderView{
                 view.removeFromSuperview()
@@ -27,9 +26,7 @@ extension UIScrollView {
     }
     
     
-    func headerBeginRefreshing()
-    {
-        
+    func headerBeginRefreshing() {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 object.beginRefreshing()
@@ -39,8 +36,7 @@ extension UIScrollView {
     }
     
     
-    func headerEndRefreshing()
-    {
+    func headerEndRefreshing() {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 object.endRefreshing()
@@ -49,8 +45,7 @@ extension UIScrollView {
         
     }
     
-    func setHeaderHidden(hidden:Bool)
-    {
+    func setHeaderHidden(hidden:Bool) {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 var view:UIView  = object as UIView
@@ -70,12 +65,10 @@ extension UIScrollView {
         return true
     }
     
-   func addFooterWithCallback( callback:(() -> Void)!){
+   func addFooterWithCallback( callback:(() -> Void)!) {
         var footer:RefreshFooterView = RefreshFooterView.footer()
-      
         self.addSubview(footer)
         footer.beginRefreshingCallback = callback
-        
         footer.addState(RefreshState.Normal)
     }
     

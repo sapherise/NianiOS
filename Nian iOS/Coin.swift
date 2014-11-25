@@ -7,17 +7,18 @@
 //
 
 import UIKit
+import StoreKit
 
 class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, LTMorphingLabelDelegate {
     
     typealias CoinCellData = (icon: String, title: String, description: String, cost: String)
     
     let coinItems: [CoinCellData] = [
-        ("5", "5 念币", "", "¥ 5.00"),
-        ("12", "12 念币", "", "¥ 10.00"),
-        ("25", "25 念币", "", "¥ 20.00"),
-        ("65", "65 念币", "", "¥ 50.00"),
-        ("140", "140 念币", "", "¥ 100.00")
+        ("12", "12 念币", "", "¥ 6.00"),
+        ("30", "30 念币", "", "¥ 12.00"),
+        ("65", "65 念币", "", "¥ 25.00"),
+        ("140", "140 念币", "", "¥ 50.00"),
+        ("295", "295 念币", "", "¥ 98.00")
     ]
     
     let propItems: [CoinCellData] = [
@@ -126,7 +127,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("CoinCell", forIndexPath: indexPath) as? CoinCell
-        cell!.btnBuy.tag = indexPath.row + 100
+        cell!.btnBuy.tag = indexPath.row + 100 * indexPath.section
         var (icon, title, desp, cost) = indexPath.section == 0 ? coinItems[indexPath.row] : propItems[indexPath.row]
         cell!.setupView(icon, title: title, description: desp, cost: cost, sectionNumber: indexPath.section)
         if indexPath.section == 0 {
@@ -151,6 +152,14 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     func onBuyCoinClick(sender: UIButton) {
         switch sender.tag {
         case 0:
+            break
+        case 1:
+            break
+        case 2:
+            break
+        case 3:
+            break
+        case 4:
             break
         default:
             break

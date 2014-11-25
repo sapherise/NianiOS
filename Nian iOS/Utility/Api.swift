@@ -23,6 +23,10 @@ struct Api {
         }
     }
     
+    static func requestLoad() {
+        s_load = false
+    }
+    
     static func getCookie() -> (String, String) {
         loadCookies()
         return (s_uid, s_shell)
@@ -63,9 +67,24 @@ struct Api {
         V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell\(s_shell)", callback: callback)
     }
     
-    static func likeStep(sid: String, like: Int, callback: V.StringCallback) {
+    static func getFriendFromWeibo(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/weibo.php?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
+    static func getFriendFromTag(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/friend_tag.php?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
+    static func postLikeStep(sid: String, like: Int, callback: V.StringCallback) {
         loadCookies()
         V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback)
+    }
+    
+    static func postFollow(uid: String, follow: Int, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
     }
     
     static func getLevelCalendar(callback: V.JsonCallback) {

@@ -55,14 +55,14 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
     }
     
     override func onHide() {
-        bindViewController!.tableView.setFooterHidden(false)
+        self.bindViewController!.tableView.setFooterHidden(false)
     }
     
     override func onShow() {
         bindViewController!.tableView.setFooterHidden(true)
         bindViewController!.tableView.reloadData()
         if dataSource.isEmpty {
-            self.onRefresh()
+            bindViewController!.tableView.headerBeginRefreshing()
         } else {
             bindViewController!.tableView.setContentOffset(CGPointZero, animated: true)
         }
@@ -74,20 +74,6 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
             if self.bindViewController!.current == 2 {
                 self.bindViewController!.tableView.headerEndRefreshing()
                 self.bindViewController!.tableView.reloadData()
-            }
-        }
-    }
-    
-    override func onLoad() {
-        load(false) {
-            success in
-            if self.bindViewController!.current == 2 {
-                if success {
-                    self.bindViewController!.tableView.footerEndRefreshing()
-                    self.bindViewController!.tableView.reloadData()
-                } else {
-                    self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
-                }
             }
         }
     }
