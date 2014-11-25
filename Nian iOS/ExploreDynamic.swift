@@ -165,7 +165,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     func onUserTap(sender: UITapGestureRecognizer) {
-        var viewController = UserViewController()
+        var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uidlike
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }

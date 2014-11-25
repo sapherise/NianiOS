@@ -32,8 +32,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
         self.view.backgroundColor = BGColor
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
-        self.inputEmail.textColor = BlueColor
-        self.inputPassword.textColor = BlueColor
+        self.inputEmail.textColor = SeaColor
+        self.inputPassword.textColor = SeaColor
         self.inputEmail.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
         self.inputEmail.rightView = UIView(frame: CGRectMake(0, 0, 20, 40))
         self.inputPassword.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
@@ -50,7 +50,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
         self.loginButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginAlert"))
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "登录"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -94,7 +94,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
                         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                         var navigationViewController = UINavigationController(rootViewController: mainViewController)
                         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                        navigationViewController.navigationBar.tintColor = IconColor
+                        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
                         navigationViewController.navigationBar.translucent = true
                         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                         navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve

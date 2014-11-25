@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegate, UIActionSheetDelegate{
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -26,8 +26,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
     var gameoverCoin:String = ""
     var gameoverTitle:String = ""
     
+    var addView:ILTranslucentView!
+    var addStepView:AddStep!
+    var viewClose:UIImageView!
+    
     let itemArray = ["","","","消息","小组"]
     let imageArray = ["home","explore","update","letter","bbs"]
+    
+    var deleteDreamSheet:UIActionSheet?
+    var cancelSheet:UIActionSheet?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -137,7 +144,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
         self.dot!.textAlignment = NSTextAlignment.Center
-        self.dot!.backgroundColor = BlueColor
+        self.dot!.backgroundColor = SeaColor
         self.dot!.layer.cornerRadius = 5
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true
@@ -161,7 +168,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         var holder = UIView(frame: CGRectMake(40, globalHeight / 2 - 175, 240, 350))
         holder.backgroundColor = UIColor.redColor()
         var gameoverHead = UIImageView(frame: CGRectMake(95, 0, 50, 50))
-        gameoverHead.setImage("http://img.nian.so/dream/\(self.gameoverHead)!head", placeHolder: IconColor)
+        gameoverHead.setImage("http://img.nian.so/dream/\(self.gameoverHead)!dream", placeHolder: IconColor)
         var gameoverLabel = UILabel(frame: CGRectMake(30, 70, 180, 210))
         var gameoverWord = "梦想「\(self.gameoverTitle)」有 \(self.gameoverDays) 天没有更新，已经阵亡。\n你有 \(self.gameoverCoin) 枚念币，支付念币或者删除梦想来继续玩念。"
         gameoverLabel.text = gameoverWord
@@ -229,31 +236,37 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
                 })
             }
         }else if sender.tag == 2 {
-            var deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            deleteDreamSheet.addButtonWithTitle("确定删除梦想")
-            deleteDreamSheet.addButtonWithTitle("取消")
-            deleteDreamSheet.cancelButtonIndex = 1
-            deleteDreamSheet.showInView(self.view)
+            self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.deleteDreamSheet!.addButtonWithTitle("确定删除梦想")
+            self.deleteDreamSheet!.addButtonWithTitle("取消")
+            self.deleteDreamSheet!.cancelButtonIndex = 1
+            self.deleteDreamSheet!.showInView(self.view)
         }
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == 0 {
-            self.navigationItem.rightBarButtonItems = buttonArray()
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/delete_dream.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.navigationItem.rightBarButtonItems = []
-                        self.GameOverView!.hidden = true
-                        self.setupViews()
-                        self.initViewControllers()
-                    })
-                }
-            })
+        if actionSheet == self.deleteDreamSheet {
+            if buttonIndex == 0 {
+                self.navigationItem.rightBarButtonItems = buttonArray()
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/delete_dream.php")
+                    if(sa == "1"){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.navigationItem.rightBarButtonItems = []
+                            self.GameOverView!.hidden = true
+                            self.setupViews()
+                            self.initViewControllers()
+                        })
+                    }
+                })
+            }
+        }else if actionSheet == self.cancelSheet {
+            if buttonIndex == 0 {
+                self.onViewCloseClick()
+            }
         }
     }
     
@@ -278,7 +291,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
         var vc1 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-        vc5.niceDeletgate = self
         self.viewControllers = [vc1, vc2, vc5, vc4, vc3]
         self.customizableViewControllers = nil
         self.selectedIndex = 0
@@ -295,18 +307,20 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
                 button.selected = false
             }
         }
-        self.selectedIndex = index-100
+        if index != 102 {
+            self.selectedIndex = index-100
+        }
         
         //标题
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = itemArray[index-100] as String
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
         let idDream = 100
         let idExplore = 101
-        let idSetting = 102
+        let idUpdate = 102
         let idMe = 103
         let idBBS = 104
         
@@ -334,11 +348,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
             self.foFreshTimes = 0
             self.bbsFreshTimes = 0
             self.navigationItem.rightBarButtonItem = nil
-        }else if index == idSetting {      //设置
-            self.foFreshTimes = 0
-            self.bbsFreshTimes = 0
-            self.navigationItem.rightBarButtonItem = nil
-            noticeDot()
+        }else if index == idUpdate {      //设置
+            self.addStep()
         }
     }
     
@@ -381,6 +392,83 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, NiceDelegat
                 })
             })
         }
+    }
+    
+    func addStep(){
+        self.navHide(-44)
+        self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        self.addView.translucentAlpha = 1
+        self.addView.translucentStyle = UIBarStyle.Default
+        self.addView.translucentTintColor = UIColor.clearColor()
+        self.addView.backgroundColor = UIColor.clearColor()
+        self.addView.alpha = 0
+        self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
+        var Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
+        Tap.delegate = self
+        self.addView.addGestureRecognizer(Tap)
+        
+        var nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
+        self.addStepView = nib.objectAtIndex(0) as AddStep
+        self.addStepView.setX(globalWidth/2-140)
+        self.addStepView.setY(globalHeight/2-106)
+        self.addView.addSubview(self.addStepView)
+        
+        self.viewClose = UIImageView(frame: CGRectMake(20, 32, 20, 20))
+        self.viewClose.image = UIImage(named: "closeBlue")
+        self.viewClose.contentMode = UIViewContentMode.Center
+        self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
+        self.viewClose.userInteractionEnabled = true
+        self.addView.addSubview(self.viewClose)
+        
+        self.view.addSubview(self.addView)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.addView.alpha = 1
+        })
+    }
+
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView"  {
+            return false
+        }
+        return true
+    }
+    
+    func onViewCloseClick(){
+        self.navHide(20)
+        self.addStepView.textView.resignFirstResponder()
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            var newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
+            self.addView.transform = newTransform
+            self.addView.alpha = 0
+            }) { (Bool) -> Void in
+                self.addView.removeFromSuperview()
+        }
+    }
+    
+    func onCloseConfirm(){
+        if (self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "") {
+            self.addStepView.textView.resignFirstResponder()
+            self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.cancelSheet!.addButtonWithTitle("不写了")
+            self.cancelSheet!.addButtonWithTitle("继续写")
+            self.cancelSheet!.cancelButtonIndex = 1
+            self.cancelSheet!.showInView(self.view)
+        }else{
+            self.onViewCloseClick()
+        }
+    }
+    
+    func onAddViewClick(){
+        self.addStepView.textView.resignFirstResponder()
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.addStepView.setY(globalHeight/2-106)
+        })
+    }
+    
+    func navHide(yPoint:CGFloat){
+        var navigationFrame = self.navigationController!.navigationBar.frame
+        navigationFrame.origin.y = yPoint
+        self.navigationController!.navigationBar.frame = navigationFrame
     }
     
 }

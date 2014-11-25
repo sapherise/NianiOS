@@ -126,13 +126,13 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     func onHeadTap(sender: UITapGestureRecognizer) {
-        var viewController = UserViewController()
+        var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
     
     func onNameTap(sender: UITapGestureRecognizer) {
-        var viewController = UserViewController()
+        var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }

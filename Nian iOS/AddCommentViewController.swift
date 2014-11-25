@@ -44,11 +44,11 @@ class AddCommentViewController: UIViewController, UIGestureRecognizerDelegate{
         self.Line.backgroundColor = LineColor
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addReply")
-        rightButton.image = UIImage(named:"ok")
+        rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "回应"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

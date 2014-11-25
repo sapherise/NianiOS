@@ -34,7 +34,7 @@ class UserCellTop: UITableViewCell{
             var foed: NSString! = sa.objectForKey("foed") as NSString
             var isfo: NSString! = sa.objectForKey("isfo") as NSString
             self.nickLabel!.text = "\(name)"
-            var userImageURL = "http://img.nian.so/head/\(self.userid).jpg!head"
+            var userImageURL = "http://img.nian.so/head/\(self.userid).jpg!dream"
             self.foNumber!.text = "\(fo) 关注"
             self.foedNumber!.text = "\(foed) 听众"
             self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)

@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         self.window!.backgroundColor = BGColor
         var navigationViewController = UINavigationController(rootViewController: WelcomeViewController())
         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        navigationViewController.navigationBar.tintColor = IconColor
+        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
         navigationViewController.navigationBar.clipsToBounds = true
         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         

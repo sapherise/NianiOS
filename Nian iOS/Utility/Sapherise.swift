@@ -14,7 +14,6 @@ let IconColor:UIColor = UIColor(red:0.71, green:0.71,blue:0.71,alpha: 1)    //�
 let BGColor:UIColor = UIColor.whiteColor()
 let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
 let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
-let BlueColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1)   //念蓝
 let DarkColor:UIColor = UIColor(red:0.15, green:0.15, blue:0.15, alpha:1)   //图片底色
 let LightBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
 let LessBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 0.2)   //念蓝
@@ -65,21 +64,21 @@ func SAReplace(word:String, before:String, after:String)->NSString{
 }
 
 //替换危险字符
-func SAHtml(var content:String)->String{
-    content = SAReplace(content, "&", "&amp;");
-    content = SAReplace(content, "<", "&lt;");
-    content = SAReplace(content, ">", "&gt;");
-    content = SAReplace(content, "\"", "&quot;");
-    content = SAReplace(content, "'", "&#039;");
-    content = SAReplace(content, " ", "&nbsp;");
-    content = SAReplace(content, "\n", "<br>");
-    return content
+func SAHtml(content:String)->String{
+    var newContent = SAReplace(content, "&", "&amp;");
+    newContent = SAReplace(newContent, "<", "&lt;");
+    newContent = SAReplace(newContent, ">", "&gt;");
+    newContent = SAReplace(newContent, "\"", "&quot;");
+    newContent = SAReplace(newContent, "'", "&#039;");
+    newContent = SAReplace(newContent, " ", "&nbsp;");
+    newContent = SAReplace(newContent, "\n", "<br>");
+    return newContent
 }
 
-func SAEncode(var content:String)->String{
+func SAEncode(content:String)->String{
     var customAllowedSet = NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-    content = content.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
-    return content
+    var s = content.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+    return s
 }
 
 func SAColorImg(theColor:UIColor)->UIImage{

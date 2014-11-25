@@ -2,16 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "nebula@1x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "bg.png"
+      "filename" : "nebula.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "nebula@3x.png"
     }
   ],
   "info" : {

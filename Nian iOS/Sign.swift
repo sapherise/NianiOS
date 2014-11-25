@@ -29,13 +29,13 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate{
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.view.backgroundColor = BGColor
-        self.inputName.textColor = BlueColor
+        self.inputName.textColor = SeaColor
         self.inputName.textAlignment = NSTextAlignment.Center
         let attributesDictionary = [NSForegroundColorAttributeName: LineColor]
         self.inputName.attributedPlaceholder = NSAttributedString(string: "昵称", attributes: attributesDictionary)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "注册"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

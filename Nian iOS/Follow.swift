@@ -207,7 +207,7 @@ func loadData(){
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }

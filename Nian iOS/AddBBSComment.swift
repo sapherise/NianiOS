@@ -24,6 +24,7 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
     var content:String = ""
     var Row:Int = 0
     var delegate: AddBBSCommentDelegate?      //😍
+    var navView:UIView!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -35,16 +36,20 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     func setupViews(){
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
+        
         self.view.backgroundColor = BGColor
         self.TextView.backgroundColor = BGColor
         self.Line.backgroundColor = LineColor
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addReply")
-        rightButton.image = UIImage(named:"ok")
+        rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "回应话题"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

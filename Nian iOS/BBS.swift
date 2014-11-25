@@ -12,7 +12,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     let identifier = "bbs"
     let identifier2 = "bbstop"
-    var lefttableView:UITableView?
+    var tableView:UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
@@ -34,6 +34,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var ReturnReplyRow:Int = 0
     var ReturnReplyContent:String = ""
     var ReturnReplyId:String = ""
+    var navView:UIView!
     
     override func viewDidLoad()
     {
@@ -45,22 +46,25 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func setupViews()
     {
-        var width = self.view.frame.size.width
-        var height = self.view.frame.size.height - 64
-        self.lefttableView = UITableView(frame:CGRectMake(0,0,width,height))
-        self.lefttableView!.delegate = self;
-        self.lefttableView!.dataSource = self;
-        self.lefttableView!.backgroundColor = BGColor
-        self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
+        
+        viewBack(self)
+        self.tableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight-64))
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.backgroundColor = BGColor
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
         var nib = UINib(nibName:"BBSCell", bundle: nil)
         var nib2 = UINib(nibName:"BBSCellTop", bundle: nil)
         
         
         self.title = "梦想"
-        self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
-        self.view.addSubview(self.lefttableView!)
+        self.tableView.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView.registerNib(nib2, forCellReuseIdentifier: identifier2)
+        self.view.addSubview(self.tableView)
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
         rightButton.image = UIImage(named:"bbs_add")
@@ -79,9 +83,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
@@ -106,8 +110,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             {
                 self.dataArray.addObject(data)
             }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.footerEndRefreshing()
+            self.tableView.reloadData()
+            self.tableView.footerEndRefreshing()
             self.page++
         })
     }
@@ -124,8 +128,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             for data : AnyObject  in arr{
                 self.dataArray.addObject(data)
             }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.headerEndRefreshing()
+            self.tableView!.reloadData()
+            self.tableView!.headerEndRefreshing()
             self.page = 1
         })
     }
@@ -179,7 +183,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
@@ -214,7 +218,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         if indexPath.section != 0{
-            self.lefttableView!.deselectRowAtIndexPath(indexPath, animated: false)
+            self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             var index = indexPath.row
@@ -295,8 +299,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             if buttonIndex == 0 {
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
-                self.lefttableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.lefttableView!.reloadData()
+                self.tableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.tableView!.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_bbscomment.php")
                 if(sa == "1"){
@@ -324,7 +328,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: self.ReturnReplyRow)
         var newindexpath = NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)
-        self.lefttableView!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.Bottom)
+        self.tableView!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.Bottom)
     }
     
     
@@ -355,11 +359,11 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.SAReloadData()
     }
     func setupRefresh(){
-        self.lefttableView!.addHeaderWithCallback({
+        self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
         })
         
-        self.lefttableView!.addFooterWithCallback({
+        self.tableView!.addFooterWithCallback({
             self.loadData()
         })
     }

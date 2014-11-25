@@ -64,7 +64,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         viewBack(self)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "等级"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel

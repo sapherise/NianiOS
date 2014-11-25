@@ -126,7 +126,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
@@ -151,7 +151,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var type = data.stringAttributeForKey("type")
         
         var DreamVC = DreamViewController()
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         var BBSVC = BBSViewController()
         if type == "0" {    //在你的梦想留言
             DreamVC.Id = dream

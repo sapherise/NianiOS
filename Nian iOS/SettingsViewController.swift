@@ -9,30 +9,26 @@
 import Foundation
 import UIKit
 
-protocol NiceDelegate {      //😍       我拥有一个代理公司
-    func niceShow(text:String)
-}
-
-class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var head:UIImageView!
     @IBOutlet var logout:UIView!
-    var niceDeletgate: NiceDelegate?
     @IBOutlet var inputName:UITextField!
     @IBOutlet var inputEmail:UITextField!
-    @IBOutlet var coinNumber:UILabel?
     @IBOutlet var helpView:UIView?
-    @IBOutlet var storeView:UIView?
     @IBOutlet var cacheView:UIView?
     @IBOutlet var cacheActivity:UIActivityIndicatorView!
     @IBOutlet var ImageSwitch:UISwitch!
     @IBOutlet var CareSwitch:UISwitch!
     @IBOutlet var version:UILabel!
+    @IBOutlet var btnCover: UIButton!
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""
     var uploadWidth:Int = 0
     var uploadHeight:Int = 0
+    // uploadWay，当上传封面时为 0，上传头像时为 1
+    var uploadWay:Int = 0
     
     var accountName:String = ""
     var accountEmail:String = ""
@@ -41,90 +37,23 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         setupViews()
     }
     
-    func uploadClick(sender: AnyObject) {
-        self.inputName!.resignFirstResponder()
-        self.inputEmail!.resignFirstResponder()
-        self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.actionSheet!.addButtonWithTitle("相册")
-        self.actionSheet!.addButtonWithTitle("拍照")
-        self.actionSheet!.addButtonWithTitle("取消")
-        self.actionSheet!.cancelButtonIndex = 2
-        self.actionSheet!.showInView(self.view)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == 0 {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = true
-            self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-        }else if buttonIndex == 1 {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = true
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
-                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-            }
-        }
-    }
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-        self.uploadFile(image)
-    }
-    func uploadFile(img:UIImage){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var uy = UpYun()
-        uy.successBlocker = ({(data:AnyObject!) in
-            self.uploadUrl = data.objectForKey("url") as String
-            self.uploadUrl = SAReplace(self.uploadUrl, "/headtmp/", "") as String
-            var userImageURL = "http://img.nian.so/headtmp/\(self.uploadUrl)!head"
-            var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-            var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
-            var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
-            var queue = NSOperationQueue();
-            NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-                dispatch_async(dispatch_get_main_queue(),{
-                    var image:UIImage? = UIImage(data: data)
-                    if image != nil{
-                        var filePath = cachePath.stringByAppendingPathComponent("\(safeuid).jpg!head")
-                        FileUtility.imageCacheToPath(filePath,image:data)
-                        self.head!.image = image
-                    }
-                })
-            })
-        })
-        uy.failBlocker = ({(error:NSError!) in
-        })
-        uy.uploadImage(resizedImage(img, 250), savekey: getSaveKey("headtmp", "jpg"))
-        
-        var uy2 = UpYun()
-        uy2.successBlocker = ({(data2:AnyObject!) in
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("uid=\(safeuid)", "http://nian.so/api/upyun_cache.php")
-            if sa != "" && sa != "err" {
-            }
-            })
-        })
-        uy2.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head"))
-    }
-    
-    func getSaveKeyPrivate(title:NSString) -> NSString{
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var string = NSString(string: "/\(title)/\(safeuid).jpg")
-        return string
-    }
-    
     func setupViews(){
+        
+        viewBack(self)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        
+        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = "设置"
+        titleLabel.textAlignment = NSTextAlignment.Center
+        self.navigationItem.titleView = titleLabel
+        
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = NavColor
         self.view.addSubview(navView)
         
-        self.scrollView.frame = CGRectMake(0, 64, globalWidth, globalHeight - 49 - 64)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 820)
+        self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 900)
         self.cacheActivity.hidden = true
         self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -132,14 +61,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var safeshell = Sa.objectForKey("shell") as String
         var safename = Sa.objectForKey("user") as String
         self.view.backgroundColor = BGColor
-        var userImageURL = "http://img.nian.so/head/\(safeuid).jpg!head"
+        var userImageURL = "http://img.nian.so/head/\(safeuid).jpg!dream"
         self.head!.setImage(userImageURL,placeHolder: IconColor)
-        self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick:"))
+        self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick"))
+        self.btnCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoverClick"))
         
         self.inputName!.delegate = self
         self.inputEmail!.delegate = self
-        
-        self.storeView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "storeClick:"))
         
         self.helpView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
         self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
@@ -165,7 +93,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             self.pushSwitchSetup(false)
         }
         
-        var longTap = UILongPressGestureRecognizer(target: self, action: "niceTry")
+        var longTap = UILongPressGestureRecognizer(target: self, action: "niceTry:")
         longTap.minimumPressDuration = 0.5
         self.version.addGestureRecognizer(longTap)
         
@@ -178,11 +106,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             var sa: AnyObject! = json.objectForKey("user")
             var email: AnyObject! = sa.objectForKey("email") as String
-            var coin: AnyObject! = sa.objectForKey("coin") as String
             dispatch_async(dispatch_get_main_queue(), {
                 self.inputName.text = safename
                 self.inputEmail.text = "\(email)"
-                self.coinNumber!.text = "\(coin)"
                 self.accountName = safename
                 self.accountEmail = "\(email)"
             })
@@ -197,10 +123,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             if (textField.text != "") & (textField.text != self.accountName){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if SAstrlen(self.inputName.text)>30 {
-                    self.niceDeletgate?.niceShow("昵称太长了...")
+                    self.view.showTipText("昵称太长了...", delay: 1)
                     textField.text = self.accountName
                 }else if !self.inputName.text.isValidName() {
-                    self.niceDeletgate?.niceShow("名字里有奇怪的字符...")
+                    self.view.showTipText("名字里有奇怪的字符...", delay: 1)
                     textField.text = self.accountName
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -210,14 +136,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
                                 dispatch_async(dispatch_get_main_queue(), {
-                                    self.niceDeletgate?.niceShow("有人取这个名字了...")
+                                    self.view.showTipText("有人取这个名字了...", delay: 1)
                                     textField.text = self.accountName
                                 })
                             }else if sa == "1" {
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.navigationItem.rightBarButtonItems = []
                                     self.accountName = self.inputName.text
-                                    self.niceDeletgate?.niceShow("昵称改好啦")
+                                    self.view.showTipText("昵称改好啦", delay: 1)
                                 })
                             }
                         }
@@ -230,10 +156,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             if (textField.text != "") & (textField.text != self.accountEmail){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if SAstrlen(self.inputEmail.text)>50 {
-                    self.niceDeletgate?.niceShow("邮箱太长了")
+                    self.view.showTipText("邮箱太长了", delay: 1)
                     textField.text = self.accountEmail
                 }else if !self.inputEmail.text.isValidEmail() {
-                    self.niceDeletgate?.niceShow("不是地球上的邮箱")
+                    self.view.showTipText("不是地球上的邮箱", delay: 1)
                     textField.text = self.accountEmail
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -243,14 +169,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
                                 dispatch_async(dispatch_get_main_queue(), {
-                                    self.niceDeletgate?.niceShow("有人用这个邮箱了...")
+                                    self.view.showTipText("有人用这个邮箱了...", delay: 1)
                                     textField.text = self.accountEmail
                                 })
                             }else if sa == "1" {
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.navigationItem.rightBarButtonItems = []
                                     self.accountEmail = self.inputEmail.text
-                                    self.niceDeletgate?.niceShow("邮箱改好啦")
+                                    self.view.showTipText("邮箱改好啦", delay: 1)
                                 })
                             }
                         }
@@ -261,6 +187,125 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             }
         }
     }
+    
+    func onHeadClick(){
+        self.uploadWay = 1
+        self.actionShow()
+    }
+    
+    func onCoverClick(){
+        self.uploadWay = 0
+        self.actionShow()
+    }
+    
+    func actionShow(){
+        var actionTitle:String = ""
+        if self.uploadWay == 0 {
+            actionTitle = "设定封面"
+        }else{
+            actionTitle = "设定头像"
+        }
+        self.actionSheet = UIActionSheet(title: actionTitle, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.actionSheet!.addButtonWithTitle("相册")
+        self.actionSheet!.addButtonWithTitle("拍照")
+        self.actionSheet!.addButtonWithTitle("取消")
+        self.actionSheet!.cancelButtonIndex = 2
+        self.actionSheet!.showInView(self.view)
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker!.delegate = self
+        self.imagePicker!.allowsEditing = true
+        if buttonIndex == 0 {
+            self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+        }else if buttonIndex == 1 {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
+                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        self.uploadFile(image)
+    }
+    
+    func uploadFile(img:UIImage){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var uy = UpYun()
+        if self.uploadWay == 1 {
+            uy.successBlocker = ({(data:AnyObject!) in
+                self.uploadUrl = data.objectForKey("url") as String
+                self.uploadUrl = SAReplace(self.uploadUrl, "/headtmp/", "") as String
+                var userImageURL = "http://img.nian.so/headtmp/\(self.uploadUrl)!dream"
+                var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
+                var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
+                var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
+                var queue = NSOperationQueue();
+                NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
+                    dispatch_async(dispatch_get_main_queue(),{
+                        var image:UIImage? = UIImage(data: data)
+                        if image != nil{
+                            globalWillNianReload = 1
+                            var filePath = cachePath.stringByAppendingPathComponent("\(safeuid).jpg!dream")
+                            FileUtility.imageCacheToPath(filePath,image:data)
+                            self.head.image = image
+                        }
+                    })
+                })
+            })
+            uy.uploadImage(resizedImage(img, 250), savekey: getSaveKey("headtmp", "jpg"))
+            
+            var uy2 = UpYun()
+            uy2.successBlocker = ({(data2:AnyObject!) in
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var sa = SAPost("uid=\(safeuid)", "http://nian.so/api/upyun_cache.php")
+                    if sa != "" && sa != "err" {
+                    }
+                })
+            })
+            uy2.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head"))
+        }else{
+            uy.successBlocker = ({(data:AnyObject!) in
+                self.uploadUrl = data.objectForKey("url") as String
+                self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
+                var userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
+                var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
+                var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
+                var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
+                var queue = NSOperationQueue();
+                NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
+                    dispatch_async(dispatch_get_main_queue(),{
+                        var image:UIImage? = UIImage(data: data)
+                        if image != nil{
+                            globalWillNianReload = 1
+                            self.view.showTipText("封面换好啦", delay: 2)
+                            var filePath = cachePath.stringByAppendingPathComponent("\(self.uploadUrl).jpg!cover")
+                            FileUtility.imageCacheToPath(filePath,image:data)
+                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&cover=\(self.uploadUrl)", "http://nian.so/api/change_cover.php")
+                            })
+                        }
+                    })
+                })
+            })
+            uy.uploadImage(resizedImage(img, 320), savekey: getSaveKey("cover", "jpg"))
+            
+        }
+    }
+    
+    func getSaveKeyPrivate(title:NSString) -> NSString{
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var string = NSString(string: "/\(title)/\(safeuid).jpg")
+        return string
+    }
+    
     
     func switchAction(sender:UISwitch){
         if sender.on {
@@ -285,8 +330,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.CareSwitch.thumbTintColor = UIColor.whiteColor()
-            self.CareSwitch.onTintColor = BlueColor
-            self.CareSwitch.tintColor = BlueColor
+            self.CareSwitch.onTintColor = SeaColor
+            self.CareSwitch.tintColor = SeaColor
             self.CareSwitch.setOn(true, animated: true)
         }else{
             self.CareSwitch.thumbTintColor = BGColor
@@ -303,8 +348,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.ImageSwitch.thumbTintColor = UIColor.whiteColor()
-            self.ImageSwitch.onTintColor = BlueColor
-            self.ImageSwitch.tintColor = BlueColor
+            self.ImageSwitch.onTintColor = SeaColor
+            self.ImageSwitch.tintColor = SeaColor
             self.ImageSwitch.setOn(true, animated: true)
             Sa.setObject("1", forKey:"saveMode")
             Sa.synchronize()
@@ -335,7 +380,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 if NSFileManager.defaultManager().fileExistsAtPath(path) {
                     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                     var safeuid = Sa.objectForKey("uid") as String
-                    if p as NSString != "\(safeuid).jpg!head" {
+                    if p as NSString != "\(safeuid).jpg!dream" {
                         NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
                     }
                 }
@@ -343,23 +388,20 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             dispatch_sync(dispatch_get_main_queue(), {
                 self.cacheActivity.hidden = true
                 self.cacheActivity.stopAnimating()
-                self.niceDeletgate?.niceShow("缓存清理好了！")
+                self.view.showTipText("缓存清理好了！", delay: 1)
             })
         })
     }
     
-    func niceTry(){
-        self.niceDeletgate?.niceShow("念 爱 你")
+    func niceTry(sender:UILongPressGestureRecognizer){
+        if sender.state == UIGestureRecognizerState.Began {
+        self.view.showTipText("念 爱 你", delay: 2)
+        }
     }
     
     func SAhelp(){
         var helpVC = HelpViewController()
         self.navigationController?.pushViewController(helpVC, animated: true)
-    }
-    
-    func storeClick(sender:UIGestureRecognizer){
-        var storeVC = StoreViewController(nibName: "Store", bundle: nil)
-        self.navigationController!.pushViewController(storeVC, animated: true)
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -384,12 +426,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func back(sender:UISwipeGestureRecognizer){
+    func back(){
         self.navigationController!.popViewControllerAnimated(true)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
     override func viewWillAppear(animated: Bool)

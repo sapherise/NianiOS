@@ -119,21 +119,18 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             self.uploadWidth = self.data!.objectForKey("img0") as String
             self.uploadHeight = self.data!.objectForKey("img1") as String
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
-            rightButton.image = UIImage(named:"ok")
+            rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }else{
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStep")
-            rightButton.image = UIImage(named:"ok")
+            rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.TextView.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        })
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         if self.isEdit == 1 {
             titleLabel.text = "编辑进展！"
         }else{
@@ -144,6 +141,11 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        
+        delay(0.5, { () -> () in
+            self.TextView.becomeFirstResponder()
+            return
+        })
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){

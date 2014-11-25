@@ -125,7 +125,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.text = "回应"
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
     }
@@ -310,7 +310,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }

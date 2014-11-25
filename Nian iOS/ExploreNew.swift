@@ -95,7 +95,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreNewCell", forIndexPath: indexPath) as? ExploreNewCell
         var data = dataSource[indexPath.row]
-        cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : BlueColor
+        cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : SeaColor
         cell!.labelTitle.text = data.title
         cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
         return cell!

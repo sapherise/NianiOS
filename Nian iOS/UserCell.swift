@@ -109,7 +109,7 @@ class UserCell: UITableViewCell {
         
         self.fromDream!.text = dreamtitle
         
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
+        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         

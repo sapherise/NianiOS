@@ -14,13 +14,18 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
     var startTime:Int = 20
     var delayTime:Int = 0
     var Greetings:String = ""
+    var navView:UIView!
     
     func setupViews(){
+        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.navView)
+        
         self.view.backgroundColor = BGColor
         var width = self.view.frame.size.width  //宽度
         var height = self.view.frame.size.height   //高度
         
-        self.picker = UIPickerView(frame: CGRectMake(0, 0, 320, 320))
+        self.picker = UIPickerView(frame: CGRectMake(0, 64, 320, 320))
         self.picker.dataSource = self
         self.picker.delegate = self
         self.picker.selectRow(19, inComponent: 0, animated: false)
@@ -28,13 +33,13 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         self.view.addSubview(self.picker)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "每日设定"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "startPush")
-        rightButton.image = UIImage(named:"ok")
+        rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
         viewBack(self)
@@ -66,7 +71,7 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
         var pkView = UILabel(frame: CGRectMake(0, 0, 320, 50))
         pkView.text = "每日 \(row+1) 时"
-        pkView.textColor = IconColor
+        pkView.textColor = UIColor.blackColor()
         pkView.textAlignment = NSTextAlignment.Center
         return pkView
     }

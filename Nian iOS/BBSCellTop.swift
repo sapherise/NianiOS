@@ -54,7 +54,7 @@ class BBSCellTop: UITableViewCell{
         
         self.nickLabel!.text = "\(self.topuser)"
         self.lastdate!.text = "\(self.toplastdate)"
-        var userImageURL = "http://img.nian.so/head/\(self.topuid).jpg!head"
+        var userImageURL = "http://img.nian.so/head/\(self.topuid).jpg!dream"
         self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
         self.dreamhead!.tag = self.topuid.toInt()!
         

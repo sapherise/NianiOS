@@ -49,7 +49,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         
         self.scrollView.contentSize.height = 800
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
@@ -60,7 +60,6 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         var header = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
         
-        self.viewTop.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.viewCircleBackground.layer.cornerRadius = 84
         self.viewCircleBackground.layer.masksToBounds = true
         self.viewCircleBackground.layer.borderColor = UIColor.whiteColor().CGColor

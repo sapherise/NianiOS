@@ -53,17 +53,17 @@ class ExploreDreamCell: UITableViewCell {
         if promo1 == "1" {
             self.title1!.textColor = GoldColor
         }else{
-            self.title1!.textColor = BlueColor
+            self.title1!.textColor = SeaColor
         }
         if promo2 == "1" {
             self.title2!.textColor = GoldColor
         }else{
-            self.title2!.textColor = BlueColor
+            self.title2!.textColor = SeaColor
         }
         if promo3 == "1" {
             self.title3!.textColor = GoldColor
         }else{
-            self.title3!.textColor = BlueColor
+            self.title3!.textColor = SeaColor
         }
         self.title1!.text = title1
         self.title2!.text = title2

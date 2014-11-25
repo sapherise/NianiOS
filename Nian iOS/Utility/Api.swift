@@ -72,4 +72,14 @@ struct Api {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/calendar.php?uid=\(s_uid)", callback: callback)
     }
+    
+    static func getUserTop(uid:Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/user.php?uid=\(uid)&myuid=\(s_uid)", callback: callback)
+    }
+    
+    static func getDreamNewest(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/addstep_dream.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
 }

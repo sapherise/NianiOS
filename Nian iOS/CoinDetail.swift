@@ -31,7 +31,7 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         var titleLabel:UILabel = UILabel(frame: CGRectZero)
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币详情"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel

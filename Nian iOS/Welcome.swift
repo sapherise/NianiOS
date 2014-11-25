@@ -64,7 +64,7 @@ class WelcomeViewController: UIViewController {
                 var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                 var navigationViewController = UINavigationController(rootViewController: mainViewController)
                 navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                navigationViewController.navigationBar.tintColor = IconColor
+                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
                 navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                 
                 navigationViewController.navigationBar.clipsToBounds = true

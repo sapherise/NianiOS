@@ -37,6 +37,18 @@ extension String {
         return rect.size.width
     }
     
+    func stringWidthBoldWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
+        var font = UIFont.boldSystemFontOfSize(fontSize)
+        var size = CGSizeMake(CGFloat.max, height)
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .ByWordWrapping;
+        var  attributes = [NSFontAttributeName:font,
+            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        var text = self as NSString
+        var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        return rect.size.width
+    }
+    
     func dateStringFromTimestamp(timeStamp:NSString)->String
     {
         var ts = timeStamp.doubleValue

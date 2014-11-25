@@ -27,7 +27,7 @@ class StoreViewController: UIViewController, UIGestureRecognizerDelegate{
     func setupViews(){
         self.view.backgroundColor = BGColor
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念铺"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

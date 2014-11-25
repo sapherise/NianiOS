@@ -40,11 +40,11 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate{
         })
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSOK")
-        rightButton.image = UIImage(named:"ok")
+        rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "新话题"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

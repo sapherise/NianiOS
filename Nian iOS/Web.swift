@@ -28,7 +28,7 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
         web.loadRequest(request)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "隐私政策"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

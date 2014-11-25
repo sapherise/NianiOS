@@ -105,9 +105,10 @@ class DreamCell: UITableViewCell {
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
+        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
+        self.nickLabel!.tag = uid.toInt()!
         
         self.like!.tag = sid.toInt()!
         

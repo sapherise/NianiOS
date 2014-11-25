@@ -139,9 +139,9 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
@@ -410,7 +410,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }

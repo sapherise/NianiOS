@@ -42,7 +42,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.extendedLayoutIncludesOpaqueBars = true
         self.scrollView.frame.size.height = globalHeight - 49
-        self.scrollView.contentSize.height = globalHeight - 49
+        self.scrollView.contentSize.height = 524
         self.scrollView.delegate = self
         
         self.tableView.delegate = self
@@ -84,35 +84,36 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safename = Sa.objectForKey("user") as String
-        var url = NSURL(string:"http://nian.so/api/user.php?uid=\(safeuid)&myuid=\(safeuid)")
-        var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-        var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-        var sa: AnyObject! = json.objectForKey("user")
-        var name: AnyObject! = sa.objectForKey("name") as String
-        var email: AnyObject! = sa.objectForKey("email") as String
-        var coin: AnyObject! = sa.objectForKey("coin") as String
-        var dream: AnyObject! = sa.objectForKey("dream") as String
-        var step: AnyObject! = sa.objectForKey("step") as String
-        var level: String! = sa.objectForKey("level") as String
-        var coverURL: String! = sa.objectForKey("cover") as String
-        var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
-        var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
-        var (l, e) = levelCount( (level.toInt()!)*7 )
         
-        self.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
-        
-        self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
-        self.levelButton.setTitle("等级 \(l)", forState: UIControlState.Normal)
-        
-        self.UserName.text = "\(name)"
-        self.UserHead.setImage(imgURL, placeHolder: LessBlueColor)
-        
-        self.UserStep.text = "\(dream)个梦想, \(step)个进展"
+        Api.getUserTop(safeuid.toInt()!){ json in
+            if json != nil {
+                var sa: AnyObject! = json!.objectForKey("user")
+                var name: AnyObject! = sa.objectForKey("name") as String
+                var email: AnyObject! = sa.objectForKey("email") as String
+                var coin: AnyObject! = sa.objectForKey("coin") as String
+                var dream: AnyObject! = sa.objectForKey("dream") as String
+                var step: AnyObject! = sa.objectForKey("step") as String
+                var level: String! = sa.objectForKey("level") as String
+                var coverURL: String! = sa.objectForKey("cover") as String
+                var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
+                var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                var (l, e) = levelCount( (level.toInt()!)*7 )
+                self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
+                self.levelButton.setTitle("等级 \(l)", forState: UIControlState.Normal)
+                self.UserName.text = "\(name)"
+                self.UserHead.setImage(imgURL, placeHolder: LessBlueColor)
+                self.UserStep.text = "\(dream) 梦想，\(step) 进展"
+                if coverURL == "" {
+                    self.BGImage.image = UIImage(named: "bg")
+                }else{
+                    self.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                }
+            }
+        }
         self.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
         self.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
         self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
-        self.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "collectionHeadClick"))
     }
     
     func addDreamButton(){
@@ -121,17 +122,38 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-//        if scrollView == self.scrollView {
-//            var height = scrollView.contentOffset.y
-//            self.scrollLayout(height)
-//            self.heightScroll = height
-//        }
+        if scrollView == self.scrollView {
+            var height = scrollView.contentOffset.y
+            self.scrollLayout(height)
+            self.heightScroll = height
+        }
         if scrollView == self.tableView {
             var height = scrollView.contentOffset.y
             self.currentCell = Int(floor(( height - 50 ) / 100 ) + 1)
             if height > 0 {
                 labelTableChange(self.currentCell)
             }
+        }
+    }
+    
+    func scrollLayout(height:CGFloat){
+        if height > 0 {
+            self.BGImage.setY(height*0.6)
+        }else{
+            self.viewHolder.setY(height)
+            self.BGImage.frame = CGRectMake(height/10, height, 320-height/5, 320)
+            self.BGImage.layer.masksToBounds = true
+        }
+        scrollHidden(self.UserHead, height: height, scrollY: 70)
+        scrollHidden(self.UserName, height: height, scrollY: 138)
+        scrollHidden(self.UserStep, height: height, scrollY: 161)
+        scrollHidden(self.coinButton, height: height, scrollY: 204)
+        scrollHidden(self.levelButton, height: height, scrollY: 204)
+        self.navHide(-44)
+        if height > 320 {
+            self.BGImage.hidden = true
+        }else{
+            self.BGImage.hidden = false
         }
     }
     
@@ -154,7 +176,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func stepClick(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
-        var userVC = UserViewController()
+        var userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)
     }
@@ -175,6 +197,22 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if globalWillNianReload == 1 {
             globalWillNianReload = 0
             self.SAReloadData()
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            Api.getUserTop(safeuid.toInt()!){ json in
+                if json != nil {
+                    var sa: AnyObject! = json!.objectForKey("user")
+                    var coverURL: String! = sa.objectForKey("cover") as String
+                    var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
+                    var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                    self.UserHead.setImage(imgURL, placeHolder: LessBlueColor)
+                    if coverURL == "" {
+                        self.BGImage.image = UIImage(named: "bg")
+                    }else{
+                        self.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    }
+                }
+            }
         }
     }
     
@@ -188,146 +226,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.navigationBar.frame = navigationFrame
     }
     
-    func scrollLayout(height:CGFloat){
-        if height > 0 {
-            self.BGImage.setY(height*0.6)
-        }else{
-            self.viewHolder.setY(height)
-            self.BGImage.frame = CGRectMake(height/10, height, 320-height/5, 320)
-            self.BGImage.layer.masksToBounds = true
-        }
-        scrollHidden(self.UserHead, height: height, scrollY: 70)
-        scrollHidden(self.UserName, height: height, scrollY: 138)
-        scrollHidden(self.UserStep, height: height, scrollY: 161)
-        scrollHidden(self.coinButton, height: height, scrollY: 204)
-        scrollHidden(self.levelButton, height: height, scrollY: 204)
-        if height > 44 {
-            self.navHide(-44)
-        }else{
-            self.navHide(20)
-        }
-        if height > 320 {
-            self.BGImage.hidden = true
-        }else{
-            self.BGImage.hidden = false
-        }
-    }
-    
     func headClick(){
-        self.uploadWay = 1
-        self.actionShow()
+        var PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        self.navigationController!.pushViewController(PlayerVC, animated: true)
     }
     
-    func collectionHeadClick(){
-        self.uploadWay = 0
-        self.actionShow()
-    }
-    
-    func actionShow(){
-        var actionTitle:String = ""
-        if self.uploadWay == 0 {
-            actionTitle = "希望从哪里\n换一张好看的封面？"
-        }else{
-            actionTitle = "希望从哪里\n换一张好看的头像？"
-        }
-        self.actionSheet = UIActionSheet(title: actionTitle, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.actionSheet!.addButtonWithTitle("相册")
-        self.actionSheet!.addButtonWithTitle("拍照")
-        self.actionSheet!.addButtonWithTitle("取消")
-        self.actionSheet!.cancelButtonIndex = 2
-        self.actionSheet!.showInView(self.view)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker!.delegate = self
-        self.imagePicker!.allowsEditing = true
-        if buttonIndex == 0 {
-            self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-        }else if buttonIndex == 1 {
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
-                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-        self.uploadFile(image)
-    }
-    
-    func uploadFile(img:UIImage){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var uy = UpYun()
-        if self.uploadWay == 1 {
-            uy.successBlocker = ({(data:AnyObject!) in
-                self.uploadUrl = data.objectForKey("url") as String
-                self.uploadUrl = SAReplace(self.uploadUrl, "/headtmp/", "") as String
-                var userImageURL = "http://img.nian.so/headtmp/\(self.uploadUrl)!dream"
-                var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-                var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
-                var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
-                var queue = NSOperationQueue();
-                NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-                    dispatch_async(dispatch_get_main_queue(),{
-                        var image:UIImage? = UIImage(data: data)
-                        if image != nil{
-                            var filePath = cachePath.stringByAppendingPathComponent("\(safeuid).jpg!dream")
-                            FileUtility.imageCacheToPath(filePath,image:data)
-                            self.UserHead.image = image
-                        }
-                    })
-                })
-            })
-            uy.uploadImage(resizedImage(img, 250), savekey: getSaveKey("headtmp", "jpg"))
-            
-            var uy2 = UpYun()
-            uy2.successBlocker = ({(data2:AnyObject!) in
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)", "http://nian.so/api/upyun_cache.php")
-                    if sa != "" && sa != "err" {
-                    }
-                })
-            })
-            uy2.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head"))
-        }else{
-            uy.successBlocker = ({(data:AnyObject!) in
-                self.uploadUrl = data.objectForKey("url") as String
-                self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
-                var userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
-                var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-                var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
-                var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
-                var queue = NSOperationQueue();
-                NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-                    dispatch_async(dispatch_get_main_queue(),{
-                        var image:UIImage? = UIImage(data: data)
-                        if image != nil{
-                            var filePath = cachePath.stringByAppendingPathComponent("\(self.uploadUrl).jpg!cover")
-                            FileUtility.imageCacheToPath(filePath,image:data)
-                            self.BGImage.image = image
-                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&cover=\(self.uploadUrl)", "http://nian.so/api/change_cover.php")
-                            })
-                        }
-                    })
-                })
-            })
-            uy.uploadImage(resizedImage(img, 320), savekey: getSaveKey("cover", "jpg"))
-            
-        }
-    }
-    
-    func getSaveKeyPrivate(title:NSString) -> NSString{
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var string = NSString(string: "/\(title)/\(safeuid).jpg")
-        return string
-    }
     
     func scrollHidden(theView:UIView, height:CGFloat, scrollY:CGFloat){
         if ( height > scrollY - 50 && height <= scrollY ) {

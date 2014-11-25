@@ -186,7 +186,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
@@ -408,6 +408,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
                 c.tag = index + 10
@@ -445,7 +446,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = UserViewController()
+        var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
@@ -459,7 +460,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
-            return  287
+            return  287 + 14
         }else{
             if tableView == lefttableView {
                 var index = indexPath!.row
@@ -779,7 +780,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var string = NSMutableAttributedString(string: "\(self.titleJson)（私密）")
             var len = string.length
             string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-4))
-            string.addAttribute(NSForegroundColorAttributeName, value: BlueColor, range: NSMakeRange(len-4, 4))
+            string.addAttribute(NSForegroundColorAttributeName, value: SeaColor, range: NSMakeRange(len-4, 4))
             self.topCell.nickLabel.attributedText = string
         }else if self.percentJson == "1" {
             var string = NSMutableAttributedString(string: "\(self.titleJson)（已完成）")
@@ -807,7 +808,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
             }else{
                 self.topCell.btnMain.setTitle("分享", forState: UIControlState.Normal)
-                self.topCell.btnMain.addTarget(self, action: "ShareDream", forControlEvents: UIControlEvents.TouchUpInside)
+                self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
         
@@ -840,14 +841,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         if self.likeJson == "1" {
             self.likeJson = "0"
             self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
-            self.topCell.btnMain.removeTarget(self, action: "ShareDream", forControlEvents: UIControlEvents.TouchUpInside)
+            self.topCell.btnMain.removeTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
             var numLike = self.topCell.numLeftNum.text!.toInt()!
             self.topCell.numLeftNum.text = "\(numLike - 1)"
         }else if self.likeJson == "0" {
             self.likeJson = "1"
             self.topCell.btnMain.setTitle("已赞", forState: UIControlState.Normal)
-            self.topCell.btnMain.removeTarget(self, action: "ShareDream", forControlEvents: UIControlEvents.TouchUpInside)
+            self.topCell.btnMain.removeTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
             var numLike = self.topCell.numLeftNum.text!.toInt()!
             self.topCell.numLeftNum.text = "\(numLike + 1)"

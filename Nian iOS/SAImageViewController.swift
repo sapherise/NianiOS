@@ -29,10 +29,10 @@ class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
     
     func setupViews()
     {
-        self.navigationController!.navigationBar.tintColor = IconColor
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.text = "图片"
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         

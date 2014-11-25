@@ -130,11 +130,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadUrl = self.editImage
             
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
-            rightButton.image = UIImage(named:"ok")
+            rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }else{
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
-            rightButton.image = UIImage(named:"ok")
+            rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
         
@@ -144,7 +144,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = IconColor
+        titleLabel.textColor = UIColor.whiteColor()
         if self.isEdit == 1 {
             titleLabel.text = "编辑梦想"
         }else{

@@ -31,9 +31,6 @@ class StepCell: UITableViewCell {
         self.img2?.hidden = true
         self.title3?.hidden = true
         self.img3?.hidden = true
-        self.title1!.textColor = BlueColor
-        self.title2!.textColor = BlueColor
-        self.title3!.textColor = BlueColor
         self.img1!.layer.cornerRadius = 4;
         self.img2!.layer.cornerRadius = 4;
         self.img3!.layer.cornerRadius = 4;

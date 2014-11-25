@@ -35,7 +35,7 @@ class LikeCell: UITableViewCell {
         var follow = self.data.stringAttributeForKey("follow") as String
         user = self.data.stringAttributeForKey("user")
         self.nickLabel!.text = user
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!head"
+        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView.tag = self.uid.toInt()!
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         
