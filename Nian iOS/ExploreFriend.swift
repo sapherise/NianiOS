@@ -14,7 +14,9 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
         var uid: String!
         var user: String!
         var detail: String!
-        var type: Int!
+        var weibouid: String!
+        var weibohead: String!
+        var weiboname: String!
     }
     
     let sections = 2
@@ -79,7 +81,10 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section < sections {
-            if (section == 0 && tagSource.count == 0) || (section == 1 && weiboSource.count == 0) {
+            if section == 0 && (tagSource.count == 0 || !tagShowFooter) {
+                return 0
+            }
+            if  section == 1 && (weiboSource.count == 0 || !weiboShowFooter) {
                 return 0
             }
             return 36
@@ -89,7 +94,10 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section < sections {
-            if (section == 0 && tagSource.count == 0) || (section == 1 && weiboSource.count == 0) {
+            if section == 0 && tagSource.count == 0 {
+                return nil
+            }
+            if  section == 1 && weiboSource.count == 0 {
                 return nil
             }
             var labelTitle = UILabel()
@@ -109,10 +117,10 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section < sections {
-            if (section == 0 && tagSource.count == 0) || !tagShowFooter {
+            if section == 0 && (tagSource.count == 0 || !tagShowFooter) {
                 return nil
             }
-            if  (section == 1 && weiboSource.count == 0) || !weiboShowFooter {
+            if  section == 1 && (weiboSource.count == 0 || !weiboShowFooter) {
                 return nil
             }
             var button = UIButton(frame: CGRectMake(15, 0, 290, 36))
@@ -130,21 +138,22 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("ExploreFriendCell", forIndexPath: indexPath) as ExploreFriendCell
-        var data: Data!
+        var cell = tableView.dequeueReusableCellWithIdentifier(indexPath.section == 0 ? "ExploreFriendCell" : "ExploreWeiboCell", forIndexPath: indexPath) as ExploreFriendCell
         switch indexPath.section {
         case 0:
-            data = tagSource[indexPath.row]
+            var data = tagSource[indexPath.row]
+            cell.labelName.text = data.user
+            cell.labelDetail.text = data.detail
+            cell.imageHead.setImage(V.urlHeadImage(data.uid, tag: .Head), placeHolder: IconColor)
             break
         case 1:
-            data = weiboSource[indexPath.row]
+            var data = weiboSource[indexPath.row]
+            cell.labelName.text = data.weiboname
+            cell.imageHead.setImage(data.weibohead, placeHolder: IconColor, bool: true, cacheName: "weibo_\(data.weibouid)");
             break
         default:
             break
         }
-        cell.labelName.text = data.user
-        cell.labelDetail.text = data.detail
-        cell.imageHead.setImage(V.urlHeadImage(data.uid, tag: .Head), placeHolder: IconColor)
         return cell
     }
     
@@ -154,10 +163,10 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     
     func onMoreClick(sender: UIButton) {
         sender.enabled = false
-        sender.titleLabel!.hidden = true
+        sender.setTitle(nil, forState: UIControlState.Normal)
         var loadingView = sender.viewWithTag(101) as UIActivityIndicatorView?
         if loadingView == nil {
-            loadingView = UIActivityIndicatorView(frame: CGRectMake(0, 0, 10, 10))
+            loadingView = UIActivityIndicatorView(frame: CGRectMake(140, 13, 10, 10))
             sender.addSubview(loadingView!)
         } else {
             loadingView!.hidden = false
@@ -165,7 +174,7 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
         loadingView!.startAnimating()
         var callback: (Bool) -> Void = {
             success in
-            sender.titleLabel!.hidden = false
+            sender.setTitle("加载更多", forState: UIControlState.Normal)
             loadingView!.stopAnimating()
             loadingView!.hidden = true
             self.tableView.reloadData()
@@ -186,6 +195,9 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     func loadWeibo(callback: (Bool) -> Void) {
         Api.getFriendFromWeibo("\(weiboPage++)") {
             json in
+            if json == nil {
+                self.view.showTipText(TextLoadFailed, delay: 1)
+            }
             var success = false
             var weibobind = (json!["weibobind"] as String).toInt()!
             if weibobind == 1 {
@@ -196,8 +208,9 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
                         var data = Data()
                         data.uid = item["uid"] as String
                         data.user = item["user"] as String
-                        var weiboname = item["weiboname"] as String
-                        data.detail = "你的微博好友「\(weiboname)」。"
+                        data.weibohead = item["weibohead"] as String
+                        data.weibouid = item["weibouid"] as String
+                        data.weiboname = item["weiboname"] as String
                         self.weiboSource.append(data)
                     }
                 }

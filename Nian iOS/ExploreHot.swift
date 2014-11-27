@@ -55,6 +55,7 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
     }
     
     override func onHide() {
+        bindViewController!.tableView.headerEndRefreshing(animated: false)
         self.bindViewController!.tableView.setFooterHidden(false)
     }
     
