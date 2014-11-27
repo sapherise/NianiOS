@@ -27,6 +27,9 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var numMiddleNum:UILabel!
     @IBOutlet var numRightNum:UILabel!
     
+    @IBOutlet var viewLineRight: UIView!
+    @IBOutlet var viewLineLeft: UIView!
+    
     var dreamid:String = ""
     var desHeight:CGFloat = 0
     var panStartPoint:CGPoint!

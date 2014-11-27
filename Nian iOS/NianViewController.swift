@@ -288,6 +288,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 self.dataArray.addObject(data)
             }
             self.tableView.reloadData()
+            globalNumberDream = self.dataArray.count
             self.tableView.contentOffset.y = 100
             self.labelTableChange(0)
         })

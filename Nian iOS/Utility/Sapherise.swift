@@ -25,6 +25,7 @@ let SeaColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1) //æ·±æµ
 
 var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
+var globalNumberDream:Int = 0
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height

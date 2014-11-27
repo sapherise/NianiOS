@@ -102,6 +102,7 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate{
                                 Sa.setObject(shell, forKey: "shell")
                                 Sa.setObject(username, forKey:"user")
                                 Sa.synchronize()
+                                Api.requestLoad()
                                 var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                                 var navigationViewController = UINavigationController(rootViewController: mainViewController)
                                 navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)

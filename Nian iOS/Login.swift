@@ -71,7 +71,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
         }else{
             self.navigationItem.rightBarButtonItems = buttonArray()
             var email = SAEncode(SAHtml(self.inputEmail.text))
-            var password = "n*A\(SAEncode(SAHtml(self.inputPassword.text)))"
+            var password = "n*A\(SAHtml(self.inputPassword.text))"
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
@@ -91,6 +91,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
                         Sa.setObject(shell, forKey: "shell")
                         Sa.setObject(username, forKey:"user")
                         Sa.synchronize()
+                        Api.requestLoad()
                         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                         var navigationViewController = UINavigationController(rootViewController: mainViewController)
                         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)

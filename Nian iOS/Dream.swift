@@ -64,6 +64,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     var topCell:DreamCellTop!
+    var hashtag:String = "0"
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -208,6 +209,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.privateJson = dream.objectForKey("private") as String
             self.contentJson = dream.objectForKey("content") as String
             self.desJson = dream.objectForKey("content") as String
+            self.hashtag = dream.objectForKey("hashtag") as String
             
             
             self.likedreamJson = dream.objectForKey("like_dream") as String
@@ -392,10 +394,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             c.dreamid = dreamid
             c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStepClick"))
             c.numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeDream"))
-//            UIControlEvents.
-//            c.menuLeft.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
-//            c.menuMiddle.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
-//            c.menuRight.addTarget(self, action: "hello:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
             self.topCell = c
             cell = c
         }else{
@@ -663,15 +662,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
         }else if actionSheet == self.ownerMoreSheet {
             if buttonIndex == 0 {   //编辑梦想
-                var editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-                editdreamVC.delegate = self
-                editdreamVC.isEdit = 1
-                editdreamVC.editId = self.Id
-                editdreamVC.editTitle = self.titleJson
-                editdreamVC.editContent = self.contentJson
-                editdreamVC.editImage = self.imgJson
-                editdreamVC.editPrivate = self.privateJson
-                self.navigationController!.pushViewController(editdreamVC, animated: true)
+                self.editMyDream()
             }else if buttonIndex == 1 { //完成梦想
                 var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
                 moreButton.image = UIImage(named:"more")
@@ -724,12 +715,27 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String){
+    func editMyDream(readyForTag:Int = 0){
+        var editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+        editdreamVC.delegate = self
+        editdreamVC.isEdit = 1
+        editdreamVC.editId = self.Id
+        editdreamVC.editTitle = self.titleJson
+        editdreamVC.editContent = self.contentJson
+        editdreamVC.editImage = self.imgJson
+        editdreamVC.editPrivate = self.privateJson
+        editdreamVC.tagType = self.hashtag.toInt()!
+        editdreamVC.readyForTag = readyForTag
+        self.navigationController!.pushViewController(editdreamVC, animated: true)
+    }
+    
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String){
         self.titleJson = editTitle
         self.privateJson = editPrivate
         self.contentJson = editDes
         self.desJson = editDes
         self.imgJson = editImage
+        self.hashtag = editTag
         loadDreamTopcell()
     }
     
@@ -814,7 +820,24 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         self.topCell.numLeftNum.text = "\(self.liketotalJson)"
         self.topCell.numMiddleNum.text = "\(self.stepJson)"
-        self.topCell.numRightNum.text = "0"
+        
+        if self.hashtag == "0" {
+            self.topCell.numRightNum.text = "0"
+            if self.dreamowner == 1 {
+                self.topCell.numRightNum.textColor = SeaColor
+            }else{
+                // 如果没有标签又不是自己，那么就把标签隐藏起来
+                self.topCell.numRightNum.textColor = UIColor.blackColor()
+                self.topCell.numRight.hidden = true
+                self.topCell.viewLineRight.hidden = true
+                self.topCell.numLeft.setX(70)
+                self.topCell.numMiddle.setX(161)
+                self.topCell.viewLineLeft.setX(160)
+            }
+        }else{
+            self.topCell.numRightNum.text = "1"
+            self.topCell.numRightNum.textColor = UIColor.blackColor()
+        }
         
         
         if self.desJson == "" {
@@ -861,6 +884,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if sa != "" && sa != "err" {
             }
         })
+    }
+    
+    func onTagClick(){
+        if self.hashtag == "0" {
+            if self.dreamowner == 1 {
+                self.editMyDream(readyForTag: 1)
+            }
+        }else{
+            var TagVC = TagViewController()
+            TagVC.Id = self.hashtag
+            self.navigationController!.pushViewController(TagVC, animated: true)
+        }
     }
     
 }
