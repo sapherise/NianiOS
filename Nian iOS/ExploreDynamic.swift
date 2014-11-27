@@ -80,6 +80,10 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         })
     }
     
+    override func onHide() {
+        bindViewController!.tableView.headerEndRefreshing(animated: false)
+    }
+    
     override func onShow() {
         bindViewController!.tableView.reloadData()
         if dataSource.isEmpty {

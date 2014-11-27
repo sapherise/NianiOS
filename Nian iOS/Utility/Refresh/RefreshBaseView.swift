@@ -188,13 +188,16 @@ class RefreshBaseView: UIView {
     }
     
     //结束刷新
-    func endRefreshing(){
-        let delayInSeconds:Double = 0.3
-        var popTime:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds));
-        
-        dispatch_after(popTime, dispatch_get_main_queue(), {
-            self.State = RefreshState.Normal;
+    func endRefreshing(animated: Bool = true) {
+        if animated {
+            let delayInSeconds:Double = 0.3
+            var popTime:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds))
+            dispatch_after(popTime, dispatch_get_main_queue(), {
+                self.State = RefreshState.Normal
             })
+        } else {
+            self.State = RefreshState.Normal
+        }
     }
 }
 

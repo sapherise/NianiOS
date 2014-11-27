@@ -23,6 +23,14 @@ let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金
 let NavColor:UIColor = UIColor(red:0, green:0, blue:0, alpha:1)
 let SeaColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1) //深海蓝
 
+let product_coin12 = "so.nian.c12"
+let product_coin30 = "so.nian.c30"
+let product_coin65 = "so.nian.c65"
+let product_coin140 = "so.nian.c140"
+let product_coin295 = "so.nian.c295"
+
+let TextLoadFailed = "加载数据失败了..."
+
 var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
 

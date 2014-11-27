@@ -132,6 +132,7 @@
 		328181E71A08CE2700768D7D /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328181E61A08CE2700768D7D /* CoinCell.swift */; };
 		32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32871D121A14AB0E002C9486 /* ExploreHotCell.xib */; };
 		32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32871D141A14ABE0002C9486 /* ExploreHot.swift */; };
+		32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A2197B1A25C5B800B5BC35 /* Payment.swift */; };
 		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
@@ -284,6 +285,7 @@
 		328181E61A08CE2700768D7D /* CoinCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
 		32871D121A14AB0E002C9486 /* ExploreHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreHotCell.xib; sourceTree = "<group>"; };
 		32871D141A14ABE0002C9486 /* ExploreHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHot.swift; sourceTree = "<group>"; };
+		32A2197B1A25C5B800B5BC35 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
 		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
 		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
@@ -689,6 +691,7 @@
 				322DB94B1A0C9E95005FD6AE /* Api.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
 				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
+				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";
@@ -1020,6 +1023,7 @@
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
+				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,

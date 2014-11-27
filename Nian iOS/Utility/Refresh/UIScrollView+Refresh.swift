@@ -36,10 +36,10 @@ extension UIScrollView {
     }
     
     
-    func headerEndRefreshing() {
+    func headerEndRefreshing(animated: Bool = true) {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
-                object.endRefreshing()
+                (object as RefreshHeaderView).endRefreshing(animated: animated)
             }
         }
         
@@ -94,11 +94,11 @@ extension UIScrollView {
     }
 
     
-    func footerEndRefreshing()
+    func footerEndRefreshing(animated: Bool = true)
     {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
-                object.endRefreshing()
+                (object as RefreshFooterView).endRefreshing(animated: animated)
             }
         }
      
