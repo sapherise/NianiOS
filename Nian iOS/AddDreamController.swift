@@ -9,24 +9,28 @@
 import UIKit
 
 protocol editDreamDelegate {
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String)
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate {
     
-    @IBOutlet var Line1: UIView?
-    @IBOutlet var Line2: UIView?
     @IBOutlet var uploadButton: UIButton?
     @IBOutlet var uploadWait: UIActivityIndicatorView?
-    @IBOutlet var uploadDone: UIImageView?
     @IBOutlet var field1:UITextField?
-    @IBOutlet var field2:UITextField?
+    @IBOutlet var field2:UITextView!
     @IBOutlet var setButton: UIButton!
     @IBOutlet var labelTag: UILabel?
+    @IBOutlet var viewHolder: UIView!
+    @IBOutlet var imageEyeClosed: UIImageView!
+    @IBOutlet var imageDreamHead: UIImageView!
+    @IBOutlet var imageTag: UIImageView!
     var actionSheet:UIActionSheet?
     var setDreamActionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var delegate:editDreamDelegate?
+    var tagType:Int = 0
+    let dataArray = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]
+    var readyForTag:Int = 0     //当为1时自动跳转到Tag去
     
     var uploadUrl:String = ""
     
@@ -41,7 +45,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     @IBAction func uploadClick(sender: AnyObject) {
         self.field1!.resignFirstResponder()
-        self.field2!.resignFirstResponder()
+        self.field2.resignFirstResponder()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheet!.addButtonWithTitle("相册")
         self.actionSheet!.addButtonWithTitle("拍照")
@@ -68,11 +72,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             if buttonIndex == 0 {
                 self.isPrivate = 0
                 self.editPrivate = "0"
-                println("变为公开")
+                self.imageEyeClosed.hidden = true
+                // 变为公开
             }else if buttonIndex == 1 {
                 self.isPrivate = 1
                 self.editPrivate = "1"
-                println("变为私密")
+                self.imageEyeClosed.hidden = false
+                // 变为私密
             }
         }
     }
@@ -85,19 +91,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
         self.uploadWait!.startAnimating()
-        self.uploadDone!.hidden = true
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
-            self.uploadDone!.hidden = false
             self.uploadUrl = data.objectForKey("url") as String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
+            self.imageDreamHead.image = resizedImage(img, 30)
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
-            self.uploadDone!.hidden = true
         })
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png"))
     }
@@ -110,23 +114,35 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         super.didReceiveMemoryWarning()
     }
     func setupViews(){
+        self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
+        self.viewHolder.layer.borderWidth = 1
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = NavColor
+        self.view.addSubview(navView)
+        if self.tagType >= 1 {
+            self.labelTag?.text = self.dataArray[self.tagType - 1]
+        }
         
-        self.view.backgroundColor = BGColor
-        self.Line1!.backgroundColor = LineColor
-        self.Line2!.backgroundColor = LineColor
-        self.field1!.textColor = IconColor
-        self.field2!.textColor = IconColor
+        if self.editPrivate == "1" {
+            self.imageEyeClosed.hidden = false
+        }else{
+            self.imageEyeClosed.hidden = true
+        }
+        
+        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.field1!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
-        self.field2!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.field1!.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        self.field2.delegate = self
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        delay(0.5, { () -> () in
+            if self.readyForTag == 1 {
+                self.onTagClick()
+                return
+            }
         })
         
         if self.isEdit == 1 {
             self.field1!.text = self.editTitle
-            self.field2!.text = self.editContent
+            self.field2.text = self.editContent
             self.uploadUrl = self.editImage
             
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
@@ -139,7 +155,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         
         self.uploadWait!.hidden = true
-        self.uploadDone!.hidden = true
         
         
         
@@ -158,19 +173,21 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
         self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
+        self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         self.labelTag!.userInteractionEnabled = true
+        self.imageTag.userInteractionEnabled = true
     }
     
     func onTagClick(){
         var storyboard = UIStoryboard(name: "DreamTagViewController", bundle: nil)
         var viewController = storyboard.instantiateViewControllerWithIdentifier("DreamTagViewController") as DreamTagViewController
         viewController.dreamTagDelegate = self
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.navigationController!.pushViewController(viewController, animated: true)
     }
     
     func setDream(){
         self.field1!.resignFirstResponder()
-        self.field2!.resignFirstResponder()
+        self.field2.resignFirstResponder()
         
         self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.setDreamActionSheet!.addButtonWithTitle("设为公开")
@@ -183,57 +200,76 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
         self.field1!.resignFirstResponder()
-        self.field2!.resignFirstResponder()
+        self.field2.resignFirstResponder()
     }
     
     func addDreamOK(){
-        self.navigationItem.rightBarButtonItems = buttonArray()
         var title = self.field1?.text
-        var content = self.field2?.text
-        title = SAEncode(SAHtml(title!))
-        content = SAEncode(SAHtml(content!))
-        
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.isPrivate)", "http://nian.so/api/add_query.php")
-            if(sa == "1"){
-                dispatch_async(dispatch_get_main_queue(), {
-                    globalWillNianReload = 1
-                    self.navigationController!.popViewControllerAnimated(true)
-                })
-            }
-        })
+        var content = self.field2.text
+        if content == "梦想简介（可选）" {
+            content = ""
+        }
+        if title != "" {
+            self.navigationItem.rightBarButtonItems = buttonArray()
+            title = SAEncode(SAHtml(title!))
+            content = SAEncode(SAHtml(content!))
+            
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.isPrivate)&&hashtag=\(self.tagType)", "http://nian.so/api/add_query.php")
+                if(sa == "1"){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        globalWillNianReload = 1
+                        self.navigationController!.popViewControllerAnimated(true)
+                    })
+                }
+            })
+        }else{
+            self.field1!.becomeFirstResponder()
+        }
     }
     
     func editDreamOK(){
-        self.navigationItem.rightBarButtonItems = buttonArray()
         var title = self.field1?.text
-        var content = self.field2?.text
-        title = SAEncode(SAHtml(title!))
-        content = SAEncode(SAHtml(content!))
-        
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.editPrivate)&&id=\(self.editId)", "http://nian.so/api/editdream.php")
-            if(sa == "1"){
-                dispatch_async(dispatch_get_main_queue(), {
-                    globalWillNianReload = 1
-                    self.navigationController!.popViewControllerAnimated(true)
-                    self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2?.text)!, editImage:self.uploadUrl)
-                })
-            }
-        })
+        var content = self.field2.text
+        if title != "" {
+            self.navigationItem.rightBarButtonItems = buttonArray()
+            title = SAEncode(SAHtml(title!))
+            content = SAEncode(SAHtml(content!))
+            
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.editPrivate)&&id=\(self.editId)&&hashtag=\(self.tagType)", "http://nian.so/api/editdream.php")
+                if(sa == "1"){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        globalWillNianReload = 1
+                        self.navigationController!.popViewControllerAnimated(true)
+                        self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)")
+                    })
+                }
+            })
+        }else{
+            self.field1!.becomeFirstResponder()
+        }
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView.text == "梦想简介（可选）" {
+            textView.text = ""
+        }
+        textView.textColor = UIColor.blackColor()
     }
     
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
     }
     
-    func onTagSelected(tag: String) {
+    func onTagSelected(tag: String, tagType: Int) {
         self.labelTag?.text = tag
+        self.tagType = tagType + 1
     }
 }

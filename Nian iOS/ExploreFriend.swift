@@ -117,7 +117,7 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
             }
             var button = UIButton(frame: CGRectMake(15, 0, 290, 36))
             button.titleLabel!.font = UIFont.systemFontOfSize(14)
-            button.backgroundColor = BlueColor
+            button.backgroundColor = SeaColor
             button.setTitle("加载更多", forState: UIControlState.Normal)
             button.tag = section
             button.addTarget(self, action: "onMoreClick:", forControlEvents: UIControlEvents.TouchUpInside)

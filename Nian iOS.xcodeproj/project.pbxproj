@@ -43,6 +43,9 @@
 		12652836196C673A005765D2 /* DreamCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652835196C673A005765D2 /* DreamCellTop.swift */; };
 		12652838196C6755005765D2 /* Sapherise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652837196C6755005765D2 /* Sapherise.swift */; };
 		126593F219CD5CE500884947 /* AddDreamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126593F119CD5CE500884947 /* AddDreamController.xib */; };
+		126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC31A25DAED001BB5DA /* Tag.swift */; };
+		126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC51A25DAFC001BB5DA /* TagCell.swift */; };
+		126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126ABCC71A25DB07001BB5DA /* TagCell.xib */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
@@ -186,6 +189,9 @@
 		12652835196C673A005765D2 /* DreamCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCellTop.swift; sourceTree = "<group>"; };
 		12652837196C6755005765D2 /* Sapherise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sapherise.swift; sourceTree = "<group>"; };
 		126593F119CD5CE500884947 /* AddDreamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddDreamController.xib; sourceTree = "<group>"; };
+		126ABCC31A25DAED001BB5DA /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		126ABCC51A25DAFC001BB5DA /* TagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		126ABCC71A25DB07001BB5DA /* TagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Nian iOS-Bridging-Header.h"; path = "../Nian iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
@@ -419,6 +425,16 @@
 			name = "点赞";
 			sourceTree = "<group>";
 		};
+		126ABCC21A25DAD3001BB5DA /* 同类标签 */ = {
+			isa = PBXGroup;
+			children = (
+				126ABCC31A25DAED001BB5DA /* Tag.swift */,
+				126ABCC51A25DAFC001BB5DA /* TagCell.swift */,
+				126ABCC71A25DB07001BB5DA /* TagCell.xib */,
+			);
+			name = "同类标签";
+			sourceTree = "<group>";
+		};
 		1282230519C7E6710002937D /* upyun */ = {
 			isa = PBXGroup;
 			children = (
@@ -539,10 +555,10 @@
 			isa = PBXGroup;
 			children = (
 				1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */,
+				1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */,
 				12D846061A233F46005DCC08 /* AddStep.xib */,
 				12D846081A2340DC005DCC08 /* AddStep.swift */,
 				129375181A236E8B001F7442 /* AddStepCell.xib */,
-				1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */,
 			);
 			name = "更新进展";
 			sourceTree = "<group>";
@@ -646,6 +662,7 @@
 				12CCA2FC19F9EDF20098EF3D /* Chat */,
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
+				126ABCC21A25DAD3001BB5DA /* 同类标签 */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
 				1231A06B19B36B6200BD425F /* 更新回应 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
@@ -881,6 +898,7 @@
 				323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
+				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				128DAC451A144F69009FB0E7 /* LevelGame.xib in Resources */,
 				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
@@ -1000,9 +1018,11 @@
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
+				126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */,
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
+				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */,

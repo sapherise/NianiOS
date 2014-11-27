@@ -21,7 +21,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     @IBOutlet var uploadWait: UIActivityIndicatorView!
     @IBOutlet var uploadDone: UIImageView!
     @IBOutlet var TextView:UITextView!
-    @IBOutlet var Line: UIView!
+    @IBOutlet var viewHolder: UIView!
     var Id:String = ""
     var delegate: AddstepDelegate?      //😍
     var actionSheet:UIActionSheet?
@@ -32,6 +32,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     var data :NSDictionary?
     var isEdit:Int = 0
     var row:Int = 0
+    var keyboardHeight:CGFloat = 0
     
     @IBAction func uploadClick(sender: AnyObject) {
         self.TextView!.resignFirstResponder()
@@ -104,9 +105,8 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         self.view.addSubview(navView)
         
         self.uploadWait.hidden = true
-        self.view.backgroundColor = BGColor
-        self.TextView.backgroundColor = BGColor
-        self.Line.backgroundColor = LineColor
+        self.view.backgroundColor = UIColor.whiteColor()
+        self.viewHolder.setY(globalHeight-50)
         
         self.uploadWait!.hidden = true
         self.uploadDone!.hidden = true
@@ -142,7 +142,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
-        delay(0.5, { () -> () in
+        delay(1, { () -> () in
             self.TextView.becomeFirstResponder()
             return
         })
@@ -201,6 +201,38 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                 })
             }
         })
+    }
+    
+    func registerForKeyboardNotifications()->Void {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
+    }
+    
+    func deregisterFromKeyboardNotifications() -> Void {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardDidHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWasShown(notification: NSNotification) {
+//        self.isKeyboardFocus = true
+        var info: Dictionary = notification.userInfo!
+        var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
+        self.keyboardHeight = keyboardSize.height
+        self.viewHolder.setY(globalHeight-50-self.keyboardHeight)
+        var textHeight = globalHeight-self.keyboardHeight-50-64-20
+        if textHeight > 0 {
+            self.TextView.setHeight(textHeight)
+        }
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification){
+        self.viewHolder.setY(globalHeight-50)
+        self.TextView.setHeight(globalHeight-50-64-20)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.registerForKeyboardNotifications()
+        self.deregisterFromKeyboardNotifications()
     }
     
     func back(){

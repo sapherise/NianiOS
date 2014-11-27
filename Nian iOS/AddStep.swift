@@ -46,6 +46,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.activity.hidden = true
         self.activityOK.hidden = true
         self.imageUploaded.hidden = true
+        self.btnOK.enabled = false
         
         Api.getDreamNewest() { json in
             if json != nil {
@@ -63,6 +64,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                 self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
                 self.dreamID = id
                 self.labelDream.text = title
+                self.btnOK.enabled = true
             }
         }
         

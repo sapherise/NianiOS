@@ -108,12 +108,12 @@
                                 </subviews>
                             </view>
                             <view contentMode="scaleToFill" id="RmZ-sJ-SAa">
-                                <rect key="frame" x="114" y="145" width="1" height="54"/>
+                                <rect key="frame" x="114" y="155" width="1" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" id="21N-tq-K2z">
-                                <rect key="frame" x="205" y="145" width="1" height="54"/>
+                                <rect key="frame" x="205" y="155" width="1" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -175,6 +175,8 @@
                 <outlet property="numRight" destination="ydk-4u-V7h" id="2FT-cQ-vgb"/>
                 <outlet property="numRightNum" destination="ZMG-xk-KfM" id="gzM-Ph-SX8"/>
                 <outlet property="viewLeft" destination="QEi-nw-N5d" id="kjX-m7-Mtb"/>
+                <outlet property="viewLineLeft" destination="RmZ-sJ-SAa" id="Fbm-fY-43z"/>
+                <outlet property="viewLineRight" destination="21N-tq-K2z" id="Xub-Qa-NnC"/>
                 <outlet property="viewRight" destination="yfL-kj-0mn" id="UiZ-lm-U1T"/>
             </connections>
             <point key="canvasLocation" x="520" y="257"/>

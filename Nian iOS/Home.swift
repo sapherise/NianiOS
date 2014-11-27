@@ -35,6 +35,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     var deleteDreamSheet:UIActionSheet?
     var cancelSheet:UIActionSheet?
+    var pointNavY:CGFloat = 0
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -395,35 +396,41 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func addStep(){
-        self.navHide(-44)
-        self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        self.addView.translucentAlpha = 1
-        self.addView.translucentStyle = UIBarStyle.Default
-        self.addView.translucentTintColor = UIColor.clearColor()
-        self.addView.backgroundColor = UIColor.clearColor()
-        self.addView.alpha = 0
-        self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
-        var Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
-        Tap.delegate = self
-        self.addView.addGestureRecognizer(Tap)
-        
-        var nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
-        self.addStepView = nib.objectAtIndex(0) as AddStep
-        self.addStepView.setX(globalWidth/2-140)
-        self.addStepView.setY(globalHeight/2-106)
-        self.addView.addSubview(self.addStepView)
-        
-        self.viewClose = UIImageView(frame: CGRectMake(20, 32, 20, 20))
-        self.viewClose.image = UIImage(named: "closeBlue")
-        self.viewClose.contentMode = UIViewContentMode.Center
-        self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
-        self.viewClose.userInteractionEnabled = true
-        self.addView.addSubview(self.viewClose)
-        
-        self.view.addSubview(self.addView)
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.addView.alpha = 1
-        })
+        if globalNumberDream == 0 {
+            var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+            self.navigationController!.pushViewController(adddreamVC, animated: true)
+        }else{
+            self.pointNavY = self.navigationController!.navigationBar.frame.origin.y
+            self.navHide(-44)
+            self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+            self.addView.translucentAlpha = 1
+            self.addView.translucentStyle = UIBarStyle.Default
+            self.addView.translucentTintColor = UIColor.clearColor()
+            self.addView.backgroundColor = UIColor.clearColor()
+            self.addView.alpha = 0
+            self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
+            var Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
+            Tap.delegate = self
+            self.addView.addGestureRecognizer(Tap)
+            
+            var nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
+            self.addStepView = nib.objectAtIndex(0) as AddStep
+            self.addStepView.setX(globalWidth/2-140)
+            self.addStepView.setY(globalHeight/2-106)
+            self.addView.addSubview(self.addStepView)
+            
+            self.viewClose = UIImageView(frame: CGRectMake(20, 32, 20, 20))
+            self.viewClose.image = UIImage(named: "closeBlue")
+            self.viewClose.contentMode = UIViewContentMode.Center
+            self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
+            self.viewClose.userInteractionEnabled = true
+            self.addView.addSubview(self.viewClose)
+            
+            self.view.addSubview(self.addView)
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.addView.alpha = 1
+            })
+        }
     }
 
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
@@ -434,7 +441,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func onViewCloseClick(){
-        self.navHide(20)
+        self.navHide(self.pointNavY)
         self.addStepView.textView.resignFirstResponder()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             var newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
