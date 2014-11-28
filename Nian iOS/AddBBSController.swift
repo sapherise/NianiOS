@@ -8,12 +8,10 @@
 
 import UIKit
 
-class AddBBSController: UIViewController, UIGestureRecognizerDelegate{
-    
-    @IBOutlet var Line1: UIView?
-    @IBOutlet var Line2: UIView?
+class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextViewDelegate{
     @IBOutlet var field1:UITextField?
     @IBOutlet var field2:UITextView?
+    @IBOutlet var viewHolder: UIView!
     
     override func viewDidLoad() {
         setupViews()
@@ -27,17 +25,15 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate{
         navView.backgroundColor = NavColor
         self.view.addSubview(navView)
         
+        self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
+        self.viewHolder.layer.borderWidth = 1
+        
         self.view.backgroundColor = BGColor
-        self.Line1!.backgroundColor = LineColor
-        self.Line2!.backgroundColor = LineColor
-        self.field1!.textColor = IconColor
-        self.field2!.textColor = IconColor
+        self.field2!.delegate = self
         self.field1!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.field1!.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        })
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        self.field1!.becomeFirstResponder()
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSOK")
         rightButton.image = UIImage(named:"newOK")
@@ -53,13 +49,20 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate{
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
     }
     
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView.text == "话题内容" {
+            textView.text = ""
+        }
+        textView.textColor = UIColor.blackColor()
+    }
+    
     func dismissKeyboard(sender:UITapGestureRecognizer){
         self.field1!.resignFirstResponder()
         self.field2!.resignFirstResponder()
     }
     
     func addBBSOK(){
-        if (( self.field1!.text != "" ) & ( self.field2!.text != "" )) {
+        if (( self.field1!.text != "" ) & ( self.field2!.text != "" ) & ( self.field2!.text != "话题内容" )) {
             self.navigationItem.rightBarButtonItems = buttonArray()
             var title = self.field1!.text
             var content = self.field2!.text

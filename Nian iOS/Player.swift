@@ -600,6 +600,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.UserFo.setWidth(foWidth)
                     self.topCell!.UserFoed.setWidth(foedWidth)
                     self.topCell!.UserHead.setImage(userImageURL, placeHolder: IconColor)
+                    self.topCell!.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                     if cover == "" {
                         self.navView.image = UIImage(named: "bg")
                     }else{
