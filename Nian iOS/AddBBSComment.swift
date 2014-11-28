@@ -18,7 +18,6 @@ protocol AddBBSCommentDelegate {   //😍
 class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet var TextView:UITextView!
-    @IBOutlet var Line: UIView!
     var toggle:Int = 0
     var Id:String = ""
     var content:String = ""
@@ -26,23 +25,12 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
     var delegate: AddBBSCommentDelegate?      //😍
     var navView:UIView!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Custom initialization
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func setupViews(){
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = UIColor.blackColor()
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = BGColor
-        self.TextView.backgroundColor = BGColor
-        self.Line.backgroundColor = LineColor
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addReply")
         rightButton.image = UIImage(named:"newOK")
@@ -53,11 +41,12 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         titleLabel.text = "回应话题"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.TextView.text = self.content
+        self.TextView.setHeight(globalHeight-84)
+        self.TextView.text = self.content
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        delay(0.5, { () -> () in
             self.TextView.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+            return
         })
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
@@ -65,6 +54,38 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
         self.TextView!.resignFirstResponder()
+    }
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        self.registerForKeyboardNotifications()
+        self.deregisterFromKeyboardNotifications()
+    }
+    
+    
+    func registerForKeyboardNotifications()->Void {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
+    }
+    
+    func deregisterFromKeyboardNotifications() -> Void {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardDidHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWasShown(notification: NSNotification) {
+        //        self.isKeyboardFocus = true
+        var info: Dictionary = notification.userInfo!
+        var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
+        var keyboardHeight = keyboardSize.height
+        var textHeight = globalHeight-keyboardHeight-20
+        if textHeight > 0 {
+            self.TextView.setHeight(textHeight)
+        }
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification){
+        self.TextView.setHeight(globalHeight-20)
     }
     
     override func viewDidLoad() {

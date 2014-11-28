@@ -103,15 +103,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var safename = Sa.objectForKey("user") as String
             var url = NSURL(string:"http://nian.so/api/user.php?uid=\(safeuid)&myuid=\(safeuid)")
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-            var sa: AnyObject! = json.objectForKey("user")
-            var email: AnyObject! = sa.objectForKey("email") as String
-            dispatch_async(dispatch_get_main_queue(), {
-                self.inputName.text = safename
-                self.inputEmail.text = "\(email)"
-                self.accountName = safename
-                self.accountEmail = "\(email)"
-            })
+            if data != nil {
+                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                var sa: AnyObject! = json.objectForKey("user")
+                var email: AnyObject! = sa.objectForKey("email") as String
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.inputName.text = safename
+                    self.inputEmail.text = "\(email)"
+                    self.accountName = safename
+                    self.accountEmail = "\(email)"
+                })
+            }
         })
     }
     

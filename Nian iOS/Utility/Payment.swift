@@ -29,6 +29,12 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     }
     
     private func onPaymentPurchased(transaction: SKPaymentTransaction) {
+        var url = NSBundle.mainBundle().appStoreReceiptURL
+        var data = NSData(contentsOfURL: url!)!
+        println(data)
+        var json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.allZeros, error: nil)
+        
+        println(json)
         _callback(transaction.payment.productIdentifier, .Purchased)
         
     }

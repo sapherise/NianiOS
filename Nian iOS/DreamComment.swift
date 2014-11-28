@@ -139,6 +139,23 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         return true
     }
     
+    func commentFinish(replyContent:String){
+        self.isKeyboardResign = 1
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        var commentReplyRow = self.dataArray.count
+        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        self.dataArray.insertObject(newinsert, atIndex: 0)
+        var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
+        self.tableview!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+        //当提交评论后滚动到最新评论的底部
+        var contentOffsetHeight = self.tableview!.contentOffset.y
+        if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
+            self.tableview!.setContentOffset(CGPointMake(0, contentOffsetHeight + replyContent.stringHeightWith(17,width:208) + 60), animated: true)
+        }
+    }
+    
     //将内容发送至服务器
     func addReply(contentComment:String){
         var content = SAEncode(SAHtml(contentComment))
@@ -151,7 +168,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             if sa != "" && sa != "err" {
                 dispatch_async(dispatch_get_main_queue(), {
                     delay(0.5, { () -> () in
-                        self.SAReloadData()
+                        self.SAReloadData(bool: true)
                     })
                 })
             }
@@ -184,7 +201,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         })
     }
     
-    func SAReloadData(){
+    func SAReloadData(bool:Bool = false){
         var url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject == NSNull(){
@@ -198,9 +215,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             for data : AnyObject  in arr {
                 self.dataArray.addObject(data)
             }
+            if self.dataTotal < 15 {
+                self.tableview!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+            }
             self.tableview!.reloadData()
             self.tableview!.headerEndRefreshing()
-            self.tableview!.setContentOffset(CGPointMake(0, self.tableview!.contentSize.height-self.tableview!.bounds.size.height), animated: false)
+            if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
+                self.tableview!.setContentOffset(CGPointMake(0, self.tableview!.contentSize.height-self.tableview!.bounds.size.height), animated: bool)
+            }
             self.page = 1
             self.isKeyboardResign = 0
         })
@@ -221,17 +243,16 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             }
         }else{
             self.activityIndicatorView.hidden = true
-            self.tableview?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
+            self.tableview?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
         }
-        
-        //如果向下滚动时，就收起键盘
-        var currentOffset:CGFloat = scrollView.contentOffset.y
-        if scrollView.contentOffset.y < self.lastContentOffset {
-            if self.isKeyboardResign == 0 {
-                self.inputKeyboard.resignFirstResponder()
-            }
-        }
-        self.lastContentOffset = currentOffset
+//        //如果向下滚动时，就收起键盘
+//        var currentOffset:CGFloat = scrollView.contentOffset.y
+//        if scrollView.contentOffset.y < self.lastContentOffset {
+//            if self.isKeyboardResign == 0 {
+//                self.inputKeyboard.resignFirstResponder()
+//            }
+//        }
+//        self.lastContentOffset = currentOffset
     }
     
     func urlString()->String
@@ -371,21 +392,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 })
             }
         }
-    }
-    
-    func commentFinish(replyContent:String){
-        self.isKeyboardResign = 1
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        var commentReplyRow = self.dataArray.count
-        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-        self.dataArray.insertObject(newinsert, atIndex: 0)
-        var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-        self.tableview!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
-        //当提交评论后滚动到最新评论的底部
-        var contentOffsetHeight = self.tableview!.contentOffset.y
-        self.tableview!.setContentOffset(CGPointMake(0, contentOffsetHeight + replyContent.stringHeightWith(17,width:208) + 60), animated: true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

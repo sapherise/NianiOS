@@ -36,12 +36,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var ReturnReplyId:String = ""
     var navView:UIView!
     
+    var flow:Int = 0    //默认为 0 正序，当为 1 的时候为倒序
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        SAReloadData(flow: self.flow)
     }
     
     func setupViews()
@@ -94,49 +96,51 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     
-    func loadData()
+    func loadData(flow:Int = 0)
     {
-        var url = urlString()
+        var url = "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)"
+        if flow == 1 {
+            url = "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)&flow=1"
+        }
         // self.refreshView!.startLoading()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull() {
+                var arr = data["items"] as NSArray
+                if ( data["total"] as Int ) < 30 {
+                    self.tableView!.setFooterHidden(true)
+                }
+                for data : AnyObject  in arr
+                {
+                    self.dataArray.addObject(data)
+                }
+                self.tableView.reloadData()
+                self.tableView.footerEndRefreshing()
+                self.page++
             }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray.addObject(data)
-            }
-            self.tableView.reloadData()
-            self.tableView.footerEndRefreshing()
-            self.page++
         })
     }
     
-    func SAReloadData(){
+    func SAReloadData(flow:Int = 0){
+        self.tableView!.setFooterHidden(false)
         var url = "http://nian.so/api/bbs_comment.php?page=0&id=\(Id)"
+        if flow == 1 {
+            url = "http://nian.so/api/bbs_comment.php?page=0&id=\(Id)&flow=1"
+        }
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                var arr = data["items"] as NSArray
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                self.tableView!.reloadData()
+                self.tableView!.headerEndRefreshing()
+                self.page = 1
+                if ( data["total"] as Int ) < 30 {
+                    self.tableView!.setFooterHidden(true)
+                }
             }
-            var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.tableView!.reloadData()
-            self.tableView!.headerEndRefreshing()
-            self.page = 1
         })
-    }
-    
-    func urlString()->String
-    {
-        return "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -170,16 +174,37 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             c!.getContent = self.getContent
             c!.toptitle = self.toptitle
             c!.dreamhead?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c!.viewFlow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFlowClick"))
+            if self.flow == 1 {
+                c!.viewFlow.text = "倒序"
+            }else{
+                c!.viewFlow.text = "正序"
+            }
+            if self.dataArray.count == 0 {
+                c!.Line!.hidden = true
+            }else{
+                c!.Line!.hidden = false
+            }
             cell = c!
         }else{
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BBSCell
-                var index = indexPath.row
-                var data = self.dataArray[index] as NSDictionary
-                c!.data = data
-                c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                cell = c!
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BBSCell
+            var index = indexPath.row
+            var data = self.dataArray[index] as NSDictionary
+            c!.data = data
+            c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            if indexPath.row == self.dataArray.count - 1 {
+                c!.Line!.hidden = true
+            }else{
+                c!.Line!.hidden = false
+            }
+            cell = c!
         }
         return cell
+    }
+    
+    func onFlowClick(){
+        self.flow = ( self.flow == 1 ? 0 : 1 )
+        self.SAReloadData(flow: self.flow)
     }
     
     func userclick(sender:UITapGestureRecognizer){
@@ -360,11 +385,11 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.SAReloadData()
+            self.SAReloadData(flow: self.flow)
         })
         
         self.tableView!.addFooterWithCallback({
-            self.loadData()
+            self.loadData(flow: self.flow)
         })
     }
     func back(){

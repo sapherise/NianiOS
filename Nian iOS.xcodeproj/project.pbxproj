@@ -115,9 +115,7 @@
 		32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */; };
 		32349D491A1F3BD2004FEA25 /* ExploreFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32349D481A1F3BD2004FEA25 /* ExploreFriendCell.swift */; };
 		323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */; };
-		323CD2ED1A11EEF300FFE3F4 /* ExploreDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2E81A11EEF300FFE3F4 /* ExploreDreamCell.swift */; };
-		323CD2EE1A11EEF300FFE3F4 /* ExploreDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2E91A11EEF300FFE3F4 /* ExploreDreamCell.xib */; };
-		323CD2EF1A11EEF300FFE3F4 /* ExploreOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EA1A11EEF300FFE3F4 /* ExploreOld.swift */; };
+		323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EA1A11EEF300FFE3F4 /* Group.swift */; };
 		323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */; };
 		323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */; };
 		323F783E1A105C93003C3755 /* V.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323F783D1A105C93003C3755 /* V.swift */; };
@@ -272,9 +270,7 @@
 		32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExploreFriend.storyboard; sourceTree = "<group>"; };
 		32349D481A1F3BD2004FEA25 /* ExploreFriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFriendCell.swift; sourceTree = "<group>"; };
 		323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreFollowCell.xib; sourceTree = "<group>"; };
-		323CD2E81A11EEF300FFE3F4 /* ExploreDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDreamCell.swift; sourceTree = "<group>"; };
-		323CD2E91A11EEF300FFE3F4 /* ExploreDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDreamCell.xib; sourceTree = "<group>"; };
-		323CD2EA1A11EEF300FFE3F4 /* ExploreOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreOld.swift; sourceTree = "<group>"; };
+		323CD2EA1A11EEF300FFE3F4 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
 		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
@@ -742,9 +738,7 @@
 			children = (
 				323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */,
 				323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */,
-				323CD2E81A11EEF300FFE3F4 /* ExploreDreamCell.swift */,
-				323CD2E91A11EEF300FFE3F4 /* ExploreDreamCell.xib */,
-				323CD2EA1A11EEF300FFE3F4 /* ExploreOld.swift */,
+				323CD2EA1A11EEF300FFE3F4 /* Group.swift */,
 			);
 			name = "广场";
 			sourceTree = "<group>";
@@ -899,7 +893,6 @@
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				1231A06F19B36B8F00BD425F /* AddCommentViewController.xib in Resources */,
 				1231A07A19B463E400BD425F /* UserCell.xib in Resources */,
-				323CD2EE1A11EEF300FFE3F4 /* ExploreDreamCell.xib in Resources */,
 				32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
@@ -1055,10 +1048,9 @@
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
-				323CD2EF1A11EEF300FFE3F4 /* ExploreOld.swift in Sources */,
+				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
-				323CD2ED1A11EEF300FFE3F4 /* ExploreDreamCell.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,

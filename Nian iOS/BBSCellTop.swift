@@ -17,6 +17,7 @@ class BBSCellTop: UITableViewCell{
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var Line:UIView?
     @IBOutlet var BBStitle:UILabel?
+    @IBOutlet var viewFlow: UILabel!
     
     var Id:String = ""
     var topcontent:String = ""
@@ -30,7 +31,6 @@ class BBSCellTop: UITableViewCell{
         super.awakeFromNib()
         self.View!.backgroundColor = BGColor
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.Line!.backgroundColor = LittleLineColor
     }
     
     
@@ -60,20 +60,20 @@ class BBSCellTop: UITableViewCell{
         
         self.contentLabel?.text = "\(topcontent)"
         
-        var height = topcontent.stringHeightWith(17,width:225)
+        var height = topcontent.stringHeightWith(17,width:235)
         self.contentLabel!.setHeight(height)
         
         self.dreamhead!.setY(self.BBStitle!.bottom()+20)
         self.nickLabel!.setY(self.BBStitle!.bottom()+20)
         self.lastdate!.setY(self.BBStitle!.bottom()+39)
         self.contentLabel!.setY(self.BBStitle!.bottom()+68)
-        
-        self.Line!.setY(self.contentLabel!.bottom()+16)
+        self.viewFlow.setY(self.contentLabel!.bottom()+26)
+        self.Line!.setY(self.viewFlow!.bottom()+18)
     }
     class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
-        var height = topcontent.stringHeightWith(17,width:225)
+        var height = topcontent.stringHeightWith(17,width:235)
         var titleHeight = toptitle.stringHeightWith(17,width:280)
-        return height + 105 + titleHeight
+        return height + 120 + titleHeight + 58
     }
     
 }

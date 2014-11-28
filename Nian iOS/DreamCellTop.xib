@@ -151,9 +151,6 @@
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="18"/>
                             </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                <color key="value" white="0.0" alpha="0.55000000000000004" colorSpace="calibratedWhite"/>
-                            </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
                 </subviews>
