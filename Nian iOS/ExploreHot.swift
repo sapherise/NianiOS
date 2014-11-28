@@ -17,6 +17,8 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         var des: String!
         var title: String!
         var img: String!
+        var step: String!
+        var like: String!
     }
     
     weak var bindViewController: ExploreViewController?
@@ -46,6 +48,8 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
                         data.des = item["des"] as String
                         data.title = item["title"] as String
                         data.img = item["img"] as String
+                        data.step = item["step"] as String
+                        data.like = item["like"] as String
                         self.dataSource.append(data)
                     }
                 }
@@ -84,7 +88,7 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 171
+        return 300
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -93,6 +97,12 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         cell!.tag = indexPath.row
         cell!.labelRank.text = "\(indexPath.row + 1)"
         cell!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
+        cell!.btnMain.addTarget(self, action: "onBtnMainClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        if indexPath.row == self.dataSource.count - 1 {
+            cell!.viewLine.hidden = true
+        }else{
+            cell!.viewLine.hidden = false
+        }
         return cell!
     }
     
@@ -101,32 +111,30 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].id
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
+    
+    func onBtnMainClick(sender: UIButton) {
+        var viewController = DreamViewController()
+        viewController.Id = "\(sender.tag)"
+        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+    }
+    
 }
 
 class ExploreHotCell: UITableViewCell {
     
     @IBOutlet var labelRank: UILabel!
     @IBOutlet var labelTitle: UILabel!
-    @IBOutlet var labelContent: UILabel!
-    @IBOutlet var labelUser: UILabel!
+    @IBOutlet var labelLike: UILabel!
+    @IBOutlet var labelStep: UILabel!
     @IBOutlet var imageDream: UIImageView!
+    @IBOutlet var btnMain: UIButton!
+    @IBOutlet var viewLine: UIView!
     
     func bindData(data: ExploreHotProvider.Data) {
-        labelUser.text = data.user
-        labelUser.sizeToFit()
-        var userFrame = labelUser.frame
-        if userFrame.size.width > 200 {
-            userFrame.size.width = 200
-            labelUser.frame = userFrame
-        }
         labelTitle.text = data.title
-        labelTitle.sizeToFit()
-        var titleFrame = labelTitle.frame
-        if titleFrame.size.width > 200 {
-            titleFrame.size.width = 200
-            labelTitle.frame = titleFrame
-        }
-        labelContent.text = data.des.isEmpty ? "暂无简介" : data.des
+        labelStep.text = data.step
+        labelLike.text = data.like
         imageDream.setImage(V.urlDreamImage(data.img, tag: .iOS), placeHolder: IconColor)
+        btnMain.tag = data.id.toInt()!
     }
 }

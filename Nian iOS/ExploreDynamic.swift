@@ -122,11 +122,17 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         return dataSource.count
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var viewController = DreamViewController()
+        viewController.Id = dataSource[indexPath.row].id
+        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+    }
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = dataSource[indexPath.row]
         switch data.type {
         case 0:
-            return 408
+            return 85
         case 1:
             return ExploreDynamicStepCell.heightWithData(data.content, w: data.img0, h: data.img1)
         default:
@@ -158,6 +164,11 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             stepCell!.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentTap:"))
             stepCell!.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             stepCell!.btnMore.addTarget(self, action: "onMoreClick:", forControlEvents: UIControlEvents.TouchUpInside)
+            if indexPath.row == self.dataSource.count - 1 {
+                stepCell!.viewLine.hidden = true
+            }else{
+                stepCell!.viewLine.hidden = false
+            }
             cell = stepCell
             break
         default:
@@ -242,32 +253,45 @@ class ExploreDynamicStepCell: UITableViewCell {
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnUnlike: UIButton!
     @IBOutlet weak var labelComment: UILabel!
+    @IBOutlet var viewLine: UIView!
     
     var cellData: ExploreDynamicProvider.Data?
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.selectionStyle = .None
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     func bindData(data: ExploreDynamicProvider.Data) {
         cellData = data
-        var imageDelta: CGFloat =  -imageContent.height()
+        var imageDelta: CGFloat =  0
         if !data.img0.isZero && !data.img1.isZero {
-            imageDelta += CGFloat(data.img1 * 320 / data.img0)
+            imageDelta = CGFloat(data.img1 * 320 / data.img0)
+            imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+            imageContent.setHeight(imageDelta)
+            imageContent.hidden = false
+            labelContent.setY(imageContent.bottom() + 15)
+        }else{
+            imageContent.hidden = true
+            labelContent.setY(70)
         }
-        imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
-        imageContent.setHeight(imageContent.height() + imageDelta)
-        labelContent.setY(labelContent.y() + imageDelta)
         var textHeight = data.content.stringHeightWith(17, width: 290)
-        var textDelta = CGFloat(textHeight - labelContent.height())
+        if data.content == "" {
+            textHeight = 0
+        }
         labelContent.setHeight(textHeight)
-        viewControl.setY(viewControl.y() + imageDelta + textDelta)
-        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Head), placeHolder: IconColor)
+        if data.content == "" {
+            viewControl.setY(labelContent.bottom()-10)
+        }else{
+            viewControl.setY(labelContent.bottom()+5)
+        }
+        viewLine.setY(viewControl.bottom()+10)
+        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
         labelName.text = data.userlike
         labelDate.text = data.lastdate
-        labelDream.text = "赞了《\(data.title)》的进展"
+        labelDream.text = "赞了「\(data.title)」"
         labelContent.text = data.content
         var liked = (data.liked != 0)
         btnLike.hidden = liked
@@ -302,25 +326,27 @@ class ExploreDynamicStepCell: UITableViewCell {
     }
     
     func onLikeClick() {
+        self.cellData!.liked = 1
+        self.btnLike.hidden = true
+        self.btnUnlike.hidden = false
+        self.cellData!.like = self.cellData!.like + 1
+        self.setLikeText(self.cellData!.like)
         Api.postLikeStep(cellData!.sid, like: 1) {
             result in
             if result != nil && result == "1" {
-                self.btnLike.hidden = true
-                self.btnUnlike.hidden = false
-                self.cellData!.like = self.cellData!.like + 1
-                self.setLikeText(self.cellData!.like)
             }
         }
     }
     
     func onUnlikeClick() {
+        self.cellData!.liked = 0
+        self.btnLike.hidden = false
+        self.btnUnlike.hidden = true
+        self.cellData!.like = self.cellData!.like - 1
+        self.setLikeText(self.cellData!.like)
         Api.postLikeStep(cellData!.sid, like: 0) {
             result in
             if result != nil && result == "1" {
-                self.btnLike.hidden = false
-                self.btnUnlike.hidden = true
-                self.cellData!.like = self.cellData!.like - 1
-                self.setLikeText(self.cellData!.like)
             }
         }
     }
@@ -330,7 +356,11 @@ class ExploreDynamicStepCell: UITableViewCell {
         if h == 0.0 || w == 0.0 {
             return height + 151
         } else {
-            return height + 171 + CGFloat(h * 320 / w)
+            if content == "" {
+                return 156 + CGFloat(h * 320 / w)
+            }else{
+                return height + 171 + CGFloat(h * 320 / w)
+            }
         }
     }
 }
@@ -345,9 +375,9 @@ class ExploreDynamicDreamCell: UITableViewCell {
     var cellData: ExploreDynamicProvider.Data?
     
     func bindData(data: ExploreDynamicProvider.Data) {
-        imageCover.setImage(V.urlDreamImage(data.img, tag: .Large), placeHolder: IconColor)
-        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Head), placeHolder: IconColor)
+        imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
+        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
         labelName.text = data.userlike
-        labelDream.text = "赞了《\(data.title)》梦想"
+        labelDream.text = "赞了「\(data.title)」"
     }
 }

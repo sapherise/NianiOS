@@ -121,12 +121,22 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         cell!.tag = indexPath.row
         cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadTap:"))
         cell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNameTap:"))
-        cell!.labelDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
         cell!.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeTap:"))
         cell!.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentTap:"))
         cell!.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
         cell!.btnMore.addTarget(self, action: "onMoreClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        if indexPath.row == self.dataSource.count - 1 {
+            cell!.viewLine.hidden = true
+        }else{
+            cell!.viewLine.hidden = false
+        }
         return cell!
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var viewController = DreamViewController()
+        viewController.Id = dataSource[indexPath.row].id
+        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
     
     func onHeadTap(sender: UITapGestureRecognizer) {
@@ -137,12 +147,6 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     func onNameTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
-        viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
-    }
-    
-    func onDreamTap(sender: UITapGestureRecognizer) {
-        var viewController = DreamViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
@@ -200,7 +204,6 @@ class ExploreFollowCell: UITableViewCell {
     
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelDate: UILabel!
     @IBOutlet var labelDream: UILabel!
     @IBOutlet var imageContent: UIImageView!
     @IBOutlet var labelContent: UILabel!
@@ -210,32 +213,47 @@ class ExploreFollowCell: UITableViewCell {
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnUnlike: UIButton!
     @IBOutlet weak var labelComment: UILabel!
+    @IBOutlet var labelLastdate: UILabel!
+    @IBOutlet var viewLine: UIView!
     
     var cellData: ExploreFollowProvider.Data?
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.selectionStyle = .None
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     func bindData(data: ExploreFollowProvider.Data) {
         cellData = data
-        var imageDelta: CGFloat =  -imageContent.height()
-        if !data.img0.isZero && !data.img1.isZero {
-            imageDelta += CGFloat(data.img1 * 320 / data.img0)
-        }
-        imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
-        imageContent.setHeight(imageContent.height() + imageDelta)
-        labelContent.setY(labelContent.y() + imageDelta)
+        var imageDelta: CGFloat =  0
         var textHeight = data.content.stringHeightWith(17, width: 290)
+        if data.content == "" {
+            textHeight = 0
+        }
         var textDelta = CGFloat(textHeight - labelContent.height())
         labelContent.setHeight(textHeight)
-        viewControl.setY(viewControl.y() + imageDelta + textDelta)
-        imageHead.setImage(V.urlHeadImage(data.uid, tag: .Head), placeHolder: IconColor)
+        if !data.img0.isZero && !data.img1.isZero {     //有图片
+            imageDelta = CGFloat(data.img1 * 320 / data.img0)
+            imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+            imageContent.setHeight(imageDelta)
+            imageContent.hidden = false
+            labelContent.setY(imageContent.bottom() + 15)
+        }else{
+            imageContent.hidden = true
+            labelContent.setY(70)
+        }
+        if data.content == "" {
+            viewControl.setY(labelContent.bottom()-10)
+        }else{
+            viewControl.setY(labelContent.bottom()+5)
+        }
+        viewLine.setY(viewControl.bottom()+10)
+        imageHead.setImage(V.urlHeadImage(data.uid, tag: .Dream), placeHolder: IconColor)
         labelName.text = data.user
-        labelDate.text = data.lastdate
         labelDream.text = data.title
+        labelLastdate.text = data.lastdate
         labelContent.text = data.content
         var liked = (data.liked != 0)
         btnLike.hidden = liked
@@ -270,25 +288,27 @@ class ExploreFollowCell: UITableViewCell {
     }
     
     func onLikeClick() {
+        self.cellData!.liked = 1
+        self.btnLike.hidden = true
+        self.btnUnlike.hidden = false
+        self.cellData!.like = self.cellData!.like + 1
+        self.setLikeText(self.cellData!.like)
         Api.postLikeStep(cellData!.sid, like: 1) {
             result in
             if result != nil && result == "1" {
-                self.btnLike.hidden = true
-                self.btnUnlike.hidden = false
-                self.cellData!.like = self.cellData!.like + 1
-                self.setLikeText(self.cellData!.like)
             }
         }
     }
     
     func onUnlikeClick() {
+        self.cellData!.liked = 0
+        self.btnLike.hidden = false
+        self.btnUnlike.hidden = true
+        self.cellData!.like = self.cellData!.like - 1
+        self.setLikeText(self.cellData!.like)
         Api.postLikeStep(cellData!.sid, like: 0) {
             result in
             if result != nil && result == "1" {
-                self.btnLike.hidden = false
-                self.btnUnlike.hidden = true
-                self.cellData!.like = self.cellData!.like - 1
-                self.setLikeText(self.cellData!.like)
             }
         }
     }
@@ -298,7 +318,12 @@ class ExploreFollowCell: UITableViewCell {
         if h == 0.0 || w == 0.0 {
             return height + 151
         } else {
-            return height + 171 + CGFloat(h * 320 / w)
+            if content == "" {
+                return 156 + CGFloat(h * 320 / w)
+            }else{
+                return height + 171 + CGFloat(h * 320 / w)
+            }
         }
     }
+    
 }

@@ -31,18 +31,18 @@
                         <color key="textColor" red="0.41960784309999999" green="0.80784313730000001" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QRR-wh-cRy">
-                        <rect key="frame" x="221" y="16" width="84" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" red="0.49803921568627452" green="0.49803921568627452" blue="0.49803921568627452" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dream" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1V9-af-s6n">
                         <rect key="frame" x="63" y="37" width="195" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8u7-XP-DGa">
+                        <rect key="frame" x="213" y="15" width="92" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VKl-fe-Nk0">
@@ -61,7 +61,7 @@
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                                        <color key="value" white="0.0" alpha="0.02" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="2"/>
@@ -77,7 +77,7 @@
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                                        <color key="value" white="0.0" alpha="0.02" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="2"/>
@@ -117,6 +117,11 @@
                         <color key="textColor" white="0.19947536499999999" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" id="yYm-HN-JTk">
+                        <rect key="frame" x="0.0" y="412" width="320" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.040000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
@@ -128,11 +133,12 @@
                 <outlet property="imageHead" destination="WfN-JR-Oe6" id="aeL-sh-ypU"/>
                 <outlet property="labelComment" destination="0kA-Wh-rIM" id="oGE-9u-BOv"/>
                 <outlet property="labelContent" destination="mUg-bp-Kd6" id="Zyp-7O-w57"/>
-                <outlet property="labelDate" destination="QRR-wh-cRy" id="hrj-1N-xHn"/>
                 <outlet property="labelDream" destination="1V9-af-s6n" id="Xv6-JR-doj"/>
+                <outlet property="labelLastdate" destination="8u7-XP-DGa" id="UZe-Sy-GKe"/>
                 <outlet property="labelLike" destination="c6J-84-H6W" id="zSA-an-1ug"/>
                 <outlet property="labelName" destination="NZO-hh-Xnj" id="ZFG-Z6-KpK"/>
                 <outlet property="viewControl" destination="ovs-Q8-aNE" id="jVI-BW-n4W"/>
+                <outlet property="viewLine" destination="yYm-HN-JTk" id="2jg-iA-FfA"/>
             </connections>
             <point key="canvasLocation" x="487" y="-685"/>
         </tableViewCell>

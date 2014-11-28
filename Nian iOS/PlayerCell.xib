@@ -54,7 +54,7 @@
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                                        <color key="value" white="0.0" alpha="0.02" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="2"/>
@@ -111,7 +111,7 @@
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                                        <color key="value" white="0.0" alpha="0.02" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="2"/>
@@ -130,6 +130,18 @@
                         <color key="textColor" white="0.19947536496350368" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" id="fC1-fX-zWk">
+                        <rect key="frame" x="0.0" y="412" width="320" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.040000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JXg-LT-7fS">
+                        <rect key="frame" x="213" y="15" width="92" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
@@ -141,13 +153,15 @@
                 <outlet property="goodbye" destination="Mxf-iO-kz0" id="wBZ-ye-4TY"/>
                 <outlet property="imageholder" destination="Q6N-Zz-AKw" id="Xe6-0U-irc"/>
                 <outlet property="labelComment" destination="bpT-v0-Xdd" id="91G-NM-eka"/>
-                <outlet property="lastdate" destination="OO1-kA-hFx" id="5gI-0r-PHw"/>
+                <outlet property="labelDream" destination="OO1-kA-hFx" id="iyH-Oa-Rl9"/>
+                <outlet property="lastdate" destination="JXg-LT-7fS" id="l2P-y2-m7n"/>
                 <outlet property="like" destination="VRe-0O-EcS" id="lYG-aF-6bo"/>
                 <outlet property="likebutton" destination="O6F-EI-cXU" id="Cfx-Bb-hhH"/>
                 <outlet property="liked" destination="ZUe-nI-fHY" id="tjl-VV-A5D"/>
                 <outlet property="menuHolder" destination="GPc-10-oYe" id="z7m-0T-310"/>
                 <outlet property="nickLabel" destination="RaU-Rm-cQH" id="s9x-PH-ssd"/>
                 <outlet property="share" destination="l8C-pG-vns" id="AIu-pQ-yVr"/>
+                <outlet property="viewLine" destination="fC1-fX-zWk" id="zNN-1s-Ihe"/>
             </connections>
             <point key="canvasLocation" x="212" y="312"/>
         </tableViewCell>

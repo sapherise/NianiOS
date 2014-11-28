@@ -62,36 +62,39 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                if ( data["total"] as Int ) < 30 {
+                    self.tableView!.setFooterHidden(true)
+                }
+                var arr = data["items"] as NSArray
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                self.tableView!.reloadData()
+                self.tableView!.footerEndRefreshing()
+                self.page++
             }
-            var arr = data["items"] as NSArray
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.tableView!.reloadData()
-            self.tableView!.footerEndRefreshing()
-            self.page++
-            })
+        })
     }
     func SAReloadData(){
         self.page = 0
         var url = urlString()
+        self.tableView!.setFooterHidden(false)
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                if ( data["total"] as Int ) < 30 {
+                    self.tableView!.setFooterHidden(true)
+                }
+                var arr = data["items"] as NSArray
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                self.tableView!.reloadData()
+                self.tableView!.headerEndRefreshing()
+                self.page++
             }
-            var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.tableView!.reloadData()
-            self.tableView!.headerEndRefreshing()
-            self.page++
-            })
+        })
     }
     
     
@@ -122,6 +125,13 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        
+        if indexPath.row == self.dataArray.count - 1 {
+            cell!.viewLine.hidden = true
+        }else{
+            cell!.viewLine.hidden = false
+        }
+        
         return cell!
     }
     
@@ -155,11 +165,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var BBSVC = BBSViewController()
         if type == "0" {    //在你的梦想留言
             DreamVC.Id = dream
-            DreamVC.toggle = "1"
             self.navigationController!.pushViewController(DreamVC, animated: true)
         }else if type == "1" {  //在某个梦想提及你
             DreamVC.Id = dream
-            DreamVC.toggle = "1"
             self.navigationController!.pushViewController(DreamVC, animated: true)
         }else if type == "2" {  //赞了你的梦想
             DreamVC.Id = dream

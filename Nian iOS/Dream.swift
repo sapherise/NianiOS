@@ -14,14 +14,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     let identifier2 = "dreamtop"
     let identifier3 = "comment"
     var lefttableView:UITableView?
-    var righttableView:UITableView?
     var dataArray = NSMutableArray()
     var dataArray2 = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
-    var toggle:String = "0"
     var deleteSheet:UIActionSheet?
-    var replySheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
     var guestMoreSheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
@@ -70,11 +67,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        if toggle == "0" {
-            SAReloadData()
-        }else{
-            SARightReloadData()
-        }
+        SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool)
@@ -159,29 +152,13 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.lefttableView!.delegate = self;
         self.lefttableView!.dataSource = self;
         self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        
-        self.righttableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64))
-        self.righttableView!.delegate = self;
-        self.righttableView!.dataSource = self;
-        self.righttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"DreamCell", bundle: nil)
         var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         var nib3 = UINib(nibName:"CommentCell", bundle: nil)
         
-        if toggle == "0" {
-            self.lefttableView!.hidden = false
-            self.righttableView!.hidden = true
-        }else{
-            self.lefttableView!.hidden = true
-            self.righttableView!.hidden = false
-        }
-        
         self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
         self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
-        self.righttableView?.registerNib(nib3, forCellReuseIdentifier: identifier3)
-        self.righttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.view.addSubview(self.lefttableView!)
-        self.view.addSubview(self.righttableView!)
         
         
         //标题颜色
@@ -198,45 +175,39 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var safeshell = Sa.objectForKey("shell") as String
             var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.Id)&uid=\(safeuid)&shell=\(safeshell)")
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-            var dream: AnyObject! = json.objectForKey("dream")
-            self.owneruid = dream.objectForKey("uid") as String
-            self.titleJson = dream.objectForKey("title") as String
-            self.percentJson = dream.objectForKey("percent") as String
-            self.followJson = dream.objectForKey("follow") as String
-            self.likeJson = dream.objectForKey("like") as String
-            self.imgJson = dream.objectForKey("img") as String
-            self.privateJson = dream.objectForKey("private") as String
-            self.contentJson = dream.objectForKey("content") as String
-            self.desJson = dream.objectForKey("content") as String
-            self.hashtag = dream.objectForKey("hashtag") as String
-            
-            
-            self.likedreamJson = dream.objectForKey("like_dream") as String
-            self.likestepJson = dream.objectForKey("like_step") as String
-            self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
-            self.stepJson = dream.objectForKey("step") as String
-            
-            self.desHeight = self.contentJson.stringHeightWith(11,width:200)
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if safeuid == self.owneruid {
-                    self.dreamowner = 1
-                    var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
-                    moreButton.image = UIImage(named:"more")
-                    self.navigationItem.rightBarButtonItems = [ moreButton]
-                }else{
-                    self.dreamowner = 0
-                    var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
-                    moreButton.image = UIImage(named:"more")
-                    self.navigationItem.rightBarButtonItems = [ moreButton]
-                }
-                self.loadDreamTopcell()
-            })
-        })
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.activityViewController = UIActivityViewController()
+            if data != nil {
+                var json: AnyObject = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)!
+                var dream: AnyObject! = json.objectForKey("dream")
+                self.owneruid = dream.objectForKey("uid") as String
+                self.titleJson = dream.objectForKey("title") as String
+                self.percentJson = dream.objectForKey("percent") as String
+                self.followJson = dream.objectForKey("follow") as String
+                self.likeJson = dream.objectForKey("like") as String
+                self.imgJson = dream.objectForKey("img") as String
+                self.privateJson = dream.objectForKey("private") as String
+                self.contentJson = dream.objectForKey("content") as String
+                self.desJson = dream.objectForKey("content") as String
+                self.hashtag = dream.objectForKey("hashtag") as String
+                self.likedreamJson = dream.objectForKey("like_dream") as String
+                self.likestepJson = dream.objectForKey("like_step") as String
+                self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
+                self.stepJson = dream.objectForKey("step") as String
+                self.desHeight = self.contentJson.stringHeightWith(11,width:200)
+                dispatch_async(dispatch_get_main_queue(), {
+                    if safeuid == self.owneruid {
+                        self.dreamowner = 1
+                        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
+                        moreButton.image = UIImage(named:"more")
+                        self.navigationItem.rightBarButtonItems = [ moreButton]
+                    }else{
+                        self.dreamowner = 0
+                        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
+                        moreButton.image = UIImage(named:"more")
+                        self.navigationItem.rightBarButtonItems = [ moreButton]
+                    }
+                    self.loadDreamTopcell()
+                })
+            }
         })
     }
     
@@ -275,85 +246,47 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     
-    func loadData()
-    {
+    func loadData() {
+        self.lefttableView!.setFooterHidden(false)
         var url = urlString()
-        // self.refreshView!.startLoading()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull() {
+                if ( data["total"] as Int ) < 15 {
+                    self.lefttableView!.setFooterHidden(true)
+                }
+                var arr = data["items"] as NSArray
+                for data : AnyObject  in arr
+                {
+                    self.dataArray.addObject(data)
+                }
+                self.lefttableView!.reloadData()
+                self.lefttableView!.footerEndRefreshing()
+                self.page++
             }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray.addObject(data)
-            }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.footerEndRefreshing()
-            self.page++
-        })
-    }
-    func RightloadData()
-    {
-        var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(Id)"
-        // self.refreshView!.startLoading()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray2.addObject(data)
-            }
-            self.righttableView!.reloadData()
-            self.righttableView!.footerEndRefreshing()
-            self.page++
         })
     }
     
     
     func SAReloadData(){
+        self.lefttableView!.setFooterHidden(false)
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         var url = "http://nian.so/api/step.php?page=0&id=\(Id)&uid=\(safeuid)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                if ( data["total"] as Int ) < 15 {
+                    self.lefttableView!.setFooterHidden(true)
+                }
+                var arr = data["items"] as NSArray
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                self.lefttableView!.reloadData()
+                self.lefttableView!.headerEndRefreshing()
+                self.page = 1
             }
-            var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.headerEndRefreshing()
-            self.page = 1
-        })
-    }
-    func SARightReloadData(){
-        var url = "http://nian.so/api/comment_step.php?page=0&id=\(Id)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            self.dataArray2.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray2.addObject(data)
-            }
-            self.righttableView!.reloadData()
-            self.righttableView!.headerEndRefreshing()
-            self.page = 1
         })
     }
     
@@ -411,6 +344,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
                 c.tag = index + 10
+                if indexPath.row == self.dataArray.count - 1 {
+                    c.viewLine.hidden = true
+                }else{
+                    c.viewLine.hidden = false
+                }
                 cell = c
             }else{
                 var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as CommentCell
@@ -427,11 +365,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func onCommentClick(sender:UIGestureRecognizer){
         var tag = sender.view!.tag
         var DreamCommentVC = DreamCommentViewController()
-        var totalComment = SAReplace(( sender.view! as UILabel ).text!, " 评论", "") as String
-        if totalComment == "评论" {
-            totalComment = "0"
-        }
-        DreamCommentVC.dataTotal = totalComment.toInt()!
         DreamCommentVC.dreamID = self.Id.toInt()!
         DreamCommentVC.stepID = tag
         DreamCommentVC.dreamowner = self.dreamowner
@@ -472,51 +405,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
         }
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        if tableView == righttableView {
-            if indexPath.section != 0 {
-            self.righttableView!.deselectRowAtIndexPath(indexPath, animated: false)
-            var index = indexPath.row
-            var data = self.dataArray2[index] as NSDictionary
-            var user = data.stringAttributeForKey("user")
-            var uid = data.stringAttributeForKey("uid")
-            var content = data.stringAttributeForKey("content")
-            var cid = data.stringAttributeForKey("id")
-                self.ReplyUser = "\(user)"
-                self.ReplyRow = index
-                self.ReplyContent = "\(content)"
-                self.ReplyCid = "\(cid)"
-                self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                if self.dreamowner == 1 {   //主人
-                    self.replySheet!.addButtonWithTitle("回应@\(user)")
-                    self.replySheet!.addButtonWithTitle("复制")
-                    self.replySheet!.addButtonWithTitle("删除")
-                    self.replySheet!.addButtonWithTitle("取消")
-                    self.replySheet!.cancelButtonIndex = 3
-                    self.replySheet!.showInView(self.view)
-                }else{  //不是主人
-                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                    var safeuid = Sa.objectForKey("uid") as String
-                    if uid == safeuid {
-                        self.replySheet!.addButtonWithTitle("回应@\(user)")
-                        self.replySheet!.addButtonWithTitle("复制")
-                        self.replySheet!.addButtonWithTitle("删除")
-                        self.replySheet!.addButtonWithTitle("取消")
-                        self.replySheet!.cancelButtonIndex = 3
-                        self.replySheet!.showInView(self.view)
-                    }else{
-                        self.replySheet!.addButtonWithTitle("回应@\(user)")
-                        self.replySheet!.addButtonWithTitle("复制")
-                        self.replySheet!.addButtonWithTitle("标记为不合适")
-                        self.replySheet!.addButtonWithTitle("取消")
-                        self.replySheet!.cancelButtonIndex = 3
-                        self.replySheet!.showInView(self.view)
-                    }
-                }
-            }
-        }
-    }
-    
     
     func addStepButton(){
         var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
@@ -537,6 +425,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
         self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
+    
     func setupRefresh(){
         self.lefttableView!.addHeaderWithCallback({
             self.SAReloadData()
@@ -545,15 +434,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.lefttableView!.addFooterWithCallback({
             self.loadData()
         })
-        
-        self.righttableView!.addHeaderWithCallback({
-            self.SARightReloadData()
-        })
-        
-        self.righttableView!.addFooterWithCallback({
-            self.RightloadData()
-        })
     }
+    
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
     }
@@ -604,44 +486,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
-                    if(sa == "1"){
-                    }
-                })
-            }
-        }else if actionSheet == self.replySheet {
-            if buttonIndex == 0 {
-                self.commentVC()
-            }else if buttonIndex == 1 { //复制
-                var pasteBoard = UIPasteboard.generalPasteboard()
-                pasteBoard.string = self.ReplyContent
-            }else if buttonIndex == 2 {
-                var data = self.dataArray2[self.ReplyRow] as NSDictionary
-                var uid = data.stringAttributeForKey("uid")
-                if (( uid == safeuid ) || ( self.dreamowner == 1 )) {
-                    self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                    self.deleteCommentSheet!.addButtonWithTitle("确定删除")
-                    self.deleteCommentSheet!.addButtonWithTitle("取消")
-                    self.deleteCommentSheet!.cancelButtonIndex = 1
-                    self.deleteCommentSheet!.showInView(self.view)
-                }else{
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
-                        if(sa == "1"){
-                            dispatch_async(dispatch_get_main_queue(), {
-                                UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
-                            })
-                        }
-                    })
-                }
-            }
-        }else if actionSheet == self.deleteCommentSheet {
-            if buttonIndex == 0 {
-                self.dataArray2.removeObjectAtIndex(self.ReplyRow)
-                var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
-                self.righttableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.righttableView!.reloadData()
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
                     if(sa == "1"){
                     }
                 })
@@ -737,29 +581,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.imgJson = editImage
         self.hashtag = editTag
         loadDreamTopcell()
-    }
-    
-    func commentVC(){
-        var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
-        if self.ReplyUser != "" {
-            addCommentVC.content = "@\(self.ReplyUser) "
-        }else{
-            addCommentVC.content = ""
-        }
-        addCommentVC.Id = self.Id
-        addCommentVC.Row = self.ReplyRow
-        self.navigationController!.pushViewController(addCommentVC, animated: true)
-    }
-    
-    func commentFinish(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        
-        var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-        self.dataArray2.insertObject(newinsert, atIndex: self.ReturnReplyRow)
-        var newindexpath = NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)
-        self.righttableView!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.Bottom)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

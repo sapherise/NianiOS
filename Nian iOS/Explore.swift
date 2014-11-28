@@ -34,20 +34,21 @@ class ExploreProvider: NSObject {
 
 class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    @IBOutlet var btnFollow: UIButton!
-    @IBOutlet var btnDynamic: UIButton!
-    @IBOutlet var btnHot: UIButton!
-    @IBOutlet var btnNew: UIButton!
+    @IBOutlet var btnFollow: UILabel!
+    @IBOutlet var btnDynamic: UILabel!
+    @IBOutlet var btnHot: UILabel!
+    @IBOutlet var btnNew: UILabel!
     @IBOutlet var btnFriend: UIButton!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var navView: UIView!
     
     var appear = false
     var current = -1
     var currentProvider: ExploreProvider!
     
-    var buttons: [UIButton]!
+    var buttons: [UILabel]!
     var providers: [ExploreProvider]!
     
     override func viewDidLoad() {
@@ -80,18 +81,20 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             ExploreHotProvider(viewController: self),
             ExploreNewProvider(viewController: self)
         ]
-        view.backgroundColor = BGColor
+        
+        view.backgroundColor = UIColor.whiteColor()
         collectionView.alwaysBounceVertical = true
         var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
         layout.sectionInset.left = 15
         layout.sectionInset.right = 15
-        collectionView.collectionViewLayout = layout
-        tableView.allowsSelection = false
-        btnFollow.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnDynamic.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnHot.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnNew.addTarget(self, action: "onTabClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        layout.sectionInset.top = 30
+        
+        btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
+        btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
+        btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
+        btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnFriend.addTarget(self, action: "onFriendClick", forControlEvents: UIControlEvents.TouchUpInside)
+        
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
         collectionView.addHeaderWithCallback(onPullDown)
@@ -108,12 +111,14 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func switchTab(tab: Int) {
         if current != -1 {
-            buttons[current].selected = false
+        //    buttons[current].selected = false
+            buttons[current].textColor = UIColor.blackColor()
             currentProvider.onHide()
         }
         current = tab
         currentProvider = self.providers[tab]
-        buttons[tab].selected = true
+   //     buttons[tab].selected = true
+        buttons[tab].textColor = SeaColor
         if tab < 3 {
             collectionView.dataSource = nil
             collectionView.delegate = nil
@@ -132,8 +137,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         currentProvider.onShow()
     }
     
-    func onTabClick(sender: UIButton) {
-        switchTab(sender.tag - 1100)
+    func onTabClick(sender: UIGestureRecognizer) {
+        switchTab(sender.view!.tag - 1100)
     }
     
     func onFriendClick() {

@@ -429,6 +429,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
+                if indexPath.row == self.dataArray.count - 1 {
+                    c.viewLine.hidden = true
+                }else{
+                    c.viewLine.hidden = false
+                }
                 c.tag = index + 10
                 cell = c
             }
@@ -555,7 +560,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             return 1
         }else{
             if toggle == 0 {
-                return Int(floor(Double(self.dataArray.count)/3))+1
+                return Int(ceil(Double(self.dataArray.count)/3))
             }else{
             return self.dataArray.count
             }
@@ -595,7 +600,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.UserFo.setWidth(foWidth)
                     self.topCell!.UserFoed.setWidth(foedWidth)
                     self.topCell!.UserHead.setImage(userImageURL, placeHolder: IconColor)
-                    self.topCell!.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                     if cover == "" {
                         self.navView.image = UIImage(named: "bg")
                     }else{
@@ -614,6 +618,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                         self.topCell!.btnMain.setTitle("关注", forState: UIControlState.Normal)
                     }
                     if cover == "" {
+                        self.topCell!.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                         self.topCell!.BGImage.image = UIImage(named: "bg")
                     }else{
                         self.topCell!.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)

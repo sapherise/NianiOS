@@ -15,9 +15,9 @@ class MeCell: UITableViewCell {
     @IBOutlet var nickLabel:UILabel?
     @IBOutlet var wordLabel:UILabel?
     @IBOutlet var contentLabel:UILabel?
-    @IBOutlet var holder:UIView?
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var View:UIView?
+    @IBOutlet var viewLine: UIView!
     var largeImageURL:String = ""
     var data :NSDictionary!
     
@@ -25,8 +25,6 @@ class MeCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.View!.backgroundColor = BGColor
-        self.holder!.layer.cornerRadius = 4;
-        self.holder!.layer.masksToBounds = true;
     }
     
     override func layoutSubviews()
@@ -38,6 +36,7 @@ class MeCell: UITableViewCell {
         var dreamtitle = self.data.stringAttributeForKey("dreamtitle")
         var content = self.data.stringAttributeForKey("content")
         var type = self.data.stringAttributeForKey("type")
+        var isread = self.data.stringAttributeForKey("isread") as String
         var word:String = ""
         
         switch type {
@@ -60,6 +59,11 @@ class MeCell: UITableViewCell {
         self.nickLabel!.text = user
         self.wordLabel!.text = word
         self.lastdate!.text = lastdate
+        if isread == "1" {
+            self.nickLabel!.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+        }else{
+            self.nickLabel!.textColor = SeaColor
+        }
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
@@ -69,12 +73,9 @@ class MeCell: UITableViewCell {
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.holder!.setHeight(height+100)
         self.View!.setHeight(110 + height)
-        
+        self.viewLine.setY(self.contentLabel!.bottom()+15)
     }
-    
-    
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
@@ -86,7 +87,7 @@ class MeCell: UITableViewCell {
             content = dreamtitle
         }
         var height = content.stringHeightWith(17,width:242)
-        return 110 + height
+        return 100 + height
     }
     
 }
