@@ -13,6 +13,11 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     typealias CoinCellData = (icon: String, title: String, description: String, cost: String)
     
+    var payment = Payment() {
+        id, state in
+        
+    }
+    
     let coinItems: [CoinCellData] = [
         ("12", "12 念币", "", "¥ 6.00"),
         ("30", "30 念币", "", "¥ 12.00"),
@@ -151,14 +156,19 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     func onBuyCoinClick(sender: UIButton) {
         switch sender.tag {
         case 0:
+            payment.pay(product_coin12)
             break
         case 1:
+            payment.pay(product_coin30)
             break
         case 2:
+            payment.pay(product_coin65)
             break
         case 3:
+            payment.pay(product_coin140)
             break
         case 4:
+            payment.pay(product_coin295)
             break
         default:
             break

@@ -123,6 +123,7 @@
 		323F783E1A105C93003C3755 /* V.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323F783D1A105C93003C3755 /* V.swift */; };
 		3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3240B4FA1A1985A8000CDAB6 /* ExploreNew.swift */; };
 		324716EF1A1C303700EF1305 /* ExploreNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324716EE1A1C303700EF1305 /* ExploreNewCell.xib */; };
+		324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324C2AEC1A28119E00E6A299 /* StoreKit.framework */; };
 		3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */; };
 		3252850D1A10C2B600316021 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3252850C1A10C2B600316021 /* Explore.storyboard */; };
 		3252850F1A10C2C300316021 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3252850E1A10C2C300316021 /* Explore.swift */; };
@@ -279,6 +280,7 @@
 		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
 		3240B4FA1A1985A8000CDAB6 /* ExploreNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNew.swift; sourceTree = "<group>"; };
 		324716EE1A1C303700EF1305 /* ExploreNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewCell.xib; sourceTree = "<group>"; };
+		324C2AEC1A28119E00E6A299 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicDreamCell.xib; sourceTree = "<group>"; };
 		3252850C1A10C2B600316021 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		3252850E1A10C2C300316021 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
+				324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,6 +789,7 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
@@ -846,12 +850,13 @@
 						DevelopmentTeam = 59CQC84C9S;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
 					12FB48AA196AE76E0026DD51 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 59CQC84C9S;
 						TestTargetID = 12FB4898196AE76E0026DD51;
 					};
 				};
@@ -1222,6 +1227,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Nian iOS.app/Nian iOS";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1234,6 +1241,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -1242,6 +1250,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Nian iOS.app/Nian iOS";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1250,6 +1260,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
