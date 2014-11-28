@@ -51,7 +51,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
-        self.viewCircle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeaderCoinClick"))
+        // 关闭了念币详情
+        // self.viewCircle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeaderCoinClick"))
         
         self.scrollView.contentSize.height = 800
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))

@@ -258,7 +258,8 @@ extension UIView {
     }
     
     func showImage(imageURL: String, width: Float, height: Float) {
-        if imageURL.pathExtension != "gif!large" {
+        
+        if true || imageURL.pathExtension != "gif!large" {
             var x: CGFloat = 0
             var y: CGFloat = 0
             var w = CGFloat(width)

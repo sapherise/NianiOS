@@ -20,6 +20,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
     var dataTotal:Int = 0
+    var viewTop:UIView!
     
     var dreamID:Int = 0
     var stepID:Int = 0
@@ -85,15 +86,12 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview?.registerNib(nib3, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableview!)
         
-        var topView = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
+        self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
         self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
         self.activityIndicatorView.hidden = false
         self.activityIndicatorView.startAnimating()
         self.activityIndicatorView.color = SeaColor
-        if self.dataTotal > ( self.page ) * 15 {
-            topView.addSubview(self.activityIndicatorView)
-        }
-        self.tableview!.tableHeaderView = topView
+        self.tableview!.tableHeaderView = self.viewTop
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.tableview!.tableFooterView = self.viewBottom
         
@@ -152,7 +150,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             var sa = SAPost("id=\(self.dreamID)&&step=\(self.stepID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
             if sa != "" && sa != "err" {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.SAReloadData()
+                    delay(0.5, { () -> () in
+                        self.SAReloadData()
+                    })
                 })
             }
         })
@@ -167,26 +167,20 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var heightBefore = self.tableview!.contentSize.height
         var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-            }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray.addObject(data)
-            }
-            delay(0.5, {
+            if data as NSObject != NSNull() {
+                var arr = data["items"] as NSArray
+                var total = data["total"] as NSString!
+                self.dataTotal = "\(total)".toInt()!
+                for data : AnyObject  in arr {
+                    self.dataArray.addObject(data)
+                }
                 self.tableview!.reloadData()
                 var heightAfter = self.tableview!.contentSize.height
                 var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
                 self.tableview!.setContentOffset(CGPointMake(0, heightChange), animated: false)
                 self.page++
                 self.animating = 0
-                self.tableview!.bounces = true
-            })
+            }
         })
     }
     
@@ -214,20 +208,20 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var y = scrollView.contentOffset.y
-        if self.dataTotal > 15 {
-            if self.dataTotal > ( self.page ) * 15 {
-                if y < 40 {
-                    self.tableview!.bounces = false
-                    if self.animating == 0 {
-                        self.animating = 1
+        println(self.dataTotal)
+        if self.dataTotal == 15 {
+            self.viewTop.addSubview(self.activityIndicatorView)
+            if y < 40 {
+                if self.animating == 0 {
+                    self.animating = 1
+                    delay(0.5, { () -> () in
                         self.SAloadData()
-                    }
+                    })
                 }
-            }else{
-                self.tableview!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
             }
         }else{
-            self.tableview!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+            self.activityIndicatorView.hidden = true
+            self.tableview?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
         }
         
         //如果向下滚动时，就收起键盘

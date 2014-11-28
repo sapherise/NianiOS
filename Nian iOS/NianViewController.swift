@@ -42,7 +42,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.extendedLayoutIncludesOpaqueBars = true
         self.scrollView.frame.size.height = globalHeight - 49
-        self.scrollView.contentSize.height = 524
+        self.scrollView.contentSize.height = 517
         self.scrollView.delegate = self
         
         self.tableView.delegate = self
@@ -122,38 +122,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView == self.scrollView {
-            var height = scrollView.contentOffset.y
-            self.scrollLayout(height)
-            self.heightScroll = height
-        }
         if scrollView == self.tableView {
             var height = scrollView.contentOffset.y
             self.currentCell = Int(floor(( height - 50 ) / 100 ) + 1)
             if height > 0 {
                 labelTableChange(self.currentCell)
             }
-        }
-    }
-    
-    func scrollLayout(height:CGFloat){
-        if height > 0 {
-            self.BGImage.setY(height*0.6)
-        }else{
-            self.viewHolder.setY(height)
-            self.BGImage.frame = CGRectMake(height/10, height, 320-height/5, 320)
-            self.BGImage.layer.masksToBounds = true
-        }
-        scrollHidden(self.UserHead, height: height, scrollY: 70)
-        scrollHidden(self.UserName, height: height, scrollY: 138)
-        scrollHidden(self.UserStep, height: height, scrollY: 161)
-        scrollHidden(self.coinButton, height: height, scrollY: 204)
-        scrollHidden(self.levelButton, height: height, scrollY: 204)
-        self.navHide(-44)
-        if height > 320 {
-            self.BGImage.hidden = true
-        }else{
-            self.BGImage.hidden = false
         }
     }
     

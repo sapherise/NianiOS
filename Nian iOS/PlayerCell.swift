@@ -24,6 +24,8 @@ class PlayerCell: UITableViewCell {
     @IBOutlet weak var likebutton:UIButton!
     @IBOutlet weak var liked:UIButton!
     @IBOutlet var labelComment:UILabel!
+    @IBOutlet var viewLine: UIView!
+    @IBOutlet var labelDream: UILabel!
     var largeImageURL:String = ""
     var data :NSDictionary!
     var imgHeight:Float = 0.0
@@ -93,7 +95,7 @@ class PlayerCell: UITableViewCell {
         var sid = self.data.stringAttributeForKey("sid")
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
+        var lastdate = self.data.stringAttributeForKey("lastdate") as String
         var liked = self.data.stringAttributeForKey("liked")
         content = self.data.stringAttributeForKey("content")
         img = self.data.stringAttributeForKey("img") as NSString
@@ -104,7 +106,8 @@ class PlayerCell: UITableViewCell {
         var dreamtitle = self.data.stringAttributeForKey("dreamtitle") as String
         
         self.nickLabel!.text = user
-        self.lastdate!.text = "\(dreamtitle)，\(lastdate)"
+        self.lastdate!.text = lastdate
+        self.labelDream.text = dreamtitle
         
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
@@ -114,6 +117,9 @@ class PlayerCell: UITableViewCell {
         self.like!.tag = sid.toInt()!
         
         var height = content.stringHeightWith(17,width:290)
+        if content == "" {
+            height = 0
+        }
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.goodbye.tag = sid.toInt()!
@@ -141,10 +147,8 @@ class PlayerCell: UITableViewCell {
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
-            //      self.holder!.setHeight(height+136)
             imgHeight = 0
             self.contentLabel!.setY(70)
-            self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }else{
             imgHeight = img1 * 320 / img0
             ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
@@ -153,11 +157,14 @@ class PlayerCell: UITableViewCell {
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
-            //      self.holder!.setHeight(height+156+sapherise)
-            
             self.contentLabel!.setY(self.imageholder!.bottom()+15)
+        }
+        if content == "" {
+            self.menuHolder!.setY(self.contentLabel!.bottom()-5)
+        }else{
             self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }
+        self.viewLine.setY(self.menuHolder!.bottom()+10)
         
         
         

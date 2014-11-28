@@ -24,6 +24,7 @@ class DreamCell: UITableViewCell {
     @IBOutlet weak var likebutton:UIButton!
     @IBOutlet weak var liked:UIButton!
     @IBOutlet var labelComment:UILabel!
+    @IBOutlet var viewLine: UIView!
     var largeImageURL:String = ""
     var data :NSDictionary!
     var imgHeight:Float = 0.0
@@ -113,6 +114,10 @@ class DreamCell: UITableViewCell {
         self.like!.tag = sid.toInt()!
         
         var height = content.stringHeightWith(17,width:290)
+        
+        if content == "" {
+            height = 0
+        }
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.goodbye.tag = sid.toInt()!
@@ -140,10 +145,8 @@ class DreamCell: UITableViewCell {
         
         if img0 == 0.0 {
             self.imageholder!.hidden = true
-      //      self.holder!.setHeight(height+136)
             imgHeight = 0
             self.contentLabel!.setY(70)
-            self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }else{
             imgHeight = img1 * 320 / img0
             ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
@@ -152,12 +155,14 @@ class DreamCell: UITableViewCell {
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
-      //      self.holder!.setHeight(height+156+sapherise)
-            
             self.contentLabel!.setY(self.imageholder!.bottom()+15)
+        }
+        if content == "" {
+            self.menuHolder!.setY(self.contentLabel!.bottom()-5)
+        }else{
             self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }
-        
+        self.viewLine.setY(self.menuHolder!.bottom()+10)
         
         
         //主人
@@ -201,7 +206,11 @@ class DreamCell: UITableViewCell {
         if(img0 == 0.0){
             return height + 151
         }else{
-            return height + 171 + CGFloat(img1*320/img0)
+            if content == "" {
+                return 156 + CGFloat(img1*320/img0)
+            }else{
+                return height + 171 + CGFloat(img1*320/img0)
+            }
         }
     }
     

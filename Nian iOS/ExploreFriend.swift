@@ -144,7 +144,7 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
             var data = tagSource[indexPath.row]
             cell.labelName.text = data.user
             cell.labelDetail.text = data.detail
-            cell.imageHead.setImage(V.urlHeadImage(data.uid, tag: .Head), placeHolder: IconColor)
+            cell.imageHead.setImage(V.urlHeadImage(data.uid, tag: .Dream), placeHolder: IconColor)
             break
         case 1:
             var data = weiboSource[indexPath.row]
