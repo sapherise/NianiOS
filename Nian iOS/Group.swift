@@ -12,7 +12,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     let identifier = "group"
     let identifier3 = "exploreall"
-    var lefttableView:UITableView?
+    var tableView:UITableView?
     var dataArray = NSMutableArray()
     var dataArray2 = NSMutableArray()
     var page :Int = 0
@@ -46,7 +46,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func bbsRefresh(noti:NSNotification){
         if noti.object! as Int != 0 {
-                self.lefttableView!.setContentOffset(CGPointMake(0, 0), animated: true)
+                self.tableView!.setContentOffset(CGPointMake(0, 0), animated: true)
         }
     }
     
@@ -56,21 +56,20 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         navView.backgroundColor = NavColor
         self.view.addSubview(navView)
         
-        self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
-        self.lefttableView!.delegate = self;
-        self.lefttableView!.dataSource = self;
-        self.lefttableView!.backgroundColor = BGColor
-        self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
+        self.tableView!.delegate = self;
+        self.tableView!.dataSource = self;
+        self.tableView!.backgroundColor = BGColor
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
         var nib = UINib(nibName:"GroupCell", bundle: nil)
         var nib2 = UINib(nibName:"ExploreTop", bundle: nil)
-        var nib3 = UINib(nibName:"ExploreDreamCell", bundle: nil)
         
         
         self.title = "梦想"
-        self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
         
-        self.view.addSubview(self.lefttableView!)
+        self.view.addSubview(self.tableView!)
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -98,8 +97,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             {
                 self.dataArray.addObject(data)
             }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.footerEndRefreshing()
+            self.tableView!.reloadData()
+            self.tableView!.footerEndRefreshing()
             self.page++
             })
     }
@@ -117,8 +116,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             for data : AnyObject  in arr{
                 self.dataArray.addObject(data)
             }
-            self.lefttableView!.reloadData()
-            self.lefttableView!.headerEndRefreshing()
+            self.tableView!.reloadData()
+            self.tableView!.headerEndRefreshing()
             self.page = 1
             })
     }
@@ -141,38 +140,21 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            if tableView == lefttableView {
-            return self.dataArray.count
-            }else{
-            return self.dataArray2.count/3
-            }
+        return self.dataArray.count
     }
-    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        if tableView == lefttableView {
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
-            var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
-            c!.data = data
-            cell = c!
+        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
+        var index = indexPath.row
+        var data = self.dataArray[index] as NSDictionary
+        c!.data = data
+        if indexPath.row == self.dataArray.count - 1 {
+            c!.viewLine.hidden = true
         }else{
-            var index = indexPath.row * 3
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? ExploreDreamCell
-            //     var index = indexPath!.row
-            var data1 = self.dataArray2[index] as NSDictionary
-            var data2 = self.dataArray2[index+1] as NSDictionary
-            var data3 = self.dataArray2[index+2] as NSDictionary
-            c!.data1 = data1
-            c!.data2 = data2
-            c!.data3 = data3
-            
-            c!.head1!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
-            c!.head2!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
-            c!.head3!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
-            cell = c!
+            c!.viewLine.hidden = false
         }
+        cell = c!
         return cell
     }
     
@@ -184,28 +166,22 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
     {
-            if tableView == lefttableView {
-                var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
-                return  GroupCell.cellHeightByData(data)
-            }else{
-                return  140
-            }
+        var index = indexPath!.row
+        var data = self.dataArray[index] as NSDictionary
+        return  GroupCell.cellHeightByData(data)
     }
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
     {
-            if tableView == lefttableView {
-                var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
-                var BBSVC = BBSViewController()
-                BBSVC.Id = data.stringAttributeForKey("id")
-                BBSVC.topcontent = data.stringAttributeForKey("content")
-                BBSVC.topuid = data.stringAttributeForKey("uid")
-                BBSVC.topuser = data.stringAttributeForKey("user")
-                BBSVC.toplastdate = data.stringAttributeForKey("lastdate")
-                BBSVC.toptitle = data.stringAttributeForKey("title")
-                self.navigationController!.pushViewController(BBSVC, animated: true)
-            }
+        var index = indexPath!.row
+        var data = self.dataArray[index] as NSDictionary
+        var BBSVC = BBSViewController()
+        BBSVC.Id = data.stringAttributeForKey("id")
+        BBSVC.topcontent = data.stringAttributeForKey("content")
+        BBSVC.topuid = data.stringAttributeForKey("uid")
+        BBSVC.topuser = data.stringAttributeForKey("user")
+        BBSVC.toplastdate = data.stringAttributeForKey("lastdate")
+        BBSVC.toptitle = data.stringAttributeForKey("title")
+        self.navigationController!.pushViewController(BBSVC, animated: true)
     }
     
     func countUp() {      //😍
@@ -220,11 +196,11 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         //        self.navigationController.pushViewController(imgVC, animated: true)
     }
     func setupRefresh(){
-        self.lefttableView!.addHeaderWithCallback({
+        self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
             })
         
-        self.lefttableView!.addFooterWithCallback({
+        self.tableView!.addFooterWithCallback({
             self.loadData()
             })
     }

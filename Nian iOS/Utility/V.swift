@@ -146,6 +146,26 @@ struct V {
         })
     }
     
+    static func httpPostForJson(requestURL: String, content: String, callback: JsonCallback) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var request = NSMutableURLRequest()
+            request.URL = NSURL(string: requestURL)
+            request.HTTPMethod = "POST"
+            request.HTTPBody = content.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
+            var response: NSURLResponse?
+            var error: NSError?
+            var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+            var json: AnyObject? = nil
+            if data != nil {
+                println(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            }
+            dispatch_async(dispatch_get_main_queue(), {
+                callback(json)
+            })
+        })
+    }
+    
     static func relativeTime(time: NSTimeInterval, current: NSTimeInterval) -> String {
         var d = current - time
         var formatter = NSDateFormatter()
