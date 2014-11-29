@@ -73,21 +73,36 @@ func SAReplace(word:String, before:String, after:String)->NSString{
 }
 
 //替换危险字符
-func SAHtml(content:String)->String{
-    var newContent = SAReplace(content, "&", "&amp;");
-    newContent = SAReplace(newContent, "<", "&lt;");
-    newContent = SAReplace(newContent, ">", "&gt;");
-    newContent = SAReplace(newContent, "\"", "&quot;");
-    newContent = SAReplace(newContent, "'", "&#039;");
-    newContent = SAReplace(newContent, " ", "&nbsp;");
-    newContent = SAReplace(newContent, "\n", "<br>");
-    return newContent
+func SAHtml(content:String) -> String {
+    var s = CFStringCreateMutableCopy(nil, 0, content)
+    var r = CFRangeMake(0, 0)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, "&", "&amp;", r, CFStringCompareFlags.allZeros)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, "<", "&lt;", r, CFStringCompareFlags.allZeros)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, ">", "&gt;", r, CFStringCompareFlags.allZeros)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, "\"", "&quot;", r, CFStringCompareFlags.allZeros)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, "'", "&#039;", r, CFStringCompareFlags.allZeros)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, " ", "&nbsp;", r, CFStringCompareFlags.allZeros)
+    r.length = CFStringGetLength(s)
+    CFStringFindAndReplace(s, "\n", "<br>", r, CFStringCompareFlags.allZeros)
+//    var newContent = SAReplace(content, "&", "&amp;");
+//    newContent = SAReplace(newContent, "<", "&lt;");
+//    newContent = SAReplace(newContent, ">", "&gt;");
+//    newContent = SAReplace(newContent, "\"", "&quot;");
+//    newContent = SAReplace(newContent, "'", "&#039;");
+//    newContent = SAReplace(newContent, " ", "&nbsp;");
+//    newContent = SAReplace(newContent, "\n", "<br>");
+    return s
 }
 
-func SAEncode(content:String)->String{
-    var customAllowedSet = NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-    var s = content.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
-    return s
+func SAEncode(content:String) -> String {
+    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&"
+    return CFURLCreateStringByAddingPercentEscapes(nil, content, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue)
 }
 
 func SAColorImg(theColor:UIColor)->UIImage{
