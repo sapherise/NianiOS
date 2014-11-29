@@ -419,7 +419,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.addStepView.setY(globalHeight/2-106)
             self.addView.addSubview(self.addStepView)
             
-            self.viewClose = UIImageView(frame: CGRectMake(20, 32, 20, 20))
+            self.viewClose = UIImageView(frame: CGRectMake(10, 20, 44, 44))
             self.viewClose.image = UIImage(named: "closeBlue")
             self.viewClose.contentMode = UIViewContentMode.Center
             self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
@@ -470,6 +470,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.addStepView.setY(globalHeight/2-106)
         })
+        if (self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "") {
+            self.addStepView.textView.resignFirstResponder()
+        }else{
+            self.onViewCloseClick()
+        }
     }
     
     func navHide(yPoint:CGFloat){

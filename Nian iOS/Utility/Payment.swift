@@ -11,11 +11,11 @@ import StoreKit
 
 class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
-    enum PayState {
+    enum PayState: Int {
         case Purchased
         case Failed
         case Cancelled
-        case Verified
+        case VerifyFailed
     }
     
     private var _callback: (String, PayState) -> Void
@@ -30,13 +30,18 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     
     private func onPaymentPurchased(transaction: SKPaymentTransaction) {
         var url = NSBundle.mainBundle().appStoreReceiptURL
-        var data = NSData(contentsOfURL: url!)!
-        println(data)
-        var json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.allZeros, error: nil)
-        
-        println(json)
-        _callback(transaction.payment.productIdentifier, .Purchased)
-        
+        if let receiptData = NSData(contentsOfURL: url!) {
+            Api.postIapReceipt(receiptData) {
+                json in
+                if json == nil {
+                    println("nil")
+                    self._callback(transaction.payment.productIdentifier, .VerifyFailed)
+                } else {
+                    println("bad")
+                    self._callback(transaction.payment.productIdentifier, (json!["success"] as String).toInt()! == 1 ? .Purchased : .VerifyFailed)
+                }
+            }
+        }
     }
     
     private func onPaymentFailed(transaction: SKPaymentTransaction) {

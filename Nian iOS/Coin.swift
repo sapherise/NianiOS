@@ -15,7 +15,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     var payment = Payment() {
         id, state in
-        
+        println(state.rawValue)
     }
     
     let coinItems: [CoinCellData] = [
