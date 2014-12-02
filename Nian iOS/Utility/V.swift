@@ -169,7 +169,7 @@ struct V {
         var d = current - time
         var formatter = NSDateFormatter()
         if d < 10 {
-            return "现在";
+            return "刚刚";
         } else if d < 60 {
             return "\(d)秒前"
         } else if d < 3600 {
@@ -239,7 +239,7 @@ extension UIView {
         var tipView = UIView()
         tipView.layer.masksToBounds = true
         tipView.layer.cornerRadius = 4
-        tipView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        tipView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         
         let fontSize: CGFloat = 14
         let textWidth: CGFloat = 180

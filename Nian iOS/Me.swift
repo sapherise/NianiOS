@@ -159,10 +159,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var content = data.stringAttributeForKey("content")
         var dream = data.stringAttributeForKey("dream")
         var type = data.stringAttributeForKey("type")
+        var step = data.stringAttributeForKey("step")
         
         var DreamVC = DreamViewController()
         var UserVC = PlayerViewController()
         var BBSVC = BBSViewController()
+        var StepVC = SingleStepViewController()
         if type == "0" {    //在你的梦想留言
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)

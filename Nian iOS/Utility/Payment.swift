@@ -38,7 +38,6 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
                     println("nil")
                     self._callback(transaction.payment.productIdentifier, .VerifyFailed)
                 } else {
-                    println("bad")
                     self._callback(transaction.payment.productIdentifier, (json!["success"] as String).toInt()! == 1 ? .Purchased : .VerifyFailed)
                 }
             }

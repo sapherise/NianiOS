@@ -180,7 +180,6 @@ class DreamCell: UITableViewCell {
     }
     
     func SAshare(){
-        println(self.indexPathRow)
         if img0 == 0.0 {
             NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "", self.sid, self.indexPathRow + 10 ])
         }else{
