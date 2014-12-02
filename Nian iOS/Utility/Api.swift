@@ -102,8 +102,11 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/addstep_dream.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    static func postIapReceipt(data: NSData, callback: V.JsonCallback) {
+    static func postIapVerify(transactionId: String, data: NSData, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&receipt_data=\(data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros))", callback: callback)
+        var receiptData = ["receipt-data" : data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)]
+        var err: NSError?
+        var jsonData = NSJSONSerialization.dataWithJSONObject(receiptData, options: NSJSONWritingOptions.allZeros, error: &err)
+        V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&transaction_id=\(transactionId)&data=\(jsonData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros))", callback: callback)
     }
 }

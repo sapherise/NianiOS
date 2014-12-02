@@ -31,7 +31,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     private func onPaymentPurchased(transaction: SKPaymentTransaction) {
         var url = NSBundle.mainBundle().appStoreReceiptURL
         if let receiptData = NSData(contentsOfURL: url!) {
-            Api.postIapReceipt(receiptData) {
+            Api.postIapVerify(transaction.transactionIdentifier, data: receiptData) {
                 json in
                 if json == nil {
                     println("nil")

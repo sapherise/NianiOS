@@ -67,7 +67,9 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.navigationBar.setY(-44)
-        switchTab(0)
+        if current == -1 {
+            switchTab(0)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
