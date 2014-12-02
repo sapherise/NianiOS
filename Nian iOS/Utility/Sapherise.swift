@@ -34,6 +34,7 @@ let TextLoadFailed = "加载数据失败了..."
 var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
 var globalNumberDream:Int = 0
+var globalImageYPoint:CGFloat = 0
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height

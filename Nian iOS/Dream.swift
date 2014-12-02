@@ -74,13 +74,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "DreamimageViewTapped", object:nil)
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "DreamimageViewTapped:", name: "DreamimageViewTapped", object: nil)
     }
     
     func ShareContent(noti:NSNotification){
@@ -142,7 +140,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         viewBack(self)
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor.blackColor()
+        self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = UIColor.blackColor()
@@ -331,35 +329,45 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.topCell = c
             cell = c
         }else{
-            if tableView == lefttableView {
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
-                var index = indexPath.row
-                var data = self.dataArray[index] as NSDictionary
-                c.data = data
-                c.indexPathRow = index
-                c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
-                c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
-                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-                c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
-                c.tag = index + 10
-                if indexPath.row == self.dataArray.count - 1 {
-                    c.viewLine.hidden = true
-                }else{
-                    c.viewLine.hidden = false
-                }
-                cell = c
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
+            var index = indexPath.row
+            var data = self.dataArray[index] as NSDictionary
+            c.data = data
+            c.indexPathRow = index
+            c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+            c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
+            c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+            c.tag = index + 10
+            if indexPath.row == self.dataArray.count - 1 {
+                c.viewLine.hidden = true
             }else{
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as CommentCell
-                var index = indexPath.row
-                var data = self.dataArray2[index] as NSDictionary
-                c.data = data
-                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                cell = c
+                c.viewLine.hidden = false
             }
+            cell = c
         }
         return cell
+    }
+    
+    func onImageTap(sender: UITapGestureRecognizer) {
+        var view  = self.findTableCell(sender.view)!
+        var img = dataArray[view.tag - 10].objectForKey("img") as String
+        var img0 = dataArray[view.tag - 10].objectForKey("img0") as NSString
+        var img1 = dataArray[view.tag - 10].objectForKey("img1") as NSString
+        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!).y
+        self.view.showImage(V.urlStepImage(img, tag: .Large), width: img0.floatValue, height: img1.floatValue, yPoint: -yPoint)
+    }
+    
+    func findTableCell(view: UIView?) -> UIView? {
+        for var v = view; v != nil; v = v!.superview {
+            if v! is UITableViewCell {
+                return v
+            }
+        }
+        return nil
     }
     
     func onCommentClick(sender:UIGestureRecognizer){
@@ -593,13 +601,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 return self.dataArray2.count
             }
         }
-    }
-    
-    func DreamimageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func loadDreamTopcell(){

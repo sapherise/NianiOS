@@ -38,11 +38,12 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var btnDynamic: UILabel!
     @IBOutlet var btnHot: UILabel!
     @IBOutlet var btnNew: UILabel!
-    @IBOutlet var btnFriend: UIButton!
+   // @IBOutlet var btnFriend: UIButton!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var navView: UIView!
+    @IBOutlet var navTopView: UIView!
     
     var appear = false
     var current = -1
@@ -82,6 +83,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             ExploreNewProvider(viewController: self)
         ]
         
+        self.navTopView.backgroundColor = BarColor
         view.backgroundColor = UIColor.whiteColor()
         collectionView.alwaysBounceVertical = true
         var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
@@ -93,7 +95,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-        btnFriend.addTarget(self, action: "onFriendClick", forControlEvents: UIControlEvents.TouchUpInside)
+    //    btnFriend.addTarget(self, action: "onFriendClick", forControlEvents: UIControlEvents.TouchUpInside)
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)

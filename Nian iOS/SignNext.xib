@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -7,79 +7,86 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignNextController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="errLabel" destination="FiC-zR-Dvo" id="g3d-TB-r84"/>
-                <outlet property="holder" destination="3Wb-dQ-8aE" id="E2g-Cj-9zk"/>
-                <outlet property="inputEmail" destination="Isa-I6-3u5" id="wYb-pJ-26H"/>
-                <outlet property="inputPassword" destination="oZw-z9-vJt" id="CvO-6U-nqW"/>
-                <outlet property="loginButton" destination="6tU-jn-hGO" id="R9N-r8-Urh"/>
-                <outlet property="loginButtonBorder" destination="web-WA-p5R" id="Eb0-eV-hDx"/>
-                <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
+                <outlet property="errLabel" destination="hZt-Ck-NnJ" id="fuX-7E-fIK"/>
+                <outlet property="holder" destination="hjk-e5-fdp" id="ZWb-ZO-Ca1"/>
+                <outlet property="inputEmail" destination="hc2-JQ-186" id="SbI-c4-UFE"/>
+                <outlet property="inputPassword" destination="xPN-5A-ag0" id="LVX-7a-yDc"/>
+                <outlet property="loginButton" destination="yBd-as-psk" id="nqf-Dp-pNo"/>
+                <outlet property="loginButtonBorder" destination="Yy8-0w-d5K" id="5QI-sk-mQP"/>
+                <outlet property="view" destination="Ipu-sz-w8p" id="uwe-M2-bh1"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="Ipu-sz-w8p">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="Ipu-sz-w8p">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Wb-dQ-8aE">
-                    <rect key="frame" x="20" y="40" width="280" height="141"/>
+                <view autoresizesSubviews="NO" contentMode="scaleToFill" id="hjk-e5-fdp">
+                    <rect key="frame" x="20" y="100" width="280" height="98"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Isa-I6-3u5">
-                            <rect key="frame" x="40" y="8" width="200" height="40"/>
-                            <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <textField autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="邮箱" minimumFontSize="17" id="hc2-JQ-186">
+                            <rect key="frame" x="35" y="7" width="200" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="35" y="7" width="200" height="40"/>
-                            </variation>
+                            <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="go"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oZw-z9-vJt">
-                            <rect key="frame" x="40" y="52" width="200" height="40"/>
-                            <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <textField autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" id="xPN-5A-ag0">
+                            <rect key="frame" x="35" y="51" width="200" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="35" y="51" width="200" height="40"/>
-                            </variation>
+                            <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </textField>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FiC-zR-Dvo">
-                            <rect key="frame" x="40" y="111" width="200" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="40" y="111" width="200" height="21"/>
-                            </variation>
-                        </label>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="web-WA-p5R">
-                            <rect key="frame" x="215" y="25" width="50" height="50"/>
+                        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="Yy8-0w-d5K">
+                            <rect key="frame" x="210" y="24" width="50" height="50"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loginarrow" translatesAutoresizingMaskIntoConstraints="NO" id="6tU-jn-hGO">
+                                <imageView autoresizesSubviews="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginarrow" id="yBd-as-psk">
                                     <rect key="frame" x="5" y="5" width="40" height="40"/>
-                                    <color key="backgroundColor" red="0.054901960780000002" green="0.050980392159999999" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <variation key="widthClass=compact" fixedFrame="YES">
-                                        <rect key="frame" x="5" y="5" width="40" height="40"/>
-                                    </variation>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </imageView>
                             </subviews>
-                            <color key="backgroundColor" red="0.14117647059999999" green="0.18823529410000001" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.92941176470588238" green="0.92941176470588238" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                            <variation key="widthClass=compact" fixedFrame="YES">
-                                <rect key="frame" x="210" y="24" width="50" height="50"/>
-                            </variation>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <variation key="widthClass=compact" fixedFrame="YES">
-                        <rect key="frame" x="20" y="72" width="280" height="141"/>
-                    </variation>
                 </view>
+                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hZt-Ck-NnJ">
+                    <rect key="frame" x="60" y="206" width="200" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="242" y="238"/>
         </view>
     </objects>
     <resources>
         <image name="loginarrow" width="7" height="13"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

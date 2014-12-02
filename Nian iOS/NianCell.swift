@@ -41,6 +41,6 @@ class NianCell: UITableViewCell{
         self.selectionStyle = .None
         self.imageCover.layer.cornerRadius = 6
         self.imageCover.layer.masksToBounds = true
-        self.backgroundColor = UIColor(red:0.05, green:0.05, blue:0.05, alpha:1)
+        self.backgroundColor = UIColor.whiteColor()
     }
 }

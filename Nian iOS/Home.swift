@@ -39,6 +39,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        self.setupViews()
+        self.initViewControllers()
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -48,11 +50,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 if sa != "0" {      //封号
                     dispatch_async(dispatch_get_main_queue(), {
                         self.gameover(sa)
-                    })
-                }else{      //没封号
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.setupViews()
-                        self.initViewControllers()
                     })
                 }
             }
@@ -163,24 +160,25 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.gameoverCoin = gameoverdata.objectForKey("coin") as String
         self.gameoverHead = gameoverdata.objectForKey("image") as String
         
-        self.GameOverView = UIView(frame: CGRectMake(0, 0, 320, globalHeight))
-        self.GameOverView!.backgroundColor = BGColor
+        self.GameOverView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        self.GameOverView!.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         
         var holder = UIView(frame: CGRectMake(40, globalHeight / 2 - 175, 240, 350))
-        holder.backgroundColor = UIColor.redColor()
         var gameoverHead = UIImageView(frame: CGRectMake(95, 0, 50, 50))
         gameoverHead.setImage("http://img.nian.so/dream/\(self.gameoverHead)!dream", placeHolder: IconColor)
-        var gameoverLabel = UILabel(frame: CGRectMake(30, 70, 180, 210))
+        gameoverHead.layer.cornerRadius = 25
+        gameoverHead.layer.masksToBounds = true
+        var gameoverLabel = UILabel(frame: CGRectMake(30, 80, 180, 210))
         var gameoverWord = "梦想「\(self.gameoverTitle)」有 \(self.gameoverDays) 天没有更新，已经阵亡。\n你有 \(self.gameoverCoin) 枚念币，支付念币或者删除梦想来继续玩念。"
         gameoverLabel.text = gameoverWord
         gameoverLabel.numberOfLines = 0
         gameoverLabel.font = UIFont.systemFontOfSize(14)
-        gameoverLabel.textColor = IconColor
+        gameoverLabel.textColor = UIColor.blackColor()
         gameoverLabel.setHeight(gameoverWord.stringHeightWith(14, width: 180))
         var button1 = gameoverButton("支付 5 念币")
         button1.tag = 1
         button1.addTarget(self, action: "GameOverHide:", forControlEvents: UIControlEvents.TouchUpInside)
-        button1.setY(gameoverLabel.bottom()+20)
+        button1.setY(gameoverLabel.bottom()+40)
         var button2 = gameoverButton("删除这个梦想")
         button2.tag = 2
         button2.addTarget(self, action: "GameOverHide:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -272,12 +270,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func gameoverButton(word:String)->UIButton{
-        var button = UIButton(frame: CGRectMake(0, 0, 240, 40))
-        button.backgroundColor = BarColor
+        var button = UIButton(frame: CGRectMake(20, 0, 200, 44))
+        button.backgroundColor = UIColor.blackColor()
         button.setTitle(word, forState: UIControlState.Normal)
         button.titleLabel!.font = UIFont.systemFontOfSize(14)
         button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         return button
     }
     
@@ -424,7 +422,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.viewClose.contentMode = UIViewContentMode.Center
             self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
             self.viewClose.userInteractionEnabled = true
-            self.addView.addSubview(self.viewClose)
+            self.view.window!.addSubview(self.viewClose)
             
             self.view.addSubview(self.addView)
             UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -442,6 +440,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func onViewCloseClick(){
         self.navHide(self.pointNavY)
+        self.viewClose.removeFromSuperview()
         self.addStepView.textView.resignFirstResponder()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             var newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
@@ -453,7 +452,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func onCloseConfirm(){
-        if (self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "") {
+        if ((self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
             self.addStepView.textView.resignFirstResponder()
             self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             self.cancelSheet!.addButtonWithTitle("不写了")
@@ -470,7 +469,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.addStepView.setY(globalHeight/2-106)
         })
-        if (self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "") {
+        if ((self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
             self.addStepView.textView.resignFirstResponder()
         }else{
             self.onViewCloseClick()

@@ -104,6 +104,8 @@ struct Api {
     
     static func postIapReceipt(data: NSData, callback: V.JsonCallback) {
         loadCookies()
+        println(data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros))
+        println("--------------")
         V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&receipt_data=\(data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros))", callback: callback)
     }
 }

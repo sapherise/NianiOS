@@ -193,7 +193,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     func onImageTap(sender: UITapGestureRecognizer) {
         var view = findTableCell(sender.view)!
         var data = dataSource[view.tag]
-        bindViewController!.view.showImage(V.urlStepImage(data.img, tag: .Large), width: data.img0, height: data.img1)
+        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!).y
+        bindViewController!.view.showImage(V.urlStepImage(data.img, tag: .Large), width: data.img0, height: data.img1, yPoint: -yPoint)
     }
     
     func onLikeTap(sender: UITapGestureRecognizer) {

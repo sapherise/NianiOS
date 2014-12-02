@@ -13,29 +13,32 @@ class WelcomeViewController: UIViewController {
     func setupViews(){
         
         self.view.hidden = true
-        self.view.backgroundColor = BGColor
-        
-        
-        var login:UIButton = UIButton(frame: CGRectMake(20, globalHeight-48-30-40, 280, 48))
+        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        var login:UIButton = UIButton(frame: CGRectMake(60, globalHeight-60-60, 200, 44))
         login.setTitle("登录", forState: UIControlState.Normal)
-        login.layer.borderColor = LineColor.CGColor
+        login.layer.borderColor = UIColor.blackColor().CGColor
         login.layer.borderWidth = 1
+        login.layer.cornerRadius = 4
+        login.layer.masksToBounds = true
         login.addTarget(self, action: "login", forControlEvents: UIControlEvents.TouchUpInside)
         login.titleLabel!.font = UIFont(name: "system", size: 17)
-        login.setTitleColor(IconColor, forState: UIControlState.Normal)
+        login.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         
-        var sign:UIButton = UIButton(frame: CGRectMake(20, globalHeight-48-30-47-40, 280, 48))
+        var sign:UIButton = UIButton(frame: CGRectMake(60, globalHeight-60-60-56, 200, 44))
         sign.setTitle("注册", forState: UIControlState.Normal)
-        sign.layer.borderColor = LineColor.CGColor
+        sign.layer.borderColor = UIColor.blackColor().CGColor
+        sign.backgroundColor = UIColor.blackColor()
         sign.layer.borderWidth = 1
+        sign.layer.cornerRadius = 4
+        sign.layer.masksToBounds = true
         sign.addTarget(self, action: "sign", forControlEvents: UIControlEvents.TouchUpInside)
         sign.titleLabel!.font = UIFont(name: "system", size: 17)
-        sign.setTitleColor(IconColor, forState: UIControlState.Normal)
+        sign.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         
         var privacy = UILabel(frame: CGRectMake(80, globalHeight - 60, 160, 30))
-        privacy.text = "使用念，就表示你同意\n念的使用条款和隐私政策。"
+        privacy.text = "使用念，就表示你同意\n念的使用条款和隐私政策"
         privacy.font = UIFont.systemFontOfSize(9)
-        privacy.textColor = LineColor
+        privacy.textColor = UIColor.blackColor()
         privacy.textAlignment = NSTextAlignment.Center
         privacy.numberOfLines = 2
         privacy.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPrivacyClick"))
@@ -45,14 +48,14 @@ class WelcomeViewController: UIViewController {
         self.view.addSubview(login)
         self.view.addSubview(sign)
         
-        var des:UILabel = UILabel(frame: CGRectMake(20, 80, globalWidth-40, 128))
+        var des:UILabel = UILabel(frame: CGRectMake(20, 120, globalWidth-40, 128))
         var content:String = "在这个宇宙最残酷\n记梦应用里，\n只有每天坚持\n更新你的梦想，\n才不会被停用账号。"
         des.font = UIFont.systemFontOfSize(14)
         des.setHeight(128)
         des.text = content
         des.numberOfLines = 0
         des.textAlignment = NSTextAlignment.Center
-        des.textColor = IconColor
+        des.textColor = UIColor.blackColor()
         self.view.addSubview(des)
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()

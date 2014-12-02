@@ -41,7 +41,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" id="ZF6-an-RPQ">
                                 <rect key="frame" x="0.0" y="64" width="320" height="44"/>
@@ -74,24 +74,16 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="y7m-zE-SsR">
-                                <rect key="frame" x="276" y="20" width="44" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="plus">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="btnDynamic" destination="bRx-v7-VHB" id="x5B-ni-kJ3"/>
                         <outlet property="btnFollow" destination="epf-4H-XeU" id="86z-bc-aCC"/>
-                        <outlet property="btnFriend" destination="y7m-zE-SsR" id="DLo-Pg-LlR"/>
                         <outlet property="btnHot" destination="Ihu-IS-EzL" id="u3L-E0-MRv"/>
                         <outlet property="btnNew" destination="jRq-Xx-k5k" id="hO6-nm-1uh"/>
                         <outlet property="collectionView" destination="Vs2-YU-bNb" id="ZHh-on-eGv"/>
+                        <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
                         <outlet property="navView" destination="ZF6-an-RPQ" id="sQY-sa-H4n"/>
                         <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
                     </connections>
@@ -101,9 +93,6 @@
             <point key="canvasLocation" x="-198" y="-264"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="plus" width="19" height="19"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

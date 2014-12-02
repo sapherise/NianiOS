@@ -46,7 +46,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     func setupViews() {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor.blackColor()
+        self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
@@ -177,8 +177,12 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     }
     
     func onBuyPropClick(sender: UIButton) {
-        var viewFilm = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        viewFilm.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25)
+        var viewFilm = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        viewFilm.alpha = 0
+        viewFilm.translucentAlpha = 1
+        viewFilm.translucentStyle = UIBarStyle.Default
+        viewFilm.translucentTintColor = UIColor.clearColor()
+        viewFilm.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)
         viewFilm.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
         viewFilm.userInteractionEnabled = true
         var nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
@@ -212,6 +216,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         viewFilm.addSubview(viewFilmScreen)
         sender.window!.addSubview(viewFilm)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
+            viewFilm.alpha = 1
             viewFilmScreen.frame.origin.y = (globalHeight - globalWidth)/2 + 45
         })
         delay(0.3, { () -> () in

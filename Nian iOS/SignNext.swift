@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SignNextController: UIViewController, UIGestureRecognizerDelegate{
+class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
     @IBOutlet var loginButton:UIImageView!
     @IBOutlet var loginButtonBorder:UIView!
     @IBOutlet var inputEmail:UITextField!
@@ -19,23 +19,17 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate{
     var isAnimate:Int = 0
     var name:String = ""
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Custom initialization
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func setupViews(){
         viewBack(self)
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = BarColor
+        self.view.addSubview(navView)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
-        self.view.backgroundColor = BGColor
+        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
-        self.inputEmail.textColor = SeaColor
-        self.inputPassword.textColor = SeaColor
+        self.inputEmail.textColor = UIColor.blackColor()
+        self.inputPassword.textColor = UIColor.blackColor()
         self.inputEmail.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
         self.inputEmail.rightView = UIView(frame: CGRectMake(0, 0, 20, 40))
         self.inputPassword.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
@@ -44,8 +38,10 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate{
         self.inputEmail.rightViewMode = UITextFieldViewMode.Always
         self.inputPassword.leftViewMode = UITextFieldViewMode.Always
         self.inputPassword.rightViewMode = UITextFieldViewMode.Always
+        self.inputPassword.delegate = self
+        self.inputEmail.delegate = self
         
-        let attributesDictionary = [NSForegroundColorAttributeName: LineColor]
+        let attributesDictionary = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)]
         self.inputEmail.attributedPlaceholder = NSAttributedString(string: "邮箱", attributes: attributesDictionary)
         self.inputPassword.attributedPlaceholder = NSAttributedString(string: "密码", attributes: attributesDictionary)
         
@@ -56,14 +52,21 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate{
         titleLabel.text = "完成注册"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        dispatch_async(dispatch_get_main_queue(), {
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        
+        delay(1, { () -> () in
             self.inputEmail.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+            return
         })
     }
     
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.loginAlert()
+        return true
     }
     
     func loginAlert(){
@@ -103,16 +106,18 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate{
                                 Sa.setObject(username, forKey:"user")
                                 Sa.synchronize()
                                 Api.requestLoad()
-                                var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                                var navigationViewController = UINavigationController(rootViewController: mainViewController)
-                                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                                navigationViewController.navigationBar.translucent = true
-                                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                navigationViewController.navigationBar.clipsToBounds = true
-                                self.presentViewController(navigationViewController, animated: true, completion: {
-                                    self.navigationItem.rightBarButtonItems = []
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                                    var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                                    navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                                    navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                                    navigationViewController.navigationBar.translucent = true
+                                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                                    navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                                    navigationViewController.navigationBar.clipsToBounds = true
+                                    self.presentViewController(navigationViewController, animated: true, completion: {
+                                        self.navigationItem.rightBarButtonItems = []
+                                    })
                                 })
                                 var DeviceToken = Sa.objectForKey("DeviceToken") as? String
                                 if DeviceToken != nil {

@@ -33,7 +33,7 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = UIColor.blackColor()
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         viewBack(self)
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))

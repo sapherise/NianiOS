@@ -117,7 +117,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
         self.viewHolder.layer.borderWidth = 1
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         if self.tagType >= 1 {
             self.labelTag?.text = self.dataArray[self.tagType - 1]

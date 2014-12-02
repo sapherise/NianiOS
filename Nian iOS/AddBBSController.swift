@@ -22,7 +22,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
     }
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
         self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor

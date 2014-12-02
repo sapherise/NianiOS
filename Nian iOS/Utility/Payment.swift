@@ -13,9 +13,9 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     
     enum PayState: Int {
         case Purchased
-        case Failed
         case Cancelled
         case VerifyFailed
+        case Failed
     }
     
     private var _callback: (String, PayState) -> Void
@@ -30,6 +30,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     
     private func onPaymentPurchased(transaction: SKPaymentTransaction) {
         var url = NSBundle.mainBundle().appStoreReceiptURL
+        println(transaction.transactionIdentifier)
         if let receiptData = NSData(contentsOfURL: url!) {
             Api.postIapReceipt(receiptData) {
                 json in
@@ -73,6 +74,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
                 break
             case SKPaymentTransactionState.Failed:
+                println(transaction.error)
                 onPaymentFailed(transaction)
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
                 break

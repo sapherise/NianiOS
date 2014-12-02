@@ -53,12 +53,16 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
             return false
+        }else{
+            let panGesture = gestureRecognizer as UIPanGestureRecognizer
+            let panY = panGesture.locationInView(self).y
+            let translation = panGesture.translationInView(self)
+            if fabs(translation.y) > fabs(translation.x) {  //如果是往下划
+                return false
+            }else{
+                return true
+            }
         }
-        
-        let panGesture = gestureRecognizer as UIPanGestureRecognizer
-        let panY = panGesture.locationInView(self).y
-        let translation = panGesture.translationInView(self)
-        return fabs(translation.y) < fabs(translation.x)
     }
     
     func pan(pan:UIPanGestureRecognizer){

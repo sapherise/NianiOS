@@ -9,31 +9,25 @@
 import UIKit
 
 
-class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
+class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
     @IBOutlet var loginButton:UIImageView!
     @IBOutlet var loginButtonBorder:UIView!
     @IBOutlet var inputEmail:UITextField!
     @IBOutlet var inputPassword:UITextField!
     @IBOutlet var holder:UIView!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Custom initialization
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func setupViews(){
         viewBack(self)
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = BarColor
+        self.view.addSubview(navView)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
-        
-        self.view.backgroundColor = BGColor
+        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
-        self.inputEmail.textColor = SeaColor
-        self.inputPassword.textColor = SeaColor
+        self.loginButtonBorder.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
+        self.inputEmail.textColor = UIColor.blackColor()
+        self.inputPassword.textColor = UIColor.blackColor()
         self.inputEmail.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
         self.inputEmail.rightView = UIView(frame: CGRectMake(0, 0, 20, 40))
         self.inputPassword.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
@@ -42,8 +36,10 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
         self.inputEmail.rightViewMode = UITextFieldViewMode.Always
         self.inputPassword.leftViewMode = UITextFieldViewMode.Always
         self.inputPassword.rightViewMode = UITextFieldViewMode.Always
+        self.inputEmail.delegate = self
+        self.inputPassword.delegate = self
         
-        let attributesDictionary = [NSForegroundColorAttributeName: LineColor]
+        let attributesDictionary = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)]
         self.inputEmail.attributedPlaceholder = NSAttributedString(string: "邮箱", attributes: attributesDictionary)
         self.inputPassword.attributedPlaceholder = NSAttributedString(string: "密码", attributes: attributesDictionary)
         
@@ -54,11 +50,16 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate{
         titleLabel.text = "登录"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
-        dispatch_async(dispatch_get_main_queue(), {
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        delay(1, { () -> () in
             self.inputEmail.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+            return
         })
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.loginAlert()
+        return true
     }
     
     func back(){

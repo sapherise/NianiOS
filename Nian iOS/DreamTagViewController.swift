@@ -34,7 +34,7 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         viewBack(self)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.view.addSubview(navView)
