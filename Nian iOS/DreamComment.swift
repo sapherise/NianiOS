@@ -204,27 +204,25 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func SAReloadData(bool:Bool = false){
         var url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                var arr = data["items"] as NSArray
+                var total = data["total"] as NSString!
+                self.dataTotal = "\(total)".toInt()!
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr {
+                    self.dataArray.addObject(data)
+                }
+                if self.dataTotal < 15 {
+                    self.tableview!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+                }
+                self.tableview!.reloadData()
+                self.tableview!.headerEndRefreshing()
+                if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
+                    self.tableview!.setContentOffset(CGPointMake(0, self.tableview!.contentSize.height-self.tableview!.bounds.size.height), animated: bool)
+                }
+                self.page = 1
+                self.isKeyboardResign = 0
             }
-            var arr = data["items"] as NSArray
-            var total = data["total"] as NSString!
-            self.dataTotal = "\(total)".toInt()!
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr {
-                self.dataArray.addObject(data)
-            }
-            if self.dataTotal < 15 {
-                self.tableview!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
-            }
-            self.tableview!.reloadData()
-            self.tableview!.headerEndRefreshing()
-            if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
-                self.tableview!.setContentOffset(CGPointMake(0, self.tableview!.contentSize.height-self.tableview!.bounds.size.height), animated: bool)
-            }
-            self.page = 1
-            self.isKeyboardResign = 0
         })
     }
     

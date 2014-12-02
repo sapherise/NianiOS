@@ -115,47 +115,42 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     
-func loadData(){
+    func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-        if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
-        }
-        var arr = data["items"] as NSArray
-        for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-       }
-            self.tableView!.reloadData()
-            self.tableView!.footerEndRefreshing()
-            self.page++
-       })
-}
+            if data as NSObject != NSNull(){
+                var arr = data["items"] as NSArray
+                for data : AnyObject  in arr {
+                    self.dataArray.addObject(data)
+                }
+                self.tableView!.reloadData()
+                self.tableView!.footerEndRefreshing()
+                self.page++
+            }
+        })
+    }
+    
     func SAReloadData(){
         self.page = 0
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                var arr = data["items"] as NSArray
+                self.dataArray = NSMutableArray()
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                Sa.setObject(self.dataArray, forKey: "followData")
+                Sa.synchronize()
+                self.tableView!.reloadData()
+                self.tableView!.headerEndRefreshing()
+                self.page++
             }
-            var arr = data["items"] as NSArray
-            self.dataArray = NSMutableArray()
-//            for var i = 0; i < self.dataArray.count; i++ {
-//                self.dataArray.removeObjectAtIndex(i)
-//            }
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            Sa.setObject(self.dataArray, forKey: "followData")
-            Sa.synchronize()
-            self.tableView!.reloadData()
-            self.tableView!.headerEndRefreshing()
-            self.page++
-            })
+        })
     }
+    
     func SAReloadCache(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if Sa.objectForKey("followData") != nil {

@@ -19,8 +19,6 @@ class PlayerCell: UITableViewCell {
     @IBOutlet var menuHolder:UIView?
     @IBOutlet weak var like: UILabel!
     @IBOutlet weak var share: UIButton!
-    @IBOutlet weak var goodbye: UIButton!
-    @IBOutlet weak var edit: UIButton!
     @IBOutlet weak var likebutton:UIButton!
     @IBOutlet weak var liked:UIButton!
     @IBOutlet var labelComment:UILabel!
@@ -35,6 +33,7 @@ class PlayerCell: UITableViewCell {
     var img1:Float = 0.0
     var ImageURL:String = ""
     var indexPathRow:Int = 0
+    var sid:Int = 0
     
     @IBAction func nolikeClick(sender: AnyObject) { //取消赞
         self.liked!.hidden = true
@@ -91,6 +90,7 @@ class PlayerCell: UITableViewCell {
     {
         super.layoutSubviews()
         var sid = self.data.stringAttributeForKey("sid")
+        self.sid = sid.toInt()!
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate") as String
@@ -120,8 +120,6 @@ class PlayerCell: UITableViewCell {
         }
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.goodbye.tag = sid.toInt()!
-        self.edit.tag = self.indexPathRow
         self.share.tag = sid.toInt()!
         self.labelComment.tag = sid.toInt()!
         if comment != "0" {
@@ -174,8 +172,6 @@ class PlayerCell: UITableViewCell {
             self.likebutton!.hidden = true
             self.liked!.hidden = true
         }else{
-            self.goodbye!.hidden = true
-            self.edit!.hidden = true
             self.share!.setX(230)
             if liked == "0" {
                 self.likebutton!.hidden = false
@@ -189,9 +185,9 @@ class PlayerCell: UITableViewCell {
     
     func SAshare(){
         if img0 == 0.0 {
-            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "" ])
+            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "", self.sid, self.indexPathRow + 10 ])
         }else{
-            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, ImageURL ])
+            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, ImageURL, self.sid, self.indexPathRow + 10 ])
         }
     }
     
