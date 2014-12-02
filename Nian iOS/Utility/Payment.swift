@@ -11,42 +11,39 @@ import StoreKit
 
 class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
-    enum PayState: Int {
+    enum PayState {
         case Purchased
         case Cancelled
         case VerifyFailed
         case Failed
+        case OnPurchasing
+        case OnVerifying
     }
     
-    private var _callback: (String, PayState) -> Void
+    private var _callback: (PayState, AnyObject?) -> Void
     
-    init(callback: (String, PayState) -> Void) {
+    init(callback: (PayState, AnyObject?) -> Void) {
         _callback = callback
-    }
-    
-    deinit {
-        SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
     }
     
     private func onPaymentPurchased(transaction: SKPaymentTransaction) {
         var url = NSBundle.mainBundle().appStoreReceiptURL
         println(transaction.transactionIdentifier)
         if let receiptData = NSData(contentsOfURL: url!) {
+            _callback(.OnVerifying, nil)
             Api.postIapVerify(transaction.transactionIdentifier, data: receiptData) {
                 json in
                 if json == nil {
-                    println("nil")
-                    self._callback(transaction.payment.productIdentifier, .VerifyFailed)
+                    self._callback(.VerifyFailed, nil)
                 } else {
-                    println("bad")
-                    self._callback(transaction.payment.productIdentifier, (json!["success"] as String).toInt()! == 1 ? .Purchased : .VerifyFailed)
+                    self._callback((json!["success"] as String).toInt()! == 1 ? .Purchased : .VerifyFailed, json)
                 }
             }
         }
     }
     
     private func onPaymentFailed(transaction: SKPaymentTransaction) {
-        _callback(transaction.payment.productIdentifier, transaction.error.code == SKErrorPaymentCancelled ? .Cancelled : .Failed)
+        _callback(transaction.error.code == SKErrorPaymentCancelled ? .Cancelled : .Failed, nil)
     }
     
     func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
@@ -58,6 +55,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
         for product: SKProduct in response.products as [SKProduct] {
             queue.addPayment(SKPayment(product: product))
         }
+        _callback(.OnPurchasing, nil)
     }
     
     func request(request: SKRequest!, didFailWithError error: NSError!) {
@@ -72,11 +70,12 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
             case SKPaymentTransactionState.Purchased:
                 onPaymentPurchased(transaction)
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
                 break
             case SKPaymentTransactionState.Failed:
-                println(transaction.error)
                 onPaymentFailed(transaction)
                 SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
                 break
             default:
                 break

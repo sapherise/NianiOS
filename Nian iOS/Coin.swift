@@ -13,11 +13,6 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     typealias CoinCellData = (icon: String, title: String, description: String, cost: String)
     
-    var payment = Payment() {
-        id, state in
-        println(state.rawValue)
-    }
-    
     let coinItems: [CoinCellData] = [
         ("12", "12 念币", "", "¥ 6.00"),
         ("30", "30 念币", "", "¥ 12.00"),
@@ -39,6 +34,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     @IBOutlet var viewCircle: UIView!
     var top:CAShapeLayer!
     var navView: UIView!
+    var memorySafe = [Payment]()
     
     override func viewDidLoad() {
         setupViews()
@@ -155,40 +151,81 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     }
     
     func onBuyCoinClick(sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            payment.pay(product_coin12)
-            break
-        case 1:
-            payment.pay(product_coin30)
-            break
-        case 2:
-            payment.pay(product_coin65)
-            break
-        case 3:
-            payment.pay(product_coin140)
-            break
-        case 4:
-            payment.pay(product_coin295)
-            break
-        default:
-            break
+        var tag = sender.tag
+        var coinData = coinItems[tag]
+        showFilm("购买念币", prompt: "立刻获得 \(coinData.title)", button: coinData.cost) {
+            film in
+            var payment = Payment() {
+                state, data in
+                if film.hidden {
+                    film.removeFromSuperview()
+                    switch state {
+                    case .Purchased:
+                        self.view.showTipText("刚刚一笔支付成功了, 刷新念币看看吧", delay: 1)
+                        break
+                    case .Failed:
+                        break
+                    case .Cancelled:
+                        break
+                    default:
+                        break
+                    }
+                } else {
+                    var prompt = "Sa去吃大餐了, 留我一个人在加班"
+                    switch state {
+                    case .OnPurchasing:
+                        prompt = "正在刷爆你的卡"
+                        break
+                    case .OnVerifying:
+                        prompt = "正在传输念币到你的账户"
+                        break
+                    case .Cancelled:
+                        prompt = "支付已取消"
+                        film.showOK()
+                        break
+                    case .Failed:
+                        prompt = "支付失败"
+                        film.showError("重试")
+                        break
+                    case .Purchased:
+                        prompt = "传输成功"
+                        film.showOK()
+                        self.levelLabelCount((data!["coin"] as String).toInt()!)
+                        break
+                    case .VerifyFailed:
+                        prompt = "传输失败, 如果念币没到账, 记得和管理员联系哦!"
+                        film.showOK()
+                        break
+                    default:
+                        break
+                    }
+                    film.labelDes.text = prompt
+                }
+            }
+            switch tag {
+            case 0:
+                payment.pay(product_coin12)
+                break
+            case 1:
+                payment.pay(product_coin30)
+                break
+            case 2:
+                payment.pay(product_coin65)
+                break
+            case 3:
+                payment.pay(product_coin140)
+                break
+            case 4:
+                payment.pay(product_coin295)
+                break
+            default:
+                break
+            }
+            self.memorySafe.append(payment)
         }
     }
     
     func onBuyPropClick(sender: UIButton) {
-        var viewFilm = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        viewFilm.alpha = 0
-        viewFilm.translucentAlpha = 1
-        viewFilm.translucentStyle = UIBarStyle.Default
-        viewFilm.translucentTintColor = UIColor.clearColor()
-        viewFilm.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)
-        viewFilm.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
-        viewFilm.userInteractionEnabled = true
-        var nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
-        var viewFilmScreen: FilmCell = nib.objectAtIndex(0) as FilmCell
-        viewFilmScreen.frame.origin.x = ( globalWidth - 270 ) / 2
-        viewFilmScreen.frame.origin.y = -270
         var title = ""
         var des = ""
         var button = ""
@@ -206,32 +243,73 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         default:
             break
         }
-        viewFilmScreen.labelTitle.text = title
-        viewFilmScreen.labelDes.text = des
-        viewFilmScreen.labelDes.setHeight(des.stringHeightWith(12, width: 200))
-        viewFilmScreen.btnBuy.setTitle(button, forState: UIControlState.Normal)
-        viewFilmScreen.btnBuy.setY(viewFilmScreen.labelDes.bottom()+22)
-        viewFilmScreen.hashTag = sender.tag
-        
-        viewFilm.addSubview(viewFilmScreen)
-        sender.window!.addSubview(viewFilm)
+        var tag = sender.tag
+        showFilm(title, prompt: des, button: button) {
+            film in
+            Api.postLabTrip("\(tag)") {
+                string in
+                if film.hidden {
+                    film.superview!.removeFromSuperview()
+                } else {
+                    if string == "1" {
+                        film.showOK()
+                    }else if string == "2" {
+                        film.showError("念币不足")
+                    }else if string == "3" {
+                        film.showError("毕业过啦")
+                    }
+                }
+            }
+        }
+    }
+    
+    let FILM_TAG = 21233
+    
+    func showFilm(title: String, prompt: String, button: String, callback: (FilmCell) -> Void) {
+        var viewFilm = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        viewFilm.alpha = 0
+        viewFilm.translucentAlpha = 1
+        viewFilm.translucentStyle = UIBarStyle.Default
+        viewFilm.translucentTintColor = UIColor.clearColor()
+        viewFilm.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)
+        viewFilm.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
+        viewFilm.userInteractionEnabled = true
+        var nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
+        var viewFilmDialog: FilmCell = nib.objectAtIndex(0) as FilmCell
+        viewFilmDialog.frame.origin.x = ( globalWidth - 270 ) / 2
+        viewFilmDialog.frame.origin.y = -270
+        viewFilmDialog.labelTitle.text = title
+        viewFilmDialog.labelDes.text = prompt
+        viewFilmDialog.labelDes.setHeight(prompt.stringHeightWith(12, width: 200))
+        viewFilmDialog.btnBuy.setTitle(button, forState: UIControlState.Normal)
+        viewFilmDialog.btnBuy.setY(viewFilmDialog.labelDes.bottom()+22)
+        viewFilmDialog.callback = callback;
+        viewFilmDialog.tag = FILM_TAG
+        viewFilm.addSubview(viewFilmDialog)
+        view.addSubview(viewFilm)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             viewFilm.alpha = 1
-            viewFilmScreen.frame.origin.y = (globalHeight - globalWidth)/2 + 45
+            viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 45
         })
         delay(0.3, { () -> () in
             UIView.animateWithDuration(0.1, animations: { () -> Void in
-                viewFilmScreen.frame.origin.y = (globalHeight - globalWidth)/2 + 25
+                viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
             })
         })
     }
     
-    func onFilmTap(gesture:UIGestureRecognizer){
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            gesture.view!.alpha = 0
-        })
-        delay(0.3, { () -> () in
-            gesture.view!.hidden = true
+    func onFilmTap(sender: UIGestureRecognizer){
+        UIView.animateWithDuration(0.3, animations: {
+            () -> Void in
+            sender.view!.alpha = 0
+            }, completion: {
+                finish in
+                var v = sender.view!.viewWithTag(self.FILM_TAG) as? FilmCell
+                if v != nil && !v!.closeable {
+                    sender.view!.hidden = true
+                } else {
+                    sender.view!.removeFromSuperview()
+                }
         })
     }
     
@@ -244,7 +322,6 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         CGPathAddCurveToPoint(path, nil, 0, 124.18, 35.82, 160, 80, 160)
         CGPathAddCurveToPoint(path, nil, 124.18, 160, 160, 124.18, 160, 80)
         CGPathAddCurveToPoint(path, nil, 160, 35.82, 124.18, 0, 80, 0)
-        
         self.top.path = path
         self.top.strokeColor = SeaColor.CGColor
         self.top.lineWidth = 8
@@ -252,13 +329,11 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.top.masksToBounds = true
         let strokingPath = CGPathCreateCopyByStrokingPath(top.path, nil, 8, kCGLineCapRound, kCGLineJoinMiter, 4)
         self.top.bounds = CGPathGetPathBoundingBox(strokingPath)
-        
         self.top.anchorPoint = CGPointMake(0, 0)
         self.top.position = CGPointZero
         self.top.strokeStart = 0
         self.top.strokeEnd = 0
         self.top.fillColor = UIColor.clearColor().CGColor
-        
         self.top.actions = [
             "strokeStart": NSNull(),
             "strokeEnd": NSNull(),
