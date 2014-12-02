@@ -109,7 +109,7 @@ class UserViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func setupViews()
     {
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
         self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))

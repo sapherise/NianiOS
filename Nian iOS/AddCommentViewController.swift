@@ -36,7 +36,7 @@ class AddCommentViewController: UIViewController, UIGestureRecognizerDelegate{
     
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
         self.view.backgroundColor = BGColor

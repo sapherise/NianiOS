@@ -62,6 +62,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     var topCell:PlayerCellTop?
     var navView:UIImageView!
+    var rowComment:Int = 0
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -157,7 +158,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.view.addSubview(self.tableView!)
         
         self.navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        self.navView.backgroundColor = BarColor
         self.navView.hidden = true
         self.navView.clipsToBounds = true
         self.navView.alpha = 0
@@ -423,35 +424,50 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var data = self.dataArray[index] as NSDictionary
                 c.data = data
                 c.indexPathRow = index
+                c.tag = index + 10
                 c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
+                c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
                 if indexPath.row == self.dataArray.count - 1 {
                     c.viewLine.hidden = true
                 }else{
                     c.viewLine.hidden = false
                 }
-                c.tag = index + 10
                 cell = c
             }
         }
         return cell
     }
     
+    func onImageTap(sender: UITapGestureRecognizer) {
+        var view  = self.findTableCell(sender.view)!
+        var img = dataArray[view.tag - 10].objectForKey("img") as String
+        var img0 = dataArray[view.tag - 10].objectForKey("img0") as NSString
+        var img1 = dataArray[view.tag - 10].objectForKey("img1") as NSString
+        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!).y
+        self.view.showImage(V.urlStepImage(img, tag: .Large), width: img0.floatValue, height: img1.floatValue, yPoint: -yPoint)
+    }
+    
+    func findTableCell(view: UIView?) -> UIView? {
+        for var v = view; v != nil; v = v!.superview {
+            if v! is UITableViewCell {
+                return v
+            }
+        }
+        return nil
+    }
+    
     func onCommentClick(sender:UIGestureRecognizer){
+        var view  = self.findTableCell(sender.view)!
+        var dream = dataArray[view.tag - 10].objectForKey("dream") as String
         var tag = sender.view!.tag
         var DreamCommentVC = DreamCommentViewController()
         var totalComment = SAReplace(( sender.view! as UILabel ).text!, " 评论", "") as String
-        if totalComment == "评论" {
-            totalComment = "0"
-        }else{
-            totalComment = "0"
-        }
-        DreamCommentVC.dataTotal = totalComment.toInt()!
-        DreamCommentVC.dreamID = self.Id.toInt()!
+        DreamCommentVC.dreamID = dream.toInt()!
         DreamCommentVC.stepID = tag
         DreamCommentVC.dreamowner = self.dreamowner
         self.navigationController!.pushViewController(DreamCommentVC, animated: true)

@@ -142,6 +142,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     
     func onSubmitClick(){
         var content = self.textView.text
+        if content == "进展正文" {
+            content = ""
+        }
         self.btnOK.setTitle("", forState: UIControlState.Normal)
         self.btnOK.enabled = false
         self.activityOK.hidden = false
@@ -153,6 +156,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa=SAPost("dream=\(self.dreamID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/addstep_query.php")
             if(sa == "1"){
+                globalWillNianReload = 1
                 dispatch_async(dispatch_get_main_queue(), {
                     self.activityOK.stopAnimating()
                     self.activityOK.hidden = true
@@ -186,9 +190,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        var VC = findRootViewController()! as UIViewController
-        VC.dismissViewControllerAnimated(true, completion: nil)
+//        var VC = findRootViewController()! as UIViewController
+//        VC.dismissViewControllerAnimated(true, completion: nil)
         self.uploadFile(image)
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func uploadFile(img:UIImage){
@@ -214,6 +223,12 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png"))
     }
     
+    func navHide(yPoint:CGFloat){
+        var VC = self.findRootViewController() as HomeViewController
+        var navigationFrame = VC.navigationController?.navigationBar.frame
+        navigationFrame!.origin.y = yPoint
+        VC.navigationController!.navigationBar.frame = navigationFrame!
+    }
 }
 
 class AddStepCell: UITableViewCell {
@@ -233,7 +248,6 @@ class AddStepCell: UITableViewCell {
     override func awakeFromNib() {
         self.selectionStyle = .None
     }
-    
     
     
 }

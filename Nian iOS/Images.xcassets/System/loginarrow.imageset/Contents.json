@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "loginarrow.png"
+      "filename" : "arrow.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "loginarrow@2x.png"
+      "filename" : "arrow@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "arrow@3x.png"
     }
   ],
   "info" : {

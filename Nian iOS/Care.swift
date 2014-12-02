@@ -18,7 +18,7 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
     
     func setupViews(){
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor.blackColor()
+        self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = BGColor

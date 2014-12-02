@@ -59,7 +59,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         viewBack(self)
         
@@ -114,30 +114,12 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
                     var date = V.getDay(lastdate)
                     self.marks[date.toInt()!] = true
                 }
-                self.layoutAMonth("11", marks: self.marks)
+                self.layoutAMonth(self.marks)
                 self.labelMonthLeft.text = "\(self.textLeft)"
                 self.labelMonthRight.text = "\(self.textRight)"
             }
         }
     }
-    
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        self.tableview.deselectRowAtIndexPath(indexPath, animated: false)
-//    }
-//    
-//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 3
-//    }
-//    
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        var cell = tableView.dequeueReusableCellWithIdentifier("GameCell", forIndexPath: indexPath) as GameCell
-//        return cell
-//    }
-//    
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 100
-//    }
-    
     
     func SACircle(float:CGFloat){
         self.top = CAShapeLayer()
@@ -181,10 +163,15 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         self.navigationController!.popViewControllerAnimated(true)
     }
     
-    func layoutAMonth(strMonthNum: NSString, marks: [Bool]) {
+    func layoutAMonth(marks: [Bool]) {
+        var calendar = NSCalendar(identifier: NSGregorianCalendar)!
+        var comoponents = calendar.components(NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit, fromDate: NSDate())
+        var year = comoponents.year
+        var month = comoponents.month
+        
         let dffd = NSDateFormatter()
         dffd.dateFormat = "MM/dd/yyyy"
-        let firstDay :NSDate = dffd.dateFromString("\(strMonthNum)/01/2014")!
+        let firstDay :NSDate = dffd.dateFromString("\(month)/01/\(year)")!
         
         let dfmn = NSDateFormatter()
         dfmn.dateFormat = "MM"
@@ -213,15 +200,13 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
             var thePosX = (40 * (theDayOfWeek - 1)) + 15 + 12
             // -1 because you want the first to be 0
             
-            let strAll = "\(strMonthNum)/\(index)/2014"
+            let strAll = "\(strMonthNum)/\(index)/\(year)"
             
             let todayF = NSDateFormatter()
-            todayF.dateFormat = "MM/dd/yyyy"
+            todayF.dateFormat = "MM/d/yyyy"
             let firstDay = todayF.stringFromDate(NSDate())
-            
             let cF = NSDateFormatter()
             cF.dateFormat = "MM/dd/yyyy"
-            
             if let d = cF.dateFromString(strAll) { // date is valid
                 //make a button
                 let myB = UILabel()

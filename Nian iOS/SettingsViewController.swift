@@ -49,7 +49,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.navigationItem.titleView = titleLabel
         
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)

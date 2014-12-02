@@ -71,7 +71,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.view.backgroundColor = UIColor.whiteColor()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor.blackColor()
+        self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
@@ -230,7 +230,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var y = scrollView.contentOffset.y
-        println(self.dataTotal)
         if self.dataTotal == 15 {
             self.viewTop.addSubview(self.activityIndicatorView)
             if y < 40 {

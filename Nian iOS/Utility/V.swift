@@ -157,7 +157,6 @@ struct V {
             var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
             var json: AnyObject? = nil
             if data != nil {
-                println(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             }
             dispatch_async(dispatch_get_main_queue(), {
@@ -170,11 +169,11 @@ struct V {
         var d = current - time
         var formatter = NSDateFormatter()
         if d < 10 {
-            return "0s";
+            return "现在";
         } else if d < 60 {
-            return "\(d)s"
+            return "\(d)秒前"
         } else if d < 3600 {
-            return "\(NSNumber(double: floor(d / 60)).integerValue)m"
+            return "\(NSNumber(double: floor(d / 60)).integerValue)分前"
         } else if d < 86400 {
             formatter.dateFormat = "HH:mm"
         } else if d < 31536000 {
@@ -277,8 +276,7 @@ extension UIView {
         }
     }
     
-    func showImage(imageURL: String, width: Float, height: Float) {
-        
+    func showImage(imageURL: String, width: Float, height: Float, yPoint: CGFloat = 0) {
         if true || imageURL.pathExtension != "gif!large" {
             var x: CGFloat = 0
             var y: CGFloat = 0
@@ -295,7 +293,9 @@ extension UIView {
                 x = (globalWidth - w) / 2
                 y = (globalHeight - h) / 2
             }
+            globalImageYPoint = yPoint - y
             var imageView = SAImageZoomingView(frame: CGRectMake(0, 0, globalWidth, globalHeight), x: x, y: y, w: w, h: h)
+            imageView.imageView!.frame.origin.y = yPoint - y
             imageView.backgroundColor = UIColor.blackColor()
             imageView.imageURL = imageURL
             var imageDoubleTap = UITapGestureRecognizer(target: self, action: "onImageViewDoubleTap:")
@@ -303,11 +303,14 @@ extension UIView {
             var imageSingleTap = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
             imageSingleTap.requireGestureRecognizerToFail(imageDoubleTap)
             var imageLongPress = UILongPressGestureRecognizer(target: self, action: "onImageViewLongPress:")
-            imageLongPress.minimumPressDuration = 0.5
+            imageLongPress.minimumPressDuration = 0.2
             imageView.addGestureRecognizer(imageDoubleTap)
             imageView.addGestureRecognizer(imageSingleTap)
             imageView.addGestureRecognizer(imageLongPress)
             self.window!.addSubview(imageView)
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                imageView.imageView!.frame.origin.y = 0
+            })
         } else {
             var view = GIFPlayer(frame: CGRectMake(0, 0, CGFloat(width), CGFloat(height)))
             view.play(V.dataFromPath(V.imageCachePath(imageURL))!)
@@ -317,7 +320,11 @@ extension UIView {
     }
     
     func onImageViewTap(sender: UITapGestureRecognizer) {
-        sender.view!.removeFromSuperview()
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            (sender.view! as SAImageZoomingView).imageView!.frame.origin.y = globalImageYPoint
+            }) { (Bool) -> Void in
+                sender.view!.removeFromSuperview()
+        }
     }
     
     func onImageViewDoubleTap(sender: UITapGestureRecognizer) {

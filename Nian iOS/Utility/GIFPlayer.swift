@@ -57,7 +57,6 @@ class GIFPlayer: UIView {
             gif.Frames.append(CGImageSourceCreateImageAtIndex(source, i, nil))
             var property = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as NSDictionary
             var gifProperty = property.valueForKey(kCGImagePropertyGIFDictionary as String) as NSDictionary
-            println(gifProperty.valueForKey(kCGImagePropertyGIFDelayTime as String)!)
             var duration = min(gifProperty.valueForKey(kCGImagePropertyGIFDelayTime as String)! as Float, 0.01)
             gif.Times.append(duration)
             totalTime += duration

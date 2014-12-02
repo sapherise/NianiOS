@@ -45,7 +45,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func setupViews()
     {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor.blackColor()
+        self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))

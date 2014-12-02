@@ -85,8 +85,6 @@ class PlayerCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
-        var tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DreamimageViewTapped:")
-        self.imageholder!.addGestureRecognizer(tap)
     }
     
     override func layoutSubviews()
@@ -195,9 +193,6 @@ class PlayerCell: UITableViewCell {
         }else{
             NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, ImageURL ])
         }
-    }
-    func DreamimageViewTapped(sender:UITapGestureRecognizer){
-        NSNotificationCenter.defaultCenter().postNotificationName("DreamimageViewTapped", object:largeImageURL)
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat

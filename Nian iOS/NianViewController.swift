@@ -75,16 +75,23 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
 
         self.tableView.tableFooterView = footerView
         
-        self.tableView.backgroundColor = UIColor(red:0.05, green:0.05, blue:0.05, alpha:1)
+        self.tableView.backgroundColor = UIColor.whiteColor()
         
         var nib = UINib(nibName: "NianCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "NianCell")
         self.tableView.showsVerticalScrollIndicator = false
-        
+        self.setupUserTop()
+        self.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
+        self.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
+        self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
+        self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
+        self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
+    }
+    
+    func setupUserTop(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safename = Sa.objectForKey("user") as String
-        
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
                 var sa: AnyObject! = json!.objectForKey("user")
@@ -97,12 +104,17 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var coverURL: String! = sa.objectForKey("cover") as String
                 var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
                 var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                var deadLine = sa.objectForKey("deadline") as String
                 var (l, e) = levelCount( (level.toInt()!)*7 )
                 self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                 self.levelButton.setTitle("等级 \(l)", forState: UIControlState.Normal)
                 self.UserName.text = "\(name)"
-                self.UserHead.setImage(imgURL, placeHolder: LessBlueColor)
-                self.UserStep.text = "\(dream) 梦想，\(step) 进展"
+                self.UserHead.setImage(imgURL, placeHolder: UIColor(red: 0, green: 0, blue: 0, alpha: 0.55))
+                if deadLine == "0" {
+                    self.UserStep.text = "\(dream) 梦想，\(step) 进展"
+                }else{
+                    self.UserStep.text = "倒计时 \(deadLine)"
+                }
                 if coverURL == "" {
                     self.BGImage.image = UIImage(named: "bg")
                 }else{
@@ -110,10 +122,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 }
             }
         }
-        self.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
-        self.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
-        self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
-        self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
     }
     
     func addDreamButton(){
@@ -131,9 +139,15 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
+    func onDreamLabelClick(sender:UIGestureRecognizer){
+        var tag = sender.view!.tag
+        self.onDreamClick("\(tag)")
+    }
+    
     func labelTableChange(number:Int){
         if self.dataArray.count > 0 && number < self.dataArray.count {
             var data: AnyObject = self.dataArray[number]
+            var id = data.objectForKey("id") as String
             var like = data.objectForKey("like") as String
             var step = data.objectForKey("step") as String
             var date = data.objectForKey("lastdate") as NSString
@@ -144,6 +158,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.labelTableLeft.text = "\(like) 赞"
             self.labelTableMiddle.text = "\(step) 进展"
             self.labelTableRight.text = "\(lastdate)"
+            self.labelTableLeft.tag = id.toInt()!
+            self.labelTableMiddle.tag = id.toInt()!
+            self.labelTableRight.tag = id.toInt()!
         }
     }
     
@@ -171,22 +188,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if globalWillNianReload == 1 {
             globalWillNianReload = 0
             self.SAReloadData()
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            Api.getUserTop(safeuid.toInt()!){ json in
-                if json != nil {
-                    var sa: AnyObject! = json!.objectForKey("user")
-                    var coverURL: String! = sa.objectForKey("cover") as String
-                    var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
-                    var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
-                    self.UserHead.setImage(imgURL, placeHolder: LessBlueColor)
-                    if coverURL == "" {
-                        self.BGImage.image = UIImage(named: "bg")
-                    }else{
-                        self.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
-                    }
-                }
-            }
+            self.setupUserTop()
         }
     }
     
@@ -237,9 +239,24 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
-        var DreamVC = DreamViewController()
-        DreamVC.Id = data.stringAttributeForKey("id")
-        self.navigationController!.pushViewController(DreamVC, animated: true)
+        var id = data.stringAttributeForKey("id")
+        self.onDreamClick(id)
+    }
+    
+    func onDreamClick(ID:String){
+        if ID != "0" && ID != "" {
+            var DreamVC = DreamViewController()
+            DreamVC.Id = ID
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }
+    }
+    
+    func onDreamLikeClick(sender:UIGestureRecognizer){
+        var tag = sender.view!.tag
+        var LikeVC = LikeViewController()
+        LikeVC.Id = "\(tag)"
+        LikeVC.urlIdentify = 3
+        self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func urlString()->String{
@@ -252,19 +269,20 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func SAReloadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                var arr = data["items"] as NSArray
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr {
+                    self.dataArray.addObject(data)
+                }
+                self.tableView.reloadData()
+                globalNumberDream = self.dataArray.count
+                self.tableView.contentOffset.y = 100
+                self.labelTableChange(0)
+                self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamLabelClick:"))
+                self.labelTableMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamLabelClick:"))
+                self.labelTableLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamLikeClick:"))
             }
-            var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr {
-                self.dataArray.addObject(data)
-            }
-            self.tableView.reloadData()
-            globalNumberDream = self.dataArray.count
-            self.tableView.contentOffset.y = 100
-            self.labelTableChange(0)
         })
     }
 }

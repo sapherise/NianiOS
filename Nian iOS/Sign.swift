@@ -9,30 +9,24 @@
 import UIKit
 
 
-class SignViewController: UIViewController, UIGestureRecognizerDelegate{
+class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
     @IBOutlet var inputName:UITextField!
     @IBOutlet var holder:UIView!
-    @IBOutlet var next:UIButton!
     @IBOutlet var errLabel:UILabel!
     var isAnimate:Int = 0
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Custom initialization
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func setupViews(){
         viewBack(self)
+        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = BarColor
+        self.view.addSubview(navView)
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
-        self.view.backgroundColor = BGColor
-        self.inputName.textColor = SeaColor
+        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
+        self.inputName.textColor = UIColor.blackColor()
         self.inputName.textAlignment = NSTextAlignment.Center
-        let attributesDictionary = [NSForegroundColorAttributeName: LineColor]
+        let attributesDictionary = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)]
         self.inputName.attributedPlaceholder = NSAttributedString(string: "昵称", attributes: attributesDictionary)
+        self.inputName.delegate = self
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
@@ -40,11 +34,17 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate{
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        self.next.layer.borderWidth = 1
-        self.next.layer.borderColor = LineColor.CGColor
-        self.next.setTitleColor(IconColor, forState: UIControlState.Normal)
-        self.next.addTarget(self, action: "checkName", forControlEvents: UIControlEvents.TouchUpInside)
         self.errLabel.alpha = 0
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        delay(1, { () -> () in
+            self.inputName!.becomeFirstResponder()
+            return
+        })
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.checkName()
+        return true
     }
     
     func back(){
@@ -125,13 +125,6 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.inputName!.becomeFirstResponder()
-            self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        })
     }
     
     override func didReceiveMemoryWarning() {

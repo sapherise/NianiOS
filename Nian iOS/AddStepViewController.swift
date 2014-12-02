@@ -101,7 +101,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     func setupViews(){
         
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = NavColor
+        navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
         self.uploadWait.hidden = true
@@ -171,6 +171,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
         var sa=SAPost("dream=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(s)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/addstep_query.php")
             if(sa == "1"){
+                globalWillNianReload = 1
                 dispatch_async(dispatch_get_main_queue(), {
                     self.navigationController!.popViewControllerAnimated(true)
                     self.delegate?.countUp()
@@ -189,6 +190,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa=SAPost("sid=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/editstep_query.php")
             if(sa == "1"){
+                globalWillNianReload = 1
                 dispatch_async(dispatch_get_main_queue(), {
                     self.data!.setValue(self.TextView.text, forKey: "content")
                     self.data!.setValue(self.uploadUrl, forKey: "img")
