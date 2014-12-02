@@ -19,8 +19,6 @@ class DreamCell: UITableViewCell {
     @IBOutlet var menuHolder:UIView?
     @IBOutlet weak var like: UILabel!
     @IBOutlet weak var share: UIButton!
-    @IBOutlet weak var goodbye: UIButton!
-    @IBOutlet weak var edit: UIButton!
     @IBOutlet weak var likebutton:UIButton!
     @IBOutlet weak var liked:UIButton!
     @IBOutlet var labelComment:UILabel!
@@ -34,6 +32,7 @@ class DreamCell: UITableViewCell {
     var img1:Float = 0.0
     var ImageURL:String = ""
     var indexPathRow:Int = 0
+    var sid:Int = 0
     
     @IBAction func nolikeClick(sender: AnyObject) { //取消赞
         self.liked!.hidden = true
@@ -68,7 +67,6 @@ class DreamCell: UITableViewCell {
             self.data.setValue("\(likenewnumber)", forKey: "like")
         self.data.setValue("1", forKey: "liked")
         self.like!.hidden = false
-        
         var sid = self.data.stringAttributeForKey("sid")
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
@@ -90,6 +88,7 @@ class DreamCell: UITableViewCell {
     {
         super.layoutSubviews()
         var sid = self.data.stringAttributeForKey("sid")
+        self.sid = sid.toInt()!
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate")
@@ -118,8 +117,6 @@ class DreamCell: UITableViewCell {
         }
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.goodbye.tag = sid.toInt()!
-        self.edit.tag = self.indexPathRow
         self.share.tag = sid.toInt()!
         self.labelComment.tag = sid.toInt()!
         if comment != "0" {
@@ -171,8 +168,6 @@ class DreamCell: UITableViewCell {
             self.likebutton!.hidden = true
             self.liked!.hidden = true
         }else{
-            self.goodbye!.hidden = true
-            self.edit!.hidden = true
             self.share!.setX(230)
             if liked == "0" {
                 self.likebutton!.hidden = false
@@ -185,10 +180,11 @@ class DreamCell: UITableViewCell {
     }
     
     func SAshare(){
+        println(self.indexPathRow)
         if img0 == 0.0 {
-        NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "" ])
+            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "", self.sid, self.indexPathRow + 10 ])
         }else{
-            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, ImageURL ])
+            NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, ImageURL, self.sid, self.indexPathRow + 10 ])
         }
     }
     

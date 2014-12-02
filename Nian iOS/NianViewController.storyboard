@@ -91,40 +91,17 @@
                                         <rect key="frame" x="0.0" y="320" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" id="ucE-r1-mY2">
-                                                <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="梦想" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7IQ-P9-dWj">
+                                                <rect key="frame" x="20" y="0.0" width="106" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.10980392160000001" green="0.1215686275" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="nxd-uI-z3F">
-                                                <rect key="frame" x="212" y="0.0" width="1" height="43"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="JI9-tF-bPs">
-                                                <rect key="frame" x="107" y="0.0" width="1" height="43"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7IQ-P9-dWj">
-                                                <rect key="frame" x="0.0" y="1" width="106" height="42"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ggh-TH-oi7">
-                                                <rect key="frame" x="107" y="1" width="106" height="42"/>
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="添加梦想" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tT9-wC-3xp">
+                                                <rect key="frame" x="247" y="0.0" width="53" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tT9-wC-3xp">
-                                                <rect key="frame" x="214" y="0.0" width="106" height="42"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -151,9 +128,7 @@
                         <outlet property="UserName" destination="JMe-EB-Oyc" id="iA3-of-pLb"/>
                         <outlet property="UserStep" destination="b27-lw-zLa" id="Y2d-K3-Z2X"/>
                         <outlet property="coinButton" destination="HFX-ex-0re" id="twb-VD-d6Z"/>
-                        <outlet property="labelTableLeft" destination="7IQ-P9-dWj" id="YXh-Uc-0fZ"/>
-                        <outlet property="labelTableMiddle" destination="ggh-TH-oi7" id="FVO-BR-YJR"/>
-                        <outlet property="labelTableRight" destination="tT9-wC-3xp" id="NLC-1o-HwO"/>
+                        <outlet property="labelTableRight" destination="tT9-wC-3xp" id="xau-rU-IZq"/>
                         <outlet property="levelButton" destination="4Kz-ar-rtC" id="GfP-G5-9Z4"/>
                         <outlet property="scrollView" destination="xkX-Pt-NF5" id="dgD-OS-Ouv"/>
                         <outlet property="tableView" destination="DCN-Qc-Pf4" id="9GU-pP-N12"/>

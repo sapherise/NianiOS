@@ -63,23 +63,9 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="l8C-pG-vns">
-                                <rect key="frame" x="190" y="0.0" width="40" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="more">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Mxf-iO-kz0">
                                 <rect key="frame" x="270" y="0.0" width="40" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="goodbye">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="o7J-IR-CAa">
-                                <rect key="frame" x="230" y="0.0" width="40" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="edit">
+                                <state key="normal" image="more">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -142,8 +128,6 @@
                 <outlet property="View" destination="kE4-Ol-CVT" id="OlR-1T-PHW"/>
                 <outlet property="avatarView" destination="Hfy-Ik-GGq" id="6qj-GH-kA4"/>
                 <outlet property="contentLabel" destination="QFB-Pf-uQa" id="raw-iF-5Lf"/>
-                <outlet property="edit" destination="o7J-IR-CAa" id="6Zi-fE-2oi"/>
-                <outlet property="goodbye" destination="Mxf-iO-kz0" id="wBZ-ye-4TY"/>
                 <outlet property="imageholder" destination="Q6N-Zz-AKw" id="Xe6-0U-irc"/>
                 <outlet property="labelComment" destination="bpT-v0-Xdd" id="91G-NM-eka"/>
                 <outlet property="lastdate" destination="OO1-kA-hFx" id="Fug-tw-qrL"/>
@@ -159,8 +143,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="edit" width="21" height="21"/>
-        <image name="goodbye" width="21" height="21"/>
         <image name="like" width="22" height="19"/>
         <image name="liked" width="22" height="19"/>
         <image name="more" width="17" height="5"/>

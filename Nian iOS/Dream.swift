@@ -62,6 +62,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var editStepData:NSDictionary?
     var topCell:DreamCellTop!
     var hashtag:String = "0"
+    var userImageURL:String = "0"
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -84,6 +85,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
+        var sid:Int = content[2] as Int
+        var row:Int = (content[3] as Int)-10
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
@@ -101,6 +104,36 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
             })
         }
+        //删除按钮
+        var deleteActivity = SAActivity()
+        deleteActivity.saActivityTitle = "删除"
+        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
+        deleteActivity.saActivityFunction = {
+            self.deleteId = sid
+            self.deleteViewId = row
+            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.deleteSheet!.addButtonWithTitle("确定")
+            self.deleteSheet!.addButtonWithTitle("取消")
+            self.deleteSheet!.cancelButtonIndex = 1
+            self.deleteSheet!.showInView(self.view)
+        }
+        //编辑按钮
+        var editActivity = SAActivity()
+        editActivity.saActivityTitle = "编辑"
+        editActivity.saActivityImage = UIImage(named: "edit")!
+        editActivity.saActivityFunction = {
+            var data = self.dataArray[row] as NSDictionary
+            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+            addstepVC.isEdit = 1
+            addstepVC.data = data
+            addstepVC.row = row
+            addstepVC.delegate = self
+            self.navigationController!.pushViewController(addstepVC, animated: true)
+        }
+        var ActivityArray = [ customActivity ]
+        if self.dreamowner == 1 {
+            ActivityArray = [ editActivity, deleteActivity ]
+        }
         
         
         if content[1] as NSString != "" {
@@ -111,7 +144,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
-                applicationActivities: [ customActivity ])
+                applicationActivities: ActivityArray)
             self.activityViewController?.excludedActivityTypes = [
                 UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
             ]
@@ -119,7 +152,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }else{
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
-                applicationActivities: [ customActivity ])
+                applicationActivities: ActivityArray)
             self.activityViewController?.excludedActivityTypes = [
                 UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
             ]
@@ -334,8 +367,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var data = self.dataArray[index] as NSDictionary
             c.data = data
             c.indexPathRow = index
-            c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
-            c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
@@ -447,32 +478,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
     }
-    func SAedit(sender:UIButton){
-        var data = self.dataArray[sender.tag] as NSDictionary
-        var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-        addstepVC.isEdit = 1
-        addstepVC.data = data
-        addstepVC.row = sender.tag
-        addstepVC.delegate = self
-        self.navigationController!.pushViewController(addstepVC, animated: true)
-    }
-    
-    func SAdelete(sender:UIButton){
-        self.deleteId = sender.tag
-        var cell:AnyObject
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1){
-            cell = sender.superview!.superview!.superview!.superview! as UITableViewCell
-            self.deleteViewId = cell.tag
-        }else{
-            cell = sender.superview!.superview!.superview! as UITableViewCell
-            self.deleteViewId = cell.tag
-        }
-        self.deleteSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.deleteSheet!.addButtonWithTitle("确定")
-        self.deleteSheet!.addButtonWithTitle("取消")
-        self.deleteSheet!.cancelButtonIndex = 1
-        self.deleteSheet!.showInView(self.view)
-    }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -480,18 +485,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var safeshell = Sa.objectForKey("shell") as String
         if actionSheet == self.deleteSheet {
             if buttonIndex == 0 {
-                var visibleCells:NSArray = self.lefttableView!.visibleCells()
-                for cell  in visibleCells {
-                    if cell.tag == self.deleteViewId {
-                        var newpath = self.lefttableView!.indexPathForCell(cell as UITableViewCell)
-                        self.dataArray.removeObjectAtIndex(newpath!.row)
-                        self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                        self.lefttableView!.reloadData()
-                        var stepNum = self.topCell.numMiddleNum.text!.toInt()!
-                        self.topCell.numMiddleNum.text = "\(stepNum - 1)"
-                        break
-                    }
-                }
+                var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
+                self.dataArray.removeObjectAtIndex(newpath!.row)
+                self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.lefttableView!.reloadData()
+                var stepNum = self.topCell.numMiddleNum.text!.toInt()!
+                self.topCell.numMiddleNum.text = "\(stepNum - 1)"
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
                     if(sa == "1"){
@@ -501,7 +500,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }else if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除梦想
                 self.navigationItem.rightBarButtonItems = buttonArray()
-                //          NSNotificationCenter.defaultCenter().postNotificationName("restartDream", object:"1")
                 globalWillNianReload = 1
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.Id)", "http://nian.so/api/delete_dream.php")
@@ -670,8 +668,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var desHeight = self.desJson.stringHeightWith(12,width:200)
         self.topCell.labelDes.setHeight(desHeight)
         self.topCell.labelDes.setY( 110 - desHeight / 2 )
-        var userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
-        self.topCell.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
+        self.userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
+        self.topCell.dreamhead!.setImage(self.userImageURL,placeHolder: IconColor)
     }
     
     

@@ -229,11 +229,15 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             }else{
                 var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
                 var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                var sa: AnyObject! = json.objectForKey("bbstop")
-                self.toptitle = sa.objectForKey("title") as String
-                self.topcontent = sa.objectForKey("content") as String
-                return  BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
+                if data != nil {
+                    var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                    var sa: AnyObject! = json.objectForKey("bbstop")
+                    self.toptitle = sa.objectForKey("title") as String
+                    self.topcontent = sa.objectForKey("content") as String
+                    return  BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
+                }else{
+                    return 0
+                }
             }
         }else{
                 var index = indexPath.row

@@ -81,45 +81,36 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     
-    func loadData()
-    {
+    func loadData() {
         var url = urlString()
-        // self.refreshView!.startLoading()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull()
-            {
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull() {
+                var arr = data["items"] as NSArray
+                for data : AnyObject  in arr {
+                    self.dataArray.addObject(data)
+                }
+                self.tableView!.reloadData()
+                self.tableView!.footerEndRefreshing()
+                self.page++
             }
-            var arr = data["items"] as NSArray
-            
-            for data : AnyObject  in arr
-            {
-                self.dataArray.addObject(data)
-            }
-            self.tableView!.reloadData()
-            self.tableView!.footerEndRefreshing()
-            self.page++
-            })
+        })
     }
     
     
     func SAReloadData(){
         var url = "http://nian.so/api/bbs.php?page=0"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject == NSNull(){
-                UIView.showAlertView("提示",message:"加载失败")
-                return
+            if data as NSObject != NSNull(){
+                var arr = data["items"] as NSArray
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                self.tableView!.reloadData()
+                self.tableView!.headerEndRefreshing()
+                self.page = 1
             }
-            var arr = data["items"] as NSArray
-            self.dataArray.removeAllObjects()
-            for data : AnyObject  in arr{
-                self.dataArray.addObject(data)
-            }
-            self.tableView!.reloadData()
-            self.tableView!.headerEndRefreshing()
-            self.page = 1
-            })
+        })
     }
     
     
@@ -188,13 +179,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.SAReloadData()
     }
     
-    func imageViewTapped(noti:NSNotification)
-    {
-        //        var imageURL = noti.object as String
-        //        var imgVC = YRImageViewController(nibName: nil, bundle: nil)
-        //        imgVC.imageURL = imageURL
-        //        self.navigationController.pushViewController(imgVC, animated: true)
-    }
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()

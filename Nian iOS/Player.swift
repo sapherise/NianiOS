@@ -87,6 +87,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
         var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
+        var sid:Int = content[2] as Int
+        var row:Int = (content[3] as Int)-10
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
@@ -104,6 +106,37 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
             })
         }
+        //删除按钮
+        var deleteActivity = SAActivity()
+        deleteActivity.saActivityTitle = "删除"
+        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
+        deleteActivity.saActivityFunction = {
+            self.deleteId = sid
+            self.deleteViewId = row
+            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.deleteSheet!.addButtonWithTitle("确定")
+            self.deleteSheet!.addButtonWithTitle("取消")
+            self.deleteSheet!.cancelButtonIndex = 1
+            self.deleteSheet!.showInView(self.view)
+        }
+        //编辑按钮
+        var editActivity = SAActivity()
+        editActivity.saActivityTitle = "编辑"
+        editActivity.saActivityImage = UIImage(named: "edit")!
+        editActivity.saActivityFunction = {
+            var data = self.dataArray[row] as NSDictionary
+            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+            addstepVC.isEdit = 1
+            addstepVC.data = data
+            addstepVC.row = row
+            addstepVC.delegate = self
+            self.navigationController!.pushViewController(addstepVC, animated: true)
+        }
+        var ActivityArray = [ customActivity ]
+        
+        if self.dreamowner == 1 {
+            ActivityArray = [ editActivity, deleteActivity ]
+        }
         
         
         if content[1] as NSString != "" {
@@ -114,7 +147,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],
-                applicationActivities: [ customActivity ])
+                applicationActivities: ActivityArray)
             self.activityViewController?.excludedActivityTypes = [
                 UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
             ]
@@ -122,7 +155,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else{
             self.activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url ],
-                applicationActivities: [ customActivity ])
+                applicationActivities: ActivityArray)
             self.activityViewController?.excludedActivityTypes = [
                 UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
             ]
@@ -144,6 +177,17 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid:String = Sa.objectForKey("uid") as String
+        if self.Id != safeuid {
+            var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "userMore")
+            moreButton.image = UIImage(named:"more")
+            self.navigationItem.rightBarButtonItems = [ moreButton ]
+            self.dreamowner = 0
+        }else{
+            self.dreamowner = 1
+        }
+        
         self.tableView = UITableView(frame:CGRectMake(0, -64, globalWidth,globalHeight+64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
@@ -163,15 +207,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.navView.clipsToBounds = true
         self.navView.alpha = 0
         self.view.addSubview(self.navView)
-        
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid:String = Sa.objectForKey("uid") as String
-        if self.Id != safeuid {
-            var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "userMore")
-            moreButton.image = UIImage(named:"more")
-            self.navigationItem.rightBarButtonItems = [ moreButton ]
-        }
-        
         self.setupPlayerTop(self.Id.toInt()!)
     }
     
@@ -189,16 +224,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as String
                 var safeshell = Sa.objectForKey("shell") as String
-                var visibleCells:NSArray = self.tableView!.visibleCells()
-                for cell  in visibleCells {
-                    if cell.tag == self.deleteViewId {
-                        var newpath = self.tableView!.indexPathForCell(cell as UITableViewCell)
-                        self.dataArray.removeObjectAtIndex(newpath!.row)
-                        self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                        self.tableView!.reloadData()
-                        break
-                    }
-                }
+                var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
+                self.dataArray.removeObjectAtIndex(newpath!.row)
+                self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.tableView!.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
                     if(sa == "1"){
@@ -425,8 +454,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 c.data = data
                 c.indexPathRow = index
                 c.tag = index + 10
-                c.edit!.addTarget(self, action: "SAedit:", forControlEvents: UIControlEvents.TouchUpInside)
-                c.goodbye!.addTarget(self, action: "SAdelete:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
@@ -530,33 +557,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     func back(){
         self.navigationController!.popViewControllerAnimated(true)
-    }
-    
-    func SAedit(sender:UIButton){
-        var data = self.dataArray[sender.tag] as NSDictionary
-        var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-        addstepVC.isEdit = 1
-        addstepVC.data = data
-        addstepVC.row = sender.tag
-        addstepVC.delegate = self
-        self.navigationController!.pushViewController(addstepVC, animated: true)
-    }
-    
-    func SAdelete(sender:UIButton){
-        self.deleteId = sender.tag
-        var cell:AnyObject
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1){
-            cell = sender.superview!.superview!.superview!.superview! as UITableViewCell
-            self.deleteViewId = cell.tag
-        }else{
-            cell = sender.superview!.superview!.superview! as UITableViewCell
-            self.deleteViewId = cell.tag
-        }
-        self.deleteSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.deleteSheet!.addButtonWithTitle("确定")
-        self.deleteSheet!.addButtonWithTitle("取消")
-        self.deleteSheet!.cancelButtonIndex = 1
-        self.deleteSheet!.showInView(self.view)
     }
     
     func commentVC(){
