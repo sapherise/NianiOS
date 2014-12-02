@@ -126,8 +126,8 @@ extension String  {
 
         CC_MD5(str!, strLen, result)
 
-        var hash = NSMutableString()
-        for i in 0..<digestLen {
+        var hash = NSMutableString(capacity: digestLen)
+        for var i = 0; i < digestLen; i++ {
             hash.appendFormat("%02x", result[i])
         }
 
