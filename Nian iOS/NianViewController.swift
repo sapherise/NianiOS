@@ -19,8 +19,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var labelTableLeft: UILabel!
-    @IBOutlet var labelTableMiddle: UILabel!
     @IBOutlet var labelTableRight: UILabel!
     var currentCell:Int = 0
     var lastPoint:CGPoint!
@@ -51,29 +49,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tableView.transform = CGAffineTransformMakeRotation( CGFloat(-M_PI/2) )
         self.tableView.frame = CGRectMake(0, 364, globalWidth, 160)
         self.tableView.contentSize.height = CGFloat(self.dataArray.count * 100)
-        self.tableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, 1, 100))
-        
-        var footerView = UIView()
-        footerView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
-        footerView.frame = CGRectMake(0, 0, 120, 160)
-        var footerViewImage = UIImageView(frame: CGRectMake(20, 30, 80, 80))
-        footerViewImage.layer.borderColor = UIColor.whiteColor().CGColor
-        footerViewImage.layer.borderWidth = 1
-        footerViewImage.image = UIImage(named: "plus")
-        footerViewImage.tintColor = UIColor.redColor()
-        footerViewImage.contentMode = UIViewContentMode.Center
-        footerViewImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
-        footerViewImage.userInteractionEnabled = true
-        footerView.addSubview(footerViewImage)
-        var footerViewLabel = UILabel(frame: CGRectMake(20, 118, 80, 21))
-        footerViewLabel.text = "添加梦想"
-        footerViewLabel.font = UIFont.boldSystemFontOfSize(13)
-        footerViewLabel.textAlignment = NSTextAlignment.Center
-        footerViewLabel.textColor = UIColor.whiteColor()
-        footerView.addSubview(footerViewLabel)
-        footerView.alpha = 0.3
 
-        self.tableView.tableFooterView = footerView
+        self.tableView.tableFooterView = UIView(frame: CGRectMake(0, 0, 1, 20))
+        self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
         
         self.tableView.backgroundColor = UIColor.whiteColor()
         
@@ -129,39 +107,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView == self.tableView {
-            var height = scrollView.contentOffset.y
-            self.currentCell = Int(floor(( height - 50 ) / 100 ) + 1)
-            if height > 0 {
-                labelTableChange(self.currentCell)
-            }
-        }
-    }
-    
     func onDreamLabelClick(sender:UIGestureRecognizer){
         var tag = sender.view!.tag
         self.onDreamClick("\(tag)")
-    }
-    
-    func labelTableChange(number:Int){
-        if self.dataArray.count > 0 && number < self.dataArray.count {
-            var data: AnyObject = self.dataArray[number]
-            var id = data.objectForKey("id") as String
-            var like = data.objectForKey("like") as String
-            var step = data.objectForKey("step") as String
-            var date = data.objectForKey("lastdate") as NSString
-            var formatter = NSDateFormatter()
-            formatter.dateFormat = "MM / dd"
-            formatter.timeZone = NSTimeZone.systemTimeZone()
-            var lastdate = (formatter.stringFromDate(NSDate(timeIntervalSince1970: date.doubleValue)))
-            self.labelTableLeft.text = "\(like) 赞"
-            self.labelTableMiddle.text = "\(step) 进展"
-            self.labelTableRight.text = "\(lastdate)"
-            self.labelTableLeft.tag = id.toInt()!
-            self.labelTableMiddle.tag = id.toInt()!
-            self.labelTableRight.tag = id.toInt()!
-        }
     }
     
     func stepClick(){
@@ -277,11 +225,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 }
                 self.tableView.reloadData()
                 globalNumberDream = self.dataArray.count
-                self.tableView.contentOffset.y = 100
-                self.labelTableChange(0)
-                self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamLabelClick:"))
-                self.labelTableMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamLabelClick:"))
-                self.labelTableLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamLikeClick:"))
             }
         })
     }

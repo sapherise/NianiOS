@@ -39,13 +39,15 @@ class BBSCellTop: UITableViewCell{
         if getContent == "1" {
             var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-            var sa: AnyObject! = json.objectForKey("bbstop")
-            self.toptitle = sa.objectForKey("title") as String
-            self.topcontent = sa.objectForKey("content") as String
-            self.topuid = sa.objectForKey("uid") as String
-            self.toplastdate = sa.objectForKey("lastdate") as String
-            self.topuser = sa.objectForKey("user") as String
+            if data != nil {
+                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                var sa: AnyObject! = json.objectForKey("bbstop")
+                self.toptitle = sa.objectForKey("title") as String
+                self.topcontent = sa.objectForKey("content") as String
+                self.topuid = sa.objectForKey("uid") as String
+                self.toplastdate = sa.objectForKey("lastdate") as String
+                self.topuser = sa.objectForKey("user") as String
+            }
         }
         
         self.BBStitle!.text = "\(self.toptitle)"
