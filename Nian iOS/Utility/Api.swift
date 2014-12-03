@@ -114,4 +114,9 @@ struct Api {
         loadCookies()
         V.httpPostForString("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
+    
+    static func getCalendarStep(lastdate:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/calendar_query.php?uid=\(s_uid)&lastdate=\(lastdate)", callback: callback)
+    }
 }

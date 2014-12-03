@@ -159,18 +159,28 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var content = data.stringAttributeForKey("content")
         var dream = data.stringAttributeForKey("dream")
         var type = data.stringAttributeForKey("type")
-        var step = data.stringAttributeForKey("step")
+        var step = data.stringAttributeForKey("step") as String
         
         var DreamVC = DreamViewController()
         var UserVC = PlayerViewController()
         var BBSVC = BBSViewController()
         var StepVC = SingleStepViewController()
         if type == "0" {    //在你的梦想留言
-            StepVC.Id = step
-            self.navigationController!.pushViewController(StepVC, animated: true)
+            if step != "0" {
+                StepVC.Id = step
+                self.navigationController!.pushViewController(StepVC, animated: true)
+            }else{
+                DreamVC.Id = dream
+                self.navigationController!.pushViewController(DreamVC, animated: true)
+            }
         }else if type == "1" {  //在某个梦想提及你
-            StepVC.Id = step
-            self.navigationController!.pushViewController(StepVC, animated: true)
+            if step != "0" {
+                StepVC.Id = step
+                self.navigationController!.pushViewController(StepVC, animated: true)
+            }else{
+                DreamVC.Id = dream
+                self.navigationController!.pushViewController(DreamVC, animated: true)
+            }
         }else if type == "2" {  //赞了你的梦想
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
@@ -196,8 +206,13 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
         }else if type == "8" {  //赞了你的进展
-            StepVC.Id = step
-            self.navigationController!.pushViewController(StepVC, animated: true)
+            if step != "0" {
+                StepVC.Id = step
+                self.navigationController!.pushViewController(StepVC, animated: true)
+            }else{
+                DreamVC.Id = dream
+                self.navigationController!.pushViewController(DreamVC, animated: true)
+            }
         }
     }
     
