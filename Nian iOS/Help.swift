@@ -34,7 +34,7 @@ class HelpViewController: UIViewController, UIGestureRecognizerDelegate{
         var contentstring4 = "念币是在念上所使用的货币。每天的第一次更新，你会获得1念币。你也可以前往广场的念铺购买更多念币。\n念币不能换成人民币，以后会很有用途的——也有可能管理员只是在哄你开心……"
         
         var titlestring5 = "五、有网页版吗？"
-        var contentstring5 = "网页版的功能比应用更加全面，试试登录 http://nian.so ！"
+        var contentstring5 = "网页版的功能比应用更加全面，试试登录 http://nian.so"
         
         var titlestring6 = "六、我超爱管理员的，怎么请他喝杯咖啡？"
         var contentstring6 = "管理员不爱喝咖啡。"

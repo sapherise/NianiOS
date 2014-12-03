@@ -166,11 +166,11 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var BBSVC = BBSViewController()
         var StepVC = SingleStepViewController()
         if type == "0" {    //在你的梦想留言
-            DreamVC.Id = dream
-            self.navigationController!.pushViewController(DreamVC, animated: true)
+            StepVC.Id = step
+            self.navigationController!.pushViewController(StepVC, animated: true)
         }else if type == "1" {  //在某个梦想提及你
-            DreamVC.Id = dream
-            self.navigationController!.pushViewController(DreamVC, animated: true)
+            StepVC.Id = step
+            self.navigationController!.pushViewController(StepVC, animated: true)
         }else if type == "2" {  //赞了你的梦想
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
@@ -196,8 +196,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
         }else if type == "8" {  //赞了你的进展
-            DreamVC.Id = dream
-            self.navigationController!.pushViewController(DreamVC, animated: true)
+            StepVC.Id = step
+            self.navigationController!.pushViewController(StepVC, animated: true)
         }
     }
     

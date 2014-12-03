@@ -97,7 +97,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadWait!.stopAnimating()
             self.uploadUrl = data.objectForKey("url") as String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
-            self.imageDreamHead.image = resizedImage(img, 30)
+            var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
@@ -144,7 +145,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.field1!.text = self.editTitle
             self.field2.text = self.editContent
             self.uploadUrl = self.editImage
-            
+            var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];

@@ -322,6 +322,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func userclick(sender:UITapGestureRecognizer){
+        self.inputKeyboard.resignFirstResponder()
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)

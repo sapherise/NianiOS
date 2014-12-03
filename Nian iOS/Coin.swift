@@ -161,7 +161,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     film.removeFromSuperview()
                     switch state {
                     case .Purchased:
-                        self.view.showTipText("刚刚一笔支付成功了, 刷新念币看看吧", delay: 1)
+                        self.view.showTipText("刚刚一笔支付成功了，刷新念币看看吧", delay: 1)
                         break
                     case .Failed:
                         break
@@ -171,13 +171,13 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         break
                     }
                 } else {
-                    var prompt = "Sa去吃大餐了, 留我一个人在加班"
+                    var prompt = "Sa爱你呀"
                     switch state {
                     case .OnPurchasing:
                         prompt = "正在刷爆你的卡"
                         break
                     case .OnVerifying:
-                        prompt = "正在传输念币到你的账户"
+                        prompt = "正在英俊地清点念币"
                         break
                     case .Cancelled:
                         prompt = "支付已取消"
@@ -185,15 +185,15 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         break
                     case .Failed:
                         prompt = "支付失败"
-                        film.showError("重试")
+                        film.showError("再试一试")
                         break
                     case .Purchased:
-                        prompt = "传输成功"
+                        prompt = "念币买好啦"
                         film.showOK()
                         self.levelLabelCount((data!["coin"] as String).toInt()!)
                         break
                     case .VerifyFailed:
-                        prompt = "传输失败, 如果念币没到账, 记得和管理员联系哦!"
+                        prompt = "出了点问题...\n如果念币没到账，记得和管理员联系！"
                         film.showOK()
                         break
                     default:

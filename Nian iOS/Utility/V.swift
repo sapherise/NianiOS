@@ -320,10 +320,14 @@ extension UIView {
     }
     
     func onImageViewTap(sender: UITapGestureRecognizer) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            (sender.view! as SAImageZoomingView).imageView!.frame.origin.y = globalImageYPoint
-            }) { (Bool) -> Void in
-                sender.view!.removeFromSuperview()
+        if sender.view != nil {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                (sender.view! as SAImageZoomingView).imageView!.frame.origin.y = globalImageYPoint
+                }) { (Bool) -> Void in
+                    if sender.view != nil {
+                        sender.view!.removeFromSuperview()
+                    }
+            }
         }
     }
     

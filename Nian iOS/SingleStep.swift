@@ -258,10 +258,11 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func onCommentClick(sender:UIGestureRecognizer){
+        var dream:String = self.dataArray[0].objectForKey("dream") as String
         var tag = sender.view!.tag
         var DreamCommentVC = DreamCommentViewController()
-        DreamCommentVC.dreamID = self.Id.toInt()!
-        DreamCommentVC.stepID = tag
+        DreamCommentVC.dreamID = dream.toInt()!
+        DreamCommentVC.stepID = self.Id.toInt()!
         DreamCommentVC.dreamowner = self.dreamowner
         self.navigationController!.pushViewController(DreamCommentVC, animated: true)
     }
