@@ -164,7 +164,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     }
     
     func layoutAMonth(marks: [Bool]) {
-        var calendar = NSCalendar(identifier: NSGregorianCalendar)!
+        var calendar = NSCalendar.currentCalendar()
         var comoponents = calendar.components(NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit, fromDate: NSDate())
         var year = comoponents.year
         var month = comoponents.month

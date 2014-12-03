@@ -24,15 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
         
+        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
+            var settings = UIUserNotificationSettings(forTypes: (UIUserNotificationType.Sound | UIUserNotificationType.Alert | UIUserNotificationType.Badge), categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Sound | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge)
+        }
         
-        let types: UIUserNotificationType = .Badge | .Sound | .Alert
-//        let pushSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
-//        UIApplication.sharedApplication().registerUserNotificationSettings(pushSettings)
-//        UIApplication.sharedApplication().registerForRemoteNotifications()
-//        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.BlackOpaque, animated: true)
-        
-//        self.window!.frame =  CGRectMake(0,20,self.window!.frame.size.width,self.window!.frame.size.height-20);
-//        self.window!.bounds = CGRectMake(0, 120, self.window!.frame.size.width, self.window!.frame.height)
         
         return true
     }
@@ -52,16 +51,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     func applicationWillTerminate(application: UIApplication) {
     }
     
-//    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//            var newDeviceToken = SAReplace("\(deviceToken)", "<", "")
-//            newDeviceToken = SAReplace("\(newDeviceToken)", ">", "")
-//            newDeviceToken = SAReplace("\(newDeviceToken)", " ", "")
-//            Sa.setObject(newDeviceToken, forKey:"DeviceToken")
-//            Sa.synchronize()
-//        })
-//    }
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var newDeviceToken = SAReplace("\(deviceToken)", "<", "")
+            newDeviceToken = SAReplace("\(newDeviceToken)", ">", "")
+            newDeviceToken = SAReplace("\(newDeviceToken)", " ", "")
+            Sa.setObject(newDeviceToken, forKey:"DeviceToken")
+            Sa.synchronize()
+        })
+    }
+
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     }
