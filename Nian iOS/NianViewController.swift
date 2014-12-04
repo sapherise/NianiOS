@@ -145,9 +145,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func navHide(yPoint:CGFloat){
-        var navigationFrame = self.navigationController!.navigationBar.frame
-        navigationFrame.origin.y = yPoint
-        self.navigationController!.navigationBar.frame = navigationFrame
+        if self.navigationController != nil {
+            var navigationFrame = self.navigationController!.navigationBar.frame
+            navigationFrame.origin.y = yPoint
+            self.navigationController!.navigationBar.frame = navigationFrame
+        }
     }
     
     func headClick(){

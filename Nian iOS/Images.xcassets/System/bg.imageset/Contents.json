@@ -2,8 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "nebula@1x.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

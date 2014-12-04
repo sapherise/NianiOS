@@ -191,6 +191,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         prompt = "念币买好啦"
                         film.showOK()
                         self.levelLabelCount((data!["coin"] as String).toInt()!)
+                        globalWillNianReload = 1
                         break
                     case .VerifyFailed:
                         prompt = "出了点问题...\n如果念币没到账，记得和管理员联系！"
@@ -247,16 +248,22 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         showFilm(title, prompt: des, button: button) {
             film in
             Api.postLabTrip("\(tag)") {
-                string in
+                json in
                 if film.hidden {
                     film.superview!.removeFromSuperview()
                 } else {
-                    if string == "1" {
-                        film.showOK()
-                    }else if string == "2" {
-                        film.showError("念币不足")
-                    }else if string == "3" {
-                        film.showError("毕业过啦")
+                    if json != nil {
+                        if json!["success"] as String == "1" {
+                            film.showOK()
+                            self.levelLabelCount((json!["coin"] as String).toInt()!)
+                            globalWillNianReload = 1
+                        }else if json!["success"] as String == "2" {
+                            film.showError("念币不足")
+                        }else if json!["success"] as String == "3" {
+                            film.showError("毕业过啦")
+                        }
+                    }else{
+                        film.showError("念没有踩你，再试试")
                     }
                 }
             }

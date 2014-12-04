@@ -110,13 +110,8 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&transaction_id=\(transactionId)&data=\(jsonData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros))", callback: callback)
     }
     
-    static func postLabTrip(id: String, callback: V.StringCallback) {
+    static func postLabTrip(id: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
-    }
-    
-    static func getCalendarStep(lastdate:String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/calendar_query.php?uid=\(s_uid)&lastdate=\(lastdate)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
 }

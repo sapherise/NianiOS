@@ -72,7 +72,7 @@ class FollowViewController: UIViewController,UITableViewDelegate,UITableViewData
             var theimgurl:String = content[1] as String
             var imgurl = NSURL(string: theimgurl)
             var cacheFilename = imgurl!.lastPathComponent
-            var cachePath = FileUtility.cachePath(cacheFilename)
+            var cachePath = FileUtility.cachePath(cacheFilename!)
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
             let activityViewController = UIActivityViewController(
                 activityItems: [ content[0], url, image ],

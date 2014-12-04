@@ -14,7 +14,7 @@ extension UIImageView{
     func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil) {
         var url = NSURL(string: urlString)
         var cacheFileName = (cacheName == nil ? url!.lastPathComponent : cacheName!)
-        var cachePath = FileUtility.cachePath(cacheFileName)
+        var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
         if image as NSObject != NSNull() {
             self.image = image as? UIImage

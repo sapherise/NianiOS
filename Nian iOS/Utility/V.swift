@@ -188,7 +188,7 @@ struct V {
     static func imageCachePath(imageURL: String) -> String {
         var url = NSURL(string: imageURL)
         var cacheFilename = url!.lastPathComponent
-        var cachePath = FileUtility.cachePath(cacheFilename)
+        var cachePath = FileUtility.cachePath(cacheFilename!)
         return cachePath
     }
     

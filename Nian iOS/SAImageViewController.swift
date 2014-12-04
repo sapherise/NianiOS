@@ -58,7 +58,7 @@ class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
         if sender.state == UIGestureRecognizerState.Began {
             var url = NSURL(string: imageURL)
             var cacheFilename = url!.lastPathComponent
-            var cachePath = FileUtility.cachePath(cacheFilename)
+            var cachePath = FileUtility.cachePath(cacheFilename!)
             var image : AnyObject = FileUtility.imageDataFromPath(cachePath)
             let activityViewController = UIActivityViewController(
                 activityItems: [ "喜欢念上的这张照片。http://nian.so", image ],

@@ -69,7 +69,7 @@ class MeCell: UITableViewCell {
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         
-        var height = content.stringHeightWith(17,width:242)
+        var height = content.stringHeightWith(17,width:290)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
@@ -86,7 +86,7 @@ class MeCell: UITableViewCell {
         if type == "8" {
             content = dreamtitle
         }
-        var height = content.stringHeightWith(17,width:242)
+        var height = content.stringHeightWith(17,width:290)
         return 100 + height
     }
     
