@@ -20,6 +20,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var labelTableRight: UILabel!
+    @IBOutlet var viewMenu: UIView!
     var currentCell:Int = 0
     var lastPoint:CGPoint!
     var dataArray = NSMutableArray()
@@ -40,7 +41,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.extendedLayoutIncludesOpaqueBars = true
         self.scrollView.frame.size.height = globalHeight - 49
-        self.scrollView.contentSize.height = 517
+        self.scrollView.contentSize.height = globalHeight - 49
         self.scrollView.delegate = self
         
         self.tableView.delegate = self
@@ -64,6 +65,18 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
+        
+        if globalHeight < 500 {
+            self.viewHolder.setHeight(232)
+            self.BGImage.setHeight(232)
+            self.tableView.setY(276)
+            self.viewMenu.setY(232)
+            self.UserHead.setY(64)
+            self.UserName.setY(132)
+            self.UserStep.hidden = true
+            self.coinButton.setY(170)
+            self.levelButton.setY(170)
+        }
     }
     
     func setupUserTop(){
