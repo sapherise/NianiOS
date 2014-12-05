@@ -36,6 +36,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var deleteDreamSheet:UIActionSheet?
     var cancelSheet:UIActionSheet?
     var pointNavY:CGFloat = 0
+    var timer:NSTimer?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -57,41 +58,47 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     override func viewDidAppear(animated: Bool) {
-        noticeDot()
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Notice:", name: "Notice", object: nil)
+        self.noticeDot()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Notice", object:nil)
+    }
+    
+    func Notice(noti:NSNotification){
+        self.noticeDot()
     }
     
     func noticeDot() {
         if self.dot != nil {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
             var safeshell = Sa.objectForKey("shell") as String
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var noticenumber = SAPost("uid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/dot.php")
                 dispatch_async(dispatch_get_main_queue(), {
-                self.dot!.text = ""
-                if noticenumber == "0" || noticenumber == "err" {
-                    self.dot!.hidden = true
-                }else{
-                    self.dot!.hidden = false
-                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                        self.dot!.frame = CGRectMake(228, 8, 20, 17)
-                        }, completion: { (complete: Bool) in
-                            UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                self.dot!.frame = CGRectMake(228, 10, 20, 15)
-                                }, completion: { (complete: Bool) in
-                                    self.dot!.text = noticenumber
-                            })
-                    })
-                }
+                    self.dot!.text = ""
+                    if noticenumber == "0" || noticenumber == "err" {
+                        self.dot!.hidden = true
+                    }else{
+                        self.dot!.hidden = false
+                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                            self.dot!.frame = CGRectMake(228, 8, 20, 17)
+                            }, completion: { (complete: Bool) in
+                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                    self.dot!.frame = CGRectMake(228, 10, 20, 15)
+                                    }, completion: { (complete: Bool) in
+                                        self.dot!.text = noticenumber
+                                })
+                        })
+                    }
                 })
             })
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        //self.dot.hidden = true
-    }
     
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
@@ -146,7 +153,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.layer.cornerRadius = 5
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true
-        noticeDot()
         self.myTabbar!.addSubview(dot!)
     }
     
@@ -327,7 +333,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("foRefresh", object: self.foFreshTimes)
             self.foFreshTimes = self.foFreshTimes + 1
             self.bbsFreshTimes = 0
-            noticeDot()
         }else if index == idBBS {     //广场
             NSNotificationCenter.defaultCenter().postNotificationName("bbsRefresh", object: self.bbsFreshTimes)
             self.bbsFreshTimes = self.bbsFreshTimes + 1
@@ -335,12 +340,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSButton")
             rightButton.image = UIImage(named:"plus")
             self.navigationItem.rightBarButtonItem = rightButton
-            noticeDot()
         }else if index == idDream {     //梦想
             self.foFreshTimes = 0
             self.bbsFreshTimes = 0
             self.navigationItem.rightBarButtonItem = nil
-            noticeDot()
         }else if index == idMe {     //消息
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")

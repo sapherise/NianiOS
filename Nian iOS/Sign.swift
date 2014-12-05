@@ -48,7 +48,9 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
     
     func checkName(){

@@ -196,20 +196,18 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
 //                    self.dreamowner = 1
 //                }else{
 //                    self.dreamowner = 0
-//                } TODO
+//                }
+                var uid = self.dataArray[0].objectForKey("uid") as String
+                if safeuid == uid {
+                    self.dreamowner = 1
+                }else{
+                    self.dreamowner = 0
+                }
                 self.lefttableView!.reloadData()
                 self.lefttableView!.headerEndRefreshing()
                 self.page = 1
             }
         })
-    }
-    
-    func urlString()->String
-    {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/step.php?page=\(page)&id=\(Id)&uid=\(safeuid)"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -286,8 +284,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func Editstep() {      //😍
-        self.dataArray[self.editStepRow] = self.editStepData!
-        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
+        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 0)
         self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
@@ -302,7 +299,9 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
@@ -311,12 +310,10 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         var safeshell = Sa.objectForKey("shell") as String
         if actionSheet == self.deleteSheet {
             if buttonIndex == 0 {
-                var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
+                var newpath = NSIndexPath(forRow: 0, inSection: 0)
                 self.dataArray.removeObjectAtIndex(newpath!.row)
                 self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
                 self.lefttableView!.reloadData()
-                var stepNum = self.topCell.numMiddleNum.text!.toInt()!
-                self.topCell.numMiddleNum.text = "\(stepNum - 1)"
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
                     if(sa == "1"){

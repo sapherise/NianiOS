@@ -63,7 +63,9 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
     
     func loginAlert(){

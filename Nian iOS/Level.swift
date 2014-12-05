@@ -160,7 +160,9 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
     
     func layoutAMonth(marks: [Bool]) {

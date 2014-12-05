@@ -73,6 +73,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.labelCoin.delegate = self
         
         self.SACircle(1)
+        self.viewTop.setHeight(234)
         
         Api.getUserMe() { json in
             if json != nil {

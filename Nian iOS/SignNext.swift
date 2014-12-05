@@ -61,7 +61,9 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

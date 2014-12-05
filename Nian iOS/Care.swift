@@ -52,7 +52,9 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

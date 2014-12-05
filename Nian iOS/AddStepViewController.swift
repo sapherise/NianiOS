@@ -238,6 +238,8 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     }
     
     func back(){
-        self.navigationController!.popViewControllerAnimated(true)
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
     }
 }
