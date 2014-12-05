@@ -101,7 +101,7 @@
 		12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */; };
 		12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C2196AE8010026DD51 /* UIViewExt.swift */; };
 		12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */; };
-		322D53D91A304E96006E053B /* NewCircle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 322D53D81A304E96006E053B /* NewCircle.storyboard */; };
+		322D53D91A304E96006E053B /* NewCircle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 322D53D81A304E96006E053B /* NewCircle.storyboard */; };
 		322D53DB1A304FBA006E053B /* NewCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322D53DA1A304FBA006E053B /* NewCircle.swift */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
 		32349D451A1F0B38004FEA25 /* ExploreFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32349D441A1F0B38004FEA25 /* ExploreFriend.swift */; };
@@ -249,7 +249,7 @@
 		12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewWebExt.swift; sourceTree = "<group>"; };
 		12FB48C2196AE8010026DD51 /* UIViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAHttpRequest.swift; sourceTree = "<group>"; };
-		322D53D81A304E96006E053B /* NewCircle.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "NewCircle\U0010.storyboard"; sourceTree = "<group>"; };
+		322D53D81A304E96006E053B /* NewCircle.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewCircle.storyboard; sourceTree = "<group>"; };
 		322D53DA1A304FBA006E053B /* NewCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCircle.swift; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		32349D441A1F0B38004FEA25 /* ExploreFriend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFriend.swift; sourceTree = "<group>"; };
@@ -692,7 +692,7 @@
 		322D53DC1A306F47006E053B /* 创建梦境 */ = {
 			isa = PBXGroup;
 			children = (
-				322D53D81A304E96006E053B /* NewCircle.storyboard */,
+				322D53D81A304E96006E053B /* NewCircle.storyboard */,
 				322D53DA1A304FBA006E053B /* NewCircle.swift */,
 			);
 			name = "创建梦境";
@@ -888,7 +888,7 @@
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
-				322D53D91A304E96006E053B /* NewCircle.storyboard in Resources */,
+				322D53D91A304E96006E053B /* NewCircle.storyboard in Resources */,
 				324716EF1A1C303700EF1305 /* ExploreNewCell.xib in Resources */,
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
 				1283482F1A31A7800049D994 /* CircleCell.xib in Resources */,

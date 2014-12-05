@@ -362,7 +362,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("bbsRefresh", object: self.bbsFreshTimes)
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSButton")
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
             rightButton.image = UIImage(named:"plus")
             self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     //梦想
@@ -385,9 +385,20 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
-    func addBBSButton(){
-        var adddreamVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
-        self.navigationController!.pushViewController(adddreamVC, animated: true)
+    func addCircleButton(){
+//        var addCircleVC = CircleNewViewController(nibName: "N"
+//        self.navigationController!.pushViewController(addCircleVC, animated: true)
+//        
+//        
+//            
+//            var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
+//            var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
+//        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
+//        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
+        
+        var storyboard = UIStoryboard(name: "NewCircle", bundle: nil)
+        var addCircleVC = storyboard.instantiateViewControllerWithIdentifier("NewCircleViewController") as UIViewController
+        self.navigationController!.pushViewController(addCircleVC, animated: true)
     }
     
     override func didReceiveMemoryWarning()
