@@ -87,6 +87,11 @@ struct Api {
         V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
     }
     
+    static func postCircle(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_list.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+    }
+    
     static func getLevelCalendar(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/calendar.php?uid=\(s_uid)", callback: callback)
