@@ -30,7 +30,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var addStepView:AddStep!
     var viewClose:UIImageView!
     
-    let itemArray = ["","","","消息","小组"]
+    let itemArray = ["","","","消息","梦境"]
     let imageArray = ["home","explore","update","letter","bbs"]
     
     var deleteDreamSheet:UIActionSheet?
@@ -292,7 +292,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
-        var vc3 = ExploreController()
+        var vc3 = CircleController()
         var vc1 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
