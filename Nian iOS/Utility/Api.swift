@@ -114,4 +114,9 @@ struct Api {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
+    
+    static func postCircleNew(name: String, content: String, img: String, privateType: Int, tag: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_new.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&tag=\(tag)", callback: callback)
+    }
 }

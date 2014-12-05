@@ -18,6 +18,8 @@ struct V {
         case Large = "large"
     }
     
+    static let Tags = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]
+    
     class CustomActivity: UIActivity {
         
         var title: String?
@@ -157,6 +159,9 @@ struct V {
             var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
             var json: AnyObject? = nil
             if data != nil {
+                if true {
+                    println(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                }
                 json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             }
             dispatch_async(dispatch_get_main_queue(), {
@@ -212,6 +217,10 @@ struct V {
     }
     
     static func urlStepImage(img: String, tag: V.IMAGE_TAG) -> String {
+        return "http://img.nian.so/step/\(img)!\(tag.rawValue)"
+    }
+    
+    static func urlCircleCoverImage(img: String, tag: V.IMAGE_TAG) -> String {
         return "http://img.nian.so/step/\(img)!\(tag.rawValue)"
     }
     
@@ -352,7 +361,6 @@ extension UIView {
                 UIActivityTypeMail,
                 UIActivityTypeMessage
                 ])
-            
         }
     }
 }

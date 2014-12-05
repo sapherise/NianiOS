@@ -55,20 +55,45 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 }
             }
         })
+        launchTimer()
     }
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Notice:", name: "Notice", object: nil)
-        self.noticeDot()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive:", name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
     }
     
     override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Notice", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
     }
     
-    func Notice(noti:NSNotification){
-        self.noticeDot()
+    func onObserveActive(sender: NSNotification) {
+        launchTimer()
+    }
+    
+    func onObserveDeactive(sender: NSNotification) {
+        stopTimer()
+    }
+    
+    func launchTimer() {
+        if timer != nil {
+            return
+        }
+        timer = NSTimer(timeInterval: 3, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
+        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+    }
+    
+    func stopTimer() {
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+    }
+    
+    func onTimerTick() {
+        noticeDot()
     }
     
     func noticeDot() {
@@ -364,7 +389,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var adddreamVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
-    
     
     override func didReceiveMemoryWarning()
     {
