@@ -55,6 +55,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 }
             }
         })
+        launchTimer()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -84,7 +85,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if timer != nil {
             return
         }
-        timer = NSTimer(timeInterval: 3, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
+        onTimerTick()
+        timer = NSTimer(timeInterval: 15, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
         NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
