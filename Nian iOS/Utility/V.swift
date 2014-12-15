@@ -159,9 +159,6 @@ struct V {
             var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
             var json: AnyObject? = nil
             if data != nil {
-                if true {
-                    println(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                }
                 json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             }
             dispatch_async(dispatch_get_main_queue(), {
@@ -176,7 +173,7 @@ struct V {
         if d < 10 {
             return "刚刚";
         } else if d < 60 {
-            return "\(d)秒前"
+            return "\(Int(d))秒前"
         } else if d < 3600 {
             return "\(NSNumber(double: floor(d / 60)).integerValue)分前"
         } else if d < 86400 {

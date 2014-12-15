@@ -38,11 +38,15 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare:", name: "noticeShare", object: nil)
     }
     
-    func setupViews()
-    {
-        
+    func setupViews() {
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
+        var labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
+        labelNav.text = "消息"
+        labelNav.textColor = UIColor.whiteColor()
+        labelNav.font = UIFont.systemFontOfSize(17)
+        labelNav.textAlignment = NSTextAlignment.Center
+        navView.addSubview(labelNav)
         self.view.addSubview(navView)
         
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))

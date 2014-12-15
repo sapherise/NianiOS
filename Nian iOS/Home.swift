@@ -30,7 +30,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var addStepView:AddStep!
     var viewClose:UIImageView!
     
-    let itemArray = ["","","","消息","梦境"]
     let imageArray = ["home","explore","update","letter","bbs"]
     
     var deleteDreamSheet:UIActionSheet?
@@ -100,28 +99,30 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func noticeDot() {
         if self.dot != nil {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var noticenumber = SAPost("uid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/dot.php")
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.dot!.text = ""
-                    if noticenumber == "0" || noticenumber == "err" {
-                        self.dot!.hidden = true
-                    }else{
-                        self.dot!.hidden = false
-                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                            self.dot!.frame = CGRectMake(228, 8, 20, 17)
-                            }, completion: { (complete: Bool) in
-                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                    self.dot!.frame = CGRectMake(228, 10, 20, 15)
-                                    }, completion: { (complete: Bool) in
-                                        self.dot!.text = noticenumber
-                                })
-                        })
-                    }
+            var safeuid = Sa.objectForKey("uid") as? String
+            var safeshell = Sa.objectForKey("shell") as? String
+            if safeuid != nil {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var noticenumber = SAPost("uid=\(safeuid!)&&shell=\(safeshell!)", "http://nian.so/api/dot.php")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.dot!.text = ""
+                        if noticenumber == "0" || noticenumber == "err" {
+                            self.dot!.hidden = true
+                        }else{
+                            self.dot!.hidden = false
+                            UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                self.dot!.frame = CGRectMake(228, 8, 20, 17)
+                                }, completion: { (complete: Bool) in
+                                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                        self.dot!.frame = CGRectMake(228, 10, 20, 15)
+                                        }, completion: { (complete: Bool) in
+                                            self.dot!.text = noticenumber
+                                    })
+                            })
+                        }
+                    })
                 })
-            })
+            }
         }
     }
     
@@ -150,7 +151,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.view.addSubview(self.niceView!)
         
         //底部按钮
-        var count = self.itemArray.count
+        var count = 5
         for var index = 0; index < count; index++ {
             var btnWidth = (CGFloat)(index*64)
             var button  = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
@@ -323,7 +324,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
        // var vc3 = ExploreController()
         
-        var vc3 = CircleController()
+        var vc3 = CircleListController()
         var vc1 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
@@ -337,22 +338,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var index = sender.tag
         for var i = 0;i<5;i++ {
             var button = self.view.viewWithTag(i+100) as UIButton
-            if button.tag == index{
-                button.selected = true
-            }else{
-                button.selected = false
+            if index != 102 {
+                if button.tag == index{
+                    button.selected = true
+                }else{
+                    button.selected = false
+                }
             }
         }
         if index != 102 {
             self.selectedIndex = index-100
         }
-        
-        //标题
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = itemArray[index-100] as String
-        titleLabel.textAlignment = NSTextAlignment.Center
-        self.navigationItem.titleView = titleLabel
         
         let idDream = 100
         let idExplore = 101
@@ -369,7 +365,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
-            rightButton.image = UIImage(named:"plus")
+            rightButton.image = UIImage(named:"more")
             self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     //梦想
             self.foFreshTimes = 0
@@ -393,9 +389,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     
     func addCircleButton(){
-        var storyboard = UIStoryboard(name: "NewCircle", bundle: nil)
-        var addCircleVC = storyboard.instantiateViewControllerWithIdentifier("NewCircleViewController") as UIViewController
-        self.navigationController!.pushViewController(addCircleVC, animated: true)
+        var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+        self.navigationController!.pushViewController(addcircleVC, animated: true)
     }
     
     func niceShow(text:String){
