@@ -70,6 +70,11 @@
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
 		12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */; };
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
+		12CE159D1A3E7AEF006AC031 /* NewCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE159C1A3E7AEF006AC031 /* NewCircle.swift */; };
+		12CE159F1A3E7B17006AC031 /* NewCircle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CE159E1A3E7B17006AC031 /* NewCircle.storyboard */; };
+		12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE15A01A3E7D24006AC031 /* CircleCell.xib */; };
+		12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A21A3E7D56006AC031 /* CircleCell.swift */; };
+		12CE15A51A3E7D68006AC031 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A41A3E7D68006AC031 /* Circle.swift */; };
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
 		12D1048F19F3387F00E65B54 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1048E19F3387F00E65B54 /* Level.swift */; };
 		12D846011A2318A6005DCC08 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D845FF1A2318A6005DCC08 /* Reachability.m */; };
@@ -213,6 +218,11 @@
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageViewController.swift; sourceTree = "<group>"; };
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
+		12CE159C1A3E7AEF006AC031 /* NewCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCircle.swift; sourceTree = "<group>"; };
+		12CE159E1A3E7B17006AC031 /* NewCircle.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewCircle.storyboard; sourceTree = "<group>"; };
+		12CE15A01A3E7D24006AC031 /* CircleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleCell.xib; sourceTree = "<group>"; };
+		12CE15A21A3E7D56006AC031 /* CircleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCell.swift; sourceTree = "<group>"; };
+		12CE15A41A3E7D68006AC031 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		12D1048C19F3387600E65B54 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
 		12D1048E19F3387F00E65B54 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		12D845FF1A2318A6005DCC08 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -516,6 +526,18 @@
 			name = "图片";
 			sourceTree = "<group>";
 		};
+		12CE159B1A3E7AD8006AC031 /* 梦境 */ = {
+			isa = PBXGroup;
+			children = (
+				12CE159C1A3E7AEF006AC031 /* NewCircle.swift */,
+				12CE159E1A3E7B17006AC031 /* NewCircle.storyboard */,
+				12CE15A01A3E7D24006AC031 /* CircleCell.xib */,
+				12CE15A21A3E7D56006AC031 /* CircleCell.swift */,
+				12CE15A41A3E7D68006AC031 /* Circle.swift */,
+			);
+			name = "梦境";
+			sourceTree = "<group>";
+		};
 		12CE6A20196EEDA500F308FF /* 更新进展 */ = {
 			isa = PBXGroup;
 			children = (
@@ -633,6 +655,7 @@
 				12D1049019F3388500E65B54 /* 等级 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
 				12BE103919C5EBCB00370348 /* 更新广场评论 */,
+				12CE159B1A3E7AD8006AC031 /* 梦境 */,
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				126ABCC21A25DAD3001BB5DA /* 同类标签 */,
@@ -876,7 +899,9 @@
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
+				12CE159F1A3E7B17006AC031 /* NewCircle.storyboard in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
+				12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
@@ -946,6 +971,7 @@
 				12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */,
 				12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
+				12CE159D1A3E7AEF006AC031 /* NewCircle.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
 				12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */,
@@ -976,6 +1002,7 @@
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12063C5E19C9A6C500E54003 /* Store.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
+				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
 				3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
@@ -989,6 +1016,7 @@
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
+				12CE15A51A3E7D68006AC031 /* Circle.swift in Sources */,
 				128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,

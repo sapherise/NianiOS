@@ -18,6 +18,8 @@ struct V {
         case Large = "large"
     }
     
+    static let Tags = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]
+    
     class CustomActivity: UIActivity {
         
         var title: String?
@@ -53,47 +55,47 @@ struct V {
     }
     
     /*class Downloader: NSObject, NSURLConnectionDataDelegate {
-        
-        private var _connection: NSURLConnection?
-        private var _callback: (Float, AnyObject?) -> Void
-        private var _data: NSMutableData? = nil
-        private var _size: Int = 0
-        
-        init(url: NSURL, callback: (Float, AnyObject?) -> Void) {
-            _callback = callback
-            super.init()
-            var request = NSURLRequest(URL: url)
-            _connection = NSURLConnection(request: request, delegate: self, startImmediately: true)
-        }
-        
-        func cancel() {
-            if _connection != nil {
-                _connection!.cancel()
-                _connection = nil
-            }
-        }
-        
-        func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
-            if response is NSHTTPURLResponse {
-                var httpResponse = response as NSHTTPURLResponse
-                var contentLength = httpResponse.allHeaderFields["Content-Length"] as NSNumber
-                var _size = contentLength.integerValue
-                _data = NSMutableData(capacity: _size)
-                _callback(0.0, contentLength)
-            } else {
-                connection.cancel()
-                _callback(0.0, nil)
-            }
-        }
-        
-        func connection(connection: NSURLConnection, didReceiveData data: NSData) {
-            _data!.appendData(data)
-            _callback(Float(_data!.length) / Float(_size), nil)
-        }
-        
-        func connectionDidFinishLoading(connection: NSURLConnection) {
-            _callback(1.0, _data)
-        }
+    
+    private var _connection: NSURLConnection?
+    private var _callback: (Float, AnyObject?) -> Void
+    private var _data: NSMutableData? = nil
+    private var _size: Int = 0
+    
+    init(url: NSURL, callback: (Float, AnyObject?) -> Void) {
+    _callback = callback
+    super.init()
+    var request = NSURLRequest(URL: url)
+    _connection = NSURLConnection(request: request, delegate: self, startImmediately: true)
+    }
+    
+    func cancel() {
+    if _connection != nil {
+    _connection!.cancel()
+    _connection = nil
+    }
+    }
+    
+    func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
+    if response is NSHTTPURLResponse {
+    var httpResponse = response as NSHTTPURLResponse
+    var contentLength = httpResponse.allHeaderFields["Content-Length"] as NSNumber
+    var _size = contentLength.integerValue
+    _data = NSMutableData(capacity: _size)
+    _callback(0.0, contentLength)
+    } else {
+    connection.cancel()
+    _callback(0.0, nil)
+    }
+    }
+    
+    func connection(connection: NSURLConnection, didReceiveData data: NSData) {
+    _data!.appendData(data)
+    _callback(Float(_data!.length) / Float(_size), nil)
+    }
+    
+    func connectionDidFinishLoading(connection: NSURLConnection) {
+    _callback(1.0, _data)
+    }
     }*/
     
     typealias StringCallback = String? -> Void
@@ -157,6 +159,9 @@ struct V {
             var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
             var json: AnyObject? = nil
             if data != nil {
+                if true {
+                    println(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                }
                 json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             }
             dispatch_async(dispatch_get_main_queue(), {
@@ -212,6 +217,10 @@ struct V {
     }
     
     static func urlStepImage(img: String, tag: V.IMAGE_TAG) -> String {
+        return "http://img.nian.so/step/\(img)!\(tag.rawValue)"
+    }
+    
+    static func urlCircleCoverImage(img: String, tag: V.IMAGE_TAG) -> String {
         return "http://img.nian.so/step/\(img)!\(tag.rawValue)"
     }
     
@@ -352,7 +361,6 @@ extension UIView {
                 UIActivityTypeMail,
                 UIActivityTypeMessage
                 ])
-            
         }
     }
 }

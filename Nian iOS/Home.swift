@@ -30,7 +30,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var addStepView:AddStep!
     var viewClose:UIImageView!
     
-    let itemArray = ["","","","消息","小组"]
+    let itemArray = ["","","","消息","梦境"]
     let imageArray = ["home","explore","update","letter","bbs"]
     
     var deleteDreamSheet:UIActionSheet?
@@ -59,16 +59,40 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Notice:", name: "Notice", object: nil)
-        self.noticeDot()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive:", name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
     }
     
     override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Notice", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
     }
     
-    func Notice(noti:NSNotification){
-        self.noticeDot()
+    func onTimerTick() {
+        noticeDot()
+    }
+    
+    func onObserveActive(sender: NSNotification) {
+        launchTimer()
+    }
+    
+    func onObserveDeactive(sender: NSNotification) {
+        stopTimer()
+    }
+    
+    func launchTimer() {
+        if timer != nil {
+            return
+        }
+        timer = NSTimer(timeInterval: 3, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
+        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+    }
+    
+    func stopTimer() {
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
     }
     
     func noticeDot() {
@@ -295,7 +319,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
-        var vc3 = ExploreController()
+       // var vc3 = ExploreController()
+        
+        var vc3 = CircleController()
         var vc1 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
@@ -340,7 +366,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("bbsRefresh", object: self.bbsFreshTimes)
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSButton")
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
             rightButton.image = UIImage(named:"plus")
             self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     //梦想
@@ -363,15 +389,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
-    func addBBSButton(){
-        var adddreamVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
-        self.navigationController!.pushViewController(adddreamVC, animated: true)
-    }
     
-    
-    override func didReceiveMemoryWarning()
-    {
-        super.didReceiveMemoryWarning()
+    func addCircleButton(){
+        var storyboard = UIStoryboard(name: "NewCircle", bundle: nil)
+        var addCircleVC = storyboard.instantiateViewControllerWithIdentifier("NewCircleViewController") as UIViewController
+        self.navigationController!.pushViewController(addCircleVC, animated: true)
     }
     
     func niceShow(text:String){
