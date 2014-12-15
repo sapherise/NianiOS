@@ -25,6 +25,7 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     
     var dreamTagDelegate: DreamTagDelegate?
     
+    let dataArray = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]
     let imgArray = ["daily", "camera", "love", "startup", "read", "us", "draw", "english", "collection", "fit", "music", "write", "travel", "food", "design", "game", "work", "habit", "handwriting", "others"]
     
     override func viewDidLoad() {
@@ -51,19 +52,19 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return V.Tags.count
+        return self.dataArray.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var index = indexPath.row
         var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as TagMediaCell
-        mediaCell.label.text = "\(V.Tags[index])"
+        mediaCell.label.text = "\(self.dataArray[index])"
         mediaCell.imageView.image = UIImage(named: "tag\(self.imgArray[index])")
         return mediaCell
     }
     
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!) {
-        dreamTagDelegate?.onTagSelected(V.Tags[indexPath.row], tagType: indexPath.row)
+        dreamTagDelegate?.onTagSelected(dataArray[indexPath.row], tagType: indexPath.row)
         self.navigationController?.popViewControllerAnimated(true)
     }
     

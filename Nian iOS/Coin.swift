@@ -92,14 +92,29 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             z = z + x
             var j = z + i
             if j < totalNumber {
-                var textI = ( j < 10 ) ? "0\(j)" : "\(j)"
+                var textI = "0"
+                if j <= 0 {
+                    textI = "\(j)"
+                }else if j >= 10 {
+                    textI = "\(j)"
+                }else{
+                    textI = "0\(j)"
+                }
                 y = y + 0.1
                 delay( y , {
                     self.labelCoin.text = textI
                 })
             }else{
                 delay( y + 0.1 , {
-                    var textI = ( totalNumber < 10 ) ? "0\(totalNumber)" : "\(totalNumber)"
+                    var textI = "0"
+                    if totalNumber <= 0 {
+                        textI = "\(totalNumber)"
+                    }else if totalNumber >= 10 {
+                        textI = "\(totalNumber)"
+                    }else{
+                        textI = "0\(totalNumber)"
+                    }
+                    
                     self.labelCoin.text = textI
                 })
                 break
@@ -162,7 +177,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     film.removeFromSuperview()
                     switch state {
                     case .Purchased:
-                        self.view.showTipText("刚刚一笔支付成功了，刷新念币看看吧", delay: 1)
+                        self.view.showTipText("刚刚一笔支付成功了，刷新念币看看！", delay: 1)
                         break
                     case .Failed:
                         break

@@ -30,7 +30,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var addStepView:AddStep!
     var viewClose:UIImageView!
     
-    let itemArray = ["","","","消息","梦境"]
+    let itemArray = ["","","","消息","小组"]
     let imageArray = ["home","explore","update","letter","bbs"]
     
     var deleteDreamSheet:UIActionSheet?
@@ -55,45 +55,20 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 }
             }
         })
-        launchTimer()
     }
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive:", name: "AppActive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Notice:", name: "Notice", object: nil)
+        self.noticeDot()
     }
     
     override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Notice", object:nil)
     }
     
-    func onObserveActive(sender: NSNotification) {
-        launchTimer()
-    }
-    
-    func onObserveDeactive(sender: NSNotification) {
-        stopTimer()
-    }
-    
-    func launchTimer() {
-        if timer != nil {
-            return
-        }
-        timer = NSTimer(timeInterval: 3, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
-        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
-    }
-    
-    func stopTimer() {
-        if timer != nil {
-            timer!.invalidate()
-            timer = nil
-        }
-    }
-    
-    func onTimerTick() {
-        noticeDot()
+    func Notice(noti:NSNotification){
+        self.noticeDot()
     }
     
     func noticeDot() {
@@ -206,7 +181,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         gameoverLabel.font = UIFont.systemFontOfSize(14)
         gameoverLabel.textColor = UIColor.blackColor()
         gameoverLabel.setHeight(gameoverWord.stringHeightWith(14, width: 180))
-        var button1 = gameoverButton("支付 5 念币")
+        //透支
+        var textGameover = ""
+        if self.gameoverCoin.toInt()! >= 5 {
+            textGameover = "支付 5 念币"
+        }else{
+            textGameover = "预支 5 念币"
+        }
+        var button1 = gameoverButton(textGameover)
         button1.tag = 1
         button1.addTarget(self, action: "GameOverHide:", forControlEvents: UIControlEvents.TouchUpInside)
         button1.setY(gameoverLabel.bottom()+40)
@@ -246,25 +228,21 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func GameOverHide(sender:UIButton){
         if sender.tag == 1 {
-            if self.gameoverCoin.toInt() < 5 {
-                UIView.showAlertView("念币不够", message: "登录 http://nian.so 来获得更多念币")
-            }else{
-                self.navigationItem.rightBarButtonItems = buttonArray()
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                var safeshell = Sa.objectForKey("shell") as String
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/gameover_coin.php")
-                    if(sa == "1"){
-                        dispatch_async(dispatch_get_main_queue(), {
+            self.navigationItem.rightBarButtonItems = buttonArray()
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeshell = Sa.objectForKey("shell") as String
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/gameover_coin.php")
+                if(sa == "1"){
+                    dispatch_async(dispatch_get_main_queue(), {
                         self.navigationItem.rightBarButtonItems = []
                         self.GameOverView!.hidden = true
                         self.setupViews()
                         self.initViewControllers()
-                        })
-                    }
-                })
-            }
+                    })
+                }
+            })
         }else if sender.tag == 2 {
             self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             self.deleteDreamSheet!.addButtonWithTitle("确定删除梦想")
@@ -317,7 +295,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
-        var vc3 = CircleController()
+        var vc3 = ExploreController()
         var vc1 = NianViewController
         var vc4 = MeViewController()
         var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
@@ -362,7 +340,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("bbsRefresh", object: self.bbsFreshTimes)
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSButton")
             rightButton.image = UIImage(named:"plus")
             self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     //梦想
@@ -385,21 +363,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
-    func addCircleButton(){
-//        var addCircleVC = CircleNewViewController(nibName: "N"
-//        self.navigationController!.pushViewController(addCircleVC, animated: true)
-//        
-//        
-//            
-//            var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
-//            var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-//        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
-//        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
-        
-        var storyboard = UIStoryboard(name: "NewCircle", bundle: nil)
-        var addCircleVC = storyboard.instantiateViewControllerWithIdentifier("NewCircleViewController") as UIViewController
-        self.navigationController!.pushViewController(addCircleVC, animated: true)
+    func addBBSButton(){
+        var adddreamVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
+        self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
+    
     
     override func didReceiveMemoryWarning()
     {

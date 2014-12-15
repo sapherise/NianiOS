@@ -296,7 +296,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     })
                 })
             })
-            uy.uploadImage(resizedImage(img, 320), savekey: getSaveKey("cover", "jpg"))
+            uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("cover", "jpg"))
             
         }
     }

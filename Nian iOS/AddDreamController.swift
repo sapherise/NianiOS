@@ -29,6 +29,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var imagePicker:UIImagePickerController?
     var delegate:editDreamDelegate?
     var tagType:Int = 0
+    let dataArray = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]
     var readyForTag:Int = 0     //当为1时自动跳转到Tag去
     
     var uploadUrl:String = ""
@@ -120,7 +121,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         if self.tagType >= 1 {
-            self.labelTag?.text = V.Tags[self.tagType - 1]
+            self.labelTag?.text = self.dataArray[self.tagType - 1]
         }
         
         if self.editPrivate == "1" {

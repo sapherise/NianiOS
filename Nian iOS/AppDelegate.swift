@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate{
     
     var window: UIWindow?
+    var timer:NSTimer?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = BGColor
@@ -35,7 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("AppDeactive", object: nil)
+        timer?.invalidate()
+        timer = nil
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
@@ -45,9 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-//        timer = NSTimer(timeInterval: 15, target: self, selector: Selector("SANotice"), userInfo: nil, repeats: true)
-//        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
-        NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
+        timer = NSTimer(timeInterval: 15, target: self, selector: Selector("SANotice"), userInfo: nil, repeats: true)
+        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
     func applicationWillTerminate(application: UIApplication) {
@@ -75,5 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
     }
+    
+    func SANotice(){
+        NSNotificationCenter.defaultCenter().postNotificationName("Notice", object:["Notice"])
+    }
+    
 }
 
