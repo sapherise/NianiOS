@@ -11,8 +11,6 @@
 		12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12028E311A3EDA9D0072FBE1 /* AddCircle.xib */; };
 		12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E331A3EECBD0072FBE1 /* CircleTag.swift */; };
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
-		12063C5E19C9A6C500E54003 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12063C5D19C9A6C500E54003 /* Store.swift */; };
-		12063C6019C9A6D200E54003 /* Store.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12063C5F19C9A6D200E54003 /* Store.xib */; };
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
 		1231A06D19B36B7B00BD425F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */; };
@@ -110,9 +108,6 @@
 		12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */; };
 		12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C2196AE8010026DD51 /* UIViewExt.swift */; };
 		12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */; };
-		12FB48CB196AE9670026DD51 /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48CA196AE9670026DD51 /* Follow.swift */; };
-		12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FB48D3196AEAB90026DD51 /* FollowCell.xib */; };
-		12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48D5196AEAC50026DD51 /* FollowCell.swift */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
 		32349D451A1F0B38004FEA25 /* ExploreFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32349D441A1F0B38004FEA25 /* ExploreFriend.swift */; };
 		32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */; };
@@ -160,8 +155,6 @@
 		12028E311A3EDA9D0072FBE1 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
 		12028E331A3EECBD0072FBE1 /* CircleTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleTag.swift; sourceTree = "<group>"; };
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
-		12063C5D19C9A6C500E54003 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		12063C5F19C9A6D200E54003 /* Store.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Store.xib; sourceTree = "<group>"; };
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
@@ -268,9 +261,6 @@
 		12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewWebExt.swift; sourceTree = "<group>"; };
 		12FB48C2196AE8010026DD51 /* UIViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAHttpRequest.swift; sourceTree = "<group>"; };
-		12FB48CA196AE9670026DD51 /* Follow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
-		12FB48D3196AEAB90026DD51 /* FollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowCell.xib; sourceTree = "<group>"; };
-		12FB48D5196AEAC50026DD51 /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		32349D441A1F0B38004FEA25 /* ExploreFriend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFriend.swift; sourceTree = "<group>"; };
 		32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExploreFriend.storyboard; sourceTree = "<group>"; };
@@ -347,15 +337,6 @@
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
 			);
 			name = "梦想";
-			sourceTree = "<group>";
-		};
-		12063C5C19C9A6B400E54003 /* 念铺 */ = {
-			isa = PBXGroup;
-			children = (
-				12063C5D19C9A6C500E54003 /* Store.swift */,
-				12063C5F19C9A6D200E54003 /* Store.xib */,
-			);
-			name = "念铺";
 			sourceTree = "<group>";
 		};
 		122D73E8197EB8CD00310C6B /* 更新梦想 */ = {
@@ -683,11 +664,8 @@
 				1231A06B19B36B6200BD425F /* 更新回应 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
 				1253C2C01A1DD169003D4ECF /* 玩家 */,
-				12FB48D2196AEAA10026DD51 /* 关注 */,
-				129419FF19CFA8480008B274 /* 更新广场 */,
 				12A49109198EB550000B6D5E /* 消息 */,
 				12A6564519719BAC004F530B /* 设置 */,
-				12063C5C19C9A6B400E54003 /* 念铺 */,
 				12CDE5CE19AC9FB4002E793F /* 图片 */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
@@ -727,16 +705,6 @@
 			path = "Nian iOS/Utility";
 			sourceTree = "<group>";
 		};
-		12FB48D2196AEAA10026DD51 /* 关注 */ = {
-			isa = PBXGroup;
-			children = (
-				12FB48CA196AE9670026DD51 /* Follow.swift */,
-				12FB48D5196AEAC50026DD51 /* FollowCell.swift */,
-				12FB48D3196AEAB90026DD51 /* FollowCell.xib */,
-			);
-			name = "关注";
-			sourceTree = "<group>";
-		};
 		32349D431A1F078F004FEA25 /* 发现好友 */ = {
 			isa = PBXGroup;
 			children = (
@@ -750,6 +718,7 @@
 		323CD2E71A11EEC400FFE3F4 /* 广场 */ = {
 			isa = PBXGroup;
 			children = (
+				129419FF19CFA8480008B274 /* 更新广场 */,
 				323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */,
 				323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */,
 				323CD2EA1A11EEF300FFE3F4 /* Group.swift */,
@@ -904,7 +873,6 @@
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
-				12063C6019C9A6D200E54003 /* Store.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				1231A06F19B36B8F00BD425F /* AddCommentViewController.xib in Resources */,
@@ -930,7 +898,6 @@
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
-				12FB48D4196AEAB90026DD51 /* FollowCell.xib in Resources */,
 				324716EF1A1C303700EF1305 /* ExploreNewCell.xib in Resources */,
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
@@ -994,7 +961,6 @@
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */,
-				12FB48D6196AEAC50026DD51 /* FollowCell.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
 				12CE159D1A3E7AEF006AC031 /* NewCircle.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
@@ -1027,7 +993,6 @@
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
-				12063C5E19C9A6C500E54003 /* Store.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
 				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
 				3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */,
@@ -1041,7 +1006,6 @@
 				3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */,
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
-				12FB48CB196AE9670026DD51 /* Follow.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				12CE15A51A3E7D68006AC031 /* CircleList.swift in Sources */,
 				128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */,
