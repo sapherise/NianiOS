@@ -44,6 +44,7 @@ class CircleCell: UITableViewCell {
         var widthCount = ceil(count.stringWidthWith(11, height: 20) + 16.0)
         self.labelCount.setWidth(widthCount)
         self.labelCount.setX(305-widthCount)
+        self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         if uid == "" {
             self.labelContent.text = "你成为这个梦境的一员啦"
         }else{

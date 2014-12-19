@@ -107,6 +107,26 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/addstep_dream.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    static func getDreamTag(tag:Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_join_dream.php?uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
+    }
+    
+    static func getCircleJoinConfirm(circle:String, dream:String, word:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_notice_confirm.php?uid=\(s_uid)&shell=\(s_shell)&circle=\(circle)&dream=\(dream)&word=\(word)", callback: callback)
+    }
+    
+    static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
+    }
+    
+    static func getCircleDetail(circle:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_detail.php?uid=\(s_uid)&id=\(circle)", callback: callback)
+    }
+    
     static func postIapVerify(transactionId: String, data: NSData, callback: V.JsonCallback) {
         loadCookies()
         var receiptData = ["receipt-data" : data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)]
@@ -120,8 +140,13 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
-    static func postCircleNew(name: String, content: String, img: String, privateType: Int, tag: Int, callback: V.JsonCallback) {
+    static func postCircleNew(name: String, content: String, img: String, privateType: Int, tag: Int, dream: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/circle_new.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&tag=\(tag)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/circle_new.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&tag=\(tag)&dream=\(dream)", callback: callback)
+    }
+    
+    static func postCircleQuit(Id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_quit.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)", callback: callback)
     }
 }

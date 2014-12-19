@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol CircleTagDelegate {
-    func onTagSelected(tag: String, tagType: Int)
+    func onTagSelected(tag: String, tagType: Int, dreamType: Int)
 }
 
 class CircleTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
@@ -18,11 +18,13 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet var collectionView: UICollectionView!
     
     var circleTagDelegate: CircleTagDelegate?
+    var dataArray = NSMutableArray()
     
     let imgArray = ["daily", "camera", "love", "startup", "read", "us", "draw", "english", "collection", "fit", "music", "write", "travel", "food", "design", "game", "work", "habit", "handwriting", "others"]
     
     override func viewDidLoad() {
         setupViews()
+        SAReloadData()
     }
     
     func setupViews(){
@@ -45,20 +47,52 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return V.Tags.count
+        return self.dataArray.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var index = indexPath.row
         var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as TagMediaCell
-        mediaCell.label.text = "\(V.Tags[index])"
-        mediaCell.imageView.image = UIImage(named: "tag\(self.imgArray[index])")
+        var data = self.dataArray[index] as NSDictionary
+        var title = data.objectForKey("title") as String
+        var img = data.objectForKey("img") as String
+        mediaCell.label.text = "\(title)"
+        mediaCell.imageView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         return mediaCell
     }
     
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!) {
-        circleTagDelegate?.onTagSelected(V.Tags[indexPath.row], tagType: indexPath.row)
+        var index = indexPath.row
+        var data = self.dataArray[index] as NSDictionary
+        var tag = (data.objectForKey("hashtag") as String).toInt()
+        var dreamType = (data.objectForKey("id") as String).toInt()
+        var textTag = "未选标签"
+        if tag != nil {
+            if tag >= 1 {
+                textTag = V.Tags[tag!-1]
+            }
+        }else{
+            tag = 0
+        }
+        circleTagDelegate?.onTagSelected(textTag, tagType: tag!, dreamType: dreamType!)
         self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func SAReloadData(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var url = "http://nian.so/api/circle_tag.php?uid=\(safeuid)"
+        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
+            if data as NSObject != NSNull() {
+                var arr = data["items"] as NSArray
+                self.dataArray.removeAllObjects()
+                for data : AnyObject  in arr{
+                    self.dataArray.addObject(data)
+                }
+                self.collectionView.reloadData()
+            }
+        })
     }
     
     func back(){

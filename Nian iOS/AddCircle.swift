@@ -29,6 +29,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     var imagePicker:UIImagePickerController?
     var delegate:editDreamDelegate?
     var tagType:Int = 0
+    var dreamType:Int = 0
     
     var uploadUrl:String = ""
     
@@ -203,20 +204,24 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         if content == "梦境简介（可选）" {
             content = ""
         }
-        if title != "" {
+        if title == "" {
+            self.field1!.becomeFirstResponder()
+            self.view.showTipText("你的梦境还没有名字...", delay: 2)
+        }else if self.uploadUrl == "" {
+            self.view.showTipText("你的梦境还没有封面...", delay: 2)
+        }else if self.tagType == 0 {
+            self.view.showTipText("你的梦境还没绑定梦想和标签...", delay: 2)
+        }else{
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
-            Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: 0) {
+            Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: self.tagType, dream: self.dreamType) {
                 json in
                 if json != nil {
-                    println(json!)
                     globalWillNianReload = 1
                     self.navigationController!.popViewControllerAnimated(true)
                 }
             }
-        }else{
-            self.field1!.becomeFirstResponder()
         }
     }
     
@@ -259,8 +264,9 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         }
     }
     
-    func onTagSelected(tag: String, tagType: Int) {
+    func onTagSelected(tag: String, tagType: Int, dreamType: Int) {
         self.labelTag?.text = tag
-        self.tagType = tagType + 1
+        self.tagType = tagType
+        self.dreamType = dreamType
     }
 }

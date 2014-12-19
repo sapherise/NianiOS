@@ -18,6 +18,9 @@ class MeCell: UITableViewCell {
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var View:UIView?
     @IBOutlet var viewLine: UIView!
+    @IBOutlet var imageDream: UIImageView!
+    @IBOutlet var labelConfirm: UILabel!
+    @IBOutlet var activity: UIActivityIndicatorView!
     var largeImageURL:String = ""
     var data :NSDictionary!
     
@@ -37,6 +40,9 @@ class MeCell: UITableViewCell {
         var content = self.data.stringAttributeForKey("content")
         var type = self.data.stringAttributeForKey("type")
         var isread = self.data.stringAttributeForKey("isread") as String
+        var img = self.data.stringAttributeForKey("img") as String
+        var dream = self.data.stringAttributeForKey("dream") as String
+        var isConfirm = self.data.stringAttributeForKey("isConfirm") as String
         var word:String = ""
         
         switch type {
@@ -53,9 +59,11 @@ class MeCell: UITableViewCell {
             content = "「\(dreamtitle)」"
         case "8": word = "赞了你的进展"
             content = dreamtitle
+        case "9": word = "申请加入梦境「\(dreamtitle)」"
         default: word = "与你互动了"
         }
         
+        self.activity.hidden = true
         self.nickLabel!.text = user
         self.wordLabel!.text = word
         self.lastdate!.text = lastdate
@@ -68,18 +76,57 @@ class MeCell: UITableViewCell {
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
-        
         var height = content.stringHeightWith(17,width:290)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.View!.setHeight(110 + height)
-        self.viewLine.setY(self.contentLabel!.bottom()+15)
+        if type == "9" {
+            self.labelConfirm.setY(self.contentLabel!.bottom()+15)
+            self.imageDream.hidden = false
+            self.labelConfirm.hidden = false
+            self.imageDream.tag = dream.toInt()!
+            self.imageDream.setImage("http://img.niain.so/dream/\(img)!dream", placeHolder: IconColor)
+            self.lastdate!.hidden = true
+            self.viewLine.setY(self.labelConfirm!.bottom()+15)
+            var tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
+            if isConfirm == "0" {
+                self.labelConfirm.text = "接受"
+                self.labelConfirm.backgroundColor = SeaColor
+                self.labelConfirm.addGestureRecognizer(tap)
+            }else{
+                self.labelConfirm.text = "已接受"
+                self.labelConfirm.backgroundColor = IconColor
+                self.labelConfirm.removeGestureRecognizer(tap)
+            }
+        }else{
+            self.imageDream.hidden = true
+            self.labelConfirm.hidden = true
+            self.lastdate!.hidden = false
+            self.viewLine.setY(self.contentLabel!.bottom()+15)
+        }
     }
     
-    class func cellHeightByData(data:NSDictionary)->CGFloat
-    {
-        
+    func onConfirmClick(sender:UIGestureRecognizer) {
+        var view = sender.view! as UILabel
+        view.text = ""
+        self.activity.frame = CGRectMake(0, 0, 20, 20)
+        self.activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        self.activity.center = view.center
+        self.activity.hidden = false
+        self.activity.startAnimating()
+        var id = self.data.stringAttributeForKey("id") as String
+        Api.getCircleJoinConfirmOK(id) { json in
+            if json != nil {
+                self.activity.hidden = true
+                view.text = "已接受"
+                view.backgroundColor = IconColor
+                view.removeGestureRecognizer(sender)
+            }
+        }
+    }
+    
+    
+    class func cellHeightByData(data:NSDictionary)->CGFloat {
         var dreamtitle = data.stringAttributeForKey("dreamtitle")
         var content = data.stringAttributeForKey("content")
         var type = data.stringAttributeForKey("type")
@@ -87,7 +134,11 @@ class MeCell: UITableViewCell {
             content = dreamtitle
         }
         var height = content.stringHeightWith(17,width:290)
-        return 100 + height
+        if type == "9" {
+            return 151 + height
+        }else{
+            return 100 + height
+        }
     }
     
 }

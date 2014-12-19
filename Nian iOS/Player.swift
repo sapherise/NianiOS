@@ -561,18 +561,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    func commentVC(){
-        var addCommentVC = AddCommentViewController(nibName: "AddCommentViewController", bundle: nil)
-        if self.ReplyUser != "" {
-            addCommentVC.content = "@\(self.ReplyUser) "
-        }else{
-            addCommentVC.content = ""
-        }
-        addCommentVC.Id = self.Id
-        addCommentVC.Row = self.ReplyRow
-        self.navigationController!.pushViewController(addCommentVC, animated: true)
-    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1

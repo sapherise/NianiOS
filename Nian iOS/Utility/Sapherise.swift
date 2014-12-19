@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 
-let IconColor:UIColor = UIColor(red:0.71, green:0.71,blue:0.71,alpha: 1)    //字体灰
+let IconColor:UIColor = UIColor(red:0.85, green:0.85,blue:0.85,alpha: 1)    //字体灰
 let BGColor:UIColor = UIColor.whiteColor()
 let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
 let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
@@ -224,6 +224,21 @@ extension UIVisualEffectView {
         let view = super.hitTest(point, withEvent: event)
         return view == self ? nil : view
     }
+}
+
+func viewEmpty(width:CGFloat = 320, text:String = "这里是空的")->UIView {
+    var viewEmpty = UIView(frame: CGRectMake(0, 0, width, 75))
+    var imageEmpty = UIImageView(frame: CGRectMake(0, 20, width, 35))
+    imageEmpty.image = UIImage(named: "smile")
+    imageEmpty.contentMode = UIViewContentMode.Center
+    var labelEmpty = UILabel(frame: CGRectMake(0, 55, width, 20))
+    labelEmpty.text = text
+    labelEmpty.font = UIFont.systemFontOfSize(11)
+    labelEmpty.textAlignment = NSTextAlignment.Center
+    labelEmpty.textColor = UIColor(red:0.65, green:0.65, blue:0.65, alpha:1)
+    viewEmpty.addSubview(imageEmpty)
+    viewEmpty.addSubview(labelEmpty)
+    return viewEmpty
 }
 
 class fakeView:UIView{

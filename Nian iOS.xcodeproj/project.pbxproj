@@ -13,8 +13,6 @@
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
-		1231A06D19B36B7B00BD425F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */; };
-		1231A06F19B36B8F00BD425F /* AddCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A06E19B36B8F00BD425F /* AddCommentViewController.xib */; };
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
@@ -43,6 +41,11 @@
 		126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC31A25DAED001BB5DA /* Tag.swift */; };
 		126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC51A25DAFC001BB5DA /* TagCell.swift */; };
 		126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126ABCC71A25DB07001BB5DA /* TagCell.xib */; };
+		1271550D1A3FE82000E27EC5 /* CircleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1271550C1A3FE82000E27EC5 /* CircleDetail.swift */; };
+		1271550F1A3FE83400E27EC5 /* CircleDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1271550E1A3FE83400E27EC5 /* CircleDetailCell.swift */; };
+		127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127155101A3FE83D00E27EC5 /* CircleDetailCell.xib */; };
+		127155131A3FE84500E27EC5 /* CircleDetailTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127155121A3FE84500E27EC5 /* CircleDetailTop.swift */; };
+		127155151A3FE84E00E27EC5 /* CircleDetailTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127155141A3FE84E00E27EC5 /* CircleDetailTop.xib */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
@@ -67,13 +70,13 @@
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
 		12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BE103C19C5EBF500370348 /* AddBBSComment.xib */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
+		12BF1A681A427A1F0044CAF4 /* CircleJoin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF1A671A427A1F0044CAF4 /* CircleJoin.xib */; };
+		12BF1A6A1A427A3E0044CAF4 /* CircleJoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF1A691A427A3E0044CAF4 /* CircleJoin.swift */; };
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
 		12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */; };
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
-		12CE159D1A3E7AEF006AC031 /* NewCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE159C1A3E7AEF006AC031 /* NewCircle.swift */; };
-		12CE159F1A3E7B17006AC031 /* NewCircle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CE159E1A3E7B17006AC031 /* NewCircle.storyboard */; };
 		12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE15A01A3E7D24006AC031 /* CircleCell.xib */; };
 		12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A21A3E7D56006AC031 /* CircleCell.swift */; };
 		12CE15A51A3E7D68006AC031 /* CircleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A41A3E7D68006AC031 /* CircleList.swift */; };
@@ -157,8 +160,6 @@
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
-		1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
-		1231A06E19B36B8F00BD425F /* AddCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCommentViewController.xib; sourceTree = "<group>"; };
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
 		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
@@ -188,6 +189,11 @@
 		126ABCC51A25DAFC001BB5DA /* TagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		126ABCC71A25DB07001BB5DA /* TagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Nian iOS-Bridging-Header.h"; path = "../Nian iOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		1271550C1A3FE82000E27EC5 /* CircleDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDetail.swift; sourceTree = "<group>"; };
+		1271550E1A3FE83400E27EC5 /* CircleDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDetailCell.swift; sourceTree = "<group>"; };
+		127155101A3FE83D00E27EC5 /* CircleDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleDetailCell.xib; sourceTree = "<group>"; };
+		127155121A3FE84500E27EC5 /* CircleDetailTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDetailTop.swift; sourceTree = "<group>"; };
+		127155141A3FE84E00E27EC5 /* CircleDetailTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleDetailTop.xib; sourceTree = "<group>"; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
 		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
@@ -215,13 +221,13 @@
 		12BE103A19C5EBEA00370348 /* AddBBSComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSComment.swift; sourceTree = "<group>"; };
 		12BE103C19C5EBF500370348 /* AddBBSComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSComment.xib; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
+		12BF1A671A427A1F0044CAF4 /* CircleJoin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleJoin.xib; sourceTree = "<group>"; };
+		12BF1A691A427A3E0044CAF4 /* CircleJoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleJoin.swift; sourceTree = "<group>"; };
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		12BF5FF919BB479900DE0ABE /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageViewController.swift; sourceTree = "<group>"; };
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
-		12CE159C1A3E7AEF006AC031 /* NewCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCircle.swift; sourceTree = "<group>"; };
-		12CE159E1A3E7B17006AC031 /* NewCircle.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewCircle.storyboard; sourceTree = "<group>"; };
 		12CE15A01A3E7D24006AC031 /* CircleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleCell.xib; sourceTree = "<group>"; };
 		12CE15A21A3E7D56006AC031 /* CircleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCell.swift; sourceTree = "<group>"; };
 		12CE15A41A3E7D68006AC031 /* CircleList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleList.swift; sourceTree = "<group>"; };
@@ -348,15 +354,6 @@
 			name = "更新梦想";
 			sourceTree = "<group>";
 		};
-		1231A06B19B36B6200BD425F /* 更新回应 */ = {
-			isa = PBXGroup;
-			children = (
-				1231A06C19B36B7B00BD425F /* AddCommentViewController.swift */,
-				1231A06E19B36B8F00BD425F /* AddCommentViewController.xib */,
-			);
-			name = "更新回应";
-			sourceTree = "<group>";
-		};
 		1231A07B19B4649000BD425F /* 用户梦想 */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +418,30 @@
 				126ABCC71A25DB07001BB5DA /* TagCell.xib */,
 			);
 			name = "同类标签";
+			sourceTree = "<group>";
+		};
+		1271550A1A3FE7C600E27EC5 /* 梦境列表 */ = {
+			isa = PBXGroup;
+			children = (
+				12CE15A01A3E7D24006AC031 /* CircleCell.xib */,
+				12CE15A21A3E7D56006AC031 /* CircleCell.swift */,
+				12CE15A41A3E7D68006AC031 /* CircleList.swift */,
+			);
+			name = "梦境列表";
+			sourceTree = "<group>";
+		};
+		1271550B1A3FE7F200E27EC5 /* 梦境资料 */ = {
+			isa = PBXGroup;
+			children = (
+				1271550C1A3FE82000E27EC5 /* CircleDetail.swift */,
+				1271550E1A3FE83400E27EC5 /* CircleDetailCell.swift */,
+				127155101A3FE83D00E27EC5 /* CircleDetailCell.xib */,
+				127155121A3FE84500E27EC5 /* CircleDetailTop.swift */,
+				127155141A3FE84E00E27EC5 /* CircleDetailTop.xib */,
+				12BF1A691A427A3E0044CAF4 /* CircleJoin.swift */,
+				12BF1A671A427A1F0044CAF4 /* CircleJoin.xib */,
+			);
+			name = "梦境资料";
 			sourceTree = "<group>";
 		};
 		1282230519C7E6710002937D /* upyun */ = {
@@ -534,12 +555,9 @@
 		12CE159B1A3E7AD8006AC031 /* 梦境 */ = {
 			isa = PBXGroup;
 			children = (
-				12CE159C1A3E7AEF006AC031 /* NewCircle.swift */,
-				12CE159E1A3E7B17006AC031 /* NewCircle.storyboard */,
-				12CE15A01A3E7D24006AC031 /* CircleCell.xib */,
-				12CE15A21A3E7D56006AC031 /* CircleCell.swift */,
-				12CE15A41A3E7D68006AC031 /* CircleList.swift */,
 				12CE15A61A3EC525006AC031 /* Circle.swift */,
+				1271550B1A3FE7F200E27EC5 /* 梦境资料 */,
+				1271550A1A3FE7C600E27EC5 /* 梦境列表 */,
 				12028E2E1A3EDA330072FBE1 /* 创建梦境 */,
 			);
 			name = "梦境";
@@ -661,7 +679,6 @@
 				12CE159B1A3E7AD8006AC031 /* 梦境 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				126ABCC21A25DAD3001BB5DA /* 同类标签 */,
-				1231A06B19B36B6200BD425F /* 更新回应 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
 				1253C2C01A1DD169003D4ECF /* 玩家 */,
 				12A49109198EB550000B6D5E /* 消息 */,
@@ -875,10 +892,10 @@
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
-				1231A06F19B36B8F00BD425F /* AddCommentViewController.xib in Resources */,
 				32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
+				127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */,
 				323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
@@ -891,11 +908,11 @@
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
-				12CE159F1A3E7B17006AC031 /* NewCircle.storyboard in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
+				127155151A3FE84E00E27EC5 /* CircleDetailTop.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				324716EF1A1C303700EF1305 /* ExploreNewCell.xib in Resources */,
@@ -905,6 +922,7 @@
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
 				3252850D1A10C2B600316021 /* Explore.storyboard in Resources */,
 				12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */,
+				12BF1A681A427A1F0044CAF4 /* CircleJoin.xib in Resources */,
 				3274A3851A15F0FF00D2425A /* ExploreDynamicStepCell.xib in Resources */,
 				1253C3001A1DF108003D4ECF /* PlayerCell.xib in Resources */,
 			);
@@ -962,7 +980,6 @@
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
-				12CE159D1A3E7AEF006AC031 /* NewCircle.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
 				12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */,
@@ -981,13 +998,13 @@
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				32349D451A1F0B38004FEA25 /* ExploreFriend.swift in Sources */,
-				1231A06D19B36B7B00BD425F /* AddCommentViewController.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				32349D491A1F3BD2004FEA25 /* ExploreFriendCell.swift in Sources */,
+				1271550D1A3FE82000E27EC5 /* CircleDetail.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
@@ -997,6 +1014,7 @@
 				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
 				3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
+				127155131A3FE84500E27EC5 /* CircleDetailTop.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
@@ -1004,11 +1022,13 @@
 				126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */,
+				1271550F1A3FE83400E27EC5 /* CircleDetailCell.swift in Sources */,
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				12CE15A51A3E7D68006AC031 /* CircleList.swift in Sources */,
 				128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */,
+				12BF1A6A1A427A3E0044CAF4 /* CircleJoin.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */,

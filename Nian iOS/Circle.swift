@@ -21,7 +21,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var navView:UIView!
     var dataTotal:Int = 0
     var viewTop:UIView!
-    var stepID:Int = 0
+    var ID:Int = 0
     
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
@@ -59,10 +59,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewWillAppear(animated)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
     }
     
-    func setupViews()
-    {
+    func setupViews() {
         viewBack(self)
         self.view.backgroundColor = UIColor.whiteColor()
         
@@ -70,7 +70,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
         self.tableview = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64 - 44))
         self.tableview!.backgroundColor = UIColor.clearColor()
@@ -122,6 +121,16 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
+        rightButton.image = UIImage(named:"newList")
+        self.navigationItem.rightBarButtonItem = rightButton
+    }
+    
+    func onCircleDetailClick(){
+        var circledetailVC = CircleDetailController()
+        circledetailVC.Id = "\(self.ID)"
+        self.navigationController!.pushViewController(circledetailVC, animated: true)
     }
     
     //按下发送后调用此函数
@@ -160,7 +169,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeshell = Sa.objectForKey("shell") as String
         var safeuser = Sa.objectForKey("user") as String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("step=\(self.stepID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
+            var sa = SAPost("step=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
             if sa != "" && sa != "err" {
                 dispatch_async(dispatch_get_main_queue(), {
                     delay(0.5, { () -> () in
@@ -178,7 +187,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func SAloadData()
     {
         var heightBefore = self.tableview!.contentSize.height
-        var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
+        var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull() {
                 var arr = data["items"] as NSArray
@@ -198,7 +207,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAReloadData(bool:Bool = false){
-        var url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
+        var url = "http://nian.so/api/comment_step.php?page=0&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
                 var arr = data["items"] as NSArray
@@ -238,14 +247,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.activityIndicatorView.hidden = true
             self.tableview?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
         }
-        //        //如果向下滚动时，就收起键盘
-        //        var currentOffset:CGFloat = scrollView.contentOffset.y
-        //        if scrollView.contentOffset.y < self.lastContentOffset {
-        //            if self.isKeyboardResign == 0 {
-        //                self.inputKeyboard.resignFirstResponder()
-        //            }
-        //        }
-        //        self.lastContentOffset = currentOffset
     }
     
     func urlString()->String
@@ -253,7 +254,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/step.php?page=\(page)&id=\(self.stepID)&uid=\(safeuid)"
+        return "http://nian.so/api/step.php?page=\(page)&id=\(self.ID)&uid=\(safeuid)"
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){

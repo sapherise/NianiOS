@@ -109,8 +109,10 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        var data = self.dataArray[indexPath.row] as NSDictionary
+        var id = data.objectForKey("id") as String
         var CircleVC = CircleController()
-        CircleVC.stepID = 2760406
+        CircleVC.ID = id.toInt()!
         self.navigationController!.pushViewController(CircleVC, animated: true)
     }
     

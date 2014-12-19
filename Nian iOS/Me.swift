@@ -129,14 +129,20 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        
+        cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
         if indexPath.row == self.dataArray.count - 1 {
             cell!.viewLine.hidden = true
         }else{
             cell!.viewLine.hidden = false
         }
-        
         return cell!
+    }
+    
+    func onDreamClick(sender:UIGestureRecognizer){
+        var tag = sender.view!.tag
+        var dreamVC = DreamViewController()
+        dreamVC.Id = "\(tag)"
+        self.navigationController!.pushViewController(dreamVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
