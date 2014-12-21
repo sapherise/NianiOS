@@ -26,6 +26,13 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         SAReloadData()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        if globalWillCircleReload == 1 {
+            globalWillCircleReload = 0
+            self.SAReloadData()
+        }
+    }
+    
     func setupViews() {
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor

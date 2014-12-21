@@ -9,7 +9,7 @@
 import UIKit
 
 protocol editCircleDelegate {
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String)
+    func editCircle(editPrivate:Int, editTitle:String, editDes:String, editImage:String)
 }
 
 class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, CircleTagDelegate, UITextViewDelegate {
@@ -27,14 +27,14 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     var actionSheet:UIActionSheet?
     var setDreamActionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
-    var delegate:editDreamDelegate?
+    var delegate:editCircleDelegate?
     var tagType:Int = 0
     var dreamType:Int = 0
     
     var uploadUrl:String = ""
     
     var isEdit:Int = 0
-    var editId:String = ""
+    var editId:Int = 0
     var editTitle:String = ""
     var editContent:String = ""
     var editImage:String = ""
@@ -138,9 +138,11 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             self.field1!.text = self.editTitle
             self.field2.text = self.editContent
             self.uploadUrl = self.editImage
+            self.labelTag!.hidden = true
+            self.imageTag.hidden = true
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editCircleOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }else{
@@ -218,36 +220,35 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: self.tagType, dream: self.dreamType) {
                 json in
                 if json != nil {
-                    globalWillNianReload = 1
+                    globalWillCircleReload = 1
                     self.navigationController!.popViewControllerAnimated(true)
                 }
             }
         }
     }
     
-    func editDreamOK(){
+    func editCircleOK(){
         var title = self.field1?.text
         var content = self.field2.text
-        if title != "" {
+        if content == "梦境简介（可选）" {
+            content = ""
+        }
+        if title == "" {
+            self.field1!.becomeFirstResponder()
+            self.view.showTipText("你的梦境还没有名字...", delay: 2)
+        }else if self.uploadUrl == "" {
+            self.view.showTipText("你的梦境还没有封面...", delay: 2)
+        }else{
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
-            
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.editPrivate)&&id=\(self.editId)&&hashtag=\(self.tagType)", "http://nian.so/api/editdream.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        globalWillNianReload = 1
-                        self.navigationController!.popViewControllerAnimated(true)
-                        self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)")
-                    })
+            Api.postCircleEdit(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, ID: self.editId) { json in
+                if json != nil {
+                    globalWillCircleReload = 1
+                    self.delegate?.editCircle(self.isPrivate, editTitle: self.field1!.text, editDes: self.field2.text, editImage: self.uploadUrl)
+                    self.navigationController!.popViewControllerAnimated(true)
                 }
-            })
-        }else{
-            self.field1!.becomeFirstResponder()
+            }
         }
     }
     

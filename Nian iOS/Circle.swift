@@ -169,8 +169,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeshell = Sa.objectForKey("shell") as String
         var safeuser = Sa.objectForKey("user") as String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("step=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
+            var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/circle_chat.php")
             if sa != "" && sa != "err" {
+                println(sa)
                 dispatch_async(dispatch_get_main_queue(), {
                     delay(0.5, { () -> () in
                         self.SAReloadData(bool: true)
@@ -178,16 +179,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 })
             }
         })
-        //推送通知
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(safeuid)", "http://nian.so/push/push_mobile.php")
-        })
     }
     
     func SAloadData()
     {
         var heightBefore = self.tableview!.contentSize.height
-        var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(ID)"
+        var url = "http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull() {
                 var arr = data["items"] as NSArray
@@ -207,7 +204,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAReloadData(bool:Bool = false){
-        var url = "http://nian.so/api/comment_step.php?page=0&id=\(ID)"
+        var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
                 var arr = data["items"] as NSArray

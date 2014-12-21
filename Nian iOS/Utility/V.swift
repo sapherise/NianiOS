@@ -267,7 +267,7 @@ extension UIView {
         tipView.frame.size = size
         tipView.frame.origin = CGPointMake((globalWidth - size.width) / 2, globalHeight * 0.5 - size.height / 2)
         tipView.addSubview(tipLabel)
-        self.window!.addSubview(tipView)
+        self.window?.addSubview(tipView)
         UIView.animateWithDuration(0.3, delay: delay, options: UIViewAnimationOptions.allZeros, animations: { tipView.alpha = 0 }, completion: {
             finished in
             tipView.removeFromSuperview()

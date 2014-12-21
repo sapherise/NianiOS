@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate{
+class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, editCircleDelegate{
     
     let identifier = "circledetailcell"
     let identifier2 = "circledetailtop"
@@ -26,6 +26,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var addStepView:CircleJoin!
     var theTag:Int = -2
     var thePrivate:String = ""
+    var theLevel:Int = 0
+    var editTitle:String = ""
+    var editContent:String = ""
+    var editImage:String = ""
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -117,9 +121,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 c.labelTag.text = V.Tags[self.theTag]
                 c.numLeftNum.text = "\(self.dataArray.count)"
                 c.numMiddleNum.text = self.textPercent
-                c.nickLabel.text = (self.circleData!.objectForKey("title") as String)
-                var image = self.circleData!.objectForKey("img") as String
-                c.dreamhead.setImage("http://img.nian.so/dream/\(image)!dream", placeHolder: IconColor)
+                self.editTitle = self.circleData!.objectForKey("title") as String
+                c.nickLabel.text = self.editTitle
+                self.editImage = self.circleData!.objectForKey("img") as String
+                c.dreamhead.setImage("http://img.nian.so/dream/\(self.editImage)!dream", placeHolder: IconColor)
                 var isJoin = self.circleData!.objectForKey("isJoin") as String
                 if isJoin == "1" {
                     c.btnMain.setTitle("邀请", forState: UIControlState.Normal)
@@ -132,13 +137,15 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     c.btnMain.addTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.hidden = false
                 }
-                var des = self.circleData!.objectForKey("content") as String
-                if des == "" {
-                    des = "暂无简介"
+                self.editContent = self.circleData!.objectForKey("content") as String
+                var textContent = ""
+                if self.editContent == "" {
+                    textContent = "暂无简介"
+                }else{
+                    textContent = self.editContent
                 }
-                
-                c.labelDes.text = des
-                var desHeight = des.stringHeightWith(12,width:200)
+                c.labelDes.text = textContent
+                var desHeight = textContent.stringHeightWith(12,width:200)
                 c.labelDes.setHeight(desHeight)
                 c.labelDes.setY( 110 - desHeight / 2 )
             }
@@ -223,9 +230,23 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func onCircleDetailMoreClick(){
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.actionSheet!.addButtonWithTitle("退出梦境")
-        self.actionSheet!.addButtonWithTitle("取消")
-        self.actionSheet!.cancelButtonIndex = 1
+        if self.circleData != nil {
+            self.theLevel = (self.circleData!.objectForKey("level") as String).toInt()!
+            if self.theLevel == 9 {
+                self.actionSheet!.addButtonWithTitle("编辑梦境资料")
+                self.actionSheet!.addButtonWithTitle("解散梦境")
+                self.actionSheet!.addButtonWithTitle("取消")
+                self.actionSheet!.cancelButtonIndex = 2
+            }else if self.theLevel == 8 {
+                self.actionSheet!.addButtonWithTitle("编辑梦境资料")
+                self.actionSheet!.addButtonWithTitle("取消")
+                self.actionSheet!.cancelButtonIndex = 1
+            }else{
+                self.actionSheet!.addButtonWithTitle("退出梦境")
+                self.actionSheet!.addButtonWithTitle("取消")
+                self.actionSheet!.cancelButtonIndex = 1
+            }
+        }
         self.actionSheet!.showInView(self.view)
     }
     
@@ -278,18 +299,29 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         if actionSheet == self.actionSheet {
-            if buttonIndex == 0 {
-                self.actionSheetQuit = UIActionSheet(title: "再见了，梦境 #\(Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                self.actionSheetQuit!.addButtonWithTitle("退出梦境")
-                self.actionSheetQuit!.addButtonWithTitle("取消")
-                self.actionSheetQuit!.cancelButtonIndex = 1
-                self.actionSheetQuit!.showInView(self.view)
+            if self.theLevel == 9 {
+                if buttonIndex == 0 {
+                    self.circleEdit()
+                }else if buttonIndex == 1 {
+                    self.circleDelete()
+                }
+            }else if self.theLevel == 8 {
+                if buttonIndex == 0 {
+                    self.circleEdit()
+                }
+            }else{
+                if buttonIndex == 0 {
+                    self.circleQuit()
+                }
             }
         }else if actionSheet == self.actionSheetQuit {
-            Api.postCircleQuit(self.Id) {
-                json in
-                if json != nil {
-                    self.navigationController!.popViewControllerAnimated(true)
+            if buttonIndex == 0 {
+                Api.postCircleQuit(self.Id) {
+                    json in
+                    if json != nil {
+                        globalWillCircleReload = 1
+                        self.navigationController!.popToRootViewControllerAnimated(true)
+                    }
                 }
             }
         }else if actionSheet == self.cancelSheet {
@@ -297,6 +329,54 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 self.onViewCloseClick()
             }
         }
+    }
+    
+    func circleEdit(){
+        if circleData != nil {
+            println("编辑梦境资料啦")
+            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+            addcircleVC.isEdit = 1
+            addcircleVC.editId = self.Id.toInt()!
+            addcircleVC.editTitle = self.editTitle
+            addcircleVC.editContent = self.editContent
+            addcircleVC.editImage = self.editImage
+            addcircleVC.editPrivate = self.thePrivate
+            addcircleVC.delegate = self
+            self.navigationController!.pushViewController(addcircleVC, animated: true)
+        }
+    }
+    
+    func circleDelete(){
+        println("解散梦境了！")
+    }
+    
+    func circleQuit(){
+        self.actionSheetQuit = UIActionSheet(title: "再见了，梦境 #\(Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.actionSheetQuit!.addButtonWithTitle("退出梦境")
+        self.actionSheetQuit!.addButtonWithTitle("取消")
+        self.actionSheetQuit!.cancelButtonIndex = 1
+        self.actionSheetQuit!.showInView(self.view)
+    }
+    
+    func editCircle(editPrivate: Int, editTitle: String, editDes: String, editImage: String) {
+        self.editTitle = editTitle
+        self.editContent = editDes
+        self.editImage = editImage
+        self.thePrivate = "\(editPrivate)"
+        self.topCell.nickLabel.text = editTitle
+        if editDes == "" {
+            self.topCell.labelDes.text = "暂无简介"
+        }else{
+            self.topCell.labelDes.text = editDes
+        }
+        var textPrivate = ""
+        if editPrivate == 0 {
+            textPrivate = "任何人都可加入"
+        }else if editPrivate == 1 {
+            textPrivate = "需要验证后加入"
+        }
+        self.topCell.labelPrivate.text = textPrivate
+        self.topCell.dreamhead.setImage("http://img.nian.so/dream/\(editImage)!dream", placeHolder: IconColor)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
