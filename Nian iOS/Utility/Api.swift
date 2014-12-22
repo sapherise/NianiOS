@@ -154,4 +154,10 @@ struct Api {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/circle_quit.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)", callback: callback)
     }
+    
+    static func postCircleDelete(Id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_delete.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)", callback: callback)
+    }
+    
 }

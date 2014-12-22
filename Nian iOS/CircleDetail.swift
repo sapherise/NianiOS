@@ -21,6 +21,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var textPercent:String = "-"
     var actionSheet:UIActionSheet?
     var actionSheetQuit:UIActionSheet?
+    var actionSheetDelete: UIActionSheet?
+    var actionSheetPromote: UIActionSheet?
     var cancelSheet:UIActionSheet?
     var addView:ILTranslucentView!
     var addStepView:CircleJoin!
@@ -30,6 +32,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var editTitle:String = ""
     var editContent:String = ""
     var editImage:String = ""
+    var selectUid:Int = 0
+    var selectDream:Int = 0
+    var selectLevel:Int = -1
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -269,6 +274,18 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
+    func onUserActionClick(){
+        var UserVC = PlayerViewController()
+        UserVC.Id = "\(self.selectUid)"
+        self.navigationController!.pushViewController(UserVC, animated: true)
+    }
+    
+    func onDreamActionClick(){
+        var DreamVC = DreamViewController()
+        DreamVC.Id = "\(self.selectDream)"
+        self.navigationController!.pushViewController(DreamVC, animated: true)
+    }
+    
     func findTableCell(view: UIView?) -> UIView? {
         for var v = view; v != nil; v = v!.superview {
             if v! is UITableViewCell {
@@ -328,7 +345,70 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             if buttonIndex == 0 {
                 self.onViewCloseClick()
             }
+        }else if actionSheet == self.actionSheetDelete {
+            if buttonIndex == 0 {
+                Api.postCircleDelete(self.Id) {
+                    json in
+                    if json != nil {
+                        globalWillCircleReload = 1
+                        self.navigationController!.popToRootViewControllerAnimated(true)
+                    }
+                }
+            }
+        }else if actionSheet == self.actionSheetPromote {
+            
+            if self.theLevel == 9 {
+                if self.selectLevel == 9 {
+                    if buttonIndex == 0 {
+                        self.onUserActionClick()
+                    }else if buttonIndex == 1 {
+                        self.onDreamActionClick()
+                    }
+                }else if self.selectLevel == 8 {
+                    if buttonIndex == 0 {
+                        self.onDemoClick()
+                    }else if buttonIndex == 1 {
+                        self.onFireClick()
+                    }
+                }else if self.selectLevel == 0 {
+                    if buttonIndex == 0 {
+                        self.onPromoClick()
+                    }else if buttonIndex == 1 {
+                        self.onFireClick()
+                    }
+                }
+            }else if self.theLevel == 8 {
+                if self.selectLevel == 9 || self.selectLevel == 8 {
+                    if buttonIndex == 0 {
+                        self.onUserActionClick()
+                    }else if buttonIndex == 1 {
+                        self.onDreamActionClick()
+                    }
+                }else if self.selectLevel == 0 {
+                    if buttonIndex == 0 {
+                        self.onFireClick()
+                    }
+                }
+            }else if self.theLevel == 0 {
+                if buttonIndex == 0 {
+                    self.onUserActionClick()
+                }else if buttonIndex == 1 {
+                    self.onDreamActionClick()
+                }
+            }
         }
+    }
+    
+    func onPromoClick(){
+        println("升职")
+    }
+    
+    func onDemoClick(){
+        println("降职")
+    }
+    
+    func onFireClick(){
+        println("移除")
     }
     
     func circleEdit(){
@@ -347,7 +427,11 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func circleDelete(){
-        println("解散梦境了！")
+        self.actionSheetDelete = UIActionSheet(title: "再见了，梦境 #\(Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.actionSheetDelete!.addButtonWithTitle("解散梦境")
+        self.actionSheetDelete!.addButtonWithTitle("取消")
+        self.actionSheetDelete!.cancelButtonIndex = 1
+        self.actionSheetDelete!.showInView(self.view)
     }
     
     func circleQuit(){
@@ -385,6 +469,52 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         }else{
             return self.dataArray.count
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.actionSheetPromote = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        var data = self.dataArray[indexPath.row] as NSDictionary
+        var level = data.objectForKey("level") as String
+        var uid = data.objectForKey("uid") as String
+        var dream = data.objectForKey("dream") as String
+        self.selectUid = uid.toInt()!
+        self.selectDream = dream.toInt()!
+        self.selectLevel = level.toInt()!
+        if self.circleData != nil {
+            self.theLevel = (self.circleData!.objectForKey("level") as String).toInt()!
+            
+            if self.theLevel == 9 {
+                if level == "9" {
+                    self.actionSheetPromote!.addButtonWithTitle("看看自己")
+                    self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                }else if level == "8" {
+                    self.actionSheetPromote!.addButtonWithTitle("降职为成员")
+                    self.actionSheetPromote!.addButtonWithTitle("移出梦境")
+                }else if level == "0" {
+                    self.actionSheetPromote!.addButtonWithTitle("升为小组长")
+                    self.actionSheetPromote!.addButtonWithTitle("移出梦境")
+                }
+                self.actionSheetPromote!.addButtonWithTitle("取消")
+                self.actionSheetPromote!.cancelButtonIndex = 2
+            }else if self.theLevel == 8 {
+                if level == "9" || level == "8" {
+                    self.actionSheetPromote!.addButtonWithTitle("看看对方")
+                    self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                    self.actionSheetPromote!.addButtonWithTitle("取消")
+                    self.actionSheetPromote!.cancelButtonIndex = 2
+                }else if level == "0" {
+                    self.actionSheetPromote!.addButtonWithTitle("移出梦境")
+                    self.actionSheetPromote!.addButtonWithTitle("取消")
+                    self.actionSheetPromote!.cancelButtonIndex = 1
+                }
+            }else if self.theLevel == 0 {
+                self.actionSheetPromote!.addButtonWithTitle("看看对方")
+                self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                self.actionSheetPromote!.addButtonWithTitle("取消")
+                self.actionSheetPromote!.cancelButtonIndex = 2
+            }
+        }
+        self.actionSheetPromote!.showInView(self.view)
     }
     
 }
