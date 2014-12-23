@@ -36,6 +36,7 @@ var globalWillBBSReload:Int = 0
 var globalNumberDream:Int = 0
 var globalWillCircleReload:Int = 0
 var globalImageYPoint:CGFloat = 0
+var globalViewLoading:UIView?
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
@@ -242,6 +243,29 @@ func viewEmpty(width:CGFloat = 320, text:String = "这里是空的")->UIView {
     return viewEmpty
 }
 
+extension UIView {
+    func viewLoadingShow() {
+        globalViewLoading = UIView(frame: CGRectMake((globalWidth-50)/2, (globalHeight-50)/2, 50, 50))
+        globalViewLoading!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        globalViewLoading!.layer.cornerRadius = 4
+        globalViewLoading!.layer.masksToBounds = true
+        globalViewLoading!.userInteractionEnabled = false
+        var activity = UIActivityIndicatorView(frame: CGRectMake(10, 10, 30, 30))
+        activity.color = UIColor.whiteColor()
+        activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        activity.hidden = false
+        activity.startAnimating()
+        globalViewLoading!.addSubview(activity)
+        self.window?.addSubview(globalViewLoading!)
+    }
+    func viewLoadingHide() {
+        if globalViewLoading != nil {
+            globalViewLoading!.removeFromSuperview()
+        }
+    }
+}
+
+
 class fakeView:UIView{
     override internal func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, withEvent: event)
@@ -269,5 +293,4 @@ class SAActivity: UIActivity {
         saActivityFunction!()
     }
 }
-
 

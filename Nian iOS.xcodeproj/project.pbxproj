@@ -31,6 +31,9 @@
 		1257833519B5F19F008A1B3B /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833419B5F19F008A1B3B /* Like.swift */; };
 		1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833619B5F1A8008A1B3B /* LikeCell.swift */; };
 		1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1257833819B5F1B1008A1B3B /* LikeCell.xib */; };
+		1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1258C3081A49A9BC008FA4EF /* CircleExplore.swift */; };
+		1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */; };
+		1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1258C30C1A49A9E6008FA4EF /* CircleExploreCell.swift */; };
 		1265282E196C6460005765D2 /* Dream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282D196C6460005765D2 /* Dream.swift */; };
 		12652830196C6468005765D2 /* DreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282F196C6468005765D2 /* DreamCell.swift */; };
 		12652832196C6474005765D2 /* DreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12652831196C6474005765D2 /* DreamCell.xib */; };
@@ -178,6 +181,9 @@
 		1257833419B5F19F008A1B3B /* Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		1257833619B5F1A8008A1B3B /* LikeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
 		1257833819B5F1B1008A1B3B /* LikeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LikeCell.xib; sourceTree = "<group>"; };
+		1258C3081A49A9BC008FA4EF /* CircleExplore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleExplore.swift; sourceTree = "<group>"; };
+		1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleExploreCell.xib; sourceTree = "<group>"; };
+		1258C30C1A49A9E6008FA4EF /* CircleExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleExploreCell.swift; sourceTree = "<group>"; };
 		1265282D196C6460005765D2 /* Dream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dream.swift; sourceTree = "<group>"; };
 		1265282F196C6468005765D2 /* DreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCell.swift; sourceTree = "<group>"; };
 		12652831196C6474005765D2 /* DreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamCell.xib; sourceTree = "<group>"; };
@@ -410,6 +416,16 @@
 			name = "点赞";
 			sourceTree = "<group>";
 		};
+		1258C3071A49A99A008FA4EF /* 发现梦境 */ = {
+			isa = PBXGroup;
+			children = (
+				1258C3081A49A9BC008FA4EF /* CircleExplore.swift */,
+				1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */,
+				1258C30C1A49A9E6008FA4EF /* CircleExploreCell.swift */,
+			);
+			name = "发现梦境";
+			sourceTree = "<group>";
+		};
 		126ABCC21A25DAD3001BB5DA /* 同类标签 */ = {
 			isa = PBXGroup;
 			children = (
@@ -559,6 +575,7 @@
 				1271550B1A3FE7F200E27EC5 /* 梦境资料 */,
 				1271550A1A3FE7C600E27EC5 /* 梦境列表 */,
 				12028E2E1A3EDA330072FBE1 /* 创建梦境 */,
+				1258C3071A49A99A008FA4EF /* 发现梦境 */,
 			);
 			name = "梦境";
 			sourceTree = "<group>";
@@ -735,10 +752,10 @@
 		323CD2E71A11EEC400FFE3F4 /* 广场 */ = {
 			isa = PBXGroup;
 			children = (
-				129419FF19CFA8480008B274 /* 更新广场 */,
 				323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */,
 				323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */,
 				323CD2EA1A11EEF300FFE3F4 /* Group.swift */,
+				129419FF19CFA8480008B274 /* 更新广场 */,
 				12BE103919C5EBCB00370348 /* 更新广场评论 */,
 				12ECFC9719B8B56300CF1F98 /* 话题 */,
 			);
@@ -903,6 +920,7 @@
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				128DAC451A144F69009FB0E7 /* LevelGame.xib in Resources */,
 				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
+				1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
@@ -986,6 +1004,7 @@
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
+				1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */,
 				1253C2FE1A1DF0FF003D4ECF /* PlayerCell.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
@@ -1047,6 +1066,7 @@
 				12028E301A3EDA770072FBE1 /* AddCircle.swift in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
+				1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,

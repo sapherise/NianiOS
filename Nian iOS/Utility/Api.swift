@@ -160,4 +160,24 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_delete.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)", callback: callback)
     }
     
+    static func postCircleFire(Id: String, fireuid:Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_fire.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&fireuid=\(fireuid)", callback: callback)
+    }
+    
+    static func postCirclePromo(Id: String, promouid:Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_promote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&promouid=\(promouid)", callback: callback)
+    }
+    
+    static func postCircleDemo(Id: String, demouid:Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_demote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&demouid=\(demouid)", callback: callback)
+    }
+    
+    static func getCircleExplore(page:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_explore.php?page=\(page)", callback: callback)
+    }
+    
 }

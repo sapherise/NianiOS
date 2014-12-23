@@ -246,10 +246,8 @@ extension UIView {
         tipView.layer.masksToBounds = true
         tipView.layer.cornerRadius = 4
         tipView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-        
         let fontSize: CGFloat = 14
         let textWidth: CGFloat = 180
-        
         var h: CGFloat = fontSize
         var w: CGFloat = text.stringWidthWith(fontSize, height: h)
         if w > textWidth {

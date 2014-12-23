@@ -23,6 +23,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var actionSheetQuit:UIActionSheet?
     var actionSheetDelete: UIActionSheet?
     var actionSheetPromote: UIActionSheet?
+    var actionSheetFireConfirm: UIActionSheet?
     var cancelSheet:UIActionSheet?
     var addView:ILTranslucentView!
     var addStepView:CircleJoin!
@@ -35,10 +36,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var selectUid:Int = 0
     var selectDream:Int = 0
     var selectLevel:Int = -1
+    var selectRow:Int = 0
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        setupViews()
+        self.setupViews()
+        self.SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool)
@@ -81,6 +84,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         titleLabel.text = "梦境资料"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+    }
+    
+    func SAReloadData(){
         Api.getCircleDetail(self.Id) { json in
             if json != nil {
                 var arr = json!["items"] as NSArray
@@ -98,6 +104,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var percent = Int(ceil(Double(i) / Double(self.dataArray.count) * 100))
                 self.textPercent = "\(percent)%"
                 self.tableView!.reloadData()
+                self.view.viewLoadingHide()
             }
         }
     }
@@ -368,13 +375,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     if buttonIndex == 0 {
                         self.onDemoClick()
                     }else if buttonIndex == 1 {
-                        self.onFireClick()
+                        self.onFireConfirm()
                     }
                 }else if self.selectLevel == 0 {
                     if buttonIndex == 0 {
                         self.onPromoClick()
                     }else if buttonIndex == 1 {
-                        self.onFireClick()
+                        self.onFireConfirm()
                     }
                 }
             }else if self.theLevel == 8 {
@@ -386,7 +393,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     }
                 }else if self.selectLevel == 0 {
                     if buttonIndex == 0 {
-                        self.onFireClick()
+                        self.onFireConfirm()
                     }
                 }
             }else if self.theLevel == 0 {
@@ -396,24 +403,88 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     self.onDreamActionClick()
                 }
             }
+        }else if actionSheet == self.actionSheetFireConfirm {
+            if buttonIndex == 0 {
+                self.onFireClick()
+            }
         }
     }
     
     func onPromoClick(){
-        println("升职")
+        self.view.viewLoadingShow()
+        Api.postCirclePromo(self.Id, promouid: self.selectUid){ json in
+            if json != nil {
+                var success = json!["success"] as String
+                var reason = json!["reason"] as String
+                if success == "1" {
+                    self.SAReloadData()
+                }else{
+                    self.view.viewLoadingHide()
+                    if  reason == "1" {
+                        self.view.showTipText("你没有提升对方的权限...", delay: 2)
+                    }else if reason == "2" {
+                        self.view.showTipText("对方已经是小组长了~", delay: 2)
+                    }else if reason == "3" {
+                        self.view.showTipText("每个梦境最多只能有两个小组长...", delay: 2)
+                    }else{
+                        self.view.showTipText("遇到了一个神秘的错误...", delay: 2)
+                    }
+                }
+            }
+        }
     }
     
     func onDemoClick(){
-        println("降职")
+        self.view.viewLoadingShow()
+        Api.postCircleDemo(self.Id, demouid: self.selectUid){ json in
+            if json != nil {
+                var success = json!["success"] as String
+                var reason = json!["reason"] as String
+                if success == "1" {
+                    self.SAReloadData()
+                }else{
+                    self.view.viewLoadingHide()
+                    if  reason == "1" {
+                        self.view.showTipText("你没有降职对方的权限...", delay: 2)
+                    }else if reason == "2" {
+                        self.view.showTipText("对方已经是组员了~", delay: 2)
+                    }else{
+                        self.view.showTipText("遇到了一个神秘的错误...", delay: 2)
+                    }
+                }
+            }
+        }
+    }
+    
+    func onFireConfirm(){
+        self.actionSheetFireConfirm = UIActionSheet(title: "真的要移除吗？", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.actionSheetFireConfirm!.addButtonWithTitle("嗯！")
+        self.actionSheetFireConfirm!.addButtonWithTitle("取消")
+        self.actionSheetFireConfirm!.cancelButtonIndex = 1
+        self.actionSheetFireConfirm!.showInView(self.view)
     }
     
     func onFireClick(){
-        println("移除")
+        self.view.viewLoadingShow()
+        Api.postCircleFire(self.Id, fireuid: self.selectUid){ json in
+            if json != nil {
+                self.view.viewLoadingHide()
+                var success = json!["success"] as String
+                var reason = json!["reason"] as String
+                if success == "1" {
+                    var newpath = NSIndexPath(forRow: self.selectRow, inSection: 1)
+                    self.dataArray.removeObjectAtIndex(newpath!.row)
+                    self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.tableView!.reloadData()
+                }else{
+                    self.view.showTipText("由于千奇百怪的原因，移除失败了...", delay: 2)
+                }
+            }
+        }
     }
     
     func circleEdit(){
         if circleData != nil {
-            println("编辑梦境资料啦")
             var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
             addcircleVC.isEdit = 1
             addcircleVC.editId = self.Id.toInt()!
@@ -454,6 +525,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             self.topCell.labelDes.text = editDes
         }
         var textPrivate = ""
+        println("===\(editPrivate)")
         if editPrivate == 0 {
             textPrivate = "任何人都可加入"
         }else if editPrivate == 1 {
@@ -472,49 +544,63 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.actionSheetPromote = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        var data = self.dataArray[indexPath.row] as NSDictionary
-        var level = data.objectForKey("level") as String
-        var uid = data.objectForKey("uid") as String
-        var dream = data.objectForKey("dream") as String
-        self.selectUid = uid.toInt()!
-        self.selectDream = dream.toInt()!
-        self.selectLevel = level.toInt()!
-        if self.circleData != nil {
-            self.theLevel = (self.circleData!.objectForKey("level") as String).toInt()!
-            
-            if self.theLevel == 9 {
-                if level == "9" {
-                    self.actionSheetPromote!.addButtonWithTitle("看看自己")
-                    self.actionSheetPromote!.addButtonWithTitle("看看梦想")
-                }else if level == "8" {
-                    self.actionSheetPromote!.addButtonWithTitle("降职为成员")
-                    self.actionSheetPromote!.addButtonWithTitle("移出梦境")
-                }else if level == "0" {
-                    self.actionSheetPromote!.addButtonWithTitle("升为小组长")
-                    self.actionSheetPromote!.addButtonWithTitle("移出梦境")
-                }
-                self.actionSheetPromote!.addButtonWithTitle("取消")
-                self.actionSheetPromote!.cancelButtonIndex = 2
-            }else if self.theLevel == 8 {
-                if level == "9" || level == "8" {
-                    self.actionSheetPromote!.addButtonWithTitle("看看对方")
+        var section = indexPath.section
+        if section==1 {
+            self.actionSheetPromote = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var data = self.dataArray[indexPath.row] as NSDictionary
+            var level = data.objectForKey("level") as String
+            var uid = data.objectForKey("uid") as String
+            var dream = data.objectForKey("dream") as String
+            self.selectUid = uid.toInt()!
+            self.selectDream = dream.toInt()!
+            self.selectLevel = level.toInt()!
+            self.selectRow = indexPath.row
+            if self.circleData != nil {
+                self.theLevel = (self.circleData!.objectForKey("level") as String).toInt()!
+                
+                if self.theLevel == 9 {
+                    if level == "9" {
+                        self.actionSheetPromote!.addButtonWithTitle("看看自己")
+                        self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                    }else if level == "8" {
+                        self.actionSheetPromote!.addButtonWithTitle("降职为成员")
+                        self.actionSheetPromote!.addButtonWithTitle("移出梦境")
+                    }else if level == "0" {
+                        self.actionSheetPromote!.addButtonWithTitle("升为小组长")
+                        self.actionSheetPromote!.addButtonWithTitle("移出梦境")
+                    }
+                    self.actionSheetPromote!.addButtonWithTitle("取消")
+                    self.actionSheetPromote!.cancelButtonIndex = 2
+                }else if self.theLevel == 8 {
+                    if level == "9" || level == "8" {
+                        if safeuid == uid {
+                            self.actionSheetPromote!.addButtonWithTitle("看看自己")
+                        }else{
+                            self.actionSheetPromote!.addButtonWithTitle("看看对方")
+                        }
+                        self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                        self.actionSheetPromote!.addButtonWithTitle("取消")
+                        self.actionSheetPromote!.cancelButtonIndex = 2
+                    }else if level == "0" {
+                        self.actionSheetPromote!.addButtonWithTitle("移出梦境")
+                        self.actionSheetPromote!.addButtonWithTitle("取消")
+                        self.actionSheetPromote!.cancelButtonIndex = 1
+                    }
+                }else if self.theLevel == 0 {
+                    if safeuid == uid {
+                        self.actionSheetPromote!.addButtonWithTitle("看看自己")
+                    }else{
+                        self.actionSheetPromote!.addButtonWithTitle("看看对方")
+                    }
                     self.actionSheetPromote!.addButtonWithTitle("看看梦想")
                     self.actionSheetPromote!.addButtonWithTitle("取消")
                     self.actionSheetPromote!.cancelButtonIndex = 2
-                }else if level == "0" {
-                    self.actionSheetPromote!.addButtonWithTitle("移出梦境")
-                    self.actionSheetPromote!.addButtonWithTitle("取消")
-                    self.actionSheetPromote!.cancelButtonIndex = 1
                 }
-            }else if self.theLevel == 0 {
-                self.actionSheetPromote!.addButtonWithTitle("看看对方")
-                self.actionSheetPromote!.addButtonWithTitle("看看梦想")
-                self.actionSheetPromote!.addButtonWithTitle("取消")
-                self.actionSheetPromote!.cancelButtonIndex = 2
             }
+            self.actionSheetPromote!.showInView(self.view)
         }
-        self.actionSheetPromote!.showInView(self.view)
     }
     
 }

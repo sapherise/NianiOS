@@ -242,10 +242,10 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
-            Api.postCircleEdit(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, ID: self.editId) { json in
+            Api.postCircleEdit(title!, content: content, img: self.uploadUrl, privateType: self.editPrivate.toInt()!, ID: self.editId) { json in
                 if json != nil {
                     globalWillCircleReload = 1
-                    self.delegate?.editCircle(self.isPrivate, editTitle: self.field1!.text, editDes: self.field2.text, editImage: self.uploadUrl)
+                    self.delegate?.editCircle(self.editPrivate.toInt()!, editTitle: self.field1!.text, editDes: self.field2.text, editImage: self.uploadUrl)
                     self.navigationController!.popViewControllerAnimated(true)
                 }
             }
