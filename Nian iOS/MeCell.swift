@@ -60,6 +60,8 @@ class MeCell: UITableViewCell {
         case "8": word = "赞了你的进展"
             content = dreamtitle
         case "9": word = "申请加入梦境「\(dreamtitle)」"
+        case "10": word = "邀请你加入梦境"
+        content = "「\(dreamtitle)」"
         default: word = "与你互动了"
         }
         

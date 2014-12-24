@@ -180,4 +180,9 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
     }
     
+    static func postCircleInvite(Id: String, uid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_invite.php", content: "uid=\(uid)&myuid=\(s_uid)&shell=\(s_shell)&circle=\(Id)", callback: callback)
+    }
+    
 }

@@ -193,6 +193,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         var LikeVC = LikeViewController()
         LikeVC.Id = safeuid
         LikeVC.urlIdentify = 4
+        LikeVC.circleID = self.Id
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     

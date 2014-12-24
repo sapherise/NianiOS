@@ -17,6 +17,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var Id:String = ""
     var urlIdentify:Int = 0
     var navView:UIView!
+    var circleID:String = "0"
     
     
     override func viewDidLoad()
@@ -156,6 +157,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
         cell!.urlIdentify = self.urlIdentify
+        cell!.circleID = self.circleID
         var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
         cell!.avatarView?.addGestureRecognizer(userclick)
         return cell!

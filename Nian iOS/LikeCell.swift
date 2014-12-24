@@ -20,18 +20,13 @@ class LikeCell: UITableViewCell {
     var user:String = ""
     var uid:String = ""
     var urlIdentify:Int = 0
+    var circleID:String = "0"
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.avatarView.layer.cornerRadius = 20
         self.avatarView.layer.masksToBounds = true
-        if self.urlIdentify == 4 {
-            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        }else{
-            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        }
-        println(self.urlIdentify)
     }
     
     override func layoutSubviews()
@@ -51,6 +46,7 @@ class LikeCell: UITableViewCell {
             self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
             self.btnFollow.backgroundColor = UIColor.whiteColor()
             self.btnFollow.setTitle("邀请", forState: UIControlState.Normal)
+            self.btnFollow.addTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
         }else{
             if follow == "0" {
                 self.btnFollow.tag = 100
@@ -66,15 +62,21 @@ class LikeCell: UITableViewCell {
                 self.btnFollow.backgroundColor = SeaColor
                 self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
             }
+            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
         }
     }
     
     func onInviteClick(sender:UIButton){
-        println("1")
         sender.layer.borderWidth = 0
         sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         sender.backgroundColor = SeaColor
         sender.setTitle("已邀请", forState: UIControlState.Normal)
+        sender.removeTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        Api.postCircleInvite(self.circleID, uid: self.uid) { json in
+            if json != nil {
+                println(json)
+            }
+        }
     }
     
     func onFollowClick(sender:UIButton){
