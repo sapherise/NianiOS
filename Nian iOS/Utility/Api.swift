@@ -112,16 +112,6 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/circle_join_dream.php?uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
     }
     
-    static func getCircleJoinConfirm(circle:String, dream:String, word:String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/circle_notice_confirm.php?uid=\(s_uid)&shell=\(s_shell)&circle=\(circle)&dream=\(dream)&word=\(word)", callback: callback)
-    }
-    
-    static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
-    }
-    
     static func getCircleDetail(circle:String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/circle_detail.php?uid=\(s_uid)&id=\(circle)", callback: callback)
@@ -175,9 +165,19 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_demote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&demouid=\(demouid)", callback: callback)
     }
     
+    static func postCircleJoinDirectly(Id: String, dream:String, word:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/circle_join.php", content: "uid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&dream=\(dream)&word=\(word)", callback: callback)
+    }
+    
     static func getCircleExplore(page:String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/circle_explore.php?page=\(page)", callback: callback)
+    }
+    
+    static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
     }
     
 }

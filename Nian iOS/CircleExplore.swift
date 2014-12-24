@@ -16,10 +16,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     var page :Int = 0
     var Id:String = "1"
     
-    override func viewDidAppear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
-    }
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -35,7 +31,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.backgroundColor = BGColor
@@ -52,6 +48,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         titleLabel.text = "发现梦境"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        self.navigationController?.navigationBar.viewLoadingShow()
     }
     
     func loadData() {
@@ -75,6 +72,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView!.setFooterHidden(false)
         Api.getCircleExplore("0"){ json in
             if json != nil {
+                self.navigationController?.navigationBar.viewLoadingHide()
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
@@ -120,6 +118,11 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        var data = self.dataArray[indexPath.row] as NSDictionary
+        var id = data.objectForKey("id") as String
+        var circledetailVC = CircleDetailController()
+        circledetailVC.Id = id
+        self.navigationController!.pushViewController(circledetailVC, animated: true)
     }
     
     func setupRefresh(){

@@ -19,13 +19,19 @@ class LikeCell: UITableViewCell {
     var data :NSDictionary!
     var user:String = ""
     var uid:String = ""
+    var urlIdentify:Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.avatarView.layer.cornerRadius = 20
         self.avatarView.layer.masksToBounds = true
-        self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        if self.urlIdentify == 4 {
+            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        }else{
+            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        }
+        println(self.urlIdentify)
     }
     
     override func layoutSubviews()
@@ -39,20 +45,36 @@ class LikeCell: UITableViewCell {
         self.avatarView.tag = self.uid.toInt()!
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         
-        if follow == "0" {
-            self.btnFollow.tag = 100
+        if self.urlIdentify == 4 {
             self.btnFollow.layer.borderColor = SeaColor.CGColor
             self.btnFollow.layer.borderWidth = 1
             self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
             self.btnFollow.backgroundColor = UIColor.whiteColor()
-            self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
+            self.btnFollow.setTitle("邀请", forState: UIControlState.Normal)
         }else{
-            self.btnFollow.tag = 200
-            self.btnFollow.layer.borderWidth = 0
-            self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            self.btnFollow.backgroundColor = SeaColor
-            self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
+            if follow == "0" {
+                self.btnFollow.tag = 100
+                self.btnFollow.layer.borderColor = SeaColor.CGColor
+                self.btnFollow.layer.borderWidth = 1
+                self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
+                self.btnFollow.backgroundColor = UIColor.whiteColor()
+                self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
+            }else{
+                self.btnFollow.tag = 200
+                self.btnFollow.layer.borderWidth = 0
+                self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+                self.btnFollow.backgroundColor = SeaColor
+                self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
+            }
         }
+    }
+    
+    func onInviteClick(sender:UIButton){
+        println("1")
+        sender.layer.borderWidth = 0
+        sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        sender.backgroundColor = SeaColor
+        sender.setTitle("已邀请", forState: UIControlState.Normal)
     }
     
     func onFollowClick(sender:UIButton){

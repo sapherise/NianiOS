@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, editCircleDelegate{
+class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, editCircleDelegate, circleAddDelegate{
     
     let identifier = "circledetailcell"
     let identifier2 = "circledetailtop"
@@ -29,7 +29,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var addStepView:CircleJoin!
     var theTag:Int = -2
     var thePrivate:String = ""
-    var theLevel:Int = 0
+    var theLevel:String = "0"
     var editTitle:String = ""
     var editContent:String = ""
     var editImage:String = ""
@@ -101,8 +101,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                         i++
                     }
                 }
-                var percent = Int(ceil(Double(i) / Double(self.dataArray.count) * 100))
-                self.textPercent = "\(percent)%"
+                if self.dataArray.count > 0 {
+                    var percent = Int(ceil(Double(i) / Double(self.dataArray.count) * 100))
+                    self.textPercent = "\(percent)%"
+                }else{
+                    self.view.showTipText("这个梦境没人在...", delay: 2)
+                }
                 self.tableView!.reloadData()
                 self.view.viewLoadingHide()
             }
@@ -141,13 +145,16 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 if isJoin == "1" {
                     c.btnMain.setTitle("邀请", forState: UIControlState.Normal)
                     c.btnMain.hidden = false
+                    c.btnMain.removeTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    c.btnMain.addTarget(self, action: "onCircleInviteClick", forControlEvents: UIControlEvents.TouchUpInside)
                     var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailMoreClick")
                     rightButton.image = UIImage(named:"more")
                     self.navigationItem.rightBarButtonItem = rightButton
                 }else{
-                    c.btnMain.setTitle("加入", forState: UIControlState.Normal)
-                    c.btnMain.addTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.hidden = false
+                    c.btnMain.setTitle("加入", forState: UIControlState.Normal)
+                    c.btnMain.removeTarget(self, action: "onCircleInviteClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    c.btnMain.addTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
                 }
                 self.editContent = self.circleData!.objectForKey("content") as String
                 var textContent = ""
@@ -179,6 +186,16 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         return cell
     }
     
+    func onCircleInviteClick(){
+        println("邀请")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var LikeVC = LikeViewController()
+        LikeVC.Id = safeuid
+        LikeVC.urlIdentify = 4
+        self.navigationController!.pushViewController(LikeVC, animated: true)
+    }
+    
     func onCircleJoinClick(){
         self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
         self.addView.translucentAlpha = 1
@@ -193,6 +210,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         
         var nib = NSBundle.mainBundle().loadNibNamed("CircleJoin", owner: self, options: nil) as NSArray
         self.addStepView = nib.objectAtIndex(0) as CircleJoin
+        self.addStepView.delegate = self
         self.addStepView.circleID = self.Id
         self.addStepView.hashTag = self.theTag + 1
         self.addStepView.thePrivate = self.thePrivate
@@ -243,13 +261,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     func onCircleDetailMoreClick(){
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if self.circleData != nil {
-            self.theLevel = (self.circleData!.objectForKey("level") as String).toInt()!
-            if self.theLevel == 9 {
+            self.theLevel = self.circleData!.objectForKey("level") as String
+            if self.theLevel == "9" {
                 self.actionSheet!.addButtonWithTitle("编辑梦境资料")
                 self.actionSheet!.addButtonWithTitle("解散梦境")
                 self.actionSheet!.addButtonWithTitle("取消")
                 self.actionSheet!.cancelButtonIndex = 2
-            }else if self.theLevel == 8 {
+            }else if self.theLevel == "8" {
                 self.actionSheet!.addButtonWithTitle("编辑梦境资料")
                 self.actionSheet!.addButtonWithTitle("取消")
                 self.actionSheet!.cancelButtonIndex = 1
@@ -323,13 +341,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         if actionSheet == self.actionSheet {
-            if self.theLevel == 9 {
+            if self.theLevel == "9" {
                 if buttonIndex == 0 {
                     self.circleEdit()
                 }else if buttonIndex == 1 {
                     self.circleDelete()
                 }
-            }else if self.theLevel == 8 {
+            }else if self.theLevel == "8" {
                 if buttonIndex == 0 {
                     self.circleEdit()
                 }
@@ -364,7 +382,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             }
         }else if actionSheet == self.actionSheetPromote {
             
-            if self.theLevel == 9 {
+            if self.theLevel == "9" {
                 if self.selectLevel == 9 {
                     if buttonIndex == 0 {
                         self.onUserActionClick()
@@ -384,7 +402,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                         self.onFireConfirm()
                     }
                 }
-            }else if self.theLevel == 8 {
+            }else if self.theLevel == "8" {
                 if self.selectLevel == 9 || self.selectLevel == 8 {
                     if buttonIndex == 0 {
                         self.onUserActionClick()
@@ -396,7 +414,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                         self.onFireConfirm()
                     }
                 }
-            }else if self.theLevel == 0 {
+            }else if self.theLevel == "0" {
                 if buttonIndex == 0 {
                     self.onUserActionClick()
                 }else if buttonIndex == 1 {
@@ -558,9 +576,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             self.selectLevel = level.toInt()!
             self.selectRow = indexPath.row
             if self.circleData != nil {
-                self.theLevel = (self.circleData!.objectForKey("level") as String).toInt()!
+                println(self.circleData)
+                self.theLevel = self.circleData!.objectForKey("level") as String
+                if self.theLevel == "" {
+                    self.theLevel = "0"
+                }
                 
-                if self.theLevel == 9 {
+                if self.theLevel == "9" {
                     if level == "9" {
                         self.actionSheetPromote!.addButtonWithTitle("看看自己")
                         self.actionSheetPromote!.addButtonWithTitle("看看梦想")
@@ -573,7 +595,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     }
                     self.actionSheetPromote!.addButtonWithTitle("取消")
                     self.actionSheetPromote!.cancelButtonIndex = 2
-                }else if self.theLevel == 8 {
+                }else if self.theLevel == "8" {
                     if level == "9" || level == "8" {
                         if safeuid == uid {
                             self.actionSheetPromote!.addButtonWithTitle("看看自己")
@@ -588,7 +610,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                         self.actionSheetPromote!.addButtonWithTitle("取消")
                         self.actionSheetPromote!.cancelButtonIndex = 1
                     }
-                }else if self.theLevel == 0 {
+                }else if self.theLevel == "0" {
                     if safeuid == uid {
                         self.actionSheetPromote!.addButtonWithTitle("看看自己")
                     }else{

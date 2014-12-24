@@ -70,6 +70,8 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             titleLabel.text = "听众"
         }else if self.urlIdentify == 3 {
             titleLabel.text = "赞过梦想"
+        }else if self.urlIdentify == 4 {
+            titleLabel.text = "邀请"
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -127,8 +129,10 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             return "http://nian.so/api/user_fo_list2.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 2 {
             return "http://nian.so/api/user_foed_list2.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
-        }else{
+        }else if self.urlIdentify == 3{
             return "http://nian.so/api/like_dream.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
+        }else{
+            return "http://nian.so/api/user_fo_list2.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
         }
     }
     
@@ -151,6 +155,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
         cell!.data = data
+        cell!.urlIdentify = self.urlIdentify
         var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
         cell!.avatarView?.addGestureRecognizer(userclick)
         return cell!

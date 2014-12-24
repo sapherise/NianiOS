@@ -8,6 +8,9 @@
 
 import UIKit
 
+protocol circleAddDelegate {
+    func SAReloadData()
+}
 
 class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     @IBOutlet var imageDream: UIImageView!
@@ -28,9 +31,9 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
     var dreamID:String = "0"
     var thePrivate:String = ""
     var circleID:String = "0"
-    
     var uploadWidth:String = ""
     var uploadHeight:String = ""
+    var delegate: circleAddDelegate?
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
@@ -141,18 +144,50 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
             self.btnOK.enabled = false
             self.activityOK.hidden = false
             self.activityOK.startAnimating()
-            if self.thePrivate == "0" {
-                println("加入梦境成功")
-            }else if self.thePrivate == "1" {
-                Api.getCircleJoinConfirm(self.circleID, dream: self.dreamID, word: content){ json in
-                    if json != nil {
-                        //提交成功
+            Api.postCircleJoinDirectly(self.circleID, dream: self.dreamID, word: content) { json in
+                if json != nil {
+                    var success = json!["success"] as String
+                    var reason = json!["reason"] as String
+                    if success == "1" {
                         self.activityOK.stopAnimating()
                         self.activityOK.hidden = true
-                        self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
-                        delay(1, { () -> () in
-                            println("关闭当前视图")
-                        })
+                        var textOK = ""
+                        if self.thePrivate == "0" {
+                            textOK = "加入好了！"
+                        }else if self.thePrivate == "1" {
+                            textOK = "发好验证了！"
+                        }
+                        self.btnOK.setTitle(textOK, forState: UIControlState.Normal)
+                        if let v = self.superview {
+                            delay(1, { () -> () in
+                                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                                    var newTransform = CGAffineTransformScale(v.transform, 1.2, 1.2)
+                                    v.transform = newTransform
+                                    v.alpha = 0
+                                    }) { (Bool) -> Void in
+                                        v.removeFromSuperview()
+                                        self.delegate?.SAReloadData()
+                                }
+                            })
+                        }
+                    }else{
+                        var textReason = ""
+                        if reason == "1" {
+                            textReason = "这个梦境不存在..."
+                        }else if reason == "2" {
+                            textReason = "梦境需要验证，取消后返回再重进试试！"
+                        }else if reason == "3" {
+                            textReason = "梦境满了..."
+                        }else if reason == "4" {
+                            textReason = "你已经在里面啦"
+                        }else{
+                            textReason = "奇怪的错误，代码是「\(reason)」"
+                        }
+                        self.activityOK.stopAnimating()
+                        self.activityOK.hidden = true
+                        self.btnOK.setTitle("加入梦境", forState: UIControlState.Normal)
+                        self.btnOK.enabled = true
+                        self.showTipText(textReason, delay: 2)
                     }
                 }
             }

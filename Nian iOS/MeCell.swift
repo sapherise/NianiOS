@@ -117,10 +117,26 @@ class MeCell: UITableViewCell {
         var id = self.data.stringAttributeForKey("id") as String
         Api.getCircleJoinConfirmOK(id) { json in
             if json != nil {
-                self.activity.hidden = true
-                view.text = "已接受"
-                view.backgroundColor = IconColor
-                view.removeGestureRecognizer(sender)
+                var success = json!["success"] as String
+                var reason = json!["reason"] as String
+                if success == "1" {
+                    self.activity.hidden = true
+                    view.text = "已接受"
+                    view.backgroundColor = IconColor
+                    view.removeGestureRecognizer(sender)
+                }else{
+                    self.activity.hidden = true
+                    view.text = "接受"
+                    if reason == "1" {
+                        self.View?.showTipText("遇到了一个奇怪的错误...", delay: 2)
+                    }else if reason == "2" {
+                        self.View?.showTipText("你的权限不够...", delay: 2)
+                    }else if reason == "3" {
+                        self.View?.showTipText("梦境的人满了！", delay: 2)
+                    }else{
+                        self.View?.showTipText("遇到了一个奇怪的错误...", delay: 2)
+                    }
+                }
             }
         }
     }
