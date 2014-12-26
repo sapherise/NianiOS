@@ -21,8 +21,6 @@ class CircleDetailCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.imageUser.setImage("http://img.nian.so/head/1.jpg!dream", placeHolder: IconColor)
-        self.imageDream.setImage("http://img.nian.so/head/1.jpg!dream", placeHolder: IconColor)
     }
     
     override func layoutSubviews() {

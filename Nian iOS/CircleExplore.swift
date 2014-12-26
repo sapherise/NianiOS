@@ -112,9 +112,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        var index = indexPath!.row
-        var data = self.dataArray[index] as NSDictionary
-        return  CircleExploreCell.cellHeightByData(data)
+        return  72
     }
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
@@ -138,5 +136,11 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         if let v = self.navigationController {
             v.popViewControllerAnimated(true)
         }
+    }
+    
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        self.navigationController!.interactivePopGestureRecognizer.delegate = self
     }
 }

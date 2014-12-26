@@ -125,21 +125,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//            for ;; {
-//                V.httpGetForJson("http://127.0.0.1:6426/poll") {
-//                    json in
-//                    dispatch_async(dispatch_get_main_queue(), {
-//                        self.handlePoll(json)
-//                    })
-//                }
-//            }
-        })
-    }
-    
-    func handlePoll(json: AnyObject?) {
-        println("1")
     }
     
     func onCircleDetailClick(){
