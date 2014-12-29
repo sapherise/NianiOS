@@ -187,7 +187,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func onCircleInviteClick(){
-        println("邀请")
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var LikeVC = LikeViewController()
@@ -544,7 +543,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             self.topCell.labelDes.text = editDes
         }
         var textPrivate = ""
-        println("===\(editPrivate)")
         if editPrivate == 0 {
             textPrivate = "任何人都可加入"
         }else if editPrivate == 1 {
@@ -577,7 +575,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             self.selectLevel = level.toInt()!
             self.selectRow = indexPath.row
             if self.circleData != nil {
-                println(self.circleData)
                 self.theLevel = self.circleData!.objectForKey("level") as String
                 if self.theLevel == "" {
                     self.theLevel = "0"

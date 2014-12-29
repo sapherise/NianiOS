@@ -42,17 +42,16 @@ class CommentCell: UITableViewCell {
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         
-        var height = content.stringHeightWith(17,width:208)
+        var height = content.stringHeightWith(13,width:208)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.avatarView?.tag = uid.toInt()!
-        
-        if floor(height) == 20.0 {      //如果是单行
-            var oneLineWidth = content.stringWidthWith(17, height: 24)
+        if floor(height) == 15.0 {      //如果是单行
+            var oneLineWidth = content.stringWidthWith(13, height: 24)
             self.imageContent.setWidth(oneLineWidth + 27)
             self.imageContent.setHeight(37)
-            self.contentLabelWidth = content.stringWidthWith(17, height: 24)
+            self.contentLabelWidth = content.stringWidthWith(13, height: 24)
         }else{      //如果是多行
             self.imageContent.setHeight(height+20)
             self.imageContent.setWidth(235)
@@ -91,7 +90,7 @@ class CommentCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var content = data.stringAttributeForKey("content")
-        var height = content.stringHeightWith(17,width:208)
+        var height = content.stringHeightWith(13,width:208)
         return height + 60
     }
     

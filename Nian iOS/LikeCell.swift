@@ -74,7 +74,6 @@ class LikeCell: UITableViewCell {
         sender.removeTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
         Api.postCircleInvite(self.circleID, uid: self.uid) { json in
             if json != nil {
-                println(json)
             }
         }
     }

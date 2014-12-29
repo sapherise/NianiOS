@@ -76,9 +76,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview!.delegate = self;
         self.tableview!.dataSource = self;
         self.tableview!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib3 = UINib(nibName:"CommentCell", bundle: nil)
+        var nib = UINib(nibName:"CommentCell", bundle: nil)
+        var nib2 = UINib(nibName:"CircleType", bundle: nil)
         
-        self.tableview?.registerNib(nib3, forCellReuseIdentifier: identifier)
+        self.tableview?.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableview?.registerNib(nib2, forCellReuseIdentifier: "CircleType")
         self.view.addSubview(self.tableview!)
         
         self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
@@ -150,7 +152,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
         var commentReplyRow = self.dataArray.count
-        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","1"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
         var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
         self.tableview!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
@@ -171,7 +173,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/circle_chat.php")
             if sa != "" && sa != "err" {
-                println(sa)
                 dispatch_async(dispatch_get_main_queue(), {
                     delay(0.5, { () -> () in
                         self.SAReloadData(bool: true)
@@ -204,9 +205,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAReloadData(bool:Bool = false){
-        
-        
-        
         var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
@@ -300,12 +298,20 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
         var index = indexPath.row
         var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
-        c.data = data
-        c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        cell = c
+        var type = data.objectForKey("type") as String
+        // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
+        if type == "1" || type == "2" {
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
+            c.data = data
+            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            cell = c
+        }else{
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as CircleTypeCell
+            c.data = data
+            cell = c
+        }
         return cell
     }
     
@@ -319,7 +325,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         var index = indexPath!.row
         var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
-        return  CommentCell.cellHeightByData(data)
+        if let type = data.objectForKey("type") as? String {
+            if type == "1" || type == "2" {
+                return CommentCell.cellHeightByData(data)
+            }
+        }
+        return 90
     }
     
     func back(){

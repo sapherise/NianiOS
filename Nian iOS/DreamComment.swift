@@ -152,7 +152,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         //当提交评论后滚动到最新评论的底部
         var contentOffsetHeight = self.tableview!.contentOffset.y
         if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
-            self.tableview!.setContentOffset(CGPointMake(0, contentOffsetHeight + replyContent.stringHeightWith(17,width:208) + 60), animated: true)
+            self.tableview!.setContentOffset(CGPointMake(0, contentOffsetHeight + replyContent.stringHeightWith(13,width:208) + 60), animated: true)
         }
     }
     
