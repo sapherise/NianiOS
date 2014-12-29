@@ -25,21 +25,17 @@ class SAHttpRequest: NSObject {
         var req = NSURLRequest(URL: URL!)
         var queue = NSOperationQueue();
         NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-            if (error != nil)
-            {
-                dispatch_async(dispatch_get_main_queue(),
-                {
+            if (error != nil) {
+                dispatch_async(dispatch_get_main_queue(), {
                     completionHandler(data:NSNull())
                 })
-            }
-            else
-            {
-                let jsonData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
-                dispatch_async(dispatch_get_main_queue(),
-                {
-                    completionHandler(data:jsonData)
-                    
-                })
+            }else{
+                if data != nil {
+                    let jsonData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(data:jsonData)
+                    })
+                }
             }
         })
     }

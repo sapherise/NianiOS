@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     let identifier = "comment"
     var tableview:UITableView?
@@ -16,6 +16,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var page :Int = 0
     var replySheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
+    var actionSheetPhoto:UIActionSheet?
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
@@ -42,6 +43,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var isKeyboardResign:Int = 0 //为了解决评论会收起键盘的BUG创建的开关，当提交过程中变为1，0时才收起键盘
     var keyboardHeight:CGFloat = 0
     var lastContentOffset:CGFloat?
+    
+    var imagePicker:UIImagePickerController?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -92,13 +95,14 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.tableview!.tableFooterView = self.viewBottom
         
-        //输入框
+        
+        // 输入框
         self.keyboardView = UIView(frame: CGRectMake(0, globalHeight - 44, globalWidth, 44))
         self.keyboardView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
         var inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
         inputLineView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
         self.keyboardView.addSubview(inputLineView)
-        self.inputKeyboard = UITextField(frame: CGRectMake(8, 8, globalWidth-16, 28))
+        self.inputKeyboard = UITextField(frame: CGRectMake(8+28+8, 8, globalWidth-16-36, 28))
         self.inputKeyboard.layer.cornerRadius = 4
         self.inputKeyboard.layer.masksToBounds = true
         
@@ -111,9 +115,20 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.inputKeyboard.delegate = self
         self.inputKeyboard.backgroundColor = UIColor.whiteColor()
         self.keyboardView.addSubview(self.inputKeyboard)
+        
+        // 发送图片
+        var imagePhoto = UIImageView(frame: CGRectMake(8, 8, 28, 28))
+        imagePhoto.image = UIImage(named: "plus")
+        imagePhoto.backgroundColor = SeaColor
+        imagePhoto.contentMode = UIViewContentMode.Center
+        imagePhoto.layer.borderColor = UIColor.whiteColor().CGColor
+        imagePhoto.layer.borderWidth = 1
+        imagePhoto.layer.cornerRadius = 14
+        imagePhoto.layer.masksToBounds = true
+        imagePhoto.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPhotoClick:"))
+        imagePhoto.userInteractionEnabled = true
+        self.keyboardView.addSubview(imagePhoto)
         self.view.addSubview(self.keyboardView)
-        
-        
         self.inputKeyboard.returnKeyType = UIReturnKeyType.Send
         
         //标题颜色
@@ -127,6 +142,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
+    }
+    
+    func onPhotoClick(sender:UITapGestureRecognizer){
+        self.actionSheetPhoto = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.actionSheetPhoto!.addButtonWithTitle("相册")
+        self.actionSheetPhoto!.addButtonWithTitle("拍照")
+        self.actionSheetPhoto!.addButtonWithTitle("取消")
+        self.actionSheetPhoto!.cancelButtonIndex = 2
+        self.actionSheetPhoto!.showInView(self.view)
     }
     
     func onCircleDetailClick(){
@@ -164,14 +188,14 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     //将内容发送至服务器
-    func addReply(contentComment:String){
+    func addReply(contentComment:String, type:Int = 1){
         var content = SAEncode(SAHtml(contentComment))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         var safeuser = Sa.objectForKey("user") as String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/circle_chat.php")
+            var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&type=\(type)", "http://nian.so/api/circle_chat.php")
             if sa != "" && sa != "err" {
                 dispatch_async(dispatch_get_main_queue(), {
                     delay(0.5, { () -> () in
@@ -260,15 +284,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.tableview!.deselectRowAtIndexPath(indexPath, animated: false)
             var index = indexPath.row
             var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
-            var user = data.stringAttributeForKey("user") as String
-            var uid = data.stringAttributeForKey("uid")
-            var content = data.stringAttributeForKey("content") as String
-            var cid = data.stringAttributeForKey("id") as String
-            self.ReplyRow = self.dataArray.count - 1 - index
-            self.ReplyContent = content
-            self.ReplyCid = cid
-            self.ReplyUserName = user
-            self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            var type = data.objectForKey("type") as String
+            if type == "1" {
+                var user = data.stringAttributeForKey("user") as String
+                var uid = data.stringAttributeForKey("uid")
+                var content = data.stringAttributeForKey("content") as String
+                var cid = data.stringAttributeForKey("id") as String
+                self.ReplyRow = self.dataArray.count - 1 - index
+                self.ReplyContent = content
+                self.ReplyCid = cid
+                self.ReplyUserName = user
+                self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as String
                 if uid == safeuid {
@@ -286,6 +312,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.replySheet!.cancelButtonIndex = 3
                     self.replySheet!.showInView(self.view)
                 }
+            }
         }else{
             self.inputKeyboard.resignFirstResponder()
         }
@@ -302,9 +329,16 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
         var type = data.objectForKey("type") as String
         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
-        if type == "1" || type == "2" {
+        if type == "1" {
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
             c.data = data
+            c.isImage = 0
+            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            cell = c
+        }else if type == "2" {
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
+            c.data = data
+            c.isImage = 1
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             cell = c
         }else{
@@ -326,11 +360,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var index = indexPath!.row
         var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
         if let type = data.objectForKey("type") as? String {
-            if type == "1" || type == "2" {
+            if type == "1" {
                 return CommentCell.cellHeightByData(data)
+            }else if type == "2" {
+                return CommentCell.cellHeightByData(data, isImage: 1)
             }
         }
-        return 90
+        return 65
     }
     
     func back(){
@@ -390,7 +426,51 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.isKeyboardResign = 0
                 })
             }
+        }else if actionSheet == self.actionSheetPhoto {
+            if buttonIndex == 0 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            }else if buttonIndex == 1 {
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
+                    self.imagePicker = UIImagePickerController()
+                    self.imagePicker!.delegate = self
+                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                    self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+                }
+            }
         }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        self.uploadFile(image)
+    }
+    
+    func uploadFile(img:UIImage){
+        var uy = UpYun()
+        uy.successBlocker = ({(data:AnyObject!) in
+            var uploadUrl = data.objectForKey("url") as String
+            uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
+            uploadUrl = SAReplace(uploadUrl, ".png", "") as String
+            var width: AnyObject? = data.objectForKey("image-width")
+            var height: AnyObject? = data.objectForKey("image-height")
+            var numWidth = ("\(width!)" as NSString).floatValue
+            var numHeight = ("\(height!)" as NSString).floatValue
+            if numWidth * numHeight > 0 {
+                if numWidth >= numHeight {
+                    numHeight = numHeight * 88 / numWidth
+                    numWidth = 88
+                }else{
+                    numWidth = numWidth * 88 / numHeight
+                    numHeight = 88
+                }
+                var content = "\(uploadUrl)_\(numWidth)_\(numHeight)"
+                self.addReply(content, type: 2)
+            }
+        })
+        uy.uploadImage(resizedImage(img, 320), savekey: getSaveKey("circle", "png"))
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

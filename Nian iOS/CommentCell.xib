@@ -41,9 +41,16 @@
                         <rect key="frame" x="117" y="62" width="37" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="a8U-17-lfI">
+                        <rect key="frame" x="113" y="91" width="44" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
@@ -53,6 +60,7 @@
                 <outlet property="avatarView" destination="Hfy-Ik-GGq" id="6qj-GH-kA4"/>
                 <outlet property="contentLabel" destination="QFB-Pf-uQa" id="raw-iF-5Lf"/>
                 <outlet property="imageContent" destination="zSc-As-WmX" id="7wa-8e-Lq2"/>
+                <outlet property="imageInner" destination="a8U-17-lfI" id="NB6-qf-JTX"/>
                 <outlet property="lastdate" destination="OO1-kA-hFx" id="Fug-tw-qrL"/>
                 <outlet property="nickLabel" destination="RaU-Rm-cQH" id="s9x-PH-ssd"/>
             </connections>

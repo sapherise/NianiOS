@@ -280,7 +280,7 @@ extension UIView {
         }
     }
     
-    func showImage(imageURL: String, width: Float, height: Float, yPoint: CGFloat = 0) {
+    func showImage(imageURL: String, width: Float, height: Float, yPoint: CGFloat = 0, bool:Bool = true) {
         if true || imageURL.pathExtension != "gif!large" {
             var x: CGFloat = 0
             var y: CGFloat = 0
@@ -306,15 +306,21 @@ extension UIView {
             imageDoubleTap.numberOfTapsRequired = 2
             var imageSingleTap = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
             imageSingleTap.requireGestureRecognizerToFail(imageDoubleTap)
+            var imageSingleTap2 = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
+            imageSingleTap2.requireGestureRecognizerToFail(imageDoubleTap)
             var imageLongPress = UILongPressGestureRecognizer(target: self, action: "onImageViewLongPress:")
             imageLongPress.minimumPressDuration = 0.2
             imageView.addGestureRecognizer(imageDoubleTap)
-            imageView.addGestureRecognizer(imageSingleTap)
             imageView.addGestureRecognizer(imageLongPress)
             self.window!.addSubview(imageView)
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                imageView.imageView!.frame.origin.y = 0
-            })
+            if bool {
+                imageView.addGestureRecognizer(imageSingleTap)
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    imageView.imageView!.frame.origin.y = 0
+                })
+            }else{
+                imageView.addGestureRecognizer(imageSingleTap2)
+            }
         } else {
             var view = GIFPlayer(frame: CGRectMake(0, 0, CGFloat(width), CGFloat(height)))
             view.play(V.dataFromPath(V.imageCachePath(imageURL))!)
@@ -327,6 +333,18 @@ extension UIView {
         if sender.view != nil {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 (sender.view! as SAImageZoomingView).imageView!.frame.origin.y = globalImageYPoint
+                }) { (Bool) -> Void in
+                    if sender.view != nil {
+                        sender.view!.removeFromSuperview()
+                    }
+            }
+        }
+    }
+    
+    func onImageViewTap2(sender: UITapGestureRecognizer) {
+        if sender.view != nil {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                (sender.view! as SAImageZoomingView).imageView!.alpha = 0
                 }) { (Bool) -> Void in
                     if sender.view != nil {
                         sender.view!.removeFromSuperview()
