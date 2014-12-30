@@ -295,31 +295,40 @@ class SAActivity: UIActivity {
 }
 
 extension UIImage{
-    func maskImageWithImage(maskImage: UIImage) -> UIImage {
-        let imgRef = self.CGImage
-        let maskRef = maskImage.CGImage
-        let mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
-            CGImageGetHeight(maskRef),
-            CGImageGetBitsPerComponent(maskRef),
-            CGImageGetBitsPerPixel(maskRef),
-            CGImageGetBytesPerRow(maskRef),
-            CGImageGetDataProvider(maskRef), nil, false);
-        let masked = CGImageCreateWithMask(imgRef, mask);
-        return Util.drawImageWithClosure(size: self.size) { (size: CGSize, context: CGContext) -> () in
-            CGContextScaleCTM(context, 1, -1)
-            CGContextTranslateCTM(context, 0, -size.height)
-            CGContextDrawImage(context, CGRect(x: 0, y: 0, width: size.width, height: size.height), masked);
-        }
+    func resetToSize(size:CGSize)->UIImage{
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        self.drawInRect(CGRectMake(0, 0, size.width, size.height))
+        let lResultImage:UIImage=UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return lResultImage;
     }
-    
-    internal struct Util {
-        static func drawImageWithClosure(#size: CGSize!, closure: (size: CGSize, context: CGContext) -> ()) -> UIImage {
-            UIGraphicsBeginImageContextWithOptions(size, false, 0)
-            closure(size: size, context: UIGraphicsGetCurrentContext())
-            let image : UIImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return image
+}
+
+extension UIImageView{
+    func SAMaskImage(isMe:Bool = true){
+        var textMask = "bubble"
+        if isMe {
+            textMask = "bubble_me"
         }
+        var size = CGSizeMake(self.bounds.size.width, self.bounds.size.height)
+        UIGraphicsBeginImageContext(size)
+        var ctx = UIGraphicsGetCurrentContext()
+        CGContextSetFillColor(ctx, [1.0,1.0,1.0,1.0])
+        CGContextFillRect(ctx, CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
+        var background = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        var subLayer = CALayer()
+        subLayer.frame = self.bounds
+        subLayer.contents = background.CGImage
+        subLayer.rasterizationScale = UIScreen.mainScreen().scale
+        var maskLayer = CALayer()
+        maskLayer.frame = self.bounds
+        subLayer.mask = maskLayer
+        self.layer.addSublayer(subLayer)
+        var roundCornerLayer = CALayer()
+        roundCornerLayer.frame = self.bounds
+        roundCornerLayer.contents = UIImage(named: textMask)!.resetToSize(self.bounds.size).CGImage
+        self.layer.mask = roundCornerLayer
     }
 }
 

@@ -6,7 +6,9 @@
 //  Copyright (c) 2014年 YANGReal. All rights reserved.
 //
 
+import Foundation
 import UIKit
+import CoreGraphics
 
 
 class CommentCell: UITableViewCell {
@@ -70,7 +72,7 @@ class CommentCell: UITableViewCell {
                     height = imageHeight - 20
                     self.imageInner.hidden = false
                     self.imageInner.frame = CGRectMake(0, 0, width, imageHeight)
-           //         self.imageInner.setImage(url, placeHolder: IconColor)
+                    self.imageInner.setImage(url, placeHolder: IconColor)
                     self.imageInner.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
                     self.contentLabel.hidden = true
                     self.contentLabel.text = ""
@@ -96,6 +98,7 @@ class CommentCell: UITableViewCell {
             self.nickLabel.hidden = true
             self.lastdate.setX(globalWidth - 75 - lastdate.stringWidthWith(11, height: 21))
             self.contentLabel.setX(globalWidth - 80 - self.contentLabelWidth)
+            self.imageInner.SAMaskImage()
         }else{
             self.imageContent.image = UIImage(named: "bubble")
             self.contentLabel.textColor = UIColor.whiteColor()
@@ -104,14 +107,10 @@ class CommentCell: UITableViewCell {
             self.nickLabel.hidden = false
             self.lastdate.setX(user.stringWidthWith(11, height: 21)+83)
             self.contentLabel.setX(80)
+            self.imageInner.SAMaskImage(isMe: false)
         }
         if isImage == 1 {
             self.imageInner.center = self.imageContent.center
-        //    bubbleImage.image = [[UIImage imageNamed:@"bubbleSomeone.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:14];
-        //    self.imageContent.image?.maskWithImage(UIImage(named: "bubble_me")!)
-            var img1 = self.imageContent.image?.stretchableImageWithLeftCapWidth(21, topCapHeight: 14)
-            var img2 = UIImage(named: "bg")
-            self.imageInner.maskImage(self.imageContent, image: img2!)
         }
     }
     
@@ -149,16 +148,9 @@ class CommentCell: UITableViewCell {
     
 }
 
-extension UIImageView{
-    func maskImage(maskImage:UIImageView, image:UIImage){
-        var maskLayer = CALayer()
-        maskLayer.frame = maskImage.layer.bounds
-        maskLayer.bounds = CGRectMake(0, 0, maskImage.width(), maskImage.height())
-    //    maskLayer.position = CGPointMake(self.bounds.origin.x, self.bounds.origin.y)
-        maskLayer.contents = image.CGImage
-        self.image = image
-        self.layer.mask = maskLayer
-        self.layer.masksToBounds = true
-        self.clipsToBounds = true
-    }
-}
+
+
+
+
+
+
