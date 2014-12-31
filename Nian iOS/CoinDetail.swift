@@ -28,8 +28,7 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         var titleLabel:UILabel = UILabel(frame: CGRectZero)
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币详情"
@@ -50,10 +49,6 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.tableView.addFooterWithCallback({
             self.loadData(2)
         })
-    }
-    
-    func back() {
-        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

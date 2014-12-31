@@ -45,8 +45,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
@@ -79,12 +78,6 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
                     self.navigationController!.popViewControllerAnimated(true)
                 }
             })
-        }
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
         }
     }
 }

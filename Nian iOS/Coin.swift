@@ -44,8 +44,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         
         // 关闭了念币详情
         // self.viewCircle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeaderCoinClick"))
@@ -120,10 +119,6 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 break
             }
         }
-    }
-    
-    func back() {
-        self.navigationController!.popViewControllerAnimated(true)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

@@ -52,7 +52,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
-        viewBack(self)
+        self.viewBack()
         self.tableView = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight-64))
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
@@ -91,8 +91,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     
     
@@ -395,10 +394,5 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView!.addFooterWithCallback({
             self.loadData(flow: self.flow)
         })
-    }
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

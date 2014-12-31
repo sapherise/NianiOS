@@ -15,6 +15,8 @@
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
+		1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1232ADC61A53AA5F00C4182A /* CircleBubbleCell.swift */; };
+		1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */; };
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
@@ -167,6 +169,8 @@
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
+		1232ADC61A53AA5F00C4182A /* CircleBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleBubbleCell.swift; sourceTree = "<group>"; };
+		1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleBubbleCell.xib; sourceTree = "<group>"; };
 		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
@@ -576,6 +580,8 @@
 			isa = PBXGroup;
 			children = (
 				12CE15A61A3EC525006AC031 /* Circle.swift */,
+				1232ADC61A53AA5F00C4182A /* CircleBubbleCell.swift */,
+				1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */,
 				128C4E361A5038C3000D2B7C /* CircleType.xib */,
 				128C4E381A503C54000D2B7C /* CircleType.swift */,
 				1271550B1A3FE7F200E27EC5 /* 梦境资料 */,
@@ -913,6 +919,7 @@
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
+				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */,
@@ -1023,6 +1030,7 @@
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
+				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				32349D451A1F0B38004FEA25 /* ExploreFriend.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,

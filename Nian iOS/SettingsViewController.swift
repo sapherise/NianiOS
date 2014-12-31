@@ -39,8 +39,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func setupViews(){
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
@@ -426,12 +425,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         Sa.removeObjectForKey("user")
         Sa.synchronize()
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     override func viewWillAppear(animated: Bool)

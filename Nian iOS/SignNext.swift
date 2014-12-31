@@ -20,11 +20,10 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
     var name:String = ""
     
     func setupViews(){
-        viewBack(self)
+        self.viewBack()
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
@@ -58,12 +57,6 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
             self.inputEmail.becomeFirstResponder()
             return
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

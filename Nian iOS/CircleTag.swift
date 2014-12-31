@@ -30,8 +30,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         self.view.addSubview(navView)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
@@ -93,11 +92,5 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
                 self.collectionView.reloadData()
             }
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

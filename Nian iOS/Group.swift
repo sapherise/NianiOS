@@ -188,9 +188,4 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             self.loadData()
             })
     }
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
-    }
 }

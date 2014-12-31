@@ -48,8 +48,7 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
             self.TextView.becomeFirstResponder()
             return
         })
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -116,11 +115,5 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
                 })
             }
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

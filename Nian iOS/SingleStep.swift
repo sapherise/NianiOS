@@ -66,6 +66,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
+        self.viewBackFix()
     }
     
     func ShareContent(noti:NSNotification){
@@ -148,14 +149,13 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func setupViews()
     {
-        viewBack(self)
+        self.viewBack()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = UIColor.blackColor()
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
         self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.lefttableView!.delegate = self;
@@ -296,12 +296,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.lefttableView!.addHeaderWithCallback({
             self.SAReloadData()
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {

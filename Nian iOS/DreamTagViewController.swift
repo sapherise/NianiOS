@@ -34,8 +34,7 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         self.view.addSubview(navView)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
@@ -65,11 +64,5 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!) {
         dreamTagDelegate?.onTagSelected(V.Tags[indexPath.row], tagType: indexPath.row)
         self.navigationController?.popViewControllerAnimated(true)
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

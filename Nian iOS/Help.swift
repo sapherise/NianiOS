@@ -160,17 +160,10 @@ class HelpViewController: UIViewController, UIGestureRecognizerDelegate{
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

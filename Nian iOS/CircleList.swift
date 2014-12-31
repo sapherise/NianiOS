@@ -131,10 +131,4 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             self.loadData()
         })
     }
-    
-    func back() {
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
-    }
 }

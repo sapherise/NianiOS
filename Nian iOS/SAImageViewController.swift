@@ -44,8 +44,7 @@ class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
         theview.addSubview(self.imageZoongView)
         self.view.backgroundColor = BGColor
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         
         
 //        
@@ -77,11 +76,5 @@ class SAImageViewController: UIViewController, UIGestureRecognizerDelegate{
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

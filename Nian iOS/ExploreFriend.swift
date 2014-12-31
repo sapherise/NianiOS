@@ -35,7 +35,7 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        viewBack(self)
+        self.viewBack()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = IconColor
         titleLabel.text = "发现好友"
@@ -45,10 +45,6 @@ class ExploreFriendViewController: UIViewController, UITableViewDelegate, UITabl
             success in
             self.tableView.reloadData()
         }
-    }
-    
-    func back() {
-        navigationController!.popViewControllerAnimated(true)
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

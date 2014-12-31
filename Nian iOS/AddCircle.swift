@@ -165,8 +165,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         
         self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
         self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
@@ -257,12 +256,6 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             textView.text = ""
         }
         textView.textColor = UIColor.blackColor()
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func onTagSelected(tag: String, tagType: Int, dreamType: Int) {

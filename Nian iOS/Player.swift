@@ -173,9 +173,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func setupViews()
     {
-        viewBack(self)
-        
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid:String = Sa.objectForKey("uid") as String
@@ -554,11 +552,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })
-    }
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

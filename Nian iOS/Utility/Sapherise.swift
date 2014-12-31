@@ -207,11 +207,27 @@ func delay(delay:Double, closure:()->()) {
         dispatch_get_main_queue(), closure)
 }
 
-func viewBack(VC:UIViewController){
-    var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: VC, action: "back")
-    leftButton.image = UIImage(named:"newBack")
-    VC.navigationItem.leftBarButtonItem = leftButton;
-    VC.navigationController!.interactivePopGestureRecognizer.enabled = true
+extension UIViewController: UIGestureRecognizerDelegate {
+    func viewBack(){
+        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
+        leftButton.image = UIImage(named:"newBack")
+        self.navigationItem.leftBarButtonItem = leftButton;
+        if let v = self.navigationController {
+            v.interactivePopGestureRecognizer.enabled = true
+            v.interactivePopGestureRecognizer.delegate = self
+        }
+    }
+    func back(){
+        if let v = self.navigationController {
+            v.popViewControllerAnimated(true)
+        }
+    }
+    func viewBackFix(){
+        if let v = self.navigationController {
+            v.interactivePopGestureRecognizer.enabled = true
+            v.interactivePopGestureRecognizer.delegate = self
+        }
+    }
 }
 
 func SAstrlen(stremp:NSString)->Int{
@@ -305,7 +321,7 @@ extension UIImage{
 }
 
 extension UIImageView{
-    func SAMaskImage(isMe:Bool = true){
+    func SAMaskImage(isMe: Bool = true){
         var textMask = "bubble"
         if isMe {
             textMask = "bubble_me"
@@ -324,10 +340,10 @@ extension UIImageView{
         var maskLayer = CALayer()
         maskLayer.frame = self.bounds
         subLayer.mask = maskLayer
-        self.layer.addSublayer(subLayer)
         var roundCornerLayer = CALayer()
         roundCornerLayer.frame = self.bounds
         roundCornerLayer.contents = UIImage(named: textMask)!.resetToSize(self.bounds.size).CGImage
+        self.layer.addSublayer(subLayer)
         self.layer.mask = roundCornerLayer
     }
 }

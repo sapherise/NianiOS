@@ -139,8 +139,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         
         delay(1, { () -> () in
             self.TextView.becomeFirstResponder()
@@ -235,11 +234,5 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     override func viewWillAppear(animated: Bool) {
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

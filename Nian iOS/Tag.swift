@@ -55,8 +55,7 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     
     
@@ -148,12 +147,6 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
 }

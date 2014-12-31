@@ -25,8 +25,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func setupViews() {
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
@@ -132,15 +131,8 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         })
     }
     
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
-    }
-    
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBackFix()
     }
 }

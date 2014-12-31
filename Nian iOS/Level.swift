@@ -61,15 +61,13 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        viewBack(self)
+        self.viewBack()
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "等级"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
-        
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.contentSize = CGSizeMake(globalWidth, 720)
         
@@ -157,12 +155,6 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
             strokeEnd.duration = 1
             self.top.SAAnimation(strokeEnd)
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func layoutAMonth(marks: [Bool]) {

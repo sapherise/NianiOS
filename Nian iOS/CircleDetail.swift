@@ -55,14 +55,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func setupViews()
     {
-        viewBack(self)
+        self.viewBack()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = UIColor.blackColor()
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.tableView!.delegate = self;
@@ -327,12 +326,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             var index = indexPath!.row
             var data = self.dataArray[index] as NSDictionary
             return  CircleDetailCell.cellHeightByData(data)
-        }
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
         }
     }
     

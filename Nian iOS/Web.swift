@@ -33,8 +33,7 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,11 +42,5 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         return true
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
 }

@@ -10,8 +10,8 @@ import UIKit
 
 class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
-    let identifier = "comment"
-    var tableview:UITableView?
+    let identifier = "CircleBubbleCell"
+    var tableview:UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
     var replySheet:UIActionSheet?
@@ -33,6 +33,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var ReturnReplyContent:String = ""
     
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
+    var isTheEnd:Int = 0    //当没有更多内容加载时为1
     var activityIndicatorView:UIActivityIndicatorView!
     
     var desHeight:CGFloat = 0
@@ -62,11 +63,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewWillAppear(animated)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBackFix()
     }
     
     func setupViews() {
-        viewBack(self)
+        self.viewBack()
         self.view.backgroundColor = UIColor.whiteColor()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
@@ -75,25 +76,30 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         
         
         self.tableview = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64 - 44))
-        self.tableview!.backgroundColor = UIColor.clearColor()
-        self.tableview!.delegate = self;
-        self.tableview!.dataSource = self;
-        self.tableview!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"CommentCell", bundle: nil)
+        self.tableview.backgroundColor = UIColor.clearColor()
+        self.tableview.delegate = self;
+        self.tableview.dataSource = self;
+        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
+        var nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
         var nib2 = UINib(nibName:"CircleType", bundle: nil)
         
-        self.tableview?.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableview?.registerNib(nib2, forCellReuseIdentifier: "CircleType")
-        self.view.addSubview(self.tableview!)
+        self.tableview.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableview.registerNib(nib2, forCellReuseIdentifier: "CircleType")
+        
+        var pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
+        pan.delegate = self
+        self.tableview.addGestureRecognizer(pan)
+        self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
+        self.view.addSubview(self.tableview)
         
         self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
         self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
         self.activityIndicatorView.hidden = false
         self.activityIndicatorView.startAnimating()
         self.activityIndicatorView.color = SeaColor
-        self.tableview!.tableHeaderView = self.viewTop
+        self.tableview.tableHeaderView = self.viewTop
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
-        self.tableview!.tableFooterView = self.viewBottom
+        self.tableview.tableFooterView = self.viewBottom
         
         
         // 输入框
@@ -110,7 +116,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.inputKeyboard.rightView = UIView(frame: CGRectMake(0, 0, 8, 28))
         self.inputKeyboard.leftViewMode = UITextFieldViewMode.Always
         self.inputKeyboard.rightViewMode = UITextFieldViewMode.Always
-        
         
         self.inputKeyboard.delegate = self
         self.inputKeyboard.backgroundColor = UIColor.whiteColor()
@@ -170,20 +175,31 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return true
     }
     
-    func commentFinish(replyContent:String){
+    func commentFinish(replyContent:String, type: Int = 1){
         self.isKeyboardResign = 1
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
         var commentReplyRow = self.dataArray.count
-        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","1"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
         var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-        self.tableview!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+        self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
         //当提交评论后滚动到最新评论的底部
-        var contentOffsetHeight = self.tableview!.contentOffset.y
-        if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
-            self.tableview!.setContentOffset(CGPointMake(0, contentOffsetHeight + replyContent.stringHeightWith(17,width:208) + 60), animated: true)
+        var contentOffsetHeight = self.tableview.contentOffset.y
+        var contentHeight:CGFloat = 0
+        if type == 1 {
+            contentHeight = replyContent.stringHeightWith(13,width:208) + 60
+        }else if type == 2 {
+            var arrContent = replyContent.componentsSeparatedByString("_")
+            if arrContent.count == 4 {
+                if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                    contentHeight = CGFloat(n) + 40
+                }
+            }
+        }
+        if self.tableview.contentSize.height > self.tableview.bounds.size.height {
+            self.tableview.setContentOffset(CGPointMake(0, contentOffsetHeight + contentHeight), animated: true)
         }
     }
     
@@ -198,17 +214,16 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&type=\(type)", "http://nian.so/api/circle_chat.php")
             if sa != "" && sa != "err" {
                 dispatch_async(dispatch_get_main_queue(), {
-                    delay(0.5, { () -> () in
-                        self.SAReloadData(bool: true)
+                    delay(0.2, { () -> () in
+                        self.SAReloadData()
                     })
                 })
             }
         })
     }
     
-    func SAloadData()
-    {
-        var heightBefore = self.tableview!.contentSize.height
+    func SAloadData() {
+        var heightBefore = self.tableview.contentSize.height
         var url = "http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull() {
@@ -218,17 +233,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
                 }
-                self.tableview!.reloadData()
-                var heightAfter = self.tableview!.contentSize.height
+                self.tableview.reloadData()
+                var heightAfter = self.tableview.contentSize.height
                 var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                self.tableview!.setContentOffset(CGPointMake(0, heightChange), animated: false)
+                self.tableview.contentOffset = CGPointMake(0, heightChange)
                 self.page++
                 self.animating = 0
             }
         })
     }
     
-    func SAReloadData(bool:Bool = false){
+    func SAReloadData(){
         var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
@@ -240,12 +255,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.dataArray.addObject(data)
                 }
                 if self.dataTotal < 15 {
-                    self.tableview!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+                    self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
                 }
-                self.tableview!.reloadData()
-                self.tableview!.headerEndRefreshing()
-                if self.tableview!.contentSize.height > self.tableview!.bounds.size.height {
-                    self.tableview!.setContentOffset(CGPointMake(0, self.tableview!.contentSize.height-self.tableview!.bounds.size.height), animated: bool)
+                self.tableview.reloadData()
+                self.tableview.headerEndRefreshing()
+                if self.tableview.contentSize.height > self.tableview.bounds.size.height {
+                    self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
                 }
                 self.page = 1
                 self.isKeyboardResign = 0
@@ -260,14 +275,19 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
-                    delay(0.5, { () -> () in
+                    delay(0.3, { () -> () in
                         self.SAloadData()
                     })
                 }
             }
         }else{
-            self.activityIndicatorView.hidden = true
-            self.tableview?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+            if self.isTheEnd == 0 {
+                self.isTheEnd = 1
+                self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+                if let v = self.activityIndicatorView {
+                    v.removeFromSuperview()
+                }
+            }
         }
     }
     
@@ -277,45 +297,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         return "http://nian.so/api/step.php?page=\(page)&id=\(self.ID)&uid=\(safeuid)"
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        if self.isKeyboardFocus == false {
-            self.tableview!.deselectRowAtIndexPath(indexPath, animated: false)
-            var index = indexPath.row
-            var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
-            var type = data.objectForKey("type") as String
-            if type == "1" {
-                var user = data.stringAttributeForKey("user") as String
-                var uid = data.stringAttributeForKey("uid")
-                var content = data.stringAttributeForKey("content") as String
-                var cid = data.stringAttributeForKey("id") as String
-                self.ReplyRow = self.dataArray.count - 1 - index
-                self.ReplyContent = content
-                self.ReplyCid = cid
-                self.ReplyUserName = user
-                self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                if uid == safeuid {
-                    self.replySheet!.addButtonWithTitle("回应@\(user)")
-                    self.replySheet!.addButtonWithTitle("复制")
-                    self.replySheet!.addButtonWithTitle("删除")
-                    self.replySheet!.addButtonWithTitle("取消")
-                    self.replySheet!.cancelButtonIndex = 3
-                    self.replySheet!.showInView(self.view)
-                }else{
-                    self.replySheet!.addButtonWithTitle("回应@\(user)")
-                    self.replySheet!.addButtonWithTitle("复制")
-                    self.replySheet!.addButtonWithTitle("标记为不合适")
-                    self.replySheet!.addButtonWithTitle("取消")
-                    self.replySheet!.cancelButtonIndex = 3
-                    self.replySheet!.showInView(self.view)
-                }
-            }
-        }else{
-            self.inputKeyboard.resignFirstResponder()
-        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -330,16 +311,22 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var type = data.objectForKey("type") as String
         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
         if type == "1" {
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
             c.isImage = 0
+            c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.View.tag = index
             cell = c
         }else if type == "2" {
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
             c.isImage = 1
+            c.imageContent.tag = index
+            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.View.tag = index
             cell = c
         }else{
             var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as CircleTypeCell
@@ -349,6 +336,42 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return cell
     }
     
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    func onCellPan(sender:UIPanGestureRecognizer){
+        if sender.state == UIGestureRecognizerState.Changed {
+            var distanceX = sender.translationInView(self.view).x
+            var distanceY = sender.translationInView(self.view).y
+            if fabs(distanceY) > fabs(distanceX) {
+                self.inputKeyboard.resignFirstResponder()
+            }
+        }
+    }
+    
+    func onCellTap(sender:UITapGestureRecognizer) {
+        self.inputKeyboard.resignFirstResponder()
+    }
+    
+    func onImageTap(sender:UITapGestureRecognizer) {
+        self.inputKeyboard.resignFirstResponder()
+        var index = sender.view!.tag
+        var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
+        var content = data.objectForKey("content") as String
+        var arrContent = content.componentsSeparatedByString("_")
+        if arrContent.count == 4 {
+            var img0 = Float(NSNumberFormatter().numberFromString(arrContent[2])!)
+            var img1 = Float(NSNumberFormatter().numberFromString(arrContent[3])!)
+            if img0 != 0 {
+                var newHeight = img1 * Float(globalWidth) / img0
+                var url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!large"
+                var yPoint = CGFloat((Float(globalHeight) - newHeight)/2)
+                self.view.showImage(url, width: Float(globalWidth), height: newHeight, yPoint: yPoint, bool:false)
+            }
+        }
+    }
+    
     func userclick(sender:UITapGestureRecognizer){
         self.inputKeyboard.resignFirstResponder()
         var UserVC = PlayerViewController()
@@ -356,23 +379,46 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func onBubbleClick(sender:UIGestureRecognizer) {
+        var index = sender.view!.tag
+        var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
+        var user = data.stringAttributeForKey("user") as String
+        var uid = data.stringAttributeForKey("uid")
+        var content = data.stringAttributeForKey("content") as String
+        var cid = data.stringAttributeForKey("id") as String
+        self.ReplyRow = self.dataArray.count - 1 - index
+        self.ReplyContent = content
+        self.ReplyCid = cid
+        self.ReplyUserName = user
+        self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            if uid == safeuid {
+                self.replySheet!.addButtonWithTitle("回应@\(user)")
+                self.replySheet!.addButtonWithTitle("复制")
+                self.replySheet!.addButtonWithTitle("取消")
+                self.replySheet!.cancelButtonIndex = 2
+                self.replySheet!.showInView(self.view)
+            }else{
+                self.replySheet!.addButtonWithTitle("回应@\(user)")
+                self.replySheet!.addButtonWithTitle("复制")
+                self.replySheet!.addButtonWithTitle("取消")
+                self.replySheet!.cancelButtonIndex = 2
+                self.replySheet!.showInView(self.view)
+            }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         var index = indexPath!.row
         var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
         if let type = data.objectForKey("type") as? String {
             if type == "1" {
-                return CommentCell.cellHeightByData(data)
+                return CircleBubbleCell.cellHeightByData(data)
             }else if type == "2" {
-                return CommentCell.cellHeightByData(data, isImage: 1)
+                return CircleBubbleCell.cellHeightByData(data, isImage: 1)
             }
         }
         return 65
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func commentVC(){
@@ -394,33 +440,14 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }else if buttonIndex == 1 { //复制
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
-            }else if buttonIndex == 2 {
-                var data = self.dataArray[self.ReplyRow] as NSDictionary
-                var uid = data.stringAttributeForKey("uid")
-                if ( uid == safeuid ) {
-                    self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                    self.deleteCommentSheet!.addButtonWithTitle("确定删除")
-                    self.deleteCommentSheet!.addButtonWithTitle("取消")
-                    self.deleteCommentSheet!.cancelButtonIndex = 1
-                    self.deleteCommentSheet!.showInView(self.view)
-                }else{
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
-                        if(sa == "1"){
-                            dispatch_async(dispatch_get_main_queue(), {
-                                UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
-                            })
-                        }
-                    })
-                }
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
                 self.isKeyboardResign = 1
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
-                self.tableview!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
-                self.tableview!.reloadData()
+                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
+                self.tableview.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0
@@ -449,26 +476,25 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func uploadFile(img:UIImage){
+        var width = img.size.width
+        var height = img.size.height
+        if width * height > 0 {
+            if width >= height {
+                height = height * 88 / width
+                width = 88
+            }else{
+                width = width * 88 / height
+                height = 88
+            }
+        }
+        self.commentFinish("1_loading_\(width)_\(height)", type: 2)
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             var uploadUrl = data.objectForKey("url") as String
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
-            var width: AnyObject? = data.objectForKey("image-width")
-            var height: AnyObject? = data.objectForKey("image-height")
-            var numWidth = ("\(width!)" as NSString).floatValue
-            var numHeight = ("\(height!)" as NSString).floatValue
-            if numWidth * numHeight > 0 {
-                if numWidth >= numHeight {
-                    numHeight = numHeight * 88 / numWidth
-                    numWidth = 88
-                }else{
-                    numWidth = numWidth * 88 / numHeight
-                    numHeight = 88
-                }
-                var content = "\(uploadUrl)_\(numWidth)_\(numHeight)"
-                self.addReply(content, type: 2)
-            }
+            var content = "\(uploadUrl)_\(width)_\(height)"
+            self.addReply(content, type: 2)
         })
         uy.uploadImage(resizedImage(img, 320), savekey: getSaveKey("circle", "png"))
     }
@@ -494,17 +520,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.keyboardHeight = keyboardSize.height
         self.keyboardView.setY( globalHeight - self.keyboardHeight - 44 )
         var heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
-        var contentOffsetTableView = self.tableview!.contentSize.height >= heightScroll ? self.tableview!.contentSize.height - heightScroll : 0
-        self.tableview!.setHeight( heightScroll )
-        self.tableview!.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
+        var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
+        self.tableview.setHeight( heightScroll )
+        self.tableview.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
         self.isKeyboardFocus = false
         var heightScroll = globalHeight - 44 - 64
-        var contentOffsetTableView = self.tableview!.contentSize.height >= heightScroll ? self.tableview!.contentSize.height - heightScroll : 0
+        var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.keyboardView.setY( globalHeight - 44 )
-        self.tableview!.setHeight( heightScroll )
+        self.tableview.setHeight( heightScroll )
     }
 }
 

@@ -16,11 +16,10 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     var isAnimate:Int = 0
     
     func setupViews(){
-        viewBack(self)
+        self.viewBack()
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
         self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.inputName.textColor = UIColor.blackColor()
         self.inputName.textAlignment = NSTextAlignment.Center
@@ -45,12 +44,6 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.checkName()
         return true
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func checkName(){

@@ -77,8 +77,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     
     
@@ -192,12 +191,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
 }

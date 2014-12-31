@@ -42,19 +42,12 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
-        viewBack(self)
-        self.navigationController!.interactivePopGestureRecognizer.delegate = self
+        self.viewBack()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-    }
-    
-    func back(){
-        if let v = self.navigationController {
-            v.popViewControllerAnimated(true)
-        }
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
