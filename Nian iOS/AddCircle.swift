@@ -130,7 +130,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         }
         
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-        self.field1!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
+        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field2.delegate = self
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         

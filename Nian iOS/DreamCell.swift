@@ -110,7 +110,7 @@ class DreamCell: UITableViewCell {
         
         self.like!.tag = sid.toInt()!
         
-        var height = content.stringHeightWith(17,width:290)
+        var height = content.stringHeightWith(14,width:290)
         
         if content == "" {
             height = 0
@@ -131,10 +131,10 @@ class DreamCell: UITableViewCell {
         }
         like = "\(like) 赞"
         self.like.text = like
-        var likeWidth = like.stringWidthWith(13, height: 30) + 17
+        var likeWidth = like.stringWidthWith(14, height: 30) + 17
         self.like.setWidth(likeWidth)
         self.labelComment.text = comment
-        var commentWidth = comment.stringWidthWith(13, height: 30) + 17
+        var commentWidth = comment.stringWidthWith(14, height: 30) + 17
         self.labelComment.setWidth(commentWidth)
         self.like.setX(commentWidth+23)
         
@@ -192,7 +192,7 @@ class DreamCell: UITableViewCell {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(17,width:290)
+        var height = content.stringHeightWith(14,width:290)
         if(img0 == 0.0){
             return height + 151
         }else{

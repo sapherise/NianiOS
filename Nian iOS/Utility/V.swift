@@ -280,7 +280,7 @@ extension UIView {
         }
     }
     
-    func showImage(imageURL: String, width: Float, height: Float, yPoint: CGFloat = 0, bool:Bool = true) {
+    func showImage(imageURL: String, width: Float, height: Float, yPoint: CGPoint = CGPointZero, bool:Bool = true) {
         if true || imageURL.pathExtension != "gif!large" {
             var x: CGFloat = 0
             var y: CGFloat = 0
@@ -297,16 +297,15 @@ extension UIView {
                 x = (globalWidth - w) / 2
                 y = (globalHeight - h) / 2
             }
-            globalImageYPoint = yPoint - y
+            globalImageYPoint = yPoint
             var imageView = SAImageZoomingView(frame: CGRectMake(0, 0, globalWidth, globalHeight), x: x, y: y, w: w, h: h)
-            imageView.imageView!.frame.origin.y = yPoint - y
             imageView.backgroundColor = UIColor.blackColor()
             imageView.imageURL = imageURL
             var imageDoubleTap = UITapGestureRecognizer(target: self, action: "onImageViewDoubleTap:")
             imageDoubleTap.numberOfTapsRequired = 2
             var imageSingleTap = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
             imageSingleTap.requireGestureRecognizerToFail(imageDoubleTap)
-            var imageSingleTap2 = UITapGestureRecognizer(target: self, action: "onImageViewTap:")
+            var imageSingleTap2 = UITapGestureRecognizer(target: self, action: "onImageViewTap2:")
             imageSingleTap2.requireGestureRecognizerToFail(imageDoubleTap)
             var imageLongPress = UILongPressGestureRecognizer(target: self, action: "onImageViewLongPress:")
             imageLongPress.minimumPressDuration = 0.2
@@ -314,12 +313,28 @@ extension UIView {
             imageView.addGestureRecognizer(imageLongPress)
             self.window!.addSubview(imageView)
             if bool {
+                imageView.imageView!.frame.origin.y = -yPoint.y - y
                 imageView.addGestureRecognizer(imageSingleTap)
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     imageView.imageView!.frame.origin.y = 0
                 })
             }else{
+                var newWidth: CGFloat = 0
+                var newHeight: CGFloat = 0
+                if width * height > 0 {
+                    if width >= height {
+                        newHeight = CGFloat(height * 88 / width)
+                        newWidth = 88
+                    }else{
+                        newWidth = CGFloat(width * 88 / height)
+                        newHeight = 88
+                    }
+                }
+                imageView.imageView!.frame = CGRectMake(-yPoint.x, -yPoint.y, newWidth, newHeight)
                 imageView.addGestureRecognizer(imageSingleTap2)
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    imageView.imageView!.frame = CGRectMake(0, CGFloat((Float(globalHeight) - height)/2), globalWidth, CGFloat(height))
+                })
             }
         } else {
             var view = GIFPlayer(frame: CGRectMake(0, 0, CGFloat(width), CGFloat(height)))
@@ -331,8 +346,10 @@ extension UIView {
     
     func onImageViewTap(sender: UITapGestureRecognizer) {
         if sender.view != nil {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                (sender.view! as SAImageZoomingView).imageView!.frame.origin.y = globalImageYPoint
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                if let image = (sender.view! as SAImageZoomingView).imageView {
+                    image.frame.origin.y = -globalImageYPoint.y - (globalHeight - image.height()) / 2
+                }
                 }) { (Bool) -> Void in
                     if sender.view != nil {
                         sender.view!.removeFromSuperview()
@@ -343,8 +360,8 @@ extension UIView {
     
     func onImageViewTap2(sender: UITapGestureRecognizer) {
         if sender.view != nil {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                (sender.view! as SAImageZoomingView).imageView!.alpha = 0
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    sender.view!.alpha = 0
                 }) { (Bool) -> Void in
                     if sender.view != nil {
                         sender.view!.removeFromSuperview()

@@ -193,8 +193,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     func onImageTap(sender: UITapGestureRecognizer) {
         var view = findTableCell(sender.view)!
         var data = dataSource[view.tag]
-        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!).y
-        bindViewController!.view.showImage(V.urlStepImage(data.img, tag: .Large), width: data.img0, height: data.img1, yPoint: -yPoint)
+        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
+        bindViewController!.view.showImage(V.urlStepImage(data.img, tag: .Large), width: data.img0, height: data.img1, yPoint: yPoint)
     }
     
     func onLikeTap(sender: UITapGestureRecognizer) {
@@ -278,7 +278,7 @@ class ExploreDynamicStepCell: UITableViewCell {
             imageContent.hidden = true
             labelContent.setY(70)
         }
-        var textHeight = data.content.stringHeightWith(17, width: 290)
+        var textHeight = data.content.stringHeightWith(14, width: 290)
         if data.content == "" {
             textHeight = 0
         }
@@ -353,7 +353,7 @@ class ExploreDynamicStepCell: UITableViewCell {
     }
     
     class func heightWithData(content: String, w: Float, h: Float) -> CGFloat {
-        var height = content.stringHeightWith(17, width: 290)
+        var height = content.stringHeightWith(14, width: 290)
         if h == 0.0 || w == 0.0 {
             return height + 151
         } else {

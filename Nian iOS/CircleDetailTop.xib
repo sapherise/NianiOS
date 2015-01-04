@@ -14,6 +14,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <view contentMode="scaleToFill" id="4rL-BZ-mf1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="287"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.02" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
                     <view contentMode="scaleToFill" id="yfL-kj-0mn">
                         <rect key="frame" x="320" y="0.0" width="320" height="287"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

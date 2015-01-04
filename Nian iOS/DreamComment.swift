@@ -151,10 +151,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.dataArray.insertObject(newinsert, atIndex: 0)
         var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
         self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+        self.tableview.reloadData()
         //当提交评论后滚动到最新评论的底部
-        var contentOffsetHeight = self.tableview.contentOffset.y
-        if self.tableview.contentSize.height > self.tableview.bounds.size.height {
-            self.tableview.setContentOffset(CGPointMake(0, contentOffsetHeight + replyContent.stringHeightWith(13,width:208) + 60), animated: true)
+        var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+        if offset > 0 {
+            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
         }
     }
     
@@ -313,6 +314,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
         c.data = data
         c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        c.imageContent.tag = index
         c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
         c.View.tag = index
         cell = c

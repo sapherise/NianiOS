@@ -53,17 +53,20 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
+    override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    override func viewWillAppear(animated: Bool)
-    {
+    
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
         self.viewBackFix()
+        if globalWillCircleChatReload == 1 {
+            globalWillCircleChatReload = 0
+            self.SAReloadData()
+        }
     }
     
     func setupViews() {
@@ -185,6 +188,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.dataArray.insertObject(newinsert, atIndex: 0)
         var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
         self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+        self.tableview.reloadData()
         //当提交评论后滚动到最新评论的底部
         var contentOffsetHeight = self.tableview.contentOffset.y
         var contentHeight:CGFloat = 0
@@ -198,8 +202,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 }
             }
         }
-        if self.tableview.contentSize.height > self.tableview.bounds.size.height {
-            self.tableview.setContentOffset(CGPointMake(0, contentOffsetHeight + contentHeight), animated: true)
+        var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+        if offset > 0 {
+            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
         }
     }
     
@@ -223,8 +228,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAloadData() {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
         var heightBefore = self.tableview.contentSize.height
-        var url = "http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(ID)"
+        var url = "http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(ID)&uid=\(safeuid)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull() {
                 var arr = data["items"] as NSArray
@@ -244,7 +251,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAReloadData(){
-        var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)"
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)&uid=\(safeuid)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
                 var arr = data["items"] as NSArray
@@ -366,8 +375,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if img0 != 0 {
                 var newHeight = img1 * Float(globalWidth) / img0
                 var url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!large"
-                var yPoint = CGFloat((Float(globalHeight) - newHeight)/2)
-                self.view.showImage(url, width: Float(globalWidth), height: newHeight, yPoint: yPoint, bool:false)
+                var yPoint = sender.view?.convertPoint(CGPointZero, fromView: self.view.window)
+                self.view.showImage(url, width: Float(globalWidth), height: newHeight, yPoint: yPoint!, bool:false)
             }
         }
     }
@@ -496,7 +505,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var content = "\(uploadUrl)_\(width)_\(height)"
             self.addReply(content, type: 2)
         })
-        uy.uploadImage(resizedImage(img, 320), savekey: getSaveKey("circle", "png"))
+        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png"))
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

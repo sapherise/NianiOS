@@ -21,7 +21,7 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
         self.addSubview(self.imageView!)
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
-        self.minimumZoomScale = 0.618;
+        self.minimumZoomScale = 0.9;
         self.maximumZoomScale = 3;
     }
     
@@ -34,7 +34,7 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
         self.addSubview(self.imageView!)
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
-        self.minimumZoomScale = 0.618;
+        self.minimumZoomScale = 0.9;
         self.maximumZoomScale = 3;
     }
     
@@ -60,6 +60,6 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imageView!.setImage(self.imageURL, placeHolder: BGColor)
+        self.imageView!.setImage(self.imageURL, placeHolder: IconColor)
     }
 }

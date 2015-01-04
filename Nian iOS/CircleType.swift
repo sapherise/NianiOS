@@ -39,13 +39,13 @@ class CircleTypeCell: UITableViewCell {
         switch type {
         case "3":   textContent = "更新了梦想"
         case "4":   textContent = "获得了成就"
-        case "5":   textContent = "加入了梦境"
+        case "5":   textContent = (content != "-1") ? "加入了梦境" : "离开了梦境"
         case "6":   textContent = content
         case "7":   textContent = "邀请了"
         default:    textContent = "触发了一个彩蛋"
             break
         }
-        self.labelUser.text = "\(user) \(textContent)"
+        self.labelUser.text = "\(user)\(textContent)"
         self.labelTitle.text = "\(title)"
     }
     

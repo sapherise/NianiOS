@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 
-let IconColor:UIColor = UIColor(red:0.85, green:0.85,blue:0.85,alpha: 1)    //字体灰
+let IconColor:UIColor = UIColor(red:0.97, green:0.97,blue:0.97,alpha: 1)    //字体灰
 let BGColor:UIColor = UIColor.whiteColor()
 let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
 let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
@@ -35,7 +35,8 @@ var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
 var globalNumberDream:Int = 0
 var globalWillCircleReload:Int = 0
-var globalImageYPoint:CGFloat = 0
+var globalImageYPoint:CGPoint = CGPointZero
+var globalWillCircleChatReload:Int = 0
 var globalViewLoading:UIView?
 
 var globalWidth = UIScreen.mainScreen().bounds.width
@@ -347,4 +348,3 @@ extension UIImageView{
         self.layer.mask = roundCornerLayer
     }
 }
-

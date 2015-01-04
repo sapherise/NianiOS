@@ -268,8 +268,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 self.actionSheet!.cancelButtonIndex = 2
             }else if self.theLevel == "8" {
                 self.actionSheet!.addButtonWithTitle("编辑梦境资料")
+                self.actionSheet!.addButtonWithTitle("退出梦境")
                 self.actionSheet!.addButtonWithTitle("取消")
-                self.actionSheet!.cancelButtonIndex = 1
+                self.actionSheet!.cancelButtonIndex = 2
             }else{
                 self.actionSheet!.addButtonWithTitle("退出梦境")
                 self.actionSheet!.addButtonWithTitle("取消")
@@ -280,8 +281,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView"  {
-            return false
+        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView" {
+            if touch.view.frame.size.width == 278 {
+                return false
+            }
         }
         return true
     }
@@ -343,6 +346,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             }else if self.theLevel == "8" {
                 if buttonIndex == 0 {
                     self.circleEdit()
+                }else if buttonIndex == 1 {
+                    self.circleQuit()
                 }
             }else{
                 if buttonIndex == 0 {
@@ -428,6 +433,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var success = json!["success"] as String
                 var reason = json!["reason"] as String
                 if success == "1" {
+                    globalWillCircleChatReload = 1
                     self.SAReloadData()
                 }else{
                     self.view.viewLoadingHide()
@@ -452,6 +458,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var success = json!["success"] as String
                 var reason = json!["reason"] as String
                 if success == "1" {
+                    globalWillCircleChatReload = 1
                     self.SAReloadData()
                 }else{
                     self.view.viewLoadingHide()
@@ -483,6 +490,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var success = json!["success"] as String
                 var reason = json!["reason"] as String
                 if success == "1" {
+                    globalWillCircleChatReload = 1
                     var newpath = NSIndexPath(forRow: self.selectRow, inSection: 1)
                     self.dataArray.removeObjectAtIndex(newpath!.row)
                     self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)

@@ -74,11 +74,13 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             var distanceX = pan.translationInView(self.View!).x
             self.View!.layer.removeAllAnimations()
             if self.toggle == 0 {
-                self.viewLeft.frame.origin.x = distanceX
-                self.viewRight.frame.origin.x = distanceX + 320
+                var ratio:CGFloat = (distanceX > 0) ? 0.5 : 1
+                self.viewLeft.frame.origin.x = distanceX * ratio
+                self.viewRight.frame.origin.x = distanceX * ratio + 320
             }else{
-                self.viewLeft.frame.origin.x = distanceX - 320
-                self.viewRight.frame.origin.x = distanceX
+                var ratio:CGFloat = (distanceX > 0) ? 1 : 0.5
+                self.viewLeft.frame.origin.x = distanceX * ratio - 320
+                self.viewRight.frame.origin.x = distanceX * ratio
             }
         }
         if pan.state == UIGestureRecognizerState.Ended {

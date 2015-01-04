@@ -40,7 +40,6 @@ extension UIImageView{
                             var image:UIImage? = UIImage(data: data)
                             if (image != nil) {
                                 dispatch_async(dispatch_get_main_queue(), {
-                                    self.backgroundColor = UIColor.clearColor()
                                     self.image = image
                                     self.contentMode = UIViewContentMode.ScaleAspectFill
                                     FileUtility.imageCacheToPath(cachePath,image:data)

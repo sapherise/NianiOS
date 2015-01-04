@@ -30,7 +30,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
         
         self.view.backgroundColor = BGColor
         self.field2!.delegate = self
-        self.field1!.setValue(IconColor, forKeyPath: "_placeholderLabel.textColor")
+        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         self.field1!.becomeFirstResponder()

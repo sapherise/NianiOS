@@ -134,10 +134,10 @@
         </view>
     </objects>
     <resources>
-        <image name="camera" width="23" height="17"/>
-        <image name="closeeye" width="17" height="9"/>
-        <image name="settingsNew" width="18" height="17"/>
-        <image name="tag" width="17" height="17"/>
+        <image name="camera" width="22" height="16"/>
+        <image name="closeeye" width="16" height="8"/>
+        <image name="settingsNew" width="17" height="16"/>
+        <image name="tag" width="16" height="16"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

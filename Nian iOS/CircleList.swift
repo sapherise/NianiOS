@@ -117,6 +117,10 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         var data = self.dataArray[indexPath.row] as NSDictionary
+        var mutableItem = NSMutableDictionary(dictionary: data)
+        mutableItem.setObject("0", forKey: "count")
+        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: mutableItem)
+        self.tableView.reloadData()
         var id = data.objectForKey("id") as String
         var CircleVC = CircleController()
         CircleVC.ID = id.toInt()!
