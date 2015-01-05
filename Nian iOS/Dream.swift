@@ -71,13 +71,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
+    override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
     }
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
         self.viewBackFix()

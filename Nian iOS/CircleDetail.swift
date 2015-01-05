@@ -107,7 +107,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     self.view.showTipText("这个梦境没人在...", delay: 2)
                 }
                 self.tableView!.reloadData()
-                self.view.viewLoadingHide()
+                self.viewLoadingHide()
             }
         }
     }
@@ -427,7 +427,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func onPromoClick(){
-        self.view.viewLoadingShow()
+        self.viewLoadingShow()
         Api.postCirclePromo(self.Id, promouid: self.selectUid){ json in
             if json != nil {
                 var success = json!["success"] as String
@@ -436,7 +436,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     globalWillCircleChatReload = 1
                     self.SAReloadData()
                 }else{
-                    self.view.viewLoadingHide()
+                    self.viewLoadingHide()
                     if  reason == "1" {
                         self.view.showTipText("你没有提升对方的权限...", delay: 2)
                     }else if reason == "2" {
@@ -452,7 +452,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func onDemoClick(){
-        self.view.viewLoadingShow()
+        self.viewLoadingShow()
         Api.postCircleDemo(self.Id, demouid: self.selectUid){ json in
             if json != nil {
                 var success = json!["success"] as String
@@ -461,7 +461,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     globalWillCircleChatReload = 1
                     self.SAReloadData()
                 }else{
-                    self.view.viewLoadingHide()
+                    self.viewLoadingHide()
                     if  reason == "1" {
                         self.view.showTipText("你没有降职对方的权限...", delay: 2)
                     }else if reason == "2" {
@@ -483,10 +483,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func onFireClick(){
-        self.view.viewLoadingShow()
+        self.viewLoadingShow()
         Api.postCircleFire(self.Id, fireuid: self.selectUid){ json in
             if json != nil {
-                self.view.viewLoadingHide()
+                self.viewLoadingHide()
                 var success = json!["success"] as String
                 var reason = json!["reason"] as String
                 if success == "1" {

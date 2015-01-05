@@ -20,7 +20,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
-    var dataTotal:Int = 0
+    var dataTotal:Int = 15
     var viewTop:UIView!
     var ID:Int = 0
     
@@ -150,6 +150,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
+        self.viewLoadingShow()
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -255,7 +256,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeuid = Sa.objectForKey("uid") as String
         var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)&uid=\(safeuid)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
+            if data as NSObject != NSNull() {
+                self.viewLoadingHide()
                 var arr = data["items"] as NSArray
                 var total = data["total"] as NSString!
                 self.dataTotal = "\(total)".toInt()!

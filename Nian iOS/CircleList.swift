@@ -53,6 +53,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         var nib = UINib(nibName:"CircleCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView)
+        self.viewLoadingShow()
     }
     
     
@@ -78,6 +79,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView.setFooterHidden(false)
         Api.postCircle("0"){ json in
             if json != nil {
+                self.viewLoadingHide()
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data:AnyObject in arr {

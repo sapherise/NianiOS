@@ -97,7 +97,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         var data = dataSource[indexPath.row]
         cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : UIColor.blackColor()
         cell!.labelTitle.text = data.title
-        cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
+        cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor, bool: false)
         return cell!
     }
     

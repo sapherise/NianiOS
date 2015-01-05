@@ -241,7 +241,7 @@ extension UIView {
         return nil
     }
     
-    func showTipText(text: String, delay: Double) {
+    func showTipText(text: String, delay: Double = 2.0) {
         var tipView = UIView()
         tipView.layer.masksToBounds = true
         tipView.layer.cornerRadius = 4

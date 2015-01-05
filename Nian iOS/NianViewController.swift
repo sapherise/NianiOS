@@ -59,6 +59,26 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var nib = UINib(nibName: "NianCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "NianCell")
         self.tableView.showsVerticalScrollIndicator = false
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safename = Sa.objectForKey("user") as String
+        var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
+        self.UserName.text = "\(safename)"
+        self.UserHead.setImage("http://img.nian.so/head/\(safeuid).jpg!dream", placeHolder: UIColor(red: 0, green: 0, blue: 0, alpha: 0.55))
+        if cacheCoverUrl != nil{
+            if cacheCoverUrl! != "http://img.nian.so/cover/!cover" {
+                self.BGImage.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
+            }else{
+                self.BGImage.image = UIImage(named: "bg")
+                self.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
+            }
+        }else{
+            self.BGImage.image = UIImage(named: "bg")
+            self.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
+        }
+        
+        
         self.setupUserTop()
         self.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
         self.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
@@ -83,6 +103,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safename = Sa.objectForKey("user") as String
+        var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
                 var sa: AnyObject! = json!.objectForKey("user")
@@ -95,6 +116,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var coverURL: String! = sa.objectForKey("cover") as String
                 var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
                 var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                Sa.setObject(AllCoverURL, forKey: "coverUrl")
+                Sa.synchronize()
                 var deadLine = sa.objectForKey("deadline") as String
                 var (l, e) = levelCount( (level.toInt()!)*7 )
                 self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)

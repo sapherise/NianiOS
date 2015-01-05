@@ -447,9 +447,9 @@
 		1271550A1A3FE7C600E27EC5 /* 梦境列表 */ = {
 			isa = PBXGroup;
 			children = (
+				12CE15A41A3E7D68006AC031 /* CircleList.swift */,
 				12CE15A01A3E7D24006AC031 /* CircleCell.xib */,
 				12CE15A21A3E7D56006AC031 /* CircleCell.swift */,
-				12CE15A41A3E7D68006AC031 /* CircleList.swift */,
 			);
 			name = "梦境列表";
 			sourceTree = "<group>";
@@ -741,11 +741,11 @@
 				12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */,
 				12FB48C2196AE8010026DD51 /* UIViewExt.swift */,
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
-				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 				322DB94B1A0C9E95005FD6AE /* Api.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
 				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
+				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";

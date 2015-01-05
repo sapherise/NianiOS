@@ -73,7 +73,6 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         }
         if pan.state == UIGestureRecognizerState.Changed {
             var distanceX = pan.translationInView(self.View!).x
-            println(distanceX)
             self.View!.layer.removeAllAnimations()
             if self.toggle == 0 {
                 var ratio:CGFloat = (distanceX > 0) ? 0.5 : 1

@@ -82,6 +82,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "DreamimageViewTapped:", name: "DreamimageViewTapped", object: nil)
+        self.viewBackFix()
     }
     
     func ShareContent(noti:NSNotification){
@@ -602,10 +603,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                     if cover == "" {
                         self.navView.image = UIImage(named: "bg")
+                        self.navView.contentMode = UIViewContentMode.ScaleAspectFill
                     }else{
                         self.navView.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                     }
-                    self.navView.contentMode = UIViewContentMode.Center
                     self.topCell!.UserFo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoClick"))
                     self.topCell!.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoedClick"))
                     self.topCell!.labelMenuLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))

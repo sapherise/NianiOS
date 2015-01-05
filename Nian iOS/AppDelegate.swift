@@ -74,5 +74,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
     }
     
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        delay(1, { () -> () in
+            NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
+        })
+        return true
+    }
+    
 }
 

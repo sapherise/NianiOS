@@ -11,7 +11,6 @@ import UIKit
 class WelcomeViewController: UIViewController {
     
     func setupViews(){
-        
         self.view.hidden = true
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         var login:UIButton = UIButton(frame: CGRectMake(60, globalHeight-60-60, 200, 44))

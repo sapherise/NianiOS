@@ -172,7 +172,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 button.selected = true
             }
         }
-        
         self.dot = UILabel(frame: CGRectMake(228, 10, 20, 15))
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
@@ -182,6 +181,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true
         self.myTabbar!.addSubview(dot!)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
     }
     
     func gameover(word:String){

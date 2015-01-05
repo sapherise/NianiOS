@@ -11,7 +11,7 @@ import Foundation
 
 extension UIImageView{
     
-    func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil) {
+    func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil, ignore:Bool = false) {
         var url = NSURL(string: urlString)
         var cacheFileName = (cacheName == nil ? url!.lastPathComponent : cacheName!)
         var cachePath = FileUtility.cachePath(cacheFileName!)
@@ -30,7 +30,7 @@ extension UIImageView{
             var networkStatus = checkNetworkStatus()
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var saveMode: String? = Sa.objectForKey("saveMode") as? String
-            if saveMode == "1" && networkStatus != 2 {   //如果是开启了同时是在2G下
+            if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
             }else{
                 var req = NSURLRequest(URL: url!)
                 var queue = NSOperationQueue();

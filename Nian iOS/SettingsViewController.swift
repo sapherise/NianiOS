@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
+import StoreKit
 
-class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, SKStoreProductViewControllerDelegate {
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var head:UIImageView!
     @IBOutlet var logout:UIView!
@@ -22,6 +23,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var CareSwitch:UISwitch!
     @IBOutlet var version:UILabel!
     @IBOutlet var btnCover: UIButton!
+    @IBOutlet var viewStar: UIView!
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""
@@ -52,7 +54,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.view.addSubview(navView)
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 900)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 1100)
         self.cacheActivity.hidden = true
         self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -70,6 +72,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         
         self.helpView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
         self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
+        self.viewStar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStarClick"))
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
         //节省流量模式
@@ -231,6 +234,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
+        self.btnCover.startLoading()
         self.uploadFile(image)
     }
     
@@ -276,6 +280,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 self.uploadUrl = data.objectForKey("url") as String
                 self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
                 var userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                Sa.setObject(userImageURL, forKey: "coverUrl")
+                Sa.synchronize()
                 var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
                 var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
                 var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
@@ -285,7 +292,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                         var image:UIImage? = UIImage(data: data)
                         if image != nil{
                             globalWillNianReload = 1
-                            self.view.showTipText("封面换好啦", delay: 2)
+                            self.btnCover.endLoading("设定封面")
                             var filePath = cachePath.stringByAppendingPathComponent("\(self.uploadUrl).jpg!cover")
                             FileUtility.imageCacheToPath(filePath,image:data)
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -408,6 +415,27 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     func dismissKeyboard(sender:UITapGestureRecognizer){
         inputName.resignFirstResponder()
         inputEmail.resignFirstResponder()
+    }
+    
+    func onStarClick(){
+        var storeProductVC = SKStoreProductViewController()
+        storeProductVC.delegate = self
+        var dict = NSDictionary(object: "929448912", forKey: SKStoreProductParameterITunesItemIdentifier)
+        storeProductVC.loadProductWithParameters(dict, completionBlock: { (result, error) -> Void in
+            if result {
+                self.navigationController?.presentViewController(storeProductVC, animated: true, completion: nil)
+            }else{
+                self.view.showTipText("打开失败了...依旧谢谢你！", delay: 2)
+            }
+        })
+    }
+    
+    func productViewControllerDidFinish(viewController: SKStoreProductViewController!) {
+        viewController.dismissViewControllerAnimated(true, completion: {
+            if let v = self.navigationController {
+                v.view.showTipText("蟹蟹你！<3", delay: 2)
+            }
+        })
     }
     
     func SAlogout(){

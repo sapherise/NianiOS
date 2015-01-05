@@ -37,6 +37,7 @@ var globalNumberDream:Int = 0
 var globalWillCircleReload:Int = 0
 var globalImageYPoint:CGPoint = CGPointZero
 var globalWillCircleChatReload:Int = 0
+var globalURL:String = ""
 var globalViewLoading:UIView?
 
 var globalWidth = UIScreen.mainScreen().bounds.width
@@ -260,7 +261,7 @@ func viewEmpty(width:CGFloat = 320, text:String = "这里是空的")->UIView {
     return viewEmpty
 }
 
-extension UIView {
+extension UIViewController {
     func viewLoadingShow() {
         globalViewLoading = UIView(frame: CGRectMake((globalWidth-50)/2, (globalHeight-50)/2, 50, 50))
         globalViewLoading!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -273,7 +274,9 @@ extension UIView {
         activity.hidden = false
         activity.startAnimating()
         globalViewLoading!.addSubview(activity)
-        self.window?.addSubview(globalViewLoading!)
+        if let v = self.navigationController?.navigationBar.window {
+            v.addSubview(globalViewLoading!)
+        }
     }
     func viewLoadingHide() {
         if globalViewLoading != nil {
@@ -346,5 +349,60 @@ extension UIImageView{
         roundCornerLayer.contents = UIImage(named: textMask)!.resetToSize(self.bounds.size).CGImage
         self.layer.addSublayer(subLayer)
         self.layer.mask = roundCornerLayer
+    }
+}
+
+extension UIViewController {
+    func onURL(sender: NSNotification){
+        var url = sender.object as String
+        var urlArray = "\(url)".componentsSeparatedByString("nian://")
+        if urlArray.count == 2 {
+            urlArray = urlArray[1].componentsSeparatedByString("/")
+            if urlArray.count == 2 {
+                if let id = urlArray[1].toInt() {
+                    if urlArray[0] == "dream" {
+                        var DreamVC = DreamViewController()
+                        DreamVC.Id = "\(id)"
+                        self.navigationController?.pushViewController(DreamVC, animated: true)
+                    }else if urlArray[0] == "user" {
+                        var UserVC = PlayerViewController()
+                        UserVC.Id = "\(id)"
+                        self.navigationController?.pushViewController(UserVC, animated: true)
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension UIButton {
+    func startLoading() {
+        var height = self.height()
+        self.enabled = false
+        self.setTitle("", forState: UIControlState.allZeros)
+        var activity = UIActivityIndicatorView(frame: CGRectMake(self.width()/2 - 10, self.height()/2 - 10, 20, 20))
+        activity.color = UIColor.whiteColor()
+        activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        self.addSubview(activity)
+        activity.hidden = false
+        activity.startAnimating()
+    }
+    func endLoading(text: String) {
+        var views:NSArray = self.subviews
+        for view:AnyObject in views {
+            if NSStringFromClass(view.classForCoder) == "UIActivityIndicatorView"  {
+                view.removeFromSuperview()
+            }
+        }
+        var imageView = UIImageView(frame: CGRectMake(self.width()/2 - 12, self.height()/2 - 12, 24, 24))
+        imageView.image = UIImage(named: "newOK")
+        imageView.contentMode = UIViewContentMode.Center
+        self.addSubview(imageView)
+        delay(2, { () -> () in
+            self.setTitle(text, forState: UIControlState.allZeros)
+            imageView.removeFromSuperview()
+            self.enabled = true
+            return
+        })
     }
 }

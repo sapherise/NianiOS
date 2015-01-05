@@ -47,7 +47,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         titleLabel.text = "发现梦境"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        self.navigationController?.navigationBar.viewLoadingShow()
+        self.viewLoadingShow()
     }
     
     func loadData() {
@@ -71,7 +71,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView!.setFooterHidden(false)
         Api.getCircleExplore("0"){ json in
             if json != nil {
-                self.navigationController?.navigationBar.viewLoadingHide()
+                self.viewLoadingHide()
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
