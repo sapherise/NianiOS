@@ -13,6 +13,13 @@ extension UIImageView{
     
     func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil, ignore:Bool = false) {
         var url = NSURL(string: urlString)
+        if bool == true {
+            self.image = UIImage(named: "drop")!
+        }else{
+            self.image = UIImage()
+        }
+        self.backgroundColor = placeHolder
+        self.contentMode = UIViewContentMode.Center
         var cacheFileName = (cacheName == nil ? url!.lastPathComponent : cacheName!)
         var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
@@ -20,13 +27,6 @@ extension UIImageView{
             self.image = image as? UIImage
             self.contentMode = UIViewContentMode.ScaleAspectFill
         }else {
-            dispatch_async(dispatch_get_main_queue(), {
-                if bool == true {
-                self.image = UIImage(named: "drop")!
-                }
-                self.backgroundColor = placeHolder
-                self.contentMode = UIViewContentMode.Center
-            })
             var networkStatus = checkNetworkStatus()
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var saveMode: String? = Sa.objectForKey("saveMode") as? String

@@ -428,8 +428,8 @@
 			isa = PBXGroup;
 			children = (
 				1258C3081A49A9BC008FA4EF /* CircleExplore.swift */,
-				1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */,
 				1258C30C1A49A9E6008FA4EF /* CircleExploreCell.swift */,
+				1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */,
 			);
 			name = "发现梦境";
 			sourceTree = "<group>";

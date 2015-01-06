@@ -66,7 +66,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 }
                 self.tableView!.reloadData()
                 if self.dataArray.count == 0 {
-                    self.tableView!.tableHeaderView = viewEmpty(width: 278, text: "没有梦想是这个标签")
+                    self.tableView!.tableHeaderView = viewEmpty(278, content: "没有梦想是这个标签")
                 }
                 self.btnOK.enabled = true
                 var tag = V.Tags[self.hashTag-1]
@@ -154,6 +154,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                         var textOK = ""
                         if self.thePrivate == "0" {
                             textOK = "加入好了！"
+                            globalWillCircleReload = 1
                         }else if self.thePrivate == "1" {
                             textOK = "发好验证了！"
                         }

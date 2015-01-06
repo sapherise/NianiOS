@@ -34,7 +34,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     var deleteDreamSheet:UIActionSheet?
     var cancelSheet:UIActionSheet?
-    var actionSheetCirclePlus:UIActionSheet?
     var pointNavY:CGFloat = 0
     var timer:NSTimer?
     
@@ -303,14 +302,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if buttonIndex == 0 {
                 self.onViewCloseClick()
             }
-        }else if actionSheet == self.actionSheetCirclePlus {
-            if buttonIndex == 0 {
-                var circleexploreVC = CircleExploreController()
-                self.navigationController!.pushViewController(circleexploreVC, animated: true)
-            }else if buttonIndex == 1 {
-                var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-                self.navigationController!.pushViewController(addcircleVC, animated: true)
-            }
         }
     }
     
@@ -374,7 +365,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.bbsFreshTimes = self.bbsFreshTimes + 1
             self.foFreshTimes = 0
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
-            rightButton.image = UIImage(named:"plus")
+            rightButton.image = UIImage(named:"find")
             self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     //梦想
             self.foFreshTimes = 0
@@ -511,12 +502,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func addCircleButton(){
-        self.actionSheetCirclePlus = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.actionSheetCirclePlus!.addButtonWithTitle("发现梦境")
-        self.actionSheetCirclePlus!.addButtonWithTitle("创建梦境")
-        self.actionSheetCirclePlus!.addButtonWithTitle("取消")
-        self.actionSheetCirclePlus!.cancelButtonIndex = 2
-        self.actionSheetCirclePlus!.showInView(self.view)
+        var circleexploreVC = CircleExploreController()
+        self.navigationController?.pushViewController(circleexploreVC, animated: true)
     }
     
     

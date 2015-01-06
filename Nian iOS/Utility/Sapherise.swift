@@ -213,7 +213,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
     func viewBack(){
         var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
         leftButton.image = UIImage(named:"newBack")
-        self.navigationItem.leftBarButtonItem = leftButton;
+        self.navigationItem.leftBarButtonItem = leftButton
         if let v = self.navigationController {
             v.interactivePopGestureRecognizer.enabled = true
             v.interactivePopGestureRecognizer.delegate = self
@@ -246,16 +246,18 @@ extension UIVisualEffectView {
     }
 }
 
-func viewEmpty(width:CGFloat = 320, text:String = "这里是空的")->UIView {
+func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
     var viewEmpty = UIView(frame: CGRectMake(0, 0, width, 75))
     var imageEmpty = UIImageView(frame: CGRectMake(0, 20, width, 35))
     imageEmpty.image = UIImage(named: "smile")
     imageEmpty.contentMode = UIViewContentMode.Center
-    var labelEmpty = UILabel(frame: CGRectMake(0, 55, width, 20))
-    labelEmpty.text = text
+    var labelEmpty = UILabel(frame: CGRectMake(0, 60, width, 20))
     labelEmpty.font = UIFont.systemFontOfSize(11)
     labelEmpty.textAlignment = NSTextAlignment.Center
     labelEmpty.textColor = UIColor(red:0.65, green:0.65, blue:0.65, alpha:1)
+    labelEmpty.numberOfLines = 0
+    labelEmpty.text = content
+    labelEmpty.setHeight(content.stringHeightWith(11, width: width))
     viewEmpty.addSubview(imageEmpty)
     viewEmpty.addSubview(labelEmpty)
     return viewEmpty
@@ -268,6 +270,7 @@ extension UIViewController {
         globalViewLoading!.layer.cornerRadius = 4
         globalViewLoading!.layer.masksToBounds = true
         globalViewLoading!.userInteractionEnabled = false
+        globalViewLoading?.hidden = true
         var activity = UIActivityIndicatorView(frame: CGRectMake(10, 10, 30, 30))
         activity.color = UIColor.whiteColor()
         activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
@@ -276,6 +279,10 @@ extension UIViewController {
         globalViewLoading!.addSubview(activity)
         if let v = self.navigationController?.navigationBar.window {
             v.addSubview(globalViewLoading!)
+            delay(0.3, { () -> () in
+                globalViewLoading!.hidden = false
+                return
+            })
         }
     }
     func viewLoadingHide() {
@@ -350,6 +357,12 @@ extension UIImageView{
         self.layer.addSublayer(subLayer)
         self.layer.mask = roundCornerLayer
     }
+    
+    func setHolder(){
+        self.image = UIImage(named: "drop")
+        self.backgroundColor = IconColor
+        self.contentMode = UIViewContentMode.Center
+    }
 }
 
 extension UIViewController {
@@ -404,5 +417,14 @@ extension UIButton {
             self.enabled = true
             return
         })
+    }
+    func setButtonNice(content:String){
+        self.frame = CGRectMake(0, 0, 100, 36)
+        self.layer.cornerRadius = 18
+        self.backgroundColor = SeaColor
+        self.layer.masksToBounds = true
+        self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.allZeros)
+        self.titleLabel!.font = UIFont.systemFontOfSize(13)
+        self.setTitle(content, forState: UIControlState.allZeros)
     }
 }

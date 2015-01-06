@@ -66,7 +66,7 @@
                         <activityIndicatorView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" id="c7o-8g-xlR">
                             <rect key="frame" x="15" y="177" width="20" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="color" red="1" green="0.82308799340000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="color" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </activityIndicatorView>
                         <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Aa2-HG-Dbs">
                             <rect key="frame" x="0.0" y="162" width="50" height="50"/>

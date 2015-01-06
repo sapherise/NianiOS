@@ -44,12 +44,11 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
+    override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        self.viewLoadingHide()
     }
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
     }
     

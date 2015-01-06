@@ -56,6 +56,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        self.viewLoadingHide()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -126,13 +127,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         
         // 发送图片
         var imagePhoto = UIImageView(frame: CGRectMake(8, 8, 28, 28))
-        imagePhoto.image = UIImage(named: "plus")
-        imagePhoto.backgroundColor = SeaColor
+        imagePhoto.image = UIImage(named: "camera")
         imagePhoto.contentMode = UIViewContentMode.Center
-        imagePhoto.layer.borderColor = UIColor.whiteColor().CGColor
-        imagePhoto.layer.borderWidth = 1
-        imagePhoto.layer.cornerRadius = 14
-        imagePhoto.layer.masksToBounds = true
         imagePhoto.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPhotoClick:"))
         imagePhoto.userInteractionEnabled = true
         self.keyboardView.addSubview(imagePhoto)

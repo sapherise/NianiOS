@@ -55,13 +55,16 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == self.actionSheet {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = true
             if buttonIndex == 0 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.allowsEditing = true
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
             }else if buttonIndex == 1 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.allowsEditing = true
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                     self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
@@ -90,10 +93,12 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
         self.uploadWait!.startAnimating()
+        self.uploadButton!.hidden = true
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
+            self.uploadButton!.hidden = false
             self.uploadUrl = data.objectForKey("url") as String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
@@ -102,6 +107,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
+            self.uploadButton!.hidden = false
         })
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png"))
     }

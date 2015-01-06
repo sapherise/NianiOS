@@ -24,14 +24,11 @@ class NianCell: UITableViewCell{
             self.labelTitle.text = title
             self.labelStep.text = "\(step) 进展"
             
+            self.imageCover.setHolder()
             var img:String = data!.objectForKey("img") as String
             if img != "" {
                 img = "http://img.nian.so/dream/\(img)!dream"
                 self.imageCover.setImage(img, placeHolder: IconColor, bool: false)
-            }else{
-                self.imageCover.image = UIImage(named: "drop")
-                self.imageCover.backgroundColor = SeaColor
-                self.imageCover.contentMode = UIViewContentMode.Center
             }
         }
     }

@@ -53,7 +53,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         var nib = UINib(nibName:"CircleCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView)
-        self.viewLoadingShow()
     }
     
     
@@ -79,7 +78,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView.setFooterHidden(false)
         Api.postCircle("0"){ json in
             if json != nil {
-                self.viewLoadingHide()
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data:AnyObject in arr {
@@ -90,9 +88,30 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                 if self.dataArray.count < 30 {
                     self.tableView.setFooterHidden(true)
                 }
+                if self.dataArray.count == 0 {
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去发现梦境吗")
+                    viewQuestion.setY(50)
+                    viewQuestion.setHeight(110)
+                    var btnGo = UIButton()
+                    btnGo.setButtonNice("  嗯！")
+                    btnGo.setX(globalWidth/2-50)
+                    btnGo.setY(viewQuestion.bottom())
+                    btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    viewHeader.addSubview(viewQuestion)
+                    viewHeader.addSubview(btnGo)
+                    self.tableView.tableHeaderView = viewHeader
+                }else{
+                    self.tableView.tableHeaderView = UIView()
+                }
                 self.page = 1
             }
         }
+    }
+    
+    func onBtnGoClick() {
+        var circleexploreVC = CircleExploreController()
+        self.navigationController?.pushViewController(circleexploreVC, animated: true)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

@@ -218,13 +218,16 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker!.delegate = self
-        self.imagePicker!.allowsEditing = true
         if buttonIndex == 0 {
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker!.delegate = self
+            self.imagePicker!.allowsEditing = true
             self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
         }else if buttonIndex == 1 {
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker!.delegate = self
+            self.imagePicker!.allowsEditing = true
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
@@ -421,13 +424,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var storeProductVC = SKStoreProductViewController()
         storeProductVC.delegate = self
         var dict = NSDictionary(object: "929448912", forKey: SKStoreProductParameterITunesItemIdentifier)
-        storeProductVC.loadProductWithParameters(dict, completionBlock: { (result, error) -> Void in
-            if result {
-                self.navigationController?.presentViewController(storeProductVC, animated: true, completion: nil)
-            }else{
-                self.view.showTipText("打开失败了...依旧谢谢你！", delay: 2)
-            }
-        })
+        self.navigationController?.presentViewController(storeProductVC, animated: true, completion: nil)
+        storeProductVC.loadProductWithParameters(dict, completionBlock: nil)
     }
     
     func productViewControllerDidFinish(viewController: SKStoreProductViewController!) {

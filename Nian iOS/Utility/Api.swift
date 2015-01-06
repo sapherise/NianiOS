@@ -57,9 +57,9 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_hot.php", callback: callback)
     }
     
-    static func getExploreNew(page: String, callback: V.JsonCallback) {
+    static func getExploreNew(lastid: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_all.php?page=\(page)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/explore_all2.php?lastid=\(lastid)", callback: callback)
     }
     
     static func postReport(type: String, id: String, callback: V.StringCallback) {
@@ -170,9 +170,9 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_join.php", content: "uid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&dream=\(dream)&word=\(word)", callback: callback)
     }
     
-    static func getCircleExplore(page:String, callback: V.JsonCallback) {
+    static func getCircleExplore(lastid:String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/circle_explore.php?page=\(page)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/circle_explore.php?lastid=\(lastid)", callback: callback)
     }
     
     static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {

@@ -174,14 +174,17 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker.delegate = self
-        self.imagePicker.allowsEditing = false
         var VC = findRootViewController()! as UIViewController
         if buttonIndex == 0 {
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker.delegate = self
+            self.imagePicker.allowsEditing = false
             self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             VC.presentViewController(self.imagePicker, animated: true, completion: nil)
         }else if buttonIndex == 1 {
+            self.imagePicker = UIImagePickerController()
+            self.imagePicker.delegate = self
+            self.imagePicker.allowsEditing = false
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                 VC.presentViewController(self.imagePicker, animated: true, completion: nil)

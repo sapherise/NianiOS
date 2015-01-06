@@ -55,18 +55,21 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == self.actionSheet {
-        self.imagePicker = UIImagePickerController()
-        self.imagePicker!.delegate = self
-        self.imagePicker!.allowsEditing = true
-        if buttonIndex == 0 {
-            self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-        }else if buttonIndex == 1 {
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+            if buttonIndex == 0 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.allowsEditing = true
+                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            }else if buttonIndex == 1 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.allowsEditing = true
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
+                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                    self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+                }
             }
-        }
         }else if actionSheet == self.setDreamActionSheet {
             if buttonIndex == 0 {
                 self.isPrivate = 0

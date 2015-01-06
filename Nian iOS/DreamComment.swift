@@ -57,6 +57,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        self.viewLoadingHide()
     }
     override func viewWillAppear(animated: Bool)
     {
@@ -128,6 +129,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        self.viewLoadingShow()
     }
     
     //按下发送后调用此函数
@@ -219,6 +222,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                     self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
                 }
                 self.tableview.reloadData()
+                self.viewLoadingHide()
                 self.tableview.headerEndRefreshing()
                 if self.tableview.contentSize.height > self.tableview.bounds.size.height {
                     self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)

@@ -11,16 +11,18 @@ import Foundation
 class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectionViewDataSource {
     
     class Data {
-        
         var id: String!
         var img: String!
         var title: String!
         var promo: Int!
+        var sid: String!
     }
     
     weak var bindViewController: ExploreViewController?
     var page = 0
     var dataSource = [Data]()
+    var lastID = "0"
+    
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
@@ -28,7 +30,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     }
     
     func load(clear: Bool, callback: Bool -> Void) {
-        Api.getExploreNew("\(page++)", callback: {
+        Api.getExploreNew("\(self.lastID)", callback: {
             json in
             var success = false
             if json != nil {
@@ -44,7 +46,14 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
                         data.title = item["title"] as String
                         data.img = item["img"] as String
                         data.promo = (item["promo"] as String).toInt()!
+                        data.sid = item["sid"] as String
                         self.dataSource.append(data)
+                    }
+                    
+                    var count = self.dataSource.count
+                    if count >= 1 {
+                        var data = self.dataSource[count - 1]
+                        self.lastID = data.sid
                     }
                 }
             }
@@ -65,6 +74,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     
     override func onRefresh() {
         page = 0
+        self.lastID = "0"
         load(true) {
             success in
             if self.bindViewController!.current == 3 {
@@ -97,7 +107,13 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         var data = dataSource[indexPath.row]
         cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : UIColor.blackColor()
         cell!.labelTitle.text = data.title
+        cell!.labelTitle.setHeight(data.title.stringHeightWith(11, width: 80))
+        cell!.imageCover.setHolder()
+        cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
+        cell!.imageCover.layer.borderWidth = 0.5
+        if data.img != "" {
         cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor, bool: false)
+        }
         return cell!
     }
     

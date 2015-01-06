@@ -15,6 +15,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     var dataArray = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
+    var lastID:String = "0"
     
     override func viewDidLoad()
     {
@@ -33,7 +34,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.backgroundColor = BGColor
+        self.tableView.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1)
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
         var nib = UINib(nibName:"CircleExploreCell", bundle: nil)
@@ -47,15 +48,30 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         titleLabel.text = "发现梦境"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        var addButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onAddCircleClick")
+        addButton.image = UIImage(named:"plus")
+        self.navigationItem.rightBarButtonItems = [addButton]
+        
         self.viewLoadingShow()
     }
     
+    func onAddCircleClick() {
+        var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+        self.navigationController!.pushViewController(addcircleVC, animated: true)
+    }
+    
     func loadData() {
-        Api.getCircleExplore("\(self.page)"){ json in
+        Api.getCircleExplore("\(self.lastID)"){ json in
             if json != nil {
                 var arr = json!["items"] as NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
+                }
+                var count = self.dataArray.count
+                if count >= 1 {
+                    var data = self.dataArray[count - 1] as NSDictionary
+                    self.lastID = data.stringAttributeForKey("dreamdate")
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
@@ -80,6 +96,11 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
                 self.page = 1
+                var count = self.dataArray.count
+                if count >= 1 {
+                    var data = self.dataArray[count - 1] as NSDictionary
+                    self.lastID = data.stringAttributeForKey("dreamdate")
+                }
                 if self.dataArray.count < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
@@ -111,7 +132,9 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        return  72
+        var index = indexPath.row
+        var data = self.dataArray[index] as NSDictionary
+        return CircleExploreCell.cellHeightByData(data)
     }
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
