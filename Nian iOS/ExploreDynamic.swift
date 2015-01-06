@@ -271,6 +271,7 @@ class ExploreDynamicStepCell: UITableViewCell {
         if !data.img0.isZero && !data.img1.isZero {
             imageDelta = CGFloat(data.img1 * 320 / data.img0)
             imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+            // data.img.pathExtension
             imageContent.setHeight(imageDelta)
             imageContent.hidden = false
             labelContent.setY(imageContent.bottom() + 15)

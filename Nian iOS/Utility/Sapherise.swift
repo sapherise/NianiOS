@@ -106,7 +106,7 @@ func SAHtml(content:String) -> String {
 }
 
 func SAEncode(content:String) -> String {
-    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&"
+    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&+"
     return CFURLCreateStringByAddingPercentEscapes(nil, content, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue)
 }
 

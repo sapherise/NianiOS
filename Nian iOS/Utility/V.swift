@@ -282,7 +282,8 @@ extension UIView {
     }
     
     func showImage(imageURL: String, width: Float, height: Float, yPoint: CGPoint = CGPointZero, bool:Bool = true) {
-        if true || imageURL.pathExtension != "gif!large" {
+        globalImageYPoint = yPoint
+        if imageURL.pathExtension != "gif!large" {
             var x: CGFloat = 0
             var y: CGFloat = 0
             var w = CGFloat(width)
@@ -298,7 +299,6 @@ extension UIView {
                 x = (globalWidth - w) / 2
                 y = (globalHeight - h) / 2
             }
-            globalImageYPoint = yPoint
             var imageView = SAImageZoomingView(frame: CGRectMake(0, 0, globalWidth, globalHeight), x: x, y: y, w: w, h: h)
             imageView.backgroundColor = UIColor.blackColor()
             imageView.imageURL = imageURL
@@ -338,10 +338,48 @@ extension UIView {
                 })
             }
         } else {
-            var view = GIFPlayer(frame: CGRectMake(0, 0, CGFloat(width), CGFloat(height)))
-            view.play(V.dataFromPath(V.imageCachePath(imageURL))!)
-            view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageViewTap:"))
-            self.window!.addSubview(view)
+            var heightGif = width != 0 ? globalWidth * CGFloat(height / width) : 100
+            var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+            var webView = UIWebView(frame: CGRectMake(0, (globalHeight-heightGif)/2, CGFloat(globalWidth), heightGif))
+            let url = NSURL(string: "http://nian.so/api/gif.php?url=\(imageURL)")
+            let request = NSURLRequest(URL: url!)
+            webView.loadRequest(request)
+            webView.userInteractionEnabled = false
+            webView.hidden = true
+            
+            var viewImage = UIImageView(frame: CGRectMake(0, -yPoint.y, CGFloat(globalWidth), heightGif))
+            viewImage.setImage(imageURL, placeHolder: IconColor)
+            viewHolder.addSubview(viewImage)
+            viewHolder.addSubview(webView)
+            viewHolder.backgroundColor = UIColor.blackColor()
+            viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGifTap:"))
+            viewHolder.userInteractionEnabled = true
+            self.window?.addSubview(viewHolder)
+            webView.backgroundColor = UIColor.clearColor()
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                viewImage.setY((globalHeight-heightGif)/2)
+            }, completion: { (Bool) -> Void in
+                webView.hidden = false
+            })
+        }
+    }
+    
+    func onGifTap(sender: UITapGestureRecognizer) {
+        if let v = sender.view {
+            var views:NSArray = v.subviews
+            for view:AnyObject in views {
+                if NSStringFromClass(view.classForCoder) == "UIWebView"  {
+                    view.removeFromSuperview()
+                }else if NSStringFromClass(view.classForCoder) == "UIImageView"  {
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        view.setY(-globalImageYPoint.y)
+                        }) { (Bool) -> Void in
+                            if sender.view != nil {
+                                sender.view!.removeFromSuperview()
+                            }
+                    }
+                }
+            }
         }
     }
     
