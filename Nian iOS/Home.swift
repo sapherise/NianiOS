@@ -159,7 +159,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             button.tag = index+100
             var image = self.imageArray[index]
             let myImage = UIImage(named:"\(image)")
-            let myImage2 = UIImage(named:"\(image)S")
+            let myImage2 = UIImage(named:"\(image)_s")
             
             button.setImage(myImage, forState: UIControlState.Normal)
             button.setImage(myImage2, forState: UIControlState.Selected)

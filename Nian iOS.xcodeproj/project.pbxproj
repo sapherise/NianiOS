@@ -71,7 +71,6 @@
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
-		12AE680C1A5C232D0085FDC4 /* iwatch.gif in Resources */ = {isa = PBXBuildFile; fileRef = 12AE680B1A5C232D0085FDC4 /* iwatch.gif */; };
 		12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D6B31A1369B100FB436E /* LevelCircle.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
@@ -230,7 +229,6 @@
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
-		12AE680B1A5C232D0085FDC4 /* iwatch.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = iwatch.gif; path = ../../../Desktop/iwatch.gif; sourceTree = "<group>"; };
 		12B4D6B31A1369B100FB436E /* LevelCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelCircle.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
@@ -697,7 +695,6 @@
 		12FB489B196AE76E0026DD51 /* Nian iOS */ = {
 			isa = PBXGroup;
 			children = (
-				12AE680B1A5C232D0085FDC4 /* iwatch.gif */,
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
 				1291D59619BE0C39009F45F6 /* 欢迎 */,
@@ -959,7 +956,6 @@
 				12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */,
 				12BF1A681A427A1F0044CAF4 /* CircleJoin.xib in Resources */,
 				3274A3851A15F0FF00D2425A /* ExploreDynamicStepCell.xib in Resources */,
-				12AE680C1A5C232D0085FDC4 /* iwatch.gif in Resources */,
 				1253C3001A1DF108003D4ECF /* PlayerCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
