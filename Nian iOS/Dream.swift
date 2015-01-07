@@ -167,16 +167,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
-    func setupViews()
-    {
+    func setupViews() {
         self.viewBack()
-        
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
-        
         self.view.backgroundColor = UIColor.blackColor()
-        
         self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.lefttableView!.delegate = self;
         self.lefttableView!.dataSource = self;
@@ -189,7 +185,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.view.addSubview(self.lefttableView!)
         
-        
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -198,15 +193,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationItem.titleView = titleLabel
         
         //主人
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var Sa = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            var url = NSURL(string:"http://nian.so/api/dream.php?id=\(self.Id)&uid=\(safeuid)&shell=\(safeshell)")
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            if data != nil {
-                var json: AnyObject = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)!
-                var dream: AnyObject! = json.objectForKey("dream")
+        Api.getDreamTop(self.Id) { json in
+            if json != nil {
+                var dream: AnyObject! = json!.objectForKey("dream")
                 self.owneruid = dream.objectForKey("uid") as String
                 self.titleJson = dream.objectForKey("title") as String
                 self.percentJson = dream.objectForKey("percent") as String
@@ -222,22 +211,24 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
                 self.stepJson = dream.objectForKey("step") as String
                 self.desHeight = self.contentJson.stringHeightWith(11,width:200)
-                dispatch_async(dispatch_get_main_queue(), {
-                    if safeuid == self.owneruid {
-                        self.dreamowner = 1
-                        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
-                        moreButton.image = UIImage(named:"more")
-                        self.navigationItem.rightBarButtonItems = [ moreButton]
-                    }else{
-                        self.dreamowner = 0
-                        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
-                        moreButton.image = UIImage(named:"more")
-                        self.navigationItem.rightBarButtonItems = [ moreButton]
-                    }
-                    self.loadDreamTopcell()
-                })
+                var Sa = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeshell = Sa.objectForKey("shell") as String
+                println(safeshell)
+                if safeuid == self.owneruid {
+                    self.dreamowner = 1
+                    var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
+                    moreButton.image = UIImage(named:"more")
+                    self.navigationItem.rightBarButtonItems = [ moreButton]
+                }else{
+                    self.dreamowner = 0
+                    var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
+                    moreButton.image = UIImage(named:"more")
+                    self.navigationItem.rightBarButtonItems = [ moreButton]
+                }
+                self.loadDreamTopcell()
             }
-        })
+        }
     }
     
     func ownerMore(){

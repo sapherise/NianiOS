@@ -31,10 +31,12 @@ class SAHttpRequest: NSObject {
                 })
             }else{
                 if data != nil {
-                    let jsonData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
-                    dispatch_async(dispatch_get_main_queue(), {
-                        completionHandler(data:jsonData)
-                    })
+                    let jsonData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary
+                    if jsonData != nil {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            completionHandler(data:jsonData!)
+                        })
+                    }
                 }
             }
         })

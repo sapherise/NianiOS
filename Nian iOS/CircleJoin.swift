@@ -10,6 +10,8 @@ import UIKit
 
 protocol circleAddDelegate {
     func SAReloadData()
+    func addDream(tag:Int)
+    func changeBtnMainText(content:String)
 }
 
 class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -66,13 +68,34 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 }
                 self.tableView!.reloadData()
                 if self.dataArray.count == 0 {
-                    self.tableView!.tableHeaderView = viewEmpty(278, content: "没有梦想是这个标签")
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, 278, 200))
+                    var viewQuestion = viewEmpty(278, content: "没有梦想是这个标签")
+                    viewQuestion.setHeight(90)
+                    var btnGo = UIButton()
+                    btnGo.setButtonNice("创建一个")
+                    btnGo.setX(278/2-50)
+                    btnGo.setY(viewQuestion.bottom())
+                    btnGo.tag = self.hashTag
+                    btnGo.addTarget(self, action: "onBtnGoClick:", forControlEvents: UIControlEvents.TouchUpInside)
+                    viewHeader.addSubview(viewQuestion)
+                    viewHeader.addSubview(btnGo)
+                    self.tableView.tableHeaderView = viewHeader
+                }else{
+                    self.tableView.tableHeaderView = UIView()
                 }
+                
+                
+                
                 self.btnOK.enabled = true
                 var tag = V.Tags[self.hashTag-1]
                 self.labelDream.text = "绑定\(tag)梦想"
             }
         }
+    }
+    
+    func onBtnGoClick(sender:UIButton){
+        var tag = sender.tag
+        delegate?.addDream(tag)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -155,8 +178,10 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                         if self.thePrivate == "0" {
                             textOK = "加入好了！"
                             globalWillCircleReload = 1
+                            self.delegate?.SAReloadData()
                         }else if self.thePrivate == "1" {
                             textOK = "发好验证了！"
+                            self.delegate?.changeBtnMainText("等待验证中")
                         }
                         self.btnOK.setTitle(textOK, forState: UIControlState.Normal)
                         if let v = self.superview {
@@ -167,7 +192,6 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                                     v.alpha = 0
                                     }) { (Bool) -> Void in
                                         v.removeFromSuperview()
-                                        self.delegate?.SAReloadData()
                                 }
                             })
                         }

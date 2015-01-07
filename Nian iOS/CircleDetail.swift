@@ -50,6 +50,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if globalWillCircleJoinReload == 1 {
+            globalWillCircleJoinReload = 0
+            self.onCircleJoinClick()
+        }
     }
     
     func setupViews()
@@ -621,6 +625,19 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             }
             self.actionSheetPromote!.showInView(self.view)
         }
+    }
+    
+    func addDream(tag:Int){
+        self.onViewCloseClick()
+        globalWillCircleJoinReload = 1
+        var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+        adddreamVC.tagType = tag
+        self.navigationController!.pushViewController(adddreamVC, animated: true)
+    }
+    
+    // 提交验证之后修改按钮的文本
+    func changeBtnMainText(content:String) {
+        self.topCell.btnMain.setTitle(content, forState: UIControlState.allZeros)
     }
     
 }

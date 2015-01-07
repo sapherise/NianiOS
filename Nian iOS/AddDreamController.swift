@@ -93,10 +93,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
         self.uploadWait!.startAnimating()
+        self.uploadButton!.hidden = true
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
+            self.uploadButton!.hidden = false
             self.uploadUrl = data.objectForKey("url") as String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
@@ -105,6 +107,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
+            self.uploadButton!.hidden = false
         })
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png"))
     }

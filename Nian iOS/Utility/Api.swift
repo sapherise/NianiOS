@@ -112,6 +112,11 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/circle_join_dream.php?uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
     }
     
+    static func getDreamTop(id:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/dream.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
+    }
+    
     static func getCircleDetail(circle:String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/circle_detail.php?uid=\(s_uid)&id=\(circle)", callback: callback)
