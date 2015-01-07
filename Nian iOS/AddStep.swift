@@ -166,7 +166,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         VC.onViewCloseClick()
                         var DreamVC = DreamViewController()
                         DreamVC.Id = self.dreamID
-                        VC.navigationController!.pushViewController(DreamVC, animated: true)
+                        VC.navigationController?.pushViewController(DreamVC, animated: true)
                     })
                 })
             }
@@ -230,7 +230,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         var VC = self.findRootViewController() as HomeViewController
         var navigationFrame = VC.navigationController?.navigationBar.frame
         navigationFrame!.origin.y = yPoint
-        VC.navigationController!.navigationBar.frame = navigationFrame!
+        VC.navigationController?.navigationBar.frame = navigationFrame!
     }
 }
 

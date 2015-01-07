@@ -42,7 +42,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.view.addSubview(self.tableView)
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "发现梦境"
@@ -58,7 +58,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     
     func onAddCircleClick() {
         var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-        self.navigationController!.pushViewController(addcircleVC, animated: true)
+        self.navigationController?.pushViewController(addcircleVC, animated: true)
     }
     
     func loadData() {
@@ -142,7 +142,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         var id = data.objectForKey("id") as String
         var circledetailVC = CircleDetailController()
         circledetailVC.Id = id
-        self.navigationController!.pushViewController(circledetailVC, animated: true)
+        self.navigationController?.pushViewController(circledetailVC, animated: true)
     }
     
     func setupRefresh(){

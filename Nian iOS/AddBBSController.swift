@@ -75,7 +75,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
                 var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)", "http://nian.so/api/add_bbs.php")
                 if(sa == "1"){
                     globalWillBBSReload = 1
-                    self.navigationController!.popViewControllerAnimated(true)
+                    self.navigationController?.popViewControllerAnimated(true)
                 }
             })
         }

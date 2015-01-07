@@ -188,7 +188,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var storyboard = UIStoryboard(name: "DreamTagViewController", bundle: nil)
         var viewController = storyboard.instantiateViewControllerWithIdentifier("DreamTagViewController") as DreamTagViewController
         viewController.dreamTagDelegate = self
-        self.navigationController!.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func setDream(){
@@ -228,7 +228,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 if(sa == "1"){
                     dispatch_async(dispatch_get_main_queue(), {
                         globalWillNianReload = 1
-                        self.navigationController!.popViewControllerAnimated(true)
+                        self.navigationController?.popViewControllerAnimated(true)
                     })
                 }
             })
@@ -253,7 +253,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 if(sa == "1"){
                     dispatch_async(dispatch_get_main_queue(), {
                         globalWillNianReload = 1
-                        self.navigationController!.popViewControllerAnimated(true)
+                        self.navigationController?.popViewControllerAnimated(true)
                         self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)")
                     })
                 }

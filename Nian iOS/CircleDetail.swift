@@ -80,7 +80,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "梦境资料"
@@ -195,7 +195,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         LikeVC.Id = safeuid
         LikeVC.urlIdentify = 4
         LikeVC.circleID = self.Id
-        self.navigationController!.pushViewController(LikeVC, animated: true)
+        self.navigationController?.pushViewController(LikeVC, animated: true)
     }
     
     func onCircleJoinClick(){
@@ -295,25 +295,25 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func dreamclick(sender:UITapGestureRecognizer){
         var DreamVC = DreamViewController()
         DreamVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(DreamVC, animated: true)
+        self.navigationController?.pushViewController(DreamVC, animated: true)
     }
     
     func onUserActionClick(){
         var UserVC = PlayerViewController()
         UserVC.Id = "\(self.selectUid)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func onDreamActionClick(){
         var DreamVC = DreamViewController()
         DreamVC.Id = "\(self.selectDream)"
-        self.navigationController!.pushViewController(DreamVC, animated: true)
+        self.navigationController?.pushViewController(DreamVC, animated: true)
     }
     
     func findTableCell(view: UIView?) -> UIView? {
@@ -363,7 +363,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     json in
                     if json != nil {
                         globalWillCircleReload = 1
-                        self.navigationController!.popToRootViewControllerAnimated(true)
+                        self.navigationController?.popToRootViewControllerAnimated(true)
                     }
                 }
             }
@@ -377,7 +377,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     json in
                     if json != nil {
                         globalWillCircleReload = 1
-                        self.navigationController!.popToRootViewControllerAnimated(true)
+                        self.navigationController?.popToRootViewControllerAnimated(true)
                     }
                 }
             }
@@ -515,7 +515,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             addcircleVC.editImage = self.editImage
             addcircleVC.editPrivate = self.thePrivate
             addcircleVC.delegate = self
-            self.navigationController!.pushViewController(addcircleVC, animated: true)
+            self.navigationController?.pushViewController(addcircleVC, animated: true)
         }
     }
     
@@ -632,7 +632,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         globalWillCircleJoinReload = 1
         var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
         adddreamVC.tagType = tag
-        self.navigationController!.pushViewController(adddreamVC, animated: true)
+        self.navigationController?.pushViewController(adddreamVC, animated: true)
     }
     
     // 提交验证之后修改按钮的文本

@@ -20,7 +20,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     var circleTagDelegate: CircleTagDelegate?
     var dataArray = NSMutableArray()
     
-    let imgArray = ["daily", "camera", "love", "startup", "read", "us", "draw", "english", "collection", "fit", "music", "write", "travel", "food", "design", "game", "work", "habit", "handwriting", "others"]
+    let imgArray = ["daily", "camera", "love", "startup", "read", "us", "draw", "english", "collection", "fit", "music", "write", "travel", "food", "design", "thegame", "work", "habit", "handwriting", "others"]
     
     override func viewDidLoad() {
         setupViews()

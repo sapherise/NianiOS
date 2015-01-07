@@ -115,6 +115,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.inputKeyboard = UITextField(frame: CGRectMake(8+28+8, 8, globalWidth-16-36, 28))
         self.inputKeyboard.layer.cornerRadius = 4
         self.inputKeyboard.layer.masksToBounds = true
+        self.inputKeyboard.font = UIFont.systemFontOfSize(13)
         
         self.inputKeyboard.leftView = UIView(frame: CGRectMake(0, 0, 8, 28))
         self.inputKeyboard.rightView = UIView(frame: CGRectMake(0, 0, 8, 28))
@@ -136,9 +137,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.inputKeyboard.returnKeyType = UIReturnKeyType.Send
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.text = "梦境"
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -161,7 +161,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func onCircleDetailClick(){
         var circledetailVC = CircleDetailController()
         circledetailVC.Id = "\(self.ID)"
-        self.navigationController!.pushViewController(circledetailVC, animated: true)
+        self.navigationController?.pushViewController(circledetailVC, animated: true)
     }
     
     //按下发送后调用此函数
@@ -225,14 +225,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAloadData() {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
         var heightBefore = self.tableview.contentSize.height
-        var url = "http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(ID)&uid=\(safeuid)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                var arr = data["items"] as NSArray
-                var total = data["total"] as NSString!
+        Api.getCircleChatList(page, id: ID) { json in
+            if json != nil {
+                var arr = json!["items"] as NSArray
+                var total = json!["total"] as NSString!
                 self.dataTotal = "\(total)".toInt()!
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
@@ -244,18 +241,18 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 self.page++
                 self.animating = 0
             }
-        })
+        }
     }
     
     func SAReloadData(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)&uid=\(safeuid)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
+        Api.getCircleChatList(0, id: ID) { json in
+            if json != nil {
                 self.viewLoadingHide()
-                var arr = data["items"] as NSArray
-                var total = data["total"] as NSString!
+                var arr = json!["items"] as NSArray
+                var total = json!["total"] as NSString!
                 self.dataTotal = "\(total)".toInt()!
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {
@@ -271,8 +268,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 }
                 self.page = 1
                 self.isKeyboardResign = 0
+                if let v = (self.navigationItem.titleView as? UILabel) {
+                    var title = json!["title"] as String
+                    v.text = title
+                }
             }
-        })
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -383,7 +384,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.inputKeyboard.resignFirstResponder()
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func onBubbleClick(sender:UIGestureRecognizer) {

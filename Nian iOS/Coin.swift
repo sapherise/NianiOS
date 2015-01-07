@@ -158,7 +158,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     func onHeaderCoinClick() {
         var storyboard = UIStoryboard(name: "CoinDetail", bundle: nil)
         var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController") as UIViewController
-        self.navigationController!.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onBuyCoinClick(sender: UIButton) {

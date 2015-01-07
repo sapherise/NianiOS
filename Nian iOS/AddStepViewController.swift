@@ -172,7 +172,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             if(sa == "1"){
                 globalWillNianReload = 1
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.navigationController!.popViewControllerAnimated(true)
+                    self.navigationController?.popViewControllerAnimated(true)
                     self.delegate?.countUp()
                 })
         }
@@ -198,7 +198,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                     self.delegate?.editStepRow = self.row
                     self.delegate?.editStepData = self.data!
                     self.delegate?.Editstep()
-                    self.navigationController!.popViewControllerAnimated(true)
+                    self.navigationController?.popViewControllerAnimated(true)
                 })
             }
         })

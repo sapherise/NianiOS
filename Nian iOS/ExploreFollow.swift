@@ -136,19 +136,19 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var viewController = DreamViewController()
         viewController.Id = dataSource[indexPath.row].id
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onHeadTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onNameTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onImageTap(sender: UITapGestureRecognizer) {
@@ -171,7 +171,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         viewController.dreamID = data.id.toInt()!
         viewController.stepID = data.sid.toInt()!
         viewController.dreamowner = data.uid.toInt()!
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onMoreClick(sender: UIButton) {

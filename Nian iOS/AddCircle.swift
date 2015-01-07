@@ -184,7 +184,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
         var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as CircleTagViewController
         viewController.circleTagDelegate = self
-        self.navigationController!.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func setDream(){
@@ -226,7 +226,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                 json in
                 if json != nil {
                     globalWillCircleReload = 1
-                    self.navigationController!.popViewControllerAnimated(true)
+                    self.navigationController?.popViewControllerAnimated(true)
                 }
             }
         }
@@ -251,7 +251,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                 if json != nil {
                     globalWillCircleReload = 1
                     self.delegate?.editCircle(self.editPrivate.toInt()!, editTitle: self.field1!.text, editDes: self.field2.text, editImage: self.uploadUrl)
-                    self.navigationController!.popViewControllerAnimated(true)
+                    self.navigationController?.popViewControllerAnimated(true)
                 }
             }
         }

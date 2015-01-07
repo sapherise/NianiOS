@@ -107,6 +107,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.inputKeyboard = UITextField(frame: CGRectMake(8, 8, globalWidth-16, 28))
         self.inputKeyboard.layer.cornerRadius = 4
         self.inputKeyboard.layer.masksToBounds = true
+        self.inputKeyboard.font = UIFont.systemFontOfSize(13)
         
         self.inputKeyboard.leftView = UIView(frame: CGRectMake(0, 0, 8, 28))
         self.inputKeyboard.rightView = UIView(frame: CGRectMake(0, 0, 8, 28))
@@ -123,7 +124,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.inputKeyboard.returnKeyType = UIReturnKeyType.Send
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.text = "回应"
         titleLabel.textColor = UIColor.whiteColor()
@@ -343,7 +344,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.inputKeyboard.resignFirstResponder()
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {

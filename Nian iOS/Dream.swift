@@ -127,7 +127,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             addstepVC.data = data
             addstepVC.row = row
             addstepVC.delegate = self
-            self.navigationController!.pushViewController(addstepVC, animated: true)
+            self.navigationController?.pushViewController(addstepVC, animated: true)
         }
         var ActivityArray = [ customActivity ]
         if self.dreamowner == 1 {
@@ -186,7 +186,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.view.addSubview(self.lefttableView!)
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -214,7 +214,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var Sa = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as String
                 var safeshell = Sa.objectForKey("shell") as String
-                println(safeshell)
                 if safeuid == self.owneruid {
                     self.dreamowner = 1
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
@@ -396,26 +395,26 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         DreamCommentVC.dreamID = self.Id.toInt()!
         DreamCommentVC.stepID = tag
         DreamCommentVC.dreamowner = self.dreamowner
-        self.navigationController!.pushViewController(DreamCommentVC, animated: true)
+        self.navigationController?.pushViewController(DreamCommentVC, animated: true)
     }
     
     func likeclick(sender:UITapGestureRecognizer){
         var LikeVC = LikeViewController()
         LikeVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(LikeVC, animated: true)
+        self.navigationController?.pushViewController(LikeVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController!.pushViewController(imgVC, animated: true)
+        self.navigationController?.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
@@ -438,7 +437,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         AddstepVC.Id = self.Id
         AddstepVC.delegate = self    //😍
-        self.navigationController!.pushViewController(AddstepVC, animated: true)
+        self.navigationController?.pushViewController(AddstepVC, animated: true)
     }
     
     func countUp() {      //😍
@@ -561,7 +560,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         editdreamVC.editPrivate = self.privateJson
         editdreamVC.tagType = self.hashtag.toInt()!
         editdreamVC.readyForTag = readyForTag
-        self.navigationController!.pushViewController(editdreamVC, animated: true)
+        self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
     func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String){
@@ -662,7 +661,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var LikeVC = LikeViewController()
         LikeVC.Id = "\(self.Id)"
         LikeVC.urlIdentify = 3
-        self.navigationController!.pushViewController(LikeVC, animated: true)
+        self.navigationController?.pushViewController(LikeVC, animated: true)
     }
     
     func onDreamLikeClick(){
@@ -699,7 +698,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }else{
             var TagVC = TagViewController()
             TagVC.Id = self.hashtag
-            self.navigationController!.pushViewController(TagVC, animated: true)
+            self.navigationController?.pushViewController(TagVC, animated: true)
         }
     }
     

@@ -63,18 +63,18 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController!.navigationBar.setY(-44)
+        self.navigationController?.navigationBar.setY(-44)
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.navigationController!.navigationBar.setY(-44)
+        self.navigationController?.navigationBar.setY(-44)
         if current == -1 {
             switchTab(0)
         }
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.navigationController!.navigationBar.setY(20)
+        self.navigationController?.navigationBar.setY(20)
     }
     
     func setupViews() {
@@ -148,6 +148,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     func onFriendClick() {
         var storyboard = UIStoryboard(name: "ExploreFriend", bundle: nil)
         var vz = storyboard.instantiateViewControllerWithIdentifier("ExploreFriendViewController") as UIViewController
-        self.navigationController!.pushViewController(vz, animated: true)
+        self.navigationController?.pushViewController(vz, animated: true)
     }
 }

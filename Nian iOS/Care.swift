@@ -114,6 +114,6 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         Sa.synchronize()
         notification.repeatInterval = NSCalendarUnit.CalendarUnitDay
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
-        self.navigationController!.popViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(true)
     }
 }

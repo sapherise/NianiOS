@@ -85,7 +85,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -209,14 +209,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func imageViewTapped(noti:NSNotification){
         var imageURL = noti.object as String
         var imgVC = SAImageViewController(nibName: nil, bundle: nil)
         imgVC.imageURL = "\(imageURL)"
-        self.navigationController!.pushViewController(imgVC, animated: true)
+        self.navigationController?.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
@@ -301,7 +301,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 addVC.content = "@\(self.ReplyUser) "
                 addVC.Id = self.Id
                 addVC.Row = self.ReplyRow
-                self.navigationController!.pushViewController(addVC, animated: true)
+                self.navigationController?.pushViewController(addVC, animated: true)
             }else if buttonIndex == 1 { //复制
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
@@ -367,7 +367,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         addVC.content = ""
         addVC.Id = self.Id
         addVC.Row = self.ReplyRow
-        self.navigationController!.pushViewController(addVC, animated: true)
+        self.navigationController?.pushViewController(addVC, animated: true)
     }
     
     func bbsMore(){

@@ -180,6 +180,11 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/circle_explore.php?lastid=\(lastid)", callback: callback)
     }
     
+    static func getCircleChatList(page: Int, id: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(id)&uid=\(s_uid)", callback: callback)
+    }
+    
     static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)

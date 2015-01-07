@@ -16,7 +16,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     var page :Int = 0
     
     override func viewDidAppear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
+        self.navigationController?.interactivePopGestureRecognizer.enabled = false
     }
     
     override func viewDidLoad() {
@@ -145,7 +145,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         var id = data.objectForKey("id") as String
         var CircleVC = CircleController()
         CircleVC.ID = id.toInt()!
-        self.navigationController!.pushViewController(CircleVC, animated: true)
+        self.navigationController?.pushViewController(CircleVC, animated: true)
     }
     
     func setupRefresh() {

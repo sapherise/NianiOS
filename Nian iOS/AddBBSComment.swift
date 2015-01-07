@@ -111,7 +111,7 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
                 self.delegate?.ReturnReplyContent = self.TextView.text
                 self.delegate?.ReturnReplyId = sa
                 self.delegate?.commentFinish()
-                self.navigationController!.popViewControllerAnimated(true)
+                self.navigationController?.popViewControllerAnimated(true)
                 })
             }
         })

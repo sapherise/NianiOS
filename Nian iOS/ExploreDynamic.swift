@@ -125,7 +125,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var viewController = DreamViewController()
         viewController.Id = dataSource[indexPath.row].id
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -181,13 +181,13 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     func onUserTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uidlike
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onDreamTap(sender: UITapGestureRecognizer) {
         var viewController = DreamViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].id
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onImageTap(sender: UITapGestureRecognizer) {
@@ -210,7 +210,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         viewController.dreamID = data.id.toInt()!
         viewController.stepID = data.sid.toInt()!
         viewController.dreamowner = data.uid.toInt()!
-        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
+        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onMoreClick(sender: UIButton) {
