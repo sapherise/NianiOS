@@ -377,7 +377,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var img0 = dataArray[view.tag - 10].objectForKey("img0") as NSString
         var img1 = dataArray[view.tag - 10].objectForKey("img1") as NSString
         var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-        self.view.showImage(V.urlStepImage(img, tag: .Large), width: img0.floatValue, height: img1.floatValue, yPoint: yPoint)
+        var w = CGFloat(img0.floatValue)
+        var h = CGFloat(img1.floatValue)
+        if w != 0 {
+            h = h * globalWidth / w
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
+            if let v = sender.view as? UIImageView {
+                v.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
+            }
+        }
     }
     
     func findTableCell(view: UIView?) -> UIView? {
@@ -408,13 +416,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
-    }
-    
-    func imageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController?.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
@@ -654,6 +655,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.topCell.labelDes.setY( 110 - desHeight / 2 )
         self.userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
         self.topCell.dreamhead!.setImage(self.userImageURL,placeHolder: IconColor)
+        self.topCell.dreamhead!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
+    }
+    
+    func onDreamHeadClick(sender:UIGestureRecognizer) {
+        if let v = sender.view as? UIImageView {
+            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, 60, 60)
+            v.showImage("http://img.nian.so/dream/\(self.imgJson)!large", rect: rect)
+        }
     }
     
     

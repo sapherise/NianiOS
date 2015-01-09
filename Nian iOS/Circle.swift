@@ -369,13 +369,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var content = data.objectForKey("content") as String
         var arrContent = content.componentsSeparatedByString("_")
         if arrContent.count == 4 {
-            var img0 = Float(NSNumberFormatter().numberFromString(arrContent[2])!)
-            var img1 = Float(NSNumberFormatter().numberFromString(arrContent[3])!)
+            var img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
+            var img1 = CGFloat(NSNumberFormatter().numberFromString(arrContent[3])!)
             if img0 != 0 {
-                var newHeight = img1 * Float(globalWidth) / img0
-                var url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!large"
-                var yPoint = sender.view?.convertPoint(CGPointZero, fromView: self.view.window)
-                self.view.showImage(url, width: Float(globalWidth), height: newHeight, yPoint: yPoint!, bool:false)
+                if let v = sender.view as? UIImageView {
+                    var w = sender.view!.width()
+                    var h = sender.view!.height()
+                    var url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!large"
+                    var yPoint = sender.view?.convertPoint(CGPointZero, fromView: self.view.window)
+                    var rect = CGRectMake(-yPoint!.x, -yPoint!.y, w, h)
+                    v.showImage(url, rect: rect)
+                }
             }
         }
     }

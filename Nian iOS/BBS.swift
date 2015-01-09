@@ -212,13 +212,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
-    func imageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController?.pushViewController(imgVC, animated: true)
-    }
-    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
         

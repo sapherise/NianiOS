@@ -214,6 +214,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             self.btnUpload.hidden = false
             self.imageUploaded.hidden = false
             self.imageUploaded.image = resizedImage(img, 150)
+            self.imageUploaded.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageUploadedClick:"))
             self.imageUploaded.clipsToBounds = true
             self.textView.setWidth(208)
             self.uploadUrl = uploadData.objectForKey("url") as String
@@ -231,6 +232,25 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         var navigationFrame = VC.navigationController?.navigationBar.frame
         navigationFrame!.origin.y = yPoint
         VC.navigationController?.navigationBar.frame = navigationFrame!
+    }
+    
+    func onImageUploadedClick(sender:UIGestureRecognizer) {
+        if let v = sender.view as? UIImageView {
+            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
+            var w = CGFloat((self.uploadWidth as NSString).floatValue)
+            var h = CGFloat((self.uploadHeight as NSString).floatValue)
+            if w * h > 0 {
+                if w > h {
+                    h = 50 * h / w
+                    w = 50
+                }else{
+                    w = 50 * w / h
+                    h = 50
+                }
+            }
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, w, h)
+            v.showImage("http://img.nian.so/step/\(self.uploadUrl)!large", rect: rect)
+        }
     }
 }
 

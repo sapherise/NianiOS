@@ -61,6 +61,7 @@
 		128DAC451A144F69009FB0E7 /* LevelGame.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128DAC441A144F69009FB0E7 /* LevelGame.xib */; };
 		128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DAC461A144F81009FB0E7 /* LevelGame.swift */; };
 		1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291D59719BE0C55009F45F6 /* Welcome.swift */; };
+		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
 		129375191A236E8B001F7442 /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
 		12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12941A0019CFA8650008B274 /* AddBBSController.swift */; };
 		12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12941A0219CFA87C0008B274 /* AddBBSController.xib */; };
@@ -82,7 +83,6 @@
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
-		12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */; };
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
 		12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE15A01A3E7D24006AC031 /* CircleCell.xib */; };
 		12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A21A3E7D56006AC031 /* CircleCell.swift */; };
@@ -219,6 +219,7 @@
 		128DAC441A144F69009FB0E7 /* LevelGame.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LevelGame.xib; sourceTree = "<group>"; };
 		128DAC461A144F81009FB0E7 /* LevelGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGame.swift; sourceTree = "<group>"; };
 		1291D59719BE0C55009F45F6 /* Welcome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
+		1292ABA51A5FB45B0091CC5F /* showImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showImage.swift; sourceTree = "<group>"; };
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
 		12941A0019CFA8650008B274 /* AddBBSController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSController.swift; sourceTree = "<group>"; };
 		12941A0219CFA87C0008B274 /* AddBBSController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSController.xib; sourceTree = "<group>"; };
@@ -240,7 +241,6 @@
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		12BF5FF919BB479900DE0ABE /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
-		12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageViewController.swift; sourceTree = "<group>"; };
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
 		12CE15A01A3E7D24006AC031 /* CircleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleCell.xib; sourceTree = "<group>"; };
 		12CE15A21A3E7D56006AC031 /* CircleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCell.swift; sourceTree = "<group>"; };
@@ -571,7 +571,6 @@
 			isa = PBXGroup;
 			children = (
 				12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */,
-				12CDE5CF19AC9FC1002E793F /* SAImageViewController.swift */,
 			);
 			name = "图片";
 			sourceTree = "<group>";
@@ -743,6 +742,7 @@
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
 				322DB94B1A0C9E95005FD6AE /* Api.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
+				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
@@ -1011,7 +1011,6 @@
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
-				12CDE5D019AC9FC1002E793F /* SAImageViewController.swift in Sources */,
 				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
@@ -1080,6 +1079,7 @@
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				12028E301A3EDA770072FBE1 /* AddCircle.swift in Sources */,
+				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */,

@@ -154,8 +154,16 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     func onImageTap(sender: UITapGestureRecognizer) {
         var view = findTableCell(sender.view)!
         var data = dataSource[view.tag]
-        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-        bindViewController!.view.showImage(V.urlStepImage(data.img, tag: .Large), width: data.img0, height: data.img1, yPoint: yPoint)
+        if let imageView = sender.view as? UIImageView {
+            var yPoint = imageView.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
+            var w = CGFloat(data.img0)
+            var h = CGFloat(data.img1)
+            if w != 0 {
+                h = h * globalWidth / w
+                var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
+                imageView.showImage(V.urlStepImage(data.img, tag: .Large), rect: rect)
+            }
+        }
     }
     
     func onLikeTap(sender: UITapGestureRecognizer) {

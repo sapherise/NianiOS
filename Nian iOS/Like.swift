@@ -29,20 +29,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "imageViewTapped", object:nil)
-        
-    }
-    override func viewWillAppear(animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "imageViewTapped:", name: "imageViewTapped", object: nil)
-    }
-    
-    
-    
     func setupViews()
     {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
@@ -166,13 +152,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
-    }
-    
-    func imageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat

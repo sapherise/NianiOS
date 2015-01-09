@@ -47,7 +47,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.viewLeft.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.viewRight.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
     }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {

@@ -10,8 +10,13 @@ import UIKit
 import Foundation
 
 extension UIImageView{
-    
-    func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil, ignore:Bool = false) {
+    // urlString 图片的网络路径
+    // placeHolder 图片的背景颜色
+    // bool 是否显示图片中间的水滴
+    // cacheName 为空时显示图片的网络文件名，否则为cacheName
+    // ignore 是否无视网络环境加载图片
+    // animated 加载完成后是否渐隐显示
+    func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil, ignore:Bool = false, animated: Bool = false) {
         var url = NSURL(string: urlString)
         if bool == true {
             self.image = UIImage(named: "drop")!
@@ -26,6 +31,9 @@ extension UIImageView{
         if image as NSObject != NSNull() {
             self.image = image as? UIImage
             self.contentMode = UIViewContentMode.ScaleAspectFill
+            if animated {
+                self.setAnimated()
+            }
         }else {
             var networkStatus = checkNetworkStatus()
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -41,6 +49,9 @@ extension UIImageView{
                             if (image != nil) {
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.image = image
+                                    if animated {
+                                        self.setAnimated()
+                                    }
                                     self.contentMode = UIViewContentMode.ScaleAspectFill
                                     FileUtility.imageCacheToPath(cachePath,image:data)
                                 })
@@ -50,6 +61,14 @@ extension UIImageView{
                 })
             }
         }
+    }
+    
+    // 设置图片渐变动画
+    func setAnimated(){
+        self.alpha = 0
+        UIView.animateWithDuration(1, animations: { () -> Void in
+            self.alpha = 1
+        })
     }
 }
 

@@ -21,6 +21,7 @@ class PlayerCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var labelMenuLeft: UILabel!
     @IBOutlet var labelMenuRight: UILabel!
     @IBOutlet var labelMenuSlider: UIView!
+    @IBOutlet var viewBlack: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

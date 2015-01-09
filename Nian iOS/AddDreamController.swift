@@ -160,7 +160,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
-        
+        self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadTap:"))
         self.uploadWait!.hidden = true
         
         
@@ -194,7 +194,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setDream(){
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
-        
         self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.setDreamActionSheet!.addButtonWithTitle("设为公开")
         self.setDreamActionSheet!.addButtonWithTitle("设为私密")
@@ -202,6 +201,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setDreamActionSheet!.cancelButtonIndex = 2
         self.setDreamActionSheet!.showInView(self.view)
         
+    }
+    
+    func onDreamHeadTap(sender:UIGestureRecognizer) {
+        if let v = sender.view as? UIImageView {
+            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, 30, 30)
+            v.showImage("http://img.nian.so/dream/\(self.uploadUrl)!large", rect: rect)
+        }
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){

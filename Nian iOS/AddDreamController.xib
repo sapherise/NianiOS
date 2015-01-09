@@ -29,7 +29,7 @@
                     <rect key="frame" x="20" y="74" width="280" height="212"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="305-bX-oL7">
+                        <imageView autoresizesSubviews="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="305-bX-oL7">
                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.89803921568627454" green="0.89411764705882357" blue="0.8901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

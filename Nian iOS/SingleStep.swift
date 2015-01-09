@@ -243,7 +243,15 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         var img0 = dataArray[view.tag - 10].objectForKey("img0") as NSString
         var img1 = dataArray[view.tag - 10].objectForKey("img1") as NSString
         var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-        self.view.showImage(V.urlStepImage(img, tag: .Large), width: img0.floatValue, height: img1.floatValue, yPoint: yPoint)
+        var w = CGFloat(img0.floatValue)
+        var h = CGFloat(img1.floatValue)
+        if w != 0 {
+            h = h * globalWidth / w
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
+            if let v = sender.view as? UIImageView {
+                v.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
+            }
+        }
     }
     
     func findTableCell(view: UIView?) -> UIView? {

@@ -75,13 +75,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "DreamimageViewTapped", object:nil)
     }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "DreamimageViewTapped:", name: "DreamimageViewTapped", object: nil)
         self.viewBackFix()
     }
     
@@ -259,10 +257,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var newHeight = height + 64
         if self.topCell != nil {
             if newHeight > 0 {
-                self.topCell!.BGImage.frame = CGRectMake(0, newHeight, 320, 320 - newHeight )
+                self.topCell!.BGImage.frame = CGRectMake(0, newHeight, 320, 320 - newHeight)
             }else{
                 self.topCell!.viewHolder.setY(newHeight)
                 self.topCell!.BGImage.frame = CGRectMake(newHeight/10, newHeight, 320-newHeight/5, 320)
+                self.topCell!.viewBlack.setY(newHeight)
             }
             scrollHidden(self.topCell!.UserHead, height: newHeight, scrollY: 70)
             scrollHidden(self.topCell!.UserName, height: newHeight, scrollY: 138)
@@ -475,7 +474,15 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var img0 = dataArray[view.tag - 10].objectForKey("img0") as NSString
         var img1 = dataArray[view.tag - 10].objectForKey("img1") as NSString
         var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-        self.view.showImage(V.urlStepImage(img, tag: .Large), width: img0.floatValue, height: img1.floatValue, yPoint: yPoint)
+        var w = CGFloat(img0.floatValue)
+        var h = CGFloat(img1.floatValue)
+        if w != 0 {
+            h = h * globalWidth / w
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
+            if let v = sender.view as? UIImageView {
+                v.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
+            }
+        }
     }
     
     func findTableCell(view: UIView?) -> UIView? {
@@ -509,13 +516,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
-    }
-    
-    func imageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController!.pushViewController(imgVC, animated: true)
     }
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
@@ -567,13 +567,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    func DreamimageViewTapped(noti:NSNotification){
-        var imageURL = noti.object as String
-        var imgVC = SAImageViewController(nibName: nil, bundle: nil)
-        imgVC.imageURL = "\(imageURL)"
-        self.navigationController!.pushViewController(imgVC, animated: true)
-    }
-    
     func setupPlayerTop(theUid:Int){
         Api.getUserTop(theUid){ json in
             if json != nil {
@@ -600,6 +593,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.UserFo.setWidth(foWidth)
                     self.topCell!.UserFoed.setWidth(foedWidth)
                     self.topCell!.UserHead.setImage(userImageURL, placeHolder: IconColor)
+                    self.topCell!.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
                     self.topCell!.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                     if cover == "" {
                         self.navView.image = UIImage(named: "bg")
@@ -622,10 +616,18 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                         self.topCell!.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                         self.topCell!.BGImage.image = UIImage(named: "bg")
                     }else{
-                        self.topCell!.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                        self.topCell!.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false, animated: true)
                     }
                 }
             }
+        }
+    }
+    
+    func onUserHeadClick(sender:UIGestureRecognizer) {
+        if let v = sender.view as? UIImageView {
+            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, 60, 60)
+            v.showImage("http://img.nian.so/head/\(self.Id).jpg!large", rect: rect)
         }
     }
     

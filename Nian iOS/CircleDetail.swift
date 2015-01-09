@@ -143,6 +143,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 c.nickLabel.text = self.editTitle
                 self.editImage = self.circleData!.objectForKey("img") as String
                 c.dreamhead.setImage("http://img.nian.so/dream/\(self.editImage)!dream", placeHolder: IconColor)
+                c.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCircleHeadClick:"))
                 var isJoin = self.circleData!.objectForKey("isJoin") as String
                 if isJoin == "1" {
                     c.btnMain.setTitle("邀请", forState: UIControlState.Normal)
@@ -186,6 +187,14 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             cell = c
         }
         return cell
+    }
+    
+    func onCircleHeadClick(sender:UIGestureRecognizer) {
+        if let v = sender.view as? UIImageView {
+            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
+            var rect = CGRectMake(-yPoint.x, -yPoint.y, 60, 60)
+            v.showImage("http://img.nian.so/dream/\(self.editImage)!large", rect: rect)
+        }
     }
     
     func onCircleInviteClick(){

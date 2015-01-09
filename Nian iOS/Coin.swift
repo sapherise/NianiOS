@@ -185,7 +185,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     var prompt = "Sa爱你呀"
                     switch state {
                     case .OnPurchasing:
-                        prompt = "正在刷爆你的卡"
+                        prompt = "正连接到 App Store"
                         break
                     case .OnVerifying:
                         prompt = "正在英俊地清点念币"
