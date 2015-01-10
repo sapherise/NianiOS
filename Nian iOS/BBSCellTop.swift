@@ -51,7 +51,7 @@ class BBSCellTop: UITableViewCell{
         }
         
         self.BBStitle!.text = "\(self.toptitle)"
-        var titleHeight = self.toptitle.stringHeightWith(17,width:280)
+        var titleHeight = self.toptitle.stringHeightWith(13,width:280)
         self.BBStitle!.setHeight(titleHeight)
         
         self.nickLabel!.text = "\(self.topuser)"
@@ -62,7 +62,7 @@ class BBSCellTop: UITableViewCell{
         
         self.contentLabel?.text = "\(topcontent)"
         
-        var height = topcontent.stringHeightWith(17,width:235)
+        var height = topcontent.stringHeightWith(13,width:235)
         self.contentLabel!.setHeight(height)
         
         self.dreamhead!.setY(self.BBStitle!.bottom()+20)
@@ -73,8 +73,8 @@ class BBSCellTop: UITableViewCell{
         self.Line!.setY(self.viewFlow!.bottom()+18)
     }
     class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
-        var height = topcontent.stringHeightWith(17,width:235)
-        var titleHeight = toptitle.stringHeightWith(17,width:280)
+        var height = topcontent.stringHeightWith(13,width:235)
+        var titleHeight = toptitle.stringHeightWith(13,width:280)
         return height + 120 + titleHeight + 58
     }
     

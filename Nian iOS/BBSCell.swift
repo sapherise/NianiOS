@@ -40,7 +40,7 @@ class BBSCell: UITableViewCell {
         self.avatarView!.setImage(userImageURL, placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         
-        var height = content.stringHeightWith(17,width:235)
+        var height = content.stringHeightWith(13,width:235)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
@@ -50,7 +50,7 @@ class BBSCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var content = data.stringAttributeForKey("content")
-        var height = content.stringHeightWith(17,width:235)
+        var height = content.stringHeightWith(13,width:235)
         return height + 95
     }
 }

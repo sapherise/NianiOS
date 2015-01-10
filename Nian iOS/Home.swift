@@ -109,16 +109,20 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         if noticenumber == "0" || noticenumber == "err" {
                             self.dot!.hidden = true
                         }else{
-                            self.dot!.hidden = false
-                            UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                self.dot!.frame = CGRectMake(228, 8, 20, 17)
-                                }, completion: { (complete: Bool) in
-                                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                        self.dot!.frame = CGRectMake(228, 10, 20, 15)
-                                        }, completion: { (complete: Bool) in
-                                            self.dot!.text = noticenumber
-                                    })
-                            })
+                            if let v = noticenumber.toInt() {
+                                self.dot!.hidden = false
+                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                    self.dot!.frame = CGRectMake(228, 8, 20, 17)
+                                    }, completion: { (complete: Bool) in
+                                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                            self.dot!.frame = CGRectMake(228, 10, 20, 15)
+                                            }, completion: { (complete: Bool) in
+                                                self.dot!.text = "\(v)"
+                                        })
+                                })
+                            }else{
+                                self.dot!.hidden = true
+                            }
                         }
                     })
                 })

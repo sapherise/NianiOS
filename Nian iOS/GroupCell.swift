@@ -37,7 +37,7 @@ class GroupCell: UITableViewCell {
         var reply = self.data.stringAttributeForKey("reply")
         self.lastdate!.text = lastdate
         self.reply!.text = "\(reply) 回应"
-        var height = title.stringHeightWith(17,width:290)
+        var height = title.stringHeightWith(13,width:290)
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = title
         self.line!.setY(self.contentLabel!.bottom()+5)
@@ -47,7 +47,7 @@ class GroupCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var title = data.stringAttributeForKey("title")
-        var height = title.stringHeightWith(17,width:290)
+        var height = title.stringHeightWith(13,width:290)
             return height + 75
     }
     

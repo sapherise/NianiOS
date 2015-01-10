@@ -10,32 +10,20 @@ import UIKit
 
 class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
-    let identifier = "me"
-    var tableView:UITableView?
+    let identifier = "LetterCell"
+    var tableView:UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
     var Id:String = ""
-    
-    func noticeShare(noti:NSNotification){
-        self.tableView!.headerBeginRefreshing()
-    }
+    var numLeft: String = ""
+    var numMiddel: String = ""
+    var numRight: String = ""
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        self.tableView!.headerBeginRefreshing()
-    }
-    
-    override func viewWillDisappear(animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
-    }
-    override func viewWillAppear(animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare:", name: "noticeShare", object: nil)
+        SAReloadData()
     }
     
     func setupViews() {
@@ -54,88 +42,106 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"MeCell", bundle: nil)
+        var nib = UINib(nibName:"LetterCell", bundle: nil)
+        var nib2 = UINib(nibName:"MeCellTop", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
+        self.tableView!.registerNib(nib2, forCellReuseIdentifier: "MeCellTop")
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
     }
     
     
     func loadData(){
-        var url = urlString()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                if ( data["total"] as Int ) < 30 {
-                    self.tableView!.setFooterHidden(true)
-                }
-                var arr = data["items"] as NSArray
-                for data : AnyObject  in arr{
+        Api.postLetter("\(self.page)"){ json in
+            if json != nil {
+                var arr = json!["items"] as NSArray
+                for data:AnyObject in arr {
                     self.dataArray.addObject(data)
                 }
-                self.tableView!.reloadData()
-                self.tableView!.footerEndRefreshing()
+                if self.dataArray.count < (self.page + 1) * 30 {
+                    self.tableView.setFooterHidden(true)
+                }
+                self.tableView.reloadData()
+                self.tableView.footerEndRefreshing(animated: true)
                 self.page++
             }
-        })
+        }
     }
     func SAReloadData(){
-        self.page = 0
-        var url = urlString()
-        self.tableView!.setFooterHidden(false)
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                if ( data["total"] as Int ) < 30 {
-                    self.tableView!.setFooterHidden(true)
-                }
-                var arr = data["items"] as NSArray
+        self.tableView.setFooterHidden(false)
+        Api.postLetter("0"){ json in
+            if json != nil {
+                var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
+                for data:AnyObject in arr {
                     self.dataArray.addObject(data)
                 }
-                self.tableView!.reloadData()
-                self.tableView!.headerEndRefreshing()
-                self.page++
+                self.tableView.reloadData()
+                self.tableView.headerEndRefreshing(animated: true)
+                if self.dataArray.count < 30 {
+                    self.tableView.setFooterHidden(true)
+                }
+                if self.dataArray.count == 0 {
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去发现梦境吗")
+                    viewQuestion.setY(50)
+                    viewQuestion.setHeight(110)
+                    var btnGo = UIButton()
+                    btnGo.setButtonNice("  嗯！")
+                    btnGo.setX(globalWidth/2-50)
+                    btnGo.setY(viewQuestion.bottom())
+                    btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    viewHeader.addSubview(viewQuestion)
+                    viewHeader.addSubview(btnGo)
+                    self.tableView.tableHeaderView = viewHeader
+                }else{
+                    self.tableView.tableHeaderView = UIView()
+                }
+                self.page = 1
+                self.numLeft = json!["notice_reply"] as String
+                self.numMiddel = json!["notice_like"] as String
+                self.numRight = json!["notice_news"] as String
             }
-        })
+        }
     }
-    
-    
-    func urlString()->String{
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/me.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)"
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataArray.count
+        if section == 0 {
+            return 1
+        }else{
+            return self.dataArray.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
-        var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
-        cell!.data = data
-        cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
-        if indexPath.row == self.dataArray.count - 1 {
-            cell!.viewLine.hidden = true
+        if indexPath.section == 0 {
+            var cell = tableView.dequeueReusableCellWithIdentifier("MeCellTop", forIndexPath: indexPath) as? MeCellTop
+            cell!.numLeft.text = self.numLeft
+            cell!.numMiddle.text = self.numMiddel
+            cell!.numRight.text = self.numRight
+            cell!.numLeft.setColorful()
+            cell!.numMiddle.setColorful()
+            cell!.numRight.setColorful()
+            return cell!
         }else{
-            cell!.viewLine.hidden = false
+            var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LetterCell
+            var index = indexPath.row
+            var data = self.dataArray[index] as NSDictionary
+            cell!.data = data
+//            cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+//            cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
+//            if indexPath.row == self.dataArray.count - 1 {
+//                cell!.viewLine.hidden = true
+//            }else{
+//                cell!.viewLine.hidden = false
+//            }
+            return cell!
         }
-        return cell!
     }
     
     func onDreamClick(sender:UIGestureRecognizer){
@@ -151,85 +157,19 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
-    {
-        var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
-        return  MeCell.cellHeightByData(data)
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 94
+        }else{
+            return 81
+        }
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
-        var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
-        var cid = data.stringAttributeForKey("cid")
-        var uid = data.stringAttributeForKey("cuid")
-        var user = data.stringAttributeForKey("cname")
-        var lastdate = data.stringAttributeForKey("lastdate")
-        var dreamtitle = data.stringAttributeForKey("dreamtitle")
-        var content = data.stringAttributeForKey("content")
-        var dream = data.stringAttributeForKey("dream")
-        var type = data.stringAttributeForKey("type")
-        var step = data.stringAttributeForKey("step") as String
-        
-        var DreamVC = DreamViewController()
-        var UserVC = PlayerViewController()
-        var BBSVC = BBSViewController()
-        var StepVC = SingleStepViewController()
-        var circleVC = CircleDetailController()
-        if type == "0" {    //在你的梦想留言
-            if step != "0" {
-                StepVC.Id = step
-                self.navigationController!.pushViewController(StepVC, animated: true)
-            }else{
-                DreamVC.Id = dream
-                self.navigationController!.pushViewController(DreamVC, animated: true)
-            }
-        }else if type == "1" {  //在某个梦想提及你
-            if step != "0" {
-                StepVC.Id = step
-                self.navigationController!.pushViewController(StepVC, animated: true)
-            }else{
-                DreamVC.Id = dream
-                self.navigationController!.pushViewController(DreamVC, animated: true)
-            }
-        }else if type == "2" {  //赞了你的梦想
-            DreamVC.Id = dream
-            self.navigationController!.pushViewController(DreamVC, animated: true)
-        }else if type == "3" {  //关注了你
-            UserVC.Id = uid
-            self.navigationController!.pushViewController(UserVC, animated: true)
-        }else if type == "4" {  //参与了你的话题
-            BBSVC.Id = dream
-            BBSVC.flow = 1
-            BBSVC.getContent = "1"
-            self.navigationController!.pushViewController(BBSVC, animated: true)
-        }else if type == "5" {  //在某个话题提及你
-            BBSVC.Id = dream
-            BBSVC.flow = 1
-            BBSVC.getContent = "1"
-            self.navigationController!.pushViewController(BBSVC, animated: true)
-            //BBS要倒叙
-        }else if type == "6" {  //为你更新了梦想
-            DreamVC.Id = dream
-            self.navigationController!.pushViewController(DreamVC, animated: true)
-            //头像不对哦
-        }else if type == "7" {  //添加你为小伙伴
-            DreamVC.Id = dream
-            self.navigationController!.pushViewController(DreamVC, animated: true)
-        }else if type == "8" {  //赞了你的进展
-            if step != "0" {
-                StepVC.Id = step
-                self.navigationController!.pushViewController(StepVC, animated: true)
-            }else{
-                DreamVC.Id = dream
-                self.navigationController!.pushViewController(DreamVC, animated: true)
-            }
-        }else if type == "9" {  //组长是否接受验证
-            circleVC.Id = step
-            self.navigationController!.pushViewController(circleVC, animated: true)
-        }else if type == "10" { //组长邀请
-            circleVC.Id = step
-            self.navigationController!.pushViewController(circleVC, animated: true)
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 {
+            var index = indexPath.row
+            var data = self.dataArray[index] as NSDictionary
+            println("要跳转到私信列表")
         }
     }
     
@@ -237,14 +177,28 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
-            })
+        })
         self.tableView!.addFooterWithCallback({
             self.loadData()
-            })
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
+}
+
+extension UILabel {
+    func setColorful(){
+        if let content = self.text?.toInt() {
+            if content == 0 {
+                self.textColor = UIColor.blackColor()
+            }else{
+                self.textColor = SeaColor
+            }
+        }else{
+            self.textColor = UIColor.blackColor()
+        }
+    }
 }

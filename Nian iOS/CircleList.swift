@@ -73,7 +73,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    
     func SAReloadData() {
         self.tableView.setFooterHidden(false)
         Api.postCircle("0"){ json in
