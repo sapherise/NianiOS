@@ -364,7 +364,11 @@ class ExploreDynamicStepCell: UITableViewCell {
     class func heightWithData(content: String, w: Float, h: Float) -> CGFloat {
         var height = content.stringHeightWith(14, width: 290)
         if h == 0.0 || w == 0.0 {
-            return height + 151
+            if content == "" {
+                return 136
+            }else{
+                return height + 151
+            }
         } else {
             if content == "" {
                 return 156 + CGFloat(h * 320 / w)

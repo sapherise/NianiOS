@@ -15,6 +15,7 @@ class PlayerCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var BGImage:UIImageView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var btnMain: UIButton!
+    @IBOutlet var btnLetter: UIButton!
     @IBOutlet var UserFo: UILabel!
     @IBOutlet var UserFoed: UILabel!
     @IBOutlet var viewMenu: UIView!

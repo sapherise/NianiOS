@@ -194,7 +194,11 @@ class DreamCell: UITableViewCell {
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(14,width:290)
         if(img0 == 0.0){
-            return height + 151
+            if content == "" {
+                return 136
+            }else{
+                return height + 151
+            }
         }else{
             if content == "" {
                 return 156 + CGFloat(img1*320/img0)

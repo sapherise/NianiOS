@@ -23,7 +23,21 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        self.tableView!.headerBeginRefreshing()
+    }
+    
+    func noticeShare(noti:NSNotification){
+        self.tableView!.headerBeginRefreshing()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare:", name: "noticeShare", object: nil)
     }
     
     func setupViews() {
@@ -84,7 +98,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 }
                 if self.dataArray.count == 0 {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去发现梦境吗")
+                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
                     viewQuestion.setY(50)
                     viewQuestion.setHeight(110)
                     var btnGo = UIButton()
@@ -94,9 +108,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
                     viewHeader.addSubview(viewQuestion)
                     viewHeader.addSubview(btnGo)
-                    self.tableView.tableHeaderView = viewHeader
+                    self.tableView.tableFooterView = viewHeader
                 }else{
-                    self.tableView.tableHeaderView = UIView()
+                    self.tableView.tableFooterView = UIView()
                 }
                 self.page = 1
                 self.numLeft = json!["notice_reply"] as String
@@ -104,6 +118,15 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 self.numRight = json!["notice_news"] as String
             }
         }
+    }
+    
+    func onBtnGoClick() {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var LikeVC = LikeViewController()
+        LikeVC.Id = safeuid
+        LikeVC.urlIdentify = 1
+        self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -169,7 +192,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if indexPath.section == 1 {
             var index = indexPath.row
             var data = self.dataArray[index] as NSDictionary
-            println("要跳转到私信列表")
+            var letterVC = LetterController()
+            if let id = data.stringAttributeForKey("uid").toInt() {
+                letterVC.ID = id
+                println(id)
+                self.navigationController?.pushViewController(letterVC, animated: true)
+            }
         }
     }
     

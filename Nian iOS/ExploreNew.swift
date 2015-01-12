@@ -30,10 +30,11 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     }
     
     func load(clear: Bool, callback: Bool -> Void) {
-        Api.getExploreNew("\(self.lastID)", callback: {
+        Api.getExploreNew("\(self.lastID)", page: self.page++, callback: {
             json in
             var success = false
             if json != nil {
+                println(self.page)
                 var items = json!["items"] as NSArray
                 if items.count != 0 {
                     if clear {

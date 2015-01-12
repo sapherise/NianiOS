@@ -57,9 +57,9 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_hot.php", callback: callback)
     }
     
-    static func getExploreNew(lastid: String, callback: V.JsonCallback) {
+    static func getExploreNew(lastid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_all2.php?lastid=\(lastid)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/explore_all2.php?lastid=\(lastid)&&page=\(page)", callback: callback)
     }
     
     static func postReport(type: String, id: String, callback: V.StringCallback) {
@@ -198,6 +198,16 @@ struct Api {
     static func postLetter(page: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/letter_list.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+    }
+    
+    static func getLetterChatList(page: Int, id: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/letter_chat_list.php?page=\(page)&id=\(id)&uid=\(s_uid)", callback: callback)
+    }
+    
+    static func postLetterAddReply(id: Int, content: String, type: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/letter_chat.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&id=\(id)&&content=\(content)&&type=\(type)", callback: callback)
     }
     
 }

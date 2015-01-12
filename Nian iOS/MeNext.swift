@@ -55,6 +55,8 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
+        
+        self.viewLoadingShow()
     }
     
     
@@ -92,6 +94,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
                 self.page++
+                self.viewLoadingHide()
             }
         })
     }
@@ -235,6 +238,14 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.viewBackFix()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.viewLoadingHide()
     }
     
 }

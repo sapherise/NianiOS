@@ -31,16 +31,13 @@ class LetterCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         var id = self.data.stringAttributeForKey("id")
-        var title = self.data.stringAttributeForKey("title")
         var postdate = (self.data.stringAttributeForKey("postdate") as NSString).doubleValue
         var current = (self.data.stringAttributeForKey("current") as NSString).doubleValue
         var uid = self.data.stringAttributeForKey("uid")
         var user = self.data.stringAttributeForKey("user")
         var content = self.data.stringAttributeForKey("content")
-        var img = self.data.stringAttributeForKey("img")
         var count = self.data.stringAttributeForKey("count")
         var type = self.data.stringAttributeForKey("type")
-        var cuser = self.data.stringAttributeForKey("cuser")
         if count == "0" {
             self.labelCount.hidden = true
         }else{
@@ -52,7 +49,7 @@ class LetterCell: UITableViewCell {
         }
         
         var textContent = ""
-        // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
+        // 1: 文字消息，2: 图片消息
         switch type {
         case "1":   textContent = "\(content)"
         case "2":   textContent = "发来一张图片"
@@ -61,8 +58,8 @@ class LetterCell: UITableViewCell {
         }
         
         self.lastdate!.text = V.relativeTime(postdate, current: current)
-        self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+        self.imageHead.setImage("http://img.nian.so/head/\(uid).jpg!dream", placeHolder: IconColor)
         self.labelContent.text = textContent
-        self.labelTitle.text = title
+        self.labelTitle.text = user
     }
 }

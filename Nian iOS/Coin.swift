@@ -9,7 +9,7 @@
 import UIKit
 import StoreKit
 
-class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, LTMorphingLabelDelegate {
+class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, LTMorphingLabelDelegate, DreamPromoDelegate {
     
     typealias CoinCellData = (icon: String, title: String, description: String, cost: String)
     
@@ -23,7 +23,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     let propItems: [CoinCellData] = [
         ("trip", "请假", "72小时不被停号", "2 念币"),
-        ("star_line", "毕业证", "永不停号", "100 念币")
+        ("star_line", "毕业证", "永不停号", "100 念币"),
+        ("promo", "推广", "让梦想被更多人看见", "7 念币")
     ]
     
     @IBOutlet var tableView: UITableView!
@@ -49,7 +50,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         // 关闭了念币详情
         // self.viewCircle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeaderCoinClick"))
         
-        self.scrollView.contentSize.height = 800
+        self.scrollView.contentSize.height = 1434
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币"
@@ -252,31 +253,44 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             des = "永不封号\n希望你已从念获益"
             button = "100 念币"
             break
+        case 102:   //推广
+            title = "推广"
+            des = "在接下来的 24 小时里\n置顶梦想到发现页面"
+            button = "7 念币"
+            break
         default:
             break
         }
         var tag = sender.tag
         showFilm(title, prompt: des, button: button) {
             film in
-            Api.postLabTrip("\(tag)") {
-                json in
-                if film.hidden {
-                    film.superview!.removeFromSuperview()
-                } else {
-                    if json != nil {
-                        if json!["success"] as String == "1" {
-                            film.showOK()
-                            self.levelLabelCount((json!["coin"] as String).toInt()!)
-                            globalWillNianReload = 1
-                        }else if json!["success"] as String == "2" {
-                            film.showError("念币不足")
-                        }else if json!["success"] as String == "3" {
-                            film.showError("毕业过啦")
+            if tag == 100 || tag == 101 {
+                Api.postLabTrip("\(tag)") {
+                    json in
+                    if film.hidden {
+                        film.superview!.removeFromSuperview()
+                    } else {
+                        if json != nil {
+                            if json!["success"] as String == "1" {
+                                film.showOK()
+                                self.levelLabelCount((json!["coin"] as String).toInt()!)
+                                globalWillNianReload = 1
+                            }else if json!["success"] as String == "2" {
+                                film.showError("念币不足")
+                            }else if json!["success"] as String == "3" {
+                                film.showError("毕业过啦")
+                            }
+                        }else{
+                            film.showError("念没有踩你，再试试")
                         }
-                    }else{
-                        film.showError("念没有踩你，再试试")
                     }
                 }
+            }else if tag == 102 {
+                println("跳转到梦想")
+                var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
+                var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as CircleTagViewController
+                viewController.dreamPromoDelegate = self
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
         }
     }
@@ -364,5 +378,9 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             strokeEnd.duration = 1
             self.top.SAAnimation(strokeEnd)
         })
+    }
+    
+    func onPromoClick() {
+        println("1")
     }
 }

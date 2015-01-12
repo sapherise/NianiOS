@@ -12,12 +12,16 @@ import UIKit
 protocol CircleTagDelegate {
     func onTagSelected(tag: String, tagType: Int, dreamType: Int)
 }
+protocol DreamPromoDelegate {
+    func onPromoClick()
+}
 
 class CircleTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet var collectionView: UICollectionView!
     
     var circleTagDelegate: CircleTagDelegate?
+    var dreamPromoDelegate: DreamPromoDelegate?
     var dataArray = NSMutableArray()
     
     let imgArray = ["daily", "camera", "love", "startup", "read", "us", "draw", "english", "collection", "fit", "music", "write", "travel", "food", "design", "thegame", "work", "habit", "handwriting", "others"]
@@ -40,7 +44,11 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = "选择标签"
+        if dreamPromoDelegate != nil {
+            titleLabel.text = "推广梦想"
+        }else{
+            titleLabel.text = "选择标签"
+        }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
     }
@@ -74,6 +82,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
             tag = 0
         }
         circleTagDelegate?.onTagSelected(textTag, tagType: tag!, dreamType: dreamType!)
+        dreamPromoDelegate?.onPromoClick()
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -82,6 +91,9 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         var url = "http://nian.so/api/circle_tag.php?uid=\(safeuid)"
+        if dreamPromoDelegate != nil {
+            url = "全梦想链接"   //TODO
+        }
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull() {
                 var arr = data["items"] as NSArray

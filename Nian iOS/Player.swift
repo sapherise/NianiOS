@@ -268,6 +268,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             scrollHidden(self.topCell!.UserFo, height: newHeight, scrollY: 161)
             scrollHidden(self.topCell!.UserFoed, height: newHeight, scrollY: 161)
             scrollHidden(self.topCell!.btnMain, height: newHeight, scrollY: 214)
+            scrollHidden(self.topCell!.btnLetter, height: newHeight, scrollY: 214)
         }
         if height >= 192 {
             self.navView.hidden = false
@@ -595,6 +596,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.UserHead.setImage(userImageURL, placeHolder: IconColor)
                     self.topCell!.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
                     self.topCell!.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
+                    self.topCell!.btnLetter.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                     if cover == "" {
                         self.navView.image = UIImage(named: "bg")
                         self.navView.contentMode = UIViewContentMode.ScaleAspectFill
@@ -612,6 +614,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                         self.topCell!.btnMain.addTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
                         self.topCell!.btnMain.setTitle("关注", forState: UIControlState.Normal)
                     }
+                    self.topCell!.btnLetter.addTarget(self, action: "SALetter:", forControlEvents: UIControlEvents.TouchUpInside)
+                    self.topCell!.btnLetter.setTitle("写信", forState: UIControlState.Normal)
                     if cover == "" {
                         self.topCell!.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                         self.topCell!.BGImage.image = UIImage(named: "bg")
@@ -699,6 +703,14 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             if sa != "" && sa != "err" {
             }
         })
+    }
+    
+    func SALetter(sender: UIButton) {
+        var letterVC = LetterController()
+        if let id = self.Id.toInt() {
+            letterVC.ID = id
+            self.navigationController?.pushViewController(letterVC, animated: true)
+        }
     }
     
     func dreamclick(sender:UITapGestureRecognizer){
