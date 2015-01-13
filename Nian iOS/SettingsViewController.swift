@@ -107,9 +107,11 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
             if data != nil {
                 var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                var sa: AnyObject! = json.objectForKey("user")
-                var email: AnyObject! = sa.objectForKey("email") as String
-                var name: String = sa.objectForKey("name") as String
+                var data: AnyObject! = json.objectForKey("user")
+                var email: AnyObject! = data.objectForKey("email") as String
+                var name: String = data.objectForKey("name") as String
+                Sa.setObject(name, forKey:"user")
+                Sa.synchronize()
                 dispatch_async(dispatch_get_main_queue(), {
                     self.inputName.text = name
                     self.inputEmail.text = "\(email)"
@@ -431,7 +433,15 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func niceTry(sender:UILongPressGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Began {
-        self.view.showTipText("念 爱 你", delay: 2)
+            var arr = ["you can't beat death", "but you can beat death in life, sometimes.", "and the more often you learn to do it,", "the more light there will be.", "your life is your life.", "know it while you have it.", "you are marvelous", "the gods wait to delight", "in you."]
+            var t: Double = 0
+            var count = arr.count - 1
+            for i in 0...count {
+                delay(t, {
+                    self.view.showTipText(arr[i], delay: 2)
+                })
+                t = t + 2.3
+            }
         }
     }
     

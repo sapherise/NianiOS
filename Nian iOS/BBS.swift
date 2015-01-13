@@ -285,8 +285,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-        var data = self.dataArray[self.ReplyRow] as NSDictionary
-        var uid = data.stringAttributeForKey("uid")
         if actionSheet == self.sheet {
             if buttonIndex == 0 {
                 var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
@@ -299,6 +297,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
+                var data = self.dataArray[self.ReplyRow] as NSDictionary
+                var uid = data.stringAttributeForKey("uid")
                 if (( uid == safeuid ) || ( self.topuid == safeuid )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                     self.deleteCommentSheet!.addButtonWithTitle("确定删除")

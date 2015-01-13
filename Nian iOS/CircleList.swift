@@ -55,6 +55,10 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.view.addSubview(self.tableView)
     }
     
+    func onBBSClick(){
+        var BBSVC = ExploreController()
+        self.navigationController?.pushViewController(BBSVC, animated: true)
+    }
     
     func loadData() {
         Api.postCircle("\(self.page)"){ json in
@@ -88,21 +92,36 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                     self.tableView.setFooterHidden(true)
                 }
                 if self.dataArray.count == 0 {
-                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去发现梦境吗")
-                    viewQuestion.setY(50)
-                    viewQuestion.setHeight(110)
-                    var btnGo = UIButton()
-                    btnGo.setButtonNice("  嗯！")
-                    btnGo.setX(globalWidth/2-50)
-                    btnGo.setY(viewQuestion.bottom())
-                    btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
-                    viewHeader.addSubview(viewQuestion)
-                    viewHeader.addSubview(btnGo)
-                    self.tableView.tableHeaderView = viewHeader
+                    
+                    // 预设发现梦境
+                    var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
+                    var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
+                    viewTop.labelTitle.text = "发现梦境"
+                    viewTop.labelContent.text = "要和大家一起组队造梦吗？"
+                    viewTop.labelCount.hidden = true
+                    viewTop.lastdate?.hidden = true
+                    viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
+                    viewTop.userInteractionEnabled = true
+                    viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
+                    self.tableView.tableHeaderView = viewTop
+                    
                 }else{
                     self.tableView.tableHeaderView = UIView()
                 }
+                
+                // 预设广场
+                var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
+                var viewBottom = NibCircleCell.objectAtIndex(0) as CircleCell
+                viewBottom.setHeight(81 + 50)
+                viewBottom.labelTitle.text = "广场"
+                viewBottom.labelContent.text = "念的留言板"
+                viewBottom.labelCount.hidden = true
+                viewBottom.lastdate?.hidden = true
+                viewBottom.imageHead.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
+                viewBottom.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBBSClick"))
+                viewBottom.userInteractionEnabled = true
+                self.tableView.tableFooterView = viewBottom
+                
                 self.page = 1
             }
         }

@@ -17,9 +17,6 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
         setupViews()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor

@@ -18,12 +18,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var page :Int = 0
     var Id:String = "1"
     
-    override func viewDidAppear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
-    }
-    
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
@@ -52,21 +47,18 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func setupViews()
     {
+        viewBack()
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
         var nib = UINib(nibName:"GroupCell", bundle: nil)
-        var nib2 = UINib(nibName:"ExploreTop", bundle: nil)
-        
-        
-        self.title = "梦想"
         self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
         
         self.view.addSubview(self.tableView!)
@@ -75,9 +67,18 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = "广场"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
+        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBS")
+        rightButton.image = UIImage(named:"plus")
+        self.navigationItem.rightBarButtonItem = rightButton
+    }
+    
+    func addBBS() {
+        var addBBSVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
+        self.navigationController?.pushViewController(addBBSVC, animated: true)
     }
     
     
