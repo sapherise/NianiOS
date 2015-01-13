@@ -247,7 +247,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func SAReloadData(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
-        var url = "http://nian.so/api/circle_chat_list.php?page=0&id=\(ID)&uid=\(safeuid)"
         Api.getCircleChatList(0, id: ID) { json in
             if json != nil {
                 self.viewLoadingHide()

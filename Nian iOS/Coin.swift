@@ -24,7 +24,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     let propItems: [CoinCellData] = [
         ("trip", "请假", "72小时不被停号", "2 念币"),
         ("star_line", "毕业证", "永不停号", "100 念币"),
-        ("promo", "推广", "让梦想被更多人看见", "7 念币")
+        ("promo", "推广", "推广你的梦想", "20 念币")
     ]
     
     @IBOutlet var tableView: UITableView!
@@ -165,8 +165,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     func onBuyCoinClick(sender: UIButton) {
         var tag = sender.tag
         var coinData = coinItems[tag]
-        showFilm("购买念币", prompt: "立刻获得 \(coinData.title)", button: coinData.cost) {
-            film in
+        showFilm("购买念币", prompt: "立刻获得 \(coinData.title)", button: coinData.cost, transDirectly: true) { film in
             var payment = Payment() {
                 state, data in
                 if film.hidden {
@@ -255,18 +254,16 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             break
         case 102:   //推广
             title = "推广"
-            des = "在接下来的 24 小时里\n置顶梦想到发现页面"
-            button = "7 念币"
+            des = "在接下来的 24 小时里\n置顶你的梦想到发现页面"
+            button = "选择梦想"
             break
         default:
             break
         }
         var tag = sender.tag
-        showFilm(title, prompt: des, button: button) {
-            film in
-            if tag == 100 || tag == 101 {
-                Api.postLabTrip("\(tag)") {
-                    json in
+        if tag == 100 || tag == 101 {
+            showFilm(title, prompt: des, button: button, transDirectly: true) { film in
+                Api.postLabTrip("\(tag)", subid: 0) { json in
                     if film.hidden {
                         film.superview!.removeFromSuperview()
                     } else {
@@ -285,64 +282,17 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         }
                     }
                 }
-            }else if tag == 102 {
-                println("跳转到梦想")
+            }
+        }else if tag == 102 {
+            showFilm(title, prompt: des, button: button, transDirectly: false){ film in
                 var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
                 var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as CircleTagViewController
                 viewController.dreamPromoDelegate = self
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
         }
-    }
-    
-    let FILM_TAG = 21233
-    
-    func showFilm(title: String, prompt: String, button: String, callback: (FilmCell) -> Void) {
-        var viewFilm = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        viewFilm.alpha = 0
-        viewFilm.translucentAlpha = 1
-        viewFilm.translucentStyle = UIBarStyle.Default
-        viewFilm.translucentTintColor = UIColor.clearColor()
-        viewFilm.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)
-        viewFilm.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
-        viewFilm.userInteractionEnabled = true
-        var nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
-        var viewFilmDialog: FilmCell = nib.objectAtIndex(0) as FilmCell
-        viewFilmDialog.frame.origin.x = ( globalWidth - 270 ) / 2
-        viewFilmDialog.frame.origin.y = -270
-        viewFilmDialog.labelTitle.text = title
-        viewFilmDialog.labelDes.text = prompt
-        viewFilmDialog.labelDes.setHeight(prompt.stringHeightWith(12, width: 200))
-        viewFilmDialog.btnBuy.setTitle(button, forState: UIControlState.Normal)
-        viewFilmDialog.btnBuy.setY(viewFilmDialog.labelDes.bottom()+22)
-        viewFilmDialog.callback = callback;
-        viewFilmDialog.tag = FILM_TAG
-        viewFilm.addSubview(viewFilmDialog)
-        view.addSubview(viewFilm)
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            viewFilm.alpha = 1
-            viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 45
-        })
-        delay(0.3, { () -> () in
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
-            })
-        })
-    }
-    
-    func onFilmTap(sender: UIGestureRecognizer){
-        UIView.animateWithDuration(0.3, animations: {
-            () -> Void in
-            sender.view!.alpha = 0
-            }, completion: {
-                finish in
-                var v = sender.view!.viewWithTag(self.FILM_TAG) as? FilmCell
-                if v != nil && !v!.closeable {
-                    sender.view!.hidden = true
-                } else {
-                    sender.view!.removeFromSuperview()
-                }
-        })
+        
+        
     }
     
     func SACircle(float:CGFloat){
@@ -380,7 +330,30 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         })
     }
     
-    func onPromoClick() {
-        println("1")
+    func onPromoClick(id: Int, content: String) {
+        globalViewFilmExist = true
+        showFilm("推广", prompt: "确定在接下去 24 小时内\n推广「\(content)」吗", button: "20 念币", transDirectly: true){ film in
+            Api.postLabTrip("102", subid: id) { json in
+                if json != nil {
+                    if json!["success"] as String == "1" {
+                        film.showOK()
+                        self.levelLabelCount((json!["coin"] as String).toInt()!)
+                        globalWillNianReload = 1
+                    }else{
+                        if json!["reason"] as String == "1" {
+                            film.showError("念币不足")
+                        }else{
+                            film.showError("服务器坏了")
+                        }
+                    }
+                }else{
+                    film.showError("服务器坏了")
+                }
+            }
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        globalViewFilmExist = false
     }
 }

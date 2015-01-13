@@ -13,7 +13,7 @@ protocol CircleTagDelegate {
     func onTagSelected(tag: String, tagType: Int, dreamType: Int)
 }
 protocol DreamPromoDelegate {
-    func onPromoClick()
+    func onPromoClick(id: Int, content: String)
 }
 
 class CircleTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
@@ -71,19 +71,27 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!) {
         var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
-        var tag = (data.objectForKey("hashtag") as String).toInt()
-        var dreamType = (data.objectForKey("id") as String).toInt()
-        var textTag = "未选标签"
-        if tag != nil {
-            if tag >= 1 {
-                textTag = V.Tags[tag!-1]
+        if dreamPromoDelegate != nil {  // 如果是推广梦想
+            var id = data.stringAttributeForKey("id")
+            var title = data.stringAttributeForKey("title")
+            if let v = id.toInt() {
+                dreamPromoDelegate?.onPromoClick(v, content: title)
+                self.navigationController?.popViewControllerAnimated(true)
             }
-        }else{
-            tag = 0
+        }else if circleTagDelegate != nil { // 如果是梦境绑定标签
+            var tag = (data.objectForKey("hashtag") as String).toInt()
+            var dreamType = (data.objectForKey("id") as String).toInt()
+            var textTag = "未选标签"
+            if tag != nil {
+                if tag >= 1 {
+                    textTag = V.Tags[tag!-1]
+                }
+            }else{
+                tag = 0
+            }
+            circleTagDelegate?.onTagSelected(textTag, tagType: tag!, dreamType: dreamType!)
+            self.navigationController?.popViewControllerAnimated(true)
         }
-        circleTagDelegate?.onTagSelected(textTag, tagType: tag!, dreamType: dreamType!)
-        dreamPromoDelegate?.onPromoClick()
-        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func SAReloadData(){
@@ -92,7 +100,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         var safeshell = Sa.objectForKey("shell") as String
         var url = "http://nian.so/api/circle_tag.php?uid=\(safeuid)"
         if dreamPromoDelegate != nil {
-            url = "全梦想链接"   //TODO
+            url = "http://nian.so/api/addstep_dream.php?uid=\(safeuid)&shell=\(safeshell)"
         }
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull() {

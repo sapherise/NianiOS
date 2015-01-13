@@ -34,7 +34,6 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
             json in
             var success = false
             if json != nil {
-                println(self.page)
                 var items = json!["items"] as NSArray
                 if items.count != 0 {
                     if clear {

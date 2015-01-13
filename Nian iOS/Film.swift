@@ -15,6 +15,7 @@ class FilmCell: UIView {
     @IBOutlet var btnBuy: UIButton!
     
     var closeable = false
+    var transDirectly = true
     
     var activity: UIActivityIndicatorView!
     var imageView: UIImageView!
@@ -28,27 +29,40 @@ class FilmCell: UIView {
     }
     
     func onBuyClick(){
-        closeable = false
-        self.btnBuy.enabled = false
-        self.btnBuy.setTitle("", forState: UIControlState.Normal)
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.btnBuy.setWidth(30)
-            self.btnBuy.setX(120)
-            }, completion: {
-                finish in
-                self.activity = UIActivityIndicatorView(frame: CGRectMake(0, 0, 20, 20))
-                self.activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
-                self.activity.center = self.btnBuy.center
-                self.activity.hidden = false
-                self.activity.startAnimating()
-                self.addSubview(self.activity)
-                self.callback(self);
-        });
+        if transDirectly {
+            self.onStartLoading()
+            closeable = false
+            self.btnBuy.enabled = false
+            self.btnBuy.setTitle("", forState: UIControlState.Normal)
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.btnBuy.setWidth(30)
+                self.btnBuy.setX(120)
+                }, completion: {
+                    finish in
+                    self.callback(self)
+            });
+        }else{
+            self.callback(self)
+        }
+    }
+    
+    func onStartLoading() {
+        self.activity = UIActivityIndicatorView(frame: CGRectMake(0, 0, 20, 20))
+        self.activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        self.activity.center = self.btnBuy.center
+        self.activity.hidden = false
+        self.activity.startAnimating()
+        self.addSubview(self.activity)
+    }
+    
+    func onStopLoading() {
+        self.activity.stopAnimating()
+        self.activity.hidden = true
     }
     
     func showOK() {
-        self.activity.stopAnimating()
-        self.activity.hidden = true
+        globalViewFilmExist = false
+        self.onStopLoading()
         self.imageView = UIImageView(frame: CGRectMake(0, 0, 24, 24))
         self.imageView.image = UIImage(named: "newOK")
         self.imageView.contentMode = UIViewContentMode.Center
@@ -56,9 +70,10 @@ class FilmCell: UIView {
         self.addSubview(self.imageView)
         delay(1.5, { () -> () in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.superview!.alpha = 0
-                }, completion: {
-                    finish in
+                if self.superview != nil {
+                    self.superview!.alpha = 0
+                }
+                }, completion: { finish in
                     if self.superview != nil {
                         self.superview!.removeFromSuperview()
                     }
@@ -68,8 +83,7 @@ class FilmCell: UIView {
     
     func showError(string:String) {
         closeable = true
-        self.activity.stopAnimating()
-        self.activity.hidden = true
+        self.onStopLoading()
         self.btnBuy.enabled = true
         UIView.animateWithDuration(0.5, animations: {
             () -> Void in

@@ -109,14 +109,28 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
                 var sa: AnyObject! = json.objectForKey("user")
                 var email: AnyObject! = sa.objectForKey("email") as String
+                var name: String = sa.objectForKey("name") as String
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.inputName.text = safename
+                    self.inputName.text = name
                     self.inputEmail.text = "\(email)"
-                    self.accountName = safename
+                    self.accountName = name
                     self.accountEmail = "\(email)"
                 })
             }
         })
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        var y = self.scrollView.contentOffset.y
+        if textField == self.inputName {
+            if y < 150 {
+                self.scrollView.setContentOffset(CGPointMake(0, 150), animated: true)
+            }
+        }else if textField == self.inputEmail {
+            if y < 198 {
+                self.scrollView.setContentOffset(CGPointMake(0, 198), animated: true)
+            }
+        }
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
@@ -127,9 +141,15 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             if (textField.text != "") & (textField.text != self.accountName){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if SAstrlen(self.inputName.text)>30 {
+                    self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("昵称太长了...", delay: 1)
                     textField.text = self.accountName
+                }else if SAstrlen(self.inputName.text)<4 {
+                    self.navigationItem.rightBarButtonItems = []
+                    self.view.showTipText("昵称太短了...", delay: 1)
+                    textField.text = self.accountName
                 }else if !self.inputName.text.isValidName() {
+                    self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("名字里有奇怪的字符...", delay: 1)
                     textField.text = self.accountName
                 }else{
@@ -140,6 +160,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
                                 dispatch_async(dispatch_get_main_queue(), {
+                                    self.navigationItem.rightBarButtonItems = []
                                     self.view.showTipText("有人取这个名字了...", delay: 1)
                                     textField.text = self.accountName
                                 })
@@ -148,6 +169,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                                     self.navigationItem.rightBarButtonItems = []
                                     self.accountName = self.inputName.text
                                     self.view.showTipText("昵称改好啦", delay: 1)
+                                    globalWillNianReload = 1
                                 })
                             }
                         }
@@ -160,9 +182,11 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             if (textField.text != "") & (textField.text != self.accountEmail){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if SAstrlen(self.inputEmail.text)>50 {
+                    self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("邮箱太长了", delay: 1)
                     textField.text = self.accountEmail
                 }else if !self.inputEmail.text.isValidEmail() {
+                    self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("不是地球上的邮箱", delay: 1)
                     textField.text = self.accountEmail
                 }else{
@@ -173,6 +197,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
                                 dispatch_async(dispatch_get_main_queue(), {
+                                    self.navigationItem.rightBarButtonItems = []
                                     self.view.showTipText("有人用这个邮箱了...", delay: 1)
                                     textField.text = self.accountEmail
                                 })

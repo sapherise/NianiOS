@@ -156,15 +156,19 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var index = indexPath.row
             var data = self.dataArray[index] as NSDictionary
             cell!.data = data
-//            cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-//            cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
-//            if indexPath.row == self.dataArray.count - 1 {
-//                cell!.viewLine.hidden = true
-//            }else{
-//                cell!.viewLine.hidden = false
-//            }
+            if let tag = data.stringAttributeForKey("uid").toInt() {
+                cell!.imageHead.tag = tag
+                cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
+            }
             return cell!
         }
+    }
+    
+    func onUserClick(sender:UIGestureRecognizer) {
+        var tag = sender.view!.tag
+        var UserVC = PlayerViewController()
+        UserVC.Id = "\(tag)"
+        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func onDreamClick(sender:UIGestureRecognizer){
@@ -195,7 +199,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var letterVC = LetterController()
             if let id = data.stringAttributeForKey("uid").toInt() {
                 letterVC.ID = id
-                println(id)
                 self.navigationController?.pushViewController(letterVC, animated: true)
             }
         }

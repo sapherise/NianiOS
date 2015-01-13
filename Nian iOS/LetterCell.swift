@@ -52,7 +52,7 @@ class LetterCell: UITableViewCell {
         // 1: 文字消息，2: 图片消息
         switch type {
         case "1":   textContent = "\(content)"
-        case "2":   textContent = "发来一张图片"
+        case "2":   textContent = "发了一张图片"
         default:    textContent = "可以开始聊天啦"
             break
         }
