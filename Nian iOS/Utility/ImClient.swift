@@ -168,7 +168,6 @@
 //                    NSThread.sleepForTimeInterval(500)
 //                }
 //            } else {
-//                println("polling")
 //                // 开始拉取
 //                var r: AnyObject? = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
 //                if r == nil {

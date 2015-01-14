@@ -54,6 +54,21 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.tableView.backgroundColor = UIColor.whiteColor()
         
+        // 加载中时
+        var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+        var viewQuestion = viewEmpty(globalWidth, content: "正在连接念的服务器")
+        viewQuestion.setY(0)
+        var btnGo = UIButton()
+        btnGo.setButtonNice("再试一试")
+        btnGo.setX(globalWidth/2-50)
+        btnGo.setY(viewQuestion.bottom())
+        btnGo.addTarget(self, action: "NianReload:", forControlEvents: UIControlEvents.TouchUpInside)
+        viewHeader.addSubview(viewQuestion)
+        viewHeader.addSubview(btnGo)
+        viewHeader.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+        self.tableView.tableHeaderView = viewHeader
+        self.tableView.tableFooterView = UIView()
+        
         var nib = UINib(nibName: "NianCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "NianCell")
         self.tableView.showsVerticalScrollIndicator = false
@@ -172,6 +187,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.SAReloadData()
             self.setupUserTop()
         }
+    }
+    
+    func NianReload(sender: UIButton){
+        sender.setTitle("加载中", forState: UIControlState.allZeros)
+        self.SAReloadData()
+        self.setupUserTop()
     }
     
     override func viewWillDisappear(animated: Bool) {

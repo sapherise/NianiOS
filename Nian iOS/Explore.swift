@@ -82,16 +82,21 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         }else{
             if let v = "\(noti.object!)".toInt() {
                 if v > 0 {
-                    println(self.tableView.contentOffset.y)
                     if current == 3 {
+                        switchTab(current)
                         if self.collectionView.contentOffset.y  > 0 {
-                            switchTab(current)
+                            delay(0.3, {
+                                self.collectionView.headerBeginRefreshing()
+                            })
                         }else{
                             self.collectionView.headerBeginRefreshing()
                         }
                     }else{
+                        switchTab(current)
                         if self.tableView.contentOffset.y  > 0 {
-                            switchTab(current)
+                            delay(0.3, {
+                                self.tableView.headerBeginRefreshing()
+                            })
                         }else{
                             self.tableView.headerBeginRefreshing()
                         }
@@ -138,7 +143,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func switchTab(tab: Int) {
-        println(1)
         if current != -1 {
         //    buttons[current].selected = false
             buttons[current].textColor = UIColor.blackColor()
