@@ -42,6 +42,7 @@ var globalURL:String = ""
 var globalViewLoading:UIView?
 var globalViewFilm:ILTranslucentView?
 var globalViewFilmExist: Bool = false
+var globalNumExploreBar: Int = -1
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
@@ -250,19 +251,21 @@ extension UIVisualEffectView {
 }
 
 func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
-    var viewEmpty = UIView(frame: CGRectMake(0, 0, width, 75))
-    var imageEmpty = UIImageView(frame: CGRectMake(0, 20, width, 35))
+    var viewEmpty = UIView(frame: CGRectMake(0, 0, width, 55))
+    var imageEmpty = UIImageView(frame: CGRectMake(0, 0, width, 35))
     imageEmpty.image = UIImage(named: "smile")
     imageEmpty.contentMode = UIViewContentMode.Center
-    var labelEmpty = UILabel(frame: CGRectMake(0, 60, width, 20))
+    var labelEmpty = UILabel(frame: CGRectMake(0, 40, width, 20))
     labelEmpty.font = UIFont.systemFontOfSize(11)
     labelEmpty.textAlignment = NSTextAlignment.Center
     labelEmpty.textColor = UIColor(red:0.65, green:0.65, blue:0.65, alpha:1)
     labelEmpty.numberOfLines = 0
     labelEmpty.text = content
-    labelEmpty.setHeight(content.stringHeightWith(11, width: width))
+    var height = content.stringHeightWith(11, width: width)
+    labelEmpty.setHeight(height)
     viewEmpty.addSubview(imageEmpty)
     viewEmpty.addSubview(labelEmpty)
+    viewEmpty.setHeight(height + 60)
     return viewEmpty
 }
 

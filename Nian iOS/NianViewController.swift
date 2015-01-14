@@ -50,8 +50,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tableView.transform = CGAffineTransformMakeRotation( CGFloat(-M_PI/2) )
         self.tableView.frame = CGRectMake(0, 364, globalWidth, 160)
         self.tableView.contentSize.height = CGFloat(self.dataArray.count * 100)
-
-        self.tableView.tableFooterView = UIView(frame: CGRectMake(0, 0, 1, 20))
         self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
         
         self.tableView.backgroundColor = UIColor.whiteColor()
@@ -262,6 +260,24 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.dataArray.addObject(data)
                 }
                 self.tableView.reloadData()
+                if self.dataArray.count == 0 {
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                    var viewQuestion = viewEmpty(globalWidth, content: "先随便写个梦想吧")
+                    viewQuestion.setY(0)
+                    var btnGo = UIButton()
+                    btnGo.setButtonNice("  嗯！")
+                    btnGo.setX(globalWidth/2-50)
+                    btnGo.setY(viewQuestion.bottom())
+                    btnGo.addTarget(self, action: "addDreamButton", forControlEvents: UIControlEvents.TouchUpInside)
+                    viewHeader.addSubview(viewQuestion)
+                    viewHeader.addSubview(btnGo)
+                    viewHeader.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+                    self.tableView.tableHeaderView = viewHeader
+                    self.tableView.tableFooterView = UIView()
+                }else{
+                    self.tableView.tableHeaderView = UIView()
+                    self.tableView.tableFooterView = UIView(frame: CGRectMake(0, 0, 1, 20))
+                }
                 globalNumberDream = self.dataArray.count
             }
         })

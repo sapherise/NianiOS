@@ -17,8 +17,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var niceViewLabel:UILabel?
     var GameOverView:UIView?
     var animationBool:Int = 0
-    var foFreshTimes:Int = 0
-    var bbsFreshTimes:Int = 0
+    var numExplore = 0
     
     var gameoverId:String = ""
     var gameoverHead:String = ""
@@ -325,14 +324,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
-        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
        // var vc3 = ExploreController()
         
-        var vc3 = CircleListController()
         var vc1 = NianViewController
+        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
+        var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         var vc4 = MeViewController()
-        var vc5 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-        self.viewControllers = [vc1, vc2, vc5, vc4, vc3]
+        var vc5 = CircleListController()
+        self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 0
     }
@@ -360,29 +359,26 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let idMe = 103
         let idBBS = 104
         
-        if index == idExplore {       //关注
-            NSNotificationCenter.defaultCenter().postNotificationName("foRefresh", object: self.foFreshTimes)
-            self.foFreshTimes = self.foFreshTimes + 1
-            self.bbsFreshTimes = 0
-        }else if index == idBBS {     //广场
-            NSNotificationCenter.defaultCenter().postNotificationName("bbsRefresh", object: self.bbsFreshTimes)
-            self.bbsFreshTimes = self.bbsFreshTimes + 1
-            self.foFreshTimes = 0
+        
+        if index == idExplore {       // 关注
+            NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
+            numExplore = numExplore + 1
+        }else if index == idBBS {     // 梦境
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
             rightButton.image = UIImage(named:"find")
             self.navigationItem.rightBarButtonItem = rightButton
-        }else if index == idDream {     //梦想
-            self.foFreshTimes = 0
-            self.bbsFreshTimes = 0
+        }else if index == idDream {     // 梦想
             self.navigationItem.rightBarButtonItem = nil
-        }else if index == idMe {     //消息
+        }else if index == idMe {     // 消息
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
-            self.foFreshTimes = 0
-            self.bbsFreshTimes = 0
             self.navigationItem.rightBarButtonItem = nil
-        }else if index == idUpdate {      //设置
+        }else if index == idUpdate {      // 更新
             self.addStep()
+        }
+        
+        if index != idExplore {
+            numExplore = 0
         }
     }
     

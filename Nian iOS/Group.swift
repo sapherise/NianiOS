@@ -27,22 +27,14 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     override func viewWillDisappear(animated: Bool){
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "bbsRefresh", object:nil)
         self.viewLoadingHide()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "bbsRefresh:", name: "bbsRefresh", object: nil)
         if globalWillBBSReload == 1 {
             self.SAReloadData()
             globalWillBBSReload = 0
-        }
-    }
-    
-    func bbsRefresh(noti:NSNotification){
-        if noti.object! as Int != 0 {
-                self.tableView!.setContentOffset(CGPointMake(0, 0), animated: true)
         }
     }
     

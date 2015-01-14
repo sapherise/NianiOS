@@ -64,17 +64,41 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBar.setY(-44)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "exploreTop:", name: "exploreTop", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController?.navigationBar.setY(-44)
-        if current == -1 {
-            switchTab(0)
-        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         self.navigationController?.navigationBar.setY(20)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
+    }
+    
+    func exploreTop(noti: NSNotification){
+        if current == -1 {
+            switchTab(0)
+        }else{
+            if let v = "\(noti.object!)".toInt() {
+                if v > 0 {
+                    println(self.tableView.contentOffset.y)
+                    if current == 3 {
+                        if self.collectionView.contentOffset.y  > 0 {
+                            switchTab(current)
+                        }else{
+                            self.collectionView.headerBeginRefreshing()
+                        }
+                    }else{
+                        if self.tableView.contentOffset.y  > 0 {
+                            switchTab(current)
+                        }else{
+                            self.tableView.headerBeginRefreshing()
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func setupViews() {
@@ -114,6 +138,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func switchTab(tab: Int) {
+        println(1)
         if current != -1 {
         //    buttons[current].selected = false
             buttons[current].textColor = UIColor.blackColor()
@@ -143,6 +168,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func onTabClick(sender: UIGestureRecognizer) {
         switchTab(sender.view!.tag - 1100)
+        globalNumExploreBar = sender.view!.tag - 1100
     }
     
     func onFriendClick() {

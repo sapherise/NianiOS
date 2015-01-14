@@ -70,7 +70,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 if self.dataArray.count == 0 {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, 278, 200))
                     var viewQuestion = viewEmpty(278, content: "没有梦想是这个标签")
-                    viewQuestion.setHeight(90)
+                    viewQuestion.setY(20)
                     var btnGo = UIButton()
                     btnGo.setButtonNice("创建一个")
                     btnGo.setX(278/2-50)

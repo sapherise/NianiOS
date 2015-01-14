@@ -107,8 +107,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 if self.dataArray.count == 0 {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
                     var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-                    viewQuestion.setY(50)
-                    viewQuestion.setHeight(110)
+                    viewQuestion.setY(70)
                     var btnGo = UIButton()
                     btnGo.setButtonNice("  嗯！")
                     btnGo.setX(globalWidth/2-50)
