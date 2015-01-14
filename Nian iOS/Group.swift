@@ -28,9 +28,10 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     override func viewWillDisappear(animated: Bool){
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "bbsRefresh", object:nil)
+        self.viewLoadingHide()
     }
-    override func viewWillAppear(animated: Bool)
-    {
+    
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "bbsRefresh:", name: "bbsRefresh", object: nil)
         if globalWillBBSReload == 1 {
@@ -74,6 +75,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBS")
         rightButton.image = UIImage(named:"plus")
         self.navigationItem.rightBarButtonItem = rightButton
+        
+        self.viewLoadingShow()
     }
     
     func addBBS() {
@@ -102,6 +105,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var url = "http://nian.so/api/bbs.php?page=0"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
+                self.viewLoadingHide()
                 var arr = data["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{

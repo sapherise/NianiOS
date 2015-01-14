@@ -69,7 +69,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.view.addSubview(self.tableView)
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
-        rightButton.image = UIImage(named:"bbs_add")
+        rightButton.image = UIImage(named:"newcomment")
         
         var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "bbsMore")
         moreButton.image = UIImage(named:"more")

@@ -56,9 +56,19 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.viewLoadingShow()
     }
     
+//    func onAddCircleClick() {
+//        var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+//        self.navigationController?.pushViewController(addcircleVC, animated: true)
+    
+        
+    
+    
     func onAddCircleClick() {
-        var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-        self.navigationController?.pushViewController(addcircleVC, animated: true)
+        showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
+            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+            self.navigationController?.pushViewController(addcircleVC, animated: true)
+            self.onFilmClose()
+        }
     }
     
     func loadData() {
@@ -157,5 +167,10 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.viewBackFix()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        globalViewFilmExist = false
+        self.viewLoadingHide()
     }
 }

@@ -502,4 +502,12 @@ extension UIViewController {
                 }
         })
     }
+    
+    // 关闭当前的 Film
+    func onFilmClose(){
+        if globalViewFilm != nil {
+            globalViewFilm!.removeFromSuperview()
+            globalViewFilmExist = false
+        }
+    }
 }

@@ -84,8 +84,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     override func onRefresh() {
         page = 0
-        load(true) {
-            success in
+        load(true) { success in
             if self.bindViewController!.current == 0 {
                 self.bindViewController!.tableView.headerEndRefreshing()
                 self.bindViewController!.tableView.reloadData()

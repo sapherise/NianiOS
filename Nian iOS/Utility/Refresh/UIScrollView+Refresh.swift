@@ -32,7 +32,6 @@ extension UIScrollView {
                 object.beginRefreshing()
             }
         }
-        
     }
     
     

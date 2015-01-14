@@ -83,9 +83,17 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     func SAReloadData(){
+        var isLoaded = 0
+        delay(3, {
+            self.tableView.headerEndRefreshing(animated: true)
+            if isLoaded == 0 {
+                self.view.showTipText("念没有踩你，再试试看", delay: 2)
+            }
+        })
         self.tableView.setFooterHidden(false)
         Api.postLetter("0"){ json in
             if json != nil {
+                isLoaded = 1
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data:AnyObject in arr {

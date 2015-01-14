@@ -78,9 +78,17 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SAReloadData() {
+        var isLoaded = 0
+        delay(3, {
+            self.tableView.headerEndRefreshing(animated: true)
+            if isLoaded == 0 {
+                self.view.showTipText("念没有踩你，再试试看", delay: 2)
+            }
+        })
         self.tableView.setFooterHidden(false)
         Api.postCircle("0"){ json in
             if json != nil {
+                isLoaded = 1
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data:AnyObject in arr {
@@ -97,7 +105,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                     var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
                     var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
                     viewTop.labelTitle.text = "发现梦境"
-                    viewTop.labelContent.text = "要和大家一起组队造梦吗？"
+                    viewTop.labelContent.text = "和大家一起组队造梦"
                     viewTop.labelCount.hidden = true
                     viewTop.lastdate?.hidden = true
                     viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))

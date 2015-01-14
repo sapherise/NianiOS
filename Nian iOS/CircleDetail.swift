@@ -56,16 +56,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         }
     }
     
-    func setupViews()
-    {
+    func setupViews() {
         self.viewBack()
-        
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
-        
         self.view.backgroundColor = UIColor.blackColor()
-        
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
@@ -86,11 +82,14 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         titleLabel.text = "梦境资料"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        self.viewLoadingShow()
     }
     
     func SAReloadData(){
         Api.getCircleDetail(self.Id) { json in
             if json != nil {
+                self.viewLoadingHide()
                 var arr = json!["items"] as NSArray
                 var i = 0
                 var cicleArray = json!["circle"] as NSArray
@@ -110,7 +109,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     self.view.showTipText("这个梦境没人在...", delay: 2)
                 }
                 self.tableView!.reloadData()
-                self.viewLoadingHide()
             }
         }
     }

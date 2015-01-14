@@ -226,7 +226,8 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                 json in
                 if json != nil {
                     globalWillCircleReload = 1
-                    self.navigationController?.popViewControllerAnimated(true)
+                    globalWillNianReload = 1
+                    self.navigationController?.popToRootViewControllerAnimated(true)
                 }
             }
         }

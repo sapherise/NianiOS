@@ -63,6 +63,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var topCell:PlayerCellTop?
     var navView:UIImageView!
     var rowComment:Int = 0
+    var isBan: Int = 0
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -209,7 +210,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func userMore(){
         self.userMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.userMoreSheet.addButtonWithTitle("拖进小黑屋")
+        if self.isBan == 0 {
+            self.userMoreSheet.addButtonWithTitle("拖进小黑屋")
+        }else{
+            self.userMoreSheet.addButtonWithTitle("取消小黑屋")
+        }
         self.userMoreSheet.addButtonWithTitle("取消")
         self.userMoreSheet.cancelButtonIndex = 1
         self.userMoreSheet.showInView(self.view)
@@ -236,14 +241,27 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as String
                 var safeshell = Sa.objectForKey("shell") as String
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/ban.php")
-                    if sa == "1" {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            UIView.showAlertView("再见啦", message: "成功拖进小黑屋")
-                        })
-                    }
-                })
+                if self.isBan == 0 {    // 拖进小黑屋
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/ban.php")
+                        if sa == "1" {
+                            dispatch_async(dispatch_get_main_queue(), {
+                                UIView.showAlertView("再见啦", message: "成功拖进小黑屋")
+                                self.isBan = 1
+                            })
+                        }
+                    })
+                }else{      // 取消小黑屋
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)&&noban=1", "http://nian.so/api/ban.php")
+                        if sa == "1" {
+                            dispatch_async(dispatch_get_main_queue(), {
+                                UIView.showAlertView("和好了", message: "成功取消小黑屋")
+                                self.isBan = 0
+                            })
+                        }
+                    })
+                }
             }
         }
     }
@@ -571,12 +589,16 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupPlayerTop(theUid:Int){
         Api.getUserTop(theUid){ json in
             if json != nil {
-                var sa: AnyObject! = json!.objectForKey("user")
-                var name: String! = sa.objectForKey("name") as String
-                var fo: String! = sa.objectForKey("fo") as String
-                var foed: String! = sa.objectForKey("foed") as String
-                var isfo: String! = sa.objectForKey("isfo") as String
-                var cover: String! = sa.objectForKey("cover") as String
+                var data: AnyObject! = json!["user"]
+                var name = data.stringAttributeForKey("name")
+                var fo = data.stringAttributeForKey("fo")
+                var foed = data.stringAttributeForKey("foed")
+                var isfo = data.stringAttributeForKey("isfo")
+                var cover = data.stringAttributeForKey("cover")
+                var black = data.stringAttributeForKey("isban")
+                if let v = black.toInt() {
+                    self.isBan = v
+                }
                 fo = "\(fo) 关注，"
                 foed = "\(foed) 听众"
                 var foWidth = fo.stringWidthBoldWith(12, height: 21)

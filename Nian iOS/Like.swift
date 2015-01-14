@@ -25,12 +25,10 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        self.tableView!.headerBeginRefreshing()
         SAReloadData()
     }
     
-    func setupViews()
-    {
+    func setupViews() {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
@@ -64,6 +62,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
+        self.viewLoadingShow()
     }
     
     
@@ -90,6 +89,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as NSObject != NSNull(){
+                self.viewLoadingHide()
                 if ( data["total"] as Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
@@ -122,11 +122,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
     func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
         return 1
     }
@@ -136,7 +131,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
         var index = indexPath.row
         var data = self.dataArray[index] as NSDictionary
@@ -154,14 +148,13 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
-    {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return  70
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
-    }
     
+    override func viewWillDisappear(animated: Bool) {
+        self.viewLoadingHide()
+    }
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
