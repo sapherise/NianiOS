@@ -57,6 +57,14 @@ class WelcomeViewController: UIViewController {
         des.textColor = UIColor.blackColor()
         self.view.addSubview(des)
         
+        var viewWeibo = UIView(frame: CGRectMake(10, 74, 50, 50))
+        viewWeibo.backgroundColor = SeaColor
+        viewWeibo.layer.cornerRadius = 25
+        viewWeibo.layer.masksToBounds = true
+        viewWeibo.userInteractionEnabled = true
+        viewWeibo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onWeiboClick"))
+        self.view.addSubview(viewWeibo)
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var cookieuid: String? = Sa.objectForKey("uid") as? String
         if cookieuid == nil {       //如果没登录
@@ -79,6 +87,13 @@ class WelcomeViewController: UIViewController {
                 })
             })
         }
+    }
+    
+    func onWeiboClick() {
+        var request: WBAuthorizeRequest! = WBAuthorizeRequest.request() as WBAuthorizeRequest
+        request.redirectURI = "https://api.weibo.com/oauth2/default.html"
+        request.scope = "follow_app_official_microblog"
+        WeiboSDK.sendRequest(request)
     }
     
     func onPrivacyClick(){

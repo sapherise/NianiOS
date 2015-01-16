@@ -9,8 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate{
-    
+class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     var window: UIWindow?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -31,6 +30,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         } else {
             application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Sound | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge)
         }
+        WeiboSDK.enableDebugMode(true)
+        WeiboSDK.registerApp("4189056912")
+        
         return true
     }
     
@@ -75,10 +77,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        delay(1, { () -> () in
-            NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
-        })
+        if let s = url.scheme {
+            if s == "nian" {
+                delay(1, { () -> () in
+                    NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
+                })
+                return true
+            }else if s == "wb4189056912" {
+                return WeiboSDK.handleOpenURL(url, delegate: self)
+            }
+        }
         return true
+    }
+    
+    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        if let s = url.scheme {
+            if s == "wb4189056912" {
+                return WeiboSDK.handleOpenURL(url, delegate: self)
+            }
+        }
+        return true
+    }
+    
+    func didReceiveWeiboRequest(request: WBBaseRequest!) {
+    }
+    
+    func didReceiveWeiboResponse(response: WBBaseResponse!) {
+        var json = response.userInfo as NSDictionary
+        var uidWeibo = json.stringAttributeForKey("uid")
+//            {
+//                "access_token" = "2.00R8hTRCEErUZE8ac76321a11QkRPE";
+//                app =     {
+//                    logo = "http://ww3.sinaimg.cn/square/ed77f397gw1emlvjpxf9wj2028028q2p.jpg";
+//                    name = "\U5ff5\U4f60\U7684\U7406\U60f3\U6e05\U5355";
+//                };
+//                "expires_in" = 7787410;
+//                "remind_in" = 7787410;
+//                scope = "follow_app_official_microblog";
+//                uid = 2090541871;
+//        }
+        println(json)
+        println("===")
+        if let uid = uidWeibo.toInt() {
+            println("请求成功，数字是\(uid)")
+        }else{
+            println("请求失败")
+        }
     }
     
 }
