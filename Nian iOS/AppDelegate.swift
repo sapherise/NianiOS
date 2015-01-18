@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         } else {
             application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Sound | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge)
         }
-        WeiboSDK.enableDebugMode(true)
+        WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         
         return true
@@ -105,23 +105,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     func didReceiveWeiboResponse(response: WBBaseResponse!) {
         var json = response.userInfo as NSDictionary
         var uidWeibo = json.stringAttributeForKey("uid")
-//            {
-//                "access_token" = "2.00R8hTRCEErUZE8ac76321a11QkRPE";
-//                app =     {
-//                    logo = "http://ww3.sinaimg.cn/square/ed77f397gw1emlvjpxf9wj2028028q2p.jpg";
-//                    name = "\U5ff5\U4f60\U7684\U7406\U60f3\U6e05\U5355";
-//                };
-//                "expires_in" = 7787410;
-//                "remind_in" = 7787410;
-//                scope = "follow_app_official_microblog";
-//                uid = 2090541871;
-//        }
-        println(json)
-        println("===")
+        var token = json.stringAttributeForKey("access_token")
         if let uid = uidWeibo.toInt() {
-            println("请求成功，数字是\(uid)")
-        }else{
-            println("请求失败")
+            NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
         }
     }
     

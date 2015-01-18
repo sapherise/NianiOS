@@ -38,7 +38,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var btnDynamic: UILabel!
     @IBOutlet var btnHot: UILabel!
     @IBOutlet var btnNew: UILabel!
-   // @IBOutlet var btnFriend: UIButton!
+    @IBOutlet var imageFriend: UIImageView!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
@@ -115,6 +115,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         ]
         
         self.navTopView.backgroundColor = BarColor
+        self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         view.backgroundColor = UIColor.whiteColor()
         collectionView.alwaysBounceVertical = true
         var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
@@ -176,8 +177,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func onFriendClick() {
-        var storyboard = UIStoryboard(name: "ExploreFriend", bundle: nil)
-        var vz = storyboard.instantiateViewControllerWithIdentifier("ExploreFriendViewController") as UIViewController
-        self.navigationController?.pushViewController(vz, animated: true)
+        self.navigationController?.pushViewController(FindViewController(), animated: true)
     }
 }

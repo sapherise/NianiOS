@@ -149,7 +149,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return  70
+        return  71
     }
     
     override func viewWillDisappear(animated: Bool) {

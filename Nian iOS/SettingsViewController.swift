@@ -24,6 +24,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var version:UILabel!
     @IBOutlet var btnCover: UIButton!
     @IBOutlet var viewStar: UIView!
+    @IBOutlet var viewFind: UIView!
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""
@@ -99,6 +100,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         longTap.minimumPressDuration = 0.5
         self.version.addGestureRecognizer(longTap)
         
+        // 发现好友
+        self.viewFind.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFindClick"))
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -120,6 +124,11 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 })
             }
         })
+    }
+    
+    func onFindClick(){
+        var findVC = FindViewController()
+        self.navigationController?.pushViewController(findVC, animated: true)
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {

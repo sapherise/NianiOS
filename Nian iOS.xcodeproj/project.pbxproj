@@ -67,6 +67,11 @@
 		128C4E391A503C54000D2B7C /* CircleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C4E381A503C54000D2B7C /* CircleType.swift */; };
 		128DAC451A144F69009FB0E7 /* LevelGame.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128DAC441A144F69009FB0E7 /* LevelGame.xib */; };
 		128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DAC461A144F81009FB0E7 /* LevelGame.swift */; };
+		129152DF1A6A5BBE00BB213C /* Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152DE1A6A5BBE00BB213C /* Find.swift */; };
+		129152E11A6A90E500BB213C /* FindCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E01A6A90E500BB213C /* FindCell.swift */; };
+		129152E31A6A90ED00BB213C /* FindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E21A6A90ED00BB213C /* FindCell.xib */; };
+		129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E41A6A90F900BB213C /* FindCellTop.swift */; };
+		129152E71A6A910200BB213C /* FindCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E61A6A910200BB213C /* FindCellTop.xib */; };
 		1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291D59719BE0C55009F45F6 /* Welcome.swift */; };
 		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
 		129375191A236E8B001F7442 /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
@@ -128,9 +133,6 @@
 		12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C2196AE8010026DD51 /* UIViewExt.swift */; };
 		12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
-		32349D451A1F0B38004FEA25 /* ExploreFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32349D441A1F0B38004FEA25 /* ExploreFriend.swift */; };
-		32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */; };
-		32349D491A1F3BD2004FEA25 /* ExploreFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32349D481A1F3BD2004FEA25 /* ExploreFriendCell.swift */; };
 		323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */; };
 		323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EA1A11EEF300FFE3F4 /* Group.swift */; };
 		323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */; };
@@ -243,6 +245,11 @@
 		128C4E381A503C54000D2B7C /* CircleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleType.swift; sourceTree = "<group>"; };
 		128DAC441A144F69009FB0E7 /* LevelGame.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LevelGame.xib; sourceTree = "<group>"; };
 		128DAC461A144F81009FB0E7 /* LevelGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGame.swift; sourceTree = "<group>"; };
+		129152DE1A6A5BBE00BB213C /* Find.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Find.swift; sourceTree = "<group>"; };
+		129152E01A6A90E500BB213C /* FindCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCell.swift; sourceTree = "<group>"; };
+		129152E21A6A90ED00BB213C /* FindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCell.xib; sourceTree = "<group>"; };
+		129152E41A6A90F900BB213C /* FindCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCellTop.swift; sourceTree = "<group>"; };
+		129152E61A6A910200BB213C /* FindCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCellTop.xib; sourceTree = "<group>"; };
 		1291D59719BE0C55009F45F6 /* Welcome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		1292ABA51A5FB45B0091CC5F /* showImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showImage.swift; sourceTree = "<group>"; };
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
@@ -309,9 +316,6 @@
 		12FB48C2196AE8010026DD51 /* UIViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAHttpRequest.swift; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
-		32349D441A1F0B38004FEA25 /* ExploreFriend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFriend.swift; sourceTree = "<group>"; };
-		32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExploreFriend.storyboard; sourceTree = "<group>"; };
-		32349D481A1F3BD2004FEA25 /* ExploreFriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreFriendCell.swift; sourceTree = "<group>"; };
 		323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreFollowCell.xib; sourceTree = "<group>"; };
 		323CD2EA1A11EEF300FFE3F4 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
@@ -576,6 +580,18 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		129152DD1A6A5BA800BB213C /* 好友 */ = {
+			isa = PBXGroup;
+			children = (
+				129152DE1A6A5BBE00BB213C /* Find.swift */,
+				129152E01A6A90E500BB213C /* FindCell.swift */,
+				129152E21A6A90ED00BB213C /* FindCell.xib */,
+				129152E41A6A90F900BB213C /* FindCellTop.swift */,
+				129152E61A6A910200BB213C /* FindCellTop.xib */,
+			);
+			name = "好友";
+			sourceTree = "<group>";
+		};
 		1291D59619BE0C39009F45F6 /* 欢迎 */ = {
 			isa = PBXGroup;
 			children = (
@@ -794,6 +810,7 @@
 				12A49109198EB550000B6D5E /* 消息 */,
 				1227F0EE1A615EAA0088DEB1 /* 私信 */,
 				12A6564519719BAC004F530B /* 设置 */,
+				129152DD1A6A5BA800BB213C /* 好友 */,
 				12CDE5CE19AC9FB4002E793F /* 图片 */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
@@ -845,16 +862,6 @@
 			name = "私信列表";
 			sourceTree = "<group>";
 		};
-		32349D431A1F078F004FEA25 /* 发现好友 */ = {
-			isa = PBXGroup;
-			children = (
-				32349D441A1F0B38004FEA25 /* ExploreFriend.swift */,
-				32349D461A1F36D2004FEA25 /* ExploreFriend.storyboard */,
-				32349D481A1F3BD2004FEA25 /* ExploreFriendCell.swift */,
-			);
-			name = "发现好友";
-			sourceTree = "<group>";
-		};
 		323CD2E71A11EEC400FFE3F4 /* 广场 */ = {
 			isa = PBXGroup;
 			children = (
@@ -882,7 +889,6 @@
 				32871D121A14AB0E002C9486 /* ExploreHotCell.xib */,
 				3240B4FA1A1985A8000CDAB6 /* ExploreNew.swift */,
 				324716EE1A1C303700EF1305 /* ExploreNewCell.xib */,
-				32349D431A1F078F004FEA25 /* 发现好友 */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1016,7 +1022,6 @@
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
-				32349D471A1F36D2004FEA25 /* ExploreFriend.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
 				127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */,
@@ -1048,10 +1053,12 @@
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 				12D846071A233F46005DCC08 /* AddStep.xib in Resources */,
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
+				129152E71A6A910200BB213C /* FindCellTop.xib in Resources */,
 				3252850D1A10C2B600316021 /* Explore.storyboard in Resources */,
 				12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */,
 				12BF1A681A427A1F0044CAF4 /* CircleJoin.xib in Resources */,
 				1214547F1A694F3C0091DCEE /* WeiboSDK.bundle in Resources */,
+				129152E31A6A90ED00BB213C /* FindCell.xib in Resources */,
 				3274A3851A15F0FF00D2425A /* ExploreDynamicStepCell.xib in Resources */,
 				1253C3001A1DF108003D4ECF /* PlayerCell.xib in Resources */,
 			);
@@ -1128,13 +1135,11 @@
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
-				32349D451A1F0B38004FEA25 /* ExploreFriend.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
-				32349D491A1F3BD2004FEA25 /* ExploreFriendCell.swift in Sources */,
 				1271550D1A3FE82000E27EC5 /* CircleDetail.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
@@ -1142,6 +1147,7 @@
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
+				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
 				3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
@@ -1151,6 +1157,7 @@
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
+				129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */,
 				126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */,
@@ -1160,6 +1167,7 @@
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				12CE15A51A3E7D68006AC031 /* CircleList.swift in Sources */,
+				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
 				128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */,
 				12BF1A6A1A427A3E0044CAF4 /* CircleJoin.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,

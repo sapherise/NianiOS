@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Explore View Controller-->
@@ -40,6 +40,10 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plus" id="jqu-kN-EO5">
+                                        <rect key="frame" x="276" y="21" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -83,6 +87,7 @@
                         <outlet property="btnHot" destination="Ihu-IS-EzL" id="u3L-E0-MRv"/>
                         <outlet property="btnNew" destination="jRq-Xx-k5k" id="hO6-nm-1uh"/>
                         <outlet property="collectionView" destination="Vs2-YU-bNb" id="ZHh-on-eGv"/>
+                        <outlet property="imageFriend" destination="jqu-kN-EO5" id="SuY-Ac-4Pu"/>
                         <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
                         <outlet property="navView" destination="ZF6-an-RPQ" id="sQY-sa-H4n"/>
                         <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
@@ -93,6 +98,9 @@
             <point key="canvasLocation" x="-198" y="-264"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="plus" width="15" height="15"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

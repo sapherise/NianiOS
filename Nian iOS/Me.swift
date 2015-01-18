@@ -193,7 +193,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 94
+            return 75
         }else{
             return 81
         }

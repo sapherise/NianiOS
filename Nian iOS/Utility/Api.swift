@@ -67,16 +67,6 @@ struct Api {
         V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell\(s_shell)", callback: callback)
     }
     
-    static func getFriendFromWeibo(page: String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/weibo.php?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
-    }
-    
-    static func getFriendFromTag(page: String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/friend_tag.php?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
-    }
-    
     static func postLikeStep(sid: String, like: Int, callback: V.StringCallback) {
         loadCookies()
         V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback)
@@ -208,6 +198,11 @@ struct Api {
     static func postLetterAddReply(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/letter_chat.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&id=\(id)&&content=\(content)&&type=\(type)", callback: callback)
+    }
+    
+    static func getWeibo(weibouid:String, Token:String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/weibo.php?uid=\(s_uid)&shell=\(s_shell)&weibouid=\(weibouid)&token=\(Token)", callback: callback)
     }
     
 }
