@@ -86,6 +86,7 @@
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
 		12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B8C91A613D5200DD8912 /* MeCellTop.swift */; };
 		12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */; };
+		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D6B31A1369B100FB436E /* LevelCircle.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
@@ -264,6 +265,7 @@
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
 		12A8B8C91A613D5200DD8912 /* MeCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCellTop.swift; sourceTree = "<group>"; };
 		12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCellTop.xib; sourceTree = "<group>"; };
+		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12B4D6B31A1369B100FB436E /* LevelCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelCircle.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
@@ -835,6 +837,7 @@
 				1251D6101975729100F55389 /* Refresh */,
 				12E1C81F1A146DCA00453805 /* LabelAnimation */,
 				12652837196C6755005765D2 /* Sapherise.swift */,
+				12B1BFFE1A6CB79B000D9284 /* Contacts.swift */,
 				12D846041A233B09005DCC08 /* BlurView.swift */,
 				12FB48BE196AE8010026DD51 /* FileUtility.swift */,
 				12FB48BF196AE8010026DD51 /* NSDictionaryExt.swift */,
@@ -1194,6 +1197,7 @@
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
+				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,

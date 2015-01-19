@@ -205,4 +205,9 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/weibo.php?uid=\(s_uid)&shell=\(s_shell)&weibouid=\(weibouid)&token=\(Token)", callback: callback)
     }
     
+    static func postPhone(list: [String], callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/phone.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&list=\(list)", callback: callback)
+    }
+    
 }
