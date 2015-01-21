@@ -339,7 +339,6 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     }
     
     [self.lock lock];
-    
     if ([self isExecuting]) {
         [self performSelector:@selector(operationDidPause) onThread:[[self class] networkRequestThread] withObject:nil waitUntilDone:NO modes:[self.runLoopModes allObjects]];
         
@@ -350,7 +349,6 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     }
     
     self.state = AFOperationPausedState;
-    
     [self.lock unlock];
 }
 
@@ -466,6 +464,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
             [self.outputStream scheduleInRunLoop:runLoop forMode:runLoopMode];
         }
         
+        [self.outputStream open];
         [self.connection start];
     }
     [self.lock unlock];
@@ -578,7 +577,10 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 #pragma mark - NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@: %p, state: %@, cancelled: %@ request: %@, response: %@>", NSStringFromClass([self class]), self, AFKeyPathFromOperationState(self.state), ([self isCancelled] ? @"YES" : @"NO"), self.request, self.response];
+    [self.lock lock];
+    NSString *description = [NSString stringWithFormat:@"<%@: %p, state: %@, cancelled: %@ request: %@, response: %@>", NSStringFromClass([self class]), self, AFKeyPathFromOperationState(self.state), ([self isCancelled] ? @"YES" : @"NO"), self.request, self.response];
+    [self.lock unlock];
+    return description;
 }
 
 #pragma mark - NSURLConnectionDelegate
@@ -642,8 +644,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 didReceiveResponse:(NSURLResponse *)response
 {
     self.response = response;
-    
-    [self.outputStream open];
 }
 
 - (void)connection:(NSURLConnection __unused *)connection
@@ -726,7 +726,7 @@ didReceiveResponse:(NSURLResponse *)response
     }
 }
 
-#pragma mark - NSecureCoding
+#pragma mark - NSSecureCoding
 
 + (BOOL)supportsSecureCoding {
     return YES;

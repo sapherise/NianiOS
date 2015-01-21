@@ -12,6 +12,7 @@
 
 +(NSData *)MD5Digest:(NSData *)input {
     unsigned char result[CC_MD5_DIGEST_LENGTH];
+
     CC_MD5(input.bytes, (CC_LONG)input.length, result);
     return [[NSData alloc] initWithBytes:result length:CC_MD5_DIGEST_LENGTH];
 }
