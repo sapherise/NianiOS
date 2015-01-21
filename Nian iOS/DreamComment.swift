@@ -31,7 +31,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     var ReplyRow:Int = 0
     var ReplyCid:String = ""
     var ReplyUserName:String = ""
-    var activityViewController:UIActivityViewController?
     
     var ReturnReplyContent:String = ""
     

@@ -157,8 +157,8 @@ struct V {
         return nil
     }
     
-    static func urlShareDream(did: String) -> String {
-        return "http://nian.so/dream/\(did)"
+    static func urlShareDream(did: String) -> NSURL {
+        return NSURL(string: "http://m.nian.so/dream/\(did)")!
     }
     
     static func urlDreamImage(img: String, tag: V.IMAGE_TAG) -> String {

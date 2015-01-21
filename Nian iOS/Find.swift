@@ -326,7 +326,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func getImageFromView(view: UIView)->UIImage {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 20);
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 8);
         view.layer.renderInContext(UIGraphicsGetCurrentContext())
         var image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -334,12 +334,14 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func sharePromo() {
-        var url:NSURL = NSURL(string: "http://nian.so/")!
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var url:NSURL = NSURL(string: "http://m.nian.so/user/\(safeuid)")!
         var image = self.getImageFromView(self.imagePromo)
-        let activityViewController = UIActivityViewController(
-            activityItems: [ "来念上找我玩", image, url],
-            applicationActivities: nil)
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        let activityView = UIActivityViewController(
+            activityItems: [image, "来念上找我玩", url],
+            applicationActivities: [WeChatSessionActivity(), WeChatMomentsActivity()])
+        self.presentViewController(activityView, animated: true, completion: nil)
     }
     
 }

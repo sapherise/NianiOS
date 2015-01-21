@@ -86,9 +86,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(Id)")!
         var sid:Int = content[2] as Int
         var row:Int = (content[3] as Int)-10
+        var url:NSURL = NSURL(string: "http://m.nian.so/step/\(sid)")!
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
@@ -132,10 +132,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             addstepVC.delegate = self
             self.navigationController!.pushViewController(addstepVC, animated: true)
         }
-        var ActivityArray = [ customActivity ]
+        var ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
         
         if self.dreamowner == 1 {
-            ActivityArray = [ editActivity, deleteActivity ]
+            ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), editActivity, deleteActivity ]
         }
         
         
@@ -163,18 +163,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    func shareDream(){
-        var url:NSURL = NSURL(string: "http://nian.so/dream/\(self.Id)")!
-        let activityViewController = UIActivityViewController(
-            activityItems: [ "喜欢念上的这个梦想！「\(self.titleJson)」", url ],
-            applicationActivities: nil)
-        self.presentViewController(activityViewController, animated: true, completion: nil)
-    }
-    
-    func setupViews()
-    {
+    func setupViews() {
         self.viewBack()
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid:String = Sa.objectForKey("uid") as String
         if self.Id != safeuid {

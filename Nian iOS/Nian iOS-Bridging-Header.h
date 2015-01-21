@@ -6,3 +6,4 @@
 #import "UpYun.h"
 #import "Reachability.h"
 #import "WeiboSDK.h"
+#import "WXApi.h"

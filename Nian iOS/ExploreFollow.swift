@@ -196,7 +196,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         if data.img != "" {
             items.append(FileUtility.imageDataFromPath(V.imageCachePath(V.urlStepImage(data.img, tag: .Large))))
         }
-        sender.popupActivity(items, activities: [ reportActivity ], exclude: [
+        sender.popupActivity(items, activities: [WeChatSessionActivity(), WeChatMomentsActivity(), reportActivity], exclude: [
             UIActivityTypeAddToReadingList,
             UIActivityTypeAirDrop,
             UIActivityTypeAssignToContact,

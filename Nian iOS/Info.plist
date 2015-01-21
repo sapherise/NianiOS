@@ -21,12 +21,15 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>com.nian.so</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>nian</string>
 				<string>wb4189056912</string>
+				<string>wx08fea299d0177c01</string>
 			</array>
 		</dict>
 	</array>
