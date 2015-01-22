@@ -146,6 +146,20 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
         self.viewLoadingShow()
+        
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var r = client.enter(safeuid, shell: safeshell)
+        if r == 0 {
+            outputln("加入成功")
+            client.pollBegin(on_poll)
+        }
+    }
+    
+    func on_poll(obj: AnyObject?) {
+        self.SAReloadData()
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -221,6 +235,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 })
             }
         })
+        on_gay(["\(self.ID)", "\(content)"])
     }
     
     func SAloadData() {
