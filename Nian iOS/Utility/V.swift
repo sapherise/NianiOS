@@ -143,6 +143,20 @@ struct V {
         return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
     }
     
+    static func absoluteTime(time: NSTimeInterval, current: NSTimeInterval) -> String {
+        var d = current - time
+        var formatter = NSDateFormatter()
+        if d < 86400 {
+            formatter.dateFormat = "HH:mm"
+        } else if d < 31536000 {
+            formatter.dateFormat = "MM-dd HH:mm"
+        } else {
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        }
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+        return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
+    }
+    
     static func imageCachePath(imageURL: String) -> String {
         var url = NSURL(string: imageURL)
         var cacheFilename = url!.lastPathComponent

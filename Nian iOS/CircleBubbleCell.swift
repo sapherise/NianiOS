@@ -41,15 +41,19 @@ class CircleBubbleCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
         var type = (self.data.objectForKey("type") as String).toInt()!
+        self.textContent.frame = CGRectMake(50, 15, 50, 50)
+        self.imageContent.frame = CGRectMake(50, 15, 50, 50)
+        self.textContent.image = UIImage()
+        self.imageContent.image = UIImage()
+        self.nickLabel!.text = ""
         self.nickLabel!.text = user
+        self.lastdate!.text = ""
         self.lastdate!.text = lastdate
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
         var height = content.stringHeightWith(13,width:208)
         self.avatarView!.tag = uid.toInt()!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
-        self.textContent.setY(15)
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String

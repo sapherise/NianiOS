@@ -13,6 +13,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var currentViewController: UIViewController?
     var currentIndex: Int?
     var dot:UILabel?
+    var dotCircle: UILabel?
     var niceView:UIView?
     var niceViewLabel:UILabel?
     var GameOverView:UIView?
@@ -54,6 +55,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         })
         launchTimer()
+        self.enter()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -109,18 +111,21 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             self.dot!.hidden = true
                         }else{
                             if let v = noticenumber.toInt() {
-                                self.dot!.hidden = false
-                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                    self.dot!.frame = CGRectMake(228, 8, 20, 17)
-                                    }, completion: { (complete: Bool) in
-                                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                            self.dot!.frame = CGRectMake(228, 10, 20, 15)
-                                            }, completion: { (complete: Bool) in
-                                                self.dot!.text = "\(v)"
-                                        })
-                                })
+                                if globalTabBarSelected != 103 {
+                                    self.dot!.hidden = false
+                                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                        self.dot!.frame = CGRectMake(228, 8, 20, 17)
+                                        }, completion: { (complete: Bool) in
+                                            UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                                self.dot!.frame = CGRectMake(228, 10, 20, 15)
+                                                }, completion: { (complete: Bool) in
+                                                    self.dot!.text = "\(v)"
+                                            })
+                                    })
+                                }else{
+                                    self.dot!.hidden = true
+                                }
                             }else{
-                                self.dot!.hidden = true
                             }
                         }
                     })
@@ -183,6 +188,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true
         self.myTabbar!.addSubview(dot!)
+        
+        self.dotCircle = UILabel(frame: CGRectMake(292, 10, 20, 15))
+        self.dotCircle!.textColor = UIColor.whiteColor()
+        self.dotCircle!.font = UIFont.systemFontOfSize(10)
+        self.dotCircle!.textAlignment = NSTextAlignment.Center
+        self.dotCircle!.backgroundColor = SeaColor
+        self.dotCircle!.layer.cornerRadius = 5
+        self.dotCircle!.layer.masksToBounds = true
+        self.dotCircle!.text = "N"
+        self.dotCircle!.hidden = true
+        self.myTabbar!.addSubview(dotCircle!)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
     }
     
@@ -352,6 +369,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if index != 102 {
             self.selectedIndex = index-100
         }
+        globalTabBarSelected = index
         
         let idDream = 100
         let idExplore = 101
@@ -364,6 +382,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
         }else if index == idBBS {     // 梦境
+            self.dotCircle!.hidden = true
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
             rightButton.image = UIImage(named:"find")
             self.navigationItem.rightBarButtonItem = rightButton
@@ -504,6 +523,45 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func addCircleButton(){
         var circleexploreVC = CircleExploreController()
         self.navigationController?.pushViewController(circleexploreVC, animated: true)
+    }
+    
+    func enter() {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        var r = client.enter(safeuid, shell: safeshell)
+        if r == 0 {
+            println("加入成功")
+            client.pollBegin(on_poll)
+        }
+    }
+    
+    
+    func on_poll(obj: AnyObject?) {
+        var msg: AnyObject? = obj!["msg"]
+        println(msg)
+        var json: AnyObject? = msg!["msg"]
+        var data: AnyObject? = json![0]
+        var contentJson: AnyObject? = data!["msg"]
+        var uidJson: AnyObject? = data!["from"]
+        var typeJson: AnyObject? = data!["totype"]
+        var timeJson: AnyObject? = data!["time"]
+        var content = "\(contentJson!)"
+        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        var uid = "\(uidJson!)"
+        var type = "\(typeJson!)".toInt()!
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        if safeuid != uid {     // 如果是朋友们发的
+            globalWillCircleReload = 1
+            dispatch_async(dispatch_get_main_queue(), {
+                if globalTabBarSelected != 104 {
+                    self.dotCircle!.hidden = false
+                    println(globalTabBarSelected)
+                }
+            })
+        }
     }
     
     

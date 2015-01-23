@@ -17,8 +17,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var replySheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
     var actionSheetPhoto:UIActionSheet?
-    var deleteId:Int = 0        //删除按钮的tag，进展编号
-    var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
     var dataTotal:Int = 15
     var viewTop:UIView!
@@ -40,7 +38,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var keyboardView:UIView!
     var viewBottom:UIView!
     var isKeyboardFocus:Bool = false
-    var isKeyboardResign:Int = 0 //为了解决评论会收起键盘的BUG创建的开关，当提交过程中变为1，0时才收起键盘
     var keyboardHeight:CGFloat = 0
     var lastContentOffset:CGFloat?
     
@@ -147,19 +144,71 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navigationItem.rightBarButtonItem = rightButton
         self.viewLoadingShow()
         
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
-            outputln("加入成功")
+            println("加入成功")
             client.pollBegin(on_poll)
         }
     }
     
     func on_poll(obj: AnyObject?) {
-        self.SAReloadData()
+        var msg: AnyObject? = obj!["msg"]
+        println(msg)
+        var json: AnyObject? = msg!["msg"]
+        var data: AnyObject? = json![0]
+        var contentJson: AnyObject? = data!["msg"]
+        var uidJson: AnyObject? = data!["from"]
+        var typeJson: AnyObject? = data!["totype"]
+        var timeJson: AnyObject? = data!["time"]
+        var content = "\(contentJson!)"
+        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        var uid = "\(uidJson!)"
+        var type = "\(typeJson!)".toInt()!
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        var commentReplyRow = self.dataArray.count
+        if safeuid != uid {     // 如果是朋友们发的
+            var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, "昵称","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(newinsert, atIndex: 0)
+            var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
+            self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+            self.tableview.reloadData()
+            //当提交评论后滚动到最新评论的底部
+            var contentOffsetHeight = self.tableview.contentOffset.y
+            var contentHeight:CGFloat = 0
+            if type == 1 {
+                contentHeight = content.stringHeightWith(13,width:208) + 60
+            }else if type == 2 {
+                var arrContent = content.componentsSeparatedByString("_")
+                if arrContent.count == 4 {
+                    if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                        contentHeight = CGFloat(n) + 40
+                    }
+                }
+            }
+            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0 {
+                self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+            }
+        }else{
+            delay(0.2, { () -> () in
+                for var i: Int = 0; i < commentReplyRow; i++ {
+                    var data = self.dataArray[i] as NSDictionary
+                    var contentOri = data.stringAttributeForKey("content")
+                    if content == contentOri {
+                        var mutableItem = NSMutableDictionary(dictionary: data)
+                        mutableItem.setObject("现在", forKey: "lastdate")
+                        self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                        self.tableview.reloadData()
+                        break
+                    }
+                }
+            })
+        }
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -189,7 +238,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func commentFinish(replyContent:String, type: Int = 1){
-        self.isKeyboardResign = 1
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
@@ -227,15 +275,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeuser = Sa.objectForKey("user") as String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&type=\(type)", "http://nian.so/api/circle_chat.php")
-            if sa != "" && sa != "err" {
-                dispatch_async(dispatch_get_main_queue(), {
-                    delay(0.2, { () -> () in
-                        self.SAReloadData()
-                    })
-                })
-            }
         })
-        on_gay(["\(self.ID)", "\(content)"])
+        on_gay(["\(self.ID)", "\(contentComment)"])
     }
     
     func SAloadData() {
@@ -280,7 +321,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
                 }
                 self.page = 1
-                self.isKeyboardResign = 0
                 if let v = (self.navigationItem.titleView as? UILabel) {
                     var title = json!["title"] as String
                     v.text = title
@@ -468,14 +508,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
-                self.isKeyboardResign = 1
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
                 self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
                 self.tableview.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
-                    self.isKeyboardResign = 0
                 })
             }
         }else if actionSheet == self.actionSheetPhoto {
