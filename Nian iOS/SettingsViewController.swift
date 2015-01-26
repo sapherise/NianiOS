@@ -16,11 +16,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var logout:UIView!
     @IBOutlet var inputName:UITextField!
     @IBOutlet var inputEmail:UITextField!
+    @IBOutlet var inputPhone: UITextField!
     @IBOutlet var helpView:UIView?
     @IBOutlet var cacheView:UIView?
     @IBOutlet var cacheActivity:UIActivityIndicatorView!
     @IBOutlet var ImageSwitch:UISwitch!
     @IBOutlet var CareSwitch:UISwitch!
+    @IBOutlet var PrivateSwitch: UISwitch!
     @IBOutlet var version:UILabel!
     @IBOutlet var btnCover: UIButton!
     @IBOutlet var viewStar: UIView!
@@ -55,7 +57,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.view.addSubview(navView)
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 1100)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 1200)
         self.cacheActivity.hidden = true
         self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -70,6 +72,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         
         self.inputName!.delegate = self
         self.inputEmail!.delegate = self
+        self.inputPhone!.delegate = self
         
         self.helpView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
         self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
@@ -81,10 +84,20 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.ImageSwitch.layer.cornerRadius = 16
         var saveMode: String? = Sa.objectForKey("saveMode") as? String
             if saveMode == "1" {
-                self.switchSetup(true)
+                self.ImageSwitch.switchSetup(true, cacheName: "saveMode")
             }else{
-                self.switchSetup(false)
+                self.ImageSwitch.switchSetup(false, cacheName: "saveMode")
             }
+        
+        // 私密模式
+        self.PrivateSwitch.addTarget(self, action: "privateSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
+        self.PrivateSwitch.layer.cornerRadius = 16
+        var privateMode: String? = Sa.objectForKey("privateMode") as? String
+        if privateMode == "1" {
+            self.PrivateSwitch.switchSetup(true, cacheName: "privateMode")
+        }else{
+            self.PrivateSwitch.switchSetup(false, cacheName: "privateMode")
+        }
         
         //每日推送模式
         self.CareSwitch.addTarget(self, action: "pushSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
@@ -356,11 +369,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func switchAction(sender:UISwitch){
         if sender.on {
-            self.switchSetup(true)
+            sender.switchSetup(true, cacheName: "saveMode")
         }else{
-            self.switchSetup(false)
+            sender.switchSetup(false, cacheName: "saveMode")
         }
     }
+    
     func pushSwitchAction(sender:UISwitch){
         if sender.on {
             self.pushSwitchSetup(true)
@@ -370,6 +384,18 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             })
         }else{
             self.pushSwitchSetup(false)
+        }
+    }
+    
+    func privateSwitchAction(sender: UISwitch) {
+        if sender.on {
+            sender.switchSetup(true, cacheName: "privateMode")
+            Api.postUserPrivate("1") { json in
+            }
+        }else{
+            sender.switchSetup(false, cacheName: "privateMode")
+            Api.postUserPrivate("0") { json in
+            }
         }
     }
     
@@ -391,24 +417,24 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }
     }
     
-    func switchSetup(bool:Bool){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        if bool {
-            self.ImageSwitch.thumbTintColor = UIColor.whiteColor()
-            self.ImageSwitch.onTintColor = SeaColor
-            self.ImageSwitch.tintColor = SeaColor
-            self.ImageSwitch.setOn(true, animated: true)
-            Sa.setObject("1", forKey:"saveMode")
-            Sa.synchronize()
-        }else{
-            self.ImageSwitch.thumbTintColor = BGColor
-            self.ImageSwitch.backgroundColor = IconColor
-            self.ImageSwitch.tintColor = IconColor
-            self.ImageSwitch.setOn(false, animated: true)
-            Sa.setObject("0", forKey:"saveMode")
-            Sa.synchronize()
-        }
-    }
+//    func switchSetup(bool:Bool){
+//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//        if bool {
+//            self.ImageSwitch.thumbTintColor = UIColor.whiteColor()
+//            self.ImageSwitch.onTintColor = SeaColor
+//            self.ImageSwitch.tintColor = SeaColor
+//            self.ImageSwitch.setOn(true, animated: true)
+//            Sa.setObject("1", forKey:"saveMode")
+//            Sa.synchronize()
+//        }else{
+//            self.ImageSwitch.thumbTintColor = BGColor
+//            self.ImageSwitch.backgroundColor = IconColor
+//            self.ImageSwitch.tintColor = IconColor
+//            self.ImageSwitch.setOn(false, animated: true)
+//            Sa.setObject("0", forKey:"saveMode")
+//            Sa.synchronize()
+//        }
+//    }
     
     func clearCache(sender:UIGestureRecognizer){
         self.cacheActivity.hidden = false
@@ -503,7 +529,28 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var pushMode: String? = Sa.objectForKey("pushMode") as? String
         if pushMode != "1" {
-                self.pushSwitchSetup(false)
+            self.pushSwitchSetup(false)
+        }
+    }
+}
+
+extension UISwitch {
+    func switchSetup(bool: Bool, cacheName: String){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if bool {
+            self.thumbTintColor = UIColor.whiteColor()
+            self.onTintColor = SeaColor
+            self.tintColor = SeaColor
+            self.setOn(true, animated: true)
+            Sa.setObject("1", forKey: cacheName)
+            Sa.synchronize()
+        }else{
+            self.thumbTintColor = BGColor
+            self.backgroundColor = IconColor
+            self.tintColor = IconColor
+            self.setOn(false, animated: true)
+            Sa.setObject("0", forKey: cacheName)
+            Sa.synchronize()
         }
     }
 }

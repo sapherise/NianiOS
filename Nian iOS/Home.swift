@@ -531,7 +531,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var safeshell = Sa.objectForKey("shell") as String
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
-            println("加入成功")
             client.pollBegin(on_poll)
         }
     }
