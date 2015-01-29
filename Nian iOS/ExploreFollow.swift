@@ -10,7 +10,7 @@ import UIKit
 
 struct FollowBlacklist {
     
-    private static let blackfile: String = NSHomeDirectory().stringByAppendingPathComponent("blacklist.gift")
+    private static let blackfile: String = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String).stringByAppendingPathComponent("blacklist.gift")
     
     private static var blacklist = [Int]()
     private static var loaded = false
@@ -33,6 +33,7 @@ struct FollowBlacklist {
                     }
                 }
             }
+            println(blacklist)
         }
     }
     
@@ -91,6 +92,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     weak var bindViewController: ExploreViewController?
     var page = 0
+    var locked = false
     var dataSource = [Data]()
     
     init(viewController: ExploreViewController) {
@@ -214,6 +216,9 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     func onIHATEYOU(sender: UILongPressGestureRecognizer) {
+        if locked {
+            return
+        }
         var tag = findTableCell(sender.view)!.tag
         if dataSource.count <= tag {
             return
@@ -224,6 +229,10 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                 return
             }
             FollowBlacklist.black(duid)
+            locked = true
+            delay(9) {
+                self.locked = false
+            }
             sender.view!.showTipText("I LOVE \(dataSource[tag].user)", delay: 1)
             bindViewController!.tableView.reloadData()
         }
