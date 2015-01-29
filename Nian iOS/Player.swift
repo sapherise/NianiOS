@@ -607,6 +607,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.UserFoed.setWidth(foedWidth)
                     self.topCell!.UserHead.setImage(userImageURL, placeHolder: IconColor)
                     self.topCell!.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
+                    
+                    var wantPress = UILongPressGestureRecognizer(target: self, action: "onIWANTYOU:")
+                    wantPress.minimumPressDuration = 10
+                    self.topCell!.UserHead.addGestureRecognizer(wantPress)
+                    
                     self.topCell!.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                     self.topCell!.btnLetter.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                     if cover == "" {
@@ -635,6 +640,15 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                         self.topCell!.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false, animated: true)
                     }
                 }
+            }
+        }
+    }
+    
+    func onIWANTYOU(sender: UILongPressGestureRecognizer) {
+        if let duid = self.Id.toInt() {
+            if FollowBlacklist.isblacked(duid) {
+                FollowBlacklist.unblack(duid)
+                sender.view!.showTipText("I WANT YOU", delay: 1)
             }
         }
     }
