@@ -1,0 +1,39 @@
+PODS:
+  - AFNetworking (2.5.0):
+    - AFNetworking/NSURLConnection (= 2.5.0)
+    - AFNetworking/NSURLSession (= 2.5.0)
+    - AFNetworking/Reachability (= 2.5.0)
+    - AFNetworking/Security (= 2.5.0)
+    - AFNetworking/Serialization (= 2.5.0)
+    - AFNetworking/UIKit (= 2.5.0)
+  - AFNetworking/NSURLConnection (2.5.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.0)
+  - AFNetworking/Security (2.5.0)
+  - AFNetworking/Serialization (2.5.0)
+  - AFNetworking/UIKit (2.5.0):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - Base64 (1.0.1)
+  - NSData+MD5Digest (1.0.0)
+  - UMengAnalytics-NO-IDFA (3.4.5)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.0)
+  - Base64
+  - NSData+MD5Digest
+  - UMengAnalytics-NO-IDFA
+
+SPEC CHECKSUMS:
+  AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
+  Base64: c6d74f31f150543b246a07e180ba813c88e59311
+  NSData+MD5Digest: 3662c71c33c32cac0302dce76df6df7a6d81acca
+  UMengAnalytics-NO-IDFA: 600bad4f635e69c097d924e8378e077a9768290d
+
+COCOAPODS: 0.35.0
