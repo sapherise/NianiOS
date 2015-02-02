@@ -11,6 +11,7 @@
 		12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12028E311A3EDA9D0072FBE1 /* AddCircle.xib */; };
 		12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E331A3EECBD0072FBE1 /* CircleTag.swift */; };
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
+		1203F0C21A7F883A001F5864 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1203F0B91A7F881F001F5864 /* SQLite.framework */; };
 		1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 121454731A694F3C0091DCEE /* libWeiboSDK.a */; };
 		1214547F1A694F3C0091DCEE /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1214547B1A694F3C0091DCEE /* WeiboSDK.bundle */; };
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
@@ -168,6 +169,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1203F0B81A7F881F001F5864 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC3773F319C8CBB3004FCF85;
+			remoteInfo = "SQLite iOS";
+		};
+		1203F0BA1A7F881F001F5864 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC3773FE19C8CBB3004FCF85;
+			remoteInfo = "SQLite iOS Tests";
+		};
+		1203F0BC1A7F881F001F5864 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC37741419C8CC2F004FCF85;
+			remoteInfo = "SQLite Mac";
+		};
+		1203F0BE1A7F881F001F5864 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC37741E19C8CC2F004FCF85;
+			remoteInfo = "SQLite Mac Tests";
+		};
+		1203F0C01A7F8825001F5864 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DC3773F219C8CBB3004FCF85;
+			remoteInfo = "SQLite iOS";
+		};
 		12FB48AC196AE76E0026DD51 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12FB4891196AE76E0026DD51 /* Project object */;
@@ -182,6 +218,7 @@
 		12028E311A3EDA9D0072FBE1 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
 		12028E331A3EECBD0072FBE1 /* CircleTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleTag.swift; sourceTree = "<group>"; };
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
+		1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite/SQLite.xcodeproj; sourceTree = "<group>"; };
 		121454731A694F3C0091DCEE /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		121454741A694F3C0091DCEE /* WBHttpRequest+WeiboShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboShare.h"; sourceTree = "<group>"; };
 		121454751A694F3C0091DCEE /* WBHttpRequest+WeiboToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboToken.h"; sourceTree = "<group>"; };
@@ -356,8 +393,8 @@
 		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
 		32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFPlayer.swift; sourceTree = "<group>"; };
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		58CC599C55D176F714C90DB1 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
-		D3109E55BBF7FB35C7D020B4 /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
+		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +402,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1203F0C21A7F883A001F5864 /* SQLite.framework in Frameworks */,
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 				1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */,
 				12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */,
@@ -391,6 +429,17 @@
 				12028E351A3EED220072FBE1 /* CircleTag.storyboard */,
 			);
 			name = "创建梦境";
+			sourceTree = "<group>";
+		};
+		1203F0B21A7F881F001F5864 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1203F0B91A7F881F001F5864 /* SQLite.framework */,
+				1203F0BB1A7F881F001F5864 /* SQLite iOS Tests.xctest */,
+				1203F0BD1A7F881F001F5864 /* SQLite.framework */,
+				1203F0BF1A7F881F001F5864 /* SQLite Mac Tests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		1205298C196B186B00E7509D /* 梦想 */ = {
@@ -815,7 +864,8 @@
 				12FB489A196AE76E0026DD51 /* Products */,
 				12FB48BD196AE8010026DD51 /* Utility */,
 				B63CD37464934379B52680E0 /* Frameworks */,
-				ECDB47B47634D9A3E13D4287 /* Pods */,
+				AD792103EEA56B9F94E30178 /* Pods */,
+				1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -952,6 +1002,15 @@
 			name = "详情";
 			sourceTree = "<group>";
 		};
+		AD792103EEA56B9F94E30178 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */,
+				4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -960,15 +1019,6 @@
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		ECDB47B47634D9A3E13D4287 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D3109E55BBF7FB35C7D020B4 /* Pods-Nian iOS.debug.xcconfig */,
-				58CC599C55D176F714C90DB1 /* Pods-Nian iOS.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -987,6 +1037,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1203F0C11A7F8825001F5864 /* PBXTargetDependency */,
 			);
 			name = "Nian iOS";
 			productName = "Nian iOS";
@@ -1046,6 +1097,12 @@
 			mainGroup = 12FB4890196AE76E0026DD51;
 			productRefGroup = 12FB489A196AE76E0026DD51 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1203F0B21A7F881F001F5864 /* Products */;
+					ProjectRef = 1203F0B11A7F881F001F5864 /* SQLite.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				12FB4898196AE76E0026DD51 /* Nian iOS */,
@@ -1053,6 +1110,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1203F0B91A7F881F001F5864 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 1203F0B81A7F881F001F5864 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1203F0BB1A7F881F001F5864 /* SQLite iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLite iOS Tests.xctest";
+			remoteRef = 1203F0BA1A7F881F001F5864 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1203F0BD1A7F881F001F5864 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 1203F0BC1A7F881F001F5864 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1203F0BF1A7F881F001F5864 /* SQLite Mac Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLite Mac Tests.xctest";
+			remoteRef = 1203F0BE1A7F881F001F5864 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		12FB4897196AE76E0026DD51 /* Resources */ = {
@@ -1276,6 +1364,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1203F0C11A7F8825001F5864 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SQLite iOS";
+			targetProxy = 1203F0C01A7F8825001F5864 /* PBXContainerItemProxy */;
+		};
 		12FB48AD196AE76E0026DD51 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 12FB4898196AE76E0026DD51 /* Nian iOS */;
@@ -1370,7 +1463,7 @@
 		};
 		12FB48B6196AE76E0026DD51 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D3109E55BBF7FB35C7D020B4 /* Pods-Nian iOS.debug.xcconfig */;
+			baseConfigurationReference = 730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1401,7 +1494,7 @@
 		};
 		12FB48B7196AE76E0026DD51 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 58CC599C55D176F714C90DB1 /* Pods-Nian iOS.release.xcconfig */;
+			baseConfigurationReference = 4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

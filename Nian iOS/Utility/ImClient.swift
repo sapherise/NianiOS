@@ -128,8 +128,8 @@ class taskQueue {
 
 class ImClient {
     
-    private enum states {
-        case unauth
+    enum States {
+        case unconnect
         case authing
         case authed
     }
@@ -145,10 +145,12 @@ class ImClient {
     
     private var m_queue = taskQueue()
     
-    private var m_pollHandler: (AnyObject? -> Void)? = nil
+    private var m_onPull: (AnyObject? -> Void)? = nil
+    private var m_onState: (States -> Void)? = nil
     
-    private var m_state: states = .unauth
+    private var m_state: States = .unconnect
     private var m_polling = false
+    private var m_repollDelay = 2000
     
     private var m_uid: String = ""
     private var m_shell: String = ""
@@ -158,28 +160,44 @@ class ImClient {
         return obj["status"] as Int
     }
     
+    private func setState(state: States) {
+        if m_state != state {
+            m_state = state
+            if m_onState != nil {
+                m_onState!(state)
+            }
+        }
+    }
+    
     private func polling() {
         while m_polling {
-            if m_state == .unauth {
+            if m_state == .unconnect {
                 // 客户端重新登录
                 var r = enter(m_uid, shell: m_shell)
                 if r == 1 {
-                    m_pollHandler!(nil)
+                    m_onPull!(nil)
                     break
                 }
             } else if m_state == .authed {
                 // 客户端已经登录, 开始拉取消息
                 var r: AnyObject? = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
                 if r == nil {
-                    break
+                    if m_repollDelay >= 60000 {
+                        setState(.unconnect)
+                        break
+                    }
+                    NSThread.sleepForTimeInterval(NSTimeInterval(m_repollDelay))
+                    m_repollDelay = m_repollDelay + m_repollDelay
+                    continue
                 }
+                m_repollDelay = 2000
                 var status = peekStatus(r!)
                 switch status {
                 case statusSuccess:
-                    m_pollHandler!(r)
+                    m_onPull!(r)
                 case statusUnauthenticated:
                     // 服务端要求重新登录
-                    m_state = .unauth
+                    setState(.unconnect)
                 case statusTimeOut:
                     // 服务端超时重新拉取
                     continue
@@ -195,13 +213,17 @@ class ImClient {
         m_polling = false
     }
     
+    func setOnState(handler: States -> Void) {
+        m_onState = handler
+    }
+    
     func leave() {
         if m_state == .authed {
             m_state = .authing
             pollEnd()
             httpPost(m_landServer + "leave", httpParams(["uid": m_uid, "sid": m_sid]))
             m_sid = ""
-            m_state = .unauth
+            m_state = .unconnect
         }
     }
     
@@ -222,7 +244,7 @@ class ImClient {
                 return 0
             }
         }
-        m_state = .unauth
+        m_state = .unconnect
         return 1
     }
     
@@ -231,7 +253,7 @@ class ImClient {
             return
         }
         m_polling = true
-        m_pollHandler = handler
+        m_onPull = handler
         go {
             self.polling()
         }

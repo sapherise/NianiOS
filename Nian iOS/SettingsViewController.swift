@@ -27,7 +27,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var btnCover: UIButton!
     @IBOutlet var viewStar: UIView!
     @IBOutlet var viewFind: UIView!
+    @IBOutlet var viewSex: UIView!
+    @IBOutlet var labelSex: UILabel!
     var actionSheet:UIActionSheet?
+    var actionSheetSex: UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""
     var uploadWidth:Int = 0
@@ -37,15 +40,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     var accountName:String = ""
     var accountEmail:String = ""
+    var accountPhone: String = ""
     
     override func viewDidLoad(){
         setupViews()
     }
     
     func setupViews(){
-        
         self.viewBack()
-        
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "设置"
@@ -115,33 +117,48 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         
         // 发现好友
         self.viewFind.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFindClick"))
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safename = Sa.objectForKey("user") as String
-            var url = NSURL(string:"http://nian.so/api/user.php?uid=\(safeuid)&myuid=\(safeuid)")
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            if data != nil {
-                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                var data: AnyObject! = json.objectForKey("user")
-                var email: AnyObject! = data.objectForKey("email") as String
-                var name: String = data.objectForKey("name") as String
+        self.viewSex.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSexClick"))
+        Api.getUserMe() { json in
+            if json != nil {
+                var data = json!["user"] as NSDictionary
+                var email = data.stringAttributeForKey("email")
+                var name = data.stringAttributeForKey("name")
+                var phone = data.stringAttributeForKey("phone")
+                var sex = data.stringAttributeForKey("sex")
                 Sa.setObject(name, forKey:"user")
                 Sa.synchronize()
                 dispatch_async(dispatch_get_main_queue(), {
                     self.inputName.text = name
-                    self.inputEmail.text = "\(email)"
+                    self.inputEmail.text = email
+                    self.inputPhone.text = phone
                     self.accountName = name
-                    self.accountEmail = "\(email)"
+                    self.accountEmail = email
+                    self.accountPhone = phone
+                    if sex == "1" {
+                        self.labelSex.text = "男"
+                    }else if sex == "2" {
+                        self.labelSex.text = "女"
+                    }else{
+                        self.labelSex.text = "保密"
+                    }
                 })
             }
-        })
+        }
     }
     
     func onFindClick(){
         var findVC = FindViewController()
         self.navigationController?.pushViewController(findVC, animated: true)
+    }
+    
+    func onSexClick() {
+        self.actionSheetSex = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        self.actionSheetSex!.addButtonWithTitle("男")
+        self.actionSheetSex!.addButtonWithTitle("女")
+        self.actionSheetSex!.addButtonWithTitle("保密")
+        self.actionSheetSex!.addButtonWithTitle("取消")
+        self.actionSheetSex!.cancelButtonIndex = 3
+        self.actionSheetSex!.showInView(self.view)
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -153,6 +170,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }else if textField == self.inputEmail {
             if y < 198 {
                 self.scrollView.setContentOffset(CGPointMake(0, 198), animated: true)
+            }
+        }else if textField == self.inputPhone {
+            if y < 246 {
+                self.scrollView.setContentOffset(CGPointMake(0, 246), animated: true)
             }
         }
     }
@@ -238,6 +259,26 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             }else{
                 textField.text = self.accountEmail
             }
+        }else if textField == self.inputPhone {
+            if (textField.text != "") & (textField.text != self.accountPhone){
+                self.navigationItem.rightBarButtonItems = buttonArray()
+                if !self.inputPhone.text.isValidPhone() {   //正则
+                    self.navigationItem.rightBarButtonItems = []
+                    self.view.showTipText("不是大陆的手机号...", delay: 1)
+                    textField.text = self.accountPhone
+                }else{
+                    // 上传手机号
+                    var phone = self.inputPhone.text
+                    phone = SAEncode(SAHtml(phone))
+                    Api.postUserPhone(phone) { json in
+                        self.navigationItem.rightBarButtonItems = []
+                        self.accountPhone = self.inputPhone.text
+                        self.view.showTipText("手机改好啦", delay: 1)
+                    }
+                }
+            }else{
+                textField.text = self.accountPhone
+            }
         }
     }
     
@@ -267,19 +308,35 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == 0 {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = true
-            self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-        }else if buttonIndex == 1 {
-            self.imagePicker = UIImagePickerController()
-            self.imagePicker!.delegate = self
-            self.imagePicker!.allowsEditing = true
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+        if actionSheet == self.actionSheet {
+            if buttonIndex == 0 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.allowsEditing = true
+                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            }else if buttonIndex == 1 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.allowsEditing = true
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
+                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                    self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+                }
+            }
+        }else if actionSheet == self.actionSheetSex {
+            if buttonIndex == 0 {
+                self.labelSex.text = "男"
+                Api.postUserSex(1) { json in
+                }
+            }else if buttonIndex == 1 {
+                self.labelSex.text = "女"
+                Api.postUserSex(2) { json in
+                }
+            }else if buttonIndex == 2 {
+                self.labelSex.text = "保密"
+                Api.postUserSex(0) { json in
+                }
             }
         }
     }
@@ -488,6 +545,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     func dismissKeyboard(sender:UITapGestureRecognizer){
         inputName.resignFirstResponder()
         inputEmail.resignFirstResponder()
+        inputPhone.resignFirstResponder()
     }
     
     func onStarClick(){

@@ -7,3 +7,4 @@
 #import "Reachability.h"
 #import "WeiboSDK.h"
 #import "WXApi.h"
+#import "MobClick.h"

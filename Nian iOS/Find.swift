@@ -281,8 +281,6 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         if object != nil {
             var uid = "\(object![0])"
             var token = "\(object![1])"
-            println(uid)
-            println(token)
             Api.getWeibo(uid, Token: token) { json in
                 self.viewLoadingHide()
                 if json != nil {

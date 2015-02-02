@@ -33,7 +33,6 @@ struct FollowBlacklist {
                     }
                 }
             }
-            println(blacklist)
         }
     }
     

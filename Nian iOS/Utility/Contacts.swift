@@ -24,7 +24,6 @@ class ContactsHelper {
         var err : Unmanaged<CFError>? = nil
         let adbk : ABAddressBook? = ABAddressBookCreateWithOptions(nil, &err).takeRetainedValue()
         if adbk == nil {
-            println(err)
             self.adbk = nil
             return false
         }

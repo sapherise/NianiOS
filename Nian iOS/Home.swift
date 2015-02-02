@@ -138,6 +138,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        println(safeuid)
+        println(safeshell)
+        
         //总的
         self.view.backgroundColor = BGColor
         self.tabBar.hidden = true
@@ -538,7 +545,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func on_poll(obj: AnyObject?) {
         var msg: AnyObject? = obj!["msg"]
-        println(msg)
         var json: AnyObject? = msg!["msg"]
         var data: AnyObject? = json![0]
         var contentJson: AnyObject? = data!["msg"]
@@ -557,7 +563,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             dispatch_async(dispatch_get_main_queue(), {
                 if globalTabBarSelected != 104 {
                     self.dotCircle!.hidden = false
-                    println(globalTabBarSelected)
                 }
             })
         }

@@ -215,5 +215,15 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=4&&private=\(userPrivate)", callback: callback)
     }
     
+    static func postUserPhone(phone: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=5&&phone=\(phone)", callback: callback)
+    }
+    
+    static func postUserSex(sex: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=6&&sex=\(sex)", callback: callback)
+    }
+    
     
 }

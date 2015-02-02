@@ -5,5 +5,6 @@ target "Nian iOS" do
 pod "AFNetworking", "~> 2.0" 
 pod 'NSData+MD5Digest'
 pod 'Base64'
+pod 'UMengAnalytics-NO-IDFA'
 end
 

@@ -1,6 +1,0 @@
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Base64" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFNetworking" -isystem "${PODS_ROOT}/Headers/Public/Base64" -isystem "${PODS_ROOT}/Headers/Public/NSData+MD5Digest"
-OTHER_LDFLAGS = -ObjC -l"Pods-Nian iOS-AFNetworking" -l"Pods-Nian iOS-Base64" -l"Pods-Nian iOS-NSData+MD5Digest" -framework "CoreGraphics" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration"
-OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
-PODS_ROOT = ${SRCROOT}/Pods

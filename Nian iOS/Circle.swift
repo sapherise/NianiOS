@@ -149,14 +149,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeshell = Sa.objectForKey("shell") as String
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
-            println("加入成功")
             client.pollBegin(on_poll)
         }
     }
     
     func on_poll(obj: AnyObject?) {
         var msg: AnyObject? = obj!["msg"]
-        println(msg)
         var json: AnyObject? = msg!["msg"]
         var data: AnyObject? = json![0]
         var contentJson: AnyObject? = data!["msg"]

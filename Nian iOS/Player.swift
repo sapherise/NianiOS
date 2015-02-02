@@ -579,13 +579,14 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupPlayerTop(theUid:Int){
         Api.getUserTop(theUid){ json in
             if json != nil {
-                var data: AnyObject! = json!["user"]
+                var data = json!["user"] as NSDictionary
                 var name = data.stringAttributeForKey("name")
                 var fo = data.stringAttributeForKey("fo")
                 var foed = data.stringAttributeForKey("foed")
                 var isfo = data.stringAttributeForKey("isfo")
                 var cover = data.stringAttributeForKey("cover")
                 var black = data.stringAttributeForKey("isban")
+                var sex = data.stringAttributeForKey("sex")
                 if let v = black.toInt() {
                     self.isBan = v
                 }
@@ -599,6 +600,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var AllCoverURL = "http://img.nian.so/cover/\(cover)!cover"
                 if self.topCell != nil {
                     self.topCell!.UserName.text = name
+                    var width = name.stringWidthBoldWith(19, height: 23)
+                    self.topCell!.UserName.setWidth(width)
+                    self.topCell!.UserName.setX((globalWidth-width)/2)
                     self.topCell!.UserFo.text = fo
                     self.topCell!.UserFoed.text = foed
                     self.topCell!.UserFo.setX(foX)

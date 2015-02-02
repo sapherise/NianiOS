@@ -151,6 +151,12 @@ extension String  {
         return emailTest!.evaluateWithObject(self)
     }
     
+    func isValidPhone()->Bool {
+        let regex :String = "^(1(([35][0-9])|(47)|[8][01236789]))\\d{8}$"
+        let PhoneTest = NSPredicate(format: "SELF MATCHES %@", regex)
+        return PhoneTest!.evaluateWithObject(self)
+    }
+    
     func isValidName()->Bool {
         var regex = "^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$"
         var nameTest = NSPredicate(format: "SELF MATCHES %@", regex)

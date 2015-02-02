@@ -18,11 +18,13 @@
                 <outlet property="inputEmail" destination="xXP-za-jew" id="nlj-Ov-A2W"/>
                 <outlet property="inputName" destination="8SV-MJ-XFo" id="HnW-Ij-VPz"/>
                 <outlet property="inputPhone" destination="lPI-OM-JAI" id="S69-wL-7ON"/>
+                <outlet property="labelSex" destination="HVu-13-Hkg" id="Jcd-kc-Jnx"/>
                 <outlet property="logout" destination="Hp1-66-DX9" id="Lzd-cS-h6d"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
                 <outlet property="version" destination="cZc-2c-cvJ" id="1PE-s0-JBy"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
                 <outlet property="viewFind" destination="oFn-lt-Dw4" id="2jj-2R-ZRo"/>
+                <outlet property="viewSex" destination="qzI-Zy-FGo" id="Bk4-ll-EGN"/>
                 <outlet property="viewStar" destination="MDU-8p-pb5" id="fCv-1q-dJz"/>
             </connections>
         </placeholder>

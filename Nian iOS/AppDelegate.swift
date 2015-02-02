@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
-        
+        MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         return true
     }
     
