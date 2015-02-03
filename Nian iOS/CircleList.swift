@@ -27,10 +27,20 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     override func viewWillAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         if globalWillCircleReload == 1 {
             globalWillCircleReload = 0
             self.SAReloadData()
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Poll", object: nil)
+    }
+    
+    func Poll(noti: NSNotification) {
+        var data = noti.object as NSDictionary
+        println(data)
     }
     
     func setupViews() {

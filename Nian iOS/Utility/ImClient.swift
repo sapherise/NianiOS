@@ -18,7 +18,7 @@ func back(justdoit: () -> Void) {
 
 func httpParams(params: [String: String]) -> String {
     var first = true
-    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&+"
+    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&"
     var s = NSMutableString()
     for (k, v) in params {
         if first {
@@ -228,7 +228,7 @@ class ImClient {
     }
     
     func enter(uid: String, shell: String) -> Int {
-        if m_state == .authing {
+        if m_state != .unconnect {
             return 2
         }
         leave()

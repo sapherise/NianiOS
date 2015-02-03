@@ -536,23 +536,30 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var safeshell = Sa.objectForKey("shell") as String
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
-            client.pollBegin(on_poll)
+            if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(50) NOT NULL , `cid` INT NOT NULL , `circle` INT NOT NULL , `content` TEXT NOT NULL , `type` INT NOT NULL , `lastdate` INT(14) NOT NULL )") {
+            } else {
+                client.pollBegin(on_poll)
+            }
         }
     }
-    
     
     func on_poll(obj: AnyObject?) {
         var msg: AnyObject? = obj!["msg"]
         var json: AnyObject? = msg!["msg"]
-        var data: AnyObject? = json![0]
-        var contentJson: AnyObject? = data!["msg"]
-        var uidJson: AnyObject? = data!["from"]
-        var typeJson: AnyObject? = data!["totype"]
-        var timeJson: AnyObject? = data!["time"]
-        var content = "\(contentJson!)"
+        var data: NSDictionary = json![0] as NSDictionary
+        var id = data.stringAttributeForKey("msgid")
+        var uid = data.stringAttributeForKey("from")
+        var name = data.stringAttributeForKey("fromname")
+        var content = data.stringAttributeForKey("msg")
+        var type = data.stringAttributeForKey("msgtype")
+        var time = data.stringAttributeForKey("time")
+        var circle = data.stringAttributeForKey("to")
         content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        var uid = "\(uidJson!)"
-        var type = "\(typeJson!)".toInt()!
+        if let err = SD.executeChange("INSERT INTO circle (id, uid, name, cid, circle, content, type, lastdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, "0", circle, content, type, time]) {
+        } else {
+            NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+        }
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String

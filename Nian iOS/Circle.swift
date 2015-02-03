@@ -57,6 +57,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
         self.viewBackFix()
@@ -64,6 +65,66 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             globalWillCircleChatReload = 0
             self.SAReloadData()
         }
+    }
+    
+    func Poll(noti: NSNotification) {
+        var data = noti.object as NSDictionary
+        println(data)
+        println("===")
+        
+        var id = data.stringAttributeForKey("msgid")
+        var uid = data.stringAttributeForKey("from")
+        var name = data.stringAttributeForKey("fromname")
+        var content = data.stringAttributeForKey("msg")
+        var type = data.stringAttributeForKey("msgtype")
+        var time = data.stringAttributeForKey("time")
+        var circle = data.stringAttributeForKey("to")
+        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        var commentReplyRow = self.dataArray.count
+        if safeuid != uid {     // 如果是朋友们发的
+            var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, "昵称","\(type)","",""], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+            self.dataArray.insertObject(newinsert, atIndex: 0)
+            var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
+            self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+            self.tableview.reloadData()
+            //当提交评论后滚动到最新评论的底部
+            var contentOffsetHeight = self.tableview.contentOffset.y
+            var contentHeight:CGFloat = 0
+            if type == "1" {
+                contentHeight = content.stringHeightWith(13,width:208) + 60
+            }else if type == "2" {
+                var arrContent = content.componentsSeparatedByString("_")
+                if arrContent.count == 4 {
+                    if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                        contentHeight = CGFloat(n) + 40
+                    }
+                }
+            }
+            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0 {
+                self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+            }
+        }else{
+            delay(0.2, { () -> () in
+                for var i: Int = 0; i < commentReplyRow; i++ {
+                    var data = self.dataArray[i] as NSDictionary
+                    var contentOri = data.stringAttributeForKey("content")
+                    if content == contentOri {
+                        var mutableItem = NSMutableDictionary(dictionary: data)
+                        mutableItem.setObject("现在", forKey: "lastdate")
+                        self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                        self.tableview.reloadData()
+                        break
+                    }
+                }
+            })
+        }
+        
+        
     }
     
     func setupViews() {
@@ -143,70 +204,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
         self.viewLoadingShow()
-        
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var r = client.enter(safeuid, shell: safeshell)
-        if r == 0 {
-            client.pollBegin(on_poll)
-        }
-    }
-    
-    func on_poll(obj: AnyObject?) {
-        var msg: AnyObject? = obj!["msg"]
-        var json: AnyObject? = msg!["msg"]
-        var data: AnyObject? = json![0]
-        var contentJson: AnyObject? = data!["msg"]
-        var uidJson: AnyObject? = data!["from"]
-        var typeJson: AnyObject? = data!["totype"]
-        var timeJson: AnyObject? = data!["time"]
-        var content = "\(contentJson!)"
-        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        var uid = "\(uidJson!)"
-        var type = "\(typeJson!)".toInt()!
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        var commentReplyRow = self.dataArray.count
-        if safeuid != uid {     // 如果是朋友们发的
-            var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, "昵称","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-            self.dataArray.insertObject(newinsert, atIndex: 0)
-            var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-            self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
-            self.tableview.reloadData()
-            //当提交评论后滚动到最新评论的底部
-            var contentOffsetHeight = self.tableview.contentOffset.y
-            var contentHeight:CGFloat = 0
-            if type == 1 {
-                contentHeight = content.stringHeightWith(13,width:208) + 60
-            }else if type == 2 {
-                var arrContent = content.componentsSeparatedByString("_")
-                if arrContent.count == 4 {
-                    if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                        contentHeight = CGFloat(n) + 40
-                    }
-                }
-            }
-            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-            if offset > 0 {
-                self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-            }
-        }else{
-            delay(0.2, { () -> () in
-                for var i: Int = 0; i < commentReplyRow; i++ {
-                    var data = self.dataArray[i] as NSDictionary
-                    var contentOri = data.stringAttributeForKey("content")
-                    if content == contentOri {
-                        var mutableItem = NSMutableDictionary(dictionary: data)
-                        mutableItem.setObject("现在", forKey: "lastdate")
-                        self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                        self.tableview.reloadData()
-                        break
-                    }
-                }
-            })
-        }
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
