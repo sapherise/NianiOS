@@ -8,3 +8,4 @@
 #import "WeiboSDK.h"
 #import "WXApi.h"
 #import "MobClick.h"
+#import "sqlite3.h"

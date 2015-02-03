@@ -142,8 +142,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-        println(safeuid)
-        println(safeshell)
         
         //总的
         self.view.backgroundColor = BGColor
