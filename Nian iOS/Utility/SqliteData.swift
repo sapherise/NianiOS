@@ -1131,8 +1131,8 @@ public struct SwiftData {
         
         :returns:  An Optional String corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a String, or the value is NULL
         */
-        public func asString() -> String? {
-            return value as? String
+        public func asString() -> String {
+            return "\(value)"
         }
         
         /**

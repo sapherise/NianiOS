@@ -18,7 +18,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var deleteCommentSheet:UIActionSheet?
     var actionSheetPhoto:UIActionSheet?
     var navView:UIView!
-    var dataTotal:Int = 15
+    var dataTotal:Int = 30
     var viewTop:UIView!
     var ID:Int = 0
     
@@ -30,8 +30,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var ReturnReplyContent:String = ""
     
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
-    var isTheEnd:Int = 0    //当没有更多内容加载时为1
-    var activityIndicatorView:UIActivityIndicatorView!
     
     var desHeight:CGFloat = 0
     var inputKeyboard:UITextField!
@@ -52,7 +50,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        self.viewLoadingHide()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -69,9 +66,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func Poll(noti: NSNotification) {
         var data = noti.object as NSDictionary
-        println(data)
-        println("===")
-        
         var id = data.stringAttributeForKey("msgid")
         var uid = data.stringAttributeForKey("from")
         var name = data.stringAttributeForKey("fromname")
@@ -153,12 +147,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
-        self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
-        self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
-        self.activityIndicatorView.hidden = false
-        self.activityIndicatorView.startAnimating()
-        self.activityIndicatorView.color = SeaColor
-        self.tableview.tableHeaderView = self.viewTop
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.tableview.tableFooterView = self.viewBottom
         
@@ -203,7 +191,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
-        self.viewLoadingShow()
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -276,72 +263,78 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func SAloadData() {
         var heightBefore = self.tableview.contentSize.height
-        Api.getCircleChatList(page, id: ID) { json in
-            if json != nil {
-                var arr = json!["items"] as NSArray
-                var total = json!["total"] as NSString!
-                self.dataTotal = "\(total)".toInt()!
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
-                }
-                self.tableview.reloadData()
-                var heightAfter = self.tableview.contentSize.height
-                var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                self.tableview.contentOffset = CGPointMake(0, heightChange)
-                self.page++
-                self.animating = 0
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' order by id desc limit \(self.page*30),30")
+        if err == nil {
+            self.page++
+            var title: String?
+            for row in resultSet {
+                var id = row["id"]?.asString()
+                var uid = row["uid"]?.asString()
+                var user = row["name"]?.asString()
+                var cid = row["cid"]?.asString()
+                var cname = row["cname"]?.asString()
+                var content = row["content"]?.asString()
+                var type = row["type"]?.asString()
+                var lastdate = row["lastdate"]?.asString()
+                var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
+                var title = row["title"]?.asString()
+                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, ""], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
+                self.dataArray.addObject(data)
+                self.dataTotal++
             }
+            self.tableview.reloadData()
+            var heightAfter = self.tableview.contentSize.height
+            var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
+            self.tableview.contentOffset = CGPointMake(0, heightChange)
+            self.animating = 0
         }
+        //==
     }
     
     func SAReloadData(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        Api.getCircleChatList(0, id: ID) { json in
-            if json != nil {
-                self.viewLoadingHide()
-                var arr = json!["items"] as NSArray
-                var total = json!["total"] as NSString!
-                self.dataTotal = "\(total)".toInt()!
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
-                }
-                if self.dataTotal < 15 {
-                    self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
-                }
-                self.tableview.reloadData()
-                self.tableview.headerEndRefreshing()
-                if self.tableview.contentSize.height > self.tableview.bounds.size.height {
-                    self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
-                }
-                self.page = 1
-                if let v = (self.navigationItem.titleView as? UILabel) {
-                    var title = json!["title"] as String
-                    v.text = title
-                }
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' order by id desc limit 30")
+        if err == nil {
+            var title: String?
+            self.dataTotal = 0
+            self.dataArray.removeAllObjects()
+            for row in resultSet {
+                var id = row["id"]?.asString()
+                var uid = row["uid"]?.asString()
+                var user = row["name"]?.asString()
+                var cid = row["cid"]?.asString()
+                var cname = row["cname"]?.asString()
+                var content = row["content"]?.asString()
+                var type = row["type"]?.asString()
+                var lastdate = row["lastdate"]?.asString()
+                var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
+                var title = row["title"]?.asString()
+                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, ""], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
+                self.dataArray.addObject(data)
+                self.dataTotal++
+            }
+            if self.dataTotal < 30 {
+                self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
+            }
+            self.tableview.reloadData()
+            if self.tableview.contentSize.height > self.tableview.bounds.size.height {
+                self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
+            }
+            self.page = 1
+            if let v = (self.navigationItem.titleView as? UILabel) {
+        //        v.text = "梦境"
             }
         }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var y = scrollView.contentOffset.y
-        if self.dataTotal == 15 {
-            self.viewTop.addSubview(self.activityIndicatorView)
+        if self.dataTotal == 30 * self.page {
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
                     delay(0.3, { () -> () in
                         self.SAloadData()
                     })
-                }
-            }
-        }else{
-            if self.isTheEnd == 0 {
-                self.isTheEnd = 1
-                self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
-                if let v = self.activityIndicatorView {
-                    v.removeFromSuperview()
                 }
             }
         }

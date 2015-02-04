@@ -18,7 +18,7 @@ func back(justdoit: () -> Void) {
 
 func httpParams(params: [String: String]) -> String {
     var first = true
-    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&"
+    let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&+"
     var s = NSMutableString()
     for (k, v) in params {
         if first {

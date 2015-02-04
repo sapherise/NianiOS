@@ -47,8 +47,6 @@ class CircleTypeCell: UITableViewCell {
         }
         self.labelUser.text = "\(user)\(textContent)"
         self.labelTitle.text = "\(title)"
-        
-        println(data)
     }
     
     func onHolderClick(sender:UITapGestureRecognizer){

@@ -96,12 +96,21 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             }
         })
         self.tableView.setFooterHidden(false)
+        
+        //===
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle group by circle order by id desc")
+        if err == nil {
+            for row in resultSet {
+            }
+        }
+        //===
         Api.postCircle("0"){ json in
             if json != nil {
                 isLoaded = 1
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data:AnyObject in arr {
+            //        println(data)
                     self.dataArray.addObject(data)
                 }
                 self.tableView.reloadData()

@@ -55,6 +55,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         })
         launchTimer()
+        self.loadCircle()
         self.enter()
     }
     
@@ -137,6 +138,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
+        
+//        var a = FileUtility.cachePath("")
+//        println(a)
         
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -536,7 +540,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var safeshell = Sa.objectForKey("shell") as String
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
-            if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(50) NOT NULL , `cid` INT NOT NULL , `circle` INT NOT NULL , `content` TEXT NOT NULL , `type` INT NOT NULL , `lastdate` INT(14) NOT NULL )") {
+            // 创建表格
+            if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL )") {
             } else {
                 client.pollBegin(on_poll)
             }
@@ -555,7 +560,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var time = data.stringAttributeForKey("time")
         var circle = data.stringAttributeForKey("to")
         content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        if let err = SD.executeChange("INSERT INTO circle (id, uid, name, cid, circle, content, type, lastdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, "0", circle, content, type, time]) {
+        if let err = SD.executeChange("INSERT INTO circle (id, uid, name, cid, cname, circle, content, type, lastdate, isread) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, "0", "",circle, content, type, time, "0"]) {
         } else {
             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
         }
@@ -570,6 +575,34 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     self.dotCircle!.hidden = false
                 }
             })
+        }
+    }
+    
+    func loadCircle() {
+        Api.postCircleInit() { json in
+            if json != nil {
+                if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL )") {
+                } else {
+                    // 成功
+                    var arr = json!["items"] as NSArray
+                    for i : AnyObject  in arr {
+                        var data = i as NSDictionary
+                        var id = data.stringAttributeForKey("id")
+                        var uid = data.stringAttributeForKey("uid")
+                        var name = data.stringAttributeForKey("name")
+                        var cid = data.stringAttributeForKey("cid")
+                        var cname = data.stringAttributeForKey("cname")
+                        var circle = data.stringAttributeForKey("circle")
+                        var content = data.stringAttributeForKey("content")
+                        var type = data.stringAttributeForKey("type")
+                        var time = data.stringAttributeForKey("lastdate")
+                        if let err = SD.executeChange("INSERT INTO circle (id, uid, name, cid, cname, circle, content, type, lastdate, isread) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, "0", "",circle, content, type, time, "0"]) {
+                        } else {
+                            // 所有数据插入成功
+                        }
+                    }
+                }
+            }
         }
     }
     
