@@ -41,13 +41,7 @@ class CircleBubbleCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
         var type = (self.data.objectForKey("type") as String).toInt()!
-        self.textContent.frame = CGRectMake(50, 15, 50, 50)
-        self.imageContent.frame = CGRectMake(50, 15, 50, 50)
-        self.textContent.image = UIImage()
-        self.imageContent.image = UIImage()
-        self.nickLabel!.text = ""
         self.nickLabel!.text = user
-        self.lastdate!.text = ""
         self.lastdate!.text = lastdate
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)

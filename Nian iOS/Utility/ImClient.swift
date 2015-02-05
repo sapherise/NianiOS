@@ -128,7 +128,7 @@ class taskQueue {
 
 class ImClient {
     
-    enum States {
+    enum State {
         case unconnect
         case authing
         case authed
@@ -146,93 +146,105 @@ class ImClient {
     private var m_queue = taskQueue()
     
     private var m_onPull: (AnyObject? -> Void)? = nil
-    private var m_onState: (States -> Void)? = nil
+    private var m_onState: (State -> Void)? = nil
     
-    private var m_state: States = .unconnect
+    private var m_lock = NSLock()
+    private var m_state: State = .unconnect
     private var m_polling = false
-    private var m_repollDelay = 2000
+    private var m_repollDelay: NSTimeInterval = 0.5
     
     private var m_uid: String = ""
     private var m_shell: String = ""
     private var m_sid: String = ""
     
+    private func casState(old: State, to: State) -> Bool {
+        var r = false
+        m_lock.lock()
+        if m_state == old {
+            setState(to)
+            r = true
+        }
+        m_lock.unlock()
+        return r
+    }
+    
     private func peekStatus(obj: AnyObject) -> Int {
         return obj["status"] as Int
     }
     
-    private func setState(state: States) {
+    private func setState(state: State) {
         if m_state != state {
             m_state = state
-            if m_onState != nil {
-                m_onState!(state)
+            var callback = m_onState
+            if callback != nil {
+                back {
+                    callback!(state)
+                }
             }
         }
     }
     
     private func polling() {
         while m_polling {
+            // 如果客户端处于无连接状态
             if m_state == .unconnect {
-                // 客户端重新登录
+                // 尝试重新登录
                 var r = enter(m_uid, shell: m_shell)
                 if r == 1 {
+                    // 登录失败, poll结束
                     m_onPull!(nil)
                     break
                 }
             } else if m_state == .authed {
                 // 客户端已经登录, 开始拉取消息
                 var r: AnyObject? = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
-                if r == nil {
-                    if m_repollDelay >= 60000 {
+                // 数据拉取失败
+                if r != nil {
+                    m_repollDelay = 0.5
+                    var status = peekStatus(r!)
+                    switch status {
+                    case statusSuccess:
+                        m_onPull!(r)
+                        break
+                    case statusUnauthenticated:
+                        // 服务端要求重新登录
                         setState(.unconnect)
                         break
+                    default:
+                        break
                     }
-                    NSThread.sleepForTimeInterval(NSTimeInterval(m_repollDelay))
+                } else {
+                    if m_repollDelay >= 60 {
+                        setState(.unconnect)
+                    }
+                    // 扩大延时
                     m_repollDelay = m_repollDelay + m_repollDelay
-                    continue
                 }
-                m_repollDelay = 2000
-                var status = peekStatus(r!)
-                switch status {
-                case statusSuccess:
-                    m_onPull!(r)
-                case statusUnauthenticated:
-                    // 服务端要求重新登录
-                    setState(.unconnect)
-                case statusTimeOut:
-                    // 服务端超时重新拉取
-                    continue
-                default:
-                    NSThread.sleepForTimeInterval(500)
-                    break
-                }
-            } else {
-                // 客户端登录中
-                NSThread.sleepForTimeInterval(500)
             }
+            NSThread.sleepForTimeInterval(m_repollDelay)
         }
         m_polling = false
     }
     
-    func setOnState(handler: States -> Void) {
+    func setOnState(handler: State -> Void) {
         m_onState = handler
     }
     
     func leave() {
-        if m_state == .authed {
-            m_state = .authing
-            pollEnd()
+        if casState(.authed, to: .authing)  {
             httpPost(m_landServer + "leave", httpParams(["uid": m_uid, "sid": m_sid]))
+            pollEnd()
             m_sid = ""
-            m_state = .unconnect
+            setState(.unconnect)
         }
     }
     
     func enter(uid: String, shell: String) -> Int {
-        if m_state != .unconnect {
+        // 仅unconnect状态下可以连接
+        leave()
+        if !casState(.unconnect, to: .authing) {
             return 2
         }
-        leave()
-        m_state = .authing
         var json: AnyObject? = httpPost(m_loginServer + "enter", httpParams(["uid": uid, "shell": shell]))
         if json != nil {
             var status = peekStatus(json!)
@@ -263,8 +275,11 @@ class ImClient {
         m_polling = false
     }
     
-    func sendGroupMessage(gid: Int, msgtype: Int, msg: String) -> AnyObject? {
-        var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg]))
+    func sendGroupMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safename = Sa.objectForKey("user") as String
+        var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)"]))
         return json
     }
 }

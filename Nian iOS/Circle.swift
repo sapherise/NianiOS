@@ -50,6 +50,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        globalCurrentCircle = 0
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -62,16 +63,22 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             globalWillCircleChatReload = 0
             self.SAReloadData()
         }
+        globalCurrentCircle = self.ID
+        if let err = SD.executeChange("update circle set isread = 1 where circle = \(self.ID) and isread = 0") {
+        }
     }
     
     func Poll(noti: NSNotification) {
         var data = noti.object as NSDictionary
+        println(data)
         var id = data.stringAttributeForKey("msgid")
         var uid = data.stringAttributeForKey("from")
         var name = data.stringAttributeForKey("fromname")
         var content = data.stringAttributeForKey("msg")
+        var title = data.stringAttributeForKey("title")
         var type = data.stringAttributeForKey("msgtype")
         var time = data.stringAttributeForKey("time")
+        var cid = data.stringAttributeForKey("cid")
         var circle = data.stringAttributeForKey("to")
         content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
         
@@ -80,10 +87,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var safeuser = Sa.objectForKey("user") as String
         var commentReplyRow = self.dataArray.count
         if safeuid != uid {     // 如果是朋友们发的
-            var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, "昵称","\(type)","",""], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+            var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
             self.dataArray.insertObject(newinsert, atIndex: 0)
-            var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-            self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
+            var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
+            self.tableview.cellForRowAtIndexPath(newindexpath)?.layoutSubviews()
             self.tableview.reloadData()
             //当提交评论后滚动到最新评论的底部
             var contentOffsetHeight = self.tableview.contentOffset.y
@@ -113,6 +120,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                         self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
                         self.tableview.reloadData()
                         break
+                    }else{
+                        println("------------")
+                        println(i)
+                        println(content)
+                        println(contentOri)
+                        println("------------")
                     }
                 }
             })
@@ -258,7 +271,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&type=\(type)", "http://nian.so/api/circle_chat.php")
         })
-        on_gay(["\(self.ID)", "\(contentComment)"])
+        on_gay(["\(self.ID)", "\(contentComment)", "\(type)", "0"])
+   //     ImClient().sendGroupMessage(self.ID, msgtype: type, msg: contentComment, cid: 0)
     }
     
     func SAloadData() {
@@ -278,7 +292,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var lastdate = row["lastdate"]?.asString()
                 var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
                 var title = row["title"]?.asString()
-                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, ""], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
+                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
                 self.dataArray.addObject(data)
                 self.dataTotal++
             }
@@ -308,7 +322,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var lastdate = row["lastdate"]?.asString()
                 var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
                 var title = row["title"]?.asString()
-                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, ""], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
+                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
                 self.dataArray.addObject(data)
                 self.dataTotal++
             }
@@ -538,13 +552,30 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 height = 88
             }
         }
-        self.commentFinish("1_loading_\(width)_\(height)", type: 2)
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             var uploadUrl = data.objectForKey("url") as String
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
+
+            // 当上传图片完成后，搜索最近的几条，当匹配名字时，就替换图片
+            // 替换完成后，提交到 Neverland，匹配文件名时将 sending 替换为现在。
             var content = "\(uploadUrl)_\(width)_\(height)"
+            for var i: Int = 0; i < self.dataArray.count; i++ {
+                var dataLoading = self.dataArray[i] as NSDictionary
+                var contentOri = dataLoading.stringAttributeForKey("content")
+                if contentOri == "\(safeuid)_loading_\(width)_\(height)" {
+                    var mutableItem = NSMutableDictionary(dictionary: dataLoading)
+                    mutableItem.setObject(content, forKey: "content")
+                    self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                    self.tableview.reloadData()
+                    break
+                }
+            }
             self.addReply(content, type: 2)
         })
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png"))

@@ -49,7 +49,7 @@ func on_say(vs: [String]) {
 }
 
 func on_gay(vs: [String]) {
-    var r: AnyObject? = client.sendGroupMessage(vs[0].toInt()!, msgtype: 0, msg: vs[1])
+    var r: AnyObject? = client.sendGroupMessage(vs[0].toInt()!, msgtype: vs[2].toInt()!, msg: vs[1], cid: vs[3].toInt()!)
     if r == nil {
         return
     }

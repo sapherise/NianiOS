@@ -139,8 +139,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         
-//        var a = FileUtility.cachePath("")
-//        println(a)
+        var a = FileUtility.cachePath("")
+        println(a)
         
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -205,7 +205,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dotCircle!.backgroundColor = SeaColor
         self.dotCircle!.layer.cornerRadius = 5
         self.dotCircle!.layer.masksToBounds = true
-        self.dotCircle!.text = "N"
+        self.dotCircle!.text = "0"
         self.dotCircle!.hidden = true
         self.myTabbar!.addSubview(dotCircle!)
         
@@ -392,6 +392,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             numExplore = numExplore + 1
         }else if index == idBBS {     // 梦境
             self.dotCircle!.hidden = true
+            self.dotCircle!.text = "0"
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
             rightButton.image = UIImage(named:"find")
             self.navigationItem.rightBarButtonItem = rightButton
@@ -541,7 +542,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
             // 创建表格
-            if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL )") {
+            if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `title` VARCHAR(255) NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL)") {
             } else {
                 client.pollBegin(on_poll)
             }
@@ -549,18 +550,29 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func on_poll(obj: AnyObject?) {
+        println("===")
+        println(obj)
+        println("===")
         var msg: AnyObject? = obj!["msg"]
         var json: AnyObject? = msg!["msg"]
         var data: NSDictionary = json![0] as NSDictionary
         var id = data.stringAttributeForKey("msgid")
         var uid = data.stringAttributeForKey("from")
         var name = data.stringAttributeForKey("fromname")
+        var cid = data.stringAttributeForKey("cid")
+        var cname = data.stringAttributeForKey("cname")
         var content = data.stringAttributeForKey("msg")
         var type = data.stringAttributeForKey("msgtype")
         var time = data.stringAttributeForKey("time")
         var circle = data.stringAttributeForKey("to")
+        var title = data.stringAttributeForKey("title")
         content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        if let err = SD.executeChange("INSERT INTO circle (id, uid, name, cid, cname, circle, content, type, lastdate, isread) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, "0", "",circle, content, type, time, "0"]) {
+        title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        var isread = 0
+        if circle == "\(globalCurrentCircle)" {
+            isread = 1
+        }
+        if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread]) {
         } else {
             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
         }
@@ -573,6 +585,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             dispatch_async(dispatch_get_main_queue(), {
                 if globalTabBarSelected != 104 {
                     self.dotCircle!.hidden = false
+                    if let a = self.dotCircle!.text?.toInt() {
+                        self.dotCircle!.text = "\(a + 1)"
+                    }
                 }
             })
         }
@@ -581,9 +596,16 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func loadCircle() {
         Api.postCircleInit() { json in
             if json != nil {
-                if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL )") {
+                if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `title` VARCHAR(255) NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL)") {
                 } else {
                     // 成功
+                    
+                    var a: Int = 0
+                    let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0")
+                    if err == nil {
+                        a = resultSet.count
+                    }
+                    
                     var arr = json!["items"] as NSArray
                     for i : AnyObject  in arr {
                         var data = i as NSDictionary
@@ -596,10 +618,20 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         var content = data.stringAttributeForKey("content")
                         var type = data.stringAttributeForKey("type")
                         var time = data.stringAttributeForKey("lastdate")
-                        if let err = SD.executeChange("INSERT INTO circle (id, uid, name, cid, cname, circle, content, type, lastdate, isread) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, "0", "",circle, content, type, time, "0"]) {
-                        } else {
-                            // 所有数据插入成功
+                        var title = data.stringAttributeForKey("title")
+                        var isread = 0
+                        if circle == "\(globalCurrentCircle)" {
+                            isread = 1
                         }
+                        if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread]) {
+                        } else {
+                            // 数据全部加载完毕
+                            a++
+                        }
+                    }
+                    if globalTabBarSelected != 104 && a > 0 {
+                        self.dotCircle!.text = "\(a)"
+                        self.dotCircle!.hidden = false
                     }
                 }
             }
