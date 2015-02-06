@@ -35,8 +35,12 @@ func httpParams(params: [String: String]) -> String {
 }
 
 func httpGet(requestURL: String, params: String) -> AnyObject? {
-    var url = NSURL(string: requestURL + (params != "" ? "?" + params : ""))
-    var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+    var request = NSMutableURLRequest()
+    request.URL = NSURL(string: requestURL + (params != "" ? "?" + params : ""))
+    request.timeoutInterval = NSTimeInterval(300)
+    var response: NSURLResponse?
+    var error: NSError?
+    var data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
     var json: AnyObject? = nil
     if data != nil {
         json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
@@ -53,7 +57,7 @@ func httpPost(requestURL: String, params: String) -> AnyObject? {
     }
     var response: NSURLResponse?
     var error: NSError?
-    var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+    var data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
     var json: AnyObject? = nil
     if data != nil {
         json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)

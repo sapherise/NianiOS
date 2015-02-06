@@ -39,7 +39,6 @@ class CircleCell: UITableViewCell {
             let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' order by id desc limit 1")
             if err2 == nil {
                 if resultSet2.count > 0 {
-                    println("哈哈")
                     for row in resultSet2 {
                         var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
                         var user = row["name"]!.asString()
@@ -52,12 +51,21 @@ class CircleCell: UITableViewCell {
                         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
                         switch type {
                         case "1":   textContent = ": \(content)"
+                            break
                         case "2":   textContent = "发来一张图片"
+                            break
                         case "3":   textContent = "更新了梦想"
+                            break
                         case "4":   textContent = "获得了成就"
+                            break
                         case "5":   textContent = (content != "-1") ? "加入了梦境" : "离开了梦境"
-                        case "6":   textContent = "\(content)\(cuser)"
+                            break
+                        case "6":   textContent = "提升了\(content)"
+                            break
+                        case "-6":   textContent = "降职了\(content)"
+                            break
                         case "7":   textContent = "邀请了\(cuser)"
+                            break
                         default:    textContent = "触发了一个彩蛋"
                             break
                         }

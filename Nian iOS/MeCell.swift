@@ -128,7 +128,7 @@ class MeCell: UITableViewCell {
                     view.text = "已接受"
                     view.backgroundColor = IconColor
                     view.removeGestureRecognizer(sender)
-                    on_gay(["\(circle)", "", "5", cid])
+                //    on_gay(["\(circle)", "", "5", cid])
                 }else{
                     self.activity.hidden = true
                     view.text = "接受"

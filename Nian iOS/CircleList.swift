@@ -40,7 +40,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     
     func Poll(noti: NSNotification) {
         var data = noti.object as NSDictionary
-        println(data)
     }
     
     func setupViews() {

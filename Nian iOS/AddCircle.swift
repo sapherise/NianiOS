@@ -225,9 +225,23 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: self.tagType, dream: self.dreamType) {
                 json in
                 if json != nil {
-                    globalWillCircleReload = 1
-                    globalWillNianReload = 1
-                    self.navigationController?.popToRootViewControllerAnimated(true)
+                    var id = json!["id"] as String
+                    var postdate = json!["postdate"] as String
+                    var success = json!["success"] as String
+                    if success == "1" {
+                        globalWillCircleReload = 1
+                        globalWillNianReload = 1
+                        // 发送加入消息
+                        // 创建本地小组
+                        SQLCircleListInsert(id, "\(title!)", self.uploadUrl, postdate)
+                        if let a: AnyObject = client.sendGroupMessage(id.toInt()!, msgtype: 5, msg: "可以开始聊天啦", cid: 0) {
+                            println("发送成功")
+                            println(a)
+                        }else{
+                            println("发送失败了！")
+                        }
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                    }
                 }
             }
         }

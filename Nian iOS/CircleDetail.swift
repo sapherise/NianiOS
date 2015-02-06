@@ -37,6 +37,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     var selectDream:Int = 0
     var selectLevel:Int = -1
     var selectRow:Int = 0
+    var selectName: String = ""
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -444,6 +445,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var reason = json!["reason"] as String
                 if success == "1" {
                     globalWillCircleChatReload = 1
+                    if let a: AnyObject = client.sendGroupMessage(self.Id.toInt()!, msgtype: 6, msg: "\(self.selectName)", cid: self.selectUid) {
+                        println("发送成功")
+                        println(a)
+                    }else{
+                        println("发送失败了！")
+                    }
+                    
                     self.SAReloadData()
                 }else{
                     self.viewLoadingHide()
@@ -469,6 +477,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var reason = json!["reason"] as String
                 if success == "1" {
                     globalWillCircleChatReload = 1
+                    if let a: AnyObject = client.sendGroupMessage(self.Id.toInt()!, msgtype: -6, msg: "\(self.selectName)", cid: self.selectUid) {
+                        println("发送成功")
+                        println(a)
+                    }else{
+                        println("发送失败了！")
+                    }
                     self.SAReloadData()
                 }else{
                     self.viewLoadingHide()
@@ -581,7 +595,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             var level = data.objectForKey("level") as String
             var uid = data.objectForKey("uid") as String
             var dream = data.objectForKey("dream") as String
+            var name = data.stringAttributeForKey("name")
             self.selectUid = uid.toInt()!
+            self.selectName = name
             self.selectDream = dream.toInt()!
             self.selectLevel = level.toInt()!
             self.selectRow = indexPath.row

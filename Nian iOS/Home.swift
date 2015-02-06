@@ -542,17 +542,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var r = client.enter(safeuid, shell: safeshell)
         if r == 0 {
             // 创建表格
-            if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `title` VARCHAR(255) NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL)") {
-            } else {
-                client.pollBegin(on_poll)
+            SQLCircleContentTable() {
+                client.pollBegin(self.on_poll)
             }
         }
     }
     
     func on_poll(obj: AnyObject?) {
-        println("===")
+        println("首页收到新的推送")
         println(obj)
-        println("===")
         var msg: AnyObject? = obj!["msg"]
         var json: AnyObject? = msg!["msg"]
         var data: NSDictionary = json![0] as NSDictionary
@@ -572,8 +570,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if circle == "\(globalCurrentCircle)" {
             isread = 1
         }
-        if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread]) {
-        } else {
+        SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
         }
         
@@ -596,16 +593,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func loadCircle() {
         Api.postCircleInit() { json in
             if json != nil {
-                if let err = SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `title` VARCHAR(255) NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL)") {
-                } else {
+                SQLCircleContentTable() {
                     // 成功
-                    
                     var a: Int = 0
                     let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0")
                     if err == nil {
                         a = resultSet.count
                     }
-                    
                     var arr = json!["items"] as NSArray
                     for i : AnyObject  in arr {
                         var data = i as NSDictionary
@@ -623,10 +617,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         if circle == "\(globalCurrentCircle)" {
                             isread = 1
                         }
-                        if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread]) {
-                        } else {
-                            // 数据全部加载完毕
-                            a++
+                        SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
+                            a = a + 1
                         }
                     }
                     if globalTabBarSelected != 104 && a > 0 {
@@ -637,6 +629,5 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         }
     }
-    
     
 }
