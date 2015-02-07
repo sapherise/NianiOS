@@ -230,5 +230,10 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_init.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
+    static func test(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/b.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
     
 }

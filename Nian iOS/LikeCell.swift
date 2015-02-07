@@ -74,6 +74,13 @@ class LikeCell: UITableViewCell {
         sender.removeTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
         Api.postCircleInvite(self.circleID, uid: self.uid) { json in
             if json != nil {
+                var name = json!["name"] as String
+                if let a: AnyObject = client.sendGroupMessage(self.circleID.toInt()!, msgtype: 7, msg: name, cid: self.uid.toInt()!) {
+                    println("发送成功")
+                    println(a)
+                }else{
+                    println("发送失败了！")
+                }
                 globalWillCircleChatReload = 1
             }
         }

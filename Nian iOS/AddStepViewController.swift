@@ -167,8 +167,9 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        var sid = client.getSid()
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-        var sa=SAPost("dream=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(s)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/addstep_query.php")
+        var sa=SAPost("dream=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(s)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)&&circleshellid=\(sid)", "http://nian.so/api/addstep_query.php")
             if(sa == "1"){
                 globalWillNianReload = 1
                 dispatch_async(dispatch_get_main_queue(), {

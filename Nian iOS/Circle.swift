@@ -79,15 +79,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var time = data.stringAttributeForKey("time")
         var cid = data.stringAttributeForKey("cid")
         var circle = data.stringAttributeForKey("to")
-        if type == "6" || type == "-6" {
-            title = content
-            if type == "6" {
-                content = "提升了"
-            }else{
-                content = "降职了"
-            }
-            type = "6"
-        }
         content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
@@ -304,15 +295,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var lastdate = row["lastdate"]?.asString()
                 var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
                 var title = row["title"]?.asString()
-                if type == "6" || type == "-6" {
-                    title = content
-                    if type == "6" {
-                        content = "提升了"
-                    }else{
-                        content = "降职了"
-                    }
-                    type = "6"
-                }
                 var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
                 self.dataArray.addObject(data)
                 self.dataTotal++

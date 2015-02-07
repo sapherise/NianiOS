@@ -29,7 +29,6 @@ class CircleTypeCell: UITableViewCell {
         var user = self.data.objectForKey("user") as String
         var type = self.data.objectForKey("type") as String
         var content = self.data.objectForKey("content") as String
-        var title = self.data.objectForKey("title") as String
         self.imageHead.setImage("http://img.nian.so/head/\(uid).jpg!dream", placeHolder: IconColor)
         self.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHolderClick:"))
         self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick:"))
@@ -38,15 +37,22 @@ class CircleTypeCell: UITableViewCell {
         
         switch type {
         case "3":   textContent = "更新了梦想"
+            break
         case "4":   textContent = "获得了成就"
+            break
         case "5":   textContent = (content != "-1") ? "加入了梦境" : "离开了梦境"
-        case "6":   textContent = content
+            break
+        case "6":   textContent = "提升了"
+            break
+        case "-6":   textContent = "降职了"
+            break
         case "7":   textContent = "邀请了"
+            break
         default:    textContent = "触发了一个彩蛋"
             break
         }
         self.labelUser.text = "\(user)\(textContent)"
-        self.labelTitle.text = "\(title)"
+        self.labelTitle.text = "\(content)"
     }
     
     func onHolderClick(sender:UITapGestureRecognizer){

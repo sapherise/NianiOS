@@ -286,4 +286,8 @@ class ImClient {
         var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)"]))
         return json
     }
+    
+    func getSid() -> String {
+        return m_sid
+    }
 }

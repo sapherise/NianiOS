@@ -212,7 +212,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(PlayerVC, animated: true)
     }
     
-    
     func scrollHidden(theView:UIView, height:CGFloat, scrollY:CGFloat){
         if ( height > scrollY - 50 && height <= scrollY ) {
             theView.alpha = ( scrollY - height ) / 50
