@@ -21,6 +21,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var dataTotal:Int = 30
     var viewTop:UIView!
     var ID:Int = 0
+    var circleTitle: String = ""
     
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
@@ -44,7 +45,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        SAloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -55,6 +55,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        SAloadData()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
@@ -70,65 +71,66 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func Poll(noti: NSNotification) {
         var data = noti.object as NSDictionary
-        var id = data.stringAttributeForKey("msgid")
-        var uid = data.stringAttributeForKey("from")
-        var name = data.stringAttributeForKey("fromname")
-        var content = data.stringAttributeForKey("msg")
-        var title = data.stringAttributeForKey("title")
-        var type = data.stringAttributeForKey("msgtype")
-        var time = data.stringAttributeForKey("time")
-        var cid = data.stringAttributeForKey("cid")
+        println(data)
         var circle = data.stringAttributeForKey("to")
-        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        var commentReplyRow = self.dataArray.count
-        if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
-                self.dataArray.insertObject(newinsert, atIndex: 0)
-                var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
-                self.tableview.insertRowsAtIndexPaths([newindexpath], withRowAnimation: UITableViewRowAnimation.None)
-                self.tableview.cellForRowAtIndexPath(newindexpath)?.layoutSubviews()
-                self.tableview.reloadData()
-                //滚动到最新评论的底部
-                var contentOffsetHeight = self.tableview.contentOffset.y
-                var contentHeight:CGFloat = 0
-                if type == "1" {
-                    contentHeight = content.stringHeightWith(13,width:208) + 60
-                }else if type == "2" {
-                    var arrContent = content.componentsSeparatedByString("_")
-                    if arrContent.count == 4 {
-                        if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                            contentHeight = CGFloat(n) + 40
+        if circle == "\(self.ID)" {
+            var id = data.stringAttributeForKey("msgid")
+            var uid = data.stringAttributeForKey("from")
+            var name = data.stringAttributeForKey("fromname")
+            var content = data.stringAttributeForKey("msg")
+            var title = data.stringAttributeForKey("title")
+            var type = data.stringAttributeForKey("msgtype")
+            var time = data.stringAttributeForKey("time")
+            var cid = data.stringAttributeForKey("cid")
+            content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                    self.dataArray.insertObject(newinsert, atIndex: 0)
+                    var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
+                    self.tableview.insertRowsAtIndexPaths([newindexpath], withRowAnimation: UITableViewRowAnimation.None)
+                    self.tableview.cellForRowAtIndexPath(newindexpath)?.layoutSubviews()
+                    self.tableview.reloadData()
+                    //滚动到最新评论的底部
+                    var contentOffsetHeight = self.tableview.contentOffset.y
+                    var contentHeight:CGFloat = 0
+                    if type == "1" {
+                        contentHeight = content.stringHeightWith(13,width:208) + 60
+                    }else if type == "2" {
+                        var arrContent = content.componentsSeparatedByString("_")
+                        if arrContent.count == 4 {
+                            if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                                contentHeight = CGFloat(n) + 40
+                            }
                         }
                     }
-                }
-                var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 {
-                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-                }
-            })
-        }else{
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                delay(0.2, { () -> () in
-                    for var i: Int = 0; i < commentReplyRow; i++ {
-                        var data = self.dataArray[i] as NSDictionary
-                        var contentOri = data.stringAttributeForKey("content")
-                        if content == contentOri {
-                            var mutableItem = NSMutableDictionary(dictionary: data)
-                            mutableItem.setObject("现在", forKey: "lastdate")
-                            self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                            self.tableview.reloadData()
-                            break
-                        }
+                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                    if offset > 0 {
+                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
                     }
                 })
-            })
+            }else{
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    delay(0.2, { () -> () in
+                        for var i: Int = 0; i < commentReplyRow; i++ {
+                            var data = self.dataArray[i] as NSDictionary
+                            var contentOri = data.stringAttributeForKey("content")
+                            if content == contentOri {
+                                var mutableItem = NSMutableDictionary(dictionary: data)
+                                mutableItem.setObject("现在", forKey: "lastdate")
+                                self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                                self.tableview.reloadData()
+                                break
+                            }
+                        }
+                    })
+                })
+            }
         }
-        
-        
     }
     
     func setupViews() {
@@ -230,47 +232,37 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func commentFinish(replyContent:String, type: Int = 1){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        var commentReplyRow = self.dataArray.count
-        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-        self.dataArray.insertObject(newinsert, atIndex: 0)
-        var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-        self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
-        self.tableview.reloadData()
-        //当提交评论后滚动到最新评论的底部
-        var contentOffsetHeight = self.tableview.contentOffset.y
-        var contentHeight:CGFloat = 0
-        if type == 1 {
-            contentHeight = replyContent.stringHeightWith(13,width:208) + 60
-        }else if type == 2 {
-            var arrContent = replyContent.componentsSeparatedByString("_")
-            if arrContent.count == 4 {
-                if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                    contentHeight = CGFloat(n) + 40
+        dispatch_async(dispatch_get_main_queue(), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(data, atIndex: 0)
+            self.tableview.reloadData()
+            var contentOffsetHeight = self.tableview.contentOffset.y
+            var contentHeight:CGFloat = 0
+            if type == 1 {
+                contentHeight = replyContent.stringHeightWith(13,width:208) + 60
+            }else if type == 2 {
+                var arrContent = replyContent.componentsSeparatedByString("_")
+                if arrContent.count == 4 {
+                    if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                        contentHeight = CGFloat(n) + 40
+                    }
                 }
             }
-        }
-        var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-        if offset > 0 {
-            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-        }
+            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0 {
+                self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+            }
+        })
     }
     
     //将内容发送至服务器
     func addReply(contentComment:String, type:Int = 1){
         var content = SAEncode(SAHtml(contentComment))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var safeuser = Sa.objectForKey("user") as String
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("id=\(self.ID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&type=\(type)", "http://nian.so/api/circle_chat.php")
-        })
-     //   on_gay(["\(self.ID)", "\(contentComment)", "\(type)", "0"])
-        if let a: AnyObject = client.sendGroupMessage(self.ID, msgtype: type, msg: contentComment, cid: 0) {
-            println("发送成功")
+        Api.postCircleChat(self.ID, content: content, type: type) { json in
         }
     }
     
@@ -307,7 +299,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.tableview.setContentOffset(CGPointMake(0, heightAfter-self.tableview.bounds.size.height), animated: false)
                 }
                 if let v = (self.navigationItem.titleView as? UILabel) {
-                    //        v.text = "梦境"
+                    v.text = circleTitle
                 }
             }else{
                 var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0

@@ -22,16 +22,11 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupRefresh()
-        SAReloadData()
     }
     
     override func viewWillAppear(animated: Bool) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
-        if globalWillCircleReload == 1 {
-            globalWillCircleReload = 0
-            self.SAReloadData()
-        }
+        self.SALoadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -39,7 +34,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func Poll(noti: NSNotification) {
-        var data = noti.object as NSDictionary
+        self.SALoadData()
     }
     
     func setupViews() {
@@ -69,88 +64,60 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.navigationController?.pushViewController(BBSVC, animated: true)
     }
     
-    func loadData() {
-        Api.postCircle("\(self.page)"){ json in
-            if json != nil {
-                var arr = json!["items"] as NSArray
-                for data:AnyObject in arr {
-                    self.dataArray.addObject(data)
+    func SALoadData() {
+        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` GROUP BY circle ORDER BY lastdate DESC")
+        self.dataArray.removeAllObjects()
+        for row in resultCircle {
+            var id = (row["circle"]?.asString())!
+            var img = ""
+            var title = ""
+            let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' limit 1")
+            if resultDes.count > 0 {
+                for row in resultDes {
+                    img = (row["image"]?.asString())!
+                    title = (row["title"]?.asString())!
                 }
-                if self.dataArray.count < (self.page + 1) * 30 {
-                    self.tableView.setFooterHidden(true)
+            }else{
+                Api.getCircleTitle(id) { json in
+                    if json != nil {
+                        img = json!["img"] as String
+                        title = json!["title"] as String
+                        SD.executeChange("insert into circlelist(id, circleid, title, image, postdate) values (null, ?, ?, ?, '0')", withArgs: [id, title, img])
+                    }
                 }
-                self.tableView.reloadData()
-                self.tableView.footerEndRefreshing(animated: true)
-                self.page++
             }
+            var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+            self.dataArray.addObject(data)
         }
-    }
-    
-    func SAReloadData() {
-        var isLoaded = 0
-        delay(3, {
-            self.tableView.headerEndRefreshing(animated: true)
-            if isLoaded == 0 {
-                self.view.showTipText("念没有踩你，再试试看", delay: 2)
-            }
-        })
-        self.tableView.setFooterHidden(false)
-        
-        //===
-        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle group by circle order by id desc")
-        if err == nil {
-            for row in resultSet {
-            }
-        }
-        //===
-        Api.postCircle("0"){ json in
-            if json != nil {
-                isLoaded = 1
-                var arr = json!["items"] as NSArray
-                self.dataArray.removeAllObjects()
-                for data:AnyObject in arr {
-            //        println(data)
-                    self.dataArray.addObject(data)
-                }
-                self.tableView.reloadData()
-                self.tableView.headerEndRefreshing(animated: true)
-                if self.dataArray.count < 30 {
-                    self.tableView.setFooterHidden(true)
-                }
-                if self.dataArray.count == 0 {
-                    
-                    // 预设发现梦境
-                    var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
-                    var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
-                    viewTop.labelTitle.text = "发现梦境"
-                    viewTop.labelContent.text = "和大家一起组队造梦"
-                    viewTop.labelCount.hidden = true
-                    viewTop.lastdate?.hidden = true
-                    viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
-                    viewTop.userInteractionEnabled = true
-                    viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
-                    self.tableView.tableHeaderView = viewTop
-                    
-                }else{
-                    self.tableView.tableHeaderView = UIView()
-                }
-                
-                // 预设广场
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+            if self.dataArray.count == 0 {
                 var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
-                var viewBottom = NibCircleCell.objectAtIndex(0) as CircleCell
-                viewBottom.setHeight(81 + 50)
-                viewBottom.labelTitle.text = "广场"
-                viewBottom.labelContent.text = "念的留言板"
-                viewBottom.labelCount.hidden = true
-                viewBottom.lastdate?.hidden = true
-                viewBottom.imageHead.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
-                viewBottom.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBBSClick"))
-                viewBottom.userInteractionEnabled = true
-                self.tableView.tableFooterView = viewBottom
-                
-                self.page = 1
+                var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
+                viewTop.labelTitle.text = "发现梦境"
+                viewTop.labelContent.text = "和大家一起组队造梦"
+                viewTop.labelCount.hidden = true
+                viewTop.lastdate?.hidden = true
+                viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
+                viewTop.userInteractionEnabled = true
+                viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
+                self.tableView.tableHeaderView = viewTop
+            }else{
+                self.tableView.tableHeaderView = UIView()
             }
-        }
+            // 预设广场
+            var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
+            var viewBottom = NibCircleCell.objectAtIndex(0) as CircleCell
+            viewBottom.setHeight(81 + 50)
+            viewBottom.labelTitle.text = "广场"
+            viewBottom.labelContent.text = "念的留言板"
+            viewBottom.labelCount.hidden = true
+            viewBottom.lastdate?.hidden = true
+            viewBottom.imageHead.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
+            viewBottom.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBBSClick"))
+            viewBottom.userInteractionEnabled = true
+            self.tableView.tableFooterView = viewBottom
+        })
     }
     
     func onBtnGoClick() {
@@ -187,17 +154,10 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: mutableItem)
         self.tableView.reloadData()
         var id = data.objectForKey("id") as String
+        var title = data.objectForKey("title") as String
         var CircleVC = CircleController()
         CircleVC.ID = id.toInt()!
+        CircleVC.circleTitle = title
         self.navigationController?.pushViewController(CircleVC, animated: true)
-    }
-    
-    func setupRefresh() {
-        self.tableView.addHeaderWithCallback({
-            self.SAReloadData()
-        })
-        self.tableView.addFooterWithCallback({
-            self.loadData()
-        })
     }
 }

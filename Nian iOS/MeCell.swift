@@ -123,12 +123,12 @@ class MeCell: UITableViewCell {
                 var reason = json!["reason"] as String
                 var circle = json!["circle"] as String
                 var cid = json!["cid"] as String
+                var status = json!["status"] as String
                 if success == "1" {
                     self.activity.hidden = true
                     view.text = "已接受"
                     view.backgroundColor = IconColor
                     view.removeGestureRecognizer(sender)
-                //    on_gay(["\(circle)", "", "5", cid])
                 }else{
                     self.activity.hidden = true
                     view.text = "接受"

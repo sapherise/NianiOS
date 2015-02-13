@@ -136,13 +136,14 @@ class ImClient {
         case unconnect
         case authing
         case authed
+        case live
     }
     
     private let statusSuccess = 0
     private let statusTimeOut = 1
     private let statusFailed = 2
     private let statusUnauthenticated = 3
-    private let statusBadUser = 4
+    private let statusOldVersion = 4
     
     private let m_loginServer: String = "http://121.41.78.240:6426/"
     private let m_landServer: String = "http://121.41.78.240:6426/"
@@ -188,40 +189,44 @@ class ImClient {
         }
     }
     
+    private var prev_nil = true
+    
     private func polling() {
         while m_polling {
-            // 如果客户端处于无连接状态
             if m_state == .unconnect {
-                // 尝试重新登录
-                var r = enter(m_uid, shell: m_shell)
-                if r == 1 {
-                    // 登录失败, poll结束
-                    m_onPull!(nil)
-                    break
-                }
+                enter(m_uid, shell: m_shell)
             } else if m_state == .authed {
-                // 客户端已经登录, 开始拉取消息
-                var r: AnyObject? = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
-                // 数据拉取失败
+                var r: AnyObject? = nil
+                if prev_nil {
+                    // 测试拉取
+                    r  = httpGet(m_landServer + "poll", "")
+                    if r != nil {
+                        // 测试成功
+                        m_onState?(.live)
+                        r = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
+                    }
+                } else {
+                    r = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
+                }
                 if r != nil {
+                    prev_nil = false
                     m_repollDelay = 0.5
                     var status = peekStatus(r!)
                     switch status {
                     case statusSuccess:
-                        m_onPull!(r)
+                        m_onPull?(r)
                         break
                     case statusUnauthenticated:
-                        // 服务端要求重新登录
                         setState(.unconnect)
                         break
                     default:
                         break
                     }
                 } else {
+                    prev_nil = true
                     if m_repollDelay >= 60 {
                         setState(.unconnect)
                     }
-                    // 扩大延时
                     m_repollDelay = m_repollDelay + m_repollDelay
                 }
             }
@@ -249,18 +254,18 @@ class ImClient {
         if !casState(.unconnect, to: .authing) {
             return 2
         }
-        var json: AnyObject? = httpPost(m_loginServer + "enter", httpParams(["uid": uid, "shell": shell]))
+        var json: AnyObject? = httpPost(m_loginServer + "enter", httpParams(["uid": uid, "shell": shell, "ver": "1000"]))
         if json != nil {
             var status = peekStatus(json!)
             if status == statusSuccess {
                 m_uid = uid
                 m_shell = shell
                 m_sid = json!["sid"] as String
-                m_state = .authed
+                setState(.authed)
                 return 0
             }
         }
-        m_state = .unconnect
+        setState(.unconnect)
         return 1
     }
     
@@ -283,8 +288,17 @@ class ImClient {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safename = Sa.objectForKey("user") as String
-        var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)"]))
+        var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)", "msgid": "1"]))
         return json
+    }
+    
+    func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safename = Sa.objectForKey("user") as String
+        var json: AnyObject? = httpPost(m_landServer  + "msg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "msgid": "1"]))
+        return json
+        // gmsg 变成 msg，cid 删除掉
     }
     
     func getSid() -> String {

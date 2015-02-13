@@ -63,13 +63,19 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         self.bindViewController!.tableView.setFooterHidden(false)
     }
     
-    override func onShow() {
+    override func onShow(loading: Bool) {
         bindViewController!.tableView.setFooterHidden(true)
         bindViewController!.tableView.reloadData()
         if dataSource.isEmpty {
             bindViewController!.tableView.headerBeginRefreshing()
         } else {
-            bindViewController!.tableView.setContentOffset(CGPointZero, animated: true)
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
+                }, completion: { (Bool) -> Void in
+                    if loading {
+                        self.bindViewController!.tableView.headerBeginRefreshing()
+                    }
+            })
         }
     }
     

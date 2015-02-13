@@ -231,15 +231,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                     if success == "1" {
                         globalWillCircleReload = 1
                         globalWillNianReload = 1
-                        // 发送加入消息
-                        // 创建本地小组
                         SQLCircleListInsert(id, "\(title!)", self.uploadUrl, postdate)
-                        if let a: AnyObject = client.sendGroupMessage(id.toInt()!, msgtype: 5, msg: "可以开始聊天啦", cid: 0) {
-                            println("发送成功")
-                            println(a)
-                        }else{
-                            println("发送失败了！")
-                        }
                         self.navigationController?.popToRootViewControllerAnimated(true)
                     }
                 }

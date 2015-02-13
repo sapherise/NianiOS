@@ -22,7 +22,7 @@ class ExploreProvider: NSObject {
     func onHide() {
     }
     
-    func onShow() {
+    func onShow(loading: Bool) {
     }
     
     func onRefresh() {
@@ -85,7 +85,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
                     if current == 3 {
                         switchTab(current)
                         if self.collectionView.contentOffset.y  > 0 {
-                            delay(0.3, {
+                            delay(0.2, {
                                 self.collectionView.headerBeginRefreshing()
                             })
                         }else{
@@ -94,7 +94,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
                     }else{
                         switchTab(current)
                         if self.tableView.contentOffset.y  > 0 {
-                            delay(0.3, {
+                            delay(0.2, {
                                 self.tableView.headerBeginRefreshing()
                             })
                         }else{
@@ -149,6 +149,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             buttons[current].textColor = UIColor.blackColor()
             currentProvider.onHide()
         }
+        var loading = current == tab ? true : false
         current = tab
         currentProvider = self.providers[tab]
    //     buttons[tab].selected = true
@@ -168,7 +169,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             collectionView.dataSource = currentProvider as? UICollectionViewDataSource
             collectionView.hidden = false
         }
-        currentProvider.onShow()
+        currentProvider.onShow(loading)
     }
     
     func onTabClick(sender: UIGestureRecognizer) {

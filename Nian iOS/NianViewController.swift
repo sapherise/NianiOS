@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate{
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate{
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -41,8 +41,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.extendedLayoutIncludesOpaqueBars = true
         self.scrollView.frame.size.height = globalHeight - 49
-        self.scrollView.contentSize.height = globalHeight - 49
+        self.scrollView.contentSize.height = globalHeight - 49 + 1
+        self.scrollView.showsHorizontalScrollIndicator = false
+        self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.delegate = self
+        
+        var pan = UIPanGestureRecognizer(target: self, action: "pan:")
+        pan.delegate = self
+        self.scrollView.addGestureRecognizer(pan)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -79,13 +85,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         self.UserName.text = "\(safename)"
         self.UserHead.setImage("http://img.nian.so/head/\(safeuid).jpg!dream", placeHolder: UIColor(red: 0, green: 0, blue: 0, alpha: 0.55))
-        if cacheCoverUrl != nil{
-            if cacheCoverUrl! != "http://img.nian.so/cover/!cover" {
-                self.BGImage.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
-            }else{
-                self.BGImage.image = UIImage(named: "bg")
-                self.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
-            }
+        if (cacheCoverUrl != nil) && (cacheCoverUrl! != "http://img.nian.so/cover/!cover") {
+            self.BGImage.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
         }else{
             self.BGImage.image = UIImage(named: "bg")
             self.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
@@ -99,7 +100,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
         
-        if globalHeight < 500 {
+        if globaliPhone == 4 {
             self.viewHolder.setHeight(232)
             self.BGImage.setHeight(232)
             self.tableView.setY(276)
@@ -110,6 +111,70 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.coinButton.setY(170)
             self.levelButton.setY(170)
         }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == self.scrollView {
+            var height = scrollView.contentOffset.y
+            self.heightScroll = height
+            if self.viewHolder != nil {
+                if height > 0 {
+                    self.BGImage.frame = CGRectMake(0, height, 320, 320 - height)
+                    if height > 320 {
+                        self.BGImage.hidden = true
+                    }else{
+                        self.BGImage.hidden = false
+                    }
+                }else{
+                    self.viewHolder!.setY(height)
+                    self.BGImage.frame = CGRectMake(height/10, height, 320-height/5, 320)
+                }
+                scrollHidden(self.UserHead, scrollY: 70)
+                scrollHidden(self.UserName, scrollY: 138)
+                scrollHidden(self.UserStep, scrollY: 161)
+//                scrollHidden(self.coinButton, scrollY: 214)
+//                scrollHidden(self.levelButton, scrollY: 214)
+            }
+        }
+    }
+    
+    func scrollHidden(theView:UIView, scrollY:CGFloat){
+        if ( self.heightScroll > scrollY - 50 && self.heightScroll <= scrollY ) {
+            theView.alpha = ( scrollY - self.heightScroll ) / 50
+        }else if self.heightScroll > scrollY {
+            theView.alpha = 0
+        }else{
+            theView.alpha = 1
+        }
+    }
+    
+    func pan(sender: UIPanGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Ended {
+            var h: CGFloat = globaliPhone == 4 ? 232 : 320
+            // 当向上滑动时
+            if self.heightScroll > 60 {
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
+                    self.scrollView.contentSize.height = globalHeight - 49 + h - 64 + 1
+                    self.scrollView.frame = CGRectMake(0, -h + 64, globalWidth, globalHeight - 49 - 64 + h)
+                    self.coinButton.alpha = 0
+                    self.levelButton.alpha = 0
+                    }, completion: { (Bool) -> Void in
+                })
+            // 当向下滑动时
+            }else if self.heightScroll < 0 {
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
+                    self.scrollView.contentSize.height = globalHeight - 49 + 1
+                    self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
+                    self.coinButton.alpha = 1
+                    self.levelButton.alpha = 1
+                    }, completion: { (Bool) -> Void in
+                })
+            }
+        }
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     func setupUserTop(){
@@ -212,16 +277,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(PlayerVC, animated: true)
     }
     
-    func scrollHidden(theView:UIView, height:CGFloat, scrollY:CGFloat){
-        if ( height > scrollY - 50 && height <= scrollY ) {
-            theView.alpha = ( scrollY - height ) / 50
-        }else if height > scrollY {
-            theView.alpha = 0
-        }else{
-            theView.alpha = 1
-        }
-    }
-    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100
     }
@@ -263,18 +318,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
-    func urlString()->String{
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/nian.php?uid=\(safeuid)&shell=\(safeshell)"
-    }
-    
     func SAReloadData(){
-        var url = urlString()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                var arr = data["items"] as NSArray
+        Api.getNian() { json in
+            if json != nil {
+                var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
@@ -282,7 +329,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 self.tableView.reloadData()
                 if self.dataArray.count == 0 {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    var viewQuestion = viewEmpty(globalWidth, content: "先随便写个梦想吧")
+                    var viewQuestion = viewEmpty(globalWidth, content: "先随便写个梦想吧\n比如日记、英语、画画...")
                     viewQuestion.setY(0)
                     var btnGo = UIButton()
                     btnGo.setButtonNice("  嗯！")
@@ -300,6 +347,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 }
                 globalNumberDream = self.dataArray.count
             }
-        })
+        }
     }
 }

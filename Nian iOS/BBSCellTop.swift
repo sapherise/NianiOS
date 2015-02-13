@@ -25,7 +25,6 @@ class BBSCellTop: UITableViewCell{
     var toplastdate:String = ""
     var topuser:String = ""
     var toptitle:String = ""
-    var getContent:String = "0" //为0时是传值，1时是自力更生去拉取数据
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,23 +32,8 @@ class BBSCellTop: UITableViewCell{
         self.selectionStyle = UITableViewCellSelectionStyle.None
     }
     
-    
     override func layoutSubviews(){
         super.layoutSubviews()
-        if getContent == "1" {
-            var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            if data != nil {
-                var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                var sa: AnyObject! = json.objectForKey("bbstop")
-                self.toptitle = sa.objectForKey("title") as String
-                self.topcontent = sa.objectForKey("content") as String
-                self.topuid = sa.objectForKey("uid") as String
-                self.toplastdate = sa.objectForKey("lastdate") as String
-                self.topuser = sa.objectForKey("user") as String
-            }
-        }
-        
         self.BBStitle!.text = "\(self.toptitle)"
         var titleHeight = self.toptitle.stringHeightWith(13,width:280)
         self.BBStitle!.setHeight(titleHeight)
@@ -58,8 +42,9 @@ class BBSCellTop: UITableViewCell{
         self.lastdate!.text = "\(self.toplastdate)"
         var userImageURL = "http://img.nian.so/head/\(self.topuid).jpg!dream"
         self.dreamhead!.setImage(userImageURL,placeHolder: IconColor)
-        self.dreamhead!.tag = self.topuid.toInt()!
-        
+        if let tag = self.topuid.toInt() {
+            self.dreamhead!.tag = tag
+        }
         self.contentLabel?.text = "\(topcontent)"
         
         var height = topcontent.stringHeightWith(13,width:235)
@@ -71,6 +56,11 @@ class BBSCellTop: UITableViewCell{
         self.contentLabel!.setY(self.BBStitle!.bottom()+68)
         self.viewFlow.setY(self.contentLabel!.bottom()+26)
         self.Line!.setY(self.viewFlow!.bottom()+18)
+        if self.topuid == "" {
+            self.View?.hidden = true
+        }else{
+            self.View?.hidden = false
+        }
     }
     class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
         var height = topcontent.stringHeightWith(13,width:235)

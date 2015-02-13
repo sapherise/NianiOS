@@ -20,7 +20,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var topuid:String = ""
     var toplastdate:String = ""
     var topuser:String = ""
-    var getContent:String = "0"
+    var getContent: Int = 0
     var toptitle:String = ""
     var sheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
@@ -121,31 +121,42 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func SAReloadData(flow:Int = 0){
         self.tableView!.setFooterHidden(false)
-        var url = "http://nian.so/api/bbs_comment.php?page=0&id=\(Id)"
-        if flow == 1 {
-            url = "http://nian.so/api/bbs_comment.php?page=0&id=\(Id)&flow=1"
-        }
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                var arr = data["items"] as NSArray
+        Api.getBBSComment(0, flow: flow, id: Id) { json in
+            if json != nil {
+                var arr = json!["items"] as NSArray
+                var total = json!["total"] as Int
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
-                self.tableView!.reloadData()
-                self.tableView!.headerEndRefreshing()
-                self.page = 1
-                if ( data["total"] as Int ) < 30 {
-                    self.tableView!.setFooterHidden(true)
+                if self.getContent == 1 {
+                    Api.getBBSTop(self.Id) { json in
+                        if json != nil {
+                            var data = json!["bbstop"] as NSDictionary
+                            self.toptitle = data.stringAttributeForKey("title")
+                            self.topcontent = data.stringAttributeForKey("content")
+                            self.topuid = data.stringAttributeForKey("uid")
+                            self.topuser = data.stringAttributeForKey("user")
+                            self.toplastdate = data.stringAttributeForKey("lastdate")
+                            self.tableView!.reloadData()
+                            self.tableView!.headerEndRefreshing()
+                            self.page = 1
+                            if total < 30 {
+                                self.tableView!.setFooterHidden(true)
+                            }
+                        }
+                    }
+                }else{
+                    self.tableView!.reloadData()
+                    self.tableView!.headerEndRefreshing()
+                    self.page = 1
+                    if ( json!["total"] as Int ) < 30 {
+                        self.tableView!.setFooterHidden(true)
+                    }
                 }
             }
-        })
+        }
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
@@ -170,7 +181,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             c!.toplastdate = self.toplastdate
             c!.topuser = self.topuser
             c!.Id = "\(self.Id)"
-            c!.getContent = self.getContent
             c!.toptitle = self.toptitle
             c!.dreamhead?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c!.viewFlow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFlowClick"))
@@ -212,29 +222,13 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
-    {
-        
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section==0{
-            if getContent == "0" {
-                return  BBSCellTop.cellHeightByData(topcontent, toptitle: toptitle)
-            }else{
-                var url = NSURL(string:"http://nian.so/api/bbstop.php?id=\(self.Id)")
-                var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-                if data != nil {
-                    var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                    var sa: AnyObject! = json.objectForKey("bbstop")
-                    self.toptitle = sa.objectForKey("title") as String
-                    self.topcontent = sa.objectForKey("content") as String
-                    return  BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
-                }else{
-                    return 0
-                }
-            }
+            return BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
         }else{
-                var index = indexPath.row
-                var data = self.dataArray[index] as NSDictionary
-                return  BBSCell.cellHeightByData(data)
+            var index = indexPath.row
+            var data = self.dataArray[index] as NSDictionary
+            return  BBSCell.cellHeightByData(data)
         }
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){

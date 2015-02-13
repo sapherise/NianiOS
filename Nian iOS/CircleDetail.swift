@@ -372,6 +372,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     if json != nil {
                         globalWillCircleReload = 1
                         self.navigationController?.popToRootViewControllerAnimated(true)
+                        SQLCircleListDelete(self.Id)
                     }
                 }
             }
@@ -384,13 +385,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 Api.postCircleDelete(self.Id) {
                     json in
                     if json != nil {
+                        SQLCircleListDelete(self.Id)
                         globalWillCircleReload = 1
                         self.navigationController?.popToRootViewControllerAnimated(true)
                     }
                 }
             }
         }else if actionSheet == self.actionSheetPromote {
-            
             if self.theLevel == "9" {
                 if self.selectLevel == 9 {
                     if buttonIndex == 0 {
@@ -439,19 +440,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func onPromoClick(){
         self.viewLoadingShow()
-        Api.postCirclePromo(self.Id, promouid: self.selectUid){ json in
+        Api.postCirclePromo(self.Id, promouid: self.selectUid, promoname: self.selectName){ json in
             if json != nil {
                 var success = json!["success"] as String
                 var reason = json!["reason"] as String
                 if success == "1" {
                     globalWillCircleChatReload = 1
-                    if let a: AnyObject = client.sendGroupMessage(self.Id.toInt()!, msgtype: 6, msg: "\(self.selectName)", cid: self.selectUid) {
-                        println("发送成功")
-                        println(a)
-                    }else{
-                        println("发送失败了！")
-                    }
-                    
                     self.SAReloadData()
                 }else{
                     self.viewLoadingHide()
@@ -471,18 +465,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func onDemoClick(){
         self.viewLoadingShow()
-        Api.postCircleDemo(self.Id, demouid: self.selectUid){ json in
+        Api.postCircleDemo(self.Id, promouid: self.selectUid, promoname: self.selectName) { json in
             if json != nil {
                 var success = json!["success"] as String
                 var reason = json!["reason"] as String
                 if success == "1" {
                     globalWillCircleChatReload = 1
-                    if let a: AnyObject = client.sendGroupMessage(self.Id.toInt()!, msgtype: -6, msg: "\(self.selectName)", cid: self.selectUid) {
-                        println("发送成功")
-                        println(a)
-                    }else{
-                        println("发送失败了！")
-                    }
                     self.SAReloadData()
                 }else{
                     self.viewLoadingHide()

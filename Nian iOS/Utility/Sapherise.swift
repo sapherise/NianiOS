@@ -48,6 +48,7 @@ var globalCurrentCircle: Int = 0
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
+var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
 
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""

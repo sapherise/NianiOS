@@ -61,14 +61,18 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         })
     }
     
-    override func onShow() {
+    override func onShow(loading: Bool) {
         bindViewController!.collectionView.reloadData()
         if dataSource.isEmpty {
             bindViewController!.collectionView.headerBeginRefreshing()
         } else {
-            var point = bindViewController!.collectionView.contentOffset
-            point.y = 0
-            bindViewController!.collectionView.setContentOffset(point, animated: true)
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.bindViewController!.collectionView.setContentOffset(CGPointZero, animated: false)
+                }, completion: { (Bool) -> Void in
+                    if loading {
+                        self.bindViewController!.collectionView.headerBeginRefreshing()
+                    }
+            })
         }
     }
     
@@ -107,7 +111,9 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         var data = dataSource[indexPath.row]
         cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : UIColor.blackColor()
         cell!.labelTitle.text = data.title
-        cell!.labelTitle.setHeight(data.title.stringHeightWith(11, width: 80))
+        var height = data.title.stringHeightWith(11, width: 80)
+        height = height > 30 ? "\n".stringHeightWith(11, width: 80) : height
+        cell!.labelTitle.setHeight(height)
         cell!.imageCover.setHolder()
         cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         cell!.imageCover.layer.borderWidth = 0.5
@@ -120,6 +126,8 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var viewController = DreamViewController()
         viewController.Id = dataSource[indexPath.row].id
+        var data = dataSource[indexPath.row]
+        var height = data.title.stringHeightWith(11, width: 80)
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
 }

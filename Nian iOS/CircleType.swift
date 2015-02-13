@@ -40,13 +40,11 @@ class CircleTypeCell: UITableViewCell {
             break
         case "4":   textContent = "获得了成就"
             break
-        case "5":   textContent = (content != "-1") ? "加入了梦境" : "离开了梦境"
+        case "5":   textContent = ""
             break
-        case "6":   textContent = "提升了"
+        case "6":   textContent = ""
             break
-        case "-6":   textContent = "降职了"
-            break
-        case "7":   textContent = "邀请了"
+        case "7":   textContent = ""
             break
         default:    textContent = "触发了一个彩蛋"
             break

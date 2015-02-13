@@ -44,11 +44,7 @@ class CircleCell: UITableViewCell {
                         var user = row["name"]!.asString()
                         var content = row["content"]!.asString()
                         var type = row["type"]!.asString()
-                        var cuser = row["cname"]!.asString()
-                        
-                        
                         var textContent = ""
-                        // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
                         switch type {
                         case "1":   textContent = ": \(content)"
                             break
@@ -58,13 +54,11 @@ class CircleCell: UITableViewCell {
                             break
                         case "4":   textContent = "获得了成就"
                             break
-                        case "5":   textContent = (content != "-1") ? "加入了梦境" : "离开了梦境"
+                        case "5":   textContent = content
                             break
-                        case "6":   textContent = "提升了\(content)"
+                        case "6":   textContent = content
                             break
-                        case "-6":   textContent = "降职了\(content)"
-                            break
-                        case "7":   textContent = "邀请了\(cuser)"
+                        case "7":   textContent = content
                             break
                         default:    textContent = "触发了一个彩蛋"
                             break

@@ -177,6 +177,10 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                         var textOK = ""
                         if self.thePrivate == "0" {
                             textOK = "加入好了！"
+                            var title = json!["title"] as String
+                            var image = json!["img"] as String
+                            var postdate = json!["postdate"] as String
+                            SQLCircleListInsert(self.circleID, title, image, postdate)
                             globalWillCircleReload = 1
                             self.delegate?.SAReloadData()
                         }else if self.thePrivate == "1" {

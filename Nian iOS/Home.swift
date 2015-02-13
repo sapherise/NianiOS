@@ -39,6 +39,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        SQLInit()
         self.setupViews()
         self.initViewControllers()
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -138,11 +139,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
-        
-        var a = FileUtility.cachePath("")
-        println(a)
-        
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
@@ -386,7 +382,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let idMe = 103
         let idBBS = 104
         
-        
         if index == idExplore {       // 关注
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
@@ -405,7 +400,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }else if index == idUpdate {      // 更新
             self.addStep()
         }
-        
         if index != idExplore {
             numExplore = 0
         }
@@ -539,92 +533,142 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
+        client.setOnState(on_state)
         var r = client.enter(safeuid, shell: safeshell)
-        if r == 0 {
+    }
+    
+    func on_state(st: ImClient.State) {
+        if st == .authed {
             // 创建表格
-            SQLCircleContentTable() {
-                client.pollBegin(self.on_poll)
-            }
+            client.pollBegin(self.on_poll)
+        } else if st == .live {
+            println("从服务器拉取离线消息")
+            self.loadCircle()
         }
     }
     
     func on_poll(obj: AnyObject?) {
-        println("首页收到新的推送")
-        println(obj)
-        var msg: AnyObject? = obj!["msg"]
-        var json: AnyObject? = msg!["msg"]
-        var data: NSDictionary = json![0] as NSDictionary
-        var id = data.stringAttributeForKey("msgid")
-        var uid = data.stringAttributeForKey("from")
-        var name = data.stringAttributeForKey("fromname")
-        var cid = data.stringAttributeForKey("cid")
-        var cname = data.stringAttributeForKey("cname")
-        var content = data.stringAttributeForKey("msg")
-        var type = data.stringAttributeForKey("msgtype")
-        var time = data.stringAttributeForKey("time")
-        var circle = data.stringAttributeForKey("to")
-        var title = data.stringAttributeForKey("title")
-        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        var isread = 0
-        if circle == "\(globalCurrentCircle)" {
-            isread = 1
-        }
-        SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-            NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-        }
-        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
-        if safeuid != uid {     // 如果是朋友们发的
-            globalWillCircleReload = 1
-            dispatch_async(dispatch_get_main_queue(), {
-                if globalTabBarSelected != 104 {
-                    self.dotCircle!.hidden = false
-                    if let a = self.dotCircle!.text?.toInt() {
-                        self.dotCircle!.text = "\(a + 1)"
+        if obj != nil {
+            var msg: AnyObject? = obj!["msg"]
+            var json = msg!["msg"] as NSArray
+            var count = json.count - 1
+            for i: Int in 0...count {
+                var data: NSDictionary = json[i] as NSDictionary
+                var id = data.stringAttributeForKey("msgid")
+                var uid = data.stringAttributeForKey("from")
+                var name = data.stringAttributeForKey("fromname")
+                var cid = data.stringAttributeForKey("cid")
+                var cname = data.stringAttributeForKey("cname")
+                var content = data.stringAttributeForKey("msg")
+                var type = data.stringAttributeForKey("msgtype")
+                var time = data.stringAttributeForKey("time")
+                var circle = data.stringAttributeForKey("to")
+                var title = data.stringAttributeForKey("title")
+                content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                var isread = 0
+                if circle == "\(globalCurrentCircle)" || uid == safeuid {
+                    isread = 1
+                }
+                SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
+                    NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                    if (type == "6") && (cid == safeuid) {
+                        Api.getCircleStatus(circle) { json in
+                            if json != nil {
+                                var numStatus = json!["count"] as String
+                                var titleStatus = json!["title"] as String
+                                var imageStatus = json!["img"] as String
+                                var postdateStatus = json!["postdate"] as String
+                                if numStatus == "1" {
+                                        // 添加
+                                    SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
+                                }else{
+                                        // 删除
+                                    SQLCircleListDelete(circle)
+                                }
+                            }
+                        }
                     }
                 }
-            })
+                
+                if safeuid != uid {     // 如果是朋友们发的
+                    globalWillCircleReload = 1
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if globalTabBarSelected != 104 {
+                            self.dotCircle!.hidden = false
+                            if let a = self.dotCircle!.text?.toInt() {
+                                self.dotCircle!.text = "\(a + 1)"
+                            }
+                        }
+                    })
+                }
+            }
         }
     }
     
     func loadCircle() {
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
         Api.postCircleInit() { json in
             if json != nil {
-                SQLCircleContentTable() {
-                    // 成功
-                    var a: Int = 0
-                    let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0")
-                    if err == nil {
-                        a = resultSet.count
+                // 成功
+                var a: Int = 0
+                var arr = json!["items"] as NSArray
+                for i : AnyObject  in arr {
+                    var data = i as NSDictionary
+                    var id = data.stringAttributeForKey("id")
+                    var uid = data.stringAttributeForKey("uid")
+                    var name = data.stringAttributeForKey("name")
+                    var cid = data.stringAttributeForKey("cid")
+                    var cname = data.stringAttributeForKey("cname")
+                    var circle = data.stringAttributeForKey("circle")
+                    var content = data.stringAttributeForKey("content")
+                    var type = data.stringAttributeForKey("type")
+                    var time = data.stringAttributeForKey("lastdate")
+                    var title = data.stringAttributeForKey("title")
+                    var isread = 0
+                    if circle == "\(globalCurrentCircle)" || uid == safeuid {
+                        isread = 1
                     }
-                    var arr = json!["items"] as NSArray
-                    for i : AnyObject  in arr {
-                        var data = i as NSDictionary
-                        var id = data.stringAttributeForKey("id")
-                        var uid = data.stringAttributeForKey("uid")
-                        var name = data.stringAttributeForKey("name")
-                        var cid = data.stringAttributeForKey("cid")
-                        var cname = data.stringAttributeForKey("cname")
-                        var circle = data.stringAttributeForKey("circle")
-                        var content = data.stringAttributeForKey("content")
-                        var type = data.stringAttributeForKey("type")
-                        var time = data.stringAttributeForKey("lastdate")
-                        var title = data.stringAttributeForKey("title")
-                        var isread = 0
-                        if circle == "\(globalCurrentCircle)" {
-                            isread = 1
+                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' order by id desc limit  1")
+                    if resultSet2.count == 0 {
+                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        var safeuid = Sa.objectForKey("uid") as String
+                        var safeuser = Sa.objectForKey("user") as String
+                        if (type == "6") && (cid == safeuid) {
+                            Api.getCircleStatus(circle) { json in
+                                if json != nil {
+                                    var numStatus = json!["count"] as String
+                                    var titleStatus = json!["title"] as String
+                                    var imageStatus = json!["img"] as String
+                                    var postdateStatus = json!["postdate"] as String
+                                    if numStatus == "1" {
+                                        // 添加
+                                        SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
+                                    }else{
+                                        // 删除
+                                        SQLCircleListDelete(circle)
+                                    }
+                                }
+                            }
                         }
                         SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-                            a = a + 1
+                            var data = NSDictionary(objects: [cid, uid, name, content, id, type, time, circle, "1"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
+                            NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                         }
                     }
-                    if globalTabBarSelected != 104 && a > 0 {
-                        self.dotCircle!.text = "\(a)"
-                        self.dotCircle!.hidden = false
-                    }
+                }
+                let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0")
+                if err == nil {
+                    a = resultSet.count
+                }
+                if globalTabBarSelected != 104 && a > 0 {
+                    self.dotCircle!.text = "\(a)"
+                    self.dotCircle!.hidden = false
                 }
             }
         }
