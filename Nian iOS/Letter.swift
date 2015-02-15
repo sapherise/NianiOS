@@ -17,12 +17,11 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var replySheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
     var actionSheetPhoto:UIActionSheet?
-    var deleteId:Int = 0        //删除按钮的tag，进展编号
-    var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
-    var dataTotal:Int = 15
+    var dataTotal:Int = 30
     var viewTop:UIView!
     var ID:Int = 0
+    var circleTitle: String = ""
     
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
@@ -32,15 +31,12 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var ReturnReplyContent:String = ""
     
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
-    var isTheEnd:Int = 0    //当没有更多内容加载时为1
-    var activityIndicatorView:UIActivityIndicatorView!
     
     var desHeight:CGFloat = 0
     var inputKeyboard:UITextField!
     var keyboardView:UIView!
     var viewBottom:UIView!
     var isKeyboardFocus:Bool = false
-    var isKeyboardResign:Int = 0 //为了解决评论会收起键盘的BUG创建的开关，当提交过程中变为1，0时才收起键盘
     var keyboardHeight:CGFloat = 0
     var lastContentOffset:CGFloat?
     
@@ -49,23 +45,66 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        self.viewLoadingHide()
+        globalCurrentLetter = 0
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        SAloadData()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
         self.viewBackFix()
-        if globalWillCircleChatReload == 1 {
-            globalWillCircleChatReload = 0
-            self.SAReloadData()
+        globalCurrentLetter = self.ID
+        SD.executeChange("update letter set isread = 1 where circle = \(self.ID) and isread = 0")
+    }
+    
+    func Letter(noti: NSNotification) {
+        var data = noti.object as NSDictionary
+        var uid = data.stringAttributeForKey("from")
+        if uid == "\(self.ID)" {
+            var id = data.stringAttributeForKey("msgid")
+            var circle = data.stringAttributeForKey("to")
+            var name = data.stringAttributeForKey("fromname")
+            var content = data.stringAttributeForKey("msg")
+            var title = data.stringAttributeForKey("title")
+            var type = data.stringAttributeForKey("msgtype")
+            var time = data.stringAttributeForKey("time")
+            content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                self.dataArray.insertObject(newinsert, atIndex: 0)
+                var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
+                self.tableview.insertRowsAtIndexPaths([newindexpath], withRowAnimation: UITableViewRowAnimation.None)
+                self.tableview.cellForRowAtIndexPath(newindexpath)?.layoutSubviews()
+                self.tableview.reloadData()
+                //滚动到最新评论的底部
+                var contentOffsetHeight = self.tableview.contentOffset.y
+                var contentHeight:CGFloat = 0
+                if type == "1" {
+                    contentHeight = content.stringHeightWith(13,width:208) + 60
+                }else if type == "2" {
+                    var arrContent = content.componentsSeparatedByString("_")
+                    if arrContent.count == 4 {
+                        if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                            contentHeight = CGFloat(n) + 40
+                        }
+                    }
+                }
+                var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                if offset > 0 {
+                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                }
+            })
         }
     }
     
@@ -84,10 +123,8 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview.dataSource = self;
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
-        var nib2 = UINib(nibName:"CircleType", bundle: nil)
         
         self.tableview.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableview.registerNib(nib2, forCellReuseIdentifier: "CircleType")
         
         var pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
         pan.delegate = self
@@ -95,12 +132,6 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
-        self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
-        self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
-        self.activityIndicatorView.hidden = false
-        self.activityIndicatorView.startAnimating()
-        self.activityIndicatorView.color = SeaColor
-        self.tableview.tableHeaderView = self.viewTop
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.tableview.tableFooterView = self.viewBottom
         
@@ -141,7 +172,6 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        self.viewLoadingShow()
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -171,58 +201,59 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func commentFinish(replyContent:String, type: Int = 1){
-        self.isKeyboardResign = 1
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        var commentReplyRow = self.dataArray.count
-        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-        self.dataArray.insertObject(newinsert, atIndex: 0)
-        var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-        self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
-        self.tableview.reloadData()
-        //当提交评论后滚动到最新评论的底部
-        var contentOffsetHeight = self.tableview.contentOffset.y
-        var contentHeight:CGFloat = 0
-        if type == 1 {
-            contentHeight = replyContent.stringHeightWith(13,width:208) + 60
-        }else if type == 2 {
-            var arrContent = replyContent.componentsSeparatedByString("_")
-            if arrContent.count == 4 {
-                if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                    contentHeight = CGFloat(n) + 40
+        dispatch_async(dispatch_get_main_queue(), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(data, atIndex: 0)
+            self.tableview.reloadData()
+            var contentOffsetHeight = self.tableview.contentOffset.y
+            var contentHeight:CGFloat = 0
+            if type == 1 {
+                contentHeight = replyContent.stringHeightWith(13,width:208) + 60
+            }else if type == 2 {
+                var arrContent = replyContent.componentsSeparatedByString("_")
+                if arrContent.count == 4 {
+                    if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
+                        contentHeight = CGFloat(n) + 40
+                    }
                 }
             }
-        }
-        var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-        if offset > 0 {
-            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-        }
+            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0 {
+                self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+            }
+        })
     }
     
     //将内容发送至服务器
     func addReply(contentComment:String, type:Int = 1){
         var content = SAEncode(SAHtml(contentComment))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var safeuser = Sa.objectForKey("user") as String
-        Api.postLetterAddReply(self.ID, content: content, type: type) { json in
+        Api.postLetterChat(self.ID, content: content, type: type) { json in
             if json != nil {
                 var success = json!["success"] as String
-                var reason = json!["reason"] as String
+                var msgid = json!["msgid"] as String
+                var lastdate = json!["lastdate"] as String
                 if success == "1" {
-                    delay(0.2, { () -> () in
-                        self.SAReloadData()
-                    })
-                }else{
-                    if reason == "1" {
-                        delay(0.2, {
-                            self.view.showTipText("对方设置了不被私信", delay: 2)
-                        })
-                    }else{
-                        delay(0.2, {
-                            self.view.showTipText("没发出去！念的服务器正遭遇 UFO 袭击...", delay: 2)
+                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                    var safeuid = Sa.objectForKey("uid") as String
+                    var safename = Sa.objectForKey("user") as String
+                    SQLLetterContent(msgid, safeuid, safename, "\(self.ID)", contentComment, "\(type)", lastdate, 1) {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            for var i: Int = 0; i < self.dataArray.count; i++ {
+                                var data = self.dataArray[i] as NSDictionary
+                                var contentOri = data.stringAttributeForKey("content")
+                                var lastdate = data.stringAttributeForKey("lastdate")
+                                if contentComment == contentOri && lastdate == "sending" {
+                                    var mutableItem = NSMutableDictionary(dictionary: data)
+                                    mutableItem.setObject("现在", forKey: "lastdate")
+                                    self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                                    self.tableview.reloadData()
+                                    break
+                                }
+                            }
                         })
                     }
                 }
@@ -230,86 +261,58 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func SAloadData() {
-        var heightBefore = self.tableview.contentSize.height
-        Api.getLetterChatList(page, id: ID) { json in
-            if json != nil {
-                var arr = json!["items"] as NSArray
-                var total = json!["total"] as NSString!
-                self.dataTotal = "\(total)".toInt()!
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
+    func SAloadData(clear: Bool = true){
+        if clear {
+            self.page = 0
+            self.dataTotal = 0
+            self.dataArray.removeAllObjects()
+        }
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' order by id desc limit \(self.page*30),30")
+        if err == nil {
+            self.page++
+            var title: String?
+            for row in resultSet {
+                var id = row["id"]?.asString()
+                var uid = row["uid"]?.asString()
+                var user = row["name"]?.asString()
+                var content = row["content"]?.asString()
+                var type = row["type"]?.asString()
+                var lastdate = row["lastdate"]?.asString()
+                var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
+                var data = NSDictionary(objects: [id!, uid!, user!, content!, type!, time], forKeys: ["id", "uid", "user", "content", "type", "lastdate"])
+                self.dataArray.addObject(data)
+                self.dataTotal++
+            }
+            var heightBefore = self.tableview.contentSize.height
+            self.tableview.reloadData()
+            var heightAfter = self.tableview.contentSize.height
+            if clear {
+                if heightAfter > self.tableview.bounds.size.height {
+                    self.tableview.setContentOffset(CGPointMake(0, heightAfter-self.tableview.bounds.size.height), animated: false)
                 }
-                self.tableview.reloadData()
-                var heightAfter = self.tableview.contentSize.height
+                if let v = (self.navigationItem.titleView as? UILabel) {
+                    v.text = circleTitle
+                }
+            }else{
                 var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
                 self.tableview.contentOffset = CGPointMake(0, heightChange)
-                self.page++
                 self.animating = 0
-            }
-        }
-    }
-    
-    func SAReloadData(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        Api.getLetterChatList(0, id: ID) { json in
-            if json != nil {
-                self.viewLoadingHide()
-                var arr = json!["items"] as NSArray
-                var total = json!["total"] as NSString!
-                self.dataTotal = "\(total)".toInt()!
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
-                }
-                if self.dataTotal < 15 {
-                    self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
-                }
-                self.tableview.reloadData()
-                self.tableview.headerEndRefreshing()
-                if self.tableview.contentSize.height > self.tableview.bounds.size.height {
-                    self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
-                }
-                self.page = 1
-                self.isKeyboardResign = 0
-                if let v = (self.navigationItem.titleView as? UILabel) {
-                    var title = json!["title"] as String
-                    v.text = title
-                }
             }
         }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var y = scrollView.contentOffset.y
-        if self.dataTotal == 15 {
-            self.viewTop.addSubview(self.activityIndicatorView)
+        if self.dataTotal == 30 * self.page {
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
                     delay(0.3, { () -> () in
-                        self.SAloadData()
+                        self.SAloadData(clear: false)
                     })
                 }
             }
-        }else{
-            if self.isTheEnd == 0 {
-                self.isTheEnd = 1
-                self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
-                if let v = self.activityIndicatorView {
-                    v.removeFromSuperview()
-                }
-            }
         }
-    }
-    
-    func urlString()->String
-    {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/step.php?page=\(page)&id=\(self.ID)&uid=\(safeuid)"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -332,7 +335,7 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
             c.View.tag = index
             cell = c
-        }else if type == "2" {
+        }else{
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
             c.isImage = 1
@@ -340,10 +343,6 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.View.tag = index
-            cell = c
-        }else{
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as CircleTypeCell
-            c.data = data
             cell = c
         }
         return cell
@@ -460,14 +459,12 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
-                self.isKeyboardResign = 1
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
                 self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
                 self.tableview.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
-                    self.isKeyboardResign = 0
                 })
             }
         }else if actionSheet == self.actionSheetPhoto {
@@ -504,13 +501,30 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 height = 88
             }
         }
-        self.commentFinish("1_loading_\(width)_\(height)", type: 2)
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             var uploadUrl = data.objectForKey("url") as String
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
+            
+            // 当上传图片完成后，搜索最近的几条，当匹配名字时，就替换图片
+            // 替换完成后，提交到 Neverland，匹配文件名时将 sending 替换为现在。
             var content = "\(uploadUrl)_\(width)_\(height)"
+            for var i: Int = 0; i < self.dataArray.count; i++ {
+                var dataLoading = self.dataArray[i] as NSDictionary
+                var contentOri = dataLoading.stringAttributeForKey("content")
+                if contentOri == "\(safeuid)_loading_\(width)_\(height)" {
+                    var mutableItem = NSMutableDictionary(dictionary: dataLoading)
+                    mutableItem.setObject(content, forKey: "content")
+                    self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                    self.tableview.reloadData()
+                    break
+                }
+            }
             self.addReply(content, type: 2)
         })
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png"))

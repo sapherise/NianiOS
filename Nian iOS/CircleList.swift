@@ -70,7 +70,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         for row in resultCircle {
             var id = (row["circle"]?.asString())!
             var img = ""
-            var title = ""
+            var title = "梦境 #\(id)"
             let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' limit 1")
             if resultDes.count > 0 {
                 for row in resultDes {
@@ -154,9 +154,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         var data = self.dataArray[indexPath.row] as NSDictionary
-        var mutableItem = NSMutableDictionary(dictionary: data)
-        mutableItem.setObject("0", forKey: "count")
-        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: mutableItem)
         self.tableView.reloadData()
         var id = data.objectForKey("id") as String
         var title = data.objectForKey("title") as String

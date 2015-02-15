@@ -56,7 +56,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         })
         launchTimer()
-        //    self.loadCircle()
         self.enter()
     }
     
@@ -71,10 +70,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
     }
     
-    func onTimerTick() {
-        noticeDot()
-    }
-    
     func onObserveActive(sender: NSNotification) {
         launchTimer()
     }
@@ -87,8 +82,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if timer != nil {
             return
         }
-        onTimerTick()
-        timer = NSTimer(timeInterval: 15, target: self, selector: "onTimerTick", userInfo: nil, repeats: true)
+        noticeDot()
+        timer = NSTimer(timeInterval: 15, target: self, selector: "noticeDot", userInfo: nil, repeats: true)
         NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
@@ -108,7 +103,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var noticenumber = SAPost("uid=\(safeuid!)&&shell=\(safeshell!)", "http://nian.so/api/dot.php")
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.dot!.text = ""
                         if noticenumber == "0" || noticenumber == "err" {
                             self.dot!.hidden = true
                         }else{
@@ -127,7 +121,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 }else{
                                     self.dot!.hidden = true
                                 }
-                            }else{
                             }
                         }
                     })
@@ -192,6 +185,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.layer.cornerRadius = 5
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true
+        self.dot!.text = "0"
         self.myTabbar!.addSubview(dot!)
         
         self.dotCircle = UILabel(frame: CGRectMake(292, 10, 20, 15))
@@ -542,8 +536,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             // 创建表格
             client.pollBegin(self.on_poll)
         } else if st == .live {
-            println("从服务器拉取离线消息")
             self.loadCircle()
+            self.loadLetter()
         }
     }
     
@@ -568,39 +562,59 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     var time = data.stringAttributeForKey("time")
                     var circle = data.stringAttributeForKey("to")
                     var title = data.stringAttributeForKey("title")
+                    var totype = data.stringAttributeForKey("totype")
                     content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
                     title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
                     var isread = 0
-                    if circle == "\(globalCurrentCircle)" || uid == safeuid {
-                        isread = 1
-                    }
-                    SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-                        NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                        if (type == "6") && ((cid == safeuid) || (cid == uid)) {
-                            Api.getCircleStatus(circle) { json in
-                                if json != nil {
-                                    var numStatus = json!["count"] as String
-                                    var titleStatus = json!["title"] as String
-                                    var imageStatus = json!["img"] as String
-                                    var postdateStatus = json!["postdate"] as String
-                                    if numStatus == "1" {
-                                        // 添加
-                                        SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                    }else{
-                                        // 删除
-                                        SQLCircleListDelete(circle)
+                    // 如果是群聊
+                    if totype == "1" {
+                        if circle == "\(globalCurrentCircle)" || uid == safeuid {
+                            isread = 1
+                        }
+                        SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
+                            NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                            if (type == "6") && ((cid == safeuid) || (cid == uid)) {
+                                Api.getCircleStatus(circle) { json in
+                                    if json != nil {
+                                        var numStatus = json!["count"] as String
+                                        var titleStatus = json!["title"] as String
+                                        var imageStatus = json!["img"] as String
+                                        var postdateStatus = json!["postdate"] as String
+                                        if numStatus == "1" {
+                                            // 添加
+                                            SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
+                                        }else{
+                                            // 删除
+                                            SQLCircleListDelete(circle)
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    if safeuid != uid {     // 如果是朋友们发的
-                        globalWillCircleReload = 1
+                        if safeuid != uid {     // 如果是朋友们发的
+                            globalWillCircleReload = 1
+                            dispatch_async(dispatch_get_main_queue(), {
+                                if globalTabBarSelected != 104 {
+                                    self.dotCircle!.hidden = false
+                                    if let a = self.dotCircle!.text?.toInt() {
+                                        self.dotCircle!.text = "\(a + 1)"
+                                    }
+                                }
+                            })
+                        }
+                    }else{
+                        // 如果是私聊
+                        if uid == "\(globalCurrentLetter)" || uid == safeuid {
+                            isread = 1
+                        }
+                        SQLLetterContent(id, uid, name, uid, content, type, time, isread) {
+                            NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+                        }
                         dispatch_async(dispatch_get_main_queue(), {
-                            if globalTabBarSelected != 104 {
-                                self.dotCircle!.hidden = false
-                                if let a = self.dotCircle!.text?.toInt() {
-                                    self.dotCircle!.text = "\(a + 1)"
+                            if globalTabBarSelected != 103 {
+                                self.dot!.hidden = false
+                                if let a = self.dot!.text?.toInt() {
+                                    self.dot!.text = "\(a + 1)"
                                 }
                             }
                         })
@@ -670,6 +684,48 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 if globalTabBarSelected != 104 && a > 0 {
                     self.dotCircle!.text = "\(a)"
                     self.dotCircle!.hidden = false
+                }
+            }
+        }
+    }
+    
+    func loadLetter() {
+        Api.postLetterInit() { json in
+            if json != nil {
+                // 成功
+                var a: Int = 0
+                var arr = json!["items"] as NSArray
+                for i : AnyObject  in arr {
+                    var data = i as NSDictionary
+                    var id = data.stringAttributeForKey("id")
+                    var uid = data.stringAttributeForKey("uid")
+                    var name = data.stringAttributeForKey("name")
+                    var circle = uid
+                    var content = data.stringAttributeForKey("content")
+                    var type = data.stringAttributeForKey("type")
+                    var time = data.stringAttributeForKey("lastdate")
+                    var isread = 0
+                    if circle == "\(globalCurrentCircle)" {
+                        isread = 1
+                    }
+                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' order by id desc limit  1")
+                    if resultSet2.count == 0 {
+                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        var safeuid = Sa.objectForKey("uid") as String
+                        var safeuser = Sa.objectForKey("user") as String
+                        SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
+                            var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
+                            NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+                        }
+                    }
+                }
+                let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0")
+                a = resultSet.count
+                if globalTabBarSelected != 103 && a > 0 {
+                    if let t = self.dot!.text?.toInt() {
+                        self.dot!.text = "\(a + t)"
+                        self.dot!.hidden = false
+                    }
                 }
             }
         }

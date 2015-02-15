@@ -45,6 +45,7 @@ var globalViewFilmExist: Bool = false
 var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
 var globalCurrentCircle: Int = 0
+var globalCurrentLetter: Int = 0
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height

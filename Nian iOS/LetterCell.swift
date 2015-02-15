@@ -20,46 +20,62 @@ class LetterCell: UITableViewCell {
     @IBOutlet var labelCount: UILabel!
     
     var largeImageURL:String = ""
-    var data :NSDictionary!
+    var data :NSDictionary?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.imageHead.setImage("http://img.nian.so/dream/1_1382882371.png!dream", placeHolder: IconColor)
+    }
+    
+    func onUserClick(sender: UIGestureRecognizer) {
+        var UserVC = PlayerViewController()
+        UserVC.Id = "\(sender.view!.tag)"
+        self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.stringAttributeForKey("id")
-        var postdate = (self.data.stringAttributeForKey("postdate") as NSString).doubleValue
-        var current = (self.data.stringAttributeForKey("current") as NSString).doubleValue
-        var uid = self.data.stringAttributeForKey("uid")
-        var user = self.data.stringAttributeForKey("user")
-        var content = self.data.stringAttributeForKey("content")
-        var count = self.data.stringAttributeForKey("count")
-        var type = self.data.stringAttributeForKey("type")
-        if count == "0" {
-            self.labelCount.hidden = true
-        }else{
-            self.labelCount.hidden = false
-            var widthCount = ceil(count.stringWidthWith(11, height: 20) + 16.0)
-            self.labelCount.text = count
-            self.labelCount.setWidth(widthCount)
-            self.labelCount.setX(305-widthCount)
+        if data != nil {
+            var id = self.data!.stringAttributeForKey("id")
+            var title = self.data!.stringAttributeForKey("title")
+            self.imageHead.setImage("http://img.nian.so/head/\(id).jpg!dream", placeHolder: IconColor)
+            if let v = id.toInt() {
+                self.imageHead.tag = v
+            }
+            self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
+            self.labelTitle.text = title
+            let (resultSet2, err2) = SD.executeQuery("select * from letter where circle='\(id)' order by id desc limit 1")
+            if resultSet2.count > 0 {
+                for row in resultSet2 {
+                    var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
+                    var content = row["content"]!.asString()
+                    var type = row["type"]!.asString()
+                    var textContent = content
+                    if type == "2" {
+                        textContent = "发了一张图片"
+                    }
+                    self.lastdate!.text = V.relativeTime(postdate, current: NSDate().timeIntervalSince1970)
+                    self.labelContent.text = textContent
+                    break
+                }
+            }else{
+                self.lastdate!.hidden = true
+                self.labelContent.text = "可以开始聊天啦"
+            }
+            let (resultSet, err) = SD.executeQuery("select id from letter where circle='\(id)' and isread = 0")
+            if err == nil {
+                var count = resultSet.count
+                if count == 0 {
+                    self.labelCount.text = "0"
+                    self.labelCount.hidden = true
+                }else{
+                    self.labelCount.hidden = false
+                    var widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
+                    self.labelCount.text = "\(count)"
+                    self.labelCount.setWidth(widthCount)
+                    self.labelCount.setX(305-widthCount)
+                }
+            }
         }
-        
-        var textContent = ""
-        // 1: 文字消息，2: 图片消息
-        switch type {
-        case "1":   textContent = "\(content)"
-        case "2":   textContent = "发了一张图片"
-        default:    textContent = "可以开始聊天啦"
-            break
-        }
-        
-        self.lastdate!.text = V.relativeTime(postdate, current: current)
-        self.imageHead.setImage("http://img.nian.so/head/\(uid).jpg!dream", placeHolder: IconColor)
-        self.labelContent.text = textContent
-        self.labelTitle.text = user
     }
 }

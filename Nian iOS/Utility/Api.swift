@@ -210,14 +210,9 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_invite.php", content: "uid=\(uid)&myuid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&circleshellid=\(sid)", callback: callback)
     }
     
-    static func postLetter(page: String, callback: V.JsonCallback) {
+    static func postLetter(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/letter_list.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
-    }
-    
-    static func getLetterChatList(page: Int, id: Int, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/letter_chat_list.php?page=\(page)&id=\(id)&uid=\(s_uid)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/letter_list.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func postLetterAddReply(id: Int, content: String, type: Int, callback: V.JsonCallback) {
@@ -273,6 +268,17 @@ struct Api {
     static func getNian(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/nian.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func postLetterChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
+        loadCookies()
+        var sid = client.getSid()
+        V.httpPostForJson("http://nian.so/api/letter_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
+    }
+    
+    static func postLetterInit(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/letter_init.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
 }

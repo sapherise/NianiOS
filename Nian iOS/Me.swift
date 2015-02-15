@@ -13,7 +13,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     let identifier = "LetterCell"
     var tableView:UITableView!
     var dataArray = NSMutableArray()
-    var page :Int = 0
     var Id:String = ""
     var numLeft: String = ""
     var numMiddel: String = ""
@@ -22,22 +21,31 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        SAReloadData()
+        SALoadData()
+        SALoadTop()
     }
     
-    func noticeShare(noti:NSNotification){
-        SAReloadData()
+    func noticeShare() {
+        SALoadData()
+        SALoadTop()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.viewLoadingHide()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare:", name: "noticeShare", object: nil)
+        noticeShare()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare", name: "noticeShare", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
+    }
+    
+    func Letter(noti: NSNotification) {
+        self.SALoadData()
     }
     
     func setupViews() {
@@ -65,24 +73,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.view.addSubview(self.tableView!)
     }
     
-    
-    func loadData(){
-        Api.postLetter("\(self.page)"){ json in
-            if json != nil {
-                var arr = json!["items"] as NSArray
-                for data:AnyObject in arr {
-                    self.dataArray.addObject(data)
-                }
-                if self.dataArray.count < (self.page + 1) * 30 {
-                    self.tableView.setFooterHidden(true)
-                }
-                self.tableView.reloadData()
-                self.tableView.footerEndRefreshing(animated: true)
-                self.page++
-            }
-        }
-    }
-    func SAReloadData(){
+    func SALoadTop() {
         self.viewLoadingShow()
         var isLoaded = 0
         delay(3, {
@@ -91,41 +82,56 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 self.view.showTipText("念没有踩你，再试试看", delay: 2)
             }
         })
-        Api.postLetter("0"){ json in
+        Api.postLetter() { json in
             if json != nil {
                 isLoaded = 1
                 self.viewLoadingHide()
-                var arr = json!["items"] as NSArray
-                self.dataArray.removeAllObjects()
-                for data:AnyObject in arr {
-                    self.dataArray.addObject(data)
-                }
-                self.tableView.reloadData()
-                self.tableView.headerEndRefreshing(animated: true)
-                if self.dataArray.count < 30 {
-                    self.tableView.setFooterHidden(true)
-                }
-                if self.dataArray.count == 0 {
-                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-                    viewQuestion.setY(70)
-                    var btnGo = UIButton()
-                    btnGo.setButtonNice("  嗯！")
-                    btnGo.setX(globalWidth/2-50)
-                    btnGo.setY(viewQuestion.bottom())
-                    btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
-                    viewHeader.addSubview(viewQuestion)
-                    viewHeader.addSubview(btnGo)
-                    self.tableView.tableFooterView = viewHeader
-                }else{
-                    self.tableView.tableFooterView = UIView()
-                }
-                self.page = 1
                 self.numLeft = json!["notice_reply"] as String
                 self.numMiddel = json!["notice_like"] as String
                 self.numRight = json!["notice_news"] as String
+                self.tableView.reloadData()
             }
         }
+    }
+    
+    func SALoadData(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safename = Sa.objectForKey("user") as String
+        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` GROUP BY circle ORDER BY lastdate DESC")
+        self.dataArray.removeAllObjects()
+        for row in resultCircle {
+            var id = (row["circle"]?.asString())!
+            var title = "玩家 #\(id)"
+            let (resultDes, err) = SD.executeQuery("select * from letter where circle = '\(id)' and uid != '\(safeuid)' order by id desc limit 1")
+            if resultDes.count > 0 {
+                for row in resultDes {
+                    title = (row["name"]?.asString())!
+                }
+            }else if safeuid == id {
+                title = safename
+            }
+            var data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
+            self.dataArray.addObject(data)
+        }
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+            if self.dataArray.count == 0 {
+                var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
+                viewQuestion.setY(70)
+                var btnGo = UIButton()
+                btnGo.setButtonNice("  嗯！")
+                btnGo.setX(globalWidth/2-50)
+                btnGo.setY(viewQuestion.bottom())
+                btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                viewHeader.addSubview(viewQuestion)
+                viewHeader.addSubview(btnGo)
+                self.tableView.tableFooterView = viewHeader
+            }else{
+                self.tableView.tableFooterView = UIView()
+            }
+        })
     }
     
     func onBtnGoClick() {
@@ -205,8 +211,10 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var index = indexPath.row
             var data = self.dataArray[index] as NSDictionary
             var letterVC = LetterController()
-            if let id = data.stringAttributeForKey("uid").toInt() {
+            if let id = data.stringAttributeForKey("id").toInt() {
+                var title = data.stringAttributeForKey("title")
                 letterVC.ID = id
+                letterVC.circleTitle = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
             }
         }
@@ -215,7 +223,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
-    
 }
 
 extension UILabel {

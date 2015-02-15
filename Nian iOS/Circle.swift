@@ -60,10 +60,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
         self.viewBackFix()
-        if globalWillCircleChatReload == 1 {
-            globalWillCircleChatReload = 0
-            self.SAloadData()
-        }
         globalCurrentCircle = self.ID
         if let err = SD.executeChange("update circle set isread = 1 where circle = \(self.ID) and isread = 0") {
         }
@@ -118,7 +114,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                         for var i: Int = 0; i < commentReplyRow; i++ {
                             var data = self.dataArray[i] as NSDictionary
                             var contentOri = data.stringAttributeForKey("content")
-                            if content == contentOri {
+                            var lastdate = data.stringAttributeForKey("lastdate")
+                            if content == contentOri && lastdate == "sending" {
                                 var mutableItem = NSMutableDictionary(dictionary: data)
                                 mutableItem.setObject("现在", forKey: "lastdate")
                                 self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
@@ -236,7 +233,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var safeuid = Sa.objectForKey("uid") as String
             var safeuser = Sa.objectForKey("user") as String
             var commentReplyRow = self.dataArray.count
-            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending...", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
             self.tableview.reloadData()
             var contentOffsetHeight = self.tableview.contentOffset.y
@@ -320,14 +317,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 }
             }
         }
-    }
-    
-    func urlString()->String
-    {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/step.php?page=\(page)&id=\(self.ID)&uid=\(safeuid)"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
