@@ -48,8 +48,11 @@ func SQLCircleListDelete(id: String) {
 
 func SQLCircleContent(id: String, uid: String, name: String, cid: String, cname: String, circle: String, content: String, title: String, type: String, time: String, isread: Int, callback: Void -> Void) {
     // 插入梦境聊天内容
-    if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread]) {
-    } else {
-        callback()
+    let (result, err) = SD.executeQuery("select id from circle where msgid = '\(id)' limit 1")
+    if result.count == 0 {
+        if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread]) {
+        } else {
+            callback()
+        }
     }
 }

@@ -83,6 +83,11 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                         img = json!["img"] as String
                         title = json!["title"] as String
                         SD.executeChange("insert into circlelist(id, circleid, title, image, postdate) values (null, ?, ?, ?, '0')", withArgs: [id, title, img])
+                        delay(0.2, { () -> () in
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.tableView.reloadData()
+                            })
+                        })
                     }
                 }
             }

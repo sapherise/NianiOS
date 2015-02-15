@@ -134,8 +134,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     textPrivate = "需要验证后加入"
                 }
                 c.labelPrivate.text = textPrivate
-                self.theTag = (self.circleData!.objectForKey("tag") as String).toInt()! - 1
-                c.labelTag.text = V.Tags[self.theTag]
+                if let tag = self.circleData?.stringAttributeForKey("tag").toInt() {
+                    self.theTag = tag - 1
+                    c.labelTag.text = V.Tags[self.theTag]
+                }
                 c.numLeftNum.text = "\(self.dataArray.count)"
                 c.numMiddleNum.text = self.textPercent
                 self.editTitle = self.circleData!.objectForKey("title") as String

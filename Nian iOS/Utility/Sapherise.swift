@@ -301,9 +301,7 @@ extension UIViewController {
         }
     }
     func viewLoadingHide() {
-        if globalViewLoading != nil {
-            globalViewLoading!.removeFromSuperview()
-        }
+        globalViewLoading?.removeFromSuperview()
     }
 }
 

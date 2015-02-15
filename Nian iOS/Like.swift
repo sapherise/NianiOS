@@ -20,8 +20,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var circleID:String = "0"
     
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupRefresh()

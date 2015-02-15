@@ -15,6 +15,7 @@ class LikeCell: UITableViewCell {
     @IBOutlet var nickLabel:UILabel!
     @IBOutlet var View:UIView!
     @IBOutlet var btnFollow:UIButton!
+    @IBOutlet var viewHolder: UIView!
     var LargeImgURL:String = ""
     var data :NSDictionary!
     var user:String = ""
@@ -29,8 +30,7 @@ class LikeCell: UITableViewCell {
         self.avatarView.layer.masksToBounds = true
     }
     
-    override func layoutSubviews()
-    {
+    override func layoutSubviews() {
         super.layoutSubviews()
         self.uid = self.data.stringAttributeForKey("uid") as String
         var follow = self.data.stringAttributeForKey("follow") as String

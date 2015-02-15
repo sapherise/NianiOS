@@ -22,16 +22,16 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        setupRefresh()
-        self.tableView!.headerBeginRefreshing()
+        SAReloadData()
     }
     
     func noticeShare(noti:NSNotification){
-        self.tableView!.headerBeginRefreshing()
+        SAReloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        self.viewLoadingHide()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
     }
     
@@ -83,17 +83,18 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     func SAReloadData(){
+        self.viewLoadingShow()
         var isLoaded = 0
         delay(3, {
-            self.tableView.headerEndRefreshing(animated: true)
+            self.viewLoadingHide()
             if isLoaded == 0 {
                 self.view.showTipText("念没有踩你，再试试看", delay: 2)
             }
         })
-        self.tableView.setFooterHidden(false)
         Api.postLetter("0"){ json in
             if json != nil {
                 isLoaded = 1
+                self.viewLoadingHide()
                 var arr = json!["items"] as NSArray
                 self.dataArray.removeAllObjects()
                 for data:AnyObject in arr {
@@ -209,16 +210,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 self.navigationController?.pushViewController(letterVC, animated: true)
             }
         }
-    }
-    
-    
-    func setupRefresh(){
-        self.tableView!.addHeaderWithCallback({
-            self.SAReloadData()
-        })
-        self.tableView!.addFooterWithCallback({
-            self.loadData()
-        })
     }
     
     override func viewDidAppear(animated: Bool) {

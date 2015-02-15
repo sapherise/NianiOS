@@ -71,7 +71,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func Poll(noti: NSNotification) {
         var data = noti.object as NSDictionary
-        println(data)
         var circle = data.stringAttributeForKey("to")
         if circle == "\(self.ID)" {
             var id = data.stringAttributeForKey("msgid")

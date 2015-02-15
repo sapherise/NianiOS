@@ -56,7 +56,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         })
         launchTimer()
-        self.loadCircle()
+        //    self.loadCircle()
         self.enter()
     }
     
@@ -346,7 +346,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
-       // var vc3 = ExploreController()
+        // var vc3 = ExploreController()
         
         var vc1 = NianViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
@@ -415,22 +415,22 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.niceViewLabel!.text = text
         if self.animationBool == 0 {
             self.animationBool = 1
-        UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-            self.niceView!.setY(0)
-            }, completion: { (complete: Bool) in
-                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                    self.niceView!.setY(-5)
-                    }, completion: { (complete: Bool) in
-                        UIView.animateWithDuration(0.1, delay:2, options: UIViewAnimationOptions.allZeros, animations: {
-                            self.niceView!.setY(0)
-                            }, completion: { (complete: Bool) in
-                                UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                    self.niceView!.setY(-40)
-                                    }, completion: { (complete: Bool) in
-                                        self.animationBool = 0
-                                })
-                        })
-                })
+            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                self.niceView!.setY(0)
+                }, completion: { (complete: Bool) in
+                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                        self.niceView!.setY(-5)
+                        }, completion: { (complete: Bool) in
+                            UIView.animateWithDuration(0.1, delay:2, options: UIViewAnimationOptions.allZeros, animations: {
+                                self.niceView!.setY(0)
+                                }, completion: { (complete: Bool) in
+                                    UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                        self.niceView!.setY(-40)
+                                        }, completion: { (complete: Bool) in
+                                            self.animationBool = 0
+                                    })
+                            })
+                    })
             })
         }
     }
@@ -472,7 +472,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             })
         }
     }
-
+    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView"  {
             return false
@@ -555,55 +555,56 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             var msg: AnyObject? = obj!["msg"]
             var json = msg!["msg"] as NSArray
             var count = json.count - 1
-            for i: Int in 0...count {
-                var data: NSDictionary = json[i] as NSDictionary
-                var id = data.stringAttributeForKey("msgid")
-                var uid = data.stringAttributeForKey("from")
-                var name = data.stringAttributeForKey("fromname")
-                var cid = data.stringAttributeForKey("cid")
-                var cname = data.stringAttributeForKey("cname")
-                var content = data.stringAttributeForKey("msg")
-                var type = data.stringAttributeForKey("msgtype")
-                var time = data.stringAttributeForKey("time")
-                var circle = data.stringAttributeForKey("to")
-                var title = data.stringAttributeForKey("title")
-                content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                var isread = 0
-                if circle == "\(globalCurrentCircle)" || uid == safeuid {
-                    isread = 1
-                }
-                SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-                    NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                    if (type == "6") && (cid == safeuid) {
-                        Api.getCircleStatus(circle) { json in
-                            if json != nil {
-                                var numStatus = json!["count"] as String
-                                var titleStatus = json!["title"] as String
-                                var imageStatus = json!["img"] as String
-                                var postdateStatus = json!["postdate"] as String
-                                if numStatus == "1" {
+            if count >= 0 {
+                for i: Int in 0...count {
+                    var data: NSDictionary = json[i] as NSDictionary
+                    var id = data.stringAttributeForKey("msgid")
+                    var uid = data.stringAttributeForKey("from")
+                    var name = data.stringAttributeForKey("fromname")
+                    var cid = data.stringAttributeForKey("cid")
+                    var cname = data.stringAttributeForKey("cname")
+                    var content = data.stringAttributeForKey("msg")
+                    var type = data.stringAttributeForKey("msgtype")
+                    var time = data.stringAttributeForKey("time")
+                    var circle = data.stringAttributeForKey("to")
+                    var title = data.stringAttributeForKey("title")
+                    content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                    title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                    var isread = 0
+                    if circle == "\(globalCurrentCircle)" || uid == safeuid {
+                        isread = 1
+                    }
+                    SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
+                        NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                        if (type == "6") && ((cid == safeuid) || (cid == uid)) {
+                            Api.getCircleStatus(circle) { json in
+                                if json != nil {
+                                    var numStatus = json!["count"] as String
+                                    var titleStatus = json!["title"] as String
+                                    var imageStatus = json!["img"] as String
+                                    var postdateStatus = json!["postdate"] as String
+                                    if numStatus == "1" {
                                         // 添加
-                                    SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                }else{
+                                        SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
+                                    }else{
                                         // 删除
-                                    SQLCircleListDelete(circle)
+                                        SQLCircleListDelete(circle)
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                
-                if safeuid != uid {     // 如果是朋友们发的
-                    globalWillCircleReload = 1
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if globalTabBarSelected != 104 {
-                            self.dotCircle!.hidden = false
-                            if let a = self.dotCircle!.text?.toInt() {
-                                self.dotCircle!.text = "\(a + 1)"
+                    if safeuid != uid {     // 如果是朋友们发的
+                        globalWillCircleReload = 1
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if globalTabBarSelected != 104 {
+                                self.dotCircle!.hidden = false
+                                if let a = self.dotCircle!.text?.toInt() {
+                                    self.dotCircle!.text = "\(a + 1)"
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             }
         }
@@ -673,5 +674,4 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         }
     }
-    
 }
