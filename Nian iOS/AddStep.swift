@@ -124,6 +124,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         }
     }
     
+    func textViewDidChange(textView: UITextView) {
+        if (textView.text != "" && textView.text != "进展正文") || self.uploadUrl != "" {
+            self.btnOK.setTitle("写好了", forState: UIControlState.allZeros)
+        }else{
+            self.btnOK.setTitle("签到", forState: UIControlState.allZeros)
+        }
+    }
+    
     func textViewDidEndEditing(textView: UITextView) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.setY(globalHeight/2-106)
@@ -194,8 +202,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-//        var VC = findRootViewController()! as UIViewController
-//        VC.dismissViewControllerAnimated(true, completion: nil)
         self.uploadFile(image)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }

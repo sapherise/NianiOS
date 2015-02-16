@@ -21,31 +21,29 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
+        setupRefresh()
         SALoadData()
-        SALoadTop()
     }
     
     func noticeShare() {
-        SALoadData()
-        SALoadTop()
+        self.tableView.headerBeginRefreshing()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        self.viewLoadingHide()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        noticeShare()
+        SALoadLetter()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare", name: "noticeShare", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
     }
     
     func Letter(noti: NSNotification) {
-        self.SALoadData()
+        self.SALoadLetter()
     }
     
     func setupViews() {
@@ -73,11 +71,10 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.view.addSubview(self.tableView!)
     }
     
-    func SALoadTop() {
-        self.viewLoadingShow()
+    func SALoadData() {
+        SALoadLetter()
         var isLoaded = 0
         delay(3, {
-            self.viewLoadingHide()
             if isLoaded == 0 {
                 self.view.showTipText("念没有踩你，再试试看", delay: 2)
             }
@@ -85,25 +82,25 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         Api.postLetter() { json in
             if json != nil {
                 isLoaded = 1
-                self.viewLoadingHide()
                 self.numLeft = json!["notice_reply"] as String
                 self.numMiddel = json!["notice_like"] as String
                 self.numRight = json!["notice_news"] as String
                 self.tableView.reloadData()
+                self.tableView.headerEndRefreshing()
             }
         }
     }
     
-    func SALoadData(){
+    func SALoadLetter(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safename = Sa.objectForKey("user") as String
-        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` GROUP BY circle ORDER BY lastdate DESC")
+        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
         self.dataArray.removeAllObjects()
         for row in resultCircle {
             var id = (row["circle"]?.asString())!
             var title = "玩家 #\(id)"
-            let (resultDes, err) = SD.executeQuery("select * from letter where circle = '\(id)' and uid != '\(safeuid)' order by id desc limit 1")
+            let (resultDes, err) = SD.executeQuery("select * from letter where circle = '\(id)' and uid != '\(safeuid)' and owner = '\(safeuid)' order by id desc limit 1")
             if resultDes.count > 0 {
                 for row in resultDes {
                     title = (row["name"]?.asString())!
@@ -164,6 +161,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             cell!.numLeft.setColorful()
             cell!.numMiddle.setColorful()
             cell!.numRight.setColorful()
+            cell!.viewLeft.tag = 1
+            cell!.viewMiddle.tag = 2
+            cell!.viewRight.tag = 3
+            cell!.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
+            cell!.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
+            cell!.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
             return cell!
         }else{
             var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LetterCell
@@ -175,6 +178,33 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             }
             return cell!
+        }
+    }
+    
+    func onTopClick(sender: UIGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            if tag == 1 {
+                self.numLeft = "0"
+            }else if tag == 2 {
+                self.numMiddel = "0"
+            }else if tag == 3 {
+                self.numRight = "0"
+            }
+            var MeNextVC = MeNextViewController()
+            MeNextVC.tag = tag
+            self.navigationController?.pushViewController(MeNextVC, animated: true)
+        }
+        if let v = sender.view {
+            var views:NSArray = v.subviews
+            for view:AnyObject in views {
+                if NSStringFromClass(view.classForCoder) == "UILabel"  {
+                    var l = view as UILabel
+                    if l.frame.origin.y == 25 {
+                        l.text = "0"
+                        l.textColor = UIColor.blackColor()
+                    }
+                }
+            }
         }
     }
     
@@ -222,6 +252,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
+    }
+    
+    func setupRefresh() {
+        self.tableView.addHeaderWithCallback {
+            self.SALoadData()
+        }
     }
 }
 

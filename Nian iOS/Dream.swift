@@ -13,9 +13,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     let identifier = "dream"
     let identifier2 = "dreamtop"
     let identifier3 = "comment"
-    var lefttableView:UITableView?
+    var tableView:UITableView?
     var dataArray = NSMutableArray()
-    var dataArray2 = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
     var deleteSheet:UIActionSheet?
@@ -40,7 +39,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     var ReturnReplyContent:String = ""
     var ReturnReplyId:String = ""
-
+    
     var titleJson: String = ""
     var percentJson: String = ""
     var followJson: String = ""
@@ -68,7 +67,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        SALoadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -85,7 +84,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var content:AnyObject = noti.object!
         var sid:Int = content[2] as Int
         var row:Int = (content[3] as Int)-10
-        var url:NSURL = NSURL(string: "http://m.nian.so/step/\(sid)")!
+        var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
@@ -160,7 +159,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func shareDream(){
-        var url:NSURL = NSURL(string: "http://m.nian.so/dream/\(self.Id)")!
+        var url:NSURL = NSURL(string: "http://nian.so/m/dream/\(self.Id)")!
         let activityViewController = UIActivityViewController(
             activityItems: [ "喜欢念上的这个梦想！「\(self.titleJson)」", url ],
             applicationActivities: [WeChatSessionActivity(), WeChatMomentsActivity()])
@@ -172,18 +171,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
-        self.view.backgroundColor = UIColor.blackColor()
-        self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
-        self.lefttableView!.delegate = self;
-        self.lefttableView!.dataSource = self;
-        self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.view.backgroundColor = UIColor.whiteColor()
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
+        self.tableView!.delegate = self;
+        self.tableView!.dataSource = self;
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"DreamCell", bundle: nil)
         var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         var nib3 = UINib(nibName:"CommentCell", bundle: nil)
         
-        self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.lefttableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
-        self.view.addSubview(self.lefttableView!)
+        self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
+        self.view.addSubview(self.tableView!)
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
@@ -218,12 +217,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     self.dreamowner = 1
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
                     moreButton.image = UIImage(named:"more")
-                    self.navigationItem.rightBarButtonItems = [ moreButton]
+                    if self.privateJson != "2" {
+                        self.navigationItem.rightBarButtonItems = [ moreButton]
+                    }
                 }else{
                     self.dreamowner = 0
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
                     moreButton.image = UIImage(named:"more")
-                    self.navigationItem.rightBarButtonItems = [ moreButton]
+                    if self.privateJson == "0" {
+                        self.navigationItem.rightBarButtonItems = [ moreButton]
+                    }
                 }
                 self.loadDreamTopcell()
             }
@@ -264,82 +267,71 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.guestMoreSheet!.showInView(self.view)
     }
     
-    
-    func loadData() {
-        self.lefttableView!.setFooterHidden(false)
-        var url = urlString()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                if ( data["total"] as Int ) < 15 {
-                    self.lefttableView!.setFooterHidden(true)
+    func SALoadData(clear: Bool = true){
+        if clear {
+            self.page = 0
+        }
+        self.tableView!.setFooterHidden(clear)
+        Api.getDreamStep(self.Id, page: self.page) { json in
+            if json != nil {
+                var total = json!["total"] as Int
+                var thePrivate = json!["private"] as String
+                var uid = json!["uid"] as String
+                if total < 15 {
+                    self.tableView!.setFooterHidden(true)
+                }else{
+                    self.tableView?.setFooterHidden(false)
                 }
-                var arr = data["items"] as NSArray
-                for data : AnyObject  in arr
-                {
-                    self.dataArray.addObject(data)
+                var arr = json!["items"] as NSArray
+                if clear {
+                    self.dataArray.removeAllObjects()
                 }
-                self.lefttableView!.reloadData()
-                self.lefttableView!.footerEndRefreshing()
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                if thePrivate == "2" {
+                    // 删除
+                    var viewTop = viewEmpty(globalWidth, content: "这个梦想\n不见了")
+                    viewTop.setY(104)
+                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    viewHolder.addSubview(viewTop)
+                    self.view.addSubview(viewHolder)
+                    self.tableView?.hidden = true
+                    self.navigationItem.rightBarButtonItems = []
+                }else if thePrivate == "1" && uid != safeuid {
+                    // 私密
+                    var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的梦想\n里面记着什么？")
+                    viewTop.setY(104)
+                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    viewHolder.addSubview(viewTop)
+                    self.view.addSubview(viewHolder)
+                    self.tableView?.hidden = true
+                    self.navigationItem.rightBarButtonItems = []
+                }else{
+                    for data: AnyObject in arr {
+                        self.dataArray.addObject(data)
+                    }
+                }
+                self.tableView?.reloadData()
+                self.tableView?.headerEndRefreshing()
+                self.tableView?.footerEndRefreshing()
                 self.page++
             }
-        })
-    }
-    
-    
-    func SAReloadData(){
-        self.lefttableView!.setFooterHidden(false)
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var url = "http://nian.so/api/step.php?page=0&id=\(Id)&uid=\(safeuid)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                if ( data["total"] as Int ) < 15 {
-                    self.lefttableView!.setFooterHidden(true)
-                }
-                var arr = data["items"] as NSArray
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
-                }
-                self.lefttableView!.reloadData()
-                self.lefttableView!.headerEndRefreshing()
-                self.page = 1
-            }
-        })
-    }
-    
-    
-    
-    
-    func urlString()->String
-    {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/step.php?page=\(page)&id=\(Id)&uid=\(safeuid)"
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        }
     }
     
     func onStepClick(){
         UIView.animateWithDuration(0.3, animations: {
-            self.lefttableView!.contentOffset.y = 287
+            self.tableView!.contentOffset.y = 287
         })
     }
-    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
     
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        
-        if indexPath.section==0{
+        if indexPath.section == 0 {
             var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as DreamCellTop
             var index = indexPath.row
             var dreamid = Id
@@ -358,6 +350,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+            c.likebutton.tag = index
+            c.liked.tag = index
+            c.likebutton.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+            c.liked.addTarget(self, action: "onLikedTap:", forControlEvents: UIControlEvents.TouchUpInside)
             c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
             c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             c.tag = index + 10
@@ -369,6 +365,40 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             cell = c
         }
         return cell
+    }
+    
+    // 赞
+    func onLikeTap(sender: UIButton) {
+        var tag = sender.tag
+        var data = self.dataArray[tag] as NSDictionary
+        if let numLike = data.stringAttributeForKey("like").toInt() {
+            var numNew = numLike + 1
+            var mutableItem = NSMutableDictionary(dictionary: data)
+            mutableItem.setValue("\(numNew)", forKey: "like")
+            mutableItem.setValue("1", forKey: "liked")
+            self.dataArray.replaceObjectAtIndex(tag, withObject: mutableItem)
+            self.tableView?.reloadData()
+            var sid = data.stringAttributeForKey("sid")
+            Api.postLike(sid, like: "1") { json in
+            }
+        }
+    }
+    
+    // 取消赞
+    func onLikedTap(sender: UIButton) {
+        var tag = sender.tag
+        var data = self.dataArray[tag] as NSDictionary
+        if let numLike = data.stringAttributeForKey("like").toInt() {
+            var numNew = numLike - 1
+            var mutableItem = NSMutableDictionary(dictionary: data)
+            mutableItem.setValue("\(numNew)", forKey: "like")
+            mutableItem.setValue("0", forKey: "liked")
+            self.dataArray.replaceObjectAtIndex(tag, withObject: mutableItem)
+            self.tableView?.reloadData()
+            var sid = data.stringAttributeForKey("sid")
+            Api.postLike(sid, like: "0") { json in
+            }
+        }
     }
     
     func onImageTap(sender: UITapGestureRecognizer) {
@@ -422,15 +452,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         if indexPath.section==0{
             return  287 + 14
         }else{
-            if tableView == lefttableView {
-                var index = indexPath!.row
-                var data = self.dataArray[index] as NSDictionary
-                return  DreamCell.cellHeightByData(data)
-            }else{
-                var index = indexPath!.row
-                var data = self.dataArray2[index] as NSDictionary
-                return  CommentCell.cellHeightByData(data)
-            }
+            var index = indexPath!.row
+            var data = self.dataArray[index] as NSDictionary
+            return  DreamCell.cellHeightByData(data)
         }
     }
     
@@ -442,7 +466,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func countUp() {      //😍
-        self.SAReloadData()
+        self.SALoadData()
         var stepNum = self.topCell.numMiddleNum.text!.toInt()!
         self.topCell.numMiddleNum.text = "\(stepNum + 1)"
     }
@@ -451,16 +475,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func Editstep() {      //😍
         self.dataArray[self.editStepRow] = self.editStepData!
         var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
-        self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+        self.tableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
     func setupRefresh(){
-        self.lefttableView!.addHeaderWithCallback({
-            self.SAReloadData()
+        self.tableView!.addHeaderWithCallback({
+            self.SALoadData()
         })
         
-        self.lefttableView!.addFooterWithCallback({
-            self.loadData()
+        self.tableView!.addFooterWithCallback({
+            self.SALoadData(clear: false)
         })
     }
     
@@ -472,8 +496,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if buttonIndex == 0 {
                 var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
                 self.dataArray.removeObjectAtIndex(newpath!.row)
-                self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.lefttableView!.reloadData()
+                self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.tableView!.reloadData()
                 var stepNum = self.topCell.numMiddleNum.text!.toInt()!
                 self.topCell.numMiddleNum.text = "\(stepNum - 1)"
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -490,7 +514,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.Id)", "http://nian.so/api/delete_dream.php")
                     if(sa == "1"){
                         dispatch_async(dispatch_get_main_queue(), {
-                        self.back()
+                            self.backNavigation()
                         })
                     }
                 })
@@ -578,11 +602,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         if section == 0 {
             return 1
         }else{
-            if tableView == self.lefttableView {
-                return self.dataArray.count
-            }else{
-                return self.dataArray2.count
-            }
+            return self.dataArray.count
         }
     }
     
@@ -665,7 +685,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             v.showImage("http://img.nian.so/dream/\(self.imgJson)!large", rect: rect)
         }
     }
-    
     
     func likeDream(){
         var LikeVC = LikeViewController()

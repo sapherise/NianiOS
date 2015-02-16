@@ -92,6 +92,16 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/user.php?uid=\(uid)&myuid=\(s_uid)", callback: callback)
     }
     
+    static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/step.php?uid=\(s_uid)&id=\(id)&page=\(page)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getSingleStep(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/step_single.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
+    }
+    
     static func getDreamNewest(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/addstep_dream.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
@@ -279,6 +289,11 @@ struct Api {
     static func postLetterInit(callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/letter_init.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func postLike(step: String, like: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&shell=\(s_shell)&step=\(step)&like=\(like)", callback: callback)
     }
     
 }

@@ -34,50 +34,6 @@ class DreamCell: UITableViewCell {
     var indexPathRow:Int = 0
     var sid:Int = 0
     
-    @IBAction func nolikeClick(sender: AnyObject) { //取消赞
-        self.liked!.hidden = true
-        self.likebutton!.hidden = false
-            var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
-            var likenewnumber = likenumber.toInt()! - 1
-            self.like!.text = "\(likenewnumber) 赞"
-            self.data.setValue("\(likenewnumber)", forKey: "like")
-            if likenewnumber == 0 {
-                self.like!.hidden = true
-            }else{
-                self.like!.hidden = false
-            }
-        self.data.setValue("0", forKey: "liked")
-        var sid = self.data.stringAttributeForKey("sid")
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-        var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=0", "http://nian.so/api/like_query.php")
-        if sa == "1" {
-        }
-        })
-    }
-    @IBAction func likeClick(sender: AnyObject) {   //赞
-        self.likebutton!.hidden = true
-        self.liked!.hidden = false
-            var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
-            var likenewnumber = likenumber.toInt()! + 1
-            self.like!.text = "\(likenewnumber) 赞"
-            self.data.setValue("\(likenewnumber)", forKey: "like")
-        self.data.setValue("1", forKey: "liked")
-        self.like!.hidden = false
-        var sid = self.data.stringAttributeForKey("sid")
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-        var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=1", "http://nian.so/api/like_query.php")
-        if sa == "1" {
-        }
-        })
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None

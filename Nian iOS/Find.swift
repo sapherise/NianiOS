@@ -336,7 +336,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func sharePromo() {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
-        var url:NSURL = NSURL(string: "http://m.nian.so/user/\(safeuid)")!
+        var url:NSURL = NSURL(string: "http://nian.so/m/user/\(safeuid)")!
         var image = self.getImageFromView(self.imagePromo)
         let activityView = UIActivityViewController(
             activityItems: [image, "来念上找我玩", url],

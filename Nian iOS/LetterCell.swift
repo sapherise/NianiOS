@@ -35,6 +35,8 @@ class LetterCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
         if data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")
@@ -44,7 +46,7 @@ class LetterCell: UITableViewCell {
             }
             self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             self.labelTitle.text = title
-            let (resultSet2, err2) = SD.executeQuery("select * from letter where circle='\(id)' order by id desc limit 1")
+            let (resultSet2, err2) = SD.executeQuery("select * from letter where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
             if resultSet2.count > 0 {
                 for row in resultSet2 {
                     var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
@@ -62,7 +64,7 @@ class LetterCell: UITableViewCell {
                 self.lastdate!.hidden = true
                 self.labelContent.text = "可以开始聊天啦"
             }
-            let (resultSet, err) = SD.executeQuery("select id from letter where circle='\(id)' and isread = 0")
+            let (resultSet, err) = SD.executeQuery("select id from letter where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
             if err == nil {
                 var count = resultSet.count
                 if count == 0 {

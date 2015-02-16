@@ -61,7 +61,9 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.deregisterFromKeyboardNotifications()
         self.viewBackFix()
         globalCurrentLetter = self.ID
-        SD.executeChange("update letter set isread = 1 where circle = \(self.ID) and isread = 0")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        SD.executeChange("update letter set isread = 1 where circle = \(self.ID) and isread = 0 and owner = '\(safeuid)'")
     }
     
     func Letter(noti: NSNotification) {
@@ -74,14 +76,16 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var content = data.stringAttributeForKey("msg")
             var title = data.stringAttributeForKey("title")
             var type = data.stringAttributeForKey("msgtype")
-            var time = data.stringAttributeForKey("time")
+            var time = (data.stringAttributeForKey("time") as NSString).doubleValue
             content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            content = SADecode(SADecode(content))
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             var safeuser = Sa.objectForKey("user") as String
             var commentReplyRow = self.dataArray.count
+            var absoluteTime = V.absoluteTime(time)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
                 self.dataArray.insertObject(newinsert, atIndex: 0)
                 var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
                 self.tableview.insertRowsAtIndexPaths([newindexpath], withRowAnimation: UITableViewRowAnimation.None)
@@ -247,8 +251,9 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
                                 var contentOri = data.stringAttributeForKey("content")
                                 var lastdate = data.stringAttributeForKey("lastdate")
                                 if contentComment == contentOri && lastdate == "sending" {
+                                    var lastdate = V.absoluteTime(NSDate().timeIntervalSince1970)
                                     var mutableItem = NSMutableDictionary(dictionary: data)
-                                    mutableItem.setObject("现在", forKey: "lastdate")
+                                    mutableItem.setObject(lastdate, forKey: "lastdate")
                                     self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
                                     self.tableview.reloadData()
                                     break
@@ -267,7 +272,9 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.dataTotal = 0
             self.dataArray.removeAllObjects()
         }
-        let (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' order by id desc limit \(self.page*30),30")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
         if err == nil {
             self.page++
             var title: String?
@@ -278,7 +285,7 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var content = row["content"]?.asString()
                 var type = row["type"]?.asString()
                 var lastdate = row["lastdate"]?.asString()
-                var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
+                var time = V.absoluteTime((lastdate! as NSString).doubleValue)
                 var data = NSDictionary(objects: [id!, uid!, user!, content!, type!, time], forKeys: ["id", "uid", "user", "content", "type", "lastdate"])
                 self.dataArray.addObject(data)
                 self.dataTotal++
@@ -478,6 +485,7 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.imagePicker = UIImagePickerController()
                     self.imagePicker!.delegate = self
                     self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                    self.imagePicker!.allowsEditing = true
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
                 }
             }

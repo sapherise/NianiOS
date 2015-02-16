@@ -36,7 +36,9 @@ class CircleCell: UITableViewCell {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             self.labelTitle.text = title
             
-            let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' order by id desc limit 1")
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
             if err2 == nil {
                 if resultSet2.count > 0 {
                     for row in resultSet2 {
@@ -75,7 +77,7 @@ class CircleCell: UITableViewCell {
             
             
             
-            let (resultSet, err) = SD.executeQuery("select id from circle where circle='\(id)' and isread = 0")
+            let (resultSet, err) = SD.executeQuery("select id from circle where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
             if err == nil {
                 var count = resultSet.count
                 if count == 0 {

@@ -12,10 +12,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     let identifier = "dream"
     let identifier3 = "comment"
-    var lefttableView:UITableView?
+    var tableView:UITableView?
     var dataArray = NSMutableArray()
-    var dataArray2 = NSMutableArray()
-    var page :Int = 0
     var Id:String = "1"
     var deleteSheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
@@ -73,7 +71,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         var content:AnyObject = noti.object!
         var sid:Int = content[2] as Int
         var row:Int = (content[3] as Int)-10
-        var url:NSURL = NSURL(string: "http://m.nian.so/step/\(sid)")!
+        var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
@@ -157,16 +155,16 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         
         self.view.backgroundColor = UIColor.blackColor()
         
-        self.lefttableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
-        self.lefttableView!.delegate = self;
-        self.lefttableView!.dataSource = self;
-        self.lefttableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
+        self.tableView!.delegate = self;
+        self.tableView!.dataSource = self;
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"DreamCell", bundle: nil)
         var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         var nib3 = UINib(nibName:"CommentCell", bundle: nil)
         
-        self.lefttableView?.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.view.addSubview(self.lefttableView!)
+        self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.view.addSubview(self.tableView!)
         
         
         //标题颜色
@@ -180,34 +178,43 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     func SAReloadData(){
-        self.lefttableView!.setFooterHidden(false)
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
-        var url = "http://nian.so/api/step_single.php?page=0&sid=\(Id)&uid=\(safeuid)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                var arr = data["items"] as NSArray
+        self.tableView?.setFooterHidden(false)
+        Api.getSingleStep(self.Id) { json in
+            if json != nil {
                 self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
-                }
-//                if safeuid == data["items"][0].objectForKey {
-//                    self.dreamowner = 1
-//                }else{
-//                    self.dreamowner = 0
-//                }
-                var uid = self.dataArray[0].objectForKey("uid") as String
-                if safeuid == uid {
-                    self.dreamowner = 1
+                var uid = json!["uid"] as String
+                var thePrivate = json!["private"] as String
+                var arr = json!["items"] as NSArray
+                if thePrivate == "2" {
+                    // 删除
+                    var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
+                    viewTop.setY(40)
+                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    viewHolder.addSubview(viewTop)
+                    self.tableView?.tableHeaderView = viewHolder
                 }else{
-                    self.dreamowner = 0
+                    for data: AnyObject in arr {
+                        var theData = data as NSDictionary
+                        var hidden = theData.stringAttributeForKey("hidden")
+                        if hidden == "1" {
+                            var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
+                            viewTop.setY(40)
+                            var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                            viewHolder.addSubview(viewTop)
+                            self.tableView?.tableHeaderView = viewHolder
+                        }else{
+                            self.dataArray.addObject(data)
+                        }
+                    }
                 }
-                self.lefttableView!.reloadData()
-                self.lefttableView!.headerEndRefreshing()
-                self.page = 1
+                self.dreamowner = safeuid == uid ? 1 : 0
+                self.tableView!.reloadData()
+                self.tableView!.headerEndRefreshing()
             }
-        })
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -219,7 +226,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         var cell:UITableViewCell
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
             var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as NSMutableDictionary
             c.data = data
             c.indexPathRow = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -293,7 +300,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func Editstep() {      //😍
         var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 0)
-        self.lefttableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+        self.tableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
     func countUp(){
@@ -301,7 +308,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func setupRefresh(){
-        self.lefttableView!.addHeaderWithCallback({
+        self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
         })
     }
@@ -314,8 +321,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
             if buttonIndex == 0 {
                 var newpath = NSIndexPath(forRow: 0, inSection: 0)
                 self.dataArray.removeObjectAtIndex(newpath!.row)
-                self.lefttableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.lefttableView!.reloadData()
+                self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.tableView!.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
                     if(sa == "1"){

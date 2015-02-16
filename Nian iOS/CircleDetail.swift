@@ -372,7 +372,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 Api.postCircleQuit(self.Id) {
                     json in
                     if json != nil {
-                        globalWillCircleReload = 1
                         self.navigationController?.popToRootViewControllerAnimated(true)
                         SQLCircleListDelete(self.Id)
                     }
@@ -388,7 +387,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     json in
                     if json != nil {
                         SQLCircleListDelete(self.Id)
-                        globalWillCircleReload = 1
                         self.navigationController?.popToRootViewControllerAnimated(true)
                     }
                 }

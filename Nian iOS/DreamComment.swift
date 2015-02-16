@@ -249,22 +249,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.activityIndicatorView.hidden = true
             self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
         }
-        //        //如果向下滚动时，就收起键盘
-        //        var currentOffset:CGFloat = scrollView.contentOffset.y
-        //        if scrollView.contentOffset.y < self.lastContentOffset {
-        //            if self.isKeyboardResign == 0 {
-        //                self.inputKeyboard.resignFirstResponder()
-        //            }
-        //        }
-        //        self.lastContentOffset = currentOffset
-    }
-    
-    func urlString()->String
-    {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        return "http://nian.so/api/step.php?page=\(page)&id=\(self.stepID)&uid=\(safeuid)"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

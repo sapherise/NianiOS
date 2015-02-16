@@ -101,29 +101,28 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             var safeshell = Sa.objectForKey("shell") as? String
             if safeuid != nil {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var noticenumber = SAPost("uid=\(safeuid!)&&shell=\(safeshell!)", "http://nian.so/api/dot.php")
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if noticenumber == "0" || noticenumber == "err" {
-                            self.dot!.hidden = true
-                        }else{
-                            if let v = noticenumber.toInt() {
-                                if globalTabBarSelected != 103 {
-                                    self.dot!.hidden = false
-                                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                        self.dot!.frame = CGRectMake(228, 8, 20, 17)
-                                        }, completion: { (complete: Bool) in
-                                            UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                                self.dot!.frame = CGRectMake(228, 10, 20, 15)
-                                                }, completion: { (complete: Bool) in
-                                                    self.dot!.text = "\(v)"
-                                            })
-                                    })
-                                }else{
-                                    self.dot!.hidden = true
-                                }
+                    let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid!)'")
+                    var a = resultSet.count
+                    var b = SAPost("uid=\(safeuid!)&&shell=\(safeshell!)", "http://nian.so/api/dot.php")
+                    if let number = b.toInt() {
+                        globalNoticeNumber = a + number
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
+                                self.dot!.hidden = false
+                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                    self.dot!.frame = CGRectMake(228, 8, 20, 17)
+                                    }, completion: { (complete: Bool) in
+                                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                            self.dot!.frame = CGRectMake(228, 10, 20, 15)
+                                            }, completion: { (complete: Bool) in
+                                                self.dot!.text = "\(globalNoticeNumber)"
+                                        })
+                                })
+                            }else{
+                                self.dot!.hidden = true
                             }
-                        }
-                    })
+                        })
+                    }
                 })
             }
         }
@@ -132,9 +131,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
         
         //总的
         self.view.backgroundColor = BGColor
@@ -564,7 +560,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     var title = data.stringAttributeForKey("title")
                     var totype = data.stringAttributeForKey("totype")
                     content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                    content = SADecode(SADecode(content))
                     title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                    title = SADecode(SADecode(title))
                     var isread = 0
                     // 如果是群聊
                     if totype == "1" {
@@ -592,7 +590,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             }
                         }
                         if safeuid != uid {     // 如果是朋友们发的
-                            globalWillCircleReload = 1
                             dispatch_async(dispatch_get_main_queue(), {
                                 if globalTabBarSelected != 104 {
                                     self.dotCircle!.hidden = false
@@ -609,15 +606,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         }
                         SQLLetterContent(id, uid, name, uid, content, type, time, isread) {
                             NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+                            self.noticeDot()
                         }
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if globalTabBarSelected != 103 {
-                                self.dot!.hidden = false
-                                if let a = self.dot!.text?.toInt() {
-                                    self.dot!.text = "\(a + 1)"
-                                }
-                            }
-                        })
                     }
                 }
             }
@@ -649,7 +639,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     if circle == "\(globalCurrentCircle)" || uid == safeuid {
                         isread = 1
                     }
-                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' order by id desc limit  1")
+                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                         var safeuid = Sa.objectForKey("uid") as String
@@ -677,7 +667,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         }
                     }
                 }
-                let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0")
+                let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0 and owner = '\(safeuid)'")
                 if err == nil {
                     a = resultSet.count
                 }
@@ -708,7 +698,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     if circle == "\(globalCurrentCircle)" {
                         isread = 1
                     }
-                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' order by id desc limit  1")
+                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                    var safeuid = Sa.objectForKey("uid") as String
+                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                         var safeuid = Sa.objectForKey("uid") as String
@@ -716,15 +708,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
                             var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                             NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+                            self.noticeDot()
                         }
-                    }
-                }
-                let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0")
-                a = resultSet.count
-                if globalTabBarSelected != 103 && a > 0 {
-                    if let t = self.dot!.text?.toInt() {
-                        self.dot!.text = "\(a + t)"
-                        self.dot!.hidden = false
                     }
                 }
             }

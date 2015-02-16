@@ -88,7 +88,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var content:AnyObject = noti.object!
         var sid:Int = content[2] as Int
         var row:Int = (content[3] as Int)-10
-        var url:NSURL = NSURL(string: "http://m.nian.so/step/\(sid)")!
+        var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
@@ -637,6 +637,13 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     }
                     self.topCell!.btnLetter.addTarget(self, action: "SALetter:", forControlEvents: UIControlEvents.TouchUpInside)
                     self.topCell!.btnLetter.setTitle("写信", forState: UIControlState.Normal)
+                    
+                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                    var safeuid = Sa.objectForKey("uid") as String
+                    if self.Id == safeuid {
+                        self.topCell?.btnLetter.hidden = true
+                        self.topCell?.btnMain.hidden = true
+                    }
                     if cover == "" {
                         self.topCell!.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                         self.topCell!.BGImage.image = UIImage(named: "bg")

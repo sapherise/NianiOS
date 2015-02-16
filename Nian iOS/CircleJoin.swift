@@ -69,7 +69,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 self.tableView!.reloadData()
                 if self.dataArray.count == 0 {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, 278, 200))
-                    var viewQuestion = viewEmpty(278, content: "没有梦想是这个标签")
+                    var viewQuestion = viewEmpty(278, content: "还没有梦想")
                     viewQuestion.setY(20)
                     var btnGo = UIButton()
                     btnGo.setButtonNice("创建一个")
@@ -83,12 +83,8 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 }else{
                     self.tableView.tableHeaderView = UIView()
                 }
-                
-                
-                
                 self.btnOK.enabled = true
-                var tag = V.Tags[self.hashTag-1]
-                self.labelDream.text = "绑定\(tag)梦想"
+                self.labelDream.text = "绑定梦想"
             }
         }
     }
@@ -181,7 +177,6 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                             var image = json!["img"] as String
                             var postdate = json!["postdate"] as String
                             SQLCircleListInsert(self.circleID, title, image, postdate)
-                            globalWillCircleReload = 1
                             self.delegate?.SAReloadData()
                         }else if self.thePrivate == "1" {
                             textOK = "发好验证了！"

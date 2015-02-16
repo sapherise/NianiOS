@@ -9,3 +9,4 @@
 #import "WXApi.h"
 #import "MobClick.h"
 #import "sqlite3.h"
+#import "NSObject+Swift.h"

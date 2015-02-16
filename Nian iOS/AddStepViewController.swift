@@ -192,14 +192,17 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             if(sa == "1"){
                 globalWillNianReload = 1
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.data!.setValue(self.TextView.text, forKey: "content")
-                    self.data!.setValue(self.uploadUrl, forKey: "img")
-                    self.data!.setValue(self.uploadWidth, forKey: "img0")
-                    self.data!.setValue(self.uploadHeight, forKey: "img1")
-                    self.delegate?.editStepRow = self.row
-                    self.delegate?.editStepData = self.data!
-                    self.delegate?.Editstep()
-                    self.navigationController?.popViewControllerAnimated(true)
+                    if self.data != nil {
+                        var mutableData = NSMutableDictionary(dictionary: self.data!)
+                        mutableData.setValue(self.TextView.text, forKey: "content")
+                        mutableData.setValue(self.uploadUrl, forKey: "img")
+                        mutableData.setValue(self.uploadWidth, forKey: "img0")
+                        mutableData.setValue(self.uploadHeight, forKey: "img1")
+                        self.delegate?.editStepRow = self.row
+                        self.delegate?.editStepData = mutableData
+                        self.delegate?.Editstep()
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }
                 })
             }
         })

@@ -229,9 +229,9 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                     var postdate = json!["postdate"] as String
                     var success = json!["success"] as String
                     if success == "1" {
-                        globalWillCircleReload = 1
                         globalWillNianReload = 1
-                        SQLCircleListInsert(id, "\(title!)", self.uploadUrl, postdate)
+                        var theTitle = self.field1?.text
+                        SQLCircleListInsert(id, "\(theTitle!)", self.uploadUrl, postdate)
                         self.navigationController?.popToRootViewControllerAnimated(true)
                     }
                 }
@@ -256,7 +256,6 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             content = SAEncode(SAHtml(content!))
             Api.postCircleEdit(title!, content: content, img: self.uploadUrl, privateType: self.editPrivate.toInt()!, ID: self.editId) { json in
                 if json != nil {
-                    globalWillCircleReload = 1
                     self.delegate?.editCircle(self.editPrivate.toInt()!, editTitle: self.field1!.text, editDes: self.field2.text, editImage: self.uploadUrl)
                     self.navigationController?.popViewControllerAnimated(true)
                 }

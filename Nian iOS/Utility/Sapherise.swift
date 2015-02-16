@@ -34,7 +34,6 @@ let TextLoadFailed = "加载数据失败了..."
 var globalWillNianReload:Int = 0
 var globalWillBBSReload:Int = 0
 var globalNumberDream:Int = 0
-var globalWillCircleReload:Int = 0
 var globalImageYPoint:CGRect = CGRectZero
 var globalWillCircleChatReload:Int = 0
 var globalWillCircleJoinReload:Int = 0
@@ -46,6 +45,7 @@ var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
 var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
+var globalNoticeNumber: Int = 0
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
@@ -103,19 +103,24 @@ func SAHtml(content:String) -> String {
     CFStringFindAndReplace(s, " ", "&nbsp;", r, CFStringCompareFlags.allZeros)
     r.length = CFStringGetLength(s)
     CFStringFindAndReplace(s, "\n", "<br>", r, CFStringCompareFlags.allZeros)
-//    var newContent = SAReplace(content, "&", "&amp;");
-//    newContent = SAReplace(newContent, "<", "&lt;");
-//    newContent = SAReplace(newContent, ">", "&gt;");
-//    newContent = SAReplace(newContent, "\"", "&quot;");
-//    newContent = SAReplace(newContent, "'", "&#039;");
-//    newContent = SAReplace(newContent, " ", "&nbsp;");
-//    newContent = SAReplace(newContent, "\n", "<br>");
     return s
 }
 
 func SAEncode(content:String) -> String {
     let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&+"
     return CFURLCreateStringByAddingPercentEscapes(nil, content, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue)
+}
+
+func SADecode(word: String) -> String {
+    var content = word
+    content = SAReplace(content, "&amp;", "&")
+    content = SAReplace(content, "&lt;", "<")
+    content = SAReplace(content, "&gt;", ">")
+    content = SAReplace(content, "&quot;", "\\")
+    content = SAReplace(content, "&#039;", "'")
+    content = SAReplace(content, "&nbsp;", " ")
+    content = SAReplace(content, "<br>", "\n")
+    return content
 }
 
 func SAColorImg(theColor:UIColor)->UIImage{
@@ -225,7 +230,7 @@ func delay(delay:Double, closure:()->()) {
 
 extension UIViewController: UIGestureRecognizerDelegate {
     func viewBack(){
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "back")
+        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigation")
         leftButton.image = UIImage(named:"newBack")
         self.navigationItem.leftBarButtonItem = leftButton
         if let v = self.navigationController {
@@ -233,7 +238,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
             v.interactivePopGestureRecognizer.delegate = self
         }
     }
-    func back(){
+    func backNavigation(){
         if let v = self.navigationController {
             v.popViewControllerAnimated(true)
         }

@@ -143,8 +143,8 @@ struct V {
         return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
     }
     
-    static func absoluteTime(time: NSTimeInterval, current: NSTimeInterval) -> String {
-        var d = current - time
+    static func absoluteTime(time: NSTimeInterval) -> String {
+        var d = NSDate().timeIntervalSince1970 - time
         var formatter = NSDateFormatter()
         if d < 86400 {
             formatter.dateFormat = "HH:mm"
@@ -172,7 +172,7 @@ struct V {
     }
     
     static func urlShareDream(did: String) -> NSURL {
-        return NSURL(string: "http://m.nian.so/dream/\(did)")!
+        return NSURL(string: "http://nian.so/m/dream/\(did)")!
     }
     
     static func urlDreamImage(img: String, tag: V.IMAGE_TAG) -> String {

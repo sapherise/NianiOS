@@ -65,13 +65,15 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SALoadData() {
-        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` GROUP BY circle ORDER BY lastdate DESC")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
         self.dataArray.removeAllObjects()
         for row in resultCircle {
             var id = (row["circle"]?.asString())!
             var img = ""
             var title = "梦境 #\(id)"
-            let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' limit 1")
+            let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
             if resultDes.count > 0 {
                 for row in resultDes {
                     img = (row["image"]?.asString())!
@@ -82,7 +84,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                     if json != nil {
                         img = json!["img"] as String
                         title = json!["title"] as String
-                        SD.executeChange("insert into circlelist(id, circleid, title, image, postdate) values (null, ?, ?, ?, '0')", withArgs: [id, title, img])
+                        SD.executeChange("insert into circlelist(id, circleid, title, image, postdate, owner) values (null, ?, ?, ?, '0', ?)", withArgs: [id, title, img, safeuid])
                         delay(0.2, { () -> () in
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.tableView.reloadData()

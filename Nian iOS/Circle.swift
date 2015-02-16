@@ -61,8 +61,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.deregisterFromKeyboardNotifications()
         self.viewBackFix()
         globalCurrentCircle = self.ID
-        if let err = SD.executeChange("update circle set isread = 1 where circle = \(self.ID) and isread = 0") {
-        }
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        SD.executeChange("update circle set isread = 1 where circle = \(self.ID) and isread = 0 and owner = \(safeuid)")
     }
     
     func Poll(noti: NSNotification) {
@@ -75,16 +76,18 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var content = data.stringAttributeForKey("msg")
             var title = data.stringAttributeForKey("title")
             var type = data.stringAttributeForKey("msgtype")
-            var time = data.stringAttributeForKey("time")
+            var time = (data.stringAttributeForKey("time") as NSString).doubleValue
             var cid = data.stringAttributeForKey("cid")
             content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            content = SADecode(SADecode(content))
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             var safeuser = Sa.objectForKey("user") as String
             var commentReplyRow = self.dataArray.count
+            var absoluteTime = V.absoluteTime(time)
             if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , "", uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                    var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
                     self.dataArray.insertObject(newinsert, atIndex: 0)
                     var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
                     self.tableview.insertRowsAtIndexPaths([newindexpath], withRowAnimation: UITableViewRowAnimation.None)
@@ -116,8 +119,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                             var contentOri = data.stringAttributeForKey("content")
                             var lastdate = data.stringAttributeForKey("lastdate")
                             if content == contentOri && lastdate == "sending" {
+                                var lastdate = V.absoluteTime(NSDate().timeIntervalSince1970)
                                 var mutableItem = NSMutableDictionary(dictionary: data)
-                                mutableItem.setObject("现在", forKey: "lastdate")
+                                mutableItem.setObject(lastdate, forKey: "lastdate")
                                 self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
                                 self.tableview.reloadData()
                                 break
@@ -268,7 +272,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.dataTotal = 0
             self.dataArray.removeAllObjects()
         }
-        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' order by id desc limit \(self.page*30),30")
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
         if err == nil {
             self.page++
             var title: String?
@@ -281,7 +287,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var content = row["content"]?.asString()
                 var type = row["type"]?.asString()
                 var lastdate = row["lastdate"]?.asString()
-                var time = V.relativeTime((lastdate! as NSString).doubleValue, current: NSDate().timeIntervalSince1970)
+                var time = V.absoluteTime((lastdate! as NSString).doubleValue)
                 var title = row["title"]?.asString()
                 var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
                 self.dataArray.addObject(data)
@@ -486,6 +492,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.imagePicker = UIImagePickerController()
                     self.imagePicker!.delegate = self
                     self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                    self.imagePicker!.allowsEditing = true
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
                 }
             }
@@ -518,22 +525,18 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var uploadUrl = data.objectForKey("url") as String
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
-
-            // 当上传图片完成后，搜索最近的几条，当匹配名字时，就替换图片
-            // 替换完成后，提交到 Neverland，匹配文件名时将 sending 替换为现在。
             var content = "\(uploadUrl)_\(width)_\(height)"
-            for var i: Int = 0; i < self.dataArray.count; i++ {
-                var dataLoading = self.dataArray[i] as NSDictionary
-                var contentOri = dataLoading.stringAttributeForKey("content")
-                if contentOri == "\(safeuid)_loading_\(width)_\(height)" {
-                    var mutableItem = NSMutableDictionary(dictionary: dataLoading)
-                    mutableItem.setObject(content, forKey: "content")
-                    self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                    self.tableview.reloadData()
-                    break
+                for var i: Int = 0; i < self.dataArray.count; i++ {
+                    var dataLoading = self.dataArray[i] as NSDictionary
+                    var contentOri = dataLoading.stringAttributeForKey("content")
+                    if contentOri == "\(safeuid)_loading_\(width)_\(height)" {
+                        var mutableItem = NSMutableDictionary(dictionary: dataLoading)
+                        mutableItem.setObject(content, forKey: "content")
+                        self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                        self.tableview.reloadData()
+                    }
                 }
-            }
-            self.addReply(content, type: 2)
+                self.addReply(content, type: 2)
         })
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png"))
     }

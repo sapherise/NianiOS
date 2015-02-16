@@ -36,6 +36,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         navView.backgroundColor = BarColor
         self.viewBack()
         self.view.addSubview(navView)
+        self.view.backgroundColor = UIColor.whiteColor()
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.alwaysBounceVertical = true
@@ -108,6 +109,18 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
+                }
+                if self.dataArray.count == 0 {
+                    var textEmpty = "要先有一个\n公开中的梦想"
+                    if self.dreamPromoDelegate == nil {
+                        textEmpty = "你的梦想\n都没有标签"
+                    }
+                    var viewTop = viewEmpty(globalWidth, content: textEmpty)
+                    viewTop.setY(104)
+                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    viewHolder.addSubview(viewTop)
+                    self.view.addSubview(viewHolder)
+                    self.collectionView?.hidden = true
                 }
                 self.collectionView.reloadData()
             }

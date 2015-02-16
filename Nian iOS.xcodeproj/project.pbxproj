@@ -26,6 +26,7 @@
 		1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */; };
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
+		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
 		12497C371A7102C4001DBD0F /* mainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12497C361A7102C4001DBD0F /* mainClient.swift */; };
 		124EFD6A1A664912009D837B /* ImClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124EFD691A664912009D837B /* ImClient.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
@@ -209,6 +210,8 @@
 		1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleBubbleCell.xib; sourceTree = "<group>"; };
 		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
+		1248FB9E1A91B46100110EEF /* NSObject+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swift.h"; sourceTree = "<group>"; };
+		1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swift.m"; sourceTree = "<group>"; };
 		12497C361A7102C4001DBD0F /* mainClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainClient.swift; sourceTree = "<group>"; };
 		124EFD691A664912009D837B /* ImClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImClient.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
@@ -476,6 +479,15 @@
 				124F3257197B19EC0070CA4C /* NianViewController.storyboard */,
 			);
 			name = "首页";
+			sourceTree = "<group>";
+		};
+		1248FB9D1A91B44A00110EEF /* performSelector */ = {
+			isa = PBXGroup;
+			children = (
+				1248FB9E1A91B46100110EEF /* NSObject+Swift.h */,
+				1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */,
+			);
+			name = performSelector;
 			sourceTree = "<group>";
 		};
 		124EFD681A6648FC009D837B /* ImClient */ = {
@@ -874,6 +886,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				1248FB9D1A91B44A00110EEF /* performSelector */,
 				12C96DE81A6F7B3300B0E327 /* WeChatSharing */,
 				121454721A694F3C0091DCEE /* weibo */,
 				124EFD681A6648FC009D837B /* ImClient */,
@@ -1250,6 +1263,7 @@
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				12028E301A3EDA770072FBE1 /* AddCircle.swift in Sources */,
 				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
+				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */,
