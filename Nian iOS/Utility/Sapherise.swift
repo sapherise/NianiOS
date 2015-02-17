@@ -37,6 +37,7 @@ var globalNumberDream:Int = 0
 var globalImageYPoint:CGRect = CGRectZero
 var globalWillCircleChatReload:Int = 0
 var globalWillCircleJoinReload:Int = 0
+var globalWillReEnter: Int = 0
 var globalURL:String = ""
 var globalViewLoading:UIView?
 var globalViewFilm:ILTranslucentView?

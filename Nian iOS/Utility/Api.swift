@@ -148,7 +148,8 @@ struct Api {
     
     static func postCircleEdit(name: String, content: String, img: String, privateType: Int, ID: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/circle_edit.php", content: "id=\(ID)&uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)", callback: callback)
+        var sid = client.getSid()
+        V.httpPostForJson("http://nian.so/api/circle_edit.php", content: "id=\(ID)&uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCircleChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {

@@ -152,6 +152,17 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        var data = self.dataArray[indexPath.row] as NSDictionary
+        var id = data.stringAttributeForKey("id")
+        SQLLetterDelete(id)
+        SALoadLetter()
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier("MeCellTop", forIndexPath: indexPath) as? MeCellTop

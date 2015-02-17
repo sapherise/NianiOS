@@ -18,6 +18,9 @@ class CircleCell: UITableViewCell {
     @IBOutlet var labelContent: UILabel!
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelCount: UILabel!
+    @IBOutlet var viewHolder: UIView!
+    @IBOutlet var viewDelete: UIView!
+    @IBOutlet var textDelete: UILabel!
     
     var largeImageURL:String = ""
     var data :NSDictionary?
@@ -32,66 +35,71 @@ class CircleCell: UITableViewCell {
         if data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")
-            var img = self.data!.stringAttributeForKey("img")
-            self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
-            self.labelTitle.text = title
-            
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
-            if err2 == nil {
-                if resultSet2.count > 0 {
-                    for row in resultSet2 {
-                        var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
-                        var user = row["name"]!.asString()
-                        var content = row["content"]!.asString()
-                        var type = row["type"]!.asString()
-                        var textContent = ""
-                        switch type {
-                        case "1":   textContent = ": \(content)"
-                            break
-                        case "2":   textContent = "发来一张图片"
-                            break
-                        case "3":   textContent = "更新了梦想"
-                            break
-                        case "4":   textContent = "获得了成就"
-                            break
-                        case "5":   textContent = content
-                            break
-                        case "6":   textContent = content
-                            break
-                        case "7":   textContent = content
-                            break
-                        default:    textContent = "触发了一个彩蛋"
+            if id == "0" {
+                self.textDelete.text = "前往"
+                self.imageHead.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
+                self.labelContent.text = "念的留言板"
+                self.labelTitle.text = "广场"
+                self.labelCount.hidden = true
+                self.lastdate?.hidden = true
+            }else{
+                self.textDelete.text = "再见"
+                var img = self.data!.stringAttributeForKey("img")
+                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+                self.labelTitle.text = title
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
+                if err2 == nil {
+                    if resultSet2.count > 0 {
+                        for row in resultSet2 {
+                            var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
+                            var user = row["name"]!.asString()
+                            var content = row["content"]!.asString()
+                            var type = row["type"]!.asString()
+                            var textContent = ""
+                            switch type {
+                            case "1":   textContent = ": \(content)"
+                                break
+                            case "2":   textContent = "发来一张图片"
+                                break
+                            case "3":   textContent = "更新了梦想"
+                                break
+                            case "4":   textContent = "获得了成就"
+                                break
+                            case "5":   textContent = content
+                                break
+                            case "6":   textContent = content
+                                break
+                            case "7":   textContent = content
+                                break
+                            default:    textContent = "触发了一个彩蛋"
+                                break
+                            }
+                            self.lastdate!.text = V.relativeTime(postdate, current: NSDate().timeIntervalSince1970)
+                            self.labelContent.text = "\(user)\(textContent)"
                             break
                         }
-                        self.lastdate!.text = V.relativeTime(postdate, current: NSDate().timeIntervalSince1970)
-                        self.labelContent.text = "\(user)\(textContent)"
-                        break
+                    }else{
+                        self.lastdate!.hidden = true
+                        self.labelContent.text = "可以开始聊天啦"
                     }
-                }else{
-                    self.lastdate!.hidden = true
-                    self.labelContent.text = "可以开始聊天啦"
+                }
+                let (resultSet, err) = SD.executeQuery("select id from circle where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
+                if err == nil {
+                    var count = resultSet.count
+                    if count == 0 {
+                        self.labelCount.text = "0"
+                        self.labelCount.hidden = true
+                    }else{
+                        self.labelCount.hidden = false
+                        var widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
+                        self.labelCount.text = "\(count)"
+                        self.labelCount.setWidth(widthCount)
+                        self.labelCount.setX(305-widthCount)
+                    }
                 }
             }
-            
-            
-            
-            let (resultSet, err) = SD.executeQuery("select id from circle where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
-            if err == nil {
-                var count = resultSet.count
-                if count == 0 {
-                    self.labelCount.text = "0"
-                    self.labelCount.hidden = true
-                }else{
-                    self.labelCount.hidden = false
-                    var widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
-                    self.labelCount.text = "\(count)"
-                    self.labelCount.setWidth(widthCount)
-                    self.labelCount.setX(305-widthCount)
-                }
-            }
-            
         }
     }
 }

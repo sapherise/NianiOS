@@ -127,6 +127,12 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                         data.comment = (item["comment"] as String).toInt()
                         self.dataSource.append(data)
                     }
+                }else if clear {
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    var viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或梦想时\n这里会发生微妙变化")
+                    viewQuestion.setY(50)
+                    viewHeader.addSubview(viewQuestion)
+                    self.bindViewController?.tableView.tableHeaderView = viewHeader
                 }
             }
             callback(success)

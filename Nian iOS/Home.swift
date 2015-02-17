@@ -41,6 +41,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         super.viewDidLoad()
         SQLInit()
         self.setupViews()
+        
+        var a = FileUtility.cachePath("")
+        println(a)
+        
         self.initViewControllers()
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -63,6 +67,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive:", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
+        // 当前账户退出，载入其他账户时使用
+        if globalWillReEnter == 1 {
+            globalWillReEnter = 0
+            self.enter()
+            self.loadCircle()
+            self.loadLetter()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -266,6 +277,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         Sa.removeObjectForKey("user")
         Sa.synchronize()
         self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
+        client.leave()
     }
     
     func GameOverHide(sender:UIButton){
@@ -581,9 +593,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                         if numStatus == "1" {
                                             // 添加
                                             SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                        }else{
-                                            // 删除
-                                            SQLCircleListDelete(circle)
                                         }
                                     }
                                 }
@@ -644,7 +653,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                         var safeuid = Sa.objectForKey("uid") as String
                         var safeuser = Sa.objectForKey("user") as String
-                        if (type == "6") && (cid == safeuid) {
+                        if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                             Api.getCircleStatus(circle) { json in
                                 if json != nil {
                                     var numStatus = json!["count"] as String
@@ -654,9 +663,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     if numStatus == "1" {
                                         // 添加
                                         SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                    }else{
-                                        // 删除
-                                        SQLCircleListDelete(circle)
                                     }
                                 }
                             }
@@ -666,14 +672,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                         }
                     }
-                }
-                let (resultSet, err) = SD.executeQuery("select id from circle where isread = 0 and owner = '\(safeuid)'")
-                if err == nil {
-                    a = resultSet.count
-                }
-                if globalTabBarSelected != 104 && a > 0 {
-                    self.dotCircle!.text = "\(a)"
-                    self.dotCircle!.hidden = false
                 }
             }
         }

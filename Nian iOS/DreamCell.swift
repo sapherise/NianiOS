@@ -40,8 +40,7 @@ class DreamCell: UITableViewCell {
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
-    override func layoutSubviews()
-    {
+    override func layoutSubviews() {
         super.layoutSubviews()
         var sid = self.data.stringAttributeForKey("sid")
         self.sid = sid.toInt()!
@@ -54,7 +53,7 @@ class DreamCell: UITableViewCell {
         img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
         img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
         var like = self.data.stringAttributeForKey("like") as String
-        var comment = self.data.stringAttributeForKey("comment") as String
+        var comment = self.data.stringAttributeForKey("comment")
         
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate

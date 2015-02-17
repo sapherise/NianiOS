@@ -579,6 +579,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         Sa.removeObjectForKey("user")
         Sa.synchronize()
         self.dismissViewControllerAnimated(true, completion: nil)
+        client.leave()
     }
     
     override func viewWillAppear(animated: Bool)

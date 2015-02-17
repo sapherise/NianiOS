@@ -59,12 +59,34 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.view.addSubview(self.tableView)
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        return  81
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        var data = self.dataArray[indexPath.row] as NSDictionary
+        var id = data.stringAttributeForKey("id")
+        if  id == "0" {
+            onBBSClick()
+        }else{
+            SQLCircleListDelete(id)
+            delay(0.2, { () -> () in
+                self.SALoadData()
+            })
+        }
+    }
+    
     func onBBSClick(){
         var BBSVC = ExploreController()
         self.navigationController?.pushViewController(BBSVC, animated: true)
     }
     
     func SALoadData() {
+        println("加载")
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
@@ -96,9 +118,11 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
             self.dataArray.addObject(data)
         }
+        var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
+        self.dataArray.addObject(dataBBS)
         dispatch_async(dispatch_get_main_queue(), {
             self.tableView.reloadData()
-            if self.dataArray.count == 0 {
+            if self.dataArray.count == 1 {
                 var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
                 var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
                 viewTop.labelTitle.text = "发现梦境"
@@ -108,22 +132,12 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                 viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
                 viewTop.userInteractionEnabled = true
                 viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
+                viewTop.tag = 1
+                viewTop.editing = false
                 self.tableView.tableHeaderView = viewTop
             }else{
                 self.tableView.tableHeaderView = UIView()
             }
-            // 预设广场
-            var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
-            var viewBottom = NibCircleCell.objectAtIndex(0) as CircleCell
-            viewBottom.setHeight(81 + 50)
-            viewBottom.labelTitle.text = "广场"
-            viewBottom.labelContent.text = "念的留言板"
-            viewBottom.labelCount.hidden = true
-            viewBottom.lastdate?.hidden = true
-            viewBottom.imageHead.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
-            viewBottom.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBBSClick"))
-            viewBottom.userInteractionEnabled = true
-            self.tableView.tableFooterView = viewBottom
         })
     }
     
@@ -150,18 +164,17 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         return cell
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        return  81
-    }
-    
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         var data = self.dataArray[indexPath.row] as NSDictionary
-        self.tableView.reloadData()
         var id = data.objectForKey("id") as String
         var title = data.objectForKey("title") as String
         var CircleVC = CircleController()
-        CircleVC.ID = id.toInt()!
-        CircleVC.circleTitle = title
-        self.navigationController?.pushViewController(CircleVC, animated: true)
+        if id != "0" {
+            CircleVC.ID = id.toInt()!
+            CircleVC.circleTitle = title
+            self.navigationController?.pushViewController(CircleVC, animated: true)
+        }else{
+            onBBSClick()
+        }
     }
 }

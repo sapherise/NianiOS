@@ -175,6 +175,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     func onTabClick(sender: UIGestureRecognizer) {
         switchTab(sender.view!.tag - 1100)
         globalNumExploreBar = sender.view!.tag - 1100
+        tableView.tableHeaderView = UIView()
     }
     
     func onFriendClick() {

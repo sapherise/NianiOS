@@ -37,8 +37,9 @@ func SQLCircleListInsert(id: String, title: String, image: String, postdate: Str
     let (resultSet2, err2) = SD.executeQuery("select id from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
     if err2 == nil {
         if resultSet2.count == 0 {
-            if let err3 = SD.executeChange("INSERT INTO circlelist (id, circleid, title, image, postdate, owner) VALUES (null, ?, ?, ?, ?, ?)", withArgs: [id, title, image, postdate, safeuid]) {
-            }
+            SD.executeChange("INSERT INTO circlelist (id, circleid, title, image, postdate, owner) VALUES (null, ?, ?, ?, ?, ?)", withArgs: [id, title, image, postdate, safeuid])
+        }else{
+            SD.executeChange("update circlelist set title = ?, image = ? where circleid='\(id)' and owner = '\(safeuid)'", withArgs: [title, image])
         }
     }
 }
@@ -75,4 +76,11 @@ func SQLLetterContent(id: String, uid: String, name: String, circle: String, con
             callback()
         }
     }
+}
+
+// 删除私信内容
+func SQLLetterDelete(uid: String) {
+    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var safeuid = Sa.objectForKey("uid") as String
+    SD.executeChange("delete from letter where circle=? and owner = ?", withArgs: [uid, safeuid])
 }

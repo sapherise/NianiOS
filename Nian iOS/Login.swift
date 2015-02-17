@@ -75,7 +75,6 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                     if sa == "err"{
                         self.navigationItem.rightBarButtonItems = []
                     }else if sa == "NO" {
-                        //self.navigationController.popViewControllerAnimated(true)
                         self.shakeAnimation(self.holder)
                         self.navigationItem.rightBarButtonItems = []
                     }else{
@@ -88,6 +87,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         Sa.setObject(username, forKey:"user")
                         Sa.synchronize()
                         Api.requestLoad()
+                        globalWillReEnter = 1
                         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
                         var navigationViewController = UINavigationController(rootViewController: mainViewController)
                         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)

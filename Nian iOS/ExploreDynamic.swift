@@ -74,6 +74,12 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                         }
                         self.dataSource.append(data)
                     }
+                }else if clear {
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    var viewQuestion = viewEmpty(globalWidth, content: "这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
+                    viewQuestion.setY(50)
+                    viewHeader.addSubview(viewQuestion)
+                    self.bindViewController?.tableView.tableHeaderView = viewHeader
                 }
             }
             callback(success)
