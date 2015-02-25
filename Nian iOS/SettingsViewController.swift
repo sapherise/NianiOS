@@ -13,12 +13,12 @@ import StoreKit
 class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, SKStoreProductViewControllerDelegate {
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var head:UIImageView!
-    @IBOutlet var logout:UIView!
+    @IBOutlet var viewLogout:UIView!
     @IBOutlet var inputName:UITextField!
     @IBOutlet var inputEmail:UITextField!
     @IBOutlet var inputPhone: UITextField!
-    @IBOutlet var helpView:UIView?
-    @IBOutlet var cacheView:UIView?
+    @IBOutlet var viewHelp:UIView!
+    @IBOutlet var viewCache:UIView!
     @IBOutlet var cacheActivity:UIActivityIndicatorView!
     @IBOutlet var ImageSwitch:UISwitch!
     @IBOutlet var CareSwitch:UISwitch!
@@ -29,6 +29,29 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var viewFind: UIView!
     @IBOutlet var viewSex: UIView!
     @IBOutlet var labelSex: UILabel!
+    @IBOutlet var viewHolder: UIView!
+    @IBOutlet var viewName: UIView!
+    @IBOutlet var viewEmail: UIView!
+    @IBOutlet var viewPhone: UIView!
+    @IBOutlet var viewImage: UIView!
+    @IBOutlet var viewAlert: UIView!
+    @IBOutlet var line1: UIView!
+    @IBOutlet var line2: UIView!
+    @IBOutlet var line3: UIView!
+    @IBOutlet var line4: UIView!
+    @IBOutlet var line5: UIView!
+    @IBOutlet var line6: UIView!
+    @IBOutlet var line7: UIView!
+    @IBOutlet var line8: UIView!
+    @IBOutlet var line9: UIView!
+    @IBOutlet var line10: UIView!
+    @IBOutlet var line11: UIView!
+    @IBOutlet var line12: UIView!
+    @IBOutlet var line13: UIView!
+    @IBOutlet var line14: UIView!
+    @IBOutlet var line15: UIView!
+    @IBOutlet var arrowHelp: UIImageView!
+    @IBOutlet var arrowStar: UIImageView!
     var actionSheet:UIActionSheet?
     var actionSheetSex: UIActionSheet?
     var imagePicker:UIImagePickerController?
@@ -58,10 +81,50 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
+        self.viewHolder.setWidth(globalWidth)
+        self.head.setX(globalWidth/2-30)
+        self.btnCover.setX(globalWidth/2-50)
+        self.viewName.setWidth(globalWidth)
+        self.viewEmail.setWidth(globalWidth)
+        self.viewPhone.setWidth(globalWidth)
+        self.viewSex.setWidth(globalWidth)
+        self.viewCache.setWidth(globalWidth)
+        self.viewImage.setWidth(globalWidth)
+        self.viewAlert.setWidth(globalWidth)
+        self.viewFind.setWidth(globalWidth)
+        self.viewHelp.setWidth(globalWidth)
+        self.viewStar.setWidth(globalWidth)
+        self.viewLogout.setWidth(globalWidth)
+        self.line1.setGlobalWidth()
+        self.line2.setGlobalWidth()
+        self.line3.setGlobalWidth()
+        self.line4.setGlobalWidth()
+        self.line5.setGlobalWidth()
+        self.line6.setGlobalWidth()
+        self.line7.setGlobalWidth()
+        self.line8.setGlobalWidth()
+        self.line9.setGlobalWidth()
+        self.line10.setGlobalWidth()
+        self.line11.setGlobalWidth()
+        self.line12.setGlobalWidth()
+        self.line13.setGlobalWidth()
+        self.line14.setGlobalWidth()
+        self.line15.setGlobalWidth()
+        self.inputName.setGlobalX()
+        self.inputEmail.setGlobalX()
+        self.inputPhone.setGlobalX()
+        self.labelSex.setGlobalX()
+        self.cacheActivity.setGlobalX()
+        self.ImageSwitch.setGlobalX(x: 13)
+        self.CareSwitch.setGlobalX(x: 13)
+        self.PrivateSwitch.setGlobalX(x: 13)
+        self.arrowHelp.setGlobalX(x: 13)
+        self.arrowStar.setGlobalX(x: 13)
+        
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.contentSize = CGSizeMake(globalWidth, 1200)
         self.cacheActivity.hidden = true
-        self.cacheView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
+        self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
@@ -76,8 +139,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.inputEmail!.delegate = self
         self.inputPhone!.delegate = self
         
-        self.helpView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
-        self.logout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
+        self.viewHelp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAhelp"))
+        self.viewLogout.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "SAlogout"))
         self.viewStar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStarClick"))
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
@@ -114,6 +177,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var longTap = UILongPressGestureRecognizer(target: self, action: "niceTry:")
         longTap.minimumPressDuration = 0.5
         self.version.addGestureRecognizer(longTap)
+        self.version.setX(globalWidth/2-36)
         
         // 发现好友
         self.viewFind.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFindClick"))
@@ -302,8 +366,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.actionSheet = UIActionSheet(title: actionTitle, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheet!.addButtonWithTitle("相册")
         self.actionSheet!.addButtonWithTitle("拍照")
-        self.actionSheet!.addButtonWithTitle("取消")
-        self.actionSheet!.cancelButtonIndex = 2
+        if self.uploadWay == 0 {
+            self.actionSheet!.addButtonWithTitle("恢复默认封面")
+            self.actionSheet!.addButtonWithTitle("取消")
+            self.actionSheet!.cancelButtonIndex = 3
+        }else{
+            self.actionSheet!.addButtonWithTitle("取消")
+            self.actionSheet!.cancelButtonIndex = 2
+        }
         self.actionSheet!.showInView(self.view)
     }
     
@@ -322,6 +392,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                     self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+                }
+            }else if buttonIndex == 2 && self.uploadWay == 0 {
+                self.btnCover.startLoading()
+                Api.postUserCover() { json in
+                    if json != nil {
+                        globalWillNianReload = 1
+                        self.btnCover.endLoading("设定封面")
+                    }
                 }
             }
         }else if actionSheet == self.actionSheetSex {
@@ -611,5 +689,15 @@ extension UISwitch {
             Sa.setObject("0", forKey: cacheName)
             Sa.synchronize()
         }
+    }
+}
+
+extension UIView {
+    func setGlobalWidth() {
+        self.setWidth(globalWidth)
+    }
+    
+    func setGlobalX(x:CGFloat = 20) {
+        self.setX(globalWidth - x - self.width())
     }
 }

@@ -22,6 +22,10 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     @IBOutlet var menuRight: UILabel!
     @IBOutlet var labelMonthLeft: UILabel!
     @IBOutlet var labelMonthRight: UILabel!
+    @IBOutlet var viewTopHolder: UIView!
+    @IBOutlet var labelCalendar: UILabel!
+    @IBOutlet var viewBottom: UIView!
+    @IBOutlet var viewBottomHolder: UIView!
 //    @IBOutlet var tableview:UITableView!
     var navView:UIView!
     var top:CAShapeLayer!
@@ -68,8 +72,16 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         titleLabel.text = "等级"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
+        self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
+        self.viewTop.setWidth(globalWidth)
         self.scrollView.contentSize = CGSizeMake(globalWidth, 720)
+        self.viewTopHolder.setX(globalWidth/2-160)
+        self.viewCircle.setX(globalWidth/2-84)
+        self.viewCalendar.setX(globalWidth/2-160)
+        self.labelCalendar.setX(globalWidth/2-145)
+        self.viewBottom.setWidth(globalWidth)
+        self.viewBottomHolder.setX(globalWidth/2-160)
         
 //        self.tableview.delegate = self
 //        self.tableview.dataSource = self
@@ -77,7 +89,6 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
 //        self.tableview.registerNib(nib, forCellReuseIdentifier: "GameCell")
 //        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        self.viewTop.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.viewCircleBackground.layer.cornerRadius = 84
         self.viewCircleBackground.layer.masksToBounds = true
         self.viewCircleBackground.layer.borderColor = UIColor.whiteColor().CGColor

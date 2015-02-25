@@ -135,6 +135,12 @@ class ExploreHotCell: UITableViewCell {
     @IBOutlet var imageDream: UIImageView!
     @IBOutlet var btnMain: UIButton!
     @IBOutlet var viewLine: UIView!
+    @IBOutlet var viewHolder: UIView!
+    
+    override func awakeFromNib() {
+        self.viewLine.setWidth(globalWidth)
+        viewHolder.setX(globalWidth/2-160)
+    }
     
     func bindData(data: ExploreHotProvider.Data) {
         labelTitle.text = data.title

@@ -51,6 +51,7 @@ var globalNoticeNumber: Int = 0
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
 var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
+var globaliOS: Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
 
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""
@@ -481,7 +482,7 @@ extension UIViewController {
                 globalViewFilm!.alpha = 1
                 viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 45
             })
-            delay(0.3, { () -> () in
+            delay(0.3, {
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
                     viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
                 })

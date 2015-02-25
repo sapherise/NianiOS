@@ -25,7 +25,7 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         var width = self.view.frame.size.width  //宽度
         var height = self.view.frame.size.height   //高度
         
-        self.picker = UIPickerView(frame: CGRectMake(0, 64, 320, 320))
+        self.picker = UIPickerView(frame: CGRectMake(0, 64, globalWidth, globalWidth))
         self.picker.dataSource = self
         self.picker.delegate = self
         self.picker.selectRow(19, inComponent: 0, animated: false)
@@ -64,7 +64,7 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
     }
     
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
-        var pkView = UILabel(frame: CGRectMake(0, 0, 320, 50))
+        var pkView = UILabel(frame: CGRectMake(0, 0, globalWidth, 50))
         pkView.text = "每日 \(row+1) 时"
         pkView.textColor = UIColor.blackColor()
         pkView.textAlignment = NSTextAlignment.Center

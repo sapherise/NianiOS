@@ -46,10 +46,6 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         self.viewBack()
-        
-        // 关闭了念币详情
-        // self.viewCircle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeaderCoinClick"))
-        
         self.scrollView.contentSize.height = 1434
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
@@ -73,7 +69,9 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.labelCoin.delegate = self
         
         self.SACircle(1)
-        self.viewTop.setHeight(234)
+        self.viewTop.frame = CGRectMake(0, 0, globalWidth, 234)
+        self.viewCircle.setX(globalWidth/2-84)
+        self.tableView.setWidth(globalWidth)
         
         Api.getUserMe() { json in
             if json != nil {

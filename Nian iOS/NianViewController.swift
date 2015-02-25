@@ -15,7 +15,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var UserHead:UIImageView!
     @IBOutlet var UserName:UILabel!
     @IBOutlet var UserStep:UILabel!
-    @IBOutlet var BGImage:UIImageView!
+    @IBOutlet var imageBG:UIImageView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var tableView: UITableView!
@@ -39,12 +39,25 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     
     func setupViews(){
+        var frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
+        var frameSquare = CGRectMake(0, 0, globalWidth, globalWidth)
+        self.view.frame = frame
+        self.scrollView.frame = frame
         self.extendedLayoutIncludesOpaqueBars = true
-        self.scrollView.frame.size.height = globalHeight - 49
         self.scrollView.contentSize.height = globalHeight - 49 + 1
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.delegate = self
+        
+        self.viewHolder.frame = frameSquare
+        self.imageBG.frame = frameSquare
+        self.viewMenu.frame = CGRectMake(0, globalWidth, globalWidth, 45)
+        self.labelTableRight.setX(globalWidth - 20 - 53)
+        self.UserHead.frame.origin = CGPointMake(globalWidth/2-30, globalWidth/2-90)
+        self.UserName.frame.origin = CGPointMake(globalWidth/2-75, globalWidth/2-90+68)
+        self.UserStep.frame.origin = CGPointMake(globalWidth/2-65, globalWidth/2-90+91)
+        self.coinButton.frame.origin = CGPointMake(globalWidth/2-104, globalWidth/2-90+144)
+        self.levelButton.frame.origin = CGPointMake(globalWidth/2-104+108, globalWidth/2-90+144)
         
         var pan = UIPanGestureRecognizer(target: self, action: "pan:")
         pan.delegate = self
@@ -54,7 +67,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.transform = CGAffineTransformMakeRotation( CGFloat(-M_PI/2) )
-        self.tableView.frame = CGRectMake(0, 364, globalWidth, 160)
+        self.tableView.frame = CGRectMake(0, globalWidth + 45, globalWidth, 160)
         self.tableView.contentSize.height = CGFloat(self.dataArray.count * 100)
         self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
         
@@ -77,7 +90,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         var nib = UINib(nibName: "NianCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "NianCell")
-        self.tableView.showsVerticalScrollIndicator = false
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
@@ -86,10 +98,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserName.text = "\(safename)"
         self.UserHead.setImage("http://img.nian.so/head/\(safeuid).jpg!dream", placeHolder: UIColor(red: 0, green: 0, blue: 0, alpha: 0.55))
         if (cacheCoverUrl != nil) && (cacheCoverUrl! != "http://img.nian.so/cover/!cover") {
-            self.BGImage.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
+            self.imageBG.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
         }else{
-            self.BGImage.image = UIImage(named: "bg")
-            self.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
+            self.imageBG.image = UIImage(named: "bg")
+            self.imageBG.contentMode = UIViewContentMode.ScaleAspectFill
         }
         
         
@@ -102,7 +114,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         if globaliPhone == 4 {
             self.viewHolder.setHeight(232)
-            self.BGImage.setHeight(232)
+            self.imageBG.setHeight(232)
             self.tableView.setY(276)
             self.viewMenu.setY(232)
             self.UserHead.setY(64)
@@ -119,21 +131,20 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.heightScroll = height
             if self.viewHolder != nil {
                 if height > 0 {
-                    self.BGImage.frame = CGRectMake(0, height, 320, 320 - height)
-                    if height > 320 {
-                        self.BGImage.hidden = true
+                    if height > globalWidth {
+                        self.imageBG.hidden = true
                     }else{
-                        self.BGImage.hidden = false
+                        self.imageBG.frame = CGRectMake(0, height, globalWidth, globalWidth - height)
+                        self.imageBG.hidden = false
                     }
                 }else{
                     self.viewHolder!.setY(height)
-                    self.BGImage.frame = CGRectMake(height/10, height, 320-height/5, 320)
+                    self.imageBG.frame = CGRectMake(height/10, height, globalWidth-height/5, globalWidth)
+                    self.imageBG.backgroundColor = UIColor.redColor()
                 }
                 scrollHidden(self.UserHead, scrollY: 70)
                 scrollHidden(self.UserName, scrollY: 138)
                 scrollHidden(self.UserStep, scrollY: 161)
-//                scrollHidden(self.coinButton, scrollY: 214)
-//                scrollHidden(self.levelButton, scrollY: 214)
             }
         }
     }
@@ -150,7 +161,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func pan(sender: UIPanGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Ended {
-            var h: CGFloat = globaliPhone == 4 ? 232 : 320
+            var h: CGFloat = globaliPhone == 4 ? 232 : globalWidth
             // 当向上滑动时
             if self.heightScroll > 60 {
                 UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
@@ -208,9 +219,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.UserStep.text = "倒计时 \(deadLine)"
                 }
                 if coverURL == "" {
-                    self.BGImage.image = UIImage(named: "bg")
+                    self.imageBG.image = UIImage(named: "bg")
                 }else{
-                    self.BGImage.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    self.imageBG.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                 }
             }
         }

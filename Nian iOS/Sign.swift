@@ -20,12 +20,14 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.inputName.textColor = UIColor.blackColor()
         self.inputName.textAlignment = NSTextAlignment.Center
         let attributesDictionary = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)]
         self.inputName.attributedPlaceholder = NSAttributedString(string: "昵称", attributes: attributesDictionary)
         self.inputName.delegate = self
+        
+        self.holder.setX(globalWidth/2-140)
+        self.errLabel.setX(globalWidth/2-100)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()

@@ -41,101 +41,101 @@ class HelpViewController: UIViewController, UIGestureRecognizerDelegate{
         
         
         var scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
-        scrollView.contentSize = CGSizeMake(320, 1050)
+        scrollView.contentSize = CGSizeMake(globalWidth, 1050)
         
-        var title1 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var title1 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         title1.text = titlestring1
         title1.numberOfLines = 0
         title1.font = UIFont.systemFontOfSize(14)
         title1.textColor = SeaColor
-        title1.setHeight(titlestring1.stringHeightWith(14, width: 240))
+        title1.setHeight(titlestring1.stringHeightWith(14, width: globalWidth - 80))
         
-        var content1 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var content1 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         content1.text = contentstring1
         content1.numberOfLines = 0
         content1.font = UIFont.systemFontOfSize(14)
         content1.textColor = UIColor.blackColor()
-        content1.setHeight(contentstring1.stringHeightWith(14, width: 240))
+        content1.setHeight(contentstring1.stringHeightWith(14, width: globalWidth - 80))
         content1.setY(title1.bottom()+10)
         
-        var title2 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var title2 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         title2.text = titlestring2
         title2.numberOfLines = 0
         title2.font = UIFont.systemFontOfSize(14)
         title2.textColor = SeaColor
-        title2.setHeight(titlestring2.stringHeightWith(14, width: 240))
+        title2.setHeight(titlestring2.stringHeightWith(14, width: globalWidth - 80))
         title2.setY(content1.bottom()+20)
         
-        var content2 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var content2 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         content2.text = contentstring2
         content2.numberOfLines = 0
         content2.font = UIFont.systemFontOfSize(14)
         content2.textColor = UIColor.blackColor()
-        content2.setHeight(contentstring2.stringHeightWith(14, width: 240))
+        content2.setHeight(contentstring2.stringHeightWith(14, width: globalWidth - 80))
         content2.setY(title2.bottom()+10)
         
-        var title3 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var title3 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         title3.text = titlestring3
         title3.numberOfLines = 0
         title3.font = UIFont.systemFontOfSize(14)
         title3.textColor = SeaColor
-        title3.setHeight(titlestring3.stringHeightWith(14, width: 240))
+        title3.setHeight(titlestring3.stringHeightWith(14, width: globalWidth - 80))
         title3.setY(content2.bottom()+20)
         
-        var content3 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var content3 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         content3.text = contentstring3
         content3.numberOfLines = 0
         content3.font = UIFont.systemFontOfSize(14)
         content3.textColor = UIColor.blackColor()
-        content3.setHeight(contentstring3.stringHeightWith(14, width: 240))
+        content3.setHeight(contentstring3.stringHeightWith(14, width: globalWidth - 80))
         content3.setY(title3.bottom()+10)
         
-        var title4 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var title4 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         title4.text = titlestring4
         title4.numberOfLines = 0
         title4.font = UIFont.systemFontOfSize(14)
         title4.textColor = SeaColor
-        title4.setHeight(titlestring4.stringHeightWith(14, width: 240))
+        title4.setHeight(titlestring4.stringHeightWith(14, width: globalWidth - 80))
         title4.setY(content3.bottom()+20)
         
-        var content4 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var content4 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         content4.text = contentstring4
         content4.numberOfLines = 0
         content4.font = UIFont.systemFontOfSize(14)
         content4.textColor = UIColor.blackColor()
-        content4.setHeight(contentstring4.stringHeightWith(14, width: 240))
+        content4.setHeight(contentstring4.stringHeightWith(14, width: globalWidth - 80))
         content4.setY(title4.bottom()+10)
         
-        var title5 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var title5 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         title5.text = titlestring5
         title5.numberOfLines = 0
         title5.font = UIFont.systemFontOfSize(14)
         title5.textColor = SeaColor
-        title5.setHeight(titlestring5.stringHeightWith(14, width: 240))
+        title5.setHeight(titlestring5.stringHeightWith(14, width: globalWidth - 80))
         title5.setY(content4.bottom()+20)
         
-        var content5 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var content5 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         content5.text = contentstring5
         content5.numberOfLines = 0
         content5.font = UIFont.systemFontOfSize(14)
         content5.textColor = UIColor.blackColor()
-        content5.setHeight(contentstring5.stringHeightWith(14, width: 240))
+        content5.setHeight(contentstring5.stringHeightWith(14, width: globalWidth - 80))
         content5.setY(title5.bottom()+10)
         
-        var title6 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var title6 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         title6.text = titlestring6
         title6.numberOfLines = 0
         title6.font = UIFont.systemFontOfSize(14)
         title6.textColor = SeaColor
-        title6.setHeight(titlestring6.stringHeightWith(14, width: 240))
+        title6.setHeight(titlestring6.stringHeightWith(14, width: globalWidth - 80))
         title6.setY(content5.bottom()+20)
         
-        var content6 = UILabel(frame: CGRectMake(40, 40, 240, 0))
+        var content6 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
         content6.text = contentstring6
         content6.numberOfLines = 0
         content6.font = UIFont.systemFontOfSize(14)
         content6.textColor = UIColor.blackColor()
-        content6.setHeight(contentstring6.stringHeightWith(14, width: 240))
+        content6.setHeight(contentstring6.stringHeightWith(14, width: globalWidth - 80))
         content6.setY(title6.bottom()+10)
         
         scrollView.addSubview(title1)

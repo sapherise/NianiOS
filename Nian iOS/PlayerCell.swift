@@ -147,7 +147,7 @@ class PlayerCell: UITableViewCell {
                 imgHeight = 0
                 self.contentLabel!.setY(70)
             }else{
-                imgHeight = img1 * 320 / img0
+                imgHeight = img1 * Float(globalWidth) / img0
                 ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
                 largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
                 self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
@@ -202,7 +202,7 @@ class PlayerCell: UITableViewCell {
         if(img0 == 0.0){
             return height + 151
         }else{
-            return height + 171 + CGFloat(img1*320/img0)
+            return height + 171 + CGFloat(img1 * Float(globalWidth) / img0)
         }
     }
     

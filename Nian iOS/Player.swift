@@ -265,10 +265,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var newHeight = height + 64
         if self.topCell != nil {
             if newHeight > 0 {
-                self.topCell!.BGImage.frame = CGRectMake(0, newHeight, 320, 320 - newHeight)
+                self.topCell!.BGImage.frame = CGRectMake(0, newHeight, globalWidth, globalWidth - newHeight)
             }else{
                 self.topCell!.viewHolder.setY(newHeight)
-                self.topCell!.BGImage.frame = CGRectMake(newHeight/10, newHeight, 320-newHeight/5, 320)
+                self.topCell!.BGImage.frame = CGRectMake(newHeight/10, newHeight, globalWidth-newHeight/5, globalWidth)
                 self.topCell!.viewBlack.setY(newHeight)
             }
             scrollHidden(self.topCell!.UserHead, height: newHeight, scrollY: 70)

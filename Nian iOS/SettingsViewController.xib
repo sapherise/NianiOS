@@ -10,20 +10,43 @@
                 <outlet property="CareSwitch" destination="mBP-xO-GVM" id="gw4-es-U7B"/>
                 <outlet property="ImageSwitch" destination="D6H-fM-Lgs" id="4nj-kC-XQ7"/>
                 <outlet property="PrivateSwitch" destination="t57-SL-uBL" id="NVD-1T-ccc"/>
+                <outlet property="arrowHelp" destination="DLY-GK-KMl" id="eN7-79-q5U"/>
+                <outlet property="arrowStar" destination="bh8-Xc-2Y3" id="egO-4V-TbK"/>
                 <outlet property="btnCover" destination="1SJ-x8-vUX" id="Sne-HB-ECq"/>
                 <outlet property="cacheActivity" destination="nJR-6R-oRr" id="Job-aO-aTZ"/>
-                <outlet property="cacheView" destination="7Hx-iU-SaN" id="5fU-sA-GGp"/>
                 <outlet property="head" destination="BGM-Ps-9vm" id="AKT-9e-N4k"/>
-                <outlet property="helpView" destination="WL9-pf-Igy" id="MWr-Gm-eNb"/>
                 <outlet property="inputEmail" destination="xXP-za-jew" id="nlj-Ov-A2W"/>
                 <outlet property="inputName" destination="8SV-MJ-XFo" id="HnW-Ij-VPz"/>
                 <outlet property="inputPhone" destination="lPI-OM-JAI" id="S69-wL-7ON"/>
                 <outlet property="labelSex" destination="HVu-13-Hkg" id="Jcd-kc-Jnx"/>
-                <outlet property="logout" destination="Hp1-66-DX9" id="Lzd-cS-h6d"/>
+                <outlet property="line1" destination="Xwi-hd-Zj9" id="WfQ-6d-OtH"/>
+                <outlet property="line10" destination="TST-KO-2ji" id="Cnf-hS-6DU"/>
+                <outlet property="line11" destination="VdP-qA-Lb1" id="WyM-ys-U77"/>
+                <outlet property="line12" destination="0BT-kv-Pnq" id="lgD-ge-suO"/>
+                <outlet property="line13" destination="o61-sa-PKl" id="qU2-GT-quR"/>
+                <outlet property="line14" destination="IPm-UO-3cc" id="9Hg-7Q-Bz7"/>
+                <outlet property="line15" destination="RTn-Xn-QFx" id="Txm-4o-6fk"/>
+                <outlet property="line2" destination="3Fu-Pa-9o8" id="7v2-aS-ixA"/>
+                <outlet property="line3" destination="3qF-6G-WLq" id="K95-eb-oDS"/>
+                <outlet property="line4" destination="HLZ-De-3FC" id="jip-3f-Fex"/>
+                <outlet property="line5" destination="nbD-Wi-h8z" id="c3o-fE-7QQ"/>
+                <outlet property="line6" destination="L9w-c5-dJh" id="6fC-zy-Ymi"/>
+                <outlet property="line7" destination="CDA-LC-OTt" id="zMG-Ue-Qx3"/>
+                <outlet property="line8" destination="x3f-dy-1zr" id="dW3-St-nfO"/>
+                <outlet property="line9" destination="bq6-aR-Lpo" id="8b9-n2-zld"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
                 <outlet property="version" destination="cZc-2c-cvJ" id="1PE-s0-JBy"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
+                <outlet property="viewAlert" destination="0md-cl-w65" id="XQ3-X9-nDV"/>
+                <outlet property="viewCache" destination="7Hx-iU-SaN" id="NMd-Fm-cfX"/>
+                <outlet property="viewEmail" destination="LLu-QK-cZf" id="6Rg-xS-b9T"/>
                 <outlet property="viewFind" destination="oFn-lt-Dw4" id="2jj-2R-ZRo"/>
+                <outlet property="viewHelp" destination="WL9-pf-Igy" id="tcJ-OW-oIj"/>
+                <outlet property="viewHolder" destination="nCZ-bg-C7c" id="0O6-kI-guE"/>
+                <outlet property="viewImage" destination="O6t-xI-3I2" id="NhO-uL-MQM"/>
+                <outlet property="viewLogout" destination="Hp1-66-DX9" id="dA4-wb-eE5"/>
+                <outlet property="viewName" destination="wyF-pE-T7f" id="jhf-o3-vW4"/>
+                <outlet property="viewPhone" destination="a0D-WO-nzO" id="SJ9-Wh-aKI"/>
                 <outlet property="viewSex" destination="qzI-Zy-FGo" id="Bk4-ll-EGN"/>
                 <outlet property="viewStar" destination="MDU-8p-pb5" id="fCv-1q-dJz"/>
             </connections>
@@ -325,8 +348,8 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="念 3.1.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cZc-2c-cvJ">
-                            <rect key="frame" x="125" y="1102" width="71" height="21"/>
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="念 3.1.1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cZc-2c-cvJ">
+                            <rect key="frame" x="125" y="1102" width="72" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.41960784313725491" green="0.81176470588235294" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

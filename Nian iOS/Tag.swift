@@ -42,8 +42,8 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var nib = UINib(nibName:"TagCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, 320, 10))
-        self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, 320, 20))
+        self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
+        self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))

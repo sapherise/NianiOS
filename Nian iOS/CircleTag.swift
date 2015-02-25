@@ -37,11 +37,13 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         self.viewBack()
         self.view.addSubview(navView)
         self.view.backgroundColor = UIColor.whiteColor()
+        self.view.setWidth(globalWidth)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.contentInset.bottom = 60
         self.extendedLayoutIncludesOpaqueBars = true
+        self.collectionView.setWidth(globalWidth)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()

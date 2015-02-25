@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LevelViewController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
+                <outlet property="labelCalendar" destination="tV7-EY-nV0" id="H9w-JY-ypT"/>
                 <outlet property="labelLevel" destination="apn-PK-6Xe" id="Abj-hu-x2G"/>
                 <outlet property="labelMonthLeft" destination="EuD-2w-b2w" id="6V9-oe-Bgi"/>
                 <outlet property="labelMonthRight" destination="KGd-08-R2y" id="fxX-e2-7CE"/>
@@ -15,15 +16,18 @@
                 <outlet property="menuRight" destination="edw-yP-hmf" id="YIb-jk-bxh"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
+                <outlet property="viewBottom" destination="ifR-5i-Tlc" id="tsP-cE-IEJ"/>
+                <outlet property="viewBottomHolder" destination="kbv-Kc-H0k" id="A8o-i7-CAt"/>
                 <outlet property="viewCalendar" destination="2LY-yA-5jy" id="seR-pL-lWi"/>
                 <outlet property="viewCircle" destination="ms5-IF-FaO" id="jUW-aP-w8l"/>
                 <outlet property="viewCircleBackground" destination="xYF-yw-Hu3" id="nZz-tM-7P6"/>
                 <outlet property="viewTop" destination="XI3-p5-SPO" id="0gk-pn-70k"/>
+                <outlet property="viewTopHolder" destination="VRv-Ty-ulg" id="Z8Z-ur-udM"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Ipu-sz-w8p">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="720"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="N3v-mf-nWx">
@@ -111,7 +115,7 @@
                                     </subviews>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="ms5-IF-FaO">
                             <rect key="frame" x="76" y="33" width="168" height="168"/>
@@ -192,8 +196,14 @@
                                     <color key="textColor" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                            </subviews>
+                        </view>
+                        <view contentMode="scaleToFill" id="ifR-5i-Tlc">
+                            <rect key="frame" x="0.0" y="619" width="320" height="100"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
                                 <view contentMode="scaleToFill" id="kbv-Kc-H0k">
-                                    <rect key="frame" x="0.0" y="240" width="320" height="100"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="连续更新" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ind-rx-Dbf">
@@ -222,20 +232,22 @@
                                             <color key="textColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <view contentMode="scaleToFill" id="8Xm-iE-niY">
+                                            <rect key="frame" x="159" y="23" width="1" height="54"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </view>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.02" colorSpace="calibratedRGB"/>
-                                </view>
-                                <view contentMode="scaleToFill" id="8Xm-iE-niY">
-                                    <rect key="frame" x="159" y="263" width="1" height="54"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
+                            <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                     </subviews>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="33" y="39"/>
         </view>
     </objects>

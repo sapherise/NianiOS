@@ -21,10 +21,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
-        self.loginButtonBorder.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         self.inputEmail.textColor = UIColor.blackColor()
         self.inputPassword.textColor = UIColor.blackColor()
         self.inputEmail.leftView = UIView(frame: CGRectMake(0, 0, 8, 40))
@@ -37,6 +35,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         self.inputPassword.rightViewMode = UITextFieldViewMode.Always
         self.inputEmail.delegate = self
         self.inputPassword.delegate = self
+        
+        self.holder.setX(globalWidth/2-140)
         
         let attributesDictionary = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)]
         self.inputEmail.attributedPlaceholder = NSAttributedString(string: "邮箱", attributes: attributesDictionary)

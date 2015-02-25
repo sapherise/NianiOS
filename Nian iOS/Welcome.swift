@@ -13,7 +13,7 @@ class WelcomeViewController: UIViewController {
     func setupViews(){
         self.view.hidden = true
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-        var login:UIButton = UIButton(frame: CGRectMake(60, globalHeight-60-60, 200, 44))
+        var login:UIButton = UIButton(frame: CGRectMake(globalWidth/2 - 100, globalHeight-60-60, 200, 44))
         login.setTitle("登录", forState: UIControlState.Normal)
         login.layer.borderColor = UIColor.blackColor().CGColor
         login.layer.borderWidth = 1
@@ -23,7 +23,7 @@ class WelcomeViewController: UIViewController {
         login.titleLabel!.font = UIFont(name: "system", size: 17)
         login.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         
-        var sign:UIButton = UIButton(frame: CGRectMake(60, globalHeight-60-60-56, 200, 44))
+        var sign:UIButton = UIButton(frame: CGRectMake(globalWidth/2 - 100, globalHeight-60-60-56, 200, 44))
         sign.setTitle("注册", forState: UIControlState.Normal)
         sign.layer.borderColor = UIColor.blackColor().CGColor
         sign.backgroundColor = UIColor.blackColor()
@@ -34,7 +34,7 @@ class WelcomeViewController: UIViewController {
         sign.titleLabel!.font = UIFont(name: "system", size: 17)
         sign.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         
-        var privacy = UILabel(frame: CGRectMake(80, globalHeight - 60, 160, 30))
+        var privacy = UILabel(frame: CGRectMake(globalWidth/2 - 80, globalHeight - 60, 160, 30))
         privacy.text = "使用念，就表示你同意\n念的使用条款和隐私政策"
         privacy.font = UIFont.systemFontOfSize(9)
         privacy.textColor = UIColor.blackColor()

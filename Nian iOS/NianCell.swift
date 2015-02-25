@@ -48,7 +48,8 @@ class NianCell: UITableViewCell{
         self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageCover.layer.borderWidth = 0.5
         self.backgroundColor = UIColor.whiteColor()
-        if (inner.counter < 3) && (globaliPhone > 4) {
+        
+        if (inner.counter < 3) && (globaliOS >= 8.0) {
             self.imageCover.alpha = 0
             var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
             self.imageCover.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 300)

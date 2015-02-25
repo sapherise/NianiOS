@@ -340,6 +340,14 @@ class ExploreFollowCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
+        self.setWidth(globalWidth)
+        self.labelLastdate.setX(globalWidth-15-92)
+        self.viewControl.setWidth(globalWidth)
+        self.labelContent.setWidth(globalWidth-30)
+        self.viewLine.setWidth(globalWidth)
+        self.btnLike.setX(globalWidth-50)
+        self.btnUnlike.setX(globalWidth-50)
+        self.btnMore.setX(globalWidth-90)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
     }
@@ -347,16 +355,17 @@ class ExploreFollowCell: UITableViewCell {
     func bindData(data: ExploreFollowProvider.Data) {
         cellData = data
         var imageDelta: CGFloat =  0
-        var textHeight = data.content.stringHeightWith(14, width: 290)
+        var textHeight = data.content.stringHeightWith(14, width: globalWidth-30)
         if data.content == "" {
             textHeight = 0
         }
         var textDelta = CGFloat(textHeight - labelContent.height())
         labelContent.setHeight(textHeight)
         if !data.img0.isZero && !data.img1.isZero {     //有图片
-            imageDelta = CGFloat(data.img1 * 320 / data.img0)
+            imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
             imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
             imageContent.setHeight(imageDelta)
+            imageContent.setWidth(globalWidth)
             imageContent.hidden = false
             labelContent.setY(imageContent.bottom() + 15)
         }else{
@@ -433,7 +442,7 @@ class ExploreFollowCell: UITableViewCell {
     }
     
     class func heightWithData(content: String, w: Float, h: Float) -> CGFloat {
-        var height = content.stringHeightWith(14, width: 290)
+        var height = content.stringHeightWith(14, width: globalWidth-30)
         if h == 0.0 || w == 0.0 {
             if content == "" {
                 return 136
@@ -442,9 +451,9 @@ class ExploreFollowCell: UITableViewCell {
             }
         } else {
             if content == "" {
-                return 156 + CGFloat(h * 320 / w)
+                return 156 + CGFloat(h * Float(globalWidth) / w)
             }else{
-                return height + 171 + CGFloat(h * 320 / w)
+                return height + 171 + CGFloat(h * Float(globalWidth) / w)
             }
         }
     }

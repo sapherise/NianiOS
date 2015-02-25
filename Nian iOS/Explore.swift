@@ -44,6 +44,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var navView: UIView!
     @IBOutlet var navTopView: UIView!
+    @IBOutlet var navTitle: UILabel!
+    @IBOutlet var navHolder: UIView!
     
     var appear = false
     var current = -1
@@ -113,8 +115,16 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             ExploreHotProvider(viewController: self),
             ExploreNewProvider(viewController: self)
         ]
+        self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
+        tableView.setWidth(globalWidth)
+        collectionView.frame = CGRectMake(0, 108, globalWidth, globalHeight - 49 - 108)
         
         self.navTopView.backgroundColor = BarColor
+        self.navTopView.setWidth(globalWidth)
+        self.imageFriend.setX(globalWidth-44)
+        self.navTitle.setX(globalWidth/2-22)
+        self.navView.setWidth(globalWidth)
+        self.navHolder.setX(globalWidth/2-120)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         view.backgroundColor = UIColor.whiteColor()
         collectionView.alwaysBounceVertical = true

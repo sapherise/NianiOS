@@ -14,8 +14,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var currentIndex: Int?
     var dot:UILabel?
     var dotCircle: UILabel?
-    var niceView:UIView?
-    var niceViewLabel:UILabel?
     var GameOverView:UIView?
     var animationBool:Int = 0
     var numExplore = 0
@@ -41,10 +39,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         super.viewDidLoad()
         SQLInit()
         self.setupViews()
-        
-        var a = FileUtility.cachePath("")
-        println(a)
-        
         self.initViewControllers()
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -121,10 +115,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
                                 self.dot!.hidden = false
                                 UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                    self.dot!.frame = CGRectMake(228, 8, 20, 17)
+                                    self.dot!.frame = CGRectMake(globalWidth*0.7+4, 8, 20, 17)
                                     }, completion: { (complete: Bool) in
                                         UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                            self.dot!.frame = CGRectMake(228, 10, 20, 15)
+                                            self.dot!.frame = CGRectMake(globalWidth*0.7+4, 10, 20, 15)
                                             }, completion: { (complete: Bool) in
                                                 self.dot!.text = "\(globalNoticeNumber)"
                                         })
@@ -152,23 +146,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.myTabbar!.backgroundColor = BarColor  //底部的背景色
         self.view.addSubview(self.myTabbar!)
         
-        //通知栏
-        self.niceView = UIView(frame: CGRectMake(0, -40, 320, 40))
-        self.niceView!.backgroundColor = LightBlueColor
-        self.niceViewLabel = UILabel(frame: CGRectMake(0, 5, 320, 35))
-        self.niceViewLabel!.textAlignment = NSTextAlignment.Center
-        self.niceViewLabel!.textColor = UIColor.whiteColor()
-        self.niceViewLabel!.font = UIFont.systemFontOfSize(14)
-        self.niceView!.addSubview(self.niceViewLabel!)
-        self.niceView!.hidden = true
-        self.view.addSubview(self.niceView!)
-        
         //底部按钮
         var count = 5
         for var index = 0; index < count; index++ {
-            var btnWidth = (CGFloat)(index*64)
+            var btnWidth = CGFloat(index) * globalWidth * 0.2
             var button  = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
-            button.frame = CGRectMake(btnWidth, 1,64,49)
+            button.frame = CGRectMake(btnWidth, 1, globalWidth * 0.2 ,49)
             button.tag = index+100
             var image = self.imageArray[index]
             let myImage = UIImage(named:"\(image)")
@@ -184,7 +167,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 button.selected = true
             }
         }
-        self.dot = UILabel(frame: CGRectMake(228, 10, 20, 15))
+        self.dot = UILabel(frame: CGRectMake(globalWidth*0.7+4, 10, 20, 15))
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
         self.dot!.textAlignment = NSTextAlignment.Center
@@ -195,7 +178,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.text = "0"
         self.myTabbar!.addSubview(dot!)
         
-        self.dotCircle = UILabel(frame: CGRectMake(292, 10, 20, 15))
+        self.dotCircle = UILabel(frame: CGRectMake(globalWidth*0.9+4, 10, 20, 15))
         self.dotCircle!.textColor = UIColor.whiteColor()
         self.dotCircle!.font = UIFont.systemFontOfSize(10)
         self.dotCircle!.textAlignment = NSTextAlignment.Center
@@ -203,7 +186,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dotCircle!.layer.cornerRadius = 5
         self.dotCircle!.layer.masksToBounds = true
         self.dotCircle!.text = "0"
-        self.dotCircle!.hidden = true
+        self.dotCircle!.hidden = false //todo
         self.myTabbar!.addSubview(dotCircle!)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
@@ -410,31 +393,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func addDreamButton(){
         var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
         self.navigationController!.pushViewController(adddreamVC, animated: true)
-    }
-    
-    func niceShow(text:String){
-        self.niceView!.hidden = false
-        self.niceViewLabel!.text = text
-        if self.animationBool == 0 {
-            self.animationBool = 1
-            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                self.niceView!.setY(0)
-                }, completion: { (complete: Bool) in
-                    UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                        self.niceView!.setY(-5)
-                        }, completion: { (complete: Bool) in
-                            UIView.animateWithDuration(0.1, delay:2, options: UIViewAnimationOptions.allZeros, animations: {
-                                self.niceView!.setY(0)
-                                }, completion: { (complete: Bool) in
-                                    UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
-                                        self.niceView!.setY(-40)
-                                        }, completion: { (complete: Bool) in
-                                            self.animationBool = 0
-                                    })
-                            })
-                    })
-            })
-        }
     }
     
     func addStep(){
@@ -671,7 +629,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             var data = NSDictionary(objects: [cid, uid, name, content, id, type, time, circle, "1"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                         }
+                        a++
                     }
+                }
+                if a != 0 {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if globalTabBarSelected != 104 {
+                            self.dotCircle!.hidden = false
+                            if let b = self.dotCircle!.text?.toInt() {
+                                self.dotCircle!.text = "\(b + a)"
+                            }
+                        }
+                    })
                 }
             }
         }

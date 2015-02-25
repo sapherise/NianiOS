@@ -283,16 +283,25 @@ class ExploreDynamicStepCell: UITableViewCell {
         self.selectionStyle = .None
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+        self.setWidth(globalWidth)
+        self.labelDate.setX(globalWidth-15-92)
+        self.viewControl.setWidth(globalWidth)
+        self.labelContent.setWidth(globalWidth-30)
+        self.viewLine.setWidth(globalWidth)
+        self.btnLike.setX(globalWidth-50)
+        self.btnUnlike.setX(globalWidth-50)
+        self.btnMore.setX(globalWidth-90)
     }
     
     func bindData(data: ExploreDynamicProvider.Data) {
         cellData = data
         var imageDelta: CGFloat =  0
         if !data.img0.isZero && !data.img1.isZero {
-            imageDelta = CGFloat(data.img1 * 320 / data.img0)
+            imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
             imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
             // data.img.pathExtension
             imageContent.setHeight(imageDelta)
+            imageContent.setWidth(globalWidth)
             imageContent.hidden = false
             labelContent.setY(imageContent.bottom() + 15)
         }else{
@@ -383,9 +392,9 @@ class ExploreDynamicStepCell: UITableViewCell {
             }
         } else {
             if content == "" {
-                return 156 + CGFloat(h * 320 / w)
+                return 156 + CGFloat(h * Float(globalWidth) / w)
             }else{
-                return height + 171 + CGFloat(h * 320 / w)
+                return height + 171 + CGFloat(h * Float(globalWidth) / w)
             }
         }
     }
@@ -397,8 +406,14 @@ class ExploreDynamicDreamCell: UITableViewCell {
     @IBOutlet var labelName: UILabel!
     @IBOutlet var labelDream: UILabel!
     @IBOutlet var imageCover: UIImageView!
+    @IBOutlet var viewLine: UIView!
     
     var cellData: ExploreDynamicProvider.Data?
+    
+    override func awakeFromNib() {
+        imageCover.setX(globalWidth-55)
+        self.viewLine.setWidth(globalWidth)
+    }
     
     func bindData(data: ExploreDynamicProvider.Data) {
         imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)

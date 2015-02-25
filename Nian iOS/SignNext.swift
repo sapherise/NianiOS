@@ -24,7 +24,10 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
-        self.view.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
+        
+        self.holder.setX(globalWidth/2-140)
+        self.errLabel.setX(globalWidth/2-100)
+        
         self.loginButton.layer.cornerRadius = 20
         self.loginButtonBorder.layer.cornerRadius = 25
         self.inputEmail.textColor = UIColor.blackColor()

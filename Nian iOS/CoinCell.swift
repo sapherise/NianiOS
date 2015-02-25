@@ -17,6 +17,11 @@ class CoinCell : UITableViewCell {
     @IBOutlet var viewLine: UIView!
     @IBOutlet var labelImage: UILabel!
     
+    override func awakeFromNib() {
+        self.btnBuy.setX(globalWidth-85)
+        self.viewLine.setWidth(globalWidth-85)
+    }
+    
     func setupView(imageURL: String, title: String, description: String, cost: String, sectionNumber: Int) {
         self.imageIcon.layer.cornerRadius = 20
         self.imageIcon.layer.masksToBounds = true

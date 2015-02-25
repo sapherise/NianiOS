@@ -75,10 +75,10 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             if self.toggle == 0 {
                 var ratio:CGFloat = (distanceX > 0) ? 0.5 : 1
                 self.viewLeft.frame.origin.x = distanceX * ratio
-                self.viewRight.frame.origin.x = distanceX * ratio + 320
+                self.viewRight.frame.origin.x = distanceX * ratio + globalWidth
             }else{
                 var ratio:CGFloat = (distanceX > 0) ? 1 : 0.5
-                self.viewLeft.frame.origin.x = distanceX * ratio - 320
+                self.viewLeft.frame.origin.x = distanceX * ratio - globalWidth
                 self.viewRight.frame.origin.x = distanceX * ratio
             }
         }
@@ -86,7 +86,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             if panStartPoint.x > point.x {
                 self.toggle = 1
                 UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: {
-                    self.viewLeft.frame.origin.x = -320
+                    self.viewLeft.frame.origin.x = -globalWidth
                     self.viewRight.frame.origin.x = 0
                     self.dotLeft.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.05)
                     self.dotRight.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.1)
@@ -99,7 +99,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
                 self.toggle = 0
                 UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: {
                     self.viewLeft.frame.origin.x = 0
-                    self.viewRight.frame.origin.x = 320
+                    self.viewRight.frame.origin.x = globalWidth
                     self.dotLeft.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.1)
                     self.dotRight.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.05)
                     }, completion: { (finished:Bool) -> Void in

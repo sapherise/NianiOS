@@ -86,7 +86,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SALoadData() {
-        println("加载")
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
