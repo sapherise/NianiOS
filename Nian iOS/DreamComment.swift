@@ -106,7 +106,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.inputKeyboard = UITextField(frame: CGRectMake(8, 8, globalWidth-16, 28))
         self.inputKeyboard.layer.cornerRadius = 4
         self.inputKeyboard.layer.masksToBounds = true
-        self.inputKeyboard.font = UIFont.systemFontOfSize(13)
+        self.inputKeyboard.font = UIFont.systemFontOfSize(15)
         
         self.inputKeyboard.leftView = UIView(frame: CGRectMake(0, 0, 8, 28))
         self.inputKeyboard.rightView = UIView(frame: CGRectMake(0, 0, 8, 28))

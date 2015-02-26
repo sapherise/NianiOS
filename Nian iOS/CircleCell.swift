@@ -28,6 +28,10 @@ class CircleCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
+        self.viewDelete.setX(globalWidth)
+        self.viewHolder.setWidth(globalWidth)
+        self.lastdate?.setX(globalWidth-92)
+        self.viewLine.setWidth(globalWidth-85)
     }
     
     override func layoutSubviews() {
@@ -96,7 +100,7 @@ class CircleCell: UITableViewCell {
                         var widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
                         self.labelCount.text = "\(count)"
                         self.labelCount.setWidth(widthCount)
-                        self.labelCount.setX(305-widthCount)
+                        self.labelCount.setX(globalWidth-15-widthCount)
                     }
                 }
             }

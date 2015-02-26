@@ -18,6 +18,7 @@ class StepCell: UITableViewCell {
     @IBOutlet var title2:UILabel?
     @IBOutlet var title3:UILabel?
     @IBOutlet var View:UIView?
+    @IBOutlet var viewHolder: UIView!
     var data1 :NSDictionary!
     var data2 :NSDictionary!
     var data3 :NSDictionary!
@@ -31,13 +32,14 @@ class StepCell: UITableViewCell {
         self.img2?.hidden = true
         self.title3?.hidden = true
         self.img3?.hidden = true
-        self.img1!.layer.cornerRadius = 4;
-        self.img2!.layer.cornerRadius = 4;
-        self.img3!.layer.cornerRadius = 4;
-        self.img1!.layer.masksToBounds = true;
-        self.img2!.layer.masksToBounds = true;
-        self.img3!.layer.masksToBounds = true;
+        self.img1!.layer.cornerRadius = 4
+        self.img2!.layer.cornerRadius = 4
+        self.img3!.layer.cornerRadius = 4
+        self.img1!.layer.masksToBounds = true
+        self.img2!.layer.masksToBounds = true
+        self.img3!.layer.masksToBounds = true
         self.View!.backgroundColor = BGColor
+        self.viewHolder.setX(globalWidth/2 - 160)
     }
     
     override func layoutSubviews()

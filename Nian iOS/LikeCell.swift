@@ -16,6 +16,7 @@ class LikeCell: UITableViewCell {
     @IBOutlet var View:UIView!
     @IBOutlet var btnFollow:UIButton!
     @IBOutlet var viewHolder: UIView!
+    @IBOutlet var viewLine: UIView!
     var LargeImgURL:String = ""
     var data :NSDictionary!
     var user:String = ""
@@ -28,6 +29,9 @@ class LikeCell: UITableViewCell {
         self.selectionStyle = .None
         self.avatarView.layer.cornerRadius = 20
         self.avatarView.layer.masksToBounds = true
+        self.viewHolder.setWidth(globalWidth)
+        self.btnFollow.setX(globalWidth-85)
+        self.viewLine.setWidth(globalWidth-85)
     }
     
     override func layoutSubviews() {

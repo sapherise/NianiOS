@@ -278,7 +278,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             scrollHidden(self.topCell!.btnMain, height: newHeight, scrollY: 214)
             scrollHidden(self.topCell!.btnLetter, height: newHeight, scrollY: 214)
         }
-        if height >= 192 {
+        println("\(height) >= \(globalWidth * 0.5 + 75)")
+        if height >= globalWidth - 128 {
             self.navView.hidden = false
             self.navView.alpha = 1
         }else{
@@ -530,9 +531,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
             if toggle == 0 {
-                return  364 + 30
+                return  globalWidth + 44 + 30
             }else{
-                return 364 + 14
+                return globalWidth + 44 + 14
             }
         }else{
             if toggle == 0 {

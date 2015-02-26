@@ -21,6 +21,8 @@ class CircleTypeCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
+        self.setWidth(globalWidth)
+        self.viewHolder.setX(globalWidth/2-93)
     }
     
     override func layoutSubviews() {

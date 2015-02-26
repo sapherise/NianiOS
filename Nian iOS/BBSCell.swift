@@ -22,11 +22,12 @@ class BBSCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.View!.backgroundColor = BGColor
+        self.setWidth(globalWidth)
+        self.contentLabel?.setWidth(globalWidth-85)
+        self.Line?.setWidth(globalWidth)
     }
     
-    override func layoutSubviews()
-    {
+    override func layoutSubviews() {
         super.layoutSubviews()
         var id = self.data.stringAttributeForKey("id")
         var uid = self.data.stringAttributeForKey("uid")
@@ -40,7 +41,7 @@ class BBSCell: UITableViewCell {
         self.avatarView!.setImage(userImageURL, placeHolder: IconColor)
         self.avatarView!.tag = uid.toInt()!
         
-        var height = content.stringHeightWith(13,width:235)
+        var height = content.stringHeightWith(16,width:globalWidth-85)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
@@ -50,7 +51,7 @@ class BBSCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var content = data.stringAttributeForKey("content")
-        var height = content.stringHeightWith(13,width:235)
+        var height = content.stringHeightWith(16,width:globalWidth-85)
         return height + 95
     }
 }

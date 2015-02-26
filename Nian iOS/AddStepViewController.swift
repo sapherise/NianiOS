@@ -110,6 +110,8 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         
         self.uploadWait!.hidden = true
         self.uploadDone!.hidden = true
+        self.TextView.setWidth(globalWidth-20)
+        self.viewHolder.setWidth(globalWidth)
         
         if self.isEdit == 1 {
             self.Id = self.data!.objectForKey("sid") as String

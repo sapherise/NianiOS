@@ -24,13 +24,13 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
         
         self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
         self.viewHolder.layer.borderWidth = 1
+        self.viewHolder.setX(globalWidth/2-140)
         
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.field2!.delegate = self
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        self.field1!.becomeFirstResponder()
         
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSOK")
         rightButton.image = UIImage(named:"newOK")

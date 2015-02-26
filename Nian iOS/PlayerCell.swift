@@ -84,6 +84,13 @@ class PlayerCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
+        self.menuHolder?.setWidth(globalWidth)
+        self.setWidth(globalWidth)
+        self.lastdate?.setX(globalWidth - 92 - 15)
+        self.share.setX(globalWidth - 50)
+        self.likebutton.setX(globalWidth - 50)
+        self.liked.setX(globalWidth - 50)
+        self.viewLine.setWidth(globalWidth)
     }
     
     override func layoutSubviews()
@@ -152,6 +159,7 @@ class PlayerCell: UITableViewCell {
                 largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
                 self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
                 self.imageholder!.setHeight(CGFloat(imgHeight))
+                self.imageholder?.setWidth(globalWidth)
                 var sapherise = self.imageholder!.frame.size.height
                 self.imageholder!.hidden = false
                 self.contentLabel!.setY(self.imageholder!.bottom()+15)
@@ -173,7 +181,7 @@ class PlayerCell: UITableViewCell {
                 self.likebutton!.hidden = true
                 self.liked!.hidden = true
             }else{
-                self.share!.setX(230)
+                self.share!.setX(globalWidth - 90)
                 if liked == "0" {
                     self.likebutton!.hidden = false
                     self.liked!.hidden = true

@@ -32,6 +32,7 @@ class CircleBubbleCell: UITableViewCell {
         self.avatarView.layer.masksToBounds = true
         self.avatarView.layer.cornerRadius = 20
         self.View.userInteractionEnabled = true
+        self.setWidth(globalWidth)
     }
     
     override func layoutSubviews() {
@@ -45,7 +46,7 @@ class CircleBubbleCell: UITableViewCell {
         self.lastdate!.text = lastdate
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
-        var height = content.stringHeightWith(13,width:208)
+        var height = content.stringHeightWith(15,width:208)
         self.avatarView!.tag = uid.toInt()!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -58,11 +59,11 @@ class CircleBubbleCell: UITableViewCell {
                 self.imageContent.hidden = true
                 self.contentLabel!.setHeight(height)
                 self.contentLabel!.text = content
-                if floor(height) == 15.0 {      //如果是单行
-                    var oneLineWidth = content.stringWidthWith(13, height: 24)
+                if height == "".stringHeightWith(15,width:208) {      //如果是单行
+                    var oneLineWidth = content.stringWidthWith(15, height: 24)
                     self.textContent.setWidth(oneLineWidth + 27)
                     self.textContent.setHeight(37)
-                    self.contentLabelWidth = content.stringWidthWith(13, height: 24)
+                    self.contentLabelWidth = content.stringWidthWith(15, height: 24)
                 }else{      //如果是多行
                     self.textContent.setHeight(height+20)
                     self.textContent.setWidth(235)
@@ -120,11 +121,11 @@ class CircleBubbleCell: UITableViewCell {
                 self.imageContent.hidden = true
                 self.contentLabel!.setHeight(height)
                 self.contentLabel!.text = content
-                if floor(height) == 15.0 {      //如果是单行
-                    var oneLineWidth = content.stringWidthWith(13, height: 24)
+                if height == "".stringHeightWith(15,width:208) {      //如果是单行
+                    var oneLineWidth = content.stringWidthWith(15, height: 24)
                     self.textContent.setWidth(oneLineWidth + 27)
                     self.textContent.setHeight(37)
-                    self.contentLabelWidth = content.stringWidthWith(13, height: 24)
+                    self.contentLabelWidth = content.stringWidthWith(15, height: 24)
                 }else{      //如果是多行
                     self.textContent.setHeight(height+20)
                     self.textContent.setWidth(235)
@@ -174,7 +175,7 @@ class CircleBubbleCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary, isImage:Int = 0)->CGFloat {
         var content = data.stringAttributeForKey("content")
         if isImage == 0 {
-            var height = content.stringHeightWith(13,width:208)
+            var height = content.stringHeightWith(15,width:208)
             return height + 60
         }else{
             var arrContent = content.componentsSeparatedByString("_")

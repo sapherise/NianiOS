@@ -38,6 +38,13 @@ class DreamCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
+        self.setWidth(globalWidth)
+        self.menuHolder?.setWidth(globalWidth)
+        self.viewLine.setWidth(globalWidth)
+        self.likebutton.setX(globalWidth-50)
+        self.liked.setX(globalWidth-50)
+        self.share.setX(globalWidth-50)
+        self.contentLabel?.setWidth(globalWidth-30)
     }
     
     override func layoutSubviews() {
@@ -65,7 +72,7 @@ class DreamCell: UITableViewCell {
         
         self.like!.tag = sid.toInt()!
         
-        var height = content.stringHeightWith(14,width:290)
+        var height = content.stringHeightWith(16,width:globalWidth-30)
         
         if content == "" {
             height = 0
@@ -86,10 +93,10 @@ class DreamCell: UITableViewCell {
         }
         like = "\(like) 赞"
         self.like.text = like
-        var likeWidth = like.stringWidthWith(14, height: 30) + 17
+        var likeWidth = like.stringWidthWith(13, height: 30) + 17
         self.like.setWidth(likeWidth)
         self.labelComment.text = comment
-        var commentWidth = comment.stringWidthWith(14, height: 30) + 17
+        var commentWidth = comment.stringWidthWith(13, height: 30) + 17
         self.labelComment.setWidth(commentWidth)
         self.like.setX(commentWidth+23)
         
@@ -102,6 +109,7 @@ class DreamCell: UITableViewCell {
             ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
             largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
             self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
+            self.imageholder!.setWidth(globalWidth)
             self.imageholder!.setHeight(CGFloat(imgHeight))
             var sapherise = self.imageholder!.frame.size.height
             self.imageholder!.hidden = false
@@ -123,7 +131,7 @@ class DreamCell: UITableViewCell {
             self.likebutton!.hidden = true
             self.liked!.hidden = true
         }else{
-            self.share!.setX(230)
+            self.share!.setX(globalWidth-90)
             if liked == "0" {
                 self.likebutton!.hidden = false
                 self.liked!.hidden = true
@@ -147,7 +155,7 @@ class DreamCell: UITableViewCell {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(14,width:290)
+        var height = content.stringHeightWith(16,width:globalWidth-30)
         if(img0 == 0.0){
             if content == "" {
                 return 136

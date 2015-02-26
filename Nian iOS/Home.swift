@@ -29,8 +29,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var viewClose:UIImageView!
     
     let imageArray = ["home","explore","update","letter","bbs"]
-    
-    var deleteDreamSheet:UIActionSheet?
     var cancelSheet:UIActionSheet?
     var pointNavY:CGFloat = 0
     var timer:NSTimer?
@@ -205,13 +203,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.GameOverView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
         self.GameOverView!.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
         
-        var holder = UIView(frame: CGRectMake(40, globalHeight / 2 - 175, 240, 350))
+        var holder = UIView(frame: CGRectMake(globalWidth/2-120, globalHeight / 2 - 130, 240, 260))
         var gameoverHead = UIImageView(frame: CGRectMake(95, 0, 50, 50))
         gameoverHead.setImage("http://img.nian.so/dream/\(self.gameoverHead)!dream", placeHolder: IconColor)
         gameoverHead.layer.cornerRadius = 25
         gameoverHead.layer.masksToBounds = true
         var gameoverLabel = UILabel(frame: CGRectMake(30, 80, 180, 210))
-        var gameoverWord = "梦想「\(self.gameoverTitle)」有 \(self.gameoverDays) 天没有更新，已经阵亡。\n你有 \(self.gameoverCoin) 枚念币，支付念币或者删除梦想来继续玩念。"
+        var gameoverWord = "梦想「\(self.gameoverTitle)」有 \(self.gameoverDays) 天没有更新，已经阵亡。你有 \(self.gameoverCoin) 枚念币，支付念币来继续玩念。"
         gameoverLabel.text = gameoverWord
         gameoverLabel.numberOfLines = 0
         gameoverLabel.font = UIFont.systemFontOfSize(14)
@@ -227,88 +225,47 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var button1 = gameoverButton(textGameover)
         button1.tag = 1
         button1.addTarget(self, action: "GameOverHide:", forControlEvents: UIControlEvents.TouchUpInside)
-        button1.setY(gameoverLabel.bottom()+40)
-        var button2 = gameoverButton("删除这个梦想")
-        button2.tag = 2
-        button2.addTarget(self, action: "GameOverHide:", forControlEvents: UIControlEvents.TouchUpInside)
+        button1.setY(gameoverLabel.bottom()+20)
+        var button2 = gameoverButton("切换为每月更新模式")
+        button2.addTarget(self, action: "SAMonthly", forControlEvents: UIControlEvents.TouchUpInside)
         button2.setY(button1.bottom()+6)
-        var button3 = gameoverButton("退出当前账号")
-        button3.addTarget(self, action: "SAlogout", forControlEvents: UIControlEvents.TouchUpInside)
-        button3.setY(button2.bottom()+6)
         holder.addSubview(gameoverHead)
         holder.addSubview(gameoverLabel)
         holder.addSubview(button1)
-        holder.addSubview(button2)
-        holder.addSubview(button3)
+        // holder.addSubview(button2)
         self.GameOverView?.addSubview(holder)
-        
         self.view.addSubview(self.GameOverView!)
     }
     
-    func SAlogout(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as? String
-        var safeshell = Sa.objectForKey("shell") as? String
-        if (safeuid != nil) & (safeshell != nil) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("devicetoken=&&uid=\(safeuid!)&&shell=\(safeshell!)&&type=1", "http://nian.so/api/user_update.php")
-            })
+    func SAMonthly(){
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        Api.postUserFrequency(1) { json in
+            if json != nil {
+                self.navigationItem.rightBarButtonItems = []
+                self.GameOverView!.hidden = true
+            }
         }
-        Sa.removeObjectForKey("uid")
-        Sa.removeObjectForKey("shell")
-        Sa.removeObjectForKey("followData")
-        Sa.removeObjectForKey("user")
-        Sa.synchronize()
-        self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
-        client.leave()
     }
     
     func GameOverHide(sender:UIButton){
-        if sender.tag == 1 {
-            self.navigationItem.rightBarButtonItems = buttonArray()
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/gameover_coin.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.navigationItem.rightBarButtonItems = []
-                        self.GameOverView!.hidden = true
-                        self.setupViews()
-                        self.initViewControllers()
-                    })
-                }
-            })
-        }else if sender.tag == 2 {
-            self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.deleteDreamSheet!.addButtonWithTitle("确定删除梦想")
-            self.deleteDreamSheet!.addButtonWithTitle("取消")
-            self.deleteDreamSheet!.cancelButtonIndex = 1
-            self.deleteDreamSheet!.showInView(self.view)
-        }
+        globalWillNianReload = 1
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/gameover_coin.php")
+            if(sa == "1"){
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.navigationItem.rightBarButtonItems = []
+                    self.GameOverView!.hidden = true
+                })
+            }
+        })
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if actionSheet == self.deleteDreamSheet {
-            if buttonIndex == 0 {
-                self.navigationItem.rightBarButtonItems = buttonArray()
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                var safeshell = Sa.objectForKey("shell") as String
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.gameoverId)", "http://nian.so/api/delete_dream.php")
-                    if(sa == "1"){
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.navigationItem.rightBarButtonItems = []
-                            self.GameOverView!.hidden = true
-                            self.setupViews()
-                            self.initViewControllers()
-                        })
-                    }
-                })
-            }
-        }else if actionSheet == self.cancelSheet {
+        if actionSheet == self.cancelSheet {
             if buttonIndex == 0 {
                 self.onViewCloseClick()
             }
@@ -326,13 +283,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     //每个按钮跳转到哪个页面
-    func initViewControllers()
-    {
+    func initViewControllers() {
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
-        // var vc3 = ExploreController()
-        
         var vc1 = NianViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)

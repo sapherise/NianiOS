@@ -21,6 +21,9 @@ class CircleDetailCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
+        self.setWidth(globalWidth)
+        self.viewLine.setWidth(globalWidth-78)
+        self.imageDream.setX(globalWidth-55)
     }
     
     override func layoutSubviews() {

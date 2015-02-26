@@ -261,6 +261,11 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=7", callback: callback)
     }
     
+    static func postUserFrequency(isMonthly: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&shell=\(s_shell)&type=8&isMonthly=\(isMonthly)", callback: callback)
+    }
+    
     static func postCircleInit(callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/circle_init.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)

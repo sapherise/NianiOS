@@ -18,6 +18,7 @@ class LetterCell: UITableViewCell {
     @IBOutlet var labelContent: UILabel!
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelCount: UILabel!
+    @IBOutlet var viewDelete: UIView!
     
     var largeImageURL:String = ""
     var data :NSDictionary?
@@ -25,6 +26,10 @@ class LetterCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
+        self.viewDelete.setX(globalWidth)
+        self.setWidth(globalWidth)
+        self.lastdate?.setX(globalWidth-92)
+        self.viewLine.setWidth(globalWidth-85)
     }
     
     func onUserClick(sender: UIGestureRecognizer) {
@@ -75,7 +80,7 @@ class LetterCell: UITableViewCell {
                     var widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
                     self.labelCount.text = "\(count)"
                     self.labelCount.setWidth(widthCount)
-                    self.labelCount.setX(305-widthCount)
+                    self.labelCount.setX(globalWidth-15-widthCount)
                 }
             }
         }

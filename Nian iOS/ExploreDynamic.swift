@@ -308,7 +308,7 @@ class ExploreDynamicStepCell: UITableViewCell {
             imageContent.hidden = true
             labelContent.setY(70)
         }
-        var textHeight = data.content.stringHeightWith(14, width: 290)
+        var textHeight = data.content.stringHeightWith(16, width: globalWidth-30)
         if data.content == "" {
             textHeight = 0
         }
@@ -383,7 +383,7 @@ class ExploreDynamicStepCell: UITableViewCell {
     }
     
     class func heightWithData(content: String, w: Float, h: Float) -> CGFloat {
-        var height = content.stringHeightWith(14, width: 290)
+        var height = content.stringHeightWith(16, width: globalWidth-30)
         if h == 0.0 || w == 0.0 {
             if content == "" {
                 return 136

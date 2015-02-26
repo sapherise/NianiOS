@@ -17,7 +17,7 @@
                     <view contentMode="scaleToFill" id="4rL-BZ-mf1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="287"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.02" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" id="yfL-kj-0mn">
                         <rect key="frame" x="320" y="0.0" width="320" height="287"/>
@@ -126,7 +126,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fcw-AJ-40u">
-                                        <rect key="frame" x="111" y="9" width="189" height="30"/>
+                                        <rect key="frame" x="110" y="9" width="190" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -151,7 +151,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LFY-DM-1gt">
-                                        <rect key="frame" x="111" y="9" width="189" height="30"/>
+                                        <rect key="frame" x="110" y="9" width="190" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -216,11 +216,14 @@
                 <outlet property="labelDes" destination="6hA-LD-V0P" id="Oxn-sG-sCk"/>
                 <outlet property="labelPrivate" destination="LFY-DM-1gt" id="s4p-SP-rQ8"/>
                 <outlet property="labelTag" destination="fcw-AJ-40u" id="anA-ND-WJm"/>
+                <outlet property="line1" destination="M6x-UR-iwP" id="syt-5u-H48"/>
+                <outlet property="line2" destination="bG8-fq-BH1" id="tub-Nd-HYF"/>
                 <outlet property="nickLabel" destination="nuw-w3-McK" id="ouk-me-wyU"/>
                 <outlet property="numLeft" destination="lvC-Ve-npV" id="cch-Ha-XYr"/>
                 <outlet property="numLeftNum" destination="Qd5-eC-62G" id="qfF-WQ-qyo"/>
                 <outlet property="numMiddle" destination="yrW-vn-YEH" id="3hF-gI-PTk"/>
                 <outlet property="numMiddleNum" destination="mZP-OB-Rhd" id="cof-hX-dTh"/>
+                <outlet property="viewBG" destination="4rL-BZ-mf1" id="rA5-bp-GsO"/>
                 <outlet property="viewLeft" destination="QEi-nw-N5d" id="kjX-m7-Mtb"/>
                 <outlet property="viewLineLeft" destination="RmZ-sJ-SAa" id="Fbm-fY-43z"/>
                 <outlet property="viewRight" destination="yfL-kj-0mn" id="UiZ-lm-U1T"/>

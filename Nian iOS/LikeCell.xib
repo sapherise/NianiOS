@@ -58,6 +58,7 @@
                 <outlet property="btnFollow" destination="Gc1-Kf-k0F" id="S24-4s-w3t"/>
                 <outlet property="nickLabel" destination="RaU-Rm-cQH" id="s9x-PH-ssd"/>
                 <outlet property="viewHolder" destination="GYy-HR-kl2" id="RZy-Ia-bZe"/>
+                <outlet property="viewLine" destination="puv-9T-vra" id="QQo-T3-kcP"/>
             </connections>
             <point key="canvasLocation" x="212" y="312"/>
         </tableViewCell>

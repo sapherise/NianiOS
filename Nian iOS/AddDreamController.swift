@@ -122,6 +122,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
         self.viewHolder.layer.borderWidth = 1
+        self.viewHolder.setX(globalWidth/2-140)
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)

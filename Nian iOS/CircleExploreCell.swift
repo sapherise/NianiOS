@@ -22,6 +22,7 @@ class CircleExploreCell: UITableViewCell {
     @IBOutlet var viewLeft: UIView!
     @IBOutlet var viewRight: UIView!
     @IBOutlet var btnScan: UIButton!
+    @IBOutlet var viewHolder: UIView!
     
     var largeImageURL:String = ""
     var data :NSDictionary!
@@ -29,6 +30,10 @@ class CircleExploreCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
+        self.setWidth(globalWidth)
+        self.labelTag.setX(globalWidth-64)
+        self.viewLine.setWidth(globalWidth)
+        self.viewHolder.setX(globalWidth/2-160)
     }
     
     override func layoutSubviews() {

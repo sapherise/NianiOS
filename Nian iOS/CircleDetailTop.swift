@@ -28,6 +28,9 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     @IBOutlet var labelTag: UILabel!
     @IBOutlet var labelPrivate: UILabel!
+    @IBOutlet var viewBG: UIView!
+    @IBOutlet var line1: UIView!
+    @IBOutlet var line2: UIView!
     
     var dreamid:String = ""
     var desHeight:CGFloat = 0
@@ -43,10 +46,18 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.View?.addGestureRecognizer(self.panGesture)
         self.btnMain.backgroundColor = SeaColor
         self.btnMain.hidden = true
-        self.viewLeft.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
-        self.viewRight.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
+        self.viewBG.setWidth(globalWidth)
+        self.viewRight.setX(globalWidth + globalWidth/2 - 160)
+        self.viewLeft.setX(globalWidth/2 - 160)
+        self.btnMain.setX(globalWidth/2-50)
+        self.dotLeft.setX(globalWidth/2-5)
+        self.dotRight.setX(globalWidth/2+5)
+        self.line1.setWidth(globalWidth-30)
+        self.line2.setWidth(globalWidth-30)
+        self.labelTag.setX(globalWidth-210)
+        self.labelPrivate.setX(globalWidth-210)
     }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -76,20 +87,20 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
             self.View!.layer.removeAllAnimations()
             if self.toggle == 0 {
                 var ratio:CGFloat = (distanceX > 0) ? 0.5 : 1
-                self.viewLeft.frame.origin.x = distanceX * ratio
-                self.viewRight.frame.origin.x = distanceX * ratio + globalWidth
+                self.viewLeft.frame.origin.x = distanceX * ratio + globalWidth/2 - 160
+                self.viewRight.frame.origin.x = distanceX * ratio + globalWidth + globalWidth/2 - 160
             }else{
                 var ratio:CGFloat = (distanceX > 0) ? 1 : 0.5
-                self.viewLeft.frame.origin.x = distanceX * ratio - globalWidth
-                self.viewRight.frame.origin.x = distanceX * ratio
+                self.viewLeft.frame.origin.x = distanceX * ratio - globalWidth + globalWidth/2 - 160
+                self.viewRight.frame.origin.x = distanceX * ratio + globalWidth/2 - 160
             }
         }
         if pan.state == UIGestureRecognizerState.Ended {
             if panStartPoint.x > point.x {
                 self.toggle = 1
                 UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: {
-                    self.viewLeft.frame.origin.x = -globalWidth
-                    self.viewRight.frame.origin.x = 0
+                    self.viewLeft.frame.origin.x = -globalWidth + globalWidth/2 - 160
+                    self.viewRight.frame.origin.x = globalWidth/2 - 160
                     self.dotLeft.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.05)
                     self.dotRight.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.1)
                     }, completion: { (finished:Bool) -> Void in
@@ -100,8 +111,8 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
             }else{
                 self.toggle = 0
                 UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: {
-                    self.viewLeft.frame.origin.x = 0
-                    self.viewRight.frame.origin.x = globalWidth
+                    self.viewLeft.frame.origin.x = globalWidth/2 - 160
+                    self.viewRight.frame.origin.x = globalWidth + globalWidth/2 - 160
                     self.dotLeft.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.1)
                     self.dotRight.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:0.05)
                     }, completion: { (finished:Bool) -> Void in

@@ -23,11 +23,21 @@ class PlayerCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var labelMenuRight: UILabel!
     @IBOutlet var labelMenuSlider: UIView!
     @IBOutlet var viewBlack: UIView!
+    @IBOutlet var viewBanner: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.BGImage.clipsToBounds = true
         self.selectionStyle = .None
+        self.viewHolder.frame.size = CGSizeMake(globalWidth, globalHeight + 44)
+        self.viewBanner.setY(globalWidth)
+        self.viewBanner.setWidth(globalWidth)
+        self.viewMenu.frame.origin = CGPointMake(globalWidth/2 - 160, 0)
+        self.BGImage.frame.size = CGSizeMake(globalWidth, globalWidth)
+        self.UserHead.setX(globalWidth/2-30)
+        self.viewBlack.frame.size = CGSizeMake(globalWidth, globalWidth)
+        self.btnMain.setX(globalWidth/2 - 105)
+        self.btnLetter.setX(globalWidth/2 + 5)
     }
     
     override func layoutSubviews(){

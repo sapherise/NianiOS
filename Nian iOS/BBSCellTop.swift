@@ -28,14 +28,17 @@ class BBSCellTop: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.View!.backgroundColor = BGColor
         self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.BBStitle?.setWidth(globalWidth-40)
+        self.setWidth(globalWidth)
+        self.contentLabel?.setWidth(globalWidth-85)
+        self.Line?.setWidth(globalWidth)
     }
     
     override func layoutSubviews(){
         super.layoutSubviews()
         self.BBStitle!.text = "\(self.toptitle)"
-        var titleHeight = self.toptitle.stringHeightWith(13,width:280)
+        var titleHeight = self.toptitle.stringHeightWith(16,width:globalWidth-40)
         self.BBStitle!.setHeight(titleHeight)
         
         self.nickLabel!.text = "\(self.topuser)"
@@ -47,7 +50,7 @@ class BBSCellTop: UITableViewCell{
         }
         self.contentLabel?.text = "\(topcontent)"
         
-        var height = topcontent.stringHeightWith(13,width:235)
+        var height = topcontent.stringHeightWith(16,width:globalWidth-85)
         self.contentLabel!.setHeight(height)
         
         self.dreamhead!.setY(self.BBStitle!.bottom()+20)
@@ -63,8 +66,8 @@ class BBSCellTop: UITableViewCell{
         }
     }
     class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
-        var height = topcontent.stringHeightWith(13,width:235)
-        var titleHeight = toptitle.stringHeightWith(13,width:280)
+        var height = topcontent.stringHeightWith(16,width:globalWidth-85)
+        var titleHeight = toptitle.stringHeightWith(16,width:globalWidth-40)
         return height + 120 + titleHeight + 58
     }
     

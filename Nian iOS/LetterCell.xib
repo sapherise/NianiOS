@@ -18,7 +18,7 @@
                         <rect key="frame" x="70" y="18" width="150" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" id="TpY-ga-hdz">
@@ -46,7 +46,7 @@
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="匿名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PpG-6p-kSg">
                         <rect key="frame" x="70" y="42" width="200" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -87,6 +87,7 @@
                 <outlet property="labelCount" destination="KOA-AZ-Q62" id="miN-wc-8lx"/>
                 <outlet property="labelTitle" destination="QFB-Pf-uQa" id="KpH-ty-RrA"/>
                 <outlet property="lastdate" destination="RXX-Oo-eWG" id="V0b-LV-AJV"/>
+                <outlet property="viewDelete" destination="36s-03-2by" id="bxM-aH-pBg"/>
                 <outlet property="viewLine" destination="TpY-ga-hdz" id="KwR-zi-cce"/>
             </connections>
             <point key="canvasLocation" x="212" y="219.5"/>

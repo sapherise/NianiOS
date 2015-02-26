@@ -12,11 +12,11 @@ import QuartzCore
 
 class GroupCell: UITableViewCell {
     
-    @IBOutlet var contentLabel:UILabel?
-    @IBOutlet var lastdate:UILabel?
-    @IBOutlet var View:UIView?
-    @IBOutlet var reply:UILabel?
-    @IBOutlet var line:UIView?
+    @IBOutlet var contentLabel:UILabel!
+    @IBOutlet var lastdate:UILabel!
+    @IBOutlet var View:UIView!
+    @IBOutlet var reply:UILabel!
+    @IBOutlet var line:UIView!
     @IBOutlet var viewLine: UIView!
     
     var largeImageURL:String = ""
@@ -26,6 +26,10 @@ class GroupCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.View!.backgroundColor = BGColor
+        self.line.setWidth(globalWidth)
+        self.lastdate.setX(globalWidth-164)
+        self.viewLine.setWidth(globalWidth)
+        self.contentLabel.setWidth(globalWidth-30)
     }
     
     override func layoutSubviews()
@@ -37,18 +41,17 @@ class GroupCell: UITableViewCell {
         var reply = self.data.stringAttributeForKey("reply")
         self.lastdate!.text = lastdate
         self.reply!.text = "\(reply) 回应"
-        var height = title.stringHeightWith(13,width:290)
+        var height = title.stringHeightWith(16,width:globalWidth-30)
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = title
-        self.line!.setY(self.contentLabel!.bottom()+5)
-        self.viewLine.setY(self.line!.bottom()+8)
+        self.line.setY(self.contentLabel!.bottom()+5)
+        self.viewLine.setY(self.line.bottom()+8)
     }
     
-    class func cellHeightByData(data:NSDictionary)->CGFloat
-    {
+    class func cellHeightByData(data:NSDictionary)->CGFloat {
         var title = data.stringAttributeForKey("title")
-        var height = title.stringHeightWith(13,width:290)
-            return height + 75
+        var height = title.stringHeightWith(16,width:globalWidth-30)
+        return height + 75
     }
     
 }

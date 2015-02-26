@@ -355,7 +355,7 @@ class ExploreFollowCell: UITableViewCell {
     func bindData(data: ExploreFollowProvider.Data) {
         cellData = data
         var imageDelta: CGFloat =  0
-        var textHeight = data.content.stringHeightWith(14, width: globalWidth-30)
+        var textHeight = data.content.stringHeightWith(16, width: globalWidth-30)
         if data.content == "" {
             textHeight = 0
         }
@@ -442,7 +442,7 @@ class ExploreFollowCell: UITableViewCell {
     }
     
     class func heightWithData(content: String, w: Float, h: Float) -> CGFloat {
-        var height = content.stringHeightWith(14, width: globalWidth-30)
+        var height = content.stringHeightWith(16, width: globalWidth-30)
         if h == 0.0 || w == 0.0 {
             if content == "" {
                 return 136

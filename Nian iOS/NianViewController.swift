@@ -52,7 +52,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.viewHolder.frame = frameSquare
         self.imageBG.frame = frameSquare
         self.viewMenu.frame = CGRectMake(0, globalWidth, globalWidth, 45)
-        self.labelTableRight.setX(globalWidth - 20 - 53)
+        self.labelTableRight.setX(globalWidth - 20 - 80)
         self.UserHead.frame.origin = CGPointMake(globalWidth/2-30, globalWidth/2-90)
         self.UserName.frame.origin = CGPointMake(globalWidth/2-75, globalWidth/2-90+68)
         self.UserStep.frame.origin = CGPointMake(globalWidth/2-65, globalWidth/2-90+91)
