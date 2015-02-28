@@ -35,8 +35,8 @@ class FilmCell: UIView {
             self.btnBuy.enabled = false
             self.btnBuy.setTitle("", forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.btnBuy.setWidth(30)
-                self.btnBuy.setX(120)
+                self.btnBuy.setWidth(36)
+                self.btnBuy.setX(117)
                 }, completion: {
                     finish in
                     self.callback(self)
@@ -87,8 +87,8 @@ class FilmCell: UIView {
         self.btnBuy.enabled = true
         UIView.animateWithDuration(0.5, animations: {
             () -> Void in
-            self.btnBuy.setWidth(70)
-            self.btnBuy.setX(100)
+            self.btnBuy.setWidth(90)
+            self.btnBuy.setX(90)
             }, completion: {
                 finish in
                 self.btnBuy.setTitle(string, forState: UIControlState.Normal)

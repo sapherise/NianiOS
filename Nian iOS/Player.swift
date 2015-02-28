@@ -61,7 +61,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var desHeight:CGFloat = 0
     
     var topCell:PlayerCellTop?
-    var navView:UIImageView!
+    var navView: UIImageView!
     var rowComment:Int = 0
     var isBan: Int = 0
     
@@ -193,7 +193,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.navView.backgroundColor = BarColor
         self.navView.hidden = true
         self.navView.clipsToBounds = true
-        self.navView.alpha = 0
         self.view.addSubview(self.navView)
         self.setupPlayerTop(self.Id.toInt()!)
     }
@@ -280,10 +279,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
         if height >= 320 - 128 {
             self.navView.hidden = false
-            self.navView.alpha = 1
         }else{
             self.navView.hidden = true
-            self.navView.alpha = 0
         }
     }
     

@@ -11,7 +11,7 @@ import UIKit
 
 var globalNianCount: Int = 0
 
-class NianCell: UITableViewCell{
+class NianCell: UICollectionViewCell{
     
      struct inner {
         static var counter = 0
@@ -42,14 +42,12 @@ class NianCell: UITableViewCell{
     }
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
         self.imageCover.layer.cornerRadius = 6
         self.imageCover.layer.masksToBounds = true
         self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageCover.layer.borderWidth = 0.5
-        self.backgroundColor = UIColor.whiteColor()
         
-        if (inner.counter < 3) && (globaliOS >= 8.0) {
+        if globaliOS >= 8.0 {
             self.imageCover.alpha = 0
             var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
             self.imageCover.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 300)

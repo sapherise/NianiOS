@@ -89,17 +89,17 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" id="rva-cO-70k">
-                                        <rect key="frame" x="0.0" y="320" width="320" height="45"/>
+                                        <rect key="frame" x="0.0" y="320" width="320" height="280"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="梦想" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7IQ-P9-dWj">
-                                                <rect key="frame" x="20" y="0.0" width="106" height="44"/>
+                                                <rect key="frame" x="20" y="5" width="106" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="添加梦想" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tT9-wC-3xp">
-                                                <rect key="frame" x="220" y="0.0" width="80" height="44"/>
+                                                <rect key="frame" x="220" y="5" width="80" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
@@ -108,13 +108,28 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NianTableView" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="119" sectionHeaderHeight="22" sectionFooterHeight="22" id="DCN-Qc-Pf4">
-                                        <rect key="frame" x="0.0" y="364" width="320" height="189"/>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="2uf-97-Eok">
+                                        <rect key="frame" x="20" y="375" width="280" height="254"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="sectionIndexTrackingBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableView>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="9Cd-6g-53A">
+                                            <size key="itemSize" width="80" height="160"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NianCell" id="HTz-dn-f6B">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="160"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </collectionViewCell>
+                                        </cells>
+                                    </collectionView>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -128,11 +143,12 @@
                         <outlet property="UserName" destination="JMe-EB-Oyc" id="iA3-of-pLb"/>
                         <outlet property="UserStep" destination="b27-lw-zLa" id="Y2d-K3-Z2X"/>
                         <outlet property="coinButton" destination="HFX-ex-0re" id="twb-VD-d6Z"/>
+                        <outlet property="collectionView" destination="2uf-97-Eok" id="f0s-kw-y61"/>
                         <outlet property="imageBG" destination="VmL-PM-bCx" id="Ko5-vH-yc5"/>
+                        <outlet property="labelTableLeft" destination="7IQ-P9-dWj" id="3DW-4D-ev0"/>
                         <outlet property="labelTableRight" destination="tT9-wC-3xp" id="xau-rU-IZq"/>
                         <outlet property="levelButton" destination="4Kz-ar-rtC" id="GfP-G5-9Z4"/>
                         <outlet property="scrollView" destination="xkX-Pt-NF5" id="dgD-OS-Ouv"/>
-                        <outlet property="tableView" destination="DCN-Qc-Pf4" id="9GU-pP-N12"/>
                         <outlet property="view" destination="ONC-Mb-mzO" id="VF3-2m-td3"/>
                         <outlet property="viewHolder" destination="oRj-LT-nWi" id="S61-WF-rgp"/>
                         <outlet property="viewMenu" destination="rva-cO-70k" id="ifR-3U-UCg"/>
