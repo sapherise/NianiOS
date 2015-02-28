@@ -265,10 +265,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var newHeight = height + 64
         if self.topCell != nil {
             if newHeight > 0 {
-                self.topCell!.BGImage.frame = CGRectMake(0, newHeight, globalWidth, globalWidth - newHeight)
+                self.topCell!.BGImage.frame = CGRectMake(0, newHeight, globalWidth, 320 - newHeight)
             }else{
                 self.topCell!.viewHolder.setY(newHeight)
-                self.topCell!.BGImage.frame = CGRectMake(newHeight/10, newHeight, globalWidth-newHeight/5, globalWidth)
+                self.topCell!.BGImage.frame = CGRectMake(newHeight/10, newHeight, globalWidth-newHeight/5, 320)
                 self.topCell!.viewBlack.setY(newHeight)
             }
             scrollHidden(self.topCell!.UserHead, height: newHeight, scrollY: 70)
@@ -278,8 +278,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             scrollHidden(self.topCell!.btnMain, height: newHeight, scrollY: 214)
             scrollHidden(self.topCell!.btnLetter, height: newHeight, scrollY: 214)
         }
-        println("\(height) >= \(globalWidth * 0.5 + 75)")
-        if height >= globalWidth - 128 {
+        if height >= 320 - 128 {
             self.navView.hidden = false
             self.navView.alpha = 1
         }else{
@@ -531,9 +530,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
             if toggle == 0 {
-                return  globalWidth + 44 + 30
+                return  320 + 44 + 30
             }else{
-                return globalWidth + 44 + 14
+                return 320 + 44 + 14
             }
         }else{
             if toggle == 0 {
@@ -643,7 +642,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     var safeuid = Sa.objectForKey("uid") as String
                     if self.Id == safeuid {
                         self.topCell?.btnLetter.hidden = true
-                        self.topCell?.btnMain.hidden = true
+                        self.topCell?.btnMain.setTitle("设置", forState: UIControlState.allZeros)
+                        self.topCell?.btnMain.setX(globalWidth/2 - 50)
+                        self.topCell?.btnMain.removeTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
+                        self.topCell?.btnMain.removeTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
+                        self.topCell?.btnMain.addTarget(self, action: "SASettings", forControlEvents: UIControlEvents.TouchUpInside)
                     }
                     if cover == "" {
                         self.topCell!.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
@@ -654,6 +657,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
             }
         }
+    }
+    
+    func SASettings() {
+        var vc = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onIWANTYOU(sender: UILongPressGestureRecognizer) {

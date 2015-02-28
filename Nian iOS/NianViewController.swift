@@ -40,7 +40,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func setupViews(){
         var frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
-        var frameSquare = CGRectMake(0, 0, globalWidth, globalWidth)
+        var frameSquare = CGRectMake(0, 0, globalWidth, 320)
         self.view.frame = frame
         self.scrollView.frame = frame
         self.extendedLayoutIncludesOpaqueBars = true
@@ -51,13 +51,13 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.viewHolder.frame = frameSquare
         self.imageBG.frame = frameSquare
-        self.viewMenu.frame = CGRectMake(0, globalWidth, globalWidth, 45)
+        self.viewMenu.frame = CGRectMake(0, 320, globalWidth, 45)
         self.labelTableRight.setX(globalWidth - 20 - 80)
-        self.UserHead.frame.origin = CGPointMake(globalWidth/2-30, globalWidth/2-90)
-        self.UserName.frame.origin = CGPointMake(globalWidth/2-75, globalWidth/2-90+68)
-        self.UserStep.frame.origin = CGPointMake(globalWidth/2-65, globalWidth/2-90+91)
-        self.coinButton.frame.origin = CGPointMake(globalWidth/2-104, globalWidth/2-90+144)
-        self.levelButton.frame.origin = CGPointMake(globalWidth/2-104+108, globalWidth/2-90+144)
+        self.UserHead.frame.origin.x = globalWidth/2-30
+        self.UserName.frame.origin.x = globalWidth/2-75
+        self.UserStep.frame.origin.x = globalWidth/2-65
+        self.coinButton.frame.origin.x = globalWidth/2-104
+        self.levelButton.frame.origin.x = globalWidth/2-104+108
         
         var pan = UIPanGestureRecognizer(target: self, action: "pan:")
         pan.delegate = self
@@ -67,7 +67,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.transform = CGAffineTransformMakeRotation( CGFloat(-M_PI/2) )
-        self.tableView.frame = CGRectMake(0, globalWidth + 45, globalWidth, 160)
+        self.tableView.frame = CGRectMake(0, 320 + 45, globalWidth, 160)
         self.tableView.contentSize.height = CGFloat(self.dataArray.count * 100)
         self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
         

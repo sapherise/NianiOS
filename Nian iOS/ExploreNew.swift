@@ -111,8 +111,8 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         var data = dataSource[indexPath.row]
         cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : UIColor.blackColor()
         cell!.labelTitle.text = data.title
-        var height = data.title.stringHeightWith(11, width: 80)
-        height = height > 30 ? "\n".stringHeightWith(11, width: 80) : height
+        var height = data.title.stringHeightWith(13, width: 80)
+        height = height > 30 ? "\n".stringHeightWith(13, width: 80) : height
         cell!.labelTitle.setHeight(height)
         cell!.imageCover.setHolder()
         cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
@@ -127,7 +127,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         var viewController = DreamViewController()
         viewController.Id = dataSource[indexPath.row].id
         var data = dataSource[indexPath.row]
-        var height = data.title.stringHeightWith(11, width: 80)
+        var height = data.title.stringHeightWith(13, width: 80)
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
 }

@@ -36,14 +36,11 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         navView.backgroundColor = BarColor
         self.viewBack()
         self.view.addSubview(navView)
-        self.view.backgroundColor = UIColor.whiteColor()
-        self.view.setWidth(globalWidth)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.contentInset.bottom = 60
         self.extendedLayoutIncludesOpaqueBars = true
-        self.collectionView.setWidth(globalWidth)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
@@ -54,6 +51,9 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        self.collectionView.frame.size = CGSizeMake(globalWidth, globalHeight)
+        self.view.frame.size = CGSizeMake(globalWidth, globalHeight)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

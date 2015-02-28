@@ -23,6 +23,7 @@ class LikeCell: UITableViewCell {
     var uid:String = ""
     var urlIdentify:Int = 0
     var circleID:String = "0"
+    var ownerID: String = "0"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,14 +37,17 @@ class LikeCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.uid = self.data.stringAttributeForKey("uid") as String
-        var follow = self.data.stringAttributeForKey("follow") as String
+        self.uid = self.data.stringAttributeForKey("uid")
+        var follow = self.data.stringAttributeForKey("follow")
         user = self.data.stringAttributeForKey("user")
         self.nickLabel!.text = user
         var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
-        self.avatarView.tag = self.uid.toInt()!
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
+        self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeshell = Sa.objectForKey("shell") as String
         if self.urlIdentify == 4 {
             self.btnFollow.layer.borderColor = SeaColor.CGColor
             self.btnFollow.layer.borderWidth = 1
@@ -51,6 +55,12 @@ class LikeCell: UITableViewCell {
             self.btnFollow.backgroundColor = UIColor.whiteColor()
             self.btnFollow.setTitle("邀请", forState: UIControlState.Normal)
             self.btnFollow.addTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        }else if self.urlIdentify == 1 && self.ownerID == safeuid {
+            self.btnFollow.layer.borderWidth = 0
+            self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            self.btnFollow.backgroundColor = SeaColor
+            self.btnFollow.setTitle("写信", forState: UIControlState.Normal)
+            self.btnFollow.addTarget(self, action: "onLetterClick", forControlEvents: UIControlEvents.TouchUpInside)
         }else{
             if follow == "0" {
                 self.btnFollow.tag = 100
@@ -67,6 +77,20 @@ class LikeCell: UITableViewCell {
                 self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
             }
             self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        }
+    }
+    
+    func onUserClick() {
+        var vc = PlayerViewController()
+        vc.Id = data.stringAttributeForKey("uid")
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onLetterClick() {
+        if let uid = data.stringAttributeForKey("uid").toInt() {
+            var vc = LetterController()
+            vc.ID = uid
+            self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

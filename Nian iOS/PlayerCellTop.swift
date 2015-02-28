@@ -30,14 +30,16 @@ class PlayerCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.BGImage.clipsToBounds = true
         self.selectionStyle = .None
         self.viewHolder.frame.size = CGSizeMake(globalWidth, globalHeight + 44)
-        self.viewBanner.setY(globalWidth)
+        self.viewBanner.setY(320)
         self.viewBanner.setWidth(globalWidth)
         self.viewMenu.frame.origin = CGPointMake(globalWidth/2 - 160, 0)
-        self.BGImage.frame.size = CGSizeMake(globalWidth, globalWidth)
+        self.BGImage.frame.size = CGSizeMake(globalWidth, 320)
         self.UserHead.setX(globalWidth/2-30)
-        self.viewBlack.frame.size = CGSizeMake(globalWidth, globalWidth)
+        self.viewBlack.frame.size = CGSizeMake(globalWidth, 320)
         self.btnMain.setX(globalWidth/2 - 105)
         self.btnLetter.setX(globalWidth/2 + 5)
+        self.UserFo.setX(globalWidth/2 - 53)
+        self.UserFoed.setX(globalWidth/2 + 1)
     }
     
     override func layoutSubviews(){

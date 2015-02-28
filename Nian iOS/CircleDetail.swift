@@ -216,7 +216,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.addView.backgroundColor = UIColor.clearColor()
         self.addView.alpha = 0
         self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
-        var Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
+        var Tap = UITapGestureRecognizer(target: self, action: "onCloseConfirm")
         Tap.delegate = self
         self.addView.addGestureRecognizer(Tap)
         
@@ -259,15 +259,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         }else{
             self.onViewCloseClick()
         }
-    }
-    
-    //如果点了边缘，收起键盘并取消焦点
-    func onAddViewClick(){
-        self.addStepView.textView.resignFirstResponder()
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.addStepView.setY(globalHeight/2-106)
-        })
-        self.addStepView.textView.resignFirstResponder()
     }
     
     func onCircleDetailMoreClick(){

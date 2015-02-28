@@ -224,24 +224,62 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
-            var index = indexPath.row
-            var data = self.dataArray[index] as NSMutableDictionary
-            c.data = data
-            c.indexPathRow = index
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-            c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
-            c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-            c.tag = index + 10
-            if indexPath.row == self.dataArray.count - 1 {
-                c.viewLine.hidden = true
-            }else{
-                c.viewLine.hidden = false
-            }
-            cell = c
+        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
+        var index = indexPath.row
+        var data = self.dataArray[index] as NSMutableDictionary
+        c.data = data
+        c.indexPathRow = index
+        c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+        c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
+        c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+        c.likebutton.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+        c.liked.addTarget(self, action: "onLikedTap:", forControlEvents: UIControlEvents.TouchUpInside)
+        c.tag = index + 10
+        c.likebutton.tag = index
+        c.liked.tag = index
+        if indexPath.row == self.dataArray.count - 1 {
+            c.viewLine.hidden = true
+        }else{
+            c.viewLine.hidden = false
+        }
+        cell = c
         return cell
+    }
+    
+    // 赞
+    func onLikeTap(sender: UIButton) {
+        var tag = sender.tag
+        var data = self.dataArray[tag] as NSDictionary
+        if let numLike = data.stringAttributeForKey("like").toInt() {
+            var numNew = numLike + 1
+            var mutableItem = NSMutableDictionary(dictionary: data)
+            mutableItem.setValue("\(numNew)", forKey: "like")
+            mutableItem.setValue("1", forKey: "liked")
+            self.dataArray.replaceObjectAtIndex(tag, withObject: mutableItem)
+            self.tableView?.reloadData()
+            var sid = data.stringAttributeForKey("sid")
+            Api.postLike(sid, like: "1") { json in
+            }
+        }
+    }
+    
+    // 取消赞
+    func onLikedTap(sender: UIButton) {
+        var tag = sender.tag
+        var data = self.dataArray[tag] as NSDictionary
+        if let numLike = data.stringAttributeForKey("like").toInt() {
+            var numNew = numLike - 1
+            var mutableItem = NSMutableDictionary(dictionary: data)
+            mutableItem.setValue("\(numNew)", forKey: "like")
+            mutableItem.setValue("0", forKey: "liked")
+            self.dataArray.replaceObjectAtIndex(tag, withObject: mutableItem)
+            self.tableView?.reloadData()
+            var sid = data.stringAttributeForKey("sid")
+            Api.postLike(sid, like: "0") { json in
+            }
+        }
     }
     
     func onImageTap(sender: UITapGestureRecognizer) {
@@ -304,7 +342,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func countUp(){
-    
+        
     }
     
     func setupRefresh(){

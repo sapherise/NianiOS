@@ -136,15 +136,8 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         cell!.data = data
         cell!.urlIdentify = self.urlIdentify
         cell!.circleID = self.circleID
-        var userclick:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "userclick:")
-        cell!.avatarView?.addGestureRecognizer(userclick)
+        cell!.ownerID = self.Id
         return cell!
-    }
-    
-    func userclick(sender:UITapGestureRecognizer){
-        var UserVC = PlayerViewController()
-        UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -153,6 +146,10 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     override func viewWillDisappear(animated: Bool) {
         self.viewLoadingHide()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.viewBackFix()
     }
     
     func setupRefresh(){

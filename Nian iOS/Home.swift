@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate{
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, MaskDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -184,7 +184,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dotCircle!.layer.cornerRadius = 5
         self.dotCircle!.layer.masksToBounds = true
         self.dotCircle!.text = "0"
-        self.dotCircle!.hidden = false //todo
+        self.dotCircle!.hidden = true
         self.myTabbar!.addSubview(dotCircle!)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
@@ -369,6 +369,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             
             var nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
             self.addStepView = nib.objectAtIndex(0) as AddStep
+            self.addStepView.delegate = self
             self.addStepView.setX(globalWidth/2-140)
             self.addStepView.setY(globalHeight/2-106)
             self.addView.addSubview(self.addStepView)

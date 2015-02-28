@@ -98,6 +98,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         navigationViewController.navigationBar.clipsToBounds = true
                         self.presentViewController(navigationViewController, animated: true, completion: {
                             self.navigationItem.rightBarButtonItems = []
+                            self.inputEmail.text = ""
+                            self.inputPassword.text = ""
                         })
                         var DeviceToken = Sa.objectForKey("DeviceToken") as? String
                         if DeviceToken != nil {

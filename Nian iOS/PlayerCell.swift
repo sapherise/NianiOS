@@ -91,6 +91,7 @@ class PlayerCell: UITableViewCell {
         self.likebutton.setX(globalWidth - 50)
         self.liked.setX(globalWidth - 50)
         self.viewLine.setWidth(globalWidth)
+        self.contentLabel?.setWidth(globalWidth-30)
     }
     
     override func layoutSubviews()
@@ -122,7 +123,7 @@ class PlayerCell: UITableViewCell {
             
             self.like!.tag = sid.toInt()!
             
-            var height = content.stringHeightWith(14,width:290)
+            var height = content.stringHeightWith(14,width:globalWidth-30)
             if content == "" {
                 height = 0
             }
@@ -206,7 +207,7 @@ class PlayerCell: UITableViewCell {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(14,width:290)
+        var height = content.stringHeightWith(14,width:globalWidth-30)
         if(img0 == 0.0){
             return height + 151
         }else{

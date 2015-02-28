@@ -14,11 +14,15 @@ class FindCell: UITableViewCell {
     @IBOutlet var imageHead:UIImageView!
     @IBOutlet var labelNick:UILabel!
     @IBOutlet var btnFollow:UIButton!
+    @IBOutlet var viewLine: UIView!
     var data: NSDictionary!
     var uid: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.setWidth(globalWidth)
+        self.btnFollow.setX(globalWidth-85)
+        self.viewLine.setWidth(globalWidth-85)
     }
     
     override func layoutSubviews() {

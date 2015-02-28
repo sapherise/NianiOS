@@ -59,16 +59,16 @@
                                 <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.02" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="imageLeft" destination="Hec-Qw-HXn" id="ANl-5Y-rdF"/>
                 <outlet property="imageMiddle" destination="072-tO-hWQ" id="pU3-Xo-buw"/>
                 <outlet property="imageRight" destination="r8J-sO-fZI" id="W5g-tn-k74"/>
+                <outlet property="viewHolder" destination="QEi-nw-N5d" id="6f3-zR-2LB"/>
                 <outlet property="viewLeft" destination="lvC-Ve-npV" id="N8P-hp-Iwy"/>
                 <outlet property="viewMiddle" destination="yrW-vn-YEH" id="oH0-7d-HIz"/>
                 <outlet property="viewRight" destination="ydk-4u-V7h" id="TPj-Sf-3sc"/>

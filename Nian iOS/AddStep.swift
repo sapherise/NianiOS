@@ -8,6 +8,9 @@
 
 import UIKit
 
+protocol MaskDelegate {
+    func onViewCloseClick()
+}
 
 class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     @IBOutlet var imageDream: UIImageView!
@@ -22,6 +25,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     @IBOutlet var activity: UIActivityIndicatorView!
     @IBOutlet var activityOK: UIActivityIndicatorView!
     @IBOutlet var imageUploaded: UIImageView!
+    var delegate: MaskDelegate?
     var keyboardHeight:CGFloat = 0
     var dataArray = NSMutableArray()
     var actionSheet:UIActionSheet!
@@ -170,12 +174,11 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     self.activityOK.stopAnimating()
                     self.activityOK.hidden = true
                     self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
-                    var VC = self.findRootViewController() as HomeViewController
                     delay(1, { () -> () in
-                        VC.onViewCloseClick()
+                        self.delegate?.onViewCloseClick()
                         var DreamVC = DreamViewController()
                         DreamVC.Id = self.dreamID
-                        VC.navigationController?.pushViewController(DreamVC, animated: true)
+                        self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
                     })
                 })
             }

@@ -41,6 +41,8 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.contentInset.bottom = 60
         self.extendedLayoutIncludesOpaqueBars = true
+        self.collectionView.frame.size = CGSizeMake(globalWidth, globalHeight)
+        self.view.frame.size = CGSizeMake(globalWidth, globalHeight)
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()

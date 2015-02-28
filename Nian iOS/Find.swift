@@ -252,13 +252,6 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
-        var letterVC = LetterController()
-        if let id = data.stringAttributeForKey("uid").toInt() {
-            letterVC.ID = id
-            self.navigationController?.pushViewController(letterVC, animated: true)
-        }
     }
     
     override func viewDidAppear(animated: Bool) {

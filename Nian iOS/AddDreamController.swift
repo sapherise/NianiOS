@@ -42,7 +42,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     var isPrivate:Int = 0
     
-    @IBAction func uploadClick(sender: AnyObject) {
+    func uploadClick() {
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -125,6 +125,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.viewHolder.setX(globalWidth/2-140)
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
+        
+        self.uploadButton?.addTarget(self, action: "uploadClick", forControlEvents: UIControlEvents.TouchUpInside)
+        self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
         self.view.addSubview(navView)
         if self.tagType >= 1 {
             self.labelTag?.text = V.Tags[self.tagType - 1]
@@ -161,7 +164,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
-        self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadTap:"))
         self.uploadWait!.hidden = true
         
         
@@ -201,15 +203,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setDreamActionSheet!.addButtonWithTitle("取消")
         self.setDreamActionSheet!.cancelButtonIndex = 2
         self.setDreamActionSheet!.showInView(self.view)
-        
-    }
-    
-    func onDreamHeadTap(sender:UIGestureRecognizer) {
-        if let v = sender.view as? UIImageView {
-            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
-            var rect = CGRectMake(-yPoint.x, -yPoint.y, 30, 30)
-            v.showImage("http://img.nian.so/dream/\(self.uploadUrl)!large", rect: rect)
-        }
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){

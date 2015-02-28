@@ -15,6 +15,7 @@ class FindCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var imageLeft: UIImageView!
     @IBOutlet var imageMiddle: UIImageView!
     @IBOutlet var imageRight: UIImageView!
+    @IBOutlet var viewHolder: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,6 +23,8 @@ class FindCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.viewLeft.tag = 1
         self.viewMiddle.tag = 2
         self.viewRight.tag = 3
+        self.setWidth(globalWidth)
+        self.viewHolder.setX(globalWidth/2 - 160)
     }
     
     override func layoutSubviews(){
