@@ -38,7 +38,7 @@ let RefreshLabelTextColor:UIColor = SeaColor
 
 class RefreshBaseView: UIView {
     
- 
+    
     //  父控件
     var scrollView:UIScrollView!
     var scrollViewOriginalInset:UIEdgeInsets!
@@ -55,12 +55,12 @@ class RefreshBaseView: UIView {
     var  oldState:RefreshState?
     
     var State:RefreshState = RefreshState.Normal{
-    willSet{
-    }
-    didSet{
+        willSet{
+        }
+        didSet{
+            
+        }
         
-    }
-    
     }
     
     func setState(newValue:RefreshState){
@@ -89,15 +89,15 @@ class RefreshBaseView: UIView {
             break
             
         }
-
-
+        
+        
     }
     
     
     //控件初始化
     override init(frame: CGRect) {
         super.init(frame: frame)
-       
+        
         
         //状态标签
         statusLabel = UILabel()
@@ -117,13 +117,13 @@ class RefreshBaseView: UIView {
         activityView.bounds = self.arrowImage.bounds
         activityView.autoresizingMask = self.arrowImage.autoresizingMask
         self.addSubview(activityView)
-         //自己的属性
+        //自己的属性
         self.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         self.backgroundColor = UIColor.clearColor()
         //设置默认状态
         self.State = RefreshState.Normal;
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -131,7 +131,7 @@ class RefreshBaseView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-         //箭头
+        //箭头
         let arrowX:CGFloat = self.frame.size.width * 0.5 - 50
         self.arrowImage.center = CGPointMake(arrowX, self.frame.size.height * 0.5 + 10.0)
         //指示器
@@ -142,10 +142,10 @@ class RefreshBaseView: UIView {
     override func willMoveToSuperview(newSuperview: UIView!) {
         super.willMoveToSuperview(newSuperview)
         // 旧的父控件
-         
-//        if (self.superview != nil) {
-//            self.superview.removeObserver(self,forKeyPath:RefreshContentSize,context: nil)
-//            }
+        
+        //        if (self.superview != nil) {
+        //            self.superview.removeObserver(self,forKeyPath:RefreshContentSize,context: nil)
+        //            }
         // 新的父控件
         if (newSuperview != nil) {
             newSuperview.addObserver(self, forKeyPath: RefreshContentOffset, options: NSKeyValueObservingOptions.New, context: nil)
@@ -159,14 +159,6 @@ class RefreshBaseView: UIView {
             scrollViewOriginalInset = scrollView.contentInset;
         }
     }
-    
-    //显示到屏幕上
-//    override func drawRect(rect: CGRect) {
-//        superview.drawRect(rect)
-//        if self.State == RefreshState.WillRefreshing {
-//            self.State = RefreshState.Refreshing
-//        }
-//    }
     
     // 刷新相关
     // 是否正在刷新
@@ -200,10 +192,3 @@ class RefreshBaseView: UIView {
         }
     }
 }
-
-
-
-
-
-
-

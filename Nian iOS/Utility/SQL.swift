@@ -23,11 +23,17 @@ func SQLCreateLetterContent() {
     SD.executeChange("CREATE TABLE if not exists `letter` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL, `owner` VARCHAR(255) NULL)")
 }
 
+// 创建进展表
+func SQLCreateStepContent() {
+    SD.executeChange("CREATE TABLE if not exists `step` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `sid` INT NOT NULL , `uid` INT NOT NULL , `dream` INT NOT NULL , `content` VARCHAR(255) NULL , `img` VARCHAR(255) NULL , `img0` VARCHAR(255) NULL , `img1` VARCHAR(255) NULL)")
+}
+
 // 创建所有表
 func SQLInit() {
     SQLCreateCircleList()
     SQLCreateCircleContent()
     SQLCreateLetterContent()
+    SQLCreateStepContent()
 }
 
 // 插入一条梦境
@@ -51,6 +57,20 @@ func SQLCircleContent(id: String, uid: String, name: String, cid: String, cname:
     let (result, err) = SD.executeQuery("select id from circle where msgid = '\(id)' and owner = '\(safeuid)' limit 1")
     if result.count == 0 {
         if let err = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread, owner) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread, safeuid]) {
+        } else {
+            callback()
+        }
+    }
+}
+
+
+// 插入进展
+func SQLStepContent(sid: String, uid: String, dream: String, content: String, img: String, img0: String, img1: String, callback: Void -> Void) {
+    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var safeuid = Sa.objectForKey("uid") as String
+    let (result, err) = SD.executeQuery("select sid from step where sid = '\(sid)' limit 1")
+    if result.count == 0 {
+        if let err = SD.executeChange("INSERT INTO step (id, sid, uid, dream, content, img, img0, img1) VALUES (null, ?, ?, ?, ?, ?, ?, ?)", withArgs: [sid, uid, dream, content, img, img0, img1]) {
         } else {
             callback()
         }

@@ -118,6 +118,17 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         tableView.setWidth(globalWidth)
         collectionView.frame = CGRectMake(0, 108, globalWidth, globalHeight - 49 - 108)
+        collectionView.alwaysBounceVertical = true
+        var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
+        layout.sectionInset.top = 20
+        var w: CGFloat = 20
+        if isiPhone6 {
+            w = 47.5
+        }else if isiPhone6P {
+            w = 17
+        }
+        layout.sectionInset.left = w
+        layout.sectionInset.right = w
         
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
@@ -127,17 +138,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navHolder.setX(globalWidth/2-120)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         view.backgroundColor = UIColor.whiteColor()
-        collectionView.alwaysBounceVertical = true
-        var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
-        layout.sectionInset.left = 15
-        layout.sectionInset.right = 15
-        layout.sectionInset.top = 30
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-    //    btnFriend.addTarget(self, action: "onFriendClick", forControlEvents: UIControlEvents.TouchUpInside)
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)

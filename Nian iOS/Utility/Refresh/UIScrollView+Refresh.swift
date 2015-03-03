@@ -12,6 +12,7 @@ extension UIScrollView {
     
     func addHeaderWithCallback( callback:(() -> Void)!) {
         var header:RefreshHeaderView = RefreshHeaderView.footer()
+        header.setWidth(self.width())
         self.addSubview(header)
         header.beginRefreshingCallback = callback
         header.addState(RefreshState.Normal)
@@ -64,17 +65,18 @@ extension UIScrollView {
         return true
     }
     
-   func addFooterWithCallback( callback:(() -> Void)!) {
+    func addFooterWithCallback( callback:(() -> Void)!) {
         var footer:RefreshFooterView = RefreshFooterView.footer()
+        footer.setWidth(self.width())
         self.addSubview(footer)
         footer.beginRefreshingCallback = callback
         footer.addState(RefreshState.Normal)
     }
     
     
-     func removeFooter()
+    func removeFooter()
     {
-    
+        
         for view : AnyObject in self.subviews{
             if view is RefreshFooterView{
                 view.removeFromSuperview()
@@ -91,7 +93,7 @@ extension UIScrollView {
         }
         
     }
-
+    
     
     func footerEndRefreshing(animated: Bool = true)
     {
@@ -100,9 +102,9 @@ extension UIScrollView {
                 (object as RefreshFooterView).endRefreshing(animated: animated)
             }
         }
-     
+        
     }
-  
+    
     func setFooterHidden(hidden:Bool)
     {
         for object : AnyObject in self.subviews{
@@ -123,5 +125,5 @@ extension UIScrollView {
         }
         return true
     }
-
+    
 }

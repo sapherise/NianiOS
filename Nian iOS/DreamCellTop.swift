@@ -30,6 +30,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var viewLineRight: UIView!
     @IBOutlet var viewLineLeft: UIView!
     @IBOutlet var viewBG: UIView!
+    @IBOutlet var viewHolder: UIView!
     
     var dreamid:String = ""
     var desHeight:CGFloat = 0
@@ -45,8 +46,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.btnMain.backgroundColor = SeaColor
         self.btnMain.hidden = true
         self.btnMain.alpha = 0
-        self.viewLeft.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
-        self.viewRight.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.viewLeft.setX(globalWidth/2-160)
         self.viewRight.setX(globalWidth/2-160+globalWidth)

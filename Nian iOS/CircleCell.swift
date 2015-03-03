@@ -49,8 +49,22 @@ class CircleCell: UITableViewCell {
             }else{
                 self.textDelete.text = "再见"
                 var img = self.data!.stringAttributeForKey("img")
-                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
-                self.labelTitle.text = title
+                if title == "梦境" {
+                    Api.getCircleTitle(id) { json in
+                        if json != nil {
+                            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                            var safeuid = Sa.objectForKey("uid") as String
+                            var img = json!["img"] as String
+                            var titleNew = json!["title"] as String
+                            self.labelTitle.text = titleNew
+                            self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+                            SD.executeChange("insert into circlelist(id, circleid, title, image, postdate, owner) values (null, ?, ?, ?, '0', ?)", withArgs: [id, titleNew, img, safeuid])
+                        }
+                    }
+                }else{
+                    self.labelTitle.text = title
+                    self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+                }
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as String
                 let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")

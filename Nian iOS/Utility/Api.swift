@@ -307,4 +307,9 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&shell=\(s_shell)&step=\(step)&like=\(like)", callback: callback)
     }
     
+    static func postName(uid: Int, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
+    }
+    
 }

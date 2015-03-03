@@ -450,7 +450,13 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
-            return  287 + 14
+            var text = self.titleJson
+            if self.privateJson == "1" {
+                text = "\(self.titleJson)（私密）"
+            }else if self.percentJson == "1" {
+                text = "\(self.titleJson)（已完成）"
+            }
+            return  text.stringHeightBoldWith(19, width: 242) + 256 + 14
         }else{
             var index = indexPath!.row
             var data = self.dataArray[index] as NSDictionary
@@ -607,20 +613,26 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func loadDreamTopcell(){
+        var h: CGFloat = 0
         if self.privateJson == "1" {
-            var string = NSMutableAttributedString(string: "\(self.titleJson)（私密）")
-            var len = string.length
-            string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-4))
-            string.addAttribute(NSForegroundColorAttributeName, value: SeaColor, range: NSMakeRange(len-4, 4))
-            self.topCell.nickLabel.attributedText = string
+            var text = "\(self.titleJson)（私密）"
+            var content = NSMutableAttributedString(string: text)
+            var len = content.length
+            content.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-4))
+            content.addAttribute(NSForegroundColorAttributeName, value: SeaColor, range: NSMakeRange(len-4, 4))
+            self.topCell.nickLabel.attributedText = content
+            h = text.stringHeightBoldWith(19, width: 242)
         }else if self.percentJson == "1" {
-            var string = NSMutableAttributedString(string: "\(self.titleJson)（已完成）")
-            var len = string.length
-            string.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-5))
-            string.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(len-5, 5))
-            self.topCell.nickLabel.attributedText = string
+            var text = "\(self.titleJson)（已完成）"
+            var content = NSMutableAttributedString(string: text)
+            var len = content.length
+            content.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-5))
+            content.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(len-5, 5))
+            self.topCell.nickLabel.attributedText = content
+            h = text.stringHeightBoldWith(19, width: 242)
         }else{
-            self.topCell.nickLabel.text = "\(self.titleJson)"
+            self.topCell.nickLabel.text = self.titleJson
+            h = self.titleJson.stringHeightBoldWith(19, width: 242)
         }
         
         var Sa = NSUserDefaults.standardUserDefaults()
@@ -642,6 +654,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
+        self.topCell.nickLabel.setHeight(h)
+        var bottom = self.topCell.nickLabel.bottom()
+        self.topCell.viewHolder.setY(bottom + 13)
+        self.topCell.btnMain.setY(bottom + 84)
+        self.topCell.dotLeft.setY(bottom + 137)
+        self.topCell.dotRight.setY(bottom + 137)
+        self.topCell.viewBG.setHeight(h + 256)
+        self.topCell.viewLeft.setHeight(h + 256)
+        self.topCell.viewRight.setHeight(h + 256)
         
         self.topCell.numLeftNum.text = "\(self.liketotalJson)"
         self.topCell.numMiddleNum.text = "\(self.stepJson)"

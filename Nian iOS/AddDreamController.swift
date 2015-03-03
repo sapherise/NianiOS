@@ -183,8 +183,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
         self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
-        self.labelTag!.userInteractionEnabled = true
-        self.imageTag.userInteractionEnabled = true
     }
     
     func onTagClick(){

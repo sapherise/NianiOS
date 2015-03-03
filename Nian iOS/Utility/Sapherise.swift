@@ -52,6 +52,8 @@ var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
 var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
 var globaliOS: Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
+var isiPhone6: Bool = globalWidth == 375 ? true : false
+var isiPhone6P: Bool = globalWidth == 414 ? true : false
 
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""

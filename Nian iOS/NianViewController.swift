@@ -46,7 +46,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var frameSquare = CGRectMake(0, 0, globalWidth, 320)
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
-        self.scrollView.contentSize.height = globalHeight - 49 + 1
+        self.scrollView.contentSize.height = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
         self.extendedLayoutIncludesOpaqueBars = true
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false
@@ -126,18 +126,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
-        
-        if globaliPhone == 4 {
-            self.viewHolder.setHeight(232)
-            self.imageBG.setHeight(232)
-            self.collectionView.setY(276)
-            self.viewMenu.setY(232)
-            self.UserHead.setY(64)
-            self.UserName.setY(132)
-            self.UserStep.hidden = true
-            self.coinButton.setY(170)
-            self.levelButton.setY(170)
-        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -333,9 +321,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
                 }
-                var height = ceil(CGFloat(self.dataArray.count) / 3) * 160
+                var height = ceil(CGFloat(self.dataArray.count) / 3) * 125
                 self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
-                self.scrollView.contentSize.height = globalHeight - 49 + 1 > height + 375 ? globalHeight - 49 + 1 : height + 375
+                var heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
+                self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
                 self.collectionView.contentSize.height = height
                 self.collectionView.reloadData()
                 if self.dataArray.count == 0 {

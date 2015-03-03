@@ -105,7 +105,7 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     }
                 }
                 var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 {
+                if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
                     self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
                 }
             })
@@ -244,22 +244,26 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                     var safeuid = Sa.objectForKey("uid") as String
                     var safename = Sa.objectForKey("user") as String
-                    SQLLetterContent(msgid, safeuid, safename, "\(self.ID)", contentComment, "\(type)", lastdate, 1) {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            for var i: Int = 0; i < self.dataArray.count; i++ {
-                                var data = self.dataArray[i] as NSDictionary
-                                var contentOri = data.stringAttributeForKey("content")
-                                var lastdate = data.stringAttributeForKey("lastdate")
-                                if contentComment == contentOri && lastdate == "sending" {
-                                    var lastdate = V.absoluteTime(NSDate().timeIntervalSince1970)
-                                    var mutableItem = NSMutableDictionary(dictionary: data)
-                                    mutableItem.setObject(lastdate, forKey: "lastdate")
-                                    self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                                    self.tableview.reloadData()
-                                    break
-                                }
+                    Api.postName(self.ID) { result in
+                        if result != nil {
+                            SQLLetterContent(msgid, safeuid, result!, "\(self.ID)", contentComment, "\(type)", lastdate, 1) {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    for var i: Int = 0; i < self.dataArray.count; i++ {
+                                        var data = self.dataArray[i] as NSDictionary
+                                        var contentOri = data.stringAttributeForKey("content")
+                                        var lastdate = data.stringAttributeForKey("lastdate")
+                                        if contentComment == contentOri && lastdate == "sending" {
+                                            var lastdate = V.absoluteTime(NSDate().timeIntervalSince1970)
+                                            var mutableItem = NSMutableDictionary(dictionary: data)
+                                            mutableItem.setObject(lastdate, forKey: "lastdate")
+                                            self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                                            self.tableview.reloadData()
+                                            break
+                                        }
+                                    }
+                                })
                             }
-                        })
+                        }
                     }
                 }
             }

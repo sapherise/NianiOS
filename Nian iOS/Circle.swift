@@ -106,9 +106,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                             }
                         }
                     }
+                    // 当消息列表大于整个的时候
                     var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0 {
-                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                    if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
+                            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
                     }
                 })
             }else{
@@ -267,6 +268,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SAloadData(clear: Bool = true){
+        dispatch_async(dispatch_get_main_queue(), {
         if clear {
             self.page = 0
             self.dataTotal = 0
@@ -301,7 +303,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.tableview.setContentOffset(CGPointMake(0, heightAfter-self.tableview.bounds.size.height), animated: false)
                 }
                 if let v = (self.navigationItem.titleView as? UILabel) {
-                    v.text = circleTitle
+                    v.text = self.circleTitle
                 }
             }else{
                 var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
@@ -309,6 +311,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 self.animating = 0
             }
         }
+        })
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -346,6 +349,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.View.tag = index
             cell = c
         }else if type == "2" {
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
+            c.data = data
+            c.isImage = 1
+            c.imageContent.tag = index
+            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.View.tag = index
+            cell = c
+        }else if type == "3" {
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
             c.isImage = 1
@@ -442,10 +454,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var index = indexPath!.row
         var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
         if let type = data.objectForKey("type") as? String {
-            if type == "1" {
-                return CircleBubbleCell.cellHeightByData(data)
-            }else if type == "2" {
+            if type == "2" {
                 return CircleBubbleCell.cellHeightByData(data, isImage: 1)
+            }else{
+                return CircleBubbleCell.cellHeightByData(data)
             }
         }
         return 65

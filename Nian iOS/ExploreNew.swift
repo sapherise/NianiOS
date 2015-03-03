@@ -112,7 +112,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         cell!.labelTitle.textColor = data.promo == 1 ? GoldColor : UIColor.blackColor()
         cell!.labelTitle.text = data.title
         var height = data.title.stringHeightWith(13, width: 80)
-        height = height > 30 ? "\n".stringHeightWith(13, width: 80) : height
+        height = height > "".stringHeightWith(13, width: 80) ? "1\n1".stringHeightWith(13, width: 80) : height
         cell!.labelTitle.setHeight(height)
         cell!.imageCover.setHolder()
         cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor

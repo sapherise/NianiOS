@@ -86,40 +86,27 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SALoadData() {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-        self.dataArray.removeAllObjects()
-        for row in resultCircle {
-            var id = (row["circle"]?.asString())!
-            var img = ""
-            var title = "梦境 #\(id)"
-            let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-            if resultDes.count > 0 {
-                for row in resultDes {
-                    img = (row["image"]?.asString())!
-                    title = (row["title"]?.asString())!
-                }
-            }else{
-                Api.getCircleTitle(id) { json in
-                    if json != nil {
-                        img = json!["img"] as String
-                        title = json!["title"] as String
-                        SD.executeChange("insert into circlelist(id, circleid, title, image, postdate, owner) values (null, ?, ?, ?, '0', ?)", withArgs: [id, title, img, safeuid])
-                        delay(0.2, { () -> () in
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.tableView.reloadData()
-                            })
-                        })
+        dispatch_async(dispatch_get_main_queue(), {
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+            self.dataArray.removeAllObjects()
+            for row in resultCircle {
+                var id = (row["circle"]?.asString())!
+                var img = ""
+                var title = "梦境"
+                let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                if resultDes.count > 0 {
+                    for row in resultDes {
+                        img = (row["image"]?.asString())!
+                        title = (row["title"]?.asString())!
                     }
                 }
+                var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                self.dataArray.addObject(data)
             }
-            var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-            self.dataArray.addObject(data)
-        }
-        var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
-        self.dataArray.addObject(dataBBS)
-        dispatch_async(dispatch_get_main_queue(), {
+            var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
+            self.dataArray.addObject(dataBBS)
             self.tableView.reloadData()
             if self.dataArray.count == 1 {
                 var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray

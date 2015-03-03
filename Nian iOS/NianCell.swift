@@ -19,7 +19,6 @@ class NianCell: UICollectionViewCell{
     
     @IBOutlet var imageCover: UIImageView!
     @IBOutlet var labelTitle: UILabel!
-    @IBOutlet var labelStep: UILabel!
     var data :NSDictionary?
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -29,7 +28,6 @@ class NianCell: UICollectionViewCell{
             var dreamPrivate:String = data!.objectForKey("private") as String
             var step:String = data!.objectForKey("step") as String
             self.labelTitle.text = title
-            self.labelStep.text = "\(step) 进展"
             
             self.imageCover.setHolder()
             var img:String = data!.objectForKey("img") as String
