@@ -164,13 +164,13 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         })
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.viewBackFix()
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         globalViewFilmExist = false
         self.viewLoadingHide()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.viewBackFix()
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import AudioToolbox
 
 
 let IconColor:UIColor = UIColor(red:0.97, green:0.97,blue:0.97,alpha: 1)    //字体灰
@@ -237,10 +238,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
         var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigation")
         leftButton.image = UIImage(named:"newBack")
         self.navigationItem.leftBarButtonItem = leftButton
-        if let v = self.navigationController {
-            v.interactivePopGestureRecognizer.enabled = true
-            v.interactivePopGestureRecognizer.delegate = self
-        }
+        viewBackFix()
     }
     func backNavigation(){
         if let v = self.navigationController {
@@ -248,10 +246,8 @@ extension UIViewController: UIGestureRecognizerDelegate {
         }
     }
     func viewBackFix(){
-        if let v = self.navigationController {
-            v.interactivePopGestureRecognizer.enabled = true
-            v.interactivePopGestureRecognizer.delegate = self
-        }
+        self.navigationController?.interactivePopGestureRecognizer.enabled = true
+        self.navigationController?.interactivePopGestureRecognizer.delegate = self
     }
 }
 
@@ -530,4 +526,8 @@ extension UIViewController {
             globalViewFilmExist = false
         }
     }
+}
+
+func shake() {
+    AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 }

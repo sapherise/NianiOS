@@ -149,6 +149,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         self.viewBackFix()
     }
     

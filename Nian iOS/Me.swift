@@ -37,9 +37,14 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        SALoadLetter()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare", name: "noticeShare", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        SALoadLetter()
+        self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
     func Letter(noti: NSNotification) {
@@ -260,12 +265,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 letterVC.ID = id
                 letterVC.circleTitle = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
+                SALoadLetter()
             }
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }
     
     func setupRefresh() {

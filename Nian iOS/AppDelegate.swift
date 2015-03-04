@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     var window: UIWindow?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
+        application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = BGColor
         var navigationViewController = UINavigationController(rootViewController: WelcomeViewController())

@@ -49,8 +49,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         super.viewWillDisappear(animated)
         self.viewLoadingHide()
     }
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         if globalWillCircleJoinReload == 1 {
             globalWillCircleJoinReload = 0
             self.onCircleJoinClick()
@@ -134,6 +135,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     textPrivate = "需要验证后加入"
                 }
                 c.labelPrivate.text = textPrivate
+                c.switchNotice.setGlobalX(x: 15)
                 if let tag = self.circleData?.stringAttributeForKey("tag").toInt() {
                     self.theTag = tag - 1
                     c.labelTag.text = V.Tags[self.theTag]
@@ -284,15 +286,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.actionSheet!.showInView(self.view)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView" {
-            if touch.view.frame.size.width == 278 {
-                return false
-            }
-        }
-        return true
-    }
-    
     func userclick(sender:UITapGestureRecognizer){
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
@@ -328,7 +321,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
-            return  495
+            return  495 + 48
         }else{
             var index = indexPath!.row
             var data = self.dataArray[index] as NSDictionary
@@ -640,6 +633,33 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     // 提交验证之后修改按钮的文本
     func changeBtnMainText(content:String) {
         self.topCell.btnMain.setTitle(content, forState: UIControlState.allZeros)
+    }
+    
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return false
+        }
+        if otherGestureRecognizer.view?.frame.width == 280 {
+            return false
+        }
+        return true
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return true
+        }
+        return false
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView" {
+            if touch.view.frame.size.width == 278 {
+                return false
+            }
+        }
+        return true
     }
     
 }

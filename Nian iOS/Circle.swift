@@ -22,16 +22,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var viewTop:UIView!
     var ID:Int = 0
     var circleTitle: String = ""
-    
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
     var ReplyCid:String = ""
     var ReplyUserName:String = ""
-    
     var ReturnReplyContent:String = ""
-    
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
-    
     var desHeight:CGFloat = 0
     var inputKeyboard:UITextField!
     var keyboardView:UIView!
@@ -39,12 +35,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var isKeyboardFocus:Bool = false
     var keyboardHeight:CGFloat = 0
     var lastContentOffset:CGFloat?
-    
     var imagePicker:UIImagePickerController?
+    var isInit: Bool = true
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
+        SAloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -55,15 +52,16 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.viewBackFix()
         SAloadData()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
-        self.viewBackFix()
         globalCurrentCircle = self.ID
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        SD.executeChange("update circle set isread = 1 where circle = \(self.ID) and isread = 0 and owner = \(safeuid)")
     }
     
     func Poll(noti: NSNotification) {
@@ -108,7 +106,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     }
                     // 当消息列表大于整个的时候
                     var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
+                    if offset > 0 && offset - self.tableview.contentOffset.y < globalHeight * 0.5 {
                             self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
                     }
                 })
@@ -157,7 +155,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
         pan.delegate = self
         self.tableview.addGestureRecognizer(pan)
-        self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
@@ -299,8 +296,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.tableview.reloadData()
             var heightAfter = self.tableview.contentSize.height
             if clear {
-                if heightAfter > self.tableview.bounds.size.height {
-                    self.tableview.setContentOffset(CGPointMake(0, heightAfter-self.tableview.bounds.size.height), animated: false)
+                var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                if offset > 0 && self.isInit {
+                    self.isInit = false
+                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
                 }
                 if let v = (self.navigationItem.titleView as? UILabel) {
                     v.text = self.circleTitle
@@ -360,10 +359,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }else if type == "3" {
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
-            c.isImage = 1
-            c.imageContent.tag = index
-            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+            c.isImage = 0
+            c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
             c.View.tag = index
             cell = c
         }else{
@@ -375,6 +374,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return false
+        }else{
+            return true
+        }
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
+            return false
+        }
         return true
     }
     
@@ -424,30 +434,29 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func onBubbleClick(sender:UIGestureRecognizer) {
         var index = sender.view!.tag
         var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
-        var user = data.stringAttributeForKey("user") as String
+        var user = data.stringAttributeForKey("user")
         var uid = data.stringAttributeForKey("uid")
-        var content = data.stringAttributeForKey("content") as String
-        var cid = data.stringAttributeForKey("id") as String
+        var content = data.stringAttributeForKey("content")
+        var cid = data.stringAttributeForKey("cid")
+        var type = data.stringAttributeForKey("type")
         self.ReplyRow = self.dataArray.count - 1 - index
         self.ReplyContent = content
         self.ReplyCid = cid
         self.ReplyUserName = user
         self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            if uid == safeuid {
-                self.replySheet!.addButtonWithTitle("回应@\(user)")
-                self.replySheet!.addButtonWithTitle("复制")
-                self.replySheet!.addButtonWithTitle("取消")
-                self.replySheet!.cancelButtonIndex = 2
-                self.replySheet!.showInView(self.view)
-            }else{
-                self.replySheet!.addButtonWithTitle("回应@\(user)")
-                self.replySheet!.addButtonWithTitle("复制")
-                self.replySheet!.addButtonWithTitle("取消")
-                self.replySheet!.cancelButtonIndex = 2
-                self.replySheet!.showInView(self.view)
-            }
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        if type == "3" {
+            var StepVC = SingleStepViewController()
+            StepVC.Id = cid
+            self.navigationController?.pushViewController(StepVC, animated: true)
+        }else{
+            self.replySheet!.addButtonWithTitle("回应@\(user)")
+            self.replySheet!.addButtonWithTitle("复制")
+            self.replySheet!.addButtonWithTitle("取消")
+            self.replySheet!.cancelButtonIndex = 2
+            self.replySheet!.showInView(self.view)
+        }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {

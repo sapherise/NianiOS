@@ -60,10 +60,13 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
     }
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         self.viewBackFix()
     }
     

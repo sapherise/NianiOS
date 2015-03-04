@@ -58,8 +58,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self)
         self.viewLoadingHide()
     }
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()

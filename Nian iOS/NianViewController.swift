@@ -246,6 +246,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         if globalWillNianReload == 1 {
             globalWillNianReload = 0
             self.SAReloadData()

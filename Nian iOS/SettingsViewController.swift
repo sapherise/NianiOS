@@ -660,8 +660,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         client.leave()
     }
     
-    override func viewWillAppear(animated: Bool)
-    {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var pushMode: String? = Sa.objectForKey("pushMode") as? String

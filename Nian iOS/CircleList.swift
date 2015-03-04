@@ -16,17 +16,19 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     var page :Int = 0
     
     override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.SALoadData()
         self.navigationController?.interactivePopGestureRecognizer.enabled = false
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
-        self.SALoadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -156,9 +158,14 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         var title = data.objectForKey("title") as String
         var CircleVC = CircleController()
         if id != "0" {
-            CircleVC.ID = id.toInt()!
+            var theID = id.toInt()!
+            CircleVC.ID = theID
             CircleVC.circleTitle = title
             self.navigationController?.pushViewController(CircleVC, animated: true)
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            SD.executeChange("update circle set isread = 1 where circle = \(theID) and isread = 0 and owner = \(safeuid)")
+            self.SALoadData()
         }else{
             onBBSClick()
         }

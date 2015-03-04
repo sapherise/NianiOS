@@ -58,13 +58,7 @@ class CircleTypeCell: UITableViewCell {
     func onHolderClick(sender:UITapGestureRecognizer){
         var cid = self.data.objectForKey("cid") as String
         var type = self.data.objectForKey("type") as String
-        if type == "3" {
-            var StepVC = SingleStepViewController()
-            StepVC.Id = cid
-            if let v = self.findRootViewController()?.navigationController {
-                v.pushViewController(StepVC, animated: true)
-            }
-        }else if type == "7" || type == "6" || type == "5" {
+        if type == "7" || type == "6" || type == "5" {
             var uid = self.data.objectForKey("cid") as String
             var UserVC = PlayerViewController()
             UserVC.Id = uid

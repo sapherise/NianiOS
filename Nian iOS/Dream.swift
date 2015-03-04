@@ -74,8 +74,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
     }
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
         self.viewBackFix()
     }
@@ -752,5 +753,24 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            var v = otherGestureRecognizer.view?.frame.origin.y
+            if v > 0 {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            var v = otherGestureRecognizer.view?.frame.origin.y
+            if v == 0 {
+                return true
+            }
+        }
+        return false
+    }
 }
 

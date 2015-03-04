@@ -57,6 +57,7 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
     
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
     }

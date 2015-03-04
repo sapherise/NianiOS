@@ -241,6 +241,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.viewBackFix()
     }
     

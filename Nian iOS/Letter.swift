@@ -22,16 +22,12 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var viewTop:UIView!
     var ID:Int = 0
     var circleTitle: String = ""
-    
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
     var ReplyCid:String = ""
     var ReplyUserName:String = ""
-    
     var ReturnReplyContent:String = ""
-    
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
-    
     var desHeight:CGFloat = 0
     var inputKeyboard:UITextField!
     var keyboardView:UIView!
@@ -39,12 +35,14 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var isKeyboardFocus:Bool = false
     var keyboardHeight:CGFloat = 0
     var lastContentOffset:CGFloat?
+    var isInit: Bool = true
     
     var imagePicker:UIImagePickerController?
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
+        SAloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -55,15 +53,16 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        SAloadData()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         self.viewBackFix()
+        SAloadData()
         globalCurrentLetter = self.ID
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        SD.executeChange("update letter set isread = 1 where circle = \(self.ID) and isread = 0 and owner = '\(safeuid)'")
     }
     
     func Letter(noti: NSNotification) {
@@ -298,12 +297,19 @@ class LetterController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.tableview.reloadData()
             var heightAfter = self.tableview.contentSize.height
             if clear {
-                if heightAfter > self.tableview.bounds.size.height {
-                    self.tableview.setContentOffset(CGPointMake(0, heightAfter-self.tableview.bounds.size.height), animated: false)
+                var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                if offset > 0 && self.isInit {
+                    self.isInit = false
+                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
                 }
                 if let v = (self.navigationItem.titleView as? UILabel) {
                     v.text = circleTitle
                 }
+                
+                
+                
+                
+                
             }else{
                 var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
                 self.tableview.contentOffset = CGPointMake(0, heightChange)

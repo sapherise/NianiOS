@@ -31,6 +31,8 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var viewBG: UIView!
     @IBOutlet var line1: UIView!
     @IBOutlet var line2: UIView!
+    @IBOutlet var line3: UIView!
+    @IBOutlet var switchNotice: UISwitch!
     
     var dreamid:String = ""
     var desHeight:CGFloat = 0
@@ -56,9 +58,42 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.dotRight.setX(globalWidth/2+5)
         self.line1.setWidth(globalWidth-30)
         self.line2.setWidth(globalWidth-30)
+        self.line3.setWidth(globalWidth-30)
         self.labelTag.setX(globalWidth-210)
         self.labelPrivate.setX(globalWidth-210)
+  //      self.switchNotice.setX(globalWidth-49-15)
+        self.switchNotice.layer.cornerRadius = 16
+        self.switchNotice.thumbTintColor = UIColor.whiteColor()
+        self.switchNotice.onTintColor = SeaColor
+        self.switchNotice.tintColor = SeaColor
+        self.switchNotice.addTarget(self, action: "onSwitch:", forControlEvents: UIControlEvents.ValueChanged)
     }
+    
+    func onSwitch(sender: UISwitch) {
+        println(1)
+    }
+    
+    
+//    extension UISwitch {
+//        func switchSetup(bool: Bool, cacheName: String){
+//            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//            if bool {
+//                self.thumbTintColor = UIColor.whiteColor()
+//                self.onTintColor = SeaColor
+//                self.tintColor = SeaColor
+//                self.setOn(true, animated: true)
+//                Sa.setObject("1", forKey: cacheName)
+//                Sa.synchronize()
+//            }else{
+//                self.thumbTintColor = BGColor
+//                self.backgroundColor = IconColor
+//                self.tintColor = IconColor
+//                self.setOn(false, animated: true)
+//                Sa.setObject("0", forKey: cacheName)
+//                Sa.synchronize()
+//            }
+//        }
+//    }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
