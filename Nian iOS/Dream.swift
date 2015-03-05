@@ -655,6 +655,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
+        println(h)
         self.topCell.nickLabel.setHeight(h)
         var bottom = self.topCell.nickLabel.bottom()
         self.topCell.viewHolder.setY(bottom + 13)
@@ -685,12 +686,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.topCell.numRightNum.text = "1"
             self.topCell.numRightNum.textColor = UIColor.blackColor()
         }
-        
-        
         if self.desJson == "" {
             self.desJson = "暂无简介"
         }
-        
         self.topCell.labelDes.text = self.desJson
         var desHeight = self.desJson.stringHeightWith(12,width:200)
         self.topCell.labelDes.setHeight(desHeight)

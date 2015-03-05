@@ -33,6 +33,8 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var line2: UIView!
     @IBOutlet var line3: UIView!
     @IBOutlet var switchNotice: UISwitch!
+    @IBOutlet var viewSettings: UIView!
+    @IBOutlet var viewNotice: UIView!
     
     var dreamid:String = ""
     var desHeight:CGFloat = 0
@@ -43,6 +45,9 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.setWidth(globalWidth)
+        self.viewSettings.setWidth(globalWidth)
+        self.viewNotice.setWidth(globalWidth)
         self.panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.panGesture.delegate = self
         self.View?.addGestureRecognizer(self.panGesture)
@@ -61,39 +66,16 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.line3.setWidth(globalWidth-30)
         self.labelTag.setX(globalWidth-210)
         self.labelPrivate.setX(globalWidth-210)
-  //      self.switchNotice.setX(globalWidth-49-15)
         self.switchNotice.layer.cornerRadius = 16
         self.switchNotice.thumbTintColor = UIColor.whiteColor()
         self.switchNotice.onTintColor = SeaColor
         self.switchNotice.tintColor = SeaColor
-        self.switchNotice.addTarget(self, action: "onSwitch:", forControlEvents: UIControlEvents.ValueChanged)
+        self.switchNotice.setGlobalX(x: 15)
     }
     
-    func onSwitch(sender: UISwitch) {
-        println(1)
+    override func layoutSubviews(){
+        super.layoutSubviews()
     }
-    
-    
-//    extension UISwitch {
-//        func switchSetup(bool: Bool, cacheName: String){
-//            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//            if bool {
-//                self.thumbTintColor = UIColor.whiteColor()
-//                self.onTintColor = SeaColor
-//                self.tintColor = SeaColor
-//                self.setOn(true, animated: true)
-//                Sa.setObject("1", forKey: cacheName)
-//                Sa.synchronize()
-//            }else{
-//                self.thumbTintColor = BGColor
-//                self.backgroundColor = IconColor
-//                self.tintColor = IconColor
-//                self.setOn(false, animated: true)
-//                Sa.setObject("0", forKey: cacheName)
-//                Sa.synchronize()
-//            }
-//        }
-//    }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
@@ -157,9 +139,5 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
                 })
             }
         }
-    }
-    
-    override func layoutSubviews(){
-        super.layoutSubviews()
     }
 }

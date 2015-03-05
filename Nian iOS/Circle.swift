@@ -9,8 +9,6 @@
 import UIKit
 
 class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    
-    let identifier = "CircleBubbleCell"
     var tableview:UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
@@ -148,9 +146,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
         var nib2 = UINib(nibName:"CircleType", bundle: nil)
+        var nib3 = UINib(nibName:"CircleDreamCell", bundle: nil)
         
-        self.tableview.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableview.registerNib(nib, forCellReuseIdentifier: "CircleBubbleCell")
         self.tableview.registerNib(nib2, forCellReuseIdentifier: "CircleType")
+        self.tableview.registerNib(nib3, forCellReuseIdentifier: "CircleDreamCell")
         
         var pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
         pan.delegate = self
@@ -339,7 +339,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var type = data.objectForKey("type") as String
         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
         if type == "1" {
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
             c.isImage = 0
             c.textContent.tag = index
@@ -348,7 +348,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.View.tag = index
             cell = c
         }else if type == "2" {
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
             c.isImage = 1
             c.imageContent.tag = index
@@ -357,7 +357,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.View.tag = index
             cell = c
         }else if type == "3" {
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleBubbleCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as CircleDreamCell
             c.data = data
             c.isImage = 0
             c.textContent.tag = index
@@ -465,6 +465,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if let type = data.objectForKey("type") as? String {
             if type == "2" {
                 return CircleBubbleCell.cellHeightByData(data, isImage: 1)
+            }else if type == "3" {
+                return CircleDreamCell.cellHeightByData(data)
             }else{
                 return CircleBubbleCell.cellHeightByData(data)
             }

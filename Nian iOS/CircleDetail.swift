@@ -135,11 +135,11 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     textPrivate = "需要验证后加入"
                 }
                 c.labelPrivate.text = textPrivate
-                c.switchNotice.setGlobalX(x: 15)
                 if let tag = self.circleData?.stringAttributeForKey("tag").toInt() {
                     self.theTag = tag - 1
                     c.labelTag.text = V.Tags[self.theTag]
                 }
+                c.switchNotice.addTarget(self, action: "onSwitch:", forControlEvents: UIControlEvents.ValueChanged)
                 c.numLeftNum.text = "\(self.dataArray.count)"
                 c.numMiddleNum.text = self.textPercent
                 self.editTitle = self.circleData!.objectForKey("title") as String
@@ -161,6 +161,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     c.btnMain.setTitle("加入", forState: UIControlState.Normal)
                     c.btnMain.removeTarget(self, action: "onCircleInviteClick", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.addTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                if self.circleData!.stringAttributeForKey("doNotDisturb") == "1" {
+                    c.switchNotice.switchSetup(false, cacheName: "", isCache: false)
                 }
                 self.editContent = self.circleData!.objectForKey("content") as String
                 var textContent = ""
@@ -190,6 +193,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             cell = c
         }
         return cell
+    }
+    
+    
+    func onSwitch(sender: UISwitch) {
+        sender.switchSetup(sender.on, cacheName: "", isCache: false)
+        Api.postCircleDisturb(self.Id, isDisturb: !sender.on) { json in
+        }
     }
     
     func onCircleHeadClick(sender:UIGestureRecognizer) {

@@ -312,4 +312,10 @@ struct Api {
         V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
     }
     
+    static func postCircleDisturb(circle: String, isDisturb: Bool, callback: V.JsonCallback) {
+        loadCookies()
+        var disturb: Int = isDisturb ? 1 : 0
+        V.httpPostForJson("http://nian.so/api/circle_disturb.php", content: "circle=\(circle)&uid=\(s_uid)&shell=\(s_shell)&disturb=\(disturb)", callback: callback)
+    }
+    
 }

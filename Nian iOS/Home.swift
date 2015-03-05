@@ -468,7 +468,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
         if obj != nil {
-            shake()
             var msg: AnyObject? = obj!["msg"]
             var json = msg!["msg"] as NSArray
             var count = json.count - 1
@@ -497,6 +496,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             isread = 1
                         }
                         SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
+                            if (type == "1" || type == "2") && (uid != safeuid) {
+                                shake()
+                            }
                             if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                 Api.getCircleStatus(circle) { json in
                                     if json != nil {
@@ -545,6 +547,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         }
                     }else{
                         // 如果是私聊
+                        shake()
                         if uid == "\(globalCurrentLetter)" || uid == safeuid {
                             isread = 1
                         }

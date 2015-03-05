@@ -671,22 +671,26 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
 }
 
 extension UISwitch {
-    func switchSetup(bool: Bool, cacheName: String){
+    func switchSetup(bool: Bool, cacheName: String, isCache: Bool = true){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.thumbTintColor = UIColor.whiteColor()
             self.onTintColor = SeaColor
             self.tintColor = SeaColor
             self.setOn(true, animated: true)
-            Sa.setObject("1", forKey: cacheName)
-            Sa.synchronize()
+            if isCache {
+                Sa.setObject("1", forKey: cacheName)
+                Sa.synchronize()
+            }
         }else{
             self.thumbTintColor = BGColor
             self.backgroundColor = IconColor
             self.tintColor = IconColor
             self.setOn(false, animated: true)
-            Sa.setObject("0", forKey: cacheName)
-            Sa.synchronize()
+            if isCache {
+                Sa.setObject("0", forKey: cacheName)
+                Sa.synchronize()
+            }
         }
     }
 }

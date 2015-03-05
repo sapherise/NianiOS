@@ -182,7 +182,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="hy5-V0-Z7N">
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="MyM-fS-5ce">
                                         <rect key="frame" x="256" y="8" width="51" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </switch>
@@ -246,11 +246,13 @@
                 <outlet property="numLeftNum" destination="Qd5-eC-62G" id="qfF-WQ-qyo"/>
                 <outlet property="numMiddle" destination="yrW-vn-YEH" id="3hF-gI-PTk"/>
                 <outlet property="numMiddleNum" destination="mZP-OB-Rhd" id="cof-hX-dTh"/>
-                <outlet property="switchNotice" destination="hy5-V0-Z7N" id="UHE-rd-aWO"/>
+                <outlet property="switchNotice" destination="MyM-fS-5ce" id="Or0-W6-t7m"/>
                 <outlet property="viewBG" destination="4rL-BZ-mf1" id="rA5-bp-GsO"/>
                 <outlet property="viewLeft" destination="QEi-nw-N5d" id="kjX-m7-Mtb"/>
                 <outlet property="viewLineLeft" destination="RmZ-sJ-SAa" id="Fbm-fY-43z"/>
+                <outlet property="viewNotice" destination="7yv-cy-gWc" id="gTq-KR-eKR"/>
                 <outlet property="viewRight" destination="yfL-kj-0mn" id="UiZ-lm-U1T"/>
+                <outlet property="viewSettings" destination="Whx-Uf-pzf" id="I5y-9d-5TC"/>
             </connections>
             <point key="canvasLocation" x="520" y="314.5"/>
         </tableViewCell>
