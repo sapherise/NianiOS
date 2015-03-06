@@ -78,9 +78,7 @@ class MeCell: UITableViewCell {
         }else{
             self.nickLabel!.textColor = SeaColor
         }
-        
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
-        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
+        self.avatarView?.setHead(uid)
         self.avatarView!.tag = uid.toInt()!
         var height = content.stringHeightWith(16,width:globalWidth-30)
         

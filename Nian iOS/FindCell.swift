@@ -30,9 +30,8 @@ class FindCell: UITableViewCell {
         self.uid = self.data.stringAttributeForKey("uid") as String
         var follow = self.data.stringAttributeForKey("follow") as String
         self.labelNick!.text = self.data.stringAttributeForKey("user")
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
         self.imageHead.tag = self.uid.toInt()!
-        self.imageHead!.setImage(userImageURL,placeHolder: IconColor)
+        self.imageHead.setHead(uid)
         
         if follow == "0" {
             self.btnFollow.tag = 100

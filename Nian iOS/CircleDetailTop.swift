@@ -35,6 +35,7 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var switchNotice: UISwitch!
     @IBOutlet var viewSettings: UIView!
     @IBOutlet var viewNotice: UIView!
+    @IBOutlet var labelMember: UILabel!
     
     var dreamid:String = ""
     var desHeight:CGFloat = 0
@@ -52,7 +53,6 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.panGesture.delegate = self
         self.View?.addGestureRecognizer(self.panGesture)
         self.btnMain.backgroundColor = SeaColor
-        self.btnMain.hidden = true
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
         self.viewBG.setWidth(globalWidth)
@@ -71,6 +71,8 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.switchNotice.onTintColor = SeaColor
         self.switchNotice.tintColor = SeaColor
         self.switchNotice.setGlobalX(x: 15)
+        self.viewNotice.hidden = true
+        self.labelMember.setY(212 - 48)
     }
     
     override func layoutSubviews(){

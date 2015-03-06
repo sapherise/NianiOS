@@ -595,7 +595,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var foedWidth = foed.stringWidthBoldWith(12, height: 21)
                 var foX = ( globalWidth - foWidth - foedWidth ) / 2
                 var foedX = foX + foWidth
-                var userImageURL = "http://img.nian.so/head/\(theUid).jpg!dream"
                 var AllCoverURL = "http://img.nian.so/cover/\(cover)!cover"
                 if self.topCell != nil {
                     self.topCell!.UserName.text = name
@@ -608,7 +607,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell!.UserFoed.setX(foedX)
                     self.topCell!.UserFo.setWidth(foWidth)
                     self.topCell!.UserFoed.setWidth(foedWidth)
-                    self.topCell!.UserHead.setImage(userImageURL, placeHolder: IconColor)
+                    self.topCell!.UserHead.setHead("\(theUid)")
                     self.topCell!.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
                     
                     var wantPress = UILongPressGestureRecognizer(target: self, action: "onIWANTYOU:")
@@ -751,9 +750,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SALetter(sender: UIButton) {
-        var letterVC = LetterController()
+        var letterVC = CircleController()
         if let id = self.Id.toInt() {
             letterVC.ID = id
+            letterVC.isCircle = false
             self.navigationController?.pushViewController(letterVC, animated: true)
         }
     }

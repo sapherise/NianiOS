@@ -13,11 +13,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var dataArray = NSMutableArray()
     var page :Int = 0
     var replySheet:UIActionSheet?
-    var deleteCommentSheet:UIActionSheet?
     var actionSheetPhoto:UIActionSheet?
     var navView:UIView!
     var dataTotal:Int = 30
-    var viewTop:UIView!
     var ID:Int = 0
     var circleTitle: String = ""
     var ReplyContent:String = ""
@@ -32,20 +30,21 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var viewBottom:UIView!
     var isKeyboardFocus:Bool = false
     var keyboardHeight:CGFloat = 0
-    var lastContentOffset:CGFloat?
     var imagePicker:UIImagePickerController?
-    var isInit: Bool = true
+    var isCircle: Bool = true
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         SAloadData()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
         globalCurrentCircle = 0
+        globalCurrentLetter = 0
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -55,14 +54,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
-        SAloadData()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
-        globalCurrentCircle = self.ID
+        if isCircle {
+            globalCurrentCircle = self.ID
+        }else{
+            globalCurrentLetter = self.ID
+        }
     }
     
     func Poll(noti: NSNotification) {
+        println(1)
         var data = noti.object as NSDictionary
         var circle = data.stringAttributeForKey("to")
         if circle == "\(self.ID)" {
@@ -82,51 +84,49 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var commentReplyRow = self.dataArray.count
             var absoluteTime = V.absoluteTime(time)
             if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
+                var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                self.dataArray.insertObject(newinsert, atIndex: 0)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
-                    self.dataArray.insertObject(newinsert, atIndex: 0)
-                    var newindexpath = NSIndexPath(forRow: 0, inSection: 0)
-                    self.tableview.insertRowsAtIndexPaths([newindexpath], withRowAnimation: UITableViewRowAnimation.None)
-                    self.tableview.cellForRowAtIndexPath(newindexpath)?.layoutSubviews()
                     self.tableview.reloadData()
-                    //滚动到最新评论的底部
-                    var contentOffsetHeight = self.tableview.contentOffset.y
-                    var contentHeight:CGFloat = 0
-                    if type == "1" {
-                        contentHeight = content.stringHeightWith(13,width:208) + 60
-                    }else if type == "2" {
-                        var arrContent = content.componentsSeparatedByString("_")
-                        if arrContent.count == 4 {
-                            if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                                contentHeight = CGFloat(n) + 40
-                            }
-                        }
-                    }
                     // 当消息列表大于整个的时候
                     var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
                     if offset > 0 && offset - self.tableview.contentOffset.y < globalHeight * 0.5 {
-                            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
                     }
                 })
             }else{
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    delay(0.2, { () -> () in
-                        for var i: Int = 0; i < commentReplyRow; i++ {
-                            var data = self.dataArray[i] as NSDictionary
-                            var contentOri = data.stringAttributeForKey("content")
-                            var lastdate = data.stringAttributeForKey("lastdate")
-                            if content == contentOri && lastdate == "sending" {
-                                var lastdate = V.absoluteTime(NSDate().timeIntervalSince1970)
-                                var mutableItem = NSMutableDictionary(dictionary: data)
-                                mutableItem.setObject(lastdate, forKey: "lastdate")
-                                self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                                self.tableview.reloadData()
-                                break
-                            }
-                        }
-                    })
-                })
             }
+        }
+    }
+    
+    
+    func Letter(noti: NSNotification) {
+        var data = noti.object as NSDictionary
+        var uid = data.stringAttributeForKey("from")
+        if uid == "\(self.ID)" {
+            var id = data.stringAttributeForKey("msgid")
+            var circle = data.stringAttributeForKey("to")
+            var name = data.stringAttributeForKey("fromname")
+            var content = data.stringAttributeForKey("msg")
+            var title = data.stringAttributeForKey("title")
+            var type = data.stringAttributeForKey("msgtype")
+            var time = (data.stringAttributeForKey("time") as NSString).doubleValue
+            content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+            content = SADecode(SADecode(content))
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            var absoluteTime = V.absoluteTime(time)
+            var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+            self.dataArray.insertObject(newinsert, atIndex: 0)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableview.reloadData()
+                var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
+                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                }
+            })
         }
     }
     
@@ -145,16 +145,20 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview.dataSource = self;
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
-        var nib2 = UINib(nibName:"CircleType", bundle: nil)
-        var nib3 = UINib(nibName:"CircleDreamCell", bundle: nil)
-        
         self.tableview.registerNib(nib, forCellReuseIdentifier: "CircleBubbleCell")
-        self.tableview.registerNib(nib2, forCellReuseIdentifier: "CircleType")
-        self.tableview.registerNib(nib3, forCellReuseIdentifier: "CircleDreamCell")
+        
+        if isCircle {
+            var nib2 = UINib(nibName:"CircleType", bundle: nil)
+            var nib3 = UINib(nibName:"CircleDreamCell", bundle: nil)
+            self.tableview.registerNib(nib2, forCellReuseIdentifier: "CircleType")
+            self.tableview.registerNib(nib3, forCellReuseIdentifier: "CircleDreamCell")
+        }
+        
         
         var pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
         pan.delegate = self
         self.tableview.addGestureRecognizer(pan)
+        self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
@@ -198,9 +202,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
-        rightButton.image = UIImage(named:"newList")
-        self.navigationItem.rightBarButtonItem = rightButton
+        if isCircle {
+            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
+            rightButton.image = UIImage(named:"newList")
+            self.navigationItem.rightBarButtonItem = rightButton
+        }
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -230,13 +236,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func commentFinish(replyContent:String, type: Int = 1){
-        dispatch_async(dispatch_get_main_queue(), {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeuser = Sa.objectForKey("user") as String
-            var commentReplyRow = self.dataArray.count
-            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-            self.dataArray.insertObject(data, atIndex: 0)
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as String
+        var safeuser = Sa.objectForKey("user") as String
+        var commentReplyRow = self.dataArray.count
+        var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+        self.dataArray.insertObject(data, atIndex: 0)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.tableview.reloadData()
             var contentOffsetHeight = self.tableview.contentOffset.y
             var contentHeight:CGFloat = 0
@@ -257,15 +263,61 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         })
     }
     
+    func tableUpdate(contentAfter: String) {
+        for var i: Int = 0; i < self.dataArray.count; i++ {
+            var data = self.dataArray[i] as NSDictionary
+            var contentBefore = data.stringAttributeForKey("content")
+            var lastdate = data.stringAttributeForKey("lastdate")
+            var type = data.stringAttributeForKey("type")
+            if (contentAfter == contentBefore || type == "2") && lastdate == "sending" {
+                var lastdate = V.absoluteTime(NSDate().timeIntervalSince1970)
+                var mutableItem = NSMutableDictionary(dictionary: data)
+                mutableItem.setObject(lastdate, forKey: "lastdate")
+                mutableItem.setObject(contentAfter, forKey: "content")
+                self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableview.reloadData()
+                })
+                break
+            }
+        }
+        
+    }
+    
     //将内容发送至服务器
-    func addReply(contentComment:String, type:Int = 1){
-        var content = SAEncode(SAHtml(contentComment))
-        Api.postCircleChat(self.ID, content: content, type: type) { json in
+    func addReply(contentAfter:String, type:Int = 1){
+        var content = SAEncode(SAHtml(contentAfter))
+        if isCircle {
+            Api.postCircleChat(self.ID, content: content, type: type) { json in
+                if json != nil {
+                    var success = json!["success"] as String
+                    if success == "1" {
+                        self.tableUpdate(contentAfter)
+                    }
+                }
+            }
+        }else{
+            Api.postLetterChat(self.ID, content: content, type: type) { json in
+                if json != nil {
+                    var success = json!["success"] as String
+                    var msgid = json!["msgid"] as String
+                    var lastdate = json!["lastdate"] as String
+                    if success == "1" {
+                        self.tableUpdate(contentAfter)
+                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        var safeuid = Sa.objectForKey("uid") as String
+                        Api.postName(self.ID) { result in
+                            if result != nil {
+                                SQLLetterContent(msgid, safeuid, result!, "\(self.ID)", contentAfter, "\(type)", lastdate, 1) {}
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
     func SAloadData(clear: Bool = true){
-        dispatch_async(dispatch_get_main_queue(), {
         if clear {
             self.page = 0
             self.dataTotal = 0
@@ -273,44 +325,78 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
-        let (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
-        if err == nil {
-            self.page++
-            var title: String?
-            for row in resultSet {
-                var id = row["id"]?.asString()
-                var uid = row["uid"]?.asString()
-                var user = row["name"]?.asString()
-                var cid = row["cid"]?.asString()
-                var cname = row["cname"]?.asString()
-                var content = row["content"]?.asString()
-                var type = row["type"]?.asString()
-                var lastdate = row["lastdate"]?.asString()
-                var time = V.absoluteTime((lastdate! as NSString).doubleValue)
-                var title = row["title"]?.asString()
-                var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
-                self.dataArray.addObject(data)
-                self.dataTotal++
+        if self.isCircle {
+            var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
+            if err == nil {
+                self.page++
+                var title: String?
+                for row in resultSet {
+                    var id = row["id"]?.asString()
+                    var uid = row["uid"]?.asString()
+                    var user = row["name"]?.asString()
+                    var cid = row["cid"]?.asString()
+                    var cname = row["cname"]?.asString()
+                    var content = row["content"]?.asString()
+                    var type = row["type"]?.asString()
+                    var lastdate = row["lastdate"]?.asString()
+                    var time = V.absoluteTime((lastdate! as NSString).doubleValue)
+                    var title = row["title"]?.asString()
+                    var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
+                    self.dataArray.addObject(data)
+                    self.dataTotal++
+                }
+                var heightBefore = self.tableview.contentSize.height
+                self.tableview.reloadData()
+                var heightAfter = self.tableview.contentSize.height
+                if clear {
+                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                    if offset > 0 {
+                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
+                    }
+                    if let v = (self.navigationItem.titleView as? UILabel) {
+                        v.text = self.circleTitle
+                    }
+                }else{
+                    var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
+                    self.tableview.contentOffset = CGPointMake(0, heightChange)
+                    self.animating = 0
+                }
             }
-            var heightBefore = self.tableview.contentSize.height
-            self.tableview.reloadData()
-            var heightAfter = self.tableview.contentSize.height
-            if clear {
-                var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 && self.isInit {
-                    self.isInit = false
-                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
+        }else{
+            var (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
+            if err == nil {
+                self.page++
+                var title: String?
+                for row in resultSet {
+                    var id = row["id"]?.asString()
+                    var uid = row["uid"]?.asString()
+                    var user = row["name"]?.asString()
+                    var content = row["content"]?.asString()
+                    var type = row["type"]?.asString()
+                    var lastdate = row["lastdate"]?.asString()
+                    var time = V.absoluteTime((lastdate! as NSString).doubleValue)
+                    var data = NSDictionary(objects: [id!, uid!, user!, content!, type!, time], forKeys: ["id", "uid", "user", "content", "type", "lastdate"])
+                    self.dataArray.addObject(data)
+                    self.dataTotal++
                 }
-                if let v = (self.navigationItem.titleView as? UILabel) {
-                    v.text = self.circleTitle
+                var heightBefore = self.tableview.contentSize.height
+                self.tableview.reloadData()
+                var heightAfter = self.tableview.contentSize.height
+                if clear {
+                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                    if offset > 0  {
+                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
+                    }
+                    if let v = (self.navigationItem.titleView as? UILabel) {
+                        v.text = self.circleTitle
+                    }
+                }else{
+                    var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
+                    self.tableview.contentOffset = CGPointMake(0, heightChange)
+                    self.animating = 0
                 }
-            }else{
-                var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                self.tableview.contentOffset = CGPointMake(0, heightChange)
-                self.animating = 0
             }
         }
-        })
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -319,7 +405,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
-                    delay(0.3, { () -> () in
+                    delay(0.2, { () -> () in
                         self.SAloadData(clear: false)
                     })
                 }
@@ -376,9 +462,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
             return false
-        }else{
-            return true
         }
+        return true
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
@@ -477,7 +562,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func commentVC(){
         //这里是回应别人
         self.inputKeyboard.text = "@\(self.ReplyUserName) "
-        delay(0.5, { () -> () in
+        delay(0.2, { () -> () in
             self.inputKeyboard.becomeFirstResponder()
             return
         })
@@ -493,16 +578,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }else if buttonIndex == 1 { //复制
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
-            }
-        }else if actionSheet == self.deleteCommentSheet {
-            if buttonIndex == 0 {
-                self.dataArray.removeObjectAtIndex(self.ReplyRow)
-                var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
-                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
-                self.tableview.reloadData()
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
-                })
             }
         }else if actionSheet == self.actionSheetPhoto {
             if buttonIndex == 0 {
@@ -549,17 +624,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
             var content = "\(uploadUrl)_\(width)_\(height)"
-                for var i: Int = 0; i < self.dataArray.count; i++ {
-                    var dataLoading = self.dataArray[i] as NSDictionary
-                    var contentOri = dataLoading.stringAttributeForKey("content")
-                    if contentOri == "\(safeuid)_loading_\(width)_\(height)" {
-                        var mutableItem = NSMutableDictionary(dictionary: dataLoading)
-                        mutableItem.setObject(content, forKey: "content")
-                        self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                        self.tableview.reloadData()
-                    }
-                }
-                self.addReply(content, type: 2)
+            self.addReply(content, type: 2)
         })
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png"))
     }

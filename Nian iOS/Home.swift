@@ -322,14 +322,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let idMe = 103
         let idBBS = 104
         
-        if index == idExplore {       // 关注
+        if index == idExplore {       // 发现
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
+            self.navigationItem.rightBarButtonItem = nil
         }else if index == idBBS {     // 梦境
             self.dotCircle!.hidden = true
             self.dotCircle!.text = "0"
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleButton")
-            rightButton.image = UIImage(named:"find")
+            var rightButton = UIBarButtonItem(title: "发现梦境 ", style: .Plain, target: self, action: "addCircleButton")
+            rightButton.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(14)], forState: UIControlState.Normal)
             self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     // 梦想
             self.navigationItem.rightBarButtonItem = nil
@@ -339,6 +340,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.navigationItem.rightBarButtonItem = nil
         }else if index == idUpdate {      // 更新
             self.addStep()
+            self.navigationItem.rightBarButtonItem = nil
         }
         if index != idExplore {
             numExplore = 0

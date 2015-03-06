@@ -111,7 +111,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var safename = Sa.objectForKey("user") as String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         self.UserName.text = "\(safename)"
-        self.UserHead.setImage("http://img.nian.so/head/\(safeuid).jpg!dream", placeHolder: UIColor(red: 0, green: 0, blue: 0, alpha: 0.55))
+        self.UserHead.setHead(safeuid)
         if (cacheCoverUrl != nil) && (cacheCoverUrl! != "http://img.nian.so/cover/!cover") {
             self.imageBG.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
         }else{
@@ -189,7 +189,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var step: AnyObject! = sa.objectForKey("step") as String
                 var level: String! = sa.objectForKey("level") as String
                 var coverURL: String! = sa.objectForKey("cover") as String
-                var imgURL = "http://img.nian.so/head/\(safeuid).jpg!dream" as NSString
                 var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                 Sa.setObject(AllCoverURL, forKey: "coverUrl")
                 Sa.synchronize()
@@ -198,7 +197,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                 self.levelButton.setTitle("等级 \(l)", forState: UIControlState.Normal)
                 self.UserName.text = "\(name)"
-                self.UserHead.setImage(imgURL, placeHolder: UIColor(red: 0, green: 0, blue: 0, alpha: 0.55))
+                self.UserHead.setHead(safeuid)
                 if deadLine == "0" {
                     self.UserStep.text = "\(dream) 梦想，\(step) 进展"
                 }else{

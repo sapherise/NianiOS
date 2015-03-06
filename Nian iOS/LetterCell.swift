@@ -45,7 +45,7 @@ class LetterCell: UITableViewCell {
         if data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")
-            self.imageHead.setImage("http://img.nian.so/head/\(id).jpg!dream", placeHolder: IconColor)
+            self.imageHead.setHead(id)
             if let v = id.toInt() {
                 self.imageHead.tag = v
             }

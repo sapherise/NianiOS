@@ -46,8 +46,7 @@ class CircleDreamCell: UITableViewCell {
         var type = (self.data.objectForKey("type") as String).toInt()!
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
-        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
+        self.avatarView.setHead(uid)
         var height = content.stringHeightWith(15,width:208)
         self.avatarView!.tag = uid.toInt()!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))

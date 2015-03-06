@@ -115,9 +115,7 @@ class PlayerCell: UITableViewCell {
             self.nickLabel!.text = user
             self.lastdate!.text = lastdate
             self.labelDream.text = dreamtitle
-            
-            var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
-            self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
+            self.avatarView?.setHead(uid)
             self.avatarView!.tag = uid.toInt()!
             self.nickLabel!.tag = uid.toInt()!
             

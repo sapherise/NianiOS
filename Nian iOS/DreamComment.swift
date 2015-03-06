@@ -393,10 +393,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         return self.dataArray.count
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
     func registerForKeyboardNotifications()->Void {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
@@ -425,6 +421,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.keyboardView.setY( globalHeight - 44 )
         self.tableview.setHeight( heightScroll )
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return false
+        }else{
+            return true
+        }
     }
 }
 

@@ -66,12 +66,11 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 var data  = json!["user"] as NSDictionary
                 var name = data.stringAttributeForKey("name")
                 var coverURL = data.stringAttributeForKey("cover")
-                var urlHead = "http://img.nian.so/head/\(safeuid).jpg!dream"
                 var urlCover = "http://img.nian.so/cover/\(coverURL)!cover"
                 var imageHead = UIImageView(frame: CGRectMake(60, 45, 40, 40))
                 imageHead.layer.cornerRadius = 20
                 imageHead.layer.masksToBounds = true
-                imageHead.setImage(urlHead, placeHolder: IconColor)
+                imageHead.setHead(safeuid)
                 self.imagePromo.contentMode = UIViewContentMode.ScaleAspectFill
                 self.imagePromo.addSubview(imageHead)
                 if coverURL == "" {

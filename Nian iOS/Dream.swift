@@ -655,7 +655,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
-        println(h)
         self.topCell.nickLabel.setHeight(h)
         var bottom = self.topCell.nickLabel.bottom()
         self.topCell.viewHolder.setY(bottom + 13)

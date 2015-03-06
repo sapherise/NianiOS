@@ -31,7 +31,7 @@ class CircleTypeCell: UITableViewCell {
         var user = self.data.objectForKey("user") as String
         var type = self.data.objectForKey("type") as String
         var content = self.data.objectForKey("content") as String
-        self.imageHead.setImage("http://img.nian.so/head/\(uid).jpg!dream", placeHolder: IconColor)
+        self.imageHead.setHead(uid)
         self.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHolderClick:"))
         self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick:"))
         var textContent = ""

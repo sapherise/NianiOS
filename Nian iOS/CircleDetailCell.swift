@@ -53,7 +53,7 @@ class CircleDetailCell: UITableViewCell {
         self.labelLevel.text = theLevel
         
         self.labelDream.text = "\(title)"
-        self.imageUser.setImage("http://img.nian.so/head/\(uid).jpg!dream", placeHolder: IconColor)
+        self.imageUser.setHead(uid)
         self.imageDream.setImage("http://img.nian.so/dream/\(cover)!dream", placeHolder: IconColor)
         self.imageUser.tag = uid.toInt()!
         self.imageDream.tag = dream.toInt()!

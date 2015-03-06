@@ -41,8 +41,7 @@ class LikeCell: UITableViewCell {
         var follow = self.data.stringAttributeForKey("follow")
         user = self.data.stringAttributeForKey("user")
         self.nickLabel!.text = user
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
-        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
+        self.avatarView.setHead(uid)
         self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -88,7 +87,8 @@ class LikeCell: UITableViewCell {
     
     func onLetterClick() {
         if let uid = data.stringAttributeForKey("uid").toInt() {
-            var vc = LetterController()
+            var vc = CircleController()
+            vc.isCircle = false
             vc.ID = uid
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }

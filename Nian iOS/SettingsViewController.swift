@@ -130,8 +130,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var safeshell = Sa.objectForKey("shell") as String
         var safename = Sa.objectForKey("user") as String
         self.view.backgroundColor = BGColor
-        var userImageURL = "http://img.nian.so/head/\(safeuid).jpg!dream"
-        self.head!.setImage(userImageURL,placeHolder: IconColor)
+        self.head!.setHead(safeuid)
         self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick"))
         self.btnCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoverClick"))
         

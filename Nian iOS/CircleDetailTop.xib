@@ -215,7 +215,7 @@
                         <rect key="frame" x="110" y="216" width="100" height="36"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <state key="normal" title="关注">
+                        <state key="normal">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </state>
@@ -236,6 +236,7 @@
                 <outlet property="dotRight" destination="HNs-sc-U8p" id="FYl-XB-D8U"/>
                 <outlet property="dreamhead" destination="kgP-Gy-L6a" id="6he-ex-mip"/>
                 <outlet property="labelDes" destination="6hA-LD-V0P" id="Oxn-sG-sCk"/>
+                <outlet property="labelMember" destination="Hb5-as-YMX" id="BUv-Gf-8Ta"/>
                 <outlet property="labelPrivate" destination="LFY-DM-1gt" id="s4p-SP-rQ8"/>
                 <outlet property="labelTag" destination="fcw-AJ-40u" id="anA-ND-WJm"/>
                 <outlet property="line1" destination="M6x-UR-iwP" id="syt-5u-H48"/>

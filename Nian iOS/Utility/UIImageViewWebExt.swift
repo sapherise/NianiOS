@@ -63,6 +63,41 @@ extension UIImageView{
         }
     }
     
+    
+    func setHead(uid: String) {
+        var url = NSURL(string: "http://img.nian.so/head/\(uid).jpg!dream")
+        self.image = UIImage(named: "head")
+        self.contentMode = UIViewContentMode.ScaleAspectFill
+        var cacheFileName = url!.lastPathComponent
+        var cachePath = FileUtility.cachePath(cacheFileName!)
+        var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
+        if image as NSObject != NSNull() {
+            self.image = image as? UIImage
+        }else {
+            var networkStatus = checkNetworkStatus()
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var saveMode: String? = Sa.objectForKey("saveMode") as? String
+            if (saveMode == "1") && (networkStatus != 2) {   //如果是开启了同时是在2G下
+            }else{
+                var req = NSURLRequest(URL: url!)
+                var queue = NSOperationQueue();
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
+                        if (error == nil){
+                            var image:UIImage? = UIImage(data: data)
+                            if (image != nil) {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.image = image
+                                    FileUtility.imageCacheToPath(cachePath,image:data)
+                                })
+                            }
+                        }
+                    })
+                })
+            }
+        }
+    }
+    
     // 设置图片渐变动画
     func setAnimated(){
         self.alpha = 0

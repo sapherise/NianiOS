@@ -37,13 +37,9 @@ class CommentCell: UITableViewCell {
         var user = self.data.stringAttributeForKey("user")
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
-        
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
-        
-        var userImageURL = "http://img.nian.so/head/\(uid).jpg!dream"
-        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
-        
+        self.avatarView!.setHead(uid)
         var height = content.stringHeightWith(15,width:208)
         self.avatarView?.tag = uid.toInt()!
         self.contentLabel!.setHeight(height)

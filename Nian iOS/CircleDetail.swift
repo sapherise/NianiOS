@@ -147,17 +147,17 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 self.editImage = self.circleData!.objectForKey("img") as String
                 c.dreamhead.setImage("http://img.nian.so/dream/\(self.editImage)!dream", placeHolder: IconColor)
                 c.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCircleHeadClick:"))
-                var isJoin = self.circleData!.objectForKey("isJoin") as String
+                var isJoin = self.circleData!.stringAttributeForKey("isJoin")
                 if isJoin == "1" {
                     c.btnMain.setTitle("邀请", forState: UIControlState.Normal)
-                    c.btnMain.hidden = false
                     c.btnMain.removeTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.addTarget(self, action: "onCircleInviteClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    c.viewNotice.hidden = false
+                    c.labelMember.setY(212)
                     var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailMoreClick")
                     rightButton.image = UIImage(named:"more")
                     self.navigationItem.rightBarButtonItem = rightButton
                 }else{
-                    c.btnMain.hidden = false
                     c.btnMain.setTitle("加入", forState: UIControlState.Normal)
                     c.btnMain.removeTarget(self, action: "onCircleInviteClick", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.addTarget(self, action: "onCircleJoinClick", forControlEvents: UIControlEvents.TouchUpInside)
@@ -331,7 +331,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         if indexPath.section==0{
-            return  495 + 48
+            if self.circleData != nil {
+                var isJoin = self.circleData!.stringAttributeForKey("isJoin")
+                if isJoin == "1" {
+                    return  495 + 48
+                }
+            }
+            return 495
         }else{
             var index = indexPath!.row
             var data = self.dataArray[index] as NSDictionary
