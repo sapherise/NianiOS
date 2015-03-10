@@ -55,16 +55,15 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        
-        delay(1, { () -> () in
-            self.inputEmail.becomeFirstResponder()
-            return
-        })
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.loginAlert()
         return true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.inputEmail.becomeFirstResponder()
     }
     
     func loginAlert(){

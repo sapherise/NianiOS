@@ -11,21 +11,37 @@ import Foundation
 // 创建梦境表
 func SQLCreateCircleList() {
     SD.executeChange("CREATE TABLE if not exists `circlelist` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `circleid` INT NOT NULL , `title` VARCHAR(255) NULL , `image` VARCHAR(255) NULL, `postdate` MEDIUMINT NOT NULL, `owner` VARCHAR(255) NULL)")
+    let (indexes, err) = SD.existingIndexesForTable("circlelist")
+    if indexes.count == 0 {
+        SD.createIndex(name: "circleid", onColumns: ["circleid"], inTable: "circlelist", isUnique: false)
+    }
 }
 
 // 创建梦境内容表
 func SQLCreateCircleContent() {
     SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `title` VARCHAR(255) NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL, `owner` VARCHAR(255) NULL)")
+    let (indexes, err) = SD.existingIndexesForTable("circle")
+    if indexes.count == 0 {
+        SD.createIndex(name: "msgid", onColumns: ["msgid"], inTable: "circle", isUnique: false)
+    }
 }
 
 // 创建私信内容表
 func SQLCreateLetterContent() {
     SD.executeChange("CREATE TABLE if not exists `letter` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL, `owner` VARCHAR(255) NULL)")
+    let (indexes, err) = SD.existingIndexesForTable("letter")
+    if indexes.count == 0 {
+        SD.createIndex(name: "lettermsgid", onColumns: ["msgid"], inTable: "letter", isUnique: false)
+    }
 }
 
 // 创建进展表
 func SQLCreateStepContent() {
     SD.executeChange("CREATE TABLE if not exists `step` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `sid` INT NOT NULL , `uid` INT NOT NULL , `dream` INT NOT NULL , `content` VARCHAR(255) NULL , `img` VARCHAR(255) NULL , `img0` VARCHAR(255) NULL , `img1` VARCHAR(255) NULL)")
+    let (indexes, err) = SD.existingIndexesForTable("step")
+    if indexes.count == 0 {
+        SD.createIndex(name: "sid", onColumns: ["sid"], inTable: "step", isUnique: false)
+    }
 }
 
 // 创建所有表

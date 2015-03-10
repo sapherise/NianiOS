@@ -466,6 +466,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func on_poll(obj: AnyObject?) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
@@ -516,7 +518,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     }
                                 }
                             }else if type == "3" {
-                                Api.getSingleStep(cid) { json in
+                                Api.getSingleStepSync(cid) { json in
                                     if json != nil {
                                         if let item = json!["items"] as? NSArray {
                                             var dataStep = item[0] as NSDictionary
@@ -561,15 +563,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 }
             }
         }
+        })
     }
     
     func loadCircle() {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as String
         var safeuser = Sa.objectForKey("user") as String
+        println("开始加载群组消息")
         Api.postCircleInit() { json in
             if json != nil {
                 // 成功
+                println("加载群组完毕")
                 var a: Int = 0
                 var arr = json!["items"] as NSArray
                 for i : AnyObject  in arr {
@@ -594,8 +599,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         var safeuid = Sa.objectForKey("uid") as String
                         var safeuser = Sa.objectForKey("user") as String
                         if (type == "6") && ((cid == safeuid) || (cid == uid)) {
+                            println("===变更===")
                             Api.getCircleStatus(circle) { json in
                                 if json != nil {
+                                    println("===变更结束===")
                                     var numStatus = json!["count"] as String
                                     var titleStatus = json!["title"] as String
                                     var imageStatus = json!["img"] as String
@@ -607,8 +614,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 }
                             }
                         }else if type == "3" {
-                            Api.getSingleStep(cid) { json in
+                            println("===进展===")
+                            Api.getSingleStepSync(cid) { json in
                                 if json != nil {
+                                    println("===进展结束===")
                                     if let item = json!["items"] as? NSArray {
                                         var data = item[0] as NSDictionary
                                         var sid = data.stringAttributeForKey("sid")
@@ -672,11 +681,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         var safeuid = Sa.objectForKey("uid") as String
                         var safeuser = Sa.objectForKey("user") as String
                         SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
-                            dispatch_async(dispatch_get_main_queue(), {
                                 var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                                 NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
                                 self.noticeDot()
-                            })
                         }
                     }
                 }

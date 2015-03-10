@@ -670,10 +670,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView" {
+        var v = NSStringFromClass(touch.view.classForCoder)
+        if v == "UITableViewCellContentView" {
             if touch.view.frame.size.width == 278 {
                 return false
             }
+        }else if v == "UITextView" {
+            return false
         }
         return true
     }

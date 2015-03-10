@@ -37,15 +37,15 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         
         self.errLabel.alpha = 0
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        delay(1, { () -> () in
-            self.inputName!.becomeFirstResponder()
-            return
-        })
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.checkName()
         return true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.inputName!.becomeFirstResponder()
     }
     
     func checkName(){

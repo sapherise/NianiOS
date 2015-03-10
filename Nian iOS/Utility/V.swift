@@ -71,6 +71,18 @@ struct V {
         })
     }
     
+    static func httpGetForJsonSync(requestURL: String, callback: JsonCallback) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var url = NSURL(string: requestURL)
+            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            var json: AnyObject? = nil
+            if data != nil {
+                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            }
+            callback(json)
+        })
+    }
+    
     static func httpGetForString(requestURL: String, callback: StringCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var url = NSURL(string: requestURL)
@@ -122,6 +134,25 @@ struct V {
             })
         })
     }
+    
+    static func httpPostForJsonSync(requestURL: String, content: String, callback: JsonCallback) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var request = NSMutableURLRequest()
+            request.URL = NSURL(string: requestURL)
+            request.HTTPMethod = "POST"
+            request.HTTPBody = content.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
+            var response: NSURLResponse?
+            var error: NSError?
+            var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+            var json: AnyObject? = nil
+            if data != nil {
+                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+            }
+            callback(json)
+        })
+    }
+    
+    
     
     static func relativeTime(time: NSTimeInterval, current: NSTimeInterval) -> String {
         var d = current - time
@@ -204,7 +235,7 @@ extension UIView {
     func findRootViewController() -> UIViewController? {
         for var view: UIView? = self; view != nil; view = view!.superview {
             var responder = view?.nextResponder()
-            if responder! is UIViewController {
+            if responder? is UIViewController {
                 return responder as? UIViewController
             }
         }

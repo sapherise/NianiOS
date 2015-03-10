@@ -64,39 +64,38 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func Poll(noti: NSNotification) {
-        println(1)
-        var data = noti.object as NSDictionary
-        var circle = data.stringAttributeForKey("to")
-        if circle == "\(self.ID)" {
-            var id = data.stringAttributeForKey("msgid")
-            var uid = data.stringAttributeForKey("from")
-            var name = data.stringAttributeForKey("fromname")
-            var content = data.stringAttributeForKey("msg")
-            var title = data.stringAttributeForKey("title")
-            var type = data.stringAttributeForKey("msgtype")
-            var time = (data.stringAttributeForKey("time") as NSString).doubleValue
-            var cid = data.stringAttributeForKey("cid")
-            content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-            content = SADecode(SADecode(content))
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeuser = Sa.objectForKey("user") as String
-            var commentReplyRow = self.dataArray.count
-            var absoluteTime = V.absoluteTime(time)
-            if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
-                var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
-                self.dataArray.insertObject(newinsert, atIndex: 0)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.tableview.reloadData()
-                    // 当消息列表大于整个的时候
-                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0 && offset - self.tableview.contentOffset.y < globalHeight * 0.5 {
-                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-                    }
-                })
-            }else{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = noti.object as NSDictionary
+            var circle = data.stringAttributeForKey("to")
+            if circle == "\(self.ID)" {
+                var id = data.stringAttributeForKey("msgid")
+                var uid = data.stringAttributeForKey("from")
+                var name = data.stringAttributeForKey("fromname")
+                var content = data.stringAttributeForKey("msg")
+                var title = data.stringAttributeForKey("title")
+                var type = data.stringAttributeForKey("msgtype")
+                var time = (data.stringAttributeForKey("time") as NSString).doubleValue
+                var cid = data.stringAttributeForKey("cid")
+                content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                content = SADecode(SADecode(content))
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as String
+                var safeuser = Sa.objectForKey("user") as String
+                var commentReplyRow = self.dataArray.count
+                var absoluteTime = V.absoluteTime(time)
+                if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
+                    var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                    self.dataArray.insertObject(newinsert, atIndex: 0)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableview.reloadData()
+                        var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                        if offset > 0 && offset - self.tableview.contentOffset.y < globalHeight * 0.5 {
+                            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                        }
+                    })
+                }
             }
-        }
+        })
     }
     
     
@@ -244,18 +243,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.dataArray.insertObject(data, atIndex: 0)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.tableview.reloadData()
-            var contentOffsetHeight = self.tableview.contentOffset.y
-            var contentHeight:CGFloat = 0
-            if type == 1 {
-                contentHeight = replyContent.stringHeightWith(13,width:208) + 60
-            }else if type == 2 {
-                var arrContent = replyContent.componentsSeparatedByString("_")
-                if arrContent.count == 4 {
-                    if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                        contentHeight = CGFloat(n) + 40
-                    }
-                }
-            }
             var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
             if offset > 0 {
                 self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
@@ -275,9 +262,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 mutableItem.setObject(lastdate, forKey: "lastdate")
                 mutableItem.setObject(contentAfter, forKey: "content")
                 self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.tableview.reloadData()
-                })
+                self.tableview.reloadData()
                 break
             }
         }
@@ -562,10 +547,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func commentVC(){
         //这里是回应别人
         self.inputKeyboard.text = "@\(self.ReplyUserName) "
-        delay(0.2, { () -> () in
-            self.inputKeyboard.becomeFirstResponder()
-            return
-        })
+        self.inputKeyboard.becomeFirstResponder()
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {

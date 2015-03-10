@@ -102,6 +102,11 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/step_single.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
     }
     
+    static func getSingleStepSync(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJsonSync("http://nian.so/api/step_single.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
+    }
+    
     static func getDreamNewest(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/addstep_dream.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
@@ -155,7 +160,7 @@ struct Api {
     static func postCircleChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/circle_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCircleQuit(Id: String, callback: V.JsonCallback) {
@@ -212,7 +217,7 @@ struct Api {
     
     static func getCircleStatus(id:String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/circle_status.php?uid=\(s_uid)&id=\(id)", callback: callback)
+        V.httpGetForJsonSync("http://nian.so/api/circle_status.php?uid=\(s_uid)&id=\(id)", callback: callback)
     }
     
     static func postCircleInvite(Id: String, uid: String, callback: V.JsonCallback) {
@@ -268,7 +273,7 @@ struct Api {
     
     static func postCircleInit(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/circle_init.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/circle_init.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
     static func test(callback: V.JsonCallback) {
@@ -294,12 +299,12 @@ struct Api {
     static func postLetterChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/letter_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/letter_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postLetterInit(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/letter_init.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/letter_init.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func postLike(step: String, like: String, callback: V.JsonCallback) {
