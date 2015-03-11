@@ -82,6 +82,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         delay(3, {
             if isLoaded == 0 {
                 self.view.showTipText("念没有踩你，再试试看", delay: 2)
+                self.tableView.headerEndRefreshing()
             }
         })
         Api.postLetter() { json in

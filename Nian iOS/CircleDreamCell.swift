@@ -24,7 +24,6 @@ class CircleDreamCell: UITableViewCell {
     var activity: UIActivityIndicatorView?
     var data :NSDictionary!
     var contentLabelWidth:CGFloat = 0
-    var isImage:Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,10 +64,6 @@ class CircleDreamCell: UITableViewCell {
                     layoutDream(height, contentStep: contentStep, img: img, img0: img0, img1: img1, user: user, title: content, lastdate: lastdate, isMe: true)
                     break
                 }
-            } else {
-                content = "更新了梦想「\(content)」"
-                height = content.stringHeightWith(15, width: 208)
-                layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: true)
             }
         }else{
             let (resultDes, err) = SD.executeQuery("select * from step where sid = '\(cid)' limit 1")
@@ -82,61 +77,12 @@ class CircleDreamCell: UITableViewCell {
                     layoutDream(height, contentStep: contentStep, img: img, img0: img0, img1: img1, user: user, title: content, lastdate: lastdate, isMe: false)
                     break
                 }
-            } else {
-                content = "更新了梦想「\(content)」"
-                height = content.stringHeightWith(15, width: 208)
-                layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: false)
             }
         }
     }
     
-    func layoutWord(height: CGFloat, content: String, user: String, lastdate: String, isMe: Bool = false) {
-        self.textContent.hidden = false
-        self.contentLabel.hidden = false
-        self.imageDream.hidden = true
-        self.labelDream.hidden = true
-        self.contentLabel!.setHeight(height)
-        self.contentLabel.setY(25)
-        self.contentLabel!.text = content
-        if height == "".stringHeightWith(15,width:208) {      //如果是单行
-            var oneLineWidth = content.stringWidthWith(15, height: 24)
-            self.textContent.setWidth(oneLineWidth + 27)
-            self.textContent.setHeight(37)
-            self.contentLabelWidth = content.stringWidthWith(15, height: 24)
-        }else{      //如果是多行
-            self.textContent.setHeight(height+20)
-            self.textContent.setWidth(235)
-            self.contentLabelWidth = 208
-        }
-        if isMe {
-            self.textContent.image = UIImage(named: "bubble_me")
-            self.contentLabel.textColor = UIColor.blackColor()
-            self.textContent.setX( globalWidth - 65 - self.textContent.width())
-            self.avatarView.setX(globalWidth - 15 - 40)
-            self.nickLabel.hidden = true
-            self.lastdate.setX(globalWidth - 75 - lastdate.stringWidthWith(11, height: 21))
-            self.contentLabel.setX(globalWidth - 80 - self.contentLabelWidth)
-        }else{
-            self.textContent.image = UIImage(named: "bubble")
-            self.contentLabel.textColor = UIColor.whiteColor()
-            self.textContent.setX(65)
-            self.avatarView.setX(15)
-            self.nickLabel.hidden = false
-            self.nickLabel.setBottom(height + 60)
-            self.nickLabel.setWidth(user.stringWidthWith(11, height: 21))
-            self.lastdate.setX(user.stringWidthWith(11, height: 21)+83)
-            self.contentLabel.setX(80)
-        }
-        self.avatarView.setBottom(height + 55)
-        self.lastdate.setBottom(height + 60)
-    }
-    
     func layoutDream(height: CGFloat, contentStep: String, img: String, img0: String, img1: String, user: String, title: String, lastdate: String, isMe: Bool) {
-        self.textContent.hidden = false
-        self.contentLabel.hidden = false
         self.textContent.setWidth(235)
-        self.imageDream.hidden = false
-        self.labelDream.hidden = false
         let maskPath = UIBezierPath(roundedRect: self.imageDream.bounds, byRoundingCorners: ( UIRectCorner.TopLeft | UIRectCorner.TopRight ), cornerRadii: CGSizeMake(12, 12))
         var maskLayer = CAShapeLayer()
         maskLayer.frame = self.imageDream.bounds
@@ -192,7 +138,7 @@ class CircleDreamCell: UITableViewCell {
         }
     }
     
-    class func cellHeightByData(data:NSDictionary, isImage:Int = 0)->CGFloat {
+    class func cellHeightByData(data:NSDictionary)->CGFloat {
         var content = data.stringAttributeForKey("content")
         var type = data.stringAttributeForKey("type")
         var cid = data.stringAttributeForKey("cid")
@@ -203,10 +149,6 @@ class CircleDreamCell: UITableViewCell {
                 var height = contentStep.stringHeightWith(15,width:208)
                 return height + 60 + 138
             }
-        }else{  // 本地不包含进展内容
-            content = "更新了梦想「\(content)」"
-            var height = content.stringHeightWith(15,width:208)
-            return height + 60
         }
         return 100
     }

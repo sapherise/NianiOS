@@ -285,6 +285,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var index = indexPath.row
         var c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as NianCell
         c.data = self.dataArray[index] as? NSDictionary
+        c.total = self.dataArray.count
         cell = c
         return cell
     }

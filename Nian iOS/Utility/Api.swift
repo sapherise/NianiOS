@@ -323,4 +323,9 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_disturb.php", content: "circle=\(circle)&uid=\(s_uid)&shell=\(s_shell)&disturb=\(disturb)", callback: callback)
     }
     
+    static func postGameover(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/gameover1.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
 }

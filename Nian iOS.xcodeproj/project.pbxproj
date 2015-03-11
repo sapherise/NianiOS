@@ -73,6 +73,8 @@
 		128C4E391A503C54000D2B7C /* CircleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C4E381A503C54000D2B7C /* CircleType.swift */; };
 		128DAC451A144F69009FB0E7 /* LevelGame.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128DAC441A144F69009FB0E7 /* LevelGame.xib */; };
 		128DAC471A144F81009FB0E7 /* LevelGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DAC461A144F81009FB0E7 /* LevelGame.swift */; };
+		128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */; };
+		128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */; };
 		129152DF1A6A5BBE00BB213C /* Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152DE1A6A5BBE00BB213C /* Find.swift */; };
 		129152E11A6A90E500BB213C /* FindCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E01A6A90E500BB213C /* FindCell.swift */; };
 		129152E31A6A90ED00BB213C /* FindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E21A6A90ED00BB213C /* FindCell.xib */; };
@@ -264,6 +266,8 @@
 		128C4E381A503C54000D2B7C /* CircleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleType.swift; sourceTree = "<group>"; };
 		128DAC441A144F69009FB0E7 /* LevelGame.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LevelGame.xib; sourceTree = "<group>"; };
 		128DAC461A144F81009FB0E7 /* LevelGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelGame.swift; sourceTree = "<group>"; };
+		128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageCell.swift; sourceTree = "<group>"; };
+		128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleImageCell.xib; sourceTree = "<group>"; };
 		129152DE1A6A5BBE00BB213C /* Find.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Find.swift; sourceTree = "<group>"; };
 		129152E01A6A90E500BB213C /* FindCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCell.swift; sourceTree = "<group>"; };
 		129152E21A6A90ED00BB213C /* FindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCell.xib; sourceTree = "<group>"; };
@@ -740,6 +744,8 @@
 				12CE15A61A3EC525006AC031 /* Circle.swift */,
 				1232ADC61A53AA5F00C4182A /* CircleBubbleCell.swift */,
 				1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */,
+				128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */,
+				128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */,
 				12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */,
 				12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */,
 				128C4E361A5038C3000D2B7C /* CircleType.xib */,
@@ -1113,6 +1119,7 @@
 				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
 				1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
+				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
 				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
@@ -1287,6 +1294,7 @@
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
 				127A2EF91A6383080058978B /* Letter.swift in Sources */,
 				32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */,
+				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,

@@ -20,6 +20,8 @@ class NianCell: UICollectionViewCell{
     @IBOutlet var imageCover: UIImageView!
     @IBOutlet var labelTitle: UILabel!
     var data :NSDictionary?
+    var total: Int = 0
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
@@ -36,8 +38,12 @@ class NianCell: UICollectionViewCell{
                 self.imageCover.setImage(img, placeHolder: IconColor, bool: false)
             }
             self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
+            if inner.counter == self.total {
+                globalhasLaunched = 1
+            }
         }
     }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.imageCover.layer.cornerRadius = 6
@@ -45,7 +51,7 @@ class NianCell: UICollectionViewCell{
         self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageCover.layer.borderWidth = 0.5
         
-        if globaliOS >= 8.0 {
+        if globaliOS >= 8.0 && globalhasLaunched == 0 {
             self.imageCover.alpha = 0
             var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
             self.imageCover.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 300)

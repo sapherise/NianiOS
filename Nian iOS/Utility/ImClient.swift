@@ -227,7 +227,7 @@ class ImClient {
                     if m_repollDelay >= 60 {
                         setState(.unconnect)
                     }
-                    m_repollDelay = m_repollDelay + m_repollDelay
+                    m_repollDelay = m_repollDelay + 0.5
                 }
             }
             NSThread.sleepForTimeInterval(m_repollDelay)

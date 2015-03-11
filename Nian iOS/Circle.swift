@@ -98,7 +98,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         })
     }
     
-    
     func Letter(noti: NSNotification) {
         var data = noti.object as NSDictionary
         var uid = data.stringAttributeForKey("from")
@@ -145,6 +144,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
         self.tableview.registerNib(nib, forCellReuseIdentifier: "CircleBubbleCell")
+        var nib4 = UINib(nibName:"CircleImageCell", bundle: nil)
+        self.tableview.registerNib(nib4, forCellReuseIdentifier: "CircleImageCell")
         
         if isCircle {
             var nib2 = UINib(nibName:"CircleType", bundle: nil)
@@ -227,26 +228,50 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         var contentComment = self.inputKeyboard.text
         if contentComment != "" {
-            commentFinish(contentComment)
+            postWord(contentComment)
             self.inputKeyboard.text = ""
-            self.addReply(contentComment)
         }
         return true
     }
     
     func commentFinish(replyContent:String, type: Int = 1){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
-        var commentReplyRow = self.dataArray.count
-        var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-        self.dataArray.insertObject(data, atIndex: 0)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(data, atIndex: 0)
             self.tableview.reloadData()
             var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
             if offset > 0 {
                 self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
             }
+        })
+    }
+    
+    func postWord(replyContent: String, type: Int = 1) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as String
+            var safeuser = Sa.objectForKey("user") as String
+            var commentReplyRow = self.dataArray.count
+            var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(data, atIndex: 0)
+            UIView.animateWithDuration(0.05, animations: { () -> Void in
+                self.tableview.insertRowsAtIndexPaths([NSIndexPath(forRow: self.dataArray.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+                }, completion: { (Bool) -> Void in
+                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                    if offset > 0 {
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
+                        }, completion: { (Bool) -> Void in
+                            self.addReply(replyContent, type: 1)
+                        })
+                    }else{
+                        self.addReply(replyContent, type: 1)
+                    }
+            })
         })
     }
     
@@ -262,11 +287,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 mutableItem.setObject(lastdate, forKey: "lastdate")
                 mutableItem.setObject(contentAfter, forKey: "content")
                 self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                self.tableview.reloadData()
+                var row = self.dataArray.count - 1 - i
+                if row > 0 {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+                    })
+                }
                 break
             }
         }
-        
     }
     
     //将内容发送至服务器
@@ -390,9 +419,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
-                    delay(0.2, { () -> () in
                         self.SAloadData(clear: false)
-                    })
                 }
             }
         }
@@ -402,40 +429,50 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return 1
     }
     
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
         var index = indexPath.row
         var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
-        var type = data.objectForKey("type") as String
+        var type = data.stringAttributeForKey("type")
+        var cid = data.stringAttributeForKey("cid")
         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
         if type == "1" {
             var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
             c.data = data
-            c.isImage = 0
             c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
             c.View.tag = index
+            c.isDream = 0
             cell = c
         }else if type == "2" {
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as CircleImageCell
             c.data = data
-            c.isImage = 1
             c.imageContent.tag = index
             c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.View.tag = index
             cell = c
         }else if type == "3" {
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as CircleDreamCell
-            c.data = data
-            c.isImage = 0
-            c.textContent.tag = index
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.View.tag = index
-            cell = c
+            let (resultDes, err) = SD.executeQuery("select * from step where sid = '\(cid)' limit 1")
+            if resultDes.count == 0 {
+                var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
+                c.data = data
+                c.textContent.tag = index
+                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+                c.View.tag = index
+                c.isDream = 1
+                cell = c
+            }else{
+                var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as CircleDreamCell
+                c.data = data
+                c.textContent.tag = index
+                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+                c.View.tag = index
+                cell = c
+            }
         }else{
             var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as CircleTypeCell
             c.data = data
@@ -534,7 +571,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
         if let type = data.objectForKey("type") as? String {
             if type == "2" {
-                return CircleBubbleCell.cellHeightByData(data, isImage: 1)
+                return CircleImageCell.cellHeightByData(data)
             }else if type == "3" {
                 return CircleDreamCell.cellHeightByData(data)
             }else{
@@ -563,11 +600,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
         }else if actionSheet == self.actionSheetPhoto {
             if buttonIndex == 0 {
+                self.inputKeyboard.resignFirstResponder()
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
             }else if buttonIndex == 1 {
+                self.inputKeyboard.resignFirstResponder()
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                     self.imagePicker = UIImagePickerController()
                     self.imagePicker!.delegate = self
@@ -642,7 +681,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var heightScroll = globalHeight - 44 - 64
         var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.keyboardView.setY( globalHeight - 44 )
-        self.tableview.setHeight( heightScroll )
+        self.tableview.setHeight(heightScroll)
     }
 }
 

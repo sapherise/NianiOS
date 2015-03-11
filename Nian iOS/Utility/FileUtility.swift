@@ -27,9 +27,11 @@ class FileUtility: NSObject {
     class func imageDataFromPath(path:String)->AnyObject
     {
        var exist = NSFileManager.defaultManager().fileExistsAtPath(path)
-        if exist
-        {
-          return  UIImage(contentsOfFile: path)!
+        if exist {
+          var image = UIImage(contentsOfFile: path)
+            if image != nil {
+                return image!
+            }
         }
         
         return NSNull()

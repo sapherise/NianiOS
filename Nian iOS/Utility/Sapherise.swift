@@ -48,6 +48,7 @@ var globalTabBarSelected: Int = 0
 var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
+var globalhasLaunched: Int = 0
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
@@ -308,6 +309,24 @@ extension UIViewController {
     }
     func viewLoadingHide() {
         globalViewLoading?.removeFromSuperview()
+    }
+    
+    func SAlogout(){
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as? String
+        var safeshell = Sa.objectForKey("shell") as? String
+        if (safeuid != nil) & (safeshell != nil) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var sa = SAPost("devicetoken=&&uid=\(safeuid!)&&shell=\(safeshell!)&&type=1", "http://nian.so/api/user_update.php")
+            })
+        }
+        Sa.removeObjectForKey("uid")
+        Sa.removeObjectForKey("shell")
+        Sa.removeObjectForKey("followData")
+        Sa.removeObjectForKey("user")
+        Sa.synchronize()
+        self.dismissViewControllerAnimated(true, completion: nil)
+        client.leave()
     }
 }
 

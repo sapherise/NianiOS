@@ -276,7 +276,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                                 film.showError("毕业过啦")
                             }
                         }else{
-                            film.showError("念没有踩你，再试试")
+                            film.showError("念没有踩你，再试试看")
                         }
                     }
                 }
