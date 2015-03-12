@@ -23,6 +23,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var ImageSwitch:UISwitch!
     @IBOutlet var CareSwitch:UISwitch!
     @IBOutlet var PrivateSwitch: UISwitch!
+    @IBOutlet var switchMode: UISwitch!
     @IBOutlet var version:UILabel!
     @IBOutlet var btnCover: UIButton!
     @IBOutlet var viewStar: UIView!
@@ -35,6 +36,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var viewPhone: UIView!
     @IBOutlet var viewImage: UIView!
     @IBOutlet var viewAlert: UIView!
+    @IBOutlet var viewMode: UIView!
     @IBOutlet var line1: UIView!
     @IBOutlet var line2: UIView!
     @IBOutlet var line3: UIView!
@@ -50,6 +52,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var line13: UIView!
     @IBOutlet var line14: UIView!
     @IBOutlet var line15: UIView!
+    @IBOutlet var line16: UIView!
     @IBOutlet var arrowHelp: UIImageView!
     @IBOutlet var arrowStar: UIImageView!
     var actionSheet:UIActionSheet?
@@ -95,6 +98,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.viewHelp.setWidth(globalWidth)
         self.viewStar.setWidth(globalWidth)
         self.viewLogout.setWidth(globalWidth)
+        self.viewMode.setWidth(globalWidth)
         self.line1.setGlobalWidth()
         self.line2.setGlobalWidth()
         self.line3.setGlobalWidth()
@@ -110,6 +114,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.line13.setGlobalWidth()
         self.line14.setGlobalWidth()
         self.line15.setGlobalWidth()
+        self.line16.setGlobalWidth()
         self.inputName.setGlobalX()
         self.inputEmail.setGlobalX()
         self.inputPhone.setGlobalX()
@@ -118,11 +123,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.ImageSwitch.setGlobalX(x: 13)
         self.CareSwitch.setGlobalX(x: 13)
         self.PrivateSwitch.setGlobalX(x: 13)
+        self.switchMode.setGlobalX(x: 13)
         self.arrowHelp.setGlobalX(x: 13)
         self.arrowStar.setGlobalX(x: 13)
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 1200)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 1250)
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -163,6 +169,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             self.PrivateSwitch.switchSetup(false, cacheName: "privateMode")
         }
         
+        self.switchMode.addTarget(self, action: "switchModeAction:", forControlEvents: UIControlEvents.ValueChanged)
+        self.switchMode.layer.cornerRadius = 16
+        
         //每日推送模式
         self.CareSwitch.addTarget(self, action: "pushSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.CareSwitch.layer.cornerRadius = 16
@@ -188,6 +197,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 var name = data.stringAttributeForKey("name")
                 var phone = data.stringAttributeForKey("phone")
                 var sex = data.stringAttributeForKey("sex")
+                var isMonthly = data.stringAttributeForKey("isMonthly")
+                if isMonthly == "1" {
+                    self.switchMode.switchSetup(false, cacheName: "", isCache: false)
+                }else{
+                    self.switchMode.switchSetup(true, cacheName: "", isCache: false)
+                }
                 Sa.setObject(name, forKey:"user")
                 Sa.synchronize()
                 dispatch_async(dispatch_get_main_queue(), {
@@ -529,6 +544,18 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }else{
             sender.switchSetup(false, cacheName: "privateMode")
             Api.postUserPrivate("0") { json in
+            }
+        }
+    }
+    
+    func switchModeAction(sender: UISwitch) {
+        if sender.on {
+            sender.switchSetup(true, cacheName: "", isCache: false)
+            Api.postUserFrequency(0) { json in
+            }
+        }else{
+            sender.switchSetup(false, cacheName: "", isCache: false)
+            Api.postUserFrequency(1) { json in
             }
         }
     }

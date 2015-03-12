@@ -401,6 +401,44 @@ extension UIImageView{
         self.backgroundColor = IconColor
         self.contentMode = UIViewContentMode.Center
     }
+    
+    func setAnimationWanderX(leftStartX: CGFloat, leftEndX: CGFloat, rightStartX: CGFloat, rightEndX: CGFloat) {
+        self.setX(leftStartX)
+        UIView.animateWithDuration(4, animations: { () -> Void in
+            self.setX(leftEndX)
+            }) { (Bool) -> Void in
+                self.setX(rightStartX)
+                self.layer.transform = CATransform3DConcat(self.layer.transform, CATransform3DMakeRotation(CGFloat(M_PI), 0, -1, 0))
+                UIView.animateWithDuration(4, animations: { () -> Void in
+                    self.setX(rightEndX)
+                    }, completion: { (Bool) -> Void in
+                        self.layer.transform = CATransform3DConcat(self.layer.transform, CATransform3DMakeRotation(CGFloat(M_PI), 0, 1, 0))
+                        self.setAnimationWanderX(leftStartX, leftEndX: leftEndX, rightStartX: rightStartX, rightEndX: rightEndX)
+                })
+        }
+    }
+    
+    func setAnimationWanderY(startY: CGFloat, endY: CGFloat, animated: Bool = true) {
+        if animated {
+        UIView.animateWithDuration(2, animations: { () -> Void in
+            self.setY(endY)
+            }) { (Bool) -> Void in
+                UIView.animateWithDuration(2, animations: { () -> Void in
+                    self.setY(startY)
+                    }, completion: { (Bool) -> Void in
+                        self.setAnimationWanderY(startY, endY: endY)
+                })
+        }
+        }else{
+            self.setY(startY)
+            delay(1, { () -> () in
+                self.setY(endY)
+                delay(1, { () -> () in
+                    self.setAnimationWanderY(startY, endY: endY, animated: false)
+                })
+            })
+        }
+    }
 }
 
 extension UIViewController {
