@@ -15,6 +15,7 @@
                 <outlet property="btnCover" destination="1SJ-x8-vUX" id="Sne-HB-ECq"/>
                 <outlet property="cacheActivity" destination="nJR-6R-oRr" id="Job-aO-aTZ"/>
                 <outlet property="head" destination="BGM-Ps-9vm" id="AKT-9e-N4k"/>
+                <outlet property="infoMode" destination="9xk-dx-wgq" id="m76-Bq-hKR"/>
                 <outlet property="inputEmail" destination="xXP-za-jew" id="nlj-Ov-A2W"/>
                 <outlet property="inputName" destination="8SV-MJ-XFo" id="HnW-Ij-VPz"/>
                 <outlet property="inputPhone" destination="lPI-OM-JAI" id="S69-wL-7ON"/>
@@ -214,7 +215,7 @@
                             <color key="textColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" id="yB7-lW-4bY" userLabel="困难模式">
+                        <view contentMode="scaleToFill" id="yB7-lW-4bY" userLabel="日更模式">
                             <rect key="frame" x="0.0" y="574" width="320" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -228,8 +229,8 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="困难模式" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qo9-Ra-bCc" userLabel="困难模式">
-                                    <rect key="frame" x="20" y="13" width="153" height="21"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="日更模式" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qo9-Ra-bCc">
+                                    <rect key="frame" x="20" y="13" width="73" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <nil key="highlightedColor"/>
@@ -240,6 +241,10 @@
                                     <color key="onTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </switch>
+                                <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info" id="9xk-dx-wgq">
+                                    <rect key="frame" x="80" y="4" width="40" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
@@ -441,6 +446,7 @@
     </objects>
     <resources>
         <image name="go" width="7" height="12"/>
+        <image name="info" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

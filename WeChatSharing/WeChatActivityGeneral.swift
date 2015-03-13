@@ -84,7 +84,7 @@ class WeChatActivityGeneral: UIActivity {
         webObject.webpageUrl = urlNew.absoluteString?.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         req.message.mediaObject = webObject
         req.message.title = textNew
-        req.message.description = "「念」\n全宇宙最残酷的 App，\n每天更新才不会被封号。😱"
+        req.message.description = "「念」\n全宇宙最残酷的 App，\n每天更新才不会被停号。😱"
         WXApi.sendReq(req)
         self.activityDidFinish(true)
     }

@@ -13,7 +13,7 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     @IBOutlet var tableView: UITableView!
     var navView: UIView!
     
-    let things = ["", "更新进展", "解除封号"]
+    let things = ["", "更新进展", "解除停号"]
     
     var coinDetails = [(String, String, Int, String)]()
     var page = 0

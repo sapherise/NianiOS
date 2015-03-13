@@ -247,7 +247,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             break
         case 101:   //毕业
             title = "毕业证"
-            des = "永不封号\n希望你已从念获益"
+            des = "永不停号\n希望你已从念获益"
             button = "100 念币"
             break
         case 102:   //推广

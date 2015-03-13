@@ -23,6 +23,7 @@ let LittleLineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 0.2)
 let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
 let NavColor:UIColor = UIColor(red:0, green:0, blue:0, alpha:1)
 let SeaColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1) //深海蓝
+let GreyColor: UIColor = UIColor(red:0.69, green:0.69, blue:0.69, alpha:1)  // 高级灰
 
 let product_coin12 = "so.nian.c12"
 let product_coin30 = "so.nian.c30"

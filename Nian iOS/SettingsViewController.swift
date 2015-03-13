@@ -55,6 +55,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var line16: UIView!
     @IBOutlet var arrowHelp: UIImageView!
     @IBOutlet var arrowStar: UIImageView!
+    @IBOutlet var infoMode: UIImageView!
     var actionSheet:UIActionSheet?
     var actionSheetSex: UIActionSheet?
     var imagePicker:UIImagePickerController?
@@ -187,6 +188,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.version.addGestureRecognizer(longTap)
         self.version.setX(globalWidth/2-36)
         
+        infoMode.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onInfoModeClick:"))
+        
         // 发现好友
         self.viewFind.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFindClick"))
         self.viewSex.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSexClick"))
@@ -221,6 +224,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     }
                 })
             }
+        }
+    }
+    
+    func onInfoModeClick(sender: UIGestureRecognizer) {
+        self.showFilm("日更模式", prompt: "打开日更模式，每天奖励更多念币\n关闭日更模式，将不再被停号", button: "好", transDirectly: false) { (FilmCell) -> Void in
+            self.onFilmClose()
         }
     }
     
@@ -675,6 +684,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         if pushMode != "1" {
             self.pushSwitchSetup(false)
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        globalViewFilmExist = false
     }
 }
 

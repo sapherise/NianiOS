@@ -14,7 +14,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var currentIndex: Int?
     var dot:UILabel?
     var dotCircle: UILabel?
-    var GameOverView:ILTranslucentView!
+    var GameOverView:Popup!
     var animationBool:Int = 0
     var numExplore = 0
     var gameoverId:String = ""
@@ -47,45 +47,28 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     var data = json!["dream"] as NSDictionary
                     self.gameoverId = data.stringAttributeForKey("id")
                     var gameoverDays = data.stringAttributeForKey("days")
-                    self.GameOverView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-                    self.GameOverView.translucentAlpha = 1
-                    self.GameOverView.translucentStyle = UIBarStyle.Default
-                    self.GameOverView.translucentTintColor = UIColor.clearColor()
-                    var holder = UIView(frame: CGRectMake(globalWidth / 2 - 135, globalHeight / 2 - 160, 270, 320))
-                    holder.backgroundColor = UIColor.whiteColor()
-                    holder.layer.cornerRadius = 8
-                    holder.layer.masksToBounds = true
-                    var gameoverHead = UIImageView(frame: CGRectMake(70, 80, 75, 60))
+                    
+                    self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
+                    self.GameOverView.textTitle = "游戏结束"
+                    self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
+                    self.GameOverView.heightImage = 130
+                    self.GameOverView.textBtnMain = "继续日更模式"
+                    self.GameOverView.textBtnSub = " 不开心！"
+                    self.GameOverView.btnMain.tag = 1
+                    self.GameOverView.btnSub.tag = 2
+                    self.GameOverView.btnMain.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
+                    self.GameOverView.btnSub.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
+                    var gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
                     gameoverHead.image = UIImage(named: "pet_ghost")
-                    
-                    var gameoverSpark = UIImageView(frame: CGRectMake(35, 68, 40, 60))
+                    var gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
                     gameoverSpark.image = UIImage(named: "pet_ghost_spark")
-                    
-                    var gameoverLabel = UILabel(frame: CGRectMake(45, 160, 180, 210))
-                    var gameoverWord = "因为 \(gameoverDays) 天没更新\n你的账户阵亡了"
-                    gameoverLabel.text = gameoverWord
-                    gameoverLabel.textAlignment = NSTextAlignment.Center
-                    gameoverLabel.numberOfLines = 0
-                    gameoverLabel.font = UIFont.systemFontOfSize(14)
-                    gameoverLabel.textColor = UIColor.blackColor()
-                    gameoverLabel.setHeight(gameoverWord.stringHeightWith(14, width: 180))
-                    var button1 = self.gameoverButton("继续困难模式")
-                    button1.tag = 1
-                    button1.setY(gameoverLabel.bottom()+20)
-                    var button2 = self.gameoverButton("不开心！")
-                    button2.tag = 2
-                    button2.setY(button1.bottom()+6)
-                    holder.addSubview(gameoverHead)
-                    holder.addSubview(gameoverLabel)
-                    holder.addSubview(gameoverSpark)
-                    holder.addSubview(button1)
-                    holder.addSubview(button2)
-                    self.GameOverView?.addSubview(holder)
-                    self.view.addSubview(self.GameOverView!)
+                    self.GameOverView.viewHolder.addSubview(gameoverHead)
+                    self.GameOverView.viewHolder.addSubview(gameoverSpark)
+                    self.view.addSubview(self.GameOverView)
                     gameoverHead.setAnimationWanderX(70, leftEndX: 125, rightStartX: 125, rightEndX: 70)
-                    gameoverHead.setAnimationWanderY(80, endY: 84)
+                    gameoverHead.setAnimationWanderY(60, endY: 64)
                     gameoverSpark.setAnimationWanderX(70-25, leftEndX: 125-25, rightStartX: 125+60, rightEndX: 70+60)
-                    gameoverSpark.setAnimationWanderY(65, endY: 68, animated: false)
+                    gameoverSpark.setAnimationWanderY(35, endY: 38, animated: false)
                 }
             }else{
                 // 密码不对，退出了
@@ -100,15 +83,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var tag = sender.tag
         self.gameoverMode = tag
         if tag == 1 {
-            self.actionSheetGameOver = UIActionSheet(title: "要支付 5 念币继续困难模式吗？\n困难模式下每天更新都可以获得 1 念币\n但一天不更新就会被停号", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.actionSheetGameOver!.addButtonWithTitle("好")
-            self.actionSheetGameOver!.addButtonWithTitle("取消")
+            self.actionSheetGameOver = UIActionSheet(title: "勇敢的你\n确定继续玩日更模式吗？", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.actionSheetGameOver!.addButtonWithTitle("嗯")
+            self.actionSheetGameOver!.addButtonWithTitle("等一下")
             self.actionSheetGameOver!.cancelButtonIndex = 1
             self.actionSheetGameOver!.showInView(self.view)
         }else{
-            self.actionSheetGameOver = UIActionSheet(title: "要开启简单模式吗？\n简单模式下永远不被停号，但更新也不再获得念币\n你随时都能在设置里重开困难模式", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.actionSheetGameOver!.addButtonWithTitle("好")
-            self.actionSheetGameOver!.addButtonWithTitle("取消")
+            self.actionSheetGameOver = UIActionSheet(title: "要关闭日更模式吗？\n关闭后永不停号，但更新奖励减少\n你随时可在设置里开启日更模式", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.actionSheetGameOver!.addButtonWithTitle("嗯")
+            self.actionSheetGameOver!.addButtonWithTitle("等一下")
             self.actionSheetGameOver!.cancelButtonIndex = 1
             self.actionSheetGameOver!.showInView(self.view)
         }
@@ -260,8 +243,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }
         }else{
             Api.postUserFrequency(1) { json in
+                Api.postGameoverCoin(self.gameoverId) { json in
                     self.navigationItem.rightBarButtonItems = []
                     self.GameOverView!.hidden = true
+                }
             }
         }
     }
@@ -279,12 +264,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func gameoverButton(word:String)->UIButton{
-        var button = UIButton(frame: CGRectMake(35, 0, 200, 36))
+        var button = UIButton(frame: CGRectMake(60, 0, 150, 36))
         button.backgroundColor = UIColor.blackColor()
         button.setTitle(word, forState: UIControlState.Normal)
         button.titleLabel!.font = UIFont.systemFontOfSize(14)
         button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 18
         button.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
         return button
     }
@@ -415,6 +400,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }) { (Bool) -> Void in
                 self.addView.removeFromSuperview()
         }
+    }
+    
+    func onViewCloseHidden() {
+        self.viewClose.hidden = true
     }
     
     func onCloseConfirm(){

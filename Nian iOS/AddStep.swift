@@ -10,6 +10,7 @@ import UIKit
 
 protocol MaskDelegate {
     func onViewCloseClick()
+    func onViewCloseHidden()
 }
 
 class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -32,9 +33,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var imagePicker:UIImagePickerController!
     var uploadUrl:String = ""
     var dreamID:String = "0"
-    
     var uploadWidth:String = ""
     var uploadHeight:String = ""
+    var viewCoin:Popup!
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
@@ -166,23 +167,55 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         var safeuid = Sa.objectForKey("uid") as String
         var safeshell = Sa.objectForKey("shell") as String
         var sid = client.getSid()
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa=SAPost("dream=\(self.dreamID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)&&circleshellid=\(sid)", "http://nian.so/api/addstep_query.php")
-            if(sa == "1"){
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+//            var sa=SAPost("dream=\(self.dreamID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)&&circleshellid=\(sid)", "http://nian.so/api/addstep_query.php")
+//        })
+        
+        Api.postAddStep(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
+            if json != nil {
+                var coin = json!["coin"] as String
+                var isfrist = json!["isfirst"] as String
                 globalWillNianReload = 1
-                dispatch_async(dispatch_get_main_queue(), {
+                if isfrist == "1" {
+                    globalWillNianReload = 1
+                    self.hidden = true
+                    self.delegate?.onViewCloseHidden()
+                    self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
+                    self.viewCoin.viewBackGround.translucentAlpha = 0
+                    self.viewCoin.textTitle = "获得 \(coin) 念币"
+                    self.viewCoin.textContent = "你获得了念币奖励！"
+                    self.viewCoin.heightImage = 130
+                    self.viewCoin.textBtnMain = "好"
+                    self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
+                    self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
+                    var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
+                    imageCoin.image = UIImage(named: "coin")
+                    self.viewCoin.viewHolder.addSubview(imageCoin)
+                    self.findRootViewController()?.view.addSubview(self.viewCoin)
+                    var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+                    self.viewCoin.viewHolder.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 1000)
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.viewCoin.viewHolder.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
+                    })
+                }else{
                     self.activityOK.stopAnimating()
                     self.activityOK.hidden = true
                     self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
-                    delay(1, { () -> () in
+                    delay(0.5, { () -> () in
                         self.delegate?.onViewCloseClick()
                         var DreamVC = DreamViewController()
                         DreamVC.Id = self.dreamID
                         self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
                     })
-                })
+                }
             }
-        })
+        }
+    }
+    
+    func onCoinClick() {
+        self.viewCoin.removeFromSuperview()
+        self.delegate?.onViewCloseClick()
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {

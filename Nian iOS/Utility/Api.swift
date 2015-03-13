@@ -333,4 +333,10 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/gameover_coin.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
     }
     
+    static func postAddStep(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
+        loadCookies()
+        var sid = client.getSid()
+        V.httpPostForJson("http://nian.so/api/addstep_query2.php", content: "uid=\(s_uid)&shell=\(s_shell)&dream=\(dream)&content=\(content)&img=\(img)&img0=\(img0)&img1=\(img1)&circleshellid=\(sid)", callback: callback)
+    }
+    
 }
