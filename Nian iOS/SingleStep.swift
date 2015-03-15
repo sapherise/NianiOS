@@ -339,13 +339,12 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         return  DreamCell.cellHeightByData(data)
     }
     
-    func Editstep() {      //😍
-        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 0)
-        self.tableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+    func Editstep() {
+        self.SAReloadData()
     }
     
-    func countUp(){
-        
+    func countUp(coin: String, isfirst: String){
+        self.SAReloadData()
     }
     
     func setupRefresh(){

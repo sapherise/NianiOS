@@ -378,7 +378,9 @@ class ExploreFollowCell: UITableViewCell {
             viewControl.setY(labelContent.bottom()+5)
         }
         viewLine.setY(viewControl.bottom()+10)
-        imageHead.setImage(V.urlHeadImage(data.uid, tag: .Dream), placeHolder: IconColor)
+   //     imageHead.setImage(V.urlHeadImage(data.uid, tag: .Dream), placeHolder: IconColor)
+        imageHead.setHead(data.uid)
+        
         labelName.text = data.user
         labelDream.text = data.title
         labelLastdate.text = data.lastdate

@@ -33,6 +33,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter", object: nil)
+        navShow()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -43,6 +44,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        navHide()
         SALoadLetter()
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
     }

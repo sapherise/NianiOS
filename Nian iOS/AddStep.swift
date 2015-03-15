@@ -27,7 +27,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     @IBOutlet var activityOK: UIActivityIndicatorView!
     @IBOutlet var imageUploaded: UIImageView!
     var delegate: MaskDelegate?
-    var keyboardHeight:CGFloat = 0
     var dataArray = NSMutableArray()
     var actionSheet:UIActionSheet!
     var imagePicker:UIImagePickerController!
@@ -36,6 +35,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var uploadWidth:String = ""
     var uploadHeight:String = ""
     var viewCoin:Popup!
+    var animated: Bool = true
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
@@ -52,7 +52,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.activityOK.hidden = true
         self.imageUploaded.hidden = true
         self.btnOK.enabled = false
-        
         Api.getDreamNewest() { json in
             if json != nil {
                 var arr = json!["items"] as NSArray
@@ -120,13 +119,13 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.frame.origin.y = 64+10
-        })
         if self.textView.text == "进展正文" {
             self.textView.text = ""
             self.textView.textColor = UIColor.blackColor()
         }
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.frame.origin.y = 64 + 10
+        })
     }
     
     func textViewDidChange(textView: UITextView) {
@@ -163,20 +162,13 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.activityOK.hidden = false
         self.activityOK.startAnimating()
         content = SAEncode(SAHtml(content))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var sid = client.getSid()
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//            var sa=SAPost("dream=\(self.dreamID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)&&circleshellid=\(sid)", "http://nian.so/api/addstep_query.php")
-//        })
-        
         Api.postAddStep(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
+                self.textView.resignFirstResponder()
                 var coin = json!["coin"] as String
-                var isfrist = json!["isfirst"] as String
+                var isfirst = json!["isfirst"] as String
                 globalWillNianReload = 1
-                if isfrist == "1" {
+                if isfirst == "1" {
                     globalWillNianReload = 1
                     self.hidden = true
                     self.delegate?.onViewCloseHidden()
@@ -268,13 +260,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             self.uploadUrl = SAReplace(self.uploadUrl, "/step/", "") as String
         })
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png"))
-    }
-    
-    func navHide(yPoint:CGFloat){
-        var VC = self.findRootViewController() as HomeViewController
-        var navigationFrame = VC.navigationController?.navigationBar.frame
-        navigationFrame!.origin.y = yPoint
-        VC.navigationController?.navigationBar.frame = navigationFrame!
     }
     
     func onImageUploadedClick(sender:UIGestureRecognizer) {

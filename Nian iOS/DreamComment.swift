@@ -41,7 +41,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     var inputKeyboard:UITextField!
     var keyboardView:UIView!
     var viewBottom:UIView!
-    var isKeyboardFocus:Bool = false
     var isKeyboardResign:Int = 0 //为了解决评论会收起键盘的BUG创建的开关，当提交过程中变为1，0时才收起键盘
     var keyboardHeight:CGFloat = 0
     var lastContentOffset:CGFloat?
@@ -52,16 +51,16 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
+    override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
         self.viewLoadingHide()
+        keyboardEndObserve()
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.registerForKeyboardNotifications()
-        self.deregisterFromKeyboardNotifications()
+        keyboardStartObserve()
     }
     
     func setupViews()
@@ -338,7 +337,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func commentVC(){
         //这里是回应别人
         self.inputKeyboard.text = "@\(self.ReplyUserName) "
-        delay(0.5, { () -> () in
+        delay(0.3, {
             self.inputKeyboard.becomeFirstResponder()
             return
         })
@@ -393,18 +392,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         return self.dataArray.count
     }
     
-    func registerForKeyboardNotifications()->Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func deregisterFromKeyboardNotifications() -> Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardDidHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
     func keyboardWasShown(notification: NSNotification) {
-        self.isKeyboardFocus = true
         var info: Dictionary = notification.userInfo!
         var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
         self.keyboardHeight = keyboardSize.height
@@ -416,7 +404,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        self.isKeyboardFocus = false
         var heightScroll = globalHeight - 44 - 64
         var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.keyboardView.setY( globalHeight - 44 )

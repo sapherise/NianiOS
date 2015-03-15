@@ -68,7 +68,6 @@ class WelcomeViewController: UIViewController {
                 navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
                 navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
                 navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                
                 navigationViewController.navigationBar.clipsToBounds = true
                 navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                 navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent

@@ -75,6 +75,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navView.backgroundColor = BarColor
         self.navView.hidden = true
         self.navView.clipsToBounds = true
+        self.navView.userInteractionEnabled = true
         self.view.addSubview(self.navView)
         
         // 加载中时
@@ -260,15 +261,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.navHide(20)
+        navShow()
     }
     
-    func navHide(yPoint:CGFloat) {
-        if self.navigationController != nil {
-            var navigationFrame = self.navigationController!.navigationBar.frame
-            navigationFrame.origin.y = yPoint
-            self.navigationController!.navigationBar.frame = navigationFrame
-        }
+    override func viewDidAppear(animated: Bool) {
+        navHide()
     }
     
     func headClick(){

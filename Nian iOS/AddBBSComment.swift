@@ -44,10 +44,6 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         self.TextView.setHeight(globalHeight-84)
         self.TextView.text = self.content
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        delay(0.5, { () -> () in
-            self.TextView.becomeFirstResponder()
-            return
-        })
         self.viewBack()
     }
     
@@ -55,26 +51,20 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         self.TextView!.resignFirstResponder()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        self.TextView.becomeFirstResponder()
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.registerForKeyboardNotifications()
-        self.deregisterFromKeyboardNotifications()
+        keyboardStartObserve()
     }
     
-    
-    func registerForKeyboardNotifications()->Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func deregisterFromKeyboardNotifications() -> Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardDidHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    override func viewWillDisappear(animated: Bool) {
+        keyboardEndObserve()
     }
     
     func keyboardWasShown(notification: NSNotification) {
-        //        self.isKeyboardFocus = true
         var info: Dictionary = notification.userInfo!
         var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
         var keyboardHeight = keyboardSize.height

@@ -319,7 +319,8 @@ class ExploreDynamicStepCell: UITableViewCell {
             viewControl.setY(labelContent.bottom()+5)
         }
         viewLine.setY(viewControl.bottom()+10)
-        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
+      //  imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
+        imageHead.setHead(data.uidlike)
         labelName.text = data.userlike
         labelDate.text = data.lastdate
         labelDream.text = "赞了「\(data.title)」"

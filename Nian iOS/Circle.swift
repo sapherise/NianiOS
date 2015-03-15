@@ -28,7 +28,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var inputKeyboard:UITextField!
     var keyboardView:UIView!
     var viewBottom:UIView!
-    var isKeyboardFocus:Bool = false
     var keyboardHeight:CGFloat = 0
     var imagePicker:UIImagePickerController?
     var isCircle: Bool = true
@@ -43,19 +42,19 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        keyboardEndObserve()
         globalCurrentCircle = 0
         globalCurrentLetter = 0
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        keyboardStartObserve()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
-        self.registerForKeyboardNotifications()
-        self.deregisterFromKeyboardNotifications()
         if isCircle {
             globalCurrentCircle = self.ID
         }else{
@@ -584,7 +583,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func commentVC(){
         //这里是回应别人
         self.inputKeyboard.text = "@\(self.ReplyUserName) "
-        self.inputKeyboard.becomeFirstResponder()
+        delay(0.3, {
+            self.inputKeyboard.becomeFirstResponder()
+            return
+        })
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
@@ -654,18 +656,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return self.dataArray.count
     }
     
-    func registerForKeyboardNotifications()->Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func deregisterFromKeyboardNotifications() -> Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardDidHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
     func keyboardWasShown(notification: NSNotification) {
-        self.isKeyboardFocus = true
         var info: Dictionary = notification.userInfo!
         var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
         self.keyboardHeight = keyboardSize.height
@@ -677,7 +668,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        self.isKeyboardFocus = false
         var heightScroll = globalHeight - 44 - 64
         var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.keyboardView.setY( globalHeight - 44 )

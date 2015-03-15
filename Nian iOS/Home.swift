@@ -25,7 +25,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     let imageArray = ["home","explore","update","letter","bbs"]
     var cancelSheet:UIActionSheet?
     var actionSheetGameOver: UIActionSheet?
-    var pointNavY:CGFloat = 0
     var timer:NSTimer?
     
     override func viewDidLoad(){
@@ -99,6 +98,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        navHide()
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive:", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
@@ -109,6 +109,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.loadCircle()
             self.loadLetter()
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        navShow()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -316,22 +323,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if index == idExplore {       // 发现
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
-            self.navigationItem.rightBarButtonItem = nil
         }else if index == idBBS {     // 梦境
             self.dotCircle!.hidden = true
             self.dotCircle!.text = "0"
-            var rightButton = UIBarButtonItem(title: "发现梦境 ", style: .Plain, target: self, action: "addCircleButton")
-            rightButton.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFontOfSize(14)], forState: UIControlState.Normal)
-            self.navigationItem.rightBarButtonItem = rightButton
         }else if index == idDream {     // 梦想
-            self.navigationItem.rightBarButtonItem = nil
         }else if index == idMe {     // 消息
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
-            self.navigationItem.rightBarButtonItem = nil
         }else if index == idUpdate {      // 更新
             self.addStep()
-            self.navigationItem.rightBarButtonItem = nil
         }
         if index != idExplore {
             numExplore = 0
@@ -348,8 +348,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
             self.navigationController!.pushViewController(adddreamVC, animated: true)
         }else{
-            self.pointNavY = self.navigationController!.navigationBar.frame.origin.y
-            self.navHide(-44)
             self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
             self.addView.translucentAlpha = 1
             self.addView.translucentStyle = UIBarStyle.Default
@@ -374,7 +372,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
             self.viewClose.userInteractionEnabled = true
             self.view.window!.addSubview(self.viewClose)
-            
             self.view.addSubview(self.addView)
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.addView.alpha = 1
@@ -390,7 +387,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func onViewCloseClick(){
-        self.navHide(self.pointNavY)
         self.viewClose.removeFromSuperview()
         self.addStepView.textView.resignFirstResponder()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -429,17 +425,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }else{
             self.onViewCloseClick()
         }
-    }
-    
-    func navHide(yPoint:CGFloat){
-        var navigationFrame = self.navigationController!.navigationBar.frame
-        navigationFrame.origin.y = yPoint
-        self.navigationController!.navigationBar.frame = navigationFrame
-    }
-    
-    func addCircleButton(){
-        var circleexploreVC = CircleExploreController()
-        self.navigationController?.pushViewController(circleexploreVC, animated: true)
     }
     
     func enter() {

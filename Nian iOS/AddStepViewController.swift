@@ -10,7 +10,7 @@ import UIKit
 
 protocol AddstepDelegate {   //😍
     func Editstep()
-    func countUp()
+    func countUp(coin: String, isfirst: String)
     var editStepRow:Int { get set }
     var editStepData:NSDictionary? { get set }
 }
@@ -140,13 +140,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
         self.viewBack()
-        
-        delay(1, { () -> () in
-            self.TextView.becomeFirstResponder()
-            return
-        })
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
@@ -165,21 +159,18 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     func addStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
         var content = self.TextView.text
-        var s = SAEncode(SAHtml(content))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var sid = client.getSid()
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-        var sa=SAPost("dream=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(s)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)&&circleshellid=\(sid)", "http://nian.so/api/addstep_query.php")
-            if(sa == "1"){
+        content = SAEncode(SAHtml(content))
+        Api.postAddStep(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
+            if json != nil {
                 globalWillNianReload = 1
+                var coin = json!["coin"] as String
+                var isfirst = json!["isfirst"] as String
                 dispatch_async(dispatch_get_main_queue(), {
                     self.navigationController?.popViewControllerAnimated(true)
-                    self.delegate?.countUp()
+                    self.delegate?.countUp(coin, isfirst: isfirst)
                 })
+            }
         }
-        })
     }
     
     func editStep(){
@@ -210,18 +201,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         })
     }
     
-    func registerForKeyboardNotifications()->Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func deregisterFromKeyboardNotifications() -> Void {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardDidHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
     func keyboardWasShown(notification: NSNotification) {
-//        self.isKeyboardFocus = true
         var info: Dictionary = notification.userInfo!
         var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
         self.keyboardHeight = keyboardSize.height
@@ -237,9 +217,27 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         self.TextView.setHeight(globalHeight-50-64-20)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        keyboardEndObserve()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.TextView.becomeFirstResponder()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.registerForKeyboardNotifications()
-        self.deregisterFromKeyboardNotifications()
+        keyboardStartObserve()
+    }
+}
+
+extension UIViewController {
+    func keyboardStartObserve() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    func keyboardEndObserve() {
+        NSNotificationCenter.defaultCenter().removeObserver(UIKeyboardWillShowNotification)
+        NSNotificationCenter.defaultCenter().removeObserver(UIKeyboardWillHideNotification)
     }
 }

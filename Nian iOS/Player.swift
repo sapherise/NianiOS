@@ -764,7 +764,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
-    func countUp() {
+    func countUp(coin: String, isfirst: String){
         self.SAReloadData()
     }
     

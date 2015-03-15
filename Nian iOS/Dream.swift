@@ -25,6 +25,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
+    var viewCoin: Popup!
     
     var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
     
@@ -472,12 +473,29 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController?.pushViewController(AddstepVC, animated: true)
     }
     
-    func countUp() {      //😍
+    func countUp(coin: String, isfirst: String){
         self.SALoadData()
         var stepNum = self.topCell.numMiddleNum.text!.toInt()!
         self.topCell.numMiddleNum.text = "\(stepNum + 1)"
+        if isfirst == "1" {
+            self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
+            self.viewCoin.textTitle = "获得 \(coin) 念币"
+            self.viewCoin.textContent = "你获得了念币奖励！"
+            self.viewCoin.heightImage = 130
+            self.viewCoin.textBtnMain = "好"
+            self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
+            self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
+            self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
+            var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
+            imageCoin.image = UIImage(named: "coin")
+            self.viewCoin.viewHolder.addSubview(imageCoin)
+            self.view.addSubview(self.viewCoin)
+        }
     }
     
+    func onCoinClick() {
+        self.viewCoin.removeFromSuperview()
+    }
     
     func Editstep() {      //😍
         self.dataArray[self.editStepRow] = self.editStepData!

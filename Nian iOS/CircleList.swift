@@ -17,6 +17,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        navHide()
         self.SALoadData()
         self.navigationController?.interactivePopGestureRecognizer.enabled = false
     }
@@ -39,6 +40,11 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.SALoadData()
     }
     
+    func addCircleButton(){
+        var circleexploreVC = CircleExploreController()
+        self.navigationController?.pushViewController(circleexploreVC, animated: true)
+    }
+    
     func setupViews() {
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
@@ -47,7 +53,16 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         labelNav.textColor = UIColor.whiteColor()
         labelNav.font = UIFont.systemFontOfSize(17)
         labelNav.textAlignment = NSTextAlignment.Center
+        var rightBarButton = UILabel(frame: CGRectMake(0, 20, 80, 44))
+        rightBarButton.text = "发现梦境"
+        rightBarButton.setX(globalWidth-80)
+        rightBarButton.userInteractionEnabled = true
+        rightBarButton.textColor = UIColor.whiteColor()
+        rightBarButton.font = UIFont.systemFontOfSize(14)
+        rightBarButton.textAlignment = NSTextAlignment.Center
+        rightBarButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addCircleButton"))
         navView.addSubview(labelNav)
+        navView.addSubview(rightBarButton)
         self.view.addSubview(navView)
         
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))

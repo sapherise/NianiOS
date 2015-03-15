@@ -251,6 +251,22 @@ extension UIViewController: UIGestureRecognizerDelegate {
         self.navigationController?.interactivePopGestureRecognizer.enabled = true
         self.navigationController?.interactivePopGestureRecognizer.delegate = self
     }
+    
+    func navMove(yPoint:CGFloat){
+        var navigationFrame = self.navigationController?.navigationBar.frame
+        if navigationFrame != nil {
+            navigationFrame!.origin.y = yPoint
+            self.navigationController?.navigationBar.frame = navigationFrame!
+        }
+    }
+    
+    func navShow() {
+        navMove(20)
+    }
+    
+    func navHide() {
+        navMove(-44)
+    }
 }
 
 func SAstrlen(stremp:NSString)->Int{
@@ -421,21 +437,32 @@ extension UIImageView{
     
     func setAnimationWanderY(startY: CGFloat, endY: CGFloat, animated: Bool = true) {
         if animated {
-        UIView.animateWithDuration(2, animations: { () -> Void in
-            self.setY(endY)
-            }) { (Bool) -> Void in
+//            UIView.animateWithDuration(2, animations: { () -> Void in
+//                self.setY(endY)
+//                }) { (Bool) -> Void in
+//                    UIView.animateWithDuration(2, animations: { () -> Void in
+//                        self.setY(startY)
+//                        }, completion: { (Bool) -> Void in
+//                            self.setAnimationWanderY(startY, endY: endY)
+//                    })
+//            }
+            UIView.animateWithDuration(2, animations: { () -> Void in
+                self.setY(endY)
+            }, completion: { (Bool) -> Void in
                 UIView.animateWithDuration(2, animations: { () -> Void in
                     self.setY(startY)
-                    }, completion: { (Bool) -> Void in
-                        self.setAnimationWanderY(startY, endY: endY)
+                }, completion: { (Bool) -> Void in
+                    if globaliOS >= 8.0 {
+                        self.setAnimationWanderY(startY, endY: endY, animated: animated)
+                    }
                 })
-        }
+            })
         }else{
             self.setY(startY)
             delay(1, { () -> () in
                 self.setY(endY)
                 delay(1, { () -> () in
-                    self.setAnimationWanderY(startY, endY: endY, animated: false)
+                    self.setAnimationWanderY(startY, endY: endY, animated: animated)
                 })
             })
         }

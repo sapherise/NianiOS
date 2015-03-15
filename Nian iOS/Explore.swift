@@ -71,12 +71,12 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.navigationController?.navigationBar.setY(-44)
+        navHide()
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBar.setY(20)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
+        navShow()
     }
     
     func exploreTop(noti: NSNotification){
