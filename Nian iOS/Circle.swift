@@ -257,20 +257,20 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var commentReplyRow = self.dataArray.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
-            UIView.animateWithDuration(0.05, animations: { () -> Void in
-                self.tableview.insertRowsAtIndexPaths([NSIndexPath(forRow: self.dataArray.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
-                }, completion: { (Bool) -> Void in
-                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0 {
-                        UIView.animateWithDuration(0.3, animations: { () -> Void in
-                            self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
-                        }, completion: { (Bool) -> Void in
-                            self.addReply(replyContent, type: 1)
-                        })
-                    }else{
-                        self.addReply(replyContent, type: 1)
-                    }
+            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0 {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.tableview.contentOffset.y = offset + replyContent.stringHeightWith(15,width:208) + 60
+                })
+            }
+            CATransaction.begin()
+            CATransaction.setCompletionBlock({ () -> Void in
+                self.addReply(replyContent, type: 1)
             })
+            self.tableview.beginUpdates()
+            self.tableview.insertRowsAtIndexPaths([NSIndexPath(forRow: self.dataArray.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Right)
+            self.tableview.endUpdates()
+            CATransaction.commit()
         })
     }
     

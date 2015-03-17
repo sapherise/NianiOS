@@ -84,6 +84,7 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
                 password = ("n*A\(SAEncode(SAHtml(password)))").md5
                 var sa = SAPost("name=\(self.name)&&pw=\(password)&&em=\(email)", "http://nian.so/api/sign_check.php")
                 dispatch_async(dispatch_get_main_queue(), {
+                    SAPush("Mua!", NSDate().dateByAddingTimeInterval(Double(60*60*24)))
                     if sa != "" && sa != "err" {
                         if sa == "NO" {
                             self.SAerr("昵称和邮箱都要填...")

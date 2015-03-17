@@ -616,3 +616,11 @@ extension UIViewController {
 func shake() {
     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 }
+
+func SAPush(content: String, pushDate: NSDate) {
+    var notification = UILocalNotification()
+    notification.fireDate = pushDate
+    notification.timeZone = NSTimeZone.defaultTimeZone()
+    notification.alertBody = content
+    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+}

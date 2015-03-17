@@ -19,28 +19,14 @@ class NianCell: UICollectionViewCell{
     
     @IBOutlet var imageCover: UIImageView!
     @IBOutlet var labelTitle: UILabel!
-    var data :NSDictionary?
+    var data :NSDictionary!
     var total: Int = 0
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if data != nil {
-            var title:String = data!.objectForKey("title") as String
-            var percent:String = data!.objectForKey("percent") as String
-            var dreamPrivate:String = data!.objectForKey("private") as String
-            var step:String = data!.objectForKey("step") as String
-            self.labelTitle.text = title
-            
-            self.imageCover.setHolder()
-            var img:String = data!.objectForKey("img") as String
-            if img != "" {
-                img = "http://img.nian.so/dream/\(img)!dream"
-                self.imageCover.setImage(img, placeHolder: IconColor, bool: false)
-            }
-            self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
-            if inner.counter == self.total {
-                globalhasLaunched = 1
-            }
+        self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
+        if inner.counter == self.total {
+            globalhasLaunched = 1
         }
     }
     

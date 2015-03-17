@@ -114,12 +114,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserName.text = "\(safename)"
         self.UserHead.setHead(safeuid)
         if (cacheCoverUrl != nil) && (cacheCoverUrl! != "http://img.nian.so/cover/!cover") {
-            self.imageBG.setImage(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
+            self.imageBG.setCover(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
         }else{
             self.imageBG.image = UIImage(named: "bg")
             self.imageBG.contentMode = UIViewContentMode.ScaleAspectFill
         }
-        
         
         self.setupUserTop()
         self.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
@@ -145,7 +144,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.viewHolder!.setY(height)
                     self.viewMenu.setY(height + 320)
                     self.imageBG.frame = CGRectMake(height/10, height, globalWidth-height/5, 320)
-                    self.imageBG.backgroundColor = UIColor.redColor()
+             //       self.imageBG.backgroundColor = UIColor.redColor()
                 }
                 scrollHidden(self.UserHead, scrollY: 70)
                 scrollHidden(self.UserName, scrollY: 138)
@@ -209,8 +208,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.navView.image = UIImage(named: "bg")
                     self.navView.contentMode = UIViewContentMode.ScaleAspectFill
                 }else{
-                    self.imageBG.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
-                    self.navView.setImage(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                 }
             }
         }
@@ -281,8 +280,17 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var cell:UICollectionViewCell
         var index = indexPath.row
         var c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as NianCell
-        c.data = self.dataArray[index] as? NSDictionary
+        var data = self.dataArray[index] as NSDictionary
+        c.data = data
         c.total = self.dataArray.count
+        
+        c.labelTitle.text = data.stringAttributeForKey("title")
+        c.imageCover.setHolder()
+        var img = data.stringAttributeForKey("img")
+        if img != "" {
+            img = "http://img.nian.so/dream/\(img)!dream"
+            c.imageCover.setCover(img, placeHolder: IconColor, bool: false)
+        }
         cell = c
         return cell
     }
@@ -319,12 +327,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
                 }
+                self.collectionView.reloadData()
                 var height = ceil(CGFloat(self.dataArray.count) / 3) * 125
                 self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
                 var heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
                 self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
                 self.collectionView.contentSize.height = height
-                self.collectionView.reloadData()
                 if self.dataArray.count == 0 {
                     self.viewHeader.hidden = false
                 }else{

@@ -40,40 +40,43 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func gameoverCheck() {
         Api.postGameover() { json in
             if json != nil {
-                var isgameover = json!["isgameover"] as String
-                if isgameover == "0" {
+                var isgameover = json!["isgameover"] as? String
+                var willLogout = json!["willlogout"] as? String
+                // 账户验证不通过
+                if willLogout == "1" {
+                    delay(1, { () -> () in
+                        self.SAlogout()
+                    })
                 }else{
-                    var data = json!["dream"] as NSDictionary
-                    self.gameoverId = data.stringAttributeForKey("id")
-                    var gameoverDays = data.stringAttributeForKey("days")
-                    
-                    self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
-                    self.GameOverView.textTitle = "游戏结束"
-                    self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
-                    self.GameOverView.heightImage = 130
-                    self.GameOverView.textBtnMain = "继续日更模式"
-                    self.GameOverView.textBtnSub = " 不开心！"
-                    self.GameOverView.btnMain.tag = 1
-                    self.GameOverView.btnSub.tag = 2
-                    self.GameOverView.btnMain.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
-                    self.GameOverView.btnSub.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
-                    var gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
-                    gameoverHead.image = UIImage(named: "pet_ghost")
-                    var gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
-                    gameoverSpark.image = UIImage(named: "pet_ghost_spark")
-                    self.GameOverView.viewHolder.addSubview(gameoverHead)
-                    self.GameOverView.viewHolder.addSubview(gameoverSpark)
-                    self.view.addSubview(self.GameOverView)
-                    gameoverHead.setAnimationWanderX(70, leftEndX: 125, rightStartX: 125, rightEndX: 70)
-                    gameoverHead.setAnimationWanderY(60, endY: 64)
-                    gameoverSpark.setAnimationWanderX(70-25, leftEndX: 125-25, rightStartX: 125+60, rightEndX: 70+60)
-                    gameoverSpark.setAnimationWanderY(35, endY: 38, animated: false)
+                    // 如果被封号
+                    if isgameover != "0" {
+                        var data = json!["dream"] as NSDictionary
+                        self.gameoverId = data.stringAttributeForKey("id")
+                        var gameoverDays = data.stringAttributeForKey("days")
+                        
+                        self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
+                        self.GameOverView.textTitle = "游戏结束"
+                        self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
+                        self.GameOverView.heightImage = 130
+                        self.GameOverView.textBtnMain = "继续日更模式"
+                        self.GameOverView.textBtnSub = " 不开心！"
+                        self.GameOverView.btnMain.tag = 1
+                        self.GameOverView.btnSub.tag = 2
+                        self.GameOverView.btnMain.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
+                        self.GameOverView.btnSub.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
+                        var gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
+                        gameoverHead.image = UIImage(named: "pet_ghost")
+                        var gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
+                        gameoverSpark.image = UIImage(named: "pet_ghost_spark")
+                        self.GameOverView.viewHolder.addSubview(gameoverHead)
+                        self.GameOverView.viewHolder.addSubview(gameoverSpark)
+                        self.view.addSubview(self.GameOverView)
+                        gameoverHead.setAnimationWanderX(70, leftEndX: 125, rightStartX: 125, rightEndX: 70)
+                        gameoverHead.setAnimationWanderY(60, endY: 64)
+                        gameoverSpark.setAnimationWanderX(70-25, leftEndX: 125-25, rightStartX: 125+60, rightEndX: 70+60)
+                        gameoverSpark.setAnimationWanderY(35, endY: 38, animated: false)
+                    }
                 }
-            }else{
-                // 密码不对，退出了
-                delay(1, { () -> () in
-                    self.SAlogout()
-                })
             }
         }
     }
@@ -110,9 +113,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.loadLetter()
         }
     }
-    
-    override func viewWillAppear(animated: Bool) {
-    }
+
+//    不可以添加这个函数，会导致 NianViewController 失效
+//    override func viewWillAppear(animated: Bool) {
+//    }
     
     override func viewWillDisappear(animated: Bool) {
         navShow()
