@@ -339,4 +339,233 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/addstep_query2.php", content: "uid=\(s_uid)&shell=\(s_shell)&dream=\(dream)&content=\(content)&img=\(img)&img0=\(img0)&img1=\(img1)&circleshellid=\(sid)", callback: callback)
     }
     
+    // ===
+    
+    static func postAddBBSComment(id: String, content: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/addbbscomment_query.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
+    }
+    
+    
+    static func postAddBBS(title: String, content: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/add_bbs.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)", callback: callback)
+    }
+    
+    
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/add_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)", callback: callback)
+    }
+    
+    
+    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/editdream.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&id=\(id)&&hashtag=\(tagType)", callback: callback)
+    }
+    
+    
+    static func postEditStep(sid: String, content: String, uploadUrl: String, uploadWidth: Int, uploadHeight: Int, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/editstep_query.php", content: "sid=\(sid)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&img=\(uploadUrl)&&img0=\(uploadWidth)&&img1=\(uploadHeight)", callback: callback)
+    }
+    
+    
+    static func postDeleteBBSComment(cid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/delete_bbscomment.php", content: "uid=\(s_uid)&shell=\(s_shell)&cid=\(cid)", callback: callback)
+    }
+    
+    
+    static func getCircleTag(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/circle_tag.php?uid=\(s_shell)", callback: callback)
+    }
+    
+    
+    static func getDreamForAddStep(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/addstep_dream.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    
+    static func postDeleteStep(sid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/delete_step.php", content: "uid=\(s_uid)&shell=\(s_shell)&sid=\(sid)", callback: callback)
+    }
+    
+    
+    static func postDeleteDream(dream: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/delete_dream.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(dream)", callback: callback)
+    }
+    
+    
+    static func postCompleteDream(dream: String, percent: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/dream_complete_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&percent=\(percent)", callback: callback)
+    }
+    
+    
+    static func postFollowDream(dream: String, follow: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/dream_fo_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
+    }
+    
+    
+    static func postLikeDream(dream: String, like: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/dream_cool_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&cool=\(like)", callback: callback)
+    }
+    
+    
+    static func postDreamStepComment(dream: String, step: String, content: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/comment_query.php", content: "id=\(dream)&&step=\(step)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
+    }
+    
+    
+    static func getDreamStepComment(sid: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/comment_step.php?page=\(page)&id=\(sid)", callback: callback)
+    }
+    
+    
+    static func postDeleteComment(cid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/delete_comment.php", content: "uid=\(s_uid)&shell=\(s_shell)&cid=\(cid)", callback: callback)
+    }
+    
+    
+    static func postFollow(uid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=1", callback: callback)
+    }
+    
+    
+    static func postUnfollow(uid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&unfo=1", callback: callback)
+    }
+    
+    
+    static func getBBS(page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/bbs.php?age=\(page)", callback: callback)
+    }
+    
+    
+    static func postDot(callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/dot.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
+    
+    static func getLike(dream: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/like2.php?page=\(page)&id=\(dream)&myuid=\(s_uid)", callback: callback)
+    }
+    
+    
+    static func getFollowList(uid: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/user_fo_list2.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
+    }
+    
+    
+    static func getFollowedList(uid: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/user_foed_list2.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
+    }
+    
+    
+    static func getDreamLike(uid: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/like_dream.php?page=\(page)&id=\(uid)&myuid=\(s_uid)", callback: callback)
+    }
+    
+    
+    static func postLogin(email: String, password: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/login.php", content: "em=\(email)&&pw=\(password)", callback: callback)
+    }
+    
+    
+    static func postUsername(uid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
+    }
+    
+    
+    static func postDeviceToken(devicetoken: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=\(devicetoken)&&uid=\(s_uid)&&shell=\(s_shell)&&type=1", callback: callback)
+    }
+    
+    
+    static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/me_next.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&&tag=\(tag)", callback: callback)
+    }
+    
+    
+    static func postBan(uid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/ban.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
+    
+    static func postNoban(uid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/ban.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&noban=1", callback: callback)
+    }
+    
+    
+    static func getUserDream(uid: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/user_dream.php?page=\(page)&uid=\(uid)", callback: callback)
+    }
+    
+    
+    static func getUserActive(uid: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/user_active.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
+    }
+    
+    
+    static func postNewname(name: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/user_update.php", content: "newname=\(name)&&uid=\(s_uid)&&shell=\(s_shell)&&type=2", callback: callback)
+    }
+    
+    
+    static func postNewEmail(email: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/user_update.php", content: "newemail=\(email)&&uid=\(s_uid)&&shell=\(s_shell)&&type=3", callback: callback)
+    }
+    
+    
+    static func postUpyunCache(callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/upyun_cache.php", content: "uid=\(s_uid)", callback: callback)
+    }
+    
+    
+    static func postChangeCover(uploadUrl: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/change_cover.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&cover=\(uploadUrl)", callback: callback)
+    }
+    
+    
+    static func postCheckName(name: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/sign_checkname.php", content: "name=\(name)", callback: callback)
+    }
+    
+    
+    static func postSignup(name: String, password: String, email: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/sign_check.php", content: "name=\(name)&&pw=\(password)&&em=\(email)", callback: callback)
+    }
+    
 }
