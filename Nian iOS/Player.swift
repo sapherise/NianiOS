@@ -194,7 +194,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableViewDream.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableViewDream.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableViewDream.registerNib(nib3, forCellReuseIdentifier: identifier3)
-        self.tableViewStep = UITableView(frame:CGRectMake(0, -64, globalWidth,globalHeight + 64))
+        self.tableViewStep = UITableView(frame:CGRectMake(0, 0, globalWidth,globalHeight))
         self.tableViewStep.delegate = self
         self.tableViewStep.dataSource = self
         self.tableViewStep.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -436,6 +436,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     if ( data["total"] as Int ) < 30 {
                         self.tableViewStep.setFooterHidden(true)
                     }
+                    self.tableViewStep.setContentOffset(CGPointZero, animated: false)
                 }
             })
     }
