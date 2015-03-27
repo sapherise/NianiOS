@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayerCellTop: UITableViewCell, UIGestureRecognizerDelegate{
+class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
     
     @IBOutlet var UserHead:UIImageView!
     @IBOutlet var UserName:UILabel!
@@ -28,7 +28,6 @@ class PlayerCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     override func awakeFromNib() {
         super.awakeFromNib()
         self.BGImage.clipsToBounds = true
-        self.selectionStyle = .None
         self.viewHolder.frame.size = CGSizeMake(globalWidth, globalHeight + 44)
         self.viewBanner.setY(320)
         self.viewBanner.setWidth(globalWidth)

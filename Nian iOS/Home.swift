@@ -474,9 +474,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         var circle = data.stringAttributeForKey("to")
                         var title = data.stringAttributeForKey("title")
                         var totype = data.stringAttributeForKey("totype")
-                        content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                        content = SADecode(SADecode(content))
-                        title = title.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                            content = SADecode(SADecode(content))
                         title = SADecode(SADecode(title))
                         var isread = 0
                         // 如果是群聊
@@ -506,16 +504,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     Api.getSingleStepSync(cid) { json in
                                         if json != nil {
                                             if let item = json!["items"] as? NSArray {
-                                                var dataStep = item[0] as NSDictionary
-                                                var sid = dataStep.stringAttributeForKey("sid")
-                                                var uid = dataStep.stringAttributeForKey("uid")
-                                                var dream = dataStep.stringAttributeForKey("dream")
-                                                var content = dataStep.stringAttributeForKey("content")
-                                                var img = dataStep.stringAttributeForKey("img")
-                                                var img0 = dataStep.stringAttributeForKey("img0")
-                                                var img1 = dataStep.stringAttributeForKey("img1")
-                                                SQLStepContent(sid, uid, dream, content, img, img0, img1) {
-                                                    NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                                                if item.count > 0 {
+                                                    var dataStep = item[0] as NSDictionary
+                                                    var sid = dataStep.stringAttributeForKey("sid")
+                                                    var uid = dataStep.stringAttributeForKey("uid")
+                                                    var dream = dataStep.stringAttributeForKey("dream")
+                                                    var content = dataStep.stringAttributeForKey("content")
+                                                    var img = dataStep.stringAttributeForKey("img")
+                                                    var img0 = dataStep.stringAttributeForKey("img0")
+                                                    var img1 = dataStep.stringAttributeForKey("img1")
+                                                    SQLStepContent(sid, uid, dream, content, img, img0, img1) {
+                                                        NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                                                    }
                                                 }
                                             }
                                         }
@@ -598,15 +598,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 Api.getSingleStepSync(cid) { json in
                                     if json != nil {
                                         if let item = json!["items"] as? NSArray {
-                                            var data = item[0] as NSDictionary
-                                            var sid = data.stringAttributeForKey("sid")
-                                            var uid = data.stringAttributeForKey("uid")
-                                            var dream = data.stringAttributeForKey("dream")
-                                            var content = data.stringAttributeForKey("content")
-                                            var img = data.stringAttributeForKey("img")
-                                            var img0 = data.stringAttributeForKey("img0")
-                                            var img1 = data.stringAttributeForKey("img1")
-                                            SQLStepContent(sid, uid, dream, content, img, img0, img1) {
+                                            if item.count > 0 {
+                                                var data = item[0] as NSDictionary
+                                                var sid = data.stringAttributeForKey("sid")
+                                                var uid = data.stringAttributeForKey("uid")
+                                                var dream = data.stringAttributeForKey("dream")
+                                                var content = data.stringAttributeForKey("content")
+                                                var img = data.stringAttributeForKey("img")
+                                                var img0 = data.stringAttributeForKey("img0")
+                                                var img1 = data.stringAttributeForKey("img1")
+                                                SQLStepContent(sid, uid, dream, content, img, img0, img1) {
+                                                }
                                             }
                                         }
                                     }

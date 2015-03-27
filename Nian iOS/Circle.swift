@@ -75,7 +75,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var type = data.stringAttributeForKey("msgtype")
                 var time = (data.stringAttributeForKey("time") as NSString).doubleValue
                 var cid = data.stringAttributeForKey("cid")
-                content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
                 content = SADecode(SADecode(content))
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as String
@@ -108,7 +107,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var title = data.stringAttributeForKey("title")
             var type = data.stringAttributeForKey("msgtype")
             var time = (data.stringAttributeForKey("time") as NSString).doubleValue
-            content = content.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
             content = SADecode(SADecode(content))
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
@@ -418,7 +416,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
-                        self.SAloadData(clear: false)
+                    self.SAloadData(clear: false)
                 }
             }
         }
