@@ -42,6 +42,16 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
         self.layer.masksToBounds = true
     }
     
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        var viewHit = super.hitTest(point, withEvent: event)
+        if let v = NSStringFromClass(viewHit?.classForCoder) {
+            if v == "UIView" {
+                return nil
+            }
+        }
+        return viewHit
+    }
+    
     override func layoutSubviews(){
         super.layoutSubviews()
     }

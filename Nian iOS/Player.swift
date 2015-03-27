@@ -8,12 +8,13 @@
 
 import UIKit
 
+
 class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, AddstepDelegate{
     
     let identifier = "PlayerCell"
     let identifier3 = "step"
-    var tableViewDream:UITableView!
-    var tableViewStep:UITableView!
+    var tableViewDream: UITableView!
+    var tableViewStep: UITableView!
     var dataArray = NSMutableArray()
     var dataArrayStep = NSMutableArray()
     var page :Int = 0
@@ -69,7 +70,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        SALoadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -194,11 +195,13 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableViewDream.dataSource = self
         self.tableViewDream.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableViewDream.registerNib(nib3, forCellReuseIdentifier: identifier3)
+        self.tableViewDream.showsVerticalScrollIndicator = false
         self.tableViewStep = UITableView(frame:CGRectMake(0, 0, globalWidth,globalHeight))
         self.tableViewStep.delegate = self
         self.tableViewStep.dataSource = self
         self.tableViewStep.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableViewStep.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableViewStep.showsVerticalScrollIndicator = false
         self.tableViewStep.hidden = true
         self.view.addSubview(self.tableViewStep)
         self.view.addSubview(self.tableViewDream)
@@ -272,37 +275,19 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func scrollLayout(height:CGFloat){
         
-        println(height)
         if height > 0 {
-            // 这里要求整个跟着向上滚动
-            // 同时图片要带着阻尼滚动
             self.topCell.setY(-height)
             self.topCell.BGImage.setY(height/2)
         }else{
             self.topCell.setY(0)
             self.topCell.BGImage.frame = CGRectMake(height/10, height/10, globalWidth-height/5, 320-height/5)
         }
-//        if height > 0 {
-//            self.topCell.setY(-height)
-//            self.tableViewStep.setY(364 + 30 - height)
-//            self.tableViewDream.setY(364 + 14 - height)
-//        }
-//        var newHeight = -height - 64
-//        println(newHeight)
-//        if newHeight > 0 {
-//            self.topCell.BGImage.frame = CGRectMake(0, -newHeight, globalWidth, 320 + newHeight)
-//        }else{
-//            self.topCell.viewHolder.setY(newHeight)
-//            self.topCell.BGImage.frame = CGRectMake(newHeight/10, newHeight, globalWidth-newHeight/5, 320)
-//            self.topCell.viewBlack.setY(newHeight)
-//        }
-//        
-//        scrollHidden(self.topCell.UserHead, height: newHeight, scrollY: 70)
-//        scrollHidden(self.topCell.UserName, height: newHeight, scrollY: 138)
-//        scrollHidden(self.topCell.UserFo, height: newHeight, scrollY: 161)
-//        scrollHidden(self.topCell.UserFoed, height: newHeight, scrollY: 161)
-//        scrollHidden(self.topCell.btnMain, height: newHeight, scrollY: 214)
-//        scrollHidden(self.topCell.btnLetter, height: newHeight, scrollY: 214)
+        scrollHidden(self.topCell.UserHead, height: height, scrollY: 70)
+        scrollHidden(self.topCell.UserName, height: height, scrollY: 138)
+        scrollHidden(self.topCell.UserFo, height: height, scrollY: 161)
+        scrollHidden(self.topCell.UserFoed, height: height, scrollY: 161)
+        scrollHidden(self.topCell.btnMain, height: height, scrollY: 214)
+        scrollHidden(self.topCell.btnLetter, height: height, scrollY: 214)
         if height >= 320 - 64 {
             self.navView.hidden = false
             self.view.bringSubviewToFront(self.navView)
@@ -355,15 +340,21 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.guestMoreSheet!.showInView(self.view)
     }
     
-    func loadData() {
+    func SALoadData(isClear: Bool = true) {
+        if isClear {
+            self.page = 0
+        }
         Api.getUserDream(Id, page: page) { json in
             if json != nil {
                 var arr = json!["items"] as NSArray
+                if isClear {
+                    self.dataArray.removeAllObjects()
+                }
                 for data: AnyObject in arr {
                     self.dataArray.addObject(data)
                 }
                 self.tableViewDream.reloadData()
-                self.tableViewDream.footerEndRefreshing()
+                self.tableViewStep.footerEndRefreshing()
                 self.page++
                 if let total = json!["total"] as? Int {
                     if total < 30 {
@@ -374,74 +365,30 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    func loadDataStep() {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        
-        var url = "http://nian.so/api/user_active.php?page=\(page)&uid=\(Id)&myuid=\(safeuid)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                var arr = data["items"] as NSArray
-                for data : AnyObject  in arr {
+    func SALoadDataStep(isClear: Bool = true) {
+        if isClear {
+            self.tableViewStep.setFooterHidden(false)
+            self.page = 0
+        }
+        Api.getUserActive(Id, page: self.page) { json in
+            if json != nil {
+                var arr = json!["items"] as NSArray
+                if isClear {
+                    self.dataArrayStep.removeAllObjects()
+                }
+                for data: AnyObject in arr {
                     self.dataArrayStep.addObject(data)
                 }
                 self.tableViewStep.reloadData()
                 self.tableViewStep.footerEndRefreshing()
                 self.page++
-                if ( data["total"] as Int ) < 30 {
-                    self.tableViewStep.setFooterHidden(true)
-                }
-            }
-        })
-    }
-    
-    
-    func SAReloadData(){
-        Api.getUserDream(Id, page: 0) { json in
-            if json != nil {
-                var arr = json!["items"] as NSArray
-                self.dataArray.removeAllObjects()
-                for data: AnyObject in arr {
-                    self.dataArray.addObject(data)
-                }
-                self.tableViewDream.reloadData()
-                self.tableViewDream.headerEndRefreshing()
-                self.page++
                 if let total = json!["total"] as? Int {
                     if total < 30 {
-                        self.tableViewDream.setFooterHidden(true)
+                        self.tableViewStep.setFooterHidden(true)
                     }
                 }
             }
         }
-    }
-    
-    func SAReloadDataStep(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        self.tableViewStep.setFooterHidden(false)
-            var url = "http://nian.so/api/user_active.php?page=0&uid=\(Id)&myuid=\(safeuid)"
-            SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-                if data as NSObject != NSNull() {
-                    var arr = data["items"] as NSArray
-                    self.dataArrayStep.removeAllObjects()
-                    for data : AnyObject  in arr{
-                        self.dataArrayStep.addObject(data)
-                    }
-                    self.tableViewStep.reloadData()
-                    self.tableViewStep.headerEndRefreshing()
-                    self.page = 1
-                    if ( data["total"] as Int ) < 30 {
-                        self.tableViewStep.setFooterHidden(true)
-                    }
-                }
-            })
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -452,6 +399,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var cell:UITableViewCell
         if indexPath.section == 0 {
             var c = UITableViewCell()
+            c.hidden = true
             c.selectionStyle = UITableViewCellSelectionStyle.None
             return c
         }else{
@@ -582,10 +530,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func setupRefresh(){
         self.tableViewDream.addFooterWithCallback({
-            self.loadData()
+            self.SALoadData(isClear: false)
         })
         self.tableViewStep.addFooterWithCallback({
-            self.loadDataStep()
+            self.SALoadDataStep(isClear: false)
         })
     }
     
@@ -716,7 +664,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuLeft.x()+15)
             })
-            self.SAReloadData()
+            self.SALoadData()
         }else if tag == 200 {
             self.tableViewStep.contentOffset.y = y1
             self.tableViewDream.hidden = true
@@ -726,7 +674,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuRight.x()+15)
             })
-            self.SAReloadDataStep()
+            self.SALoadDataStep()
         }
     }
     
@@ -793,7 +741,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func countUp(coin: String, isfirst: String){
-        self.SAReloadData()
+        self.SALoadData()
     }
     
     func Editstep() {
@@ -801,6 +749,5 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
         self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
-    
 }
 
