@@ -39,6 +39,7 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
         self.btnLetter.setX(globalWidth/2 + 5)
         self.UserFo.setX(globalWidth/2 - 53)
         self.UserFoed.setX(globalWidth/2 + 1)
+        self.layer.masksToBounds = true
     }
     
     override func layoutSubviews(){

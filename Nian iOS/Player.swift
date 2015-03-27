@@ -183,6 +183,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.navView.backgroundColor = BarColor
         self.navView.hidden = true
         self.navView.clipsToBounds = true
+        self.view.addSubview(self.navView)
         self.topCell = (NSBundle.mainBundle().loadNibNamed("PlayerCellTop", owner: self, options: nil) as NSArray).objectAtIndex(0) as PlayerCellTop
         self.topCell.frame = CGRectMake(0, 0, globalWidth, 364)
         self.setupPlayerTop(self.Id.toInt()!)
@@ -192,21 +193,16 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableViewDream.delegate = self
         self.tableViewDream.dataSource = self
         self.tableViewDream.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableViewDream.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableViewDream.registerNib(nib3, forCellReuseIdentifier: identifier3)
         self.tableViewStep = UITableView(frame:CGRectMake(0, 0, globalWidth,globalHeight))
         self.tableViewStep.delegate = self
         self.tableViewStep.dataSource = self
         self.tableViewStep.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableViewStep.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableViewStep.registerNib(nib3, forCellReuseIdentifier: identifier3)
         self.tableViewStep.hidden = true
         self.view.addSubview(self.tableViewStep)
         self.view.addSubview(self.tableViewDream)
         self.view.addSubview(self.topCell)
-        self.view.addSubview(self.navView)
-        
-        
     }
     
     func userMore(){
@@ -268,8 +264,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        var height = scrollView.contentOffset.y
         if scrollView == self.tableViewDream || scrollView == self.tableViewStep {
-            var height = scrollView.contentOffset.y
             self.scrollLayout(height)
         }
     }
@@ -281,7 +277,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             // 这里要求整个跟着向上滚动
             // 同时图片要带着阻尼滚动
             self.topCell.setY(-height)
-            self.topCell.BGImage.setY(height/5)
+            self.topCell.BGImage.setY(height/2)
+        }else{
+            self.topCell.setY(0)
+            self.topCell.BGImage.frame = CGRectMake(height/10, height/10, globalWidth-height/5, 320-height/5)
         }
 //        if height > 0 {
 //            self.topCell.setY(-height)
@@ -304,8 +303,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
 //        scrollHidden(self.topCell.UserFoed, height: newHeight, scrollY: 161)
 //        scrollHidden(self.topCell.btnMain, height: newHeight, scrollY: 214)
 //        scrollHidden(self.topCell.btnLetter, height: newHeight, scrollY: 214)
-        if height >= 320 - 44 {
+        if height >= 320 - 64 {
             self.navView.hidden = false
+            self.view.bringSubviewToFront(self.navView)
         }else{
             self.navView.hidden = true
         }
@@ -436,7 +436,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     if ( data["total"] as Int ) < 30 {
                         self.tableViewStep.setFooterHidden(true)
                     }
-                    self.tableViewStep.setContentOffset(CGPointZero, animated: false)
                 }
             })
     }
@@ -453,6 +452,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var cell:UITableViewCell
         if indexPath.section == 0 {
             var c = UITableViewCell()
+            c.selectionStyle = UITableViewCellSelectionStyle.None
             return c
         }else{
             if tableView == self.tableViewDream {
@@ -556,7 +556,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             if tableView == self.tableViewDream {
                 return 364 + 30
             }else{
-                return 320
+                return 364 + 14
             }
         }else{
             if tableView == self.tableViewDream {
@@ -705,9 +705,12 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func onMenuClick(sender:UIGestureRecognizer){
         var tag = sender.view!.tag
+        var y1 = self.tableViewDream.contentOffset.y
+        var y2 = self.tableViewStep.contentOffset.y
         if tag == 100 {
-            self.tableViewDream.hidden = false
+            self.tableViewDream.contentOffset.y = y2
             self.tableViewStep.hidden = true
+            self.tableViewDream.hidden = false
             self.topCell.labelMenuLeft.textColor = SeaColor
             self.topCell.labelMenuRight.textColor = UIColor.blackColor()
             UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -715,6 +718,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             })
             self.SAReloadData()
         }else if tag == 200 {
+            self.tableViewStep.contentOffset.y = y1
             self.tableViewDream.hidden = true
             self.tableViewStep.hidden = false
             self.topCell.labelMenuRight.textColor = SeaColor
@@ -724,12 +728,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             })
             self.SAReloadDataStep()
         }
-        
-        
-        var h = self.tableViewDream.frame
-        var h2 = self.tableViewStep.frame
-        println("dream 的高度是 \(h)")
-        println("step 的高度是 \(h2) ")
     }
     
     func onFoClick(){
