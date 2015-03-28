@@ -255,10 +255,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var commentReplyRow = self.dataArray.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
-            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height + replyContent.stringHeightWith(15,width:208) + 60
             if offset > 0 {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.tableview.contentOffset.y = offset + replyContent.stringHeightWith(15,width:208) + 60
+                    self.tableview.contentOffset.y = offset
                 })
             }
             CATransaction.begin()

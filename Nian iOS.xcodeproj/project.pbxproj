@@ -64,7 +64,6 @@
 		127155131A3FE84500E27EC5 /* CircleDetailTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127155121A3FE84500E27EC5 /* CircleDetailTop.swift */; };
 		127155151A3FE84E00E27EC5 /* CircleDetailTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127155141A3FE84E00E27EC5 /* CircleDetailTop.xib */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
-		127A2EF91A6383080058978B /* Letter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A2EF81A6383080058978B /* Letter.swift */; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
@@ -256,7 +255,6 @@
 		127155121A3FE84500E27EC5 /* CircleDetailTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDetailTop.swift; sourceTree = "<group>"; };
 		127155141A3FE84E00E27EC5 /* CircleDetailTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleDetailTop.xib; sourceTree = "<group>"; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
-		127A2EF81A6383080058978B /* Letter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Letter.swift; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
 		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
 		1282230819C7E6710002937D /* UpYunSDK2.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UpYunSDK2.0-Prefix.pch"; sourceTree = "<group>"; };
@@ -458,7 +456,6 @@
 		1227F0EE1A615EAA0088DEB1 /* 私信 */ = {
 			isa = PBXGroup;
 			children = (
-				127A2EF71A6382F80058978B /* 私信 */,
 				12FC88381A62A4D400904657 /* 私信列表 */,
 			);
 			name = "私信";
@@ -589,14 +586,6 @@
 				12BF1A671A427A1F0044CAF4 /* CircleJoin.xib */,
 			);
 			name = "梦境资料";
-			sourceTree = "<group>";
-		};
-		127A2EF71A6382F80058978B /* 私信 */ = {
-			isa = PBXGroup;
-			children = (
-				127A2EF81A6383080058978B /* Letter.swift */,
-			);
-			name = "私信";
 			sourceTree = "<group>";
 		};
 		1282230519C7E6710002937D /* upyun */ = {
@@ -1308,7 +1297,6 @@
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
-				127A2EF91A6383080058978B /* Letter.swift in Sources */,
 				32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */,
 				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,

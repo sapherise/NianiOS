@@ -72,11 +72,6 @@ struct Api {
         V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback)
     }
     
-    static func postFollow(uid: String, follow: Int, callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
-    }
-    
     static func postCircle(page: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/circle_list.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
@@ -436,12 +431,10 @@ struct Api {
         V.httpPostForString("http://nian.so/api/delete_comment.php", content: "uid=\(s_uid)&shell=\(s_shell)&cid=\(cid)", callback: callback)
     }
     
-    
-    static func postFollow(uid: String, callback: V.StringCallback) {
+    static func postFollow(uid: String, follow: Int, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=1", callback: callback)
+        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
     }
-    
     
     static func postUnfollow(uid: String, callback: V.StringCallback) {
         loadCookies()

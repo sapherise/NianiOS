@@ -11,8 +11,6 @@ import UIKit
 
 class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, AddstepDelegate{
     
-    let identifier = "PlayerCell"
-    let identifier3 = "step"
     var tableViewDream: UITableView!
     var tableViewStep: UITableView!
     var dataArray = NSMutableArray()
@@ -20,7 +18,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var page :Int = 0
     var Id:String = "0"
     var deleteSheet:UIActionSheet?
-    var replySheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
     var guestMoreSheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
@@ -34,8 +31,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
     var userMoreSheet:UIActionSheet!
     
-    var EditId:Int = 0
-    var EditContent:String = ""
     var ReplyUser:String = ""
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
@@ -43,10 +38,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var ReplyCid:String = ""
     var activityViewController:UIActivityViewController?
     
-    var ReturnReplyContent:String = ""
-    var ReturnReplyId:String = ""
-    
-    var titleJson: String = ""
     var percentJson: String = ""
     var followJson: String = ""
     var likeJson: String = ""
@@ -59,11 +50,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var stepJson: String = ""
     var desJson:String = ""
     
-    var desHeight:CGFloat = 0
-    
     var topCell:PlayerCellTop!
     var navView: UIImageView!
-    var rowComment:Int = 0
     var isBan: Int = 0
     
     override func viewDidLoad(){
@@ -92,7 +80,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var sid:Int = content[2] as Int
         var row:Int = (content[3] as Int)-10
         var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
-        
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
         customActivity.saActivityImage = UIImage(named: "flag")!
@@ -127,7 +114,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         editActivity.saActivityTitle = "编辑"
         editActivity.saActivityImage = UIImage(named: "edit")!
         editActivity.saActivityFunction = {
-            var data = self.dataArray[row] as NSDictionary
+            var data = self.dataArrayStep[row] as NSDictionary
             var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
             addstepVC.isEdit = 1
             addstepVC.data = data
@@ -169,6 +156,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupViews() {
         self.viewBack()
         self.view.backgroundColor = UIColor.whiteColor()
+        self.edgesForExtendedLayout = UIRectEdge.None
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid:String = Sa.objectForKey("uid") as String
@@ -180,27 +168,27 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else{
             self.dreamowner = 1
         }
-        self.navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView = UIImageView(frame: CGRectMake(0, -64, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.navView.hidden = true
         self.navView.clipsToBounds = true
         self.view.addSubview(self.navView)
         self.topCell = (NSBundle.mainBundle().loadNibNamed("PlayerCellTop", owner: self, options: nil) as NSArray).objectAtIndex(0) as PlayerCellTop
-        self.topCell.frame = CGRectMake(0, 0, globalWidth, 364)
+        self.topCell.frame = CGRectMake(0, -64, globalWidth, 364)
         self.setupPlayerTop(self.Id.toInt()!)
         var nib = UINib(nibName:"PlayerCell", bundle: nil)
         var nib3 = UINib(nibName:"StepCell", bundle: nil)
-        self.tableViewDream = UITableView(frame:CGRectMake(0, 0, globalWidth,globalHeight))
+        self.tableViewDream = UITableView(frame:CGRectMake(0, -64, globalWidth,globalHeight))
         self.tableViewDream.delegate = self
         self.tableViewDream.dataSource = self
         self.tableViewDream.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableViewDream.registerNib(nib3, forCellReuseIdentifier: identifier3)
+        self.tableViewDream.registerNib(nib3, forCellReuseIdentifier: "step")
         self.tableViewDream.showsVerticalScrollIndicator = false
-        self.tableViewStep = UITableView(frame:CGRectMake(0, 0, globalWidth,globalHeight))
+        self.tableViewStep = UITableView(frame:CGRectMake(0, -64, globalWidth,globalHeight))
         self.tableViewStep.delegate = self
         self.tableViewStep.dataSource = self
         self.tableViewStep.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableViewStep.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableViewStep.registerNib(nib, forCellReuseIdentifier: "PlayerCell")
         self.tableViewStep.showsVerticalScrollIndicator = false
         self.tableViewStep.hidden = true
         self.view.addSubview(self.tableViewStep)
@@ -227,7 +215,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var safeuid = Sa.objectForKey("uid") as String
                 var safeshell = Sa.objectForKey("shell") as String
                 var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
-                self.dataArray.removeObjectAtIndex(newpath!.row)
+                self.dataArrayStep.removeObjectAtIndex(newpath!.row)
                 self.tableViewStep.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
                 self.tableViewStep.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -274,12 +262,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func scrollLayout(height:CGFloat){
-        
         if height > 0 {
-            self.topCell.setY(-height)
+            self.topCell.setY(-height-64)
             self.topCell.BGImage.setY(height/2)
         }else{
-            self.topCell.setY(0)
+            self.topCell.setY(-64)
             self.topCell.BGImage.frame = CGRectMake(height/10, height/10, globalWidth-height/5, 320-height/5)
         }
         scrollHidden(self.topCell.UserHead, height: height, scrollY: 70)
@@ -404,7 +391,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             return c
         }else{
             if tableView == self.tableViewDream {
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier3, forIndexPath: indexPath) as? StepCell
+                var c = tableView.dequeueReusableCellWithIdentifier("step", forIndexPath: indexPath) as? StepCell
                 var dictionary:Dictionary<String, String> = ["id":"", "title":"", "img":"", "percent":""]
                 var index = indexPath.row * 3
                 if index<self.dataArray.count {
@@ -427,7 +414,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
                 cell = c!
             }else{
-                var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as PlayerCell
+                var c = tableView.dequeueReusableCellWithIdentifier("PlayerCell", forIndexPath: indexPath) as PlayerCell
                 var index = indexPath.row
                 var data = self.dataArrayStep[index] as NSDictionary
                 c.data = data
@@ -438,6 +425,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
                 c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+                c.btnLike.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+                c.btnLiked.addTarget(self, action: "onUnLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+                c.btnLike.tag = index + 10
+                c.btnLiked.tag = index + 10
                 if indexPath.row == self.dataArrayStep.count - 1 {
                     c.viewLine.hidden = true
                 }else{
@@ -447,6 +438,38 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             }
         }
         return cell
+    }
+    
+    func onLikeTap(sender: UIButton) {
+        var tag = sender.tag - 10
+        var data = self.dataArrayStep[tag] as NSDictionary
+        if let numLike = data.stringAttributeForKey("like").toInt() {
+            var numNew = numLike + 1
+            var mutableItem = NSMutableDictionary(dictionary: data)
+            mutableItem.setValue("\(numNew)", forKey: "like")
+            mutableItem.setValue("1", forKey: "liked")
+            self.dataArrayStep.replaceObjectAtIndex(tag, withObject: mutableItem)
+            self.tableViewStep.reloadData()
+            var sid = data.stringAttributeForKey("sid")
+            Api.postLike(sid, like: "1") { json in
+            }
+        }
+    }
+    
+    func onUnLikeTap(sender: UIButton) {
+        var tag = sender.tag - 10
+        var data = self.dataArrayStep[tag] as NSDictionary
+        if let numLike = data.stringAttributeForKey("like").toInt() {
+            var numNew = numLike - 1
+            var mutableItem = NSMutableDictionary(dictionary: data)
+            mutableItem.setValue("\(numNew)", forKey: "like")
+            mutableItem.setValue("0", forKey: "liked")
+            self.dataArrayStep.replaceObjectAtIndex(tag, withObject: mutableItem)
+            self.tableViewStep.reloadData()
+            var sid = data.stringAttributeForKey("sid")
+            Api.postLike(sid, like: "0") { json in
+            }
+        }
     }
     
     func onImageTap(sender: UITapGestureRecognizer) {
@@ -515,17 +538,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 return  PlayerCell.cellHeightByData(data)
             }
         }
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-            var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
-            var dream = data.stringAttributeForKey("dream")
-            if tableView == self.tableViewDream && indexPath.section > 0 {
-                var DreamVC = DreamViewController()
-                DreamVC.Id = dream
-                self.navigationController!.pushViewController(DreamVC, animated: true)
-            }
     }
     
     func setupRefresh(){
@@ -678,6 +690,17 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        if indexPath.section > 0 && tableView == self.tableViewStep {
+            var index = indexPath.row
+            var data = self.dataArrayStep[index] as NSDictionary
+            var dream = data.stringAttributeForKey("dream")
+            var DreamVC = DreamViewController()
+            DreamVC.Id = dream
+            self.navigationController!.pushViewController(DreamVC, animated: true)
+        }
+    }
+    
     func onFoClick(){
         var LikeVC = LikeViewController()
         LikeVC.Id = "\(self.Id)"
@@ -696,16 +719,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         sender.removeTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
         sender.addTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
         var textFoed = SAReplace(self.topCell.UserFoed.text!, " 听众", "") as String
-        var numberFoed = textFoed.toInt()! + 1
-        self.topCell.UserFoed.text = "\(numberFoed) 听众"
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
-            if sa != "" && sa != "err" {
-            }
-        })
+        if let num = textFoed.toInt() {
+            self.topCell.UserFoed.text = "\(num + 1) 听众"
+        }
+        Api.postFollow(self.Id, follow: 1) { string in
+        }
     }
     
     func SAunfo(sender:UIButton){
@@ -713,16 +731,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         sender.removeTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
         sender.addTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
         var textFoed = SAReplace(self.topCell.UserFoed.text!, " 听众", "") as String
-        var numberFoed = textFoed.toInt()! - 1
-        self.topCell.UserFoed.text = "\(numberFoed) 听众"
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
-            var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
-            if sa != "" && sa != "err" {
-            }
-        })
+        if let num = textFoed.toInt() {
+            self.topCell.UserFoed.text = "\(num - 1) 听众"
+        }
+        Api.postUnfollow(self.Id) { result in
+        }
     }
     
     func SALetter(sender: UIButton) {
@@ -745,9 +758,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func Editstep() {
-        self.dataArrayStep[self.editStepRow] = self.editStepData!
-        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
-        self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+        if self.editStepData != nil {
+            self.dataArrayStep[self.editStepRow] = self.editStepData!
+            var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
+            self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+        }
     }
 }
 

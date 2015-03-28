@@ -65,8 +65,6 @@ class ContactsHelper {
         let people = ABAddressBookCopyArrayOfAllPeople(adbk).takeRetainedValue() as NSArray
         for person in people {
             let phone: ABMultiValueRef = ABRecordCopyValue(person, kABPersonPhoneProperty)?.takeRetainedValue() as ABMultiValueRef? ?? ""
-            let firstName: String = ABRecordCopyValue(person, kABPersonFirstNameProperty)?.takeRetainedValue() as String? ?? ""
-            let lastName: String = ABRecordCopyValue(person, kABPersonLastNameProperty)?.takeRetainedValue() as String? ?? ""
             var phoneNumber: NSString? = ABMultiValueCopyValueAtIndex(phone, 0)?.takeRetainedValue() as? NSString
             if phoneNumber != nil {
                 phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("-", withString: "")
