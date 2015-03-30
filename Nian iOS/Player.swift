@@ -15,7 +15,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var tableViewStep: UITableView!
     var dataArray = NSMutableArray()
     var dataArrayStep = NSMutableArray()
-    var page :Int = 0
+    var page: Int = 0
+    var pageStep: Int = 0
     var Id:String = "0"
     var deleteSheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
@@ -191,6 +192,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableViewStep.registerNib(nib, forCellReuseIdentifier: "PlayerCell")
         self.tableViewStep.showsVerticalScrollIndicator = false
         self.tableViewStep.hidden = true
+        
+        self.topCell.labelMenuLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))
+        self.topCell.labelMenuRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))
         self.view.addSubview(self.tableViewStep)
         self.view.addSubview(self.tableViewDream)
         self.view.addSubview(self.topCell)
@@ -329,10 +333,20 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func SALoadData(isClear: Bool = true) {
         if isClear {
+            self.tableViewDream.setFooterHidden(false)
             self.page = 0
+            var v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
+            var activity = UIActivityIndicatorView()
+            activity.color = SeaColor
+            activity.startAnimating()
+            activity.hidden = false
+            v.addSubview(activity)
+            activity.center = v.center
+            self.tableViewDream.tableFooterView = v
         }
         Api.getUserDream(Id, page: page) { json in
             if json != nil {
+                self.tableViewDream.tableFooterView = UIView()
                 var arr = json!["items"] as NSArray
                 if isClear {
                     self.dataArray.removeAllObjects()
@@ -355,10 +369,19 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func SALoadDataStep(isClear: Bool = true) {
         if isClear {
             self.tableViewStep.setFooterHidden(false)
-            self.page = 0
+            self.pageStep = 0
+            var v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
+            var activity = UIActivityIndicatorView()
+            activity.color = SeaColor
+            activity.startAnimating()
+            activity.hidden = false
+            v.addSubview(activity)
+            activity.center = v.center
+            self.tableViewStep.tableFooterView = v
         }
-        Api.getUserActive(Id, page: self.page) { json in
+        Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
+                self.tableViewStep.tableFooterView = UIView()
                 var arr = json!["items"] as NSArray
                 if isClear {
                     self.dataArrayStep.removeAllObjects()
@@ -368,7 +391,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
                 self.tableViewStep.reloadData()
                 self.tableViewStep.footerEndRefreshing()
-                self.page++
+                self.pageStep++
                 if let total = json!["total"] as? Int {
                     if total < 30 {
                         self.tableViewStep.setFooterHidden(true)
@@ -609,8 +632,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
                 self.topCell.UserFo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoClick"))
                 self.topCell.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoedClick"))
-                self.topCell.labelMenuLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))
-                self.topCell.labelMenuRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))
                 if isfo == "1" {
                     self.topCell.btnMain.addTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
                     self.topCell.btnMain.setTitle("正在关注", forState: UIControlState.Normal)
@@ -676,7 +697,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuLeft.x()+15)
             })
-            self.SALoadData()
+            if self.dataArray.count == 0 {
+                self.SALoadData()
+            }
         }else if tag == 200 {
             self.tableViewStep.contentOffset.y = y1
             self.tableViewDream.hidden = true
@@ -686,7 +709,9 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuRight.x()+15)
             })
-            self.SALoadDataStep()
+            if self.dataArrayStep.count == 0 {
+                self.SALoadDataStep()
+            }
         }
     }
     
