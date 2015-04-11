@@ -18,10 +18,9 @@ extension UIImageView {
     // urlString 图片的网络路径
     // placeHolder 图片的背景颜色
     // bool 是否显示图片中间的水滴
-    // cacheName 为空时显示图片的网络文件名，否则为cacheName
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
-    func setImage(var urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil, ignore:Bool = false, animated: Bool = false) {
+    func setImage(urlString: String,placeHolder: UIColor!, bool:Bool = true, ignore:Bool = false, animated: Bool = false) {
         var url = NSURL(string: urlString)
         if bool == true {
             self.image = UIImage(named: "drop")!
@@ -30,7 +29,7 @@ extension UIImageView {
         }
         self.backgroundColor = placeHolder
         self.contentMode = UIViewContentMode.Center
-        var cacheFileName = (cacheName == nil ? url!.lastPathComponent : cacheName!)
+        var cacheFileName = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
         if image as NSObject != NSNull() {
@@ -93,7 +92,7 @@ extension UIImageView {
     }
     
     
-    func setCover(urlString: String,placeHolder: UIColor!, bool:Bool = true, cacheName: String? = nil, ignore:Bool = false, animated: Bool = false) {
+    func setCover(urlString: String,placeHolder: UIColor!, bool:Bool = true, ignore:Bool = false, animated: Bool = false) {
         var url = NSURL(string: urlString)
         if bool == true {
             self.image = UIImage(named: "drop")!
@@ -102,7 +101,7 @@ extension UIImageView {
         }
         self.backgroundColor = placeHolder
         self.contentMode = UIViewContentMode.Center
-        var cacheFileName = (cacheName == nil ? url!.lastPathComponent : cacheName!)
+        var cacheFileName = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
         if image as NSObject != NSNull() {

@@ -20,7 +20,6 @@ class MeCell: UITableViewCell {
     @IBOutlet var viewLine: UIView!
     @IBOutlet var imageDream: UIImageView!
     @IBOutlet var labelConfirm: UILabel!
-    @IBOutlet var activity: UIActivityIndicatorView!
     var largeImageURL:String = ""
     var data :NSDictionary!
     
@@ -69,7 +68,6 @@ class MeCell: UITableViewCell {
         default: word = "与你互动了"
         }
         
-        self.activity.hidden = true
         self.nickLabel!.text = user
         self.wordLabel!.text = word
         self.lastdate!.text = lastdate
@@ -113,11 +111,6 @@ class MeCell: UITableViewCell {
     func onConfirmClick(sender:UIGestureRecognizer) {
         var view = sender.view! as UILabel
         view.text = ""
-        self.activity.frame = CGRectMake(0, 0, 20, 20)
-        self.activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
-        self.activity.center = view.center
-        self.activity.hidden = false
-        self.activity.startAnimating()
         var id = self.data.stringAttributeForKey("id") as String
         Api.getCircleJoinConfirmOK(id) { json in
             if json != nil {
@@ -127,12 +120,10 @@ class MeCell: UITableViewCell {
                 var cid = json!["cid"] as String
                 var status = json!["status"] as String
                 if success == "1" {
-                    self.activity.hidden = true
                     view.text = "已接受"
                     view.backgroundColor = IconColor
                     view.removeGestureRecognizer(sender)
                 }else{
-                    self.activity.hidden = true
                     view.text = "接受"
                     if reason == "1" {
                         self.View?.showTipText("遇到了一个奇怪的错误...", delay: 2)

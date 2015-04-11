@@ -22,6 +22,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var labelTableRight: UILabel!
     @IBOutlet var labelTableLeft: UILabel!
     @IBOutlet var viewMenu: UIView!
+    @IBOutlet var imageBadge: SABadgeView!
+    @IBOutlet var viewHolderHead: UIView!
     var currentCell:Int = 0
     var lastPoint:CGPoint!
     var dataArray = NSMutableArray()
@@ -57,7 +59,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.viewMenu.setWidth(globalWidth)
         self.labelTableLeft.setX(globalWidth/2 - 160 + 20)
         self.labelTableRight.setX(globalWidth/2 + 160 - 20 - 80)
-        self.UserHead.frame.origin.x = globalWidth/2-30
+        self.viewHolderHead.frame.origin.x = globalWidth/2-32
         self.UserName.frame.origin.x = globalWidth/2-75
         self.UserStep.frame.origin.x = globalWidth/2-65
         self.coinButton.frame.origin.x = globalWidth/2-104
@@ -126,6 +128,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
+        self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+        self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -146,7 +150,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.imageBG.frame = CGRectMake(height/10, height, globalWidth-height/5, 320)
              //       self.imageBG.backgroundColor = UIColor.redColor()
                 }
-                scrollHidden(self.UserHead, scrollY: 70)
+                scrollHidden(self.viewHolderHead, scrollY: 68)
+                scrollHidden(self.imageBadge, scrollY: 68)
                 scrollHidden(self.UserName, scrollY: 138)
                 scrollHidden(self.UserStep, scrollY: 161)
                 scrollHidden(self.coinButton, scrollY: 214)
@@ -181,23 +186,25 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
-                var sa: AnyObject! = json!.objectForKey("user")
-                var name: AnyObject! = sa.objectForKey("name") as String
-                var email: AnyObject! = sa.objectForKey("email") as String
-                var coin: AnyObject! = sa.objectForKey("coin") as String
-                var dream: AnyObject! = sa.objectForKey("dream") as String
-                var step: AnyObject! = sa.objectForKey("step") as String
-                var level: String! = sa.objectForKey("level") as String
-                var coverURL: String! = sa.objectForKey("cover") as String
+                var data = json!.objectForKey("user") as NSDictionary
+                var name = data.stringAttributeForKey("name")
+                var email = data.stringAttributeForKey("email")
+                var coin = data.stringAttributeForKey("coin")
+                var dream = data.stringAttributeForKey("dream")
+                var step = data.stringAttributeForKey("step")
+                var level = data.stringAttributeForKey("level")
+                var coverURL = data.stringAttributeForKey("cover")
                 var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                var vip = data.stringAttributeForKey("vip")
                 Sa.setObject(AllCoverURL, forKey: "coverUrl")
                 Sa.synchronize()
-                var deadLine = sa.objectForKey("deadline") as String
+                var deadLine = data.stringAttributeForKey("deadline")
                 var (l, e) = levelCount( (level.toInt()!)*7 )
                 self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                 self.levelButton.setTitle("等级 \(l)", forState: UIControlState.Normal)
                 self.UserName.text = "\(name)"
                 self.UserHead.setHead(safeuid)
+                self.imageBadge.setType(vip)
                 if deadLine == "0" {
                     self.UserStep.text = "\(dream) 梦想，\(step) 进展"
                 }else{

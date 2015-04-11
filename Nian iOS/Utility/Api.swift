@@ -271,11 +271,6 @@ struct Api {
         V.httpPostForJsonSync("http://nian.so/api/circle_init.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
-    static func test(callback: V.JsonCallback) {
-        loadCookies()
-        V.httpPostForJson("http://nian.so/api/b.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
-    }
-    
     static func getBBSComment(page: Int, flow: Int, id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/bbs_comment.php?page=\(page)&flow=\(flow)&id=\(id)", callback: callback)
@@ -412,7 +407,6 @@ struct Api {
         loadCookies()
         V.httpPostForString("http://nian.so/api/dream_cool_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&cool=\(like)", callback: callback)
     }
-    
     
     static func postDreamStepComment(dream: String, step: String, content: String, callback: V.StringCallback) {
         loadCookies()

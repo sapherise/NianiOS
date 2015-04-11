@@ -9,7 +9,7 @@
 import UIKit
 
 
-class LikeCell: UITableViewCell {
+class LikeCell: MKTableViewCell {
     
     @IBOutlet var avatarView:UIImageView!
     @IBOutlet var nickLabel:UILabel!

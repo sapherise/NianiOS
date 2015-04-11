@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class CircleCell: UITableViewCell {
+class CircleCell: MKTableViewCell {
     
     @IBOutlet var labelTitle:UILabel!
     @IBOutlet var lastdate:UILabel?

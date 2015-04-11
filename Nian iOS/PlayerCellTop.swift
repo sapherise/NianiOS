@@ -24,6 +24,9 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
     @IBOutlet var labelMenuSlider: UIView!
     @IBOutlet var viewBlack: UIView!
     @IBOutlet var viewBanner: UIView!
+    @IBOutlet var imageBadge: SABadgeView!
+    @IBOutlet var viewHolderHead: UIView!
+    @IBOutlet var imageSex: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,12 +36,14 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
         self.viewBanner.setWidth(globalWidth)
         self.viewMenu.frame.origin = CGPointMake(globalWidth/2 - 160, 0)
         self.BGImage.frame.size = CGSizeMake(globalWidth, 320)
-        self.UserHead.setX(globalWidth/2-30)
+        self.viewHolderHead.setX(globalWidth/2-32)
         self.viewBlack.frame.size = CGSizeMake(globalWidth, 320)
         self.btnMain.setX(globalWidth/2 - 105)
         self.btnLetter.setX(globalWidth/2 + 5)
         self.UserFo.setX(globalWidth/2 - 53)
         self.UserFoed.setX(globalWidth/2 + 1)
+        self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
+        self.imageSex.hidden = true
         self.layer.masksToBounds = true
     }
     

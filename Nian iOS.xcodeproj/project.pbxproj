@@ -84,6 +84,8 @@
 		129375191A236E8B001F7442 /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
 		12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12941A0019CFA8650008B274 /* AddBBSController.swift */; };
 		12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12941A0219CFA87C0008B274 /* AddBBSController.xib */; };
+		129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492811AD9322A000E7461 /* MKTableViewCell.swift */; };
+		129492841AD9329D000E7461 /* MKLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492831AD9329D000E7461 /* MKLayer.swift */; };
 		12960F6D19BF230100CB973E /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12960F6C19BF230100CB973E /* Sign.swift */; };
 		12960F6F19BF230900CB973E /* Sign.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F6E19BF230900CB973E /* Sign.xib */; };
 		12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12960F7019BF2E3B00CB973E /* SignNext.swift */; };
@@ -105,6 +107,7 @@
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
+		12C354531AD5126F0078693F /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C354521AD5126F0078693F /* Badge.swift */; };
 		12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */; };
 		12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DED1A6F7B3300B0E327 /* WeChatActivityGeneral.swift */; };
 		12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */; };
@@ -278,6 +281,8 @@
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
 		12941A0019CFA8650008B274 /* AddBBSController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSController.swift; sourceTree = "<group>"; };
 		12941A0219CFA87C0008B274 /* AddBBSController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSController.xib; sourceTree = "<group>"; };
+		129492811AD9322A000E7461 /* MKTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTableViewCell.swift; sourceTree = "<group>"; };
+		129492831AD9329D000E7461 /* MKLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLayer.swift; sourceTree = "<group>"; };
 		12960F6C19BF230100CB973E /* Sign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
 		12960F6E19BF230900CB973E /* Sign.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Sign.xib; sourceTree = "<group>"; };
 		12960F7019BF2E3B00CB973E /* SignNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignNext.swift; sourceTree = "<group>"; };
@@ -299,6 +304,7 @@
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		12BF5FF919BB479900DE0ABE /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		12C354521AD5126F0078693F /* Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		12C96DEB1A6F7B3300B0E327 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		12C96DEC1A6F7B3300B0E327 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
@@ -529,6 +535,7 @@
 				1253C2FF1A1DF108003D4ECF /* PlayerCell.xib */,
 				1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */,
 				1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */,
+				12C354521AD5126F0078693F /* Badge.swift */,
 				1231A07B19B4649000BD425F /* 用户梦想 */,
 			);
 			name = "玩家";
@@ -646,6 +653,15 @@
 				12941A0219CFA87C0008B274 /* AddBBSController.xib */,
 			);
 			name = "更新广场";
+			sourceTree = "<group>";
+		};
+		129492801AD93211000E7461 /* MaterialKit */ = {
+			isa = PBXGroup;
+			children = (
+				129492811AD9322A000E7461 /* MKTableViewCell.swift */,
+				129492831AD9329D000E7461 /* MKLayer.swift */,
+			);
+			name = MaterialKit;
 			sourceTree = "<group>";
 		};
 		12960F6B19BF22EC00CB973E /* 注册 */ = {
@@ -901,6 +917,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				129492801AD93211000E7461 /* MaterialKit */,
 				1248FB9D1A91B44A00110EEF /* performSelector */,
 				12C96DE81A6F7B3300B0E327 /* WeChatSharing */,
 				121454721A694F3C0091DCEE /* weibo */,
@@ -1229,6 +1246,7 @@
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
+				129492841AD9329D000E7461 /* MKLayer.swift in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
@@ -1268,6 +1286,7 @@
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */,
+				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
@@ -1276,6 +1295,7 @@
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
 				12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */,
+				12C354531AD5126F0078693F /* Badge.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
 				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
@@ -1422,8 +1442,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: YIRONG ZENG (XPSX3WUES5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: YIRONG ZENG (XPSX3WUES5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1454,8 +1474,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: YIRONG ZENG (XPSX3WUES5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: YIRONG ZENG (XPSX3WUES5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

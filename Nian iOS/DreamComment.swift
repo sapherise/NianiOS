@@ -163,28 +163,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     //将内容发送至服务器
     func addReply(contentComment:String){
         var content = SAEncode(SAHtml(contentComment))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var safeuser = Sa.objectForKey("user") as String
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("id=\(self.dreamID)&&step=\(self.stepID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/comment_query.php")
-            if sa != "" && sa != "err" {
-                dispatch_async(dispatch_get_main_queue(), {
-                    delay(0.2, { () -> () in
-                        self.SAReloadData()
-                    })
-                })
-            }
-        })
-        //推送通知
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("id=\(self.dreamID)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(safeuid)", "http://nian.so/push/push_mobile.php")
-        })
+        Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { result in
+            delay(0.2, { () -> () in
+                self.SAReloadData()
+            })
+        }
     }
     
-    func SAloadData()
-    {
+    func SAloadData() {
         var heightBefore = self.tableview.contentSize.height
         var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in

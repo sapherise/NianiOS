@@ -273,8 +273,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             self.topCell.setY(-64)
             self.topCell.BGImage.frame = CGRectMake(height/10, height/10, globalWidth-height/5, 320-height/5)
         }
-        scrollHidden(self.topCell.UserHead, height: height, scrollY: 70)
+        scrollHidden(self.topCell.viewHolderHead, height: height, scrollY: 68)
+        scrollHidden(self.topCell.imageBadge, height: height, scrollY: 68)
         scrollHidden(self.topCell.UserName, height: height, scrollY: 138)
+        scrollHidden(self.topCell.imageSex, height: height, scrollY: 138)
         scrollHidden(self.topCell.UserFo, height: height, scrollY: 161)
         scrollHidden(self.topCell.UserFoed, height: height, scrollY: 161)
         scrollHidden(self.topCell.btnMain, height: height, scrollY: 214)
@@ -598,6 +600,13 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 if let v = black.toInt() {
                     self.isBan = v
                 }
+                if sex == "1" {
+                    self.topCell.imageSex.image = UIImage(named: "user_male")
+                    self.topCell.imageSex.hidden = false
+                }else if sex == "2" {
+                    self.topCell.imageSex.image = UIImage(named: "user_female")
+                    self.topCell.imageSex.hidden = false
+                }
                 fo = "\(fo) 关注，"
                 foed = "\(foed) 听众"
                 var foWidth = fo.stringWidthBoldWith(12, height: 21)
@@ -609,6 +618,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var width = name.stringWidthBoldWith(19, height: 23)
                 self.topCell.UserName.setWidth(width)
                 self.topCell.UserName.setX((globalWidth-width)/2)
+                self.topCell.imageSex.setX((globalWidth-width)/2+width)
                 self.topCell.UserFo.text = fo
                 self.topCell.UserFoed.text = foed
                 self.topCell.UserFo.setX(foX)
@@ -617,10 +627,11 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.topCell.UserFoed.setWidth(foedWidth)
                 self.topCell.UserHead.setHead("\(theUid)")
                 self.topCell.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
-                
+                var vip = data.stringAttributeForKey("vip")
+                self.topCell.imageBadge.setType(vip)
                 var wantPress = UILongPressGestureRecognizer(target: self, action: "onIWANTYOU:")
                 wantPress.minimumPressDuration = 10
-                self.topCell.UserHead.addGestureRecognizer(wantPress)
+                self.topCell.viewHolderHead.addGestureRecognizer(wantPress)
                 
                 self.topCell.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                 self.topCell.btnLetter.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)

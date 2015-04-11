@@ -9,7 +9,7 @@
 import UIKit
 
 
-class CircleDetailCell: UITableViewCell {
+class CircleDetailCell: MKTableViewCell {
     @IBOutlet var imageUser: UIImageView!
     @IBOutlet var imageDream: UIImageView!
     @IBOutlet var viewLine: UIView!

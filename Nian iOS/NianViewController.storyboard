@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="fFW-N9-SCA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="fFW-N9-SCA">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--Nian View Controller-->
@@ -58,16 +58,6 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="WVF-kW-IoC">
-                                                <rect key="frame" x="130" y="97" width="60" height="60"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="30"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="4Kz-ar-rtC">
                                                 <rect key="frame" x="164" y="241" width="100" height="36"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -85,6 +75,33 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
+                                            <view contentMode="scaleToFill" id="rw2-7Y-2dw">
+                                                <rect key="frame" x="128" y="95" width="64" height="64"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="WVF-kW-IoC">
+                                                        <rect key="frame" x="2" y="2" width="60" height="60"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="30"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </imageView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="32"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ItJ-q3-xdj" customClass="SABadgeView" customModule="Nian_iOS" customModuleProvider="target">
+                                                <rect key="frame" x="178" y="145" width="14" height="14"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -145,12 +162,14 @@
                         <outlet property="coinButton" destination="HFX-ex-0re" id="twb-VD-d6Z"/>
                         <outlet property="collectionView" destination="2uf-97-Eok" id="f0s-kw-y61"/>
                         <outlet property="imageBG" destination="VmL-PM-bCx" id="Ko5-vH-yc5"/>
+                        <outlet property="imageBadge" destination="ItJ-q3-xdj" id="br4-uK-DKr"/>
                         <outlet property="labelTableLeft" destination="7IQ-P9-dWj" id="3DW-4D-ev0"/>
                         <outlet property="labelTableRight" destination="tT9-wC-3xp" id="xau-rU-IZq"/>
                         <outlet property="levelButton" destination="4Kz-ar-rtC" id="GfP-G5-9Z4"/>
                         <outlet property="scrollView" destination="xkX-Pt-NF5" id="dgD-OS-Ouv"/>
                         <outlet property="view" destination="ONC-Mb-mzO" id="VF3-2m-td3"/>
                         <outlet property="viewHolder" destination="oRj-LT-nWi" id="S61-WF-rgp"/>
+                        <outlet property="viewHolderHead" destination="rw2-7Y-2dw" id="rQZ-0f-quw"/>
                         <outlet property="viewMenu" destination="rva-cO-70k" id="ifR-3U-UCg"/>
                     </connections>
                 </viewController>

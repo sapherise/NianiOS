@@ -30,6 +30,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        self.setupRefresh()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -103,10 +104,17 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SALoadData() {
-        dispatch_async(dispatch_get_main_queue(), {
+        go {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+            if errCircle != nil {
+                back({ () -> Void in
+                    self.view.showTipText("加载失败，错误代码：\(errCircle!)。刷新试试", delay: 2)
+                    self.tableView.headerEndRefreshing()
+                })
+                return
+            }
             self.dataArray.removeAllObjects()
             for row in resultCircle {
                 var id = (row["circle"]?.asString())!
@@ -124,24 +132,33 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             }
             var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
             self.dataArray.addObject(dataBBS)
-            self.tableView.reloadData()
-            if self.dataArray.count == 1 {
-                var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
-                var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
-                viewTop.labelTitle.text = "发现梦境"
-                viewTop.labelContent.text = "和大家一起组队造梦"
-                viewTop.labelCount.hidden = true
-                viewTop.lastdate?.hidden = true
-                viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
-                viewTop.userInteractionEnabled = true
-                viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
-                viewTop.tag = 1
-                viewTop.editing = false
-                self.tableView.tableHeaderView = viewTop
-            }else{
-                self.tableView.tableHeaderView = UIView()
+            back {
+                self.tableView.reloadData()
+                self.tableView.headerEndRefreshing()
+                if self.dataArray.count == 1 {
+                    var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
+                    var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
+                    viewTop.labelTitle.text = "发现梦境"
+                    viewTop.labelContent.text = "和大家一起组队造梦"
+                    viewTop.labelCount.hidden = true
+                    viewTop.lastdate?.hidden = true
+                    viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
+                    viewTop.userInteractionEnabled = true
+                    viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
+                    viewTop.tag = 1
+                    viewTop.editing = false
+                    self.tableView.tableHeaderView = viewTop
+                }else{
+                    self.tableView.tableHeaderView = nil
+                }
             }
-        })
+        }
+    }
+    
+    func setupRefresh() {
+        self.tableView.addHeaderWithCallback {
+            self.SALoadData()
+        }
     }
     
     func onBtnGoClick() {

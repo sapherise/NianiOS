@@ -46,16 +46,29 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="zA8-po-YPM">
-                            <rect key="frame" x="130" y="97" width="60" height="60"/>
+                        <view contentMode="scaleToFill" id="5o0-ik-ieP">
+                            <rect key="frame" x="128" y="95" width="64" height="64"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="zA8-po-YPM">
+                                    <rect key="frame" x="2" y="2" width="60" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="30"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="30"/>
+                                    <integer key="value" value="32"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                        </imageView>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6i5-2s-7Yn">
                             <rect key="frame" x="55" y="241" width="100" height="36"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -116,6 +129,14 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="HV3-NW-WHv" customClass="SABadgeView" customModule="Nian_iOS" customModuleProvider="target">
+                            <rect key="frame" x="178" y="145" width="14" height="14"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_male" id="B7D-Fl-4z9">
+                            <rect key="frame" x="227" y="165" width="23" height="23"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                 </view>
             </subviews>
@@ -128,17 +149,23 @@
                 <outlet property="UserName" destination="vgG-PT-BI0" id="HJV-9Q-Jkc"/>
                 <outlet property="btnLetter" destination="WK1-CX-DeX" id="BbX-p3-9B4"/>
                 <outlet property="btnMain" destination="6i5-2s-7Yn" id="YDD-bL-ABb"/>
+                <outlet property="imageBadge" destination="HV3-NW-WHv" id="Yx8-Np-ylS"/>
+                <outlet property="imageSex" destination="B7D-Fl-4z9" id="1dl-TC-Pu4"/>
                 <outlet property="labelMenuLeft" destination="OL5-Re-SOZ" id="JWl-La-a8a"/>
                 <outlet property="labelMenuRight" destination="4ue-sg-FWk" id="Pyd-xq-t5I"/>
                 <outlet property="labelMenuSlider" destination="hbM-c6-kOm" id="OJB-5L-vyy"/>
                 <outlet property="viewBanner" destination="HDS-Bx-orQ" id="tfa-Fq-9Wp"/>
                 <outlet property="viewBlack" destination="5go-ia-4fm" id="pQ4-pe-kZU"/>
                 <outlet property="viewHolder" destination="08G-kh-YxA" id="cZm-Ew-krX"/>
+                <outlet property="viewHolderHead" destination="5o0-ik-ieP" id="Ehv-Ku-8Ty"/>
                 <outlet property="viewMenu" destination="ke0-dS-SE8" id="cIh-nS-C1v"/>
             </connections>
             <point key="canvasLocation" x="481" y="720"/>
         </view>
     </objects>
+    <resources>
+        <image name="user_male" width="12" height="23"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
