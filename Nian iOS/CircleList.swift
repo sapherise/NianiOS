@@ -8,6 +8,8 @@
 
 import UIKit
 
+var sql_error = ""
+
 class CircleListController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
     
     let identifier = "circle"
@@ -107,12 +109,16 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         go {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as String
+            sql_error = ""
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             if errCircle != nil {
-                back({ () -> Void in
-                    self.view.showTipText("加载失败，错误代码：\(errCircle!)。刷新试试", delay: 2)
+                back {
+                    sql_error += "uid: \(safeuid);"
+                    sql_error += "ec: \(errCircle!);"
+                    
+                    self.view.showTipText(sql_error, delay: 3)
                     self.tableView.headerEndRefreshing()
-                })
+                }
                 return
             }
             self.dataArray.removeAllObjects()

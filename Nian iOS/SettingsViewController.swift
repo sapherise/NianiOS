@@ -193,6 +193,11 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         // 发现好友
         self.viewFind.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFindClick"))
         self.viewSex.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSexClick"))
+        
+        //labelVersion.text = [NSString stringWithFormat:@"v%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
+        var numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as String
+        self.version.text = "念 \(numberVersion)"
+        
         Api.getUserMe() { json in
             if json != nil {
                 var data = json!["user"] as NSDictionary

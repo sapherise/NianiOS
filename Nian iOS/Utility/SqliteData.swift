@@ -172,6 +172,9 @@ public struct SwiftData {
                 return
             }
             (result, error) = SQLiteDB.sharedInstance.executeQuery(sqlStr)
+            sql_error += "sql: \(SQLiteDB.sharedInstance);"
+            sql_error += "conn: \(SQLiteDB.sharedInstance.isConnected);"
+            sql_error += "tran: \(SQLiteDB.sharedInstance.inTransaction);"
             SQLiteDB.sharedInstance.close()
         }
         putOnThread(task)
@@ -1220,7 +1223,6 @@ public struct SwiftData {
     private struct SDError {
         
     }
-    
 }
 
 
@@ -1570,7 +1572,6 @@ extension SwiftData.SQLiteDB {
         return (indexArr, nil)
         
     }
-    
 }
 
 
