@@ -133,9 +133,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
-        var safename = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
+        var safename = Sa.objectForKey("user") as! String
         self.view.backgroundColor = BGColor
         self.head!.setHead(safeuid)
         self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick"))
@@ -195,12 +195,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.viewSex.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSexClick"))
         
         //labelVersion.text = [NSString stringWithFormat:@"v%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
-        var numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as String
+        var numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
         self.version.text = "念 \(numberVersion)"
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!["user"] as NSDictionary
+                var data = json!["user"] as! NSDictionary
                 var email = data.stringAttributeForKey("email")
                 var name = data.stringAttributeForKey("name")
                 var phone = data.stringAttributeForKey("phone")
@@ -272,10 +272,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func textFieldDidEndEditing(textField: UITextField) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if textField == self.inputName {
-            if (textField.text != "") & (textField.text != self.accountName){
+            if (textField.text != "") && (textField.text != self.accountName){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if SAstrlen(self.inputName.text)>30 {
                     self.navigationItem.rightBarButtonItems = []
@@ -316,7 +316,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 textField.text = self.accountName
             }
         }else if textField == self.inputEmail {
-            if (textField.text != "") & (textField.text != self.accountEmail){
+            if (textField.text != "") && (textField.text != self.accountEmail){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if SAstrlen(self.inputEmail.text)>50 {
                     self.navigationItem.rightBarButtonItems = []
@@ -352,7 +352,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 textField.text = self.accountEmail
             }
         }else if textField == self.inputPhone {
-            if (textField.text != "") & (textField.text != self.accountPhone){
+            if (textField.text != "") && (textField.text != self.accountPhone){
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 if !self.inputPhone.text.isValidPhone() {   //正则
                     self.navigationItem.rightBarButtonItems = []
@@ -447,7 +447,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.btnCover.startLoading()
         self.uploadFile(image)
@@ -455,16 +455,16 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func uploadFile(img:UIImage){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         var uy = UpYun()
         if self.uploadWay == 1 {
             uy.successBlocker = ({(data:AnyObject!) in
-                self.uploadUrl = data.objectForKey("url") as String
+                self.uploadUrl = data.objectForKey("url") as! String
                 self.uploadUrl = SAReplace(self.uploadUrl, "/headtmp/", "") as String
                 var userImageURL = "http://img.nian.so/headtmp/\(self.uploadUrl)!dream"
                 var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-                var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
+                var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
                 var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
                 var queue = NSOperationQueue();
                 NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
@@ -479,7 +479,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     })
                 })
             })
-            uy.uploadImage(resizedImage(img, 250), savekey: getSaveKey("headtmp", "jpg"))
+            uy.uploadImage(resizedImage(img, 250), savekey: getSaveKey("headtmp", "jpg") as String)
             
             var uy2 = UpYun()
             uy2.successBlocker = ({(data2:AnyObject!) in
@@ -489,17 +489,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     }
                 })
             })
-            uy2.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head"))
+            uy2.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head") as String)
         }else{
             uy.successBlocker = ({(data:AnyObject!) in
-                self.uploadUrl = data.objectForKey("url") as String
+                self.uploadUrl = data.objectForKey("url") as! String
                 self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
                 var userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 Sa.setObject(userImageURL, forKey: "coverUrl")
                 Sa.synchronize()
                 var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-                var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
+                var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
                 var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
                 var queue = NSOperationQueue();
                 NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
@@ -517,14 +517,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     })
                 })
             })
-            uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("cover", "jpg"))
+            uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("cover", "jpg") as String)
             
         }
     }
     
     func getSaveKeyPrivate(title:NSString) -> NSString{
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         var string = NSString(string: "/\(title)/\(safeuid).jpg")
         return string
     }
@@ -620,15 +620,15 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     func clearingCache(){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-            var cachePath: NSString = searchPath.objectAtIndex(0) as NSString
-            var files = NSFileManager.defaultManager().subpathsAtPath(cachePath)
+            var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
+            var files = NSFileManager.defaultManager().subpathsAtPath(cachePath as String)
             var p:NSString = ""
             for p in files! as NSArray {
                 var path = cachePath.stringByAppendingPathComponent("\(p)")
                 if NSFileManager.defaultManager().fileExistsAtPath(path) {
                     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                    var safeuid = Sa.objectForKey("uid") as String
-                    if p as NSString != "\(safeuid).jpg!dream" {
+                    var safeuid = Sa.objectForKey("uid") as! String
+                    if p as! NSString != "\(safeuid).jpg!dream" {
                         NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
                     }
                 }
@@ -671,7 +671,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         storeProductVC.delegate = self
         var dict = NSDictionary(object: "929448912", forKey: SKStoreProductParameterITunesItemIdentifier)
         self.navigationController?.presentViewController(storeProductVC, animated: true, completion: nil)
-        storeProductVC.loadProductWithParameters(dict, completionBlock: nil)
+        storeProductVC.loadProductWithParameters(dict as [NSObject : AnyObject], completionBlock: nil)
     }
     
     func productViewControllerDidFinish(viewController: SKStoreProductViewController!) {

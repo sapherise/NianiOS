@@ -101,10 +101,10 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         Api.getUserMe() { json in
             if json != nil {
                 var sa: AnyObject! = json!.objectForKey("user")
-                var foed: String! = sa.objectForKey("foed") as String
-                var like: String! = sa.objectForKey("like") as String
-                var step: String! = sa.objectForKey("step") as String
-                var level: String! = sa.objectForKey("level") as String
+                var foed: String! = sa.objectForKey("foed") as! String
+                var like: String! = sa.objectForKey("like") as! String
+                var step: String! = sa.objectForKey("step") as! String
+                var level: String! = sa.objectForKey("level") as! String
                 self.menuLeft.text = like
                 self.menuMiddle.text = step
                 self.menuRight.text = foed
@@ -117,9 +117,9 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         Api.getLevelCalendar(){ json in
             if json != nil {
                 self.marks = [Bool](count: 32, repeatedValue: false)
-                var items = json!.objectForKey("items") as NSArray
+                var items = json!.objectForKey("items") as! NSArray
                 for item in items {
-                    var lastdate = (item.objectForKey("lastdate") as NSString).doubleValue
+                    var lastdate = (item.objectForKey("lastdate") as! NSString).doubleValue
                     var date = V.getDay(lastdate)
                     self.marks[date.toInt()!] = true
                 }

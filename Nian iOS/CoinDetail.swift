@@ -71,11 +71,11 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     func loadData(forWhich: Int) {
         Api.getCoinDetial("\(page++)") { json in
             if json != nil {
-                let current = (json!.objectForKey("time") as NSString).doubleValue
-                let items = json!.objectForKey("items") as NSArray
+                let current = (json!.objectForKey("time") as! NSString).doubleValue
+                let items = json!.objectForKey("items") as! NSArray
                 let success = (items.count != 0)
                 for item in items {
-                    self.coinDetails.append(("", (item.objectForKey("coin") as String), (item.objectForKey("thing") as String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as NSString).doubleValue, current: current)))
+                    self.coinDetails.append(("", (item.objectForKey("coin") as! String), (item.objectForKey("thing") as! String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as! NSString).doubleValue, current: current)))
                 }
                 if success {
                     self.tableView.reloadData()

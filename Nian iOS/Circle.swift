@@ -64,7 +64,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func Poll(noti: NSNotification) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = noti.object as NSDictionary
+            var data = noti.object as! NSDictionary
             var circle = data.stringAttributeForKey("to")
             if circle == "\(self.ID)" {
                 var id = data.stringAttributeForKey("msgid")
@@ -77,8 +77,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var cid = data.stringAttributeForKey("cid")
                 content = SADecode(SADecode(content))
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                var safeuser = Sa.objectForKey("user") as String
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeuser = Sa.objectForKey("user") as! String
                 var commentReplyRow = self.dataArray.count
                 var absoluteTime = V.absoluteTime(time)
                 if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
@@ -97,7 +97,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func Letter(noti: NSNotification) {
-        var data = noti.object as NSDictionary
+        var data = noti.object as! NSDictionary
         var uid = data.stringAttributeForKey("from")
         if uid == "\(self.ID)" {
             var id = data.stringAttributeForKey("msgid")
@@ -109,8 +109,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var time = (data.stringAttributeForKey("time") as NSString).doubleValue
             content = SADecode(SADecode(content))
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeuser = Sa.objectForKey("user") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArray.count
             var absoluteTime = V.absoluteTime(time)
             var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
@@ -234,8 +234,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func commentFinish(replyContent:String, type: Int = 1){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeuser = Sa.objectForKey("user") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArray.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
@@ -250,8 +250,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func postWord(replyContent: String, type: Int = 1) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeuser = Sa.objectForKey("user") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArray.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
@@ -274,7 +274,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func tableUpdate(contentAfter: String) {
         for var i: Int = 0; i < self.dataArray.count; i++ {
-            var data = self.dataArray[i] as NSDictionary
+            var data = self.dataArray[i] as! NSDictionary
             var contentBefore = data.stringAttributeForKey("content")
             var lastdate = data.stringAttributeForKey("lastdate")
             var type = data.stringAttributeForKey("type")
@@ -301,7 +301,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if isCircle {
             Api.postCircleChat(self.ID, content: content, type: type) { json in
                 if json != nil {
-                    var success = json!["success"] as String
+                    var success = json!["success"] as! String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
                     }
@@ -310,13 +310,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }else{
             Api.postLetterChat(self.ID, content: content, type: type) { json in
                 if json != nil {
-                    var success = json!["success"] as String
-                    var msgid = json!["msgid"] as String
-                    var lastdate = json!["lastdate"] as String
+                    var success = json!["success"] as! String
+                    var msgid = json!["msgid"] as! String
+                    var lastdate = json!["lastdate"] as! String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        var safeuid = Sa.objectForKey("uid") as String
+                        var safeuid = Sa.objectForKey("uid") as! String
                         Api.postName(self.ID) { result in
                             if result != nil {
                                 SQLLetterContent(msgid, safeuid, result!, "\(self.ID)", contentAfter, "\(type)", lastdate, 1) {}
@@ -335,7 +335,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.dataArray.removeAllObjects()
         }
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         if self.isCircle {
             var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
             if err == nil {
@@ -429,12 +429,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
         var index = indexPath.row
-        var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
+        var data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         var type = data.stringAttributeForKey("type")
         var cid = data.stringAttributeForKey("cid")
         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
         if type == "1" {
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
             c.data = data
             c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -443,7 +443,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.isDream = 0
             cell = c
         }else if type == "2" {
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as CircleImageCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
             c.data = data
             c.imageContent.tag = index
             c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
@@ -453,7 +453,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }else if type == "3" {
             let (resultDes, err) = SD.executeQuery("select * from step where sid = '\(cid)' limit 1")
             if resultDes.count == 0 {
-                var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as CircleBubbleCell
+                var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
                 c.data = data
                 c.textContent.tag = index
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -462,7 +462,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 c.isDream = 1
                 cell = c
             }else{
-                var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as CircleDreamCell
+                var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as! CircleDreamCell
                 c.data = data
                 c.textContent.tag = index
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -471,7 +471,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 cell = c
             }
         }else{
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as CircleTypeCell
+            var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as! CircleTypeCell
             c.data = data
             cell = c
         }
@@ -509,8 +509,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func onImageTap(sender:UITapGestureRecognizer) {
         self.inputKeyboard.resignFirstResponder()
         var index = sender.view!.tag
-        var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
-        var content = data.objectForKey("content") as String
+        var data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
+        var content = data.objectForKey("content") as! String
         var arrContent = content.componentsSeparatedByString("_")
         if arrContent.count == 4 {
             var img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
@@ -537,7 +537,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func onBubbleClick(sender:UIGestureRecognizer) {
         var index = sender.view!.tag
-        var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
+        var data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
         var user = data.stringAttributeForKey("user")
         var uid = data.stringAttributeForKey("uid")
         var content = data.stringAttributeForKey("content")
@@ -549,7 +549,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.ReplyUserName = user
         self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         if type == "3" {
             var StepVC = SingleStepViewController()
             StepVC.Id = cid
@@ -563,9 +563,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        var index = indexPath!.row
-        var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var index = indexPath.row
+        var data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
         if let type = data.objectForKey("type") as? String {
             if type == "2" {
                 return CircleImageCell.cellHeightByData(data)
@@ -589,8 +589,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
                 self.commentVC()
@@ -618,7 +618,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.uploadFile(image)
     }
@@ -636,18 +636,18 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
         }
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeuser = Sa.objectForKey("user") as! String
         self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
-            var uploadUrl = data.objectForKey("url") as String
+            var uploadUrl = data.objectForKey("url") as! String
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
             var content = "\(uploadUrl)_\(width)_\(height)"
             self.addReply(content, type: 2)
         })
-        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png"))
+        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("circle", "png") as String)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

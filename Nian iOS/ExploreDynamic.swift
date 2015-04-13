@@ -46,7 +46,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             json in
             var success = false
             if json != nil {
-                var items = json!["items"] as NSArray
+                var items = json!["items"] as! NSArray
                 if items.count != 0 {
                     if clear {
                         self.dataSource.removeAll(keepCapacity: true)
@@ -54,23 +54,23 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                     success = true
                     for item in items {
                         var data = Data()
-                        data.id = item["id"] as String
-                        data.uid = item["uid"] as String
-                        data.user = item["user"] as String
-                        data.title = item["title"] as String
-                        data.img = item["img"] as String
-                        data.uidlike = item["uidlike"] as String
-                        data.userlike = item["userlike"] as String
-                        data.type = (item["type"] as String).toInt()
+                        data.id = item["id"] as! String
+                        data.uid = item["uid"] as! String
+                        data.user = item["user"] as! String
+                        data.title = item["title"] as! String
+                        data.img = item["img"] as! String
+                        data.uidlike = item["uidlike"] as! String
+                        data.userlike = item["userlike"] as! String
+                        data.type = (item["type"] as! String).toInt()
                         if data.type == 1 {
-                            data.sid = item["sid"] as String
-                            data.content = item["content"] as String
-                            data.lastdate = item["lastdate"] as String
-                            data.img0 = (item["img0"] as NSString).floatValue
-                            data.img1 = (item["img1"] as NSString).floatValue
-                            data.like = (item["like"] as String).toInt()
-                            data.liked = (item["liked"] as String).toInt()
-                            data.comment = (item["comment"] as String).toInt()
+                            data.sid = item["sid"] as! String
+                            data.content = item["content"] as! String
+                            data.lastdate = item["lastdate"] as! String
+                            data.img0 = (item["img0"] as! NSString).floatValue
+                            data.img1 = (item["img1"] as! NSString).floatValue
+                            data.like = (item["like"] as! String).toInt()
+                            data.liked = (item["liked"] as! String).toInt()
+                            data.comment = (item["comment"] as! String).toInt()
                         }
                         self.dataSource.append(data)
                     }

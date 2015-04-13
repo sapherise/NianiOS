@@ -39,7 +39,7 @@ extension UIScrollView {
     func headerEndRefreshing(animated: Bool = true) {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
-                (object as RefreshHeaderView).endRefreshing(animated: animated)
+                (object as! RefreshHeaderView).endRefreshing(animated: animated)
             }
         }
         
@@ -48,7 +48,7 @@ extension UIScrollView {
     func setHeaderHidden(hidden:Bool) {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
-                var view:UIView  = object as UIView
+                var view:UIView  = object as! UIView
                 view.hidden = hidden
             }
         }
@@ -58,7 +58,7 @@ extension UIScrollView {
     func isHeaderHidden() -> Bool {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
-                var view:UIView  = object as UIView
+                var view:UIView  = object as! UIView
                 return view.hidden
             }
         }
@@ -99,7 +99,7 @@ extension UIScrollView {
     {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
-                (object as RefreshFooterView).endRefreshing(animated: animated)
+                (object as! RefreshFooterView).endRefreshing(animated: animated)
             }
         }
         
@@ -109,7 +109,7 @@ extension UIScrollView {
     {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
-                var view:UIView  = object as UIView
+                var view:UIView  = object as! UIView
                 view.hidden = hidden
             }
         }
@@ -119,7 +119,7 @@ extension UIScrollView {
     func isFooterHidden() -> Bool {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
-                var view:UIView  = object as UIView
+                var view:UIView  = object as! UIView
                 return view.hidden
             }
         }

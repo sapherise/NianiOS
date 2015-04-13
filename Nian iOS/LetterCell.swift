@@ -41,7 +41,7 @@ class LetterCell: MKTableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         if data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")

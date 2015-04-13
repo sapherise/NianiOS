@@ -83,12 +83,12 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         return true
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return  81
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        var data = self.dataArray[indexPath.row] as NSDictionary
+        var data = self.dataArray[indexPath.row] as! NSDictionary
         var id = data.stringAttributeForKey("id")
         if  id == "0" {
             onBBSClick()
@@ -108,7 +108,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
     func SALoadData() {
         go {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
+            var safeuid = Sa.objectForKey("uid") as! String
             sql_error = ""
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             if errCircle != nil {
@@ -143,7 +143,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                 self.tableView.headerEndRefreshing()
                 if self.dataArray.count == 1 {
                     var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
-                    var viewTop = NibCircleCell.objectAtIndex(0) as CircleCell
+                    var viewTop = NibCircleCell.objectAtIndex(0) as! CircleCell
                     viewTop.labelTitle.text = "发现梦境"
                     viewTop.labelContent.text = "和大家一起组队造梦"
                     viewTop.labelCount.hidden = true
@@ -184,16 +184,16 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         var cell:UITableViewCell
         var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? CircleCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         c!.data = data
         cell = c!
         return cell
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        var data = self.dataArray[indexPath.row] as NSDictionary
-        var id = data.objectForKey("id") as String
-        var title = data.objectForKey("title") as String
+    func tableView(tableView: UITableView,didSelectRowAtIndexPath indexPath: NSIndexPath){
+        var data = self.dataArray[indexPath.row] as! NSDictionary
+        var id = data.objectForKey("id") as! String
+        var title = data.objectForKey("title") as! String
         var CircleVC = CircleController()
         if id != "0" {
             var theID = id.toInt()!
@@ -201,7 +201,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             CircleVC.circleTitle = title
             self.navigationController?.pushViewController(CircleVC, animated: true)
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
+            var safeuid = Sa.objectForKey("uid") as! String
             SD.executeChange("update circle set isread = 1 where circle = \(theID) and isread = 0 and owner = \(safeuid)")
             self.SALoadData()
         }else{

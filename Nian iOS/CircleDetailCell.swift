@@ -28,12 +28,12 @@ class CircleDetailCell: MKTableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var uid = self.data.objectForKey("uid") as String
-        var name = self.data.objectForKey("name") as String
-        var dream = self.data.objectForKey("dream") as String
-        var level = self.data.objectForKey("level") as String
-        var cover = self.data.objectForKey("dreamcover") as String
-        var title = self.data.objectForKey("title") as String
+        var uid = self.data.objectForKey("uid") as! String
+        var name = self.data.objectForKey("name") as! String
+        var dream = self.data.objectForKey("dream") as! String
+        var level = self.data.objectForKey("level") as! String
+        var cover = self.data.objectForKey("dreamcover") as! String
+        var title = self.data.objectForKey("title") as! String
         var theLevel = ""
         if level == "9" {
             theLevel = "组长"

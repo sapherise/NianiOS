@@ -61,7 +61,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
         }
         Api.getDreamTag(self.hashTag) { json in
             if json != nil {
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -96,7 +96,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as AddStepCell
+        var c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as! AddStepCell
         var index = indexPath.row
         c.data = self.dataArray[index] as? NSDictionary
         cell = c
@@ -114,9 +114,9 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as? NSDictionary
-        var id = data!.objectForKey("id") as String     //选中梦想的编号
-        var title = data!.objectForKey("title") as String     //选中梦想的编号
-        var image = data!.objectForKey("img") as String     //选中梦想的编号
+        var id = data!.objectForKey("id") as! String     //选中梦想的编号
+        var title = data!.objectForKey("title") as! String     //选中梦想的编号
+        var image = data!.objectForKey("img") as! String     //选中梦想的编号
         var userImageURL = "http://img.nian.so/dream/\(image)!dream"
         self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
         self.labelDream.text = title
@@ -156,8 +156,8 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
         var content = self.textView.text
         content = SAEncode(SAHtml(content))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if self.dreamID != "0" {
             self.btnOK.setTitle("", forState: UIControlState.Normal)
             self.btnOK.enabled = false
@@ -165,17 +165,17 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
             self.activityOK.startAnimating()
             Api.postCircleJoinDirectly(self.circleID, dream: self.dreamID, word: content) { json in
                 if json != nil {
-                    var success = json!["success"] as String
-                    var reason = json!["reason"] as String
+                    var success = json!["success"] as! String
+                    var reason = json!["reason"] as! String
                     if success == "1" {
                         self.activityOK.stopAnimating()
                         self.activityOK.hidden = true
                         var textOK = ""
                         if self.thePrivate == "0" {
                             textOK = "加入好了！"
-                            var title = json!["title"] as String
-                            var image = json!["img"] as String
-                            var postdate = json!["postdate"] as String
+                            var title = json!["title"] as! String
+                            var image = json!["img"] as! String
+                            var postdate = json!["postdate"] as! String
                             SQLCircleListInsert(self.circleID, title, image, postdate)
                             self.delegate?.SAReloadData()
                         }else if self.thePrivate == "1" {

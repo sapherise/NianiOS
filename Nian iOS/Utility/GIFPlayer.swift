@@ -49,15 +49,15 @@ class GIFPlayer: UIView {
         var gif = Gif()
         if count > 0 {
             var property = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as NSDictionary
-            gif.Width = property.valueForKey(kCGImagePropertyPixelWidth as String)! as Float
-            gif.Height = property.valueForKey(kCGImagePropertyPixelHeight as String)! as Float
+            gif.Width = property.valueForKey(kCGImagePropertyPixelWidth as String)! as! Float
+            gif.Height = property.valueForKey(kCGImagePropertyPixelHeight as String)! as! Float
         }
         var totalTime: Float = 0
-        for var i: UInt = 0; i < count; i++ {
+        for var i: Int = 0; i < count; i++ {
             gif.Frames.append(CGImageSourceCreateImageAtIndex(source, i, nil))
             var property = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as NSDictionary
-            var gifProperty = property.valueForKey(kCGImagePropertyGIFDictionary as String) as NSDictionary
-            var duration = min(gifProperty.valueForKey(kCGImagePropertyGIFDelayTime as String)! as Float, 0.01)
+            var gifProperty = property.valueForKey(kCGImagePropertyGIFDictionary as String) as! NSDictionary
+            var duration = min(gifProperty.valueForKey(kCGImagePropertyGIFDelayTime as String)! as! Float, 0.01)
             gif.Times.append(duration)
             totalTime += duration
         }

@@ -32,7 +32,7 @@ extension UIImageView {
         var cacheFileName = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
-        if image as NSObject != NSNull() {
+        if image as! NSObject != NSNull() {
             self.image = image as? UIImage
             self.contentMode = UIViewContentMode.ScaleAspectFill
             if animated {
@@ -104,7 +104,7 @@ extension UIImageView {
         var cacheFileName = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
-        if image as NSObject != NSNull() {
+        if image as! NSObject != NSNull() {
             self.image = image as? UIImage
             self.contentMode = UIViewContentMode.ScaleAspectFill
             if animated {
@@ -147,7 +147,7 @@ extension UIImageView {
         var cacheFileName = url!.lastPathComponent
         var cachePath = FileUtility.cachePath(cacheFileName!)
         var image: AnyObject = FileUtility.imageDataFromPath(cachePath)
-        if image as NSObject != NSNull() {
+        if image as! NSObject != NSNull() {
             self.image = image as? UIImage
         }else {
             var networkStatus = checkNetworkStatus()

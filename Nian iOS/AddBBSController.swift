@@ -58,15 +58,15 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
     }
     
     func addBBSOK(){
-        if (( self.field1!.text != "" ) & ( self.field2!.text != "" ) & ( self.field2!.text != "话题内容" )) {
+        if (( self.field1!.text != "" ) && ( self.field2!.text != "" ) && ( self.field2!.text != "话题内容" )) {
             self.navigationItem.rightBarButtonItems = buttonArray()
             var title = self.field1!.text
             var content = self.field2!.text
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeshell = Sa.objectForKey("shell") as! String
             
             dispatch_async(dispatch_get_main_queue(), {
                 var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)", "http://nian.so/api/add_bbs.php")

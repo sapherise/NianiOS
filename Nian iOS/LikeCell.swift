@@ -45,8 +45,8 @@ class LikeCell: MKTableViewCell {
         self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if self.urlIdentify == 4 {
             self.btnFollow.layer.borderColor = SeaColor.CGColor
             self.btnFollow.layer.borderWidth = 1
@@ -118,8 +118,8 @@ class LikeCell: MKTableViewCell {
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                var safeshell = Sa.objectForKey("shell") as String
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeshell = Sa.objectForKey("shell") as! String
                 var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
                 if sa != "" && sa != "err" {
                 }
@@ -134,8 +134,8 @@ class LikeCell: MKTableViewCell {
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
-                var safeshell = Sa.objectForKey("shell") as String
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeshell = Sa.objectForKey("shell") as! String
                 var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
                 if sa != "" && sa != "err" {
                 }

@@ -60,10 +60,10 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
-                var data  = json!["user"] as NSDictionary
+                var data  = json!["user"] as! NSDictionary
                 var name = data.stringAttributeForKey("name")
                 var coverURL = data.stringAttributeForKey("cover")
                 var urlCover = "http://img.nian.so/cover/\(coverURL)!cover"
@@ -100,7 +100,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         // 顶部
         var nib2 = NSBundle.mainBundle().loadNibNamed("FindCellTop", owner: self, options: nil) as NSArray
-        self.viewFindCellTop = nib2.objectAtIndex(0) as FindCellTop
+        self.viewFindCellTop = nib2.objectAtIndex(0) as! FindCellTop
         self.viewFindCellTop.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
         self.viewFindCellTop.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
         self.viewFindCellTop.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
@@ -163,12 +163,12 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var cell = tableView.dequeueReusableCellWithIdentifier("FindCell", forIndexPath: indexPath) as? FindCell
         var index = indexPath.row
         if tableView == self.tableView {
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as! NSDictionary
             cell!.data = data
             cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             return cell!
         }else{
-            var data = self.dataArrayPhone[index] as NSDictionary
+            var data = self.dataArrayPhone[index] as! NSDictionary
             cell!.data = data
             cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             return cell!
@@ -183,7 +183,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func onWeiboClick() {
-        var request: WBAuthorizeRequest! = WBAuthorizeRequest.request() as WBAuthorizeRequest
+        var request: WBAuthorizeRequest! = WBAuthorizeRequest.request() as! WBAuthorizeRequest
         request.redirectURI = "https://api.weibo.com/oauth2/default.html"
         request.scope = "follow_app_official_microblog"
         WeiboSDK.sendRequest(request)
@@ -226,7 +226,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         Api.postPhone(list) { json in
             self.viewLoadingHide()
             if json != nil {
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 self.dataArrayPhone.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArrayPhone.addObject(data)
@@ -277,7 +277,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             Api.getWeibo(uid, Token: token) { json in
                 self.viewLoadingHide()
                 if json != nil {
-                    var arr = json!["items"] as NSArray
+                    var arr = json!["items"] as! NSArray
                     self.dataArray.removeAllObjects()
                     for data : AnyObject  in arr{
                         self.dataArray.addObject(data)
@@ -328,7 +328,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func sharePromo() {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         var url:NSURL = NSURL(string: "http://nian.so/m/user/\(safeuid)")!
         var image = self.getImageFromView(self.imagePromo)
         let activityView = UIActivityViewController(

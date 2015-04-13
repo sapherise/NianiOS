@@ -74,13 +74,13 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     func loadData() {
         Api.getCircleExplore("\(self.lastID)"){ json in
             if json != nil {
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
                 var count = self.dataArray.count
                 if count >= 1 {
-                    var data = self.dataArray[count - 1] as NSDictionary
+                    var data = self.dataArray[count - 1] as! NSDictionary
                     self.lastID = data.stringAttributeForKey("dreamdate")
                 }
                 self.tableView!.reloadData()
@@ -98,7 +98,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         Api.getCircleExplore("0"){ json in
             if json != nil {
                 self.viewLoadingHide()
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -108,7 +108,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
                 self.page = 1
                 var count = self.dataArray.count
                 if count >= 1 {
-                    var data = self.dataArray[count - 1] as NSDictionary
+                    var data = self.dataArray[count - 1] as! NSDictionary
                     self.lastID = data.stringAttributeForKey("dreamdate")
                 }
                 if self.dataArray.count < 30 {
@@ -130,7 +130,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         var cell:UITableViewCell
         var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? CircleExploreCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         c!.data = data
         if indexPath.row == self.dataArray.count - 1 {
             c!.viewLine.hidden = true
@@ -141,15 +141,15 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         return cell
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         return CircleExploreCell.cellHeightByData(data)
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        var data = self.dataArray[indexPath.row] as NSDictionary
-        var id = data.objectForKey("id") as String
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var data = self.dataArray[indexPath.row] as! NSDictionary
+        var id = data.objectForKey("id") as! String
         var circledetailVC = CircleDetailController()
         circledetailVC.Id = id
         self.navigationController?.pushViewController(circledetailVC, animated: true)

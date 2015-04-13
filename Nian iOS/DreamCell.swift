@@ -56,7 +56,7 @@ class DreamCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var liked = self.data.stringAttributeForKey("liked")
         content = self.data.stringAttributeForKey("content")
-        img = self.data.stringAttributeForKey("img") as NSString
+        img = self.data.stringAttributeForKey("img") as NSString as String
         img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
         img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
         var like = self.data.stringAttributeForKey("like") as String
@@ -104,8 +104,8 @@ class DreamCell: UITableViewCell {
             self.contentLabel!.setY(70)
         }else{
             imgHeight = img1 * Float(globalWidth) / img0
-            ImageURL = "http://img.nian.so/step/\(img)!large" as NSString
-            largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString
+            ImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
+            largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
             self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
             self.imageholder!.setWidth(globalWidth)
             self.imageholder!.setHeight(CGFloat(imgHeight))
@@ -123,7 +123,7 @@ class DreamCell: UITableViewCell {
         
         //主人
         var Sa = NSUserDefaults.standardUserDefaults()
-        var cookieuid: String = Sa.objectForKey("uid") as String
+        var cookieuid: String = Sa.objectForKey("uid") as! String
         
         if cookieuid == uid {
             self.likebutton!.hidden = true

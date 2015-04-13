@@ -72,8 +72,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
-        var sid:Int = content[2] as Int
-        var row:Int = (content[3] as Int)-10
+        var sid:Int = content[2] as! Int
+        var row:Int = (content[3] as! Int)-10
         var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
         
         var customActivity = SAActivity()
@@ -81,8 +81,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         customActivity.saActivityImage = UIImage(named: "flag")!
         customActivity.saActivityFunction = {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeshell = Sa.objectForKey("shell") as! String
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
                 if(sa == "1"){
@@ -110,7 +110,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         editActivity.saActivityTitle = "编辑"
         editActivity.saActivityImage = UIImage(named: "edit")!
         editActivity.saActivityFunction = {
-            var data = self.dataArray[row] as NSDictionary
+            var data = self.dataArray[row] as! NSDictionary
             var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
             addstepVC.isEdit = 1
             addstepVC.data = data
@@ -124,8 +124,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         }
         
         
-        if content[1] as NSString != "" {
-            var theimgurl:String = content[1] as String
+        if content[1] as! NSString != "" {
+            var theimgurl:String = content[1] as! String
             var imgurl = NSURL(string: theimgurl)!
             var cacheFilename = imgurl.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename!)
@@ -182,15 +182,15 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func SAReloadData(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         self.tableView?.setFooterHidden(false)
         Api.getSingleStep(self.Id) { json in
             if json != nil {
                 self.dataArray.removeAllObjects()
-                var uid = json!["uid"] as String
-                var thePrivate = json!["private"] as String
-                var arr = json!["items"] as NSArray
+                var uid = json!["uid"] as! String
+                var thePrivate = json!["private"] as! String
+                var arr = json!["items"] as! NSArray
                 if thePrivate == "2" {
                     // 删除
                     var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
@@ -200,7 +200,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
                     self.tableView?.tableHeaderView = viewHolder
                 }else{
                     for data: AnyObject in arr {
-                        var theData = data as NSDictionary
+                        var theData = data as! NSDictionary
                         var hidden = theData.stringAttributeForKey("hidden")
                         if hidden == "1" {
                             var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
@@ -227,9 +227,9 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as DreamCell
+        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DreamCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSMutableDictionary
+        var data = self.dataArray[index] as! NSMutableDictionary
         c.data = data
         c.indexPathRow = index
         c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
@@ -254,7 +254,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     // 赞
     func onLikeTap(sender: UIButton) {
         var tag = sender.tag
-        var data = self.dataArray[tag] as NSDictionary
+        var data = self.dataArray[tag] as! NSDictionary
         if let numLike = data.stringAttributeForKey("like").toInt() {
             var numNew = numLike + 1
             var mutableItem = NSMutableDictionary(dictionary: data)
@@ -271,7 +271,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     // 取消赞
     func onLikedTap(sender: UIButton) {
         var tag = sender.tag
-        var data = self.dataArray[tag] as NSDictionary
+        var data = self.dataArray[tag] as! NSDictionary
         if let numLike = data.stringAttributeForKey("like").toInt() {
             var numNew = numLike - 1
             var mutableItem = NSMutableDictionary(dictionary: data)
@@ -287,9 +287,9 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func onImageTap(sender: UITapGestureRecognizer) {
         var view  = self.findTableCell(sender.view)!
-        var img = dataArray[view.tag - 10].objectForKey("img") as String
-        var img0 = dataArray[view.tag - 10].objectForKey("img0") as NSString
-        var img1 = dataArray[view.tag - 10].objectForKey("img1") as NSString
+        var img = dataArray[view.tag - 10].objectForKey("img") as! String
+        var img0 = dataArray[view.tag - 10].objectForKey("img0") as! NSString
+        var img1 = dataArray[view.tag - 10].objectForKey("img1") as! NSString
         var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
         var w = CGFloat(img0.floatValue)
         var h = CGFloat(img1.floatValue)
@@ -312,7 +312,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func onCommentClick(sender:UIGestureRecognizer){
-        var dream:String = self.dataArray[0].objectForKey("dream") as String
+        var dream:String = self.dataArray[0].objectForKey("dream") as! String
         var tag = sender.view!.tag
         var DreamCommentVC = DreamCommentViewController()
         DreamCommentVC.dreamID = dream.toInt()!
@@ -333,9 +333,9 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        var index = indexPath!.row
-        var data = self.dataArray[index] as NSDictionary
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var index = indexPath.row
+        var data = self.dataArray[index] as! NSDictionary
         return  DreamCell.cellHeightByData(data)
     }
     
@@ -355,8 +355,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if actionSheet == self.deleteSheet {
             if buttonIndex == 0 {
                 var newpath = NSIndexPath(forRow: 0, inSection: 0)

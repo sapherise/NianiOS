@@ -72,7 +72,7 @@ class ContactsHelper {
                 phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("*", withString: "")
                 phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("+86", withString: "")
                 phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("+", withString: "")
-                list.append(phoneNumber!)
+                list.append(phoneNumber! as String)
             }
         }
         return list

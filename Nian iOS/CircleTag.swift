@@ -62,18 +62,18 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var index = indexPath.row
-        var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as TagMediaCell
-        var data = self.dataArray[index] as NSDictionary
-        var title = data.objectForKey("title") as String
-        var img = data.objectForKey("img") as String
+        var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as! TagMediaCell
+        var data = self.dataArray[index] as! NSDictionary
+        var title = data.objectForKey("title") as! String
+        var img = data.objectForKey("img") as! String
         mediaCell.label.text = "\(title)"
         mediaCell.imageView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         return mediaCell
     }
     
-    func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!) {
+    func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath) {
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         if dreamPromoDelegate != nil {  // 如果是推广梦想
             var id = data.stringAttributeForKey("id")
             var title = data.stringAttributeForKey("title")
@@ -82,8 +82,8 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
                 self.navigationController?.popViewControllerAnimated(true)
             }
         }else if circleTagDelegate != nil { // 如果是梦境绑定标签
-            var tag = (data.objectForKey("hashtag") as String).toInt()
-            var dreamType = (data.objectForKey("id") as String).toInt()
+            var tag = (data.objectForKey("hashtag") as! String).toInt()
+            var dreamType = (data.objectForKey("id") as! String).toInt()
             var textTag = "未选标签"
             if tag != nil {
                 if tag >= 1 {
@@ -99,15 +99,15 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func SAReloadData(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         var url = "http://nian.so/api/circle_tag.php?uid=\(safeuid)"
         if dreamPromoDelegate != nil {
             url = "http://nian.so/api/addstep_dream.php?uid=\(safeuid)&shell=\(safeshell)"
         }
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                var arr = data["items"] as NSArray
+            if data as! NSObject != NSNull() {
+                var arr = data["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)

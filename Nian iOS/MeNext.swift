@@ -63,11 +63,11 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                if ( data["total"] as Int ) < 30 {
+            if data as! NSObject != NSNull(){
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data["items"] as NSArray
+                var arr = data["items"] as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
@@ -82,11 +82,11 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         var url = urlString()
         self.tableView!.setFooterHidden(false)
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                if ( data["total"] as Int ) < 30 {
+            if data as! NSObject != NSNull(){
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data["items"] as NSArray
+                var arr = data["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -102,8 +102,8 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func urlString()->String{
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         return "http://nian.so/api/me_next.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)&&tag=\(self.tag)"
     }
     
@@ -124,7 +124,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
         cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
@@ -152,13 +152,13 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         return  MeCell.cellHeightByData(data)
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         var cid = data.stringAttributeForKey("cid")
         var uid = data.stringAttributeForKey("cuid")
         var user = data.stringAttributeForKey("cname")

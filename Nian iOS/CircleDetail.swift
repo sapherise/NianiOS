@@ -92,14 +92,14 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         Api.getCircleDetail(self.Id) { json in
             if json != nil {
                 self.viewLoadingHide()
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 var i = 0
-                var cicleArray = json!["circle"] as NSArray
+                var cicleArray = json!["circle"] as! NSArray
                 self.circleData = cicleArray[0] as? NSDictionary
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
-                    var num = ((data as NSDictionary).objectForKey("num") as String).toInt()!
+                    var num = ((data as! NSDictionary).objectForKey("num") as! String).toInt()!
                     if num > 0 {
                         i++
                     }
@@ -122,12 +122,12 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
         if indexPath.section==0{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as CircleDetailTop
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as! CircleDetailTop
             var index = indexPath.row
             var dreamid = Id
             c.dreamid = dreamid
             if self.circleData != nil {
-                self.thePrivate = self.circleData!.objectForKey("private") as String
+                self.thePrivate = self.circleData!.objectForKey("private") as! String
                 var textPrivate = ""
                 if self.thePrivate == "0" {
                     textPrivate = "任何人都可加入"
@@ -142,9 +142,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 c.switchNotice.addTarget(self, action: "onSwitch:", forControlEvents: UIControlEvents.ValueChanged)
                 c.numLeftNum.text = "\(self.dataArray.count)"
                 c.numMiddleNum.text = self.textPercent
-                self.editTitle = self.circleData!.objectForKey("title") as String
+                self.editTitle = self.circleData!.objectForKey("title") as! String
                 c.nickLabel.text = self.editTitle
-                self.editImage = self.circleData!.objectForKey("img") as String
+                self.editImage = self.circleData!.objectForKey("img") as! String
                 c.dreamhead.setImage("http://img.nian.so/dream/\(self.editImage)!dream", placeHolder: IconColor)
                 c.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCircleHeadClick:"))
                 var isJoin = self.circleData!.stringAttributeForKey("isJoin")
@@ -165,7 +165,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 if self.circleData!.stringAttributeForKey("doNotDisturb") == "1" {
                     c.switchNotice.switchSetup(false, cacheName: "", isCache: false)
                 }
-                self.editContent = self.circleData!.objectForKey("content") as String
+                self.editContent = self.circleData!.objectForKey("content") as! String
                 var textContent = ""
                 if self.editContent == "" {
                     textContent = "暂无简介"
@@ -180,9 +180,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             self.topCell = c
             cell = c
         }else{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CircleDetailCell
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! CircleDetailCell
             var index = indexPath.row
-            c.data = self.dataArray[index] as NSDictionary
+            c.data = self.dataArray[index] as! NSDictionary
             c.imageUser.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
             if indexPath.row == 0 {
@@ -212,7 +212,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func onCircleInviteClick(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         var LikeVC = LikeViewController()
         LikeVC.Id = safeuid
         LikeVC.urlIdentify = 4
@@ -233,7 +233,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.addView.addGestureRecognizer(Tap)
         
         var nib = NSBundle.mainBundle().loadNibNamed("CircleJoin", owner: self, options: nil) as NSArray
-        self.addStepView = nib.objectAtIndex(0) as CircleJoin
+        self.addStepView = nib.objectAtIndex(0) as! CircleJoin
         self.addStepView.delegate = self
         self.addStepView.circleID = self.Id
         self.addStepView.hashTag = self.theTag + 1
@@ -261,7 +261,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func onCloseConfirm(){
-        if (self.addStepView.textView.text != "我想加入这个梦境！") & (self.addStepView.textView.text != "") {
+        if (self.addStepView.textView.text != "我想加入这个梦境！") && (self.addStepView.textView.text != "") {
             self.addStepView.textView.resignFirstResponder()
             self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             self.cancelSheet!.addButtonWithTitle("不写了")
@@ -276,7 +276,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     func onCircleDetailMoreClick(){
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if self.circleData != nil {
-            self.theLevel = self.circleData!.objectForKey("level") as String
+            self.theLevel = self.circleData!.objectForKey("level") as! String
             if self.theLevel == "9" {
                 self.actionSheet!.addButtonWithTitle("编辑梦境资料")
                 self.actionSheet!.addButtonWithTitle("解散梦境")
@@ -329,7 +329,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         return nil
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section==0{
             if self.circleData != nil {
                 var isJoin = self.circleData!.stringAttributeForKey("isJoin")
@@ -339,16 +339,16 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             }
             return 495
         }else{
-            var index = indexPath!.row
-            var data = self.dataArray[index] as NSDictionary
+            var index = indexPath.row
+            var data = self.dataArray[index] as! NSDictionary
             return  CircleDetailCell.cellHeightByData(data)
         }
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if actionSheet == self.actionSheet {
             if self.theLevel == "9" {
                 if buttonIndex == 0 {
@@ -442,8 +442,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.viewLoadingShow()
         Api.postCirclePromo(self.Id, promouid: self.selectUid, promoname: self.selectName){ json in
             if json != nil {
-                var success = json!["success"] as String
-                var reason = json!["reason"] as String
+                var success = json!["success"] as! String
+                var reason = json!["reason"] as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
                     self.SAReloadData()
@@ -467,8 +467,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.viewLoadingShow()
         Api.postCircleDemo(self.Id, promouid: self.selectUid, promoname: self.selectName) { json in
             if json != nil {
-                var success = json!["success"] as String
-                var reason = json!["reason"] as String
+                var success = json!["success"] as! String
+                var reason = json!["reason"] as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
                     self.SAReloadData()
@@ -499,8 +499,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         Api.postCircleFire(self.Id, fireuid: self.selectUid){ json in
             if json != nil {
                 self.viewLoadingHide()
-                var success = json!["success"] as String
-                var reason = json!["reason"] as String
+                var success = json!["success"] as! String
+                var reason = json!["reason"] as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
                     var newpath = NSIndexPath(forRow: self.selectRow, inSection: 1)
@@ -578,11 +578,11 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         if section==1 {
             self.actionSheetPromote = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var data = self.dataArray[indexPath.row] as NSDictionary
-            var level = data.objectForKey("level") as String
-            var uid = data.objectForKey("uid") as String
-            var dream = data.objectForKey("dream") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var data = self.dataArray[indexPath.row] as! NSDictionary
+            var level = data.objectForKey("level") as! String
+            var uid = data.objectForKey("uid") as! String
+            var dream = data.objectForKey("dream") as! String
             var name = data.stringAttributeForKey("name")
             self.selectUid = uid.toInt()!
             self.selectName = name
@@ -590,7 +590,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
             self.selectLevel = level.toInt()!
             self.selectRow = indexPath.row
             if self.circleData != nil {
-                self.theLevel = self.circleData!.objectForKey("level") as String
+                self.theLevel = self.circleData!.objectForKey("level") as! String
                 if self.theLevel == "" {
                     self.theLevel = "0"
                 }

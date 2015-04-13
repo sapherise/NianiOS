@@ -59,7 +59,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.uploadFile(image)
     }
@@ -73,7 +73,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
             self.uploadDone!.hidden = false
-            self.uploadUrl = uploadData.objectForKey("url") as String
+            self.uploadUrl = uploadData.objectForKey("url") as! String
             var width: AnyObject? = uploadData.objectForKey("image-width")
             self.uploadWidth = "\(width!)"
             var height: AnyObject? = uploadData.objectForKey("image-height")
@@ -85,7 +85,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             self.uploadWait!.stopAnimating()
             self.uploadDone!.hidden = true
         })
-        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png"))
+        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png") as String)
     }
     
     
@@ -114,12 +114,12 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         self.viewHolder.setWidth(globalWidth)
         
         if self.isEdit == 1 {
-            self.Id = self.data!.objectForKey("sid") as String
-            self.TextView.text =  self.data!.objectForKey("content") as String
+            self.Id = self.data!.objectForKey("sid") as! String
+            self.TextView.text =  self.data!.objectForKey("content") as! String
             
-            self.uploadUrl = self.data!.objectForKey("img") as String
-            self.uploadWidth = self.data!.objectForKey("img0") as String
-            self.uploadHeight = self.data!.objectForKey("img1") as String
+            self.uploadUrl = self.data!.objectForKey("img") as! String
+            self.uploadWidth = self.data!.objectForKey("img0") as! String
+            self.uploadHeight = self.data!.objectForKey("img1") as! String
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
@@ -163,8 +163,8 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         Api.postAddStep(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 globalWillNianReload = 1
-                var coin = json!["coin"] as String
-                var isfirst = json!["isfirst"] as String
+                var coin = json!["coin"] as! String
+                var isfirst = json!["isfirst"] as! String
                 dispatch_async(dispatch_get_main_queue(), {
                     self.navigationController?.popViewControllerAnimated(true)
                     self.delegate?.countUp(coin, isfirst: isfirst)
@@ -178,8 +178,8 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa=SAPost("sid=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/editstep_query.php")
             if(sa == "1"){

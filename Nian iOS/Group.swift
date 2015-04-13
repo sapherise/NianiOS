@@ -80,8 +80,8 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func loadData() {
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                var arr = data["items"] as NSArray
+            if data as! NSObject != NSNull() {
+                var arr = data["items"] as! NSArray
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
                 }
@@ -96,9 +96,9 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func SAReloadData(){
         var url = "http://nian.so/api/bbs.php?page=0"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
+            if data as! NSObject != NSNull(){
                 self.viewLoadingHide()
-                var arr = data["items"] as NSArray
+                var arr = data["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -135,7 +135,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var cell:UITableViewCell
         var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         c!.data = data
         if indexPath.row == self.dataArray.count - 1 {
             c!.viewLine.hidden = true
@@ -152,16 +152,15 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        var index = indexPath!.row
-        var data = self.dataArray[index] as NSDictionary
+        var index = indexPath.row
+        var data = self.dataArray[index] as! NSDictionary
         return  GroupCell.cellHeightByData(data)
     }
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
-    {
-        var index = indexPath!.row
-        var data = self.dataArray[index] as NSDictionary
+    func tableView(tableView: UITableView,didSelectRowAtIndexPath indexPath: NSIndexPath)    {
+        var index = indexPath.row
+        var data = self.dataArray[index] as! NSDictionary
         var BBSVC = BBSViewController()
         BBSVC.Id = data.stringAttributeForKey("id")
         BBSVC.topcontent = data.stringAttributeForKey("content")

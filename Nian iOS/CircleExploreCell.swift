@@ -38,13 +38,13 @@ class CircleExploreCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.objectForKey("id") as String
-        var title = self.data.objectForKey("title") as String
-        var img = self.data.objectForKey("img") as String
-        var tag = self.data.objectForKey("tag") as String
-        var people = self.data.objectForKey("people") as String
-        var content = self.data.objectForKey("content") as String
-        var chat = self.data.objectForKey("chat") as String
+        var id = self.data.objectForKey("id") as! String
+        var title = self.data.objectForKey("title") as! String
+        var img = self.data.objectForKey("img") as! String
+        var tag = self.data.objectForKey("tag") as! String
+        var people = self.data.objectForKey("people") as! String
+        var content = self.data.objectForKey("content") as! String
+        var chat = self.data.objectForKey("chat") as! String
         if let IntTag = tag.toInt() {
             self.labelTag.text = V.Tags[IntTag-1]
         }

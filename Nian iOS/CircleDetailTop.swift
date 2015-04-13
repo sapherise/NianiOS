@@ -83,7 +83,7 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
             return false
         }else{
-            let panGesture = gestureRecognizer as UIPanGestureRecognizer
+            let panGesture = gestureRecognizer as! UIPanGestureRecognizer
             let panY = panGesture.locationInView(self).y
             let translation = panGesture.translationInView(self)
             if panY > 287 {

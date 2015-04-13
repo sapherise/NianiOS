@@ -57,13 +57,13 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var index = indexPath.row
-        var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as TagMediaCell
+        var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as! TagMediaCell
         mediaCell.label.text = "\(V.Tags[index])"
         mediaCell.imageView.image = UIImage(named: "tag\(self.imgArray[index])")
         return mediaCell
     }
     
-    func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath!) {
+    func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath) {
         dreamTagDelegate?.onTagSelected(V.Tags[indexPath.row], tagType: indexPath.row)
         self.navigationController?.popViewControllerAnimated(true)
     }

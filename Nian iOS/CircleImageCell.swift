@@ -39,7 +39,7 @@ class CircleImageCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
         var cid = self.data.stringAttributeForKey("cid")
-        var type = (self.data.objectForKey("type") as String).toInt()!
+        var type = (self.data.objectForKey("type") as! String).toInt()!
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         self.avatarView.setHead(uid)
@@ -47,8 +47,8 @@ class CircleImageCell: UITableViewCell {
         self.avatarView!.tag = uid.toInt()!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if uid == safeuid {
                 layoutImage(height, content: content, user: user, lastdate: lastdate, isMe: true)
         }else{

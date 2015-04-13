@@ -861,9 +861,9 @@
 			children = (
 				1275E4B319A8D02600E2FC4C /* Images.xcassets */,
 				12FB489B196AE76E0026DD51 /* Nian iOS */,
-				12FB489A196AE76E0026DD51 /* Products */,
 				12FB48BD196AE8010026DD51 /* Utility */,
 				B63CD37464934379B52680E0 /* Frameworks */,
+				12FB489A196AE76E0026DD51 /* Products */,
 				AD792103EEA56B9F94E30178 /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -1455,7 +1455,24 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 				);
 				New_Setting = "";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"MobClickLibrary\"",
+					"-l\"Pods-Nian iOS-Base64\"",
+					"-l\"Pods-Nian iOS-NSData+MD5Digest\"",
+					"-l\"Pods-Nian iOS-UMengAnalytics-NO-IDFA\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";
@@ -1487,7 +1504,24 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 				);
 				New_Setting = "";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"MobClickLibrary\"",
+					"-l\"Pods-Nian iOS-Base64\"",
+					"-l\"Pods-Nian iOS-NSData+MD5Digest\"",
+					"-l\"Pods-Nian iOS-UMengAnalytics-NO-IDFA\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";

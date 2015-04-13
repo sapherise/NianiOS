@@ -50,11 +50,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 }else{
                     // 如果被封号
                     if isgameover != "0" {
-                        var data = json!["dream"] as NSDictionary
+                        var data = json!["dream"] as! NSDictionary
                         self.gameoverId = data.stringAttributeForKey("id")
                         var gameoverDays = data.stringAttributeForKey("days")
                         
-                        self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
+                        self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
                         self.GameOverView.textTitle = "游戏结束"
                         self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
                         self.GameOverView.heightImage = 130
@@ -202,7 +202,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var count = 5
         for var index = 0; index < count; index++ {
             var btnWidth = CGFloat(index) * globalWidth * 0.2
-            var button  = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+            var button  = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
             button.frame = CGRectMake(btnWidth, 1, globalWidth * 0.2 ,49)
             button.tag = index+100
             var image = self.imageArray[index]
@@ -289,9 +289,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func initViewControllers() {
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as UIViewController
+        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! UIViewController
         var vc1 = NianViewController
-        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as UIViewController
+        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         var vc4 = MeViewController()
         var vc5 = CircleListController()
@@ -304,7 +304,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func tabBarButtonClicked(sender:UIButton){
         var index = sender.tag
         for var i = 0;i<5;i++ {
-            var button = self.view.viewWithTag(i+100) as UIButton
+            var button = self.view.viewWithTag(i+100) as! UIButton
             if index != 102 {
                 if button.tag == index{
                     button.selected = true
@@ -364,7 +364,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.addView.addGestureRecognizer(Tap)
             
             var nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
-            self.addStepView = nib.objectAtIndex(0) as AddStep
+            self.addStepView = nib.objectAtIndex(0) as! AddStep
             self.addStepView.delegate = self
             self.addStepView.setX(globalWidth/2-140)
             self.addStepView.setY(globalHeight/2-106)
@@ -407,7 +407,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func onCloseConfirm(){
-        if ((self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
+        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
             self.addStepView.textView.resignFirstResponder()
             self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             self.cancelSheet!.addButtonWithTitle("不写了")
@@ -424,7 +424,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.addStepView.setY(globalHeight/2-106)
         })
-        if ((self.addStepView.textView.text != "进展正文") & (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
+        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
             self.addStepView.textView.resignFirstResponder()
         }else{
             self.onViewCloseClick()
@@ -434,8 +434,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func enter() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeshell = Sa.objectForKey("shell") as! String
             client.setOnState(self.on_state)
             var r = client.enter(safeuid, shell: safeshell)
         })
@@ -454,15 +454,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func on_poll(obj: AnyObject?) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeuser = Sa.objectForKey("user") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeuser = Sa.objectForKey("user") as! String
             if obj != nil {
                 var msg: AnyObject? = obj!["msg"]
-                var json = msg!["msg"] as NSArray
+                var json = msg!["msg"] as! NSArray
                 var count = json.count - 1
                 if count >= 0 {
                     for i: Int in 0...count {
-                        var data: NSDictionary = json[i] as NSDictionary
+                        var data: NSDictionary = json[i] as! NSDictionary
                         var id = data.stringAttributeForKey("msgid")
                         var uid = data.stringAttributeForKey("from")
                         var name = data.stringAttributeForKey("fromname")
@@ -489,10 +489,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                     Api.getCircleStatus(circle) { json in
                                         if json != nil {
-                                            var numStatus = json!["count"] as String
-                                            var titleStatus = json!["title"] as String
-                                            var imageStatus = json!["img"] as String
-                                            var postdateStatus = json!["postdate"] as String
+                                            var numStatus = json!["count"] as! String
+                                            var titleStatus = json!["title"] as! String
+                                            var imageStatus = json!["img"] as! String
+                                            var postdateStatus = json!["postdate"] as! String
                                             if numStatus == "1" {
                                                 // 添加
                                                 SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
@@ -505,7 +505,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                         if json != nil {
                                             if let item = json!["items"] as? NSArray {
                                                 if item.count > 0 {
-                                                    var dataStep = item[0] as NSDictionary
+                                                    var dataStep = item[0] as! NSDictionary
                                                     var sid = dataStep.stringAttributeForKey("sid")
                                                     var uid = dataStep.stringAttributeForKey("uid")
                                                     var dream = dataStep.stringAttributeForKey("dream")
@@ -559,9 +559,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 if json != nil {
                     // 成功
                     var a: Int = 0
-                    var arr = json!["items"] as NSArray
+                    var arr = json!["items"] as! NSArray
                     for i : AnyObject  in arr {
-                        var data = i as NSDictionary
+                        var data = i as! NSDictionary
                         var id = data.stringAttributeForKey("id")
                         var uid = data.stringAttributeForKey("uid")
                         var name = data.stringAttributeForKey("name")
@@ -579,15 +579,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid!)' order by id desc limit  1")
                         if resultSet2.count == 0 {
                             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                            var safeuid = Sa.objectForKey("uid") as String
-                            var safeuser = Sa.objectForKey("user") as String
+                            var safeuid = Sa.objectForKey("uid") as! String
+                            var safeuser = Sa.objectForKey("user") as! String
                             if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                 Api.getCircleStatus(circle) { json in
                                     if json != nil {
-                                        var numStatus = json!["count"] as String
-                                        var titleStatus = json!["title"] as String
-                                        var imageStatus = json!["img"] as String
-                                        var postdateStatus = json!["postdate"] as String
+                                        var numStatus = json!["count"] as! String
+                                        var titleStatus = json!["title"] as! String
+                                        var imageStatus = json!["img"] as! String
+                                        var postdateStatus = json!["postdate"] as! String
                                         if numStatus == "1" {
                                             // 添加
                                             SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
@@ -599,7 +599,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     if json != nil {
                                         if let item = json!["items"] as? NSArray {
                                             if item.count > 0 {
-                                                var data = item[0] as NSDictionary
+                                                var data = item[0] as! NSDictionary
                                                 var sid = data.stringAttributeForKey("sid")
                                                 var uid = data.stringAttributeForKey("uid")
                                                 var dream = data.stringAttributeForKey("dream")
@@ -641,9 +641,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if json != nil {
                 // 成功
                 var a: Int = 0
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 for i : AnyObject  in arr {
-                    var data = i as NSDictionary
+                    var data = i as! NSDictionary
                     var id = data.stringAttributeForKey("id")
                     var uid = data.stringAttributeForKey("uid")
                     var name = data.stringAttributeForKey("name")
@@ -656,12 +656,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         isread = 1
                     }
                     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                    var safeuid = Sa.objectForKey("uid") as String
+                    var safeuid = Sa.objectForKey("uid") as! String
                     let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        var safeuid = Sa.objectForKey("uid") as String
-                        var safeuser = Sa.objectForKey("user") as String
+                        var safeuid = Sa.objectForKey("uid") as! String
+                        var safeuser = Sa.objectForKey("user") as! String
                         SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
                             var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                             NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)

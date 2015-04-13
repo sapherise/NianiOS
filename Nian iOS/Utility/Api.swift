@@ -17,8 +17,8 @@ struct Api {
     private static func loadCookies() {
         if (!s_load) {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            s_uid = Sa.objectForKey("uid") as String
-            s_shell = Sa.objectForKey("shell") as String
+            s_uid = Sa.objectForKey("uid") as! String
+            s_shell = Sa.objectForKey("shell") as! String
             s_load = true
         }
     }
@@ -69,7 +69,7 @@ struct Api {
     
     static func postLikeStep(sid: String, like: Int, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback)
+        V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback: callback)
     }
     
     static func postCircle(page: String, callback: V.JsonCallback) {

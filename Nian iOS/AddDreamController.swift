@@ -85,7 +85,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.uploadFile(image)
     }
@@ -99,7 +99,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
             self.uploadButton!.hidden = false
-            self.uploadUrl = data.objectForKey("url") as String
+            self.uploadUrl = data.objectForKey("url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
@@ -109,7 +109,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadWait!.stopAnimating()
             self.uploadButton!.hidden = false
         })
-        uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png"))
+        uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
     
     override func viewDidLoad() {
@@ -187,7 +187,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func onTagClick(){
         var storyboard = UIStoryboard(name: "DreamTagViewController", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("DreamTagViewController") as DreamTagViewController
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("DreamTagViewController") as! DreamTagViewController
         viewController.dreamTagDelegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -220,8 +220,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             content = SAEncode(SAHtml(content!))
             
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeshell = Sa.objectForKey("shell") as! String
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.isPrivate)&&hashtag=\(self.tagType)", "http://nian.so/api/add_query.php")
                 if(sa == "1"){
@@ -245,8 +245,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             content = SAEncode(SAHtml(content!))
             
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safeshell = Sa.objectForKey("shell") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safeshell = Sa.objectForKey("shell") as! String
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.editPrivate)&&id=\(self.editId)&&hashtag=\(self.tagType)", "http://nian.so/api/editdream.php")
                 if(sa == "1"){

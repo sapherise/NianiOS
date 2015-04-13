@@ -62,15 +62,15 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                var arr = data["items"] as NSArray
+            if data as! NSObject != NSNull(){
+                var arr = data["items"] as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
                 self.page++
-                if ( data["total"] as Int ) < 30 {
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
             }
@@ -81,11 +81,11 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.page = 0
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                if ( data["total"] as Int ) < 30 {
+            if data as! NSObject != NSNull(){
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data["items"] as NSArray
+                var arr = data["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -107,7 +107,7 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
@@ -119,7 +119,7 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? TagCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         return cell!
     }
@@ -132,8 +132,8 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
-        var id = data.objectForKey("id") as String
+        var data = self.dataArray[index] as! NSDictionary
+        var id = data.objectForKey("id") as! String
         var DreamVC = DreamViewController()
         DreamVC.Id = id
         self.navigationController!.pushViewController(DreamVC, animated: true)

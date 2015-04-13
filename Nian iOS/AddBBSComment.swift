@@ -92,8 +92,8 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/addbbscomment_query.php")
             if sa != "" && sa != "err" {

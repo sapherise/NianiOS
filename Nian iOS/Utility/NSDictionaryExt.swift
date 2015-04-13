@@ -19,10 +19,10 @@ extension NSDictionary {
         }
         if obj!.isKindOfClass(NSNumber)
         {
-            var num = obj as NSNumber
+            var num = obj as! NSNumber
             return num.stringValue
         }
-       return obj! as String
+       return obj! as! String
     }
     
 }

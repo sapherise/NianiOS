@@ -54,16 +54,16 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.btnOK.enabled = false
         Api.getDreamNewest() { json in
             if json != nil {
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
-                var data = self.dataArray[0] as NSDictionary
-                var id = data.objectForKey("id") as String
-                var title = data.objectForKey("title") as String
-                var image = data.objectForKey("img") as String
+                var data = self.dataArray[0] as! NSDictionary
+                var id = data.objectForKey("id") as! String
+                var title = data.objectForKey("title") as! String
+                var image = data.objectForKey("img") as! String
                 var userImageURL = "http://img.nian.so/dream/\(image)!dream"
                 self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
                 self.dreamID = id
@@ -76,7 +76,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as AddStepCell
+        var c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as! AddStepCell
         var index = indexPath.row
         c.data = self.dataArray[index] as? NSDictionary
         cell = c
@@ -94,9 +94,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as? NSDictionary
-        var id = data!.objectForKey("id") as String     //选中梦想的编号
-        var title = data!.objectForKey("title") as String     //选中梦想的编号
-        var image = data!.objectForKey("img") as String     //选中梦想的编号
+        var id = data!.objectForKey("id") as! String     //选中梦想的编号
+        var title = data!.objectForKey("title") as! String     //选中梦想的编号
+        var image = data!.objectForKey("img") as! String     //选中梦想的编号
         var userImageURL = "http://img.nian.so/dream/\(image)!dream"
         self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
         self.labelDream.text = title
@@ -165,14 +165,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         Api.postAddStep(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 self.textView.resignFirstResponder()
-                var coin = json!["coin"] as String
-                var isfirst = json!["isfirst"] as String
+                var coin = json!["coin"] as! String
+                var isfirst = json!["isfirst"] as! String
                 globalWillNianReload = 1
                 if isfirst == "1" {
                     globalWillNianReload = 1
                     self.hidden = true
                     self.delegate?.onViewCloseHidden()
-                    self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as Popup
+                    self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
                     self.viewCoin.viewBackGround.translucentAlpha = 0
                     self.viewCoin.textTitle = "获得 \(coin) 念币"
                     self.viewCoin.textContent = "你获得了念币奖励！"
@@ -229,7 +229,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.uploadFile(image)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -252,14 +252,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             self.imageUploaded.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageUploadedClick:"))
             self.imageUploaded.clipsToBounds = true
             self.textView.setWidth(208)
-            self.uploadUrl = uploadData.objectForKey("url") as String
+            self.uploadUrl = uploadData.objectForKey("url") as! String
             var width: AnyObject? = uploadData.objectForKey("image-width")
             self.uploadWidth = "\(width!)"
             var height: AnyObject? = uploadData.objectForKey("image-height")
             self.uploadHeight = "\(height!)"
             self.uploadUrl = SAReplace(self.uploadUrl, "/step/", "") as String
         })
-        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png"))
+        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png") as String)
     }
     
     func onImageUploadedClick(sender:UIGestureRecognizer) {
@@ -289,8 +289,8 @@ class AddStepCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            var title:String = self.data!.objectForKey("title") as String
-            var image:String = self.data!.objectForKey("img") as String
+            var title:String = self.data!.objectForKey("title") as! String
+            var image:String = self.data!.objectForKey("img") as! String
             var userImageURL = "http://img.nian.so/dream/\(image)!dream"
             self.labelTitle.text = title
             self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)

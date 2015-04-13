@@ -61,8 +61,8 @@ class CommentCell: UITableViewCell {
         self.lastdate.setBottom(height + 60)
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if uid == safeuid {
             self.imageContent.image = UIImage(named: "bubble_me")
             self.contentLabel.textColor = UIColor.blackColor()

@@ -34,7 +34,7 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
             json in
             var success = false
             if json != nil {
-                var items = json!["items"] as NSArray
+                var items = json!["items"] as! NSArray
                 if items.count != 0 {
                     if clear {
                         self.dataSource.removeAll(keepCapacity: true)
@@ -42,14 +42,14 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
                     success = true
                     for item in items {
                         var data = Data()
-                        data.id = item["id"] as String
-                        data.uid = item["uid"] as String
-                        data.user = item["user"] as String
-                        data.des = item["des"] as String
-                        data.title = item["title"] as String
-                        data.img = item["img"] as String
-                        data.step = item["step"] as String
-                        data.like = item["like"] as String
+                        data.id = item["id"] as! String
+                        data.uid = item["uid"] as! String
+                        data.user = item["user"] as! String
+                        data.des = item["des"] as! String
+                        data.title = item["title"] as! String
+                        data.img = item["img"] as! String
+                        data.step = item["step"] as! String
+                        data.like = item["like"] as! String
                         self.dataSource.append(data)
                     }
                 }

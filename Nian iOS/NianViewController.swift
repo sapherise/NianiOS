@@ -110,8 +110,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.collectionView.registerNib(nib, forCellWithReuseIdentifier: "NianCell")
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safename = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safename = Sa.objectForKey("user") as! String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         self.UserName.text = "\(safename)"
         self.UserHead.setHead(safeuid)
@@ -181,12 +181,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func setupUserTop(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safename = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safename = Sa.objectForKey("user") as! String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
-                var data = json!.objectForKey("user") as NSDictionary
+                var data = json!.objectForKey("user") as! NSDictionary
                 var name = data.stringAttributeForKey("name")
                 var email = data.stringAttributeForKey("email")
                 var coin = data.stringAttributeForKey("coin")
@@ -234,7 +234,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func stepClick(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         var userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)
@@ -247,7 +247,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func coinClick(){
         var storyboard = UIStoryboard(name: "Coin", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") as UIViewController
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") as! UIViewController
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
@@ -286,8 +286,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell:UICollectionViewCell
         var index = indexPath.row
-        var c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as NianCell
-        var data = self.dataArray[index] as NSDictionary
+        var c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as! NianCell
+        var data = self.dataArray[index] as! NSDictionary
         c.data = data
         c.total = self.dataArray.count
         
@@ -304,7 +304,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         var id = data.stringAttributeForKey("id")
         self.onDreamClick(id)
     }
@@ -329,7 +329,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         Api.getNian() { json in
             if json != nil {
                 self.viewErr.hidden = true
-                var arr = json!["items"] as NSArray
+                var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)

@@ -32,7 +32,7 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView!)->UIView {
+    func viewForZoomingInScrollView(scrollView: UIScrollView)->UIView? {
         return self.imageView!
     }
     

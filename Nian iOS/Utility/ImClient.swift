@@ -29,9 +29,9 @@ func httpParams(params: [String: String]) -> String {
         }
         s.appendString(k)
         s.appendString("=")
-        s.appendString(CFURLCreateStringByAddingPercentEscapes(nil, v, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue))
+        s.appendString(CFURLCreateStringByAddingPercentEscapes(nil, v, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue) as String)
     }
-    return s
+    return s as String
 }
 
 func httpGet(requestURL: String, params: String) -> AnyObject? {
@@ -174,7 +174,7 @@ class ImClient {
     }
     
     private func peekStatus(obj: AnyObject) -> Int {
-        return obj["status"] as Int
+        return obj["status"] as! Int
     }
     
     private func setState(state: State) {
@@ -260,7 +260,7 @@ class ImClient {
             if status == statusSuccess {
                 m_uid = uid
                 m_shell = shell
-                m_sid = json!["sid"] as String
+                m_sid = json!["sid"] as! String
                 setState(.authed)
                 return 0
             }
@@ -286,16 +286,16 @@ class ImClient {
     
     func sendGroupMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safename = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safename = Sa.objectForKey("user") as! String
         var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)", "msgid": "1"]))
         return json
     }
     
     func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safename = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safename = Sa.objectForKey("user") as! String
         var json: AnyObject? = httpPost(m_landServer  + "msg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "msgid": "1"]))
         return json
         // gmsg 变成 msg，cid 删除掉

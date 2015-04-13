@@ -85,7 +85,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.uploadFile(image)
     }
@@ -99,7 +99,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
             self.uploadButton!.hidden = false
-            self.uploadUrl = data.objectForKey("url") as String
+            self.uploadUrl = data.objectForKey("url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
@@ -109,7 +109,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             self.uploadWait!.stopAnimating()
             self.uploadButton!.hidden = false
         })
-        uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png"))
+        uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
     
     override func viewDidLoad() {
@@ -183,7 +183,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     
     func onTagClick(){
         var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as CircleTagViewController
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as! CircleTagViewController
         viewController.circleTagDelegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -226,9 +226,9 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: self.tagType, dream: self.dreamType) {
                 json in
                 if json != nil {
-                    var id = json!["id"] as String
-                    var postdate = json!["postdate"] as String
-                    var success = json!["success"] as String
+                    var id = json!["id"] as! String
+                    var postdate = json!["postdate"] as! String
+                    var success = json!["success"] as! String
                     if success == "1" {
                         globalWillNianReload = 1
                         var theTitle = self.field1?.text

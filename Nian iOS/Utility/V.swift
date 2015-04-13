@@ -89,7 +89,7 @@ struct V {
             var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
             var string: String?
             if data != nil {
-                string = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                string = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
             }
             dispatch_async(dispatch_get_main_queue(), {
                 callback(string)
@@ -108,7 +108,7 @@ struct V {
             var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
             var string: String?
             if  error == nil {
-                string = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                string = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
             }
             dispatch_async(dispatch_get_main_queue(), {
                 callback(string)
@@ -235,7 +235,7 @@ extension UIView {
     func findRootViewController() -> UIViewController? {
         for var view: UIView? = self; view != nil; view = view!.superview {
             var responder = view?.nextResponder()
-            if responder? is UIViewController {
+            if responder! is UIViewController {
                 return responder as? UIViewController
             }
         }

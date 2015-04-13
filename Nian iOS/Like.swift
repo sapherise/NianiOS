@@ -68,15 +68,15 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func loadData(){
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                var arr = data["items"] as NSArray
+            if data as! NSObject != NSNull(){
+                var arr = data["items"] as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
                 self.page++
-                if ( data["total"] as Int ) < 30 {
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
             }
@@ -87,12 +87,12 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.page = 0
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
+            if data as! NSObject != NSNull(){
                 self.viewLoadingHide()
-                if ( data["total"] as Int ) < 30 {
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data["items"] as NSArray
+                var arr = data["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -107,7 +107,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func urlString()->String{
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         if self.urlIdentify == 0 {
             return "http://nian.so/api/like2.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 1 {
@@ -121,7 +121,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
@@ -132,7 +132,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
         var index = indexPath.row
-        var data = self.dataArray[index] as NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.urlIdentify = self.urlIdentify
         cell!.circleID = self.circleID

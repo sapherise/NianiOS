@@ -35,7 +35,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
                 if json == nil {
                     self._callback(.VerifyFailed, nil)
                 } else {
-                    self._callback((json!["success"] as String).toInt()! == 1 ? .Purchased : .VerifyFailed, json)
+                    self._callback((json!["success"] as! String).toInt()! == 1 ? .Purchased : .VerifyFailed, json)
                 }
             }
         }
@@ -51,7 +51,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
         }
         var queue = SKPaymentQueue.defaultQueue()
         SKPaymentQueue.defaultQueue().addTransactionObserver(self)
-        for product: SKProduct in response.products as [SKProduct] {
+        for product: SKProduct in response.products as! [SKProduct] {
             queue.addPayment(SKPayment(product: product))
         }
         _callback(.OnPurchasing, nil)
@@ -64,7 +64,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     }
     
     func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
-        for transaction: SKPaymentTransaction in transactions as [SKPaymentTransaction] {
+        for transaction: SKPaymentTransaction in transactions as! [SKPaymentTransaction] {
             switch transaction.transactionState {
             case SKPaymentTransactionState.Purchased:
                 onPaymentPurchased(transaction)
@@ -85,7 +85,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     func pay(productId: String) -> Bool {
         var allowed = SKPaymentQueue.canMakePayments()
         if allowed {
-            var request = SKProductsRequest(productIdentifiers: NSSet(object: productId))
+            var request = SKProductsRequest(productIdentifiers: NSSet(object: productId) as Set<NSObject>)
             request.delegate = self
             request.start()
         }

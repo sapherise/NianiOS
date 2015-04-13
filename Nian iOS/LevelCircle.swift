@@ -1,7 +1,7 @@
 
 extension CALayer {
     func SAAnimation(animation: CABasicAnimation) {
-        let copy = animation.copy() as CABasicAnimation
+        let copy = animation.copy() as! CABasicAnimation
         
         if copy.fromValue == nil {
             copy.fromValue = self.presentationLayer().valueForKeyPath(copy.keyPath)

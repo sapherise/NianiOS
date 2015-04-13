@@ -114,7 +114,7 @@ extension UIImageView {
     }
     
     func onImageViewDoubleTap(sender: UIGestureRecognizer) {
-        var imageView = sender.view! as SAImageZoomingView
+        var imageView = sender.view! as! SAImageZoomingView
         if imageView.zoomScale > 1.0 {
             imageView.setZoomScale(1.0, animated: true)
         } else {

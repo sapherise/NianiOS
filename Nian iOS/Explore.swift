@@ -120,7 +120,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         tableView.setWidth(globalWidth)
         collectionView.frame = CGRectMake(0, 108, globalWidth, globalHeight - 49 - 108)
         collectionView.alwaysBounceVertical = true
-        var layout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
+        var layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset.top = 20
         var w: CGFloat = 20
         if isiPhone6 {

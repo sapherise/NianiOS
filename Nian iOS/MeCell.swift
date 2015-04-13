@@ -109,16 +109,16 @@ class MeCell: UITableViewCell {
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {
-        var view = sender.view! as UILabel
+        var view = sender.view! as! UILabel
         view.text = ""
         var id = self.data.stringAttributeForKey("id") as String
         Api.getCircleJoinConfirmOK(id) { json in
             if json != nil {
-                var success = json!["success"] as String
-                var reason = json!["reason"] as String
-                var circle = json!["circle"] as String
-                var cid = json!["cid"] as String
-                var status = json!["status"] as String
+                var success = json!["success"] as! String
+                var reason = json!["reason"] as! String
+                var circle = json!["circle"] as! String
+                var cid = json!["cid"] as! String
+                var status = json!["status"] as! String
                 if success == "1" {
                     view.text = "已接受"
                     view.backgroundColor = IconColor

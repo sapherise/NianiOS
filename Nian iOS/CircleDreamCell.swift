@@ -42,7 +42,7 @@ class CircleDreamCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
         var cid = self.data.stringAttributeForKey("cid")
-        var type = (self.data.objectForKey("type") as String).toInt()!
+        var type = (self.data.objectForKey("type") as! String).toInt()!
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         self.avatarView.setHead(uid)
@@ -50,8 +50,8 @@ class CircleDreamCell: UITableViewCell {
         self.avatarView!.tag = uid.toInt()!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if uid == safeuid {
             let (resultDes, err) = SD.executeQuery("select * from step where sid = '\(cid)' limit 1")
             if resultDes.count > 0 {

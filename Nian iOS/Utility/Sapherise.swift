@@ -72,7 +72,7 @@ func SAPost(postString:String, urlString:String)->String{
     }else{
         strRet = "err"
     }
-    return strRet!
+    return strRet! as String
 }
 
 func SAGet(getString:String, urlString:String)->String{
@@ -84,7 +84,7 @@ func SAGet(getString:String, urlString:String)->String{
     var error : NSError?
     var returnData : NSData? = NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response, error: &error)
     var strRet:NSString? = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
-    return strRet!
+    return strRet! as String
 }
 
 //替换，用法：var sa = SAReplace("This is my string", " ", "___")
@@ -110,23 +110,24 @@ func SAHtml(content:String) -> String {
     CFStringFindAndReplace(s, " ", "&nbsp;", r, CFStringCompareFlags.allZeros)
     r.length = CFStringGetLength(s)
     CFStringFindAndReplace(s, "\n", "<br>", r, CFStringCompareFlags.allZeros)
-    return s
+    
+    return s as String
 }
 
 func SAEncode(content:String) -> String {
     let legalURLCharactersToBeEscaped: CFStringRef = "=\"#%/<>?@\\^`{|}&+"
-    return CFURLCreateStringByAddingPercentEscapes(nil, content, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue)
+    return CFURLCreateStringByAddingPercentEscapes(nil, content, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue) as String
 }
 
 func SADecode(word: String) -> String {
     var content = word
-    content = SAReplace(content, "&amp;", "&")
-    content = SAReplace(content, "&lt;", "<")
-    content = SAReplace(content, "&gt;", ">")
-    content = SAReplace(content, "&quot;", "\\")
-    content = SAReplace(content, "&#039;", "'")
-    content = SAReplace(content, "&nbsp;", " ")
-    content = SAReplace(content, "<br>", "\n")
+    content = SAReplace(content, "&amp;", "&") as String
+    content = SAReplace(content, "&lt;", "<") as String
+    content = SAReplace(content, "&gt;", ">") as String
+    content = SAReplace(content, "&quot;", "\\") as String
+    content = SAReplace(content, "&#039;", "'") as String
+    content = SAReplace(content, "&nbsp;", " ") as String
+    content = SAReplace(content, "<br>", "\n") as String
     return content
 }
 
@@ -157,25 +158,25 @@ extension String  {
 
         result.destroy()
 
-        return String(format: hash)
+        return String(format: hash as String)
     }
     
     func isValidEmail()->Bool {
         let regex :String = "[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", regex)
-        return emailTest!.evaluateWithObject(self)
+        return emailTest.evaluateWithObject(self)
     }
     
     func isValidPhone()->Bool {
         let regex :String = "^(1(([35][0-9])|(47)|[8][01236789]))\\d{8}$"
         let PhoneTest = NSPredicate(format: "SELF MATCHES %@", regex)
-        return PhoneTest!.evaluateWithObject(self)
+        return PhoneTest.evaluateWithObject(self)
     }
     
     func isValidName()->Bool {
         var regex = "^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$"
         var nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
-        return nameTest!.evaluateWithObject(self)
+        return nameTest.evaluateWithObject(self)
     }
  }
 
@@ -202,7 +203,7 @@ func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
 func getSaveKey(title:NSString, png:NSString) -> NSString{
     var date = NSDate().timeIntervalSince1970
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    var safeuid = Sa.objectForKey("uid") as String
+    var safeuid = Sa.objectForKey("uid") as! String
     var string = NSString(string: "/\(title)/\(safeuid)_\(Int(date)).\(png)")
     return string
 }
@@ -332,7 +333,7 @@ extension UIViewController {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as? String
         var safeshell = Sa.objectForKey("shell") as? String
-        if (safeuid != nil) & (safeshell != nil) {
+        if (safeuid != nil) && (safeshell != nil) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var sa = SAPost("devicetoken=&&uid=\(safeuid!)&&shell=\(safeshell!)&&type=1", "http://nian.so/api/user_update.php")
             })
@@ -471,7 +472,7 @@ extension UIImageView{
 
 extension UIViewController {
     func onURL(sender: NSNotification){
-        var url = sender.object as String
+        var url = sender.object as! String
         var urlArray = "\(url)".componentsSeparatedByString("nian://")
         if urlArray.count == 2 {
             urlArray = urlArray[1].componentsSeparatedByString("/")
@@ -549,7 +550,7 @@ extension UIViewController {
             globalViewFilm!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
             globalViewFilm!.userInteractionEnabled = true
             var nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
-            var viewFilmDialog: FilmCell = nib.objectAtIndex(0) as FilmCell
+            var viewFilmDialog: FilmCell = nib.objectAtIndex(0) as! FilmCell
             viewFilmDialog.frame.origin.x = ( globalWidth - 270 ) / 2
             viewFilmDialog.frame.origin.y = -270
             viewFilmDialog.labelTitle.text = title

@@ -90,9 +90,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         Api.postLetter() { json in
             if json != nil {
                 isLoaded = 1
-                self.numLeft = json!["notice_reply"] as String
-                self.numMiddel = json!["notice_like"] as String
-                self.numRight = json!["notice_news"] as String
+                self.numLeft = json!["notice_reply"] as! String
+                self.numMiddel = json!["notice_like"] as! String
+                self.numRight = json!["notice_news"] as! String
                 self.tableView.reloadData()
                 self.tableView.headerEndRefreshing()
             }
@@ -102,8 +102,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func SALoadLetter(){
         dispatch_async(dispatch_get_main_queue(), {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
-            var safename = Sa.objectForKey("user") as String
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safename = Sa.objectForKey("user") as! String
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
             for row in resultCircle {
@@ -141,7 +141,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func onBtnGoClick() {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         var LikeVC = LikeViewController()
         LikeVC.Id = safeuid
         LikeVC.urlIdentify = 1
@@ -168,7 +168,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        var data = self.dataArray[indexPath.row] as NSDictionary
+        var data = self.dataArray[indexPath.row] as! NSDictionary
         var id = data.stringAttributeForKey("id")
         SQLLetterDelete(id)
         SALoadLetter()
@@ -193,7 +193,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }else{
             var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LetterCell
             var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as! NSDictionary
             cell!.data = data
             if let tag = data.stringAttributeForKey("uid").toInt() {
                 cell!.imageHead.tag = tag
@@ -220,7 +220,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var views:NSArray = v.subviews
             for view:AnyObject in views {
                 if NSStringFromClass(view.classForCoder) == "UILabel"  {
-                    var l = view as UILabel
+                    var l = view as! UILabel
                     if l.frame.origin.y == 25 {
                         l.text = "0"
                         l.textColor = UIColor.blackColor()
@@ -261,7 +261,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
             var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as! NSDictionary
             var letterVC = CircleController()
             letterVC.isCircle = false
             if let id = data.stringAttributeForKey("id").toInt() {
@@ -270,7 +270,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 letterVC.circleTitle = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as String
+                var safeuid = Sa.objectForKey("uid") as! String
                 SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
                 SALoadLetter()
             }

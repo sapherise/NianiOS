@@ -145,8 +145,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func commentFinish(replyContent:String){
         self.isKeyboardResign = 1
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeuser = Sa.objectForKey("user") as! String
         var commentReplyRow = self.dataArray.count
         var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
@@ -174,9 +174,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var heightBefore = self.tableview.contentSize.height
         var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                var arr = data["items"] as NSArray
-                var total = data["total"] as NSString!
+            if data as! NSObject != NSNull() {
+                var arr = data["items"] as! NSArray
+                var total = data["total"] as! NSString!
                 self.dataTotal = "\(total)".toInt()!
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
@@ -194,9 +194,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func SAReloadData(){
         var url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull(){
-                var arr = data["items"] as NSArray
-                var total = data["total"] as NSString!
+            if data as! NSObject != NSNull(){
+                var arr = data["items"] as! NSArray
+                var total = data["total"] as! NSString!
                 self.dataTotal = "\(total)".toInt()!
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {
@@ -241,7 +241,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func onBubbleClick(sender:UIGestureRecognizer) {
         var index = sender.view!.tag
-        var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
+        var data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
         var user = data.stringAttributeForKey("user") as String
         var uid = data.stringAttributeForKey("uid")
         var content = data.stringAttributeForKey("content") as String
@@ -260,7 +260,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.replySheet!.showInView(self.view)
         }else{  //不是主人
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
+            var safeuid = Sa.objectForKey("uid") as! String
             if uid == safeuid {
                 self.replySheet!.addButtonWithTitle("回应@\(user)")
                 self.replySheet!.addButtonWithTitle("复制")
@@ -281,9 +281,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as CommentCell
+        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! CommentCell
         var index = indexPath.row
-        var data = self.dataArray[dataArray.count - 1 - index] as NSDictionary
+        var data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         c.data = data
         c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
         c.imageContent.tag = index
@@ -314,9 +314,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        var index = indexPath!.row
-        var data = self.dataArray[self.dataArray.count - 1 - index] as NSDictionary
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var index = indexPath.row
+        var data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
         return  CommentCell.cellHeightByData(data)
     }
     
@@ -331,8 +331,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
                 self.commentVC()
@@ -340,7 +340,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
-                var data = self.dataArray[self.ReplyRow] as NSDictionary
+                var data = self.dataArray[self.ReplyRow] as! NSDictionary
                 var uid = data.stringAttributeForKey("uid")
                 if (( uid == safeuid ) || ( self.dreamowner == 1 )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)

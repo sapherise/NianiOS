@@ -27,10 +27,10 @@ class CircleTypeCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var uid = self.data.objectForKey("uid") as String
-        var user = self.data.objectForKey("user") as String
-        var type = self.data.objectForKey("type") as String
-        var content = self.data.objectForKey("content") as String
+        var uid = self.data.objectForKey("uid") as! String
+        var user = self.data.objectForKey("user") as! String
+        var type = self.data.objectForKey("type") as! String
+        var content = self.data.objectForKey("content") as! String
         self.imageHead.setHead(uid)
         self.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHolderClick:"))
         self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick:"))
@@ -56,10 +56,10 @@ class CircleTypeCell: UITableViewCell {
     }
     
     func onHolderClick(sender:UITapGestureRecognizer){
-        var cid = self.data.objectForKey("cid") as String
-        var type = self.data.objectForKey("type") as String
+        var cid = self.data.objectForKey("cid") as! String
+        var type = self.data.objectForKey("type") as! String
         if type == "7" || type == "6" || type == "5" {
-            var uid = self.data.objectForKey("cid") as String
+            var uid = self.data.objectForKey("cid") as! String
             var UserVC = PlayerViewController()
             UserVC.Id = uid
             if let v = self.findRootViewController()?.navigationController {
@@ -69,7 +69,7 @@ class CircleTypeCell: UITableViewCell {
     }
     
     func onHeadClick(sender:UITapGestureRecognizer) {
-        var uid = self.data.objectForKey("uid") as String
+        var uid = self.data.objectForKey("uid") as! String
         var UserVC = PlayerViewController()
         UserVC.Id = uid
         if let v = self.findRootViewController()?.navigationController {

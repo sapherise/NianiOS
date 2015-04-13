@@ -75,7 +75,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         moreButton.image = UIImage(named:"more")
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
+        var safeuid = Sa.objectForKey("uid") as! String
         if safeuid == self.topuid {
             self.navigationItem.rightBarButtonItems = [ rightButton ]
         }else{
@@ -103,9 +103,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }
         // self.refreshView!.startLoading()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as NSObject != NSNull() {
-                var arr = data["items"] as NSArray
-                if ( data["total"] as Int ) < 30 {
+            if data as! NSObject != NSNull() {
+                var arr = data["items"] as! NSArray
+                if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
                 for data : AnyObject  in arr
@@ -123,8 +123,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView!.setFooterHidden(false)
         Api.getBBSComment(0, flow: flow, id: Id) { json in
             if json != nil {
-                var arr = json!["items"] as NSArray
-                var total = json!["total"] as Int
+                var arr = json!["items"] as! NSArray
+                var total = json!["total"] as! Int
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -132,7 +132,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 if self.getContent == 1 {
                     Api.getBBSTop(self.Id) { json in
                         if json != nil {
-                            var data = json!["bbstop"] as NSDictionary
+                            var data = json!["bbstop"] as! NSDictionary
                             self.toptitle = data.stringAttributeForKey("title")
                             self.topcontent = data.stringAttributeForKey("content")
                             self.topuid = data.stringAttributeForKey("uid")
@@ -150,7 +150,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                     self.tableView!.reloadData()
                     self.tableView!.headerEndRefreshing()
                     self.page = 1
-                    if ( json!["total"] as Int ) < 30 {
+                    if ( json!["total"] as! Int ) < 30 {
                         self.tableView!.setFooterHidden(true)
                     }
                 }
@@ -198,7 +198,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }else{
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BBSCell
             var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as! NSDictionary
             c!.data = data
             c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             if indexPath.row == self.dataArray.count - 1 {
@@ -227,7 +227,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             return BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
         }else{
             var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as! NSDictionary
             return  BBSCell.cellHeightByData(data)
         }
     }
@@ -235,9 +235,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         if indexPath.section != 0{
             self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as String
+            var safeuid = Sa.objectForKey("uid") as! String
             var index = indexPath.row
-            var data = self.dataArray[index] as NSDictionary
+            var data = self.dataArray[index] as! NSDictionary
             var user = data.stringAttributeForKey("user")
             var uid = data.stringAttributeForKey("uid")
             var content = data.stringAttributeForKey("content")
@@ -277,8 +277,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeshell = Sa.objectForKey("shell") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeshell = Sa.objectForKey("shell") as! String
         if actionSheet == self.sheet {
             if buttonIndex == 0 {
                 var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
@@ -291,7 +291,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 var pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
-                var data = self.dataArray[self.ReplyRow] as NSDictionary
+                var data = self.dataArray[self.ReplyRow] as! NSDictionary
                 var uid = data.stringAttributeForKey("uid")
                 if (( uid == safeuid ) || ( self.topuid == safeuid )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -338,8 +338,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func commentFinish(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as String
-        var safeuser = Sa.objectForKey("user") as String
+        var safeuid = Sa.objectForKey("uid") as! String
+        var safeuser = Sa.objectForKey("user") as! String
         var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: self.ReturnReplyRow)
         var newindexpath = NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)

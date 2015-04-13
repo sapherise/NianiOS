@@ -38,10 +38,10 @@ class MKTableViewCell : UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupLayer()
-    }
+//    override init(frame: CGRect) {†t
+//        super.init(frame: frame)
+//        setupLayer()
+//    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -55,10 +55,10 @@ class MKTableViewCell : UITableViewCell {
         mkLayer.circleGrowRatioMax = 1.2
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        super.touchesBegan(touches, withEvent: event)
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        super.touchesBegan(touches as Set<NSObject>, withEvent: event)
         
-        if let firstTouch = touches.anyObject() as? UITouch {
+        if let firstTouch = touches.first as? UITouch {
             if !contentViewResized {
                 mkLayer.superLayerDidResize()
                 contentViewResized = true

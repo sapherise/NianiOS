@@ -211,7 +211,7 @@ extension LTMorphingLabel {
             let frameRate = Float(displayLink.duration) / Float(displayLink.frameInterval)
             _totalFrames = Int(ceil(morphingDuration / frameRate))
             
-            let totalDelay = Float(countElements(self.text!)) * morphingCharacterDelay
+            let totalDelay = Float(count(self.text!)) * morphingCharacterDelay
             _totalDelayFrames = Int(ceil(totalDelay / frameRate))
         }
         
@@ -366,7 +366,7 @@ extension LTMorphingLabel {
         
         // Add new characters
         for (i, character) in enumerate(text!) {
-            if i >= countElements(_diffResults) {
+            if i >= count(_diffResults) {
                 break
             }
             

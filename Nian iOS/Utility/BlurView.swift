@@ -230,7 +230,7 @@ extension ILTranslucentView {
     
     @objc override var subviews : Array<AnyObject> {
         if self.initComplete {
-            var array = super.subviews as Array<UIView>
+            var array = super.subviews as! Array<UIView>
             
             var index = 0
             for view in array {

@@ -76,7 +76,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         Api.getUserMe() { json in
             if json != nil {
                 var sa: AnyObject! = json!.objectForKey("user")
-                var coin: String! = sa.objectForKey("coin") as String
+                var coin: String! = sa.objectForKey("coin") as! String
                 self.levelLabelCount(coin.toInt()!)
             }
         }
@@ -156,7 +156,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     func onHeaderCoinClick() {
         var storyboard = UIStoryboard(name: "CoinDetail", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController") as UIViewController
+        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController") as! UIViewController
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -199,7 +199,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     case .Purchased:
                         prompt = "念币买好啦"
                         film.showOK()
-                        self.levelLabelCount((data!["coin"] as String).toInt()!)
+                        self.levelLabelCount((data!["coin"] as! String).toInt()!)
                         globalWillNianReload = 1
                         break
                     case .VerifyFailed:
@@ -266,13 +266,13 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         film.superview!.removeFromSuperview()
                     } else {
                         if json != nil {
-                            if json!["success"] as String == "1" {
+                            if json!["success"] as! String == "1" {
                                 film.showOK()
-                                self.levelLabelCount((json!["coin"] as String).toInt()!)
+                                self.levelLabelCount((json!["coin"] as! String).toInt()!)
                                 globalWillNianReload = 1
-                            }else if json!["success"] as String == "2" {
+                            }else if json!["success"] as! String == "2" {
                                 film.showError("念币不足")
-                            }else if json!["success"] as String == "3" {
+                            }else if json!["success"] as! String == "3" {
                                 film.showError("毕业过啦")
                             }
                         }else{
@@ -284,7 +284,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         }else if tag == 102 {
             showFilm(title, prompt: des, button: button, transDirectly: false){ film in
                 var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
-                var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as CircleTagViewController
+                var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as! CircleTagViewController
                 viewController.dreamPromoDelegate = self
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
@@ -333,12 +333,12 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         showFilm("推广", prompt: "确定在接下去 24 小时内\n推广「\(content)」吗", button: "20 念币", transDirectly: true){ film in
             Api.postLabTrip("102", subid: id) { json in
                 if json != nil {
-                    if json!["success"] as String == "1" {
+                    if json!["success"] as! String == "1" {
                         film.showOK()
-                        self.levelLabelCount((json!["coin"] as String).toInt()!)
+                        self.levelLabelCount((json!["coin"] as! String).toInt()!)
                         globalWillNianReload = 1
                     }else{
-                        if json!["reason"] as String == "1" {
+                        if json!["reason"] as! String == "1" {
                             film.showError("念币不足")
                         }else{
                             film.showError("服务器坏了")
