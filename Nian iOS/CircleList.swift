@@ -113,9 +113,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             if errCircle != nil {
                 back {
-                    sql_error += "uid: \(safeuid);"
-                    sql_error += "ec: \(errCircle!);"
-                    
                     self.view.showTipText(sql_error, delay: 3)
                     self.tableView.headerEndRefreshing()
                 }

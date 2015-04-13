@@ -172,9 +172,6 @@ public struct SwiftData {
                 return
             }
             (result, error) = SQLiteDB.sharedInstance.executeQuery(sqlStr)
-            sql_error += "sql: \(SQLiteDB.sharedInstance);"
-            sql_error += "conn: \(SQLiteDB.sharedInstance.isConnected);"
-            sql_error += "tran: \(SQLiteDB.sharedInstance.inTransaction);"
             SQLiteDB.sharedInstance.close()
         }
         putOnThread(task)
@@ -739,10 +736,10 @@ public struct SwiftData {
             }
             let status = sqlite3_open(dbPath.cStringUsingEncoding(NSUTF8StringEncoding)!, &sqliteDB)
             if status != SQLITE_OK {
-                println("SwiftData Error -> During: Opening Database")
-                println("                -> Code: \(status) - " + SDError.errorMessageFromCode(Int(status)))
+                sql_error += "SwiftData Error -> During: Opening Database";
+                sql_error += "-> Code: \(status) - " + SDError.errorMessageFromCode(Int(status))
                 if let errMsg = String.fromCString(sqlite3_errmsg(SQLiteDB.sharedInstance.sqliteDB)) {
-                    println("                -> Details: \(errMsg)")
+                    sql_error += "                -> Details: \(errMsg)"
                 }
                 return Int(status)
             }
@@ -1036,10 +1033,10 @@ public struct SwiftData {
             var pStmt: COpaquePointer = nil
             var status = sqlite3_prepare_v2(SQLiteDB.sharedInstance.sqliteDB, sql, -1, &pStmt, nil)
             if status != SQLITE_OK {
-                println("SwiftData Error -> During: SQL Prepare")
-                println("                -> Code: \(status) - " + SDError.errorMessageFromCode(Int(status)))
+                sql_error += "SwiftData Error -> During: SQL Prepare"
+                sql_error += "-> Code: \(status) - " + SDError.errorMessageFromCode(Int(status))
                 if let errMsg = String.fromCString(sqlite3_errmsg(SQLiteDB.sharedInstance.sqliteDB)) {
-                    println("                -> Details: \(errMsg)")
+                    sql_error += "-> Details: \(errMsg)"
                 }
                 sqlite3_finalize(pStmt)
                 return (resultSet, Int(status))
@@ -1084,10 +1081,10 @@ public struct SwiftData {
                 } else if status == SQLITE_DONE {
                     next = false
                 } else {
-                    println("SwiftData Error -> During: SQL Step")
-                    println("                -> Code: \(status) - " + SDError.errorMessageFromCode(Int(status)))
+                    sql_error += "SwiftData Error -> During: SQL Step"
+                    sql_error += "-> Code: \(status) - " + SDError.errorMessageFromCode(Int(status))
                     if let errMsg = String.fromCString(sqlite3_errmsg(SQLiteDB.sharedInstance.sqliteDB)) {
-                        println("                -> Details: \(errMsg)")
+                        sql_error += "-> Details: \(errMsg)"
                     }
                     sqlite3_finalize(pStmt)
                     return (resultSet, Int(status))
