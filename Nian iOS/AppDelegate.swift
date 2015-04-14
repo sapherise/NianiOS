@@ -35,6 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
+        
+        //设置 cache
+        var urlCache = NSURLCache(memoryCapacity: 0, diskCapacity: 50*1024*1024, diskPath: nil)
+        NSURLCache.setSharedURLCache(urlCache)
+        
         return true
     }
     

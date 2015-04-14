@@ -940,8 +940,8 @@
 				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
-				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 				122AFE021A80864800464641 /* SqliteData.swift */,
+				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";
@@ -1443,6 +1443,7 @@
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Nian iOS/Info.plist";

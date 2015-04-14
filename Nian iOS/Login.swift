@@ -65,6 +65,9 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         if self.inputEmail.text == "" || self.inputPassword.text == "" {
             shakeAnimation(self.holder)
         }else{
+            self.inputEmail.resignFirstResponder()
+            self.inputPassword.resignFirstResponder()
+            
             self.navigationItem.rightBarButtonItems = buttonArray()
             var email = SAEncode(SAHtml(self.inputEmail.text))
             var password = "n*A\(SAHtml(self.inputPassword.text))"
