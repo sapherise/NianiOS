@@ -201,11 +201,17 @@ class PlayerCell: UITableViewCell {
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(16,width:globalWidth-30)
         if(img0 == 0.0){
-            return height + 151
+            if content == "" {
+                return 136
+            } else {
+                return height + 151
+            }
         }else{
-            return height + 171 + CGFloat(img1 * Float(globalWidth) / img0)
+            if content == "" {
+                return 156 + CGFloat(img1 * Float(globalWidth) / img0)
+            } else {
+                return height + 171 + CGFloat(img1 * Float(globalWidth) / img0)
+            }
         }
     }
-    
-    
 }
