@@ -52,6 +52,11 @@ class NianCell: UICollectionViewCell{
             inner.counter++
         }
     }
+    
+    override func prepareForReuse() {
+        self.imageCover.image = nil
+        self.labelTitle.text  = ""
+    }
 }
 
 func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform3D {

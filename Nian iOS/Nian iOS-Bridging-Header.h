@@ -10,4 +10,5 @@
 #import "MobClick.h"
 #import "sqlite3.h"
 #import "NSObject+Swift.h"
+#import "AFNetworking.h"
 #import "UIImageView+AFNetworking.h"

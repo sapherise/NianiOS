@@ -37,8 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
         //设置 cache
-        var urlCache = NSURLCache(memoryCapacity: 0, diskCapacity: 50*1024*1024, diskPath: nil)
-        NSURLCache.setSharedURLCache(urlCache)
+//        var urlCache = NSURLCache(memoryCapacity: 10*1024*1024, diskCapacity: 100*1024*1024, diskPath: nil)
+//        NSURLCache.setSharedURLCache(urlCache)
+//        UIImageView.setSharedImageCache(UIImageView.sharedImageCache())
         
         return true
     }
