@@ -53,10 +53,11 @@ class NianCell: UICollectionViewCell{
         }
     }
     
-    override func prepareForReuse() {
-        self.imageCover.image = nil
-        self.labelTitle.text  = ""
-    }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        self.imageCover.image = nil
+//        self.labelTitle.text  = ""
+//    }
 }
 
 func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform3D {

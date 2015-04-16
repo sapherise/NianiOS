@@ -293,6 +293,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         c.labelTitle.text = data.stringAttributeForKey("title")
         c.imageCover.setHolder()
+        
+        //使用这个方法让 table 响应更顺畅
+        if self.collectionView.decelerating {
+            
+        }
         var img = data.stringAttributeForKey("img")
         if img != "" {
             img = "http://img.nian.so/dream/\(img)!dream"
