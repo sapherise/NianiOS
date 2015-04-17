@@ -71,7 +71,7 @@ struct FollowBlacklist {
     }
 }
 
-class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource {
+class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     class Data {
         var id: String!
@@ -226,6 +226,21 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        var visiblePaths =  bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+        
+        for item in visiblePaths {
+            let indexPath = item as! NSIndexPath
+            
+            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreFollowCell
+            
+            if cell.imageContent.image == nil {
+                cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+            }
+        }
+        
+    }
+    
     func onIHATEYOU(sender: UILongPressGestureRecognizer) {
         if locked {
             return
@@ -350,6 +365,12 @@ class ExploreFollowCell: UITableViewCell {
         self.btnMore.setX(globalWidth-90)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageHead.image = nil
+        self.imageContent.image = nil   
     }
     
     func bindData(data: ExploreFollowProvider.Data, tableview: UITableView) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource {
+class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     class Data {
         var id: String!
@@ -112,6 +112,21 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         return cell!
     }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+       var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+        
+        for item in visiblePaths {
+            let indexPath = item as! NSIndexPath
+            
+            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreHotCell
+            
+            if cell.imageDream.image == nil {
+                cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+            }
+        }
+        
+    }
+    
     func onDreamTap(sender: UITapGestureRecognizer) {
         var viewController = DreamViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].id
@@ -152,5 +167,10 @@ class ExploreHotCell: UITableViewCell {
         }
         
         btnMain.tag = data.id.toInt()!
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageDream.image = nil
     }
 }

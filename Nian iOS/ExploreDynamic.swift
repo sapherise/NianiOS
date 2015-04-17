@@ -10,7 +10,7 @@ import UIKit
 
 import UIKit
 
-class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource {
+class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     class Data {
         var id: String!
@@ -190,6 +190,39 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+//        var visibleCells = self.bindViewController!.tableView.visibleCells() as Array
+        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+        
+        for item in visiblePaths {
+            let indexPath = item as! NSIndexPath
+            
+            var data = dataSource[indexPath.row]
+            
+            switch data.type {
+            case 0:
+               let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicDreamCell
+                
+               if cell.imageCover.image == nil || cell.imageHead.image == nil {
+                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+                }
+                break
+            
+            case 1:
+                let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicStepCell
+                
+                if cell.imageContent.image == nil {
+                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+                }
+                break
+                
+            default:
+                break
+            }
+        }
+        
+    }
+    
     func onUserTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].uidlike
@@ -291,6 +324,13 @@ class ExploreDynamicStepCell: UITableViewCell {
         self.btnLike.setX(globalWidth-50)
         self.btnUnlike.setX(globalWidth-50)
         self.btnMore.setX(globalWidth-90)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageHead.image = nil
+        self.imageContent.image = nil
     }
     
     func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
@@ -417,6 +457,13 @@ class ExploreDynamicDreamCell: UITableViewCell {
     override func awakeFromNib() {
         imageCover.setX(globalWidth-55)
         self.viewLine.setWidth(globalWidth)
+    }
+   
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageHead.image = nil
+        self.imageCover.image = nil
     }
     
     func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
