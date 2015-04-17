@@ -199,7 +199,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("ExploreFollowCell", forIndexPath: indexPath) as? ExploreFollowCell
-        cell!.bindData(dataSource[indexPath.row])
+        cell!.bindData(dataSource[indexPath.row], tableview: tableView)
         cell!.tag = indexPath.row
         cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadTap:"))
         ///=======
@@ -352,7 +352,7 @@ class ExploreFollowCell: UITableViewCell {
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
-    func bindData(data: ExploreFollowProvider.Data) {
+    func bindData(data: ExploreFollowProvider.Data, tableview: UITableView) {
         cellData = data
         var imageDelta: CGFloat =  0
         var textHeight = data.content.stringHeightWith(16, width: globalWidth-30)
@@ -363,7 +363,11 @@ class ExploreFollowCell: UITableViewCell {
         labelContent.setHeight(textHeight)
         if !data.img0.isZero && !data.img1.isZero {     //有图片
             imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
-            imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+          
+            //当 tableview 不在 dragging 或者 deceletaring 时加载图片
+            if !tableview.dragging && !tableview.decelerating {
+                imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+            }
             imageContent.setHeight(imageDelta)
             imageContent.setWidth(globalWidth)
             imageContent.hidden = false

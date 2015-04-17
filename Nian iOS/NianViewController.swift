@@ -295,14 +295,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         c.imageCover.setHolder()
         
         //使用这个方法让 table 响应更顺畅
-        if self.collectionView.decelerating {
-            
+        if !self.collectionView.decelerating && !self.collectionView.dragging {
+            var img = data.stringAttributeForKey("img")
+            if img != "" {
+                img = "http://img.nian.so/dream/\(img)!dream"
+                c.imageCover.setCover(img, placeHolder: IconColor, bool: false)
+            }
         }
-        var img = data.stringAttributeForKey("img")
-        if img != "" {
-            img = "http://img.nian.so/dream/\(img)!dream"
-            c.imageCover.setCover(img, placeHolder: IconColor, bool: false)
-        }
+
         cell = c
         return cell
     }

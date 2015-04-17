@@ -159,7 +159,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         switch data.type {
         case 0:
             var dreamCell = tableView.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as? ExploreDynamicDreamCell
-            dreamCell!.bindData(data)
+            dreamCell!.bindData(data, tableview: tableView)
             dreamCell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
             dreamCell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
             dreamCell!.labelDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
@@ -168,7 +168,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             break
         case 1:
             var stepCell = tableView.dequeueReusableCellWithIdentifier("ExploreDynamicStepCell", forIndexPath: indexPath) as? ExploreDynamicStepCell
-            stepCell!.bindData(data)
+            stepCell!.bindData(data, tableview: tableView)
             stepCell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
             stepCell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
             stepCell!.labelDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
@@ -293,12 +293,15 @@ class ExploreDynamicStepCell: UITableViewCell {
         self.btnMore.setX(globalWidth-90)
     }
     
-    func bindData(data: ExploreDynamicProvider.Data) {
+    func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
         cellData = data
         var imageDelta: CGFloat =  0
         if !data.img0.isZero && !data.img1.isZero {
             imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
-            imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+            
+            if !tableview.dragging && !tableview.decelerating {
+                imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
+            }
             // data.img.pathExtension
             imageContent.setHeight(imageDelta)
             imageContent.setWidth(globalWidth)
@@ -416,9 +419,15 @@ class ExploreDynamicDreamCell: UITableViewCell {
         self.viewLine.setWidth(globalWidth)
     }
     
-    func bindData(data: ExploreDynamicProvider.Data) {
-        imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
-        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
+    func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
+        if !tableview.dragging && !tableview.decelerating {
+            imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
+        }
+        
+        if !tableview.dragging && !tableview.decelerating {
+            imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
+        }
+        
         labelName.text = data.userlike
         labelDream.text = "赞了「\(data.title)」"
     }

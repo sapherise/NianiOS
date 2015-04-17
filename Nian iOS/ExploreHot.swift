@@ -99,7 +99,7 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("ExploreHotCell", forIndexPath: indexPath) as? ExploreHotCell
-        cell!.bindData(dataSource[indexPath.row])
+        cell!.bindData(dataSource[indexPath.row], tableview: tableView)
         cell!.tag = indexPath.row
         cell!.labelRank.text = "\(indexPath.row + 1)"
         cell!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
@@ -142,11 +142,15 @@ class ExploreHotCell: UITableViewCell {
         viewHolder.setX(globalWidth/2-160)
     }
     
-    func bindData(data: ExploreHotProvider.Data) {
+    func bindData(data: ExploreHotProvider.Data, tableview: UITableView) {
         labelTitle.text = data.title
         labelStep.text = data.step
         labelLike.text = data.like
-        imageDream.setImage(V.urlDreamImage(data.img, tag: .iOS), placeHolder: IconColor)
+        
+        if !tableview.dragging && !tableview.decelerating {
+            imageDream.setImage(V.urlDreamImage(data.img, tag: .iOS), placeHolder: IconColor)
+        }
+        
         btnMain.tag = data.id.toInt()!
     }
 }

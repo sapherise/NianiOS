@@ -117,8 +117,11 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         cell!.imageCover.setHolder()
         cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         cell!.imageCover.layer.borderWidth = 0.5
-        if data.img != "" {
-        cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor, bool: false)
+        
+        if !collectionView.decelerating && !collectionView.dragging {
+            if data.img != "" {
+            cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor, bool: false)
+            }
         }
         return cell!
     }
@@ -135,4 +138,10 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
 class ExploreNewCell: UICollectionViewCell {
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var imageCover: UIImageView!
+    
+    
+     override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageCover.image = nil
+    }
 }
