@@ -14,7 +14,7 @@ class DreamCell: UITableViewCell {
     @IBOutlet var nickLabel:UILabel?
     @IBOutlet var contentLabel:UILabel?
     @IBOutlet var lastdate:UILabel?
-    @IBOutlet var imageholder:UIImageView?
+    @IBOutlet var imageholder:UIImageView!
     @IBOutlet var View:UIView?
     @IBOutlet var menuHolder:UIView?
     @IBOutlet weak var like: UILabel!
@@ -99,25 +99,34 @@ class DreamCell: UITableViewCell {
         self.like.setX(commentWidth+23)
         
         if img0 == 0.0 {
-            self.imageholder!.hidden = true
-            imgHeight = 0
-            self.contentLabel!.setY(70)
-        }else{
+            if content == "" {  // 没有图片，没有文字
+                self.imageholder.hidden = false
+                self.imageholder.image = UIImage(named: "check")
+                self.imageholder.frame.size = CGSizeMake(50, 23)
+                self.imageholder.setX(15)
+            }else{  // 没有图片，有文字
+                self.imageholder.hidden = true
+                imgHeight = 0
+                self.contentLabel!.setY(70)
+            }
+        }else{  // 有图片
             imgHeight = img1 * Float(globalWidth) / img0
             ImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
             largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
-            self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
-            self.imageholder!.setWidth(globalWidth)
-            self.imageholder!.setHeight(CGFloat(imgHeight))
-            var sapherise = self.imageholder!.frame.size.height
-            self.imageholder!.hidden = false
-            self.contentLabel!.setY(self.imageholder!.bottom()+15)
+            self.imageholder.setX(0)
+            self.imageholder.setImage(ImageURL,placeHolder: IconColor)
+            self.imageholder.setWidth(globalWidth)
+            self.imageholder.setHeight(CGFloat(imgHeight))
+            self.imageholder.hidden = false
+            self.contentLabel!.setY(self.imageholder.bottom()+15)
         }
+        
         if content == "" {
-            self.menuHolder!.setY(self.contentLabel!.bottom()-5)
-        }else{
+            self.menuHolder!.setY(self.imageholder!.bottom()+5)
+        } else {
             self.menuHolder!.setY(self.contentLabel!.bottom()+5)
         }
+        
         self.viewLine.setY(self.menuHolder!.bottom()+10)
         
         
@@ -148,15 +157,14 @@ class DreamCell: UITableViewCell {
         }
     }
     
-    class func cellHeightByData(data:NSDictionary)->CGFloat
-    {
+    class func cellHeightByData(data:NSDictionary)->CGFloat {
         var content = data.stringAttributeForKey("content")
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(16,width:globalWidth-30)
         if(img0 == 0.0){
             if content == "" {
-                return 136
+                return 156 + 23
             }else{
                 return height + 151
             }

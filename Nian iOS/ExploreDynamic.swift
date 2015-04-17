@@ -305,6 +305,14 @@ class ExploreDynamicStepCell: UITableViewCell {
             // data.img.pathExtension
             imageContent.setHeight(imageDelta)
             imageContent.setWidth(globalWidth)
+            imageContent.setX(0)
+            imageContent.hidden = false
+            labelContent.setY(imageContent.bottom() + 15)
+        }else if data.content == "" {
+            imageContent.image = UIImage(named: "check")
+            imageContent.setHeight(23)
+            imageContent.setWidth(50)
+            imageContent.setX(15)
             imageContent.hidden = false
             labelContent.setY(imageContent.bottom() + 15)
         }else{
@@ -322,7 +330,6 @@ class ExploreDynamicStepCell: UITableViewCell {
             viewControl.setY(labelContent.bottom()+5)
         }
         viewLine.setY(viewControl.bottom()+10)
-      //  imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
         imageHead.setHead(data.uidlike)
         labelName.text = data.userlike
         labelDate.text = data.lastdate
@@ -390,7 +397,7 @@ class ExploreDynamicStepCell: UITableViewCell {
         var height = content.stringHeightWith(16, width: globalWidth-30)
         if h == 0.0 || w == 0.0 {
             if content == "" {
-                return 136
+                return 156 + 23
             }else{
                 return height + 151
             }
