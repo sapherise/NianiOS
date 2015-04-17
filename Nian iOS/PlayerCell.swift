@@ -14,7 +14,7 @@ class PlayerCell: UITableViewCell {
     @IBOutlet var nickLabel:UILabel?
     @IBOutlet var contentLabel:UILabel?
     @IBOutlet var lastdate:UILabel?
-    @IBOutlet var imageholder:UIImageView?
+    @IBOutlet var imageholder:UIImageView!
     @IBOutlet var View:UIView?
     @IBOutlet var menuHolder:UIView?
     @IBOutlet weak var like: UILabel!
@@ -34,53 +34,6 @@ class PlayerCell: UITableViewCell {
     var ImageURL:String = ""
     var indexPathRow:Int = 0
     var sid:Int = 0
-//    
-//    @IBAction func nolikeClick(sender: AnyObject) { //取消赞
-//        self.liked!.hidden = true
-//        self.likebutton!.hidden = false
-//        var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
-//        var likenewnumber = likenumber.toInt()! - 1
-//        self.like!.text = "\(likenewnumber) 赞"
-//        self.data.setValue("\(likenewnumber)", forKey: "like")
-//        if likenewnumber == 0 {
-//            self.like!.hidden = true
-//        }else{
-//            self.like!.hidden = false
-//        }
-//        self.data.setValue("0", forKey: "liked")
-//        var sid = self.data.stringAttributeForKey("sid")
-//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as String
-//        var safeshell = Sa.objectForKey("shell") as String
-//        
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//            var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=0", "http://nian.so/api/like_query.php")
-//            if sa == "1" {
-//            }
-//        })
-//    }
-//    @IBAction func likeClick(sender: AnyObject) {   //赞
-////        self.likebutton!.hidden = true
-////        self.liked!.hidden = false
-////        var likenumber = SAReplace(self.like!.text!, " 赞", "") as String
-////        var likenewnumber = likenumber.toInt()! + 1
-////        self.like!.text = "\(likenewnumber) 赞"
-////        self.data.setValue("\(likenewnumber)", forKey: "like")
-////        self.data.setValue("1", forKey: "liked")
-////        self.like!.hidden = false
-////        
-////        var sid = self.data.stringAttributeForKey("sid")
-////        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-////        var safeuid = Sa.objectForKey("uid") as String
-////        var safeshell = Sa.objectForKey("shell") as String
-////        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-////            var sa = SAPost("step=\(sid)&&uid=\(safeuid)&&shell=\(safeshell)&&like=1", "http://nian.so/api/like_query.php")
-////            if sa == "1" {
-////            }
-////        })
-//        var numLike = self.data.stringAttributeForKey("like")
-//        var multableData = 
-//    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -148,9 +101,16 @@ class PlayerCell: UITableViewCell {
             self.like.setX(commentWidth+23)
             
             if img0 == 0.0 {
-                self.imageholder!.hidden = true
-                imgHeight = 0
-                self.contentLabel!.setY(70)
+                if content == "" {  // 没有图片，没有文字
+                    self.imageholder.hidden = false
+                    self.imageholder.image = UIImage(named: "check")
+                    self.imageholder.frame.size = CGSizeMake(50, 23)
+                    self.imageholder.setX(15)
+                }else{  // 没有图片，有文字
+                    self.imageholder.hidden = true
+                    imgHeight = 0
+                    self.contentLabel!.setY(70)
+                }
             }else{
                 imgHeight = img1 * Float(globalWidth) / img0
                 ImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
@@ -158,16 +118,16 @@ class PlayerCell: UITableViewCell {
                 self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
                 self.imageholder!.setHeight(CGFloat(imgHeight))
                 self.imageholder?.setWidth(globalWidth)
-                var sapherise = self.imageholder!.frame.size.height
                 self.imageholder!.hidden = false
                 self.contentLabel!.setY(self.imageholder!.bottom()+15)
             }
             if content == "" {
-                self.menuHolder!.setY(self.contentLabel!.bottom()-5)
+                self.menuHolder!.setY(self.imageholder!.bottom()+5)
             }else{
                 self.menuHolder!.setY(self.contentLabel!.bottom()+5)
             }
             self.viewLine.setY(self.menuHolder!.bottom()+10)
+            
             //主人
             var Sa = NSUserDefaults.standardUserDefaults()
             var cookieuid: String = Sa.objectForKey("uid") as! String
@@ -202,7 +162,7 @@ class PlayerCell: UITableViewCell {
         var height = content.stringHeightWith(16,width:globalWidth-30)
         if(img0 == 0.0){
             if content == "" {
-                return 136
+                return 156 + 23
             } else {
                 return height + 151
             }

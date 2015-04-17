@@ -391,6 +391,14 @@ class ExploreFollowCell: UITableViewCell {
             }
             imageContent.setHeight(imageDelta)
             imageContent.setWidth(globalWidth)
+            imageContent.setX(0)
+            imageContent.hidden = false
+            labelContent.setY(imageContent.bottom() + 15)
+        }else if data.content == "" {
+            imageContent.image = UIImage(named: "check")
+            imageContent.setHeight(23)
+            imageContent.setWidth(50)
+            imageContent.setX(15)
             imageContent.hidden = false
             labelContent.setY(imageContent.bottom() + 15)
         }else{
@@ -403,7 +411,6 @@ class ExploreFollowCell: UITableViewCell {
             viewControl.setY(labelContent.bottom()+5)
         }
         viewLine.setY(viewControl.bottom()+10)
-   //     imageHead.setImage(V.urlHeadImage(data.uid, tag: .Dream), placeHolder: IconColor)
         imageHead.setHead(data.uid)
         
         labelName.text = data.user
@@ -472,7 +479,7 @@ class ExploreFollowCell: UITableViewCell {
         var height = content.stringHeightWith(16, width: globalWidth-30)
         if h == 0.0 || w == 0.0 {
             if content == "" {
-                return 136
+                return 156 + 23
             }else{
                 return height + 151
             }

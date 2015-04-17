@@ -1,6 +1,5 @@
 #include "Pods-Nian iOS-NSData+MD5Digest.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Base64" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public/UMengAnalytics-NO-IDFA"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Base64" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public/UMengAnalytics-NO-IDFA"
 OTHER_LDFLAGS = -ObjC
 PODS_ROOT = ${SRCROOT}
-SKIP_INSTALL = YES
