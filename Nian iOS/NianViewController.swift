@@ -165,6 +165,19 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
+//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+//        var visiblePaths = self.collectionView!.indexPathsForVisibleItems() as Array
+//        
+//        for item in visiblePaths {
+//            let indexPath = item as! NSIndexPath
+//            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! NianCell
+//            
+//            if cell.imageCover.image == nil {
+//                
+//            }
+//        }
+//    }
+    
     func scrollHidden(theView:UIView, scrollY:CGFloat){
         if ( self.heightScroll > scrollY - 50 && self.heightScroll <= scrollY ) {
             theView.alpha = ( scrollY - self.heightScroll ) / 50

@@ -190,8 +190,29 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+//    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+////        NSLog("即将 display cell %@", cell)
+//        var data = dataSource[indexPath.row]
+//        
+//        switch data.type {
+//        case 0:
+//            var dreamCell = cell as? ExploreDynamicDreamCell
+//            dreamCell!.imageHead.image = nil
+//            dreamCell!.imageCover.image = nil
+//            dreamCell!.bindData(data, tableview: tableView)
+//        case 1:
+//            var stepCell = cell as? ExploreDynamicStepCell
+//            //        self.imageHead.image = nil
+//            //        self.imageContent.image = nil
+//            stepCell!.imageHead.image = nil
+//            stepCell!.imageContent.image = nil
+//            stepCell!.bindData(data, tableview: tableView)
+//        default:
+//            break
+//        }
+//    }
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//        var visibleCells = self.bindViewController!.tableView.visibleCells() as Array
         var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
         
         for item in visiblePaths {
@@ -206,7 +227,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                if cell.imageCover.image == nil || cell.imageHead.image == nil {
                     cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
                 }
-                break
             
             case 1:
                 let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicStepCell
@@ -214,7 +234,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                 if cell.imageContent.image == nil {
                     cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
                 }
-                break
                 
             default:
                 break
@@ -222,6 +241,39 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         }
         
     }
+    
+//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if decelerate {
+//            var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+//            
+//            for item in visiblePaths {
+//                let indexPath = item as! NSIndexPath
+//                
+//                var data = dataSource[indexPath.row]
+//                
+//                switch data.type {
+//                case 0:
+//                    let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicDreamCell
+//                    
+//                    if cell.imageCover.image == nil || cell.imageHead.image == nil {
+//                        cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+//                    }
+//                    
+//                case 1:
+//                    let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicStepCell
+//                    
+//                    if cell.imageContent.image == nil {
+//                        cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+//                    }
+//                    
+//                default:
+//                    break
+//                }
+//            }
+//        } else {
+//            
+//        }
+//    }
     
     func onUserTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
@@ -339,7 +391,7 @@ class ExploreDynamicStepCell: UITableViewCell {
         if !data.img0.isZero && !data.img1.isZero {
             imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
             
-            if !tableview.dragging && !tableview.decelerating {
+            if !tableview.dragging && !tableview.decelerating {      //
                 imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
             }
             // data.img.pathExtension
@@ -474,11 +526,8 @@ class ExploreDynamicDreamCell: UITableViewCell {
     }
     
     func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
-        if !tableview.dragging && !tableview.decelerating {
+        if !tableview.dragging && !tableview.decelerating {    //
             imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
-        }
-        
-        if !tableview.dragging && !tableview.decelerating {
             imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
         }
         

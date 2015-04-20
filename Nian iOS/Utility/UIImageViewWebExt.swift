@@ -34,20 +34,25 @@ extension UIImageView {
         var networkStatus = checkNetworkStatus()
         var Sa:NSUserDefaults = .standardUserDefaults()
         var saveMode: String? = Sa.objectForKey("saveMode") as? String
+        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
+            //todo:加载缓存图片
+            self.loadCacheImage(req, placeholderImage: UIImage(named: "drop")!)
+            if animated {
+                self.setAnimated()
+            }
         } else {
-            var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
             self.setImageWithURLRequest(req,
-                placeholderImage: nil,
-                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                    self.image = image
-                    if animated {
-                        self.setAnimated()
-                    }
-                    self.contentMode = .ScaleAspectFill
-                },
-                failure: nil)
+                                        placeholderImage: nil,
+                                        success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                                            self.image = image
+                                            if animated {
+                                                self.setAnimated()
+                                            }
+                                            self.contentMode = .ScaleAspectFill
+                                        },
+                                        failure: nil)
         }
     }
 
@@ -64,10 +69,14 @@ extension UIImageView {
         var networkStatus = checkNetworkStatus()
         var Sa: NSUserDefaults = .standardUserDefaults()
         var saveMode: String? = Sa.objectForKey("saveMode") as? String
+        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {    //如果是开启了同时还是在2G下
+            self.loadCacheImage(req, placeholderImage: UIImage(named: "drop")!)
+            if animated {
+                self.setAnimated()
+            }
         } else {
-            var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
             self.setImageWithURLRequest(req,
                                         placeholderImage: nil,
                                         success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
@@ -89,16 +98,17 @@ extension UIImageView {
         var networkStatus = checkNetworkStatus()
         var Sa: NSUserDefaults = .standardUserDefaults()
         var saveMode: String? = Sa.objectForKey("saveMode") as? String
+        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) {    //如果是开启了同时还是在2G下
+            self.loadCacheImage(req, placeholderImage: UIImage(named: "drop")!)
         } else {
-            var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
             self.setImageWithURLRequest(req,
-                placeholderImage: nil,
-                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                    self.image = image
-                },
-                failure: nil)
+                                        placeholderImage: nil,
+                                        success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                                            self.image = image
+                                        },
+                                        failure: nil)
         }
         
         
@@ -110,6 +120,17 @@ extension UIImageView {
         UIView.animateWithDuration(1, animations: { () -> Void in
             self.alpha = 1
         })
+    }
+    
+    func loadCacheImage(request: NSURLRequest, placeholderImage: UIImage) {
+        var cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(request)
+        if cachedImage != nil {
+            self.image = cachedImage
+            self.contentMode = .ScaleAspectFill
+        } else {
+            self.image = placeholderImage
+            self.contentMode = .Center
+        }
     }
     
     

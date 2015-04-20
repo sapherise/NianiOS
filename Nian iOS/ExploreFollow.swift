@@ -226,6 +226,14 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
+//    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+////        NSLog("即将 display cell %@", cell)
+//        var reuseCell = cell as? ExploreFollowCell
+//        reuseCell!.imageHead.image = nil
+//        reuseCell!.imageContent.image = nil
+//        reuseCell!.bindData(dataSource[indexPath.row], tableview: tableView)
+//    }
+    
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         var visiblePaths =  bindViewController!.tableView.indexPathsForVisibleRows()! as Array
         
@@ -240,6 +248,24 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         }
         
     }
+    
+//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if decelerate {
+//            var visiblePaths =  bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+//            
+//            for item in visiblePaths {
+//                let indexPath = item as! NSIndexPath
+//                
+//                let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreFollowCell
+//                
+//                if cell.imageContent.image == nil {
+//                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+//                }
+//            }
+//        } else {
+//            
+//        }
+//    }
     
     func onIHATEYOU(sender: UILongPressGestureRecognizer) {
         if locked {
@@ -386,7 +412,8 @@ class ExploreFollowCell: UITableViewCell {
             imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
           
             //当 tableview 不在 dragging 或者 deceletaring 时加载图片
-            if !tableview.dragging && !tableview.decelerating {
+            if !tableview.dragging && !tableview.decelerating {   // 
+                NSLog("tableview 不在 dragging")
                 imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
             }
             imageContent.setHeight(imageDelta)
