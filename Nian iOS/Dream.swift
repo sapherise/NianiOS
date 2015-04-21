@@ -104,6 +104,22 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
             })
         }
+        
+        //编辑按钮
+        var editActivity = SAActivity()
+        editActivity.saActivityTitle = "编辑"
+        editActivity.saActivityImage = UIImage(named: "edit")!
+        editActivity.saActivityFunction = {
+            self.activityViewController!.dismissViewControllerAnimated(true, completion: nil)
+            var data = self.dataArray[row] as! NSDictionary
+            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+            addstepVC.isEdit = 1
+            addstepVC.data = data
+            addstepVC.row = row
+            addstepVC.delegate = self
+            self.navigationController?.pushViewController(addstepVC, animated: true)
+        }
+        
         //删除按钮
         var deleteActivity = SAActivity()
         deleteActivity.saActivityTitle = "删除"
@@ -117,22 +133,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.deleteSheet!.cancelButtonIndex = 1
             self.deleteSheet!.showInView(self.view)
         }
-        //编辑按钮
-        var editActivity = SAActivity()
-        editActivity.saActivityTitle = "编辑"
-        editActivity.saActivityImage = UIImage(named: "edit")!
-        editActivity.saActivityFunction = {
-            var data = self.dataArray[row] as! NSDictionary
-            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-            addstepVC.isEdit = 1
-            addstepVC.data = data
-            addstepVC.row = row
-            addstepVC.delegate = self
-            self.navigationController?.pushViewController(addstepVC, animated: true)
-        }
-        var ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
+
+        var ActivityArray: Array<UIActivity>  //= [ WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
         if self.dreamowner == 1 {
-            ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), editActivity, deleteActivity ]
+            ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
+        } else {
+            ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
         }
         
         
@@ -142,19 +148,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var cacheFilename = imgurl.lastPathComponent
             var cachePath = FileUtility.cachePath(cacheFilename!)
             var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
-            self.activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url, image ],
-                applicationActivities: ActivityArray)
+            self.activityViewController = UIActivityViewController( activityItems: [ content[0], url, image ], applicationActivities: ActivityArray)
             self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint //, UIActivityTypeCopyToPasteboard
             ]
             self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }else{
-            self.activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url ],
-                applicationActivities: ActivityArray)
+            self.activityViewController = UIActivityViewController( activityItems: [ content[0], url ], applicationActivities: ActivityArray)
             self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint //, UIActivityTypeCopyToPasteboard
             ]
             self.presentViewController(self.activityViewController!, animated: true, completion: nil)
         }

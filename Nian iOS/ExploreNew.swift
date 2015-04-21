@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectionViewDataSource {
+class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
     
     class Data {
         var id: String!
@@ -118,11 +118,10 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         cell!.imageCover.layer.borderWidth = 0.5
         
-        if !collectionView.decelerating && !collectionView.dragging {
-            if data.img != "" {
+        if data.img != "" {
             cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor, bool: false)
-            }
         }
+        
         return cell!
     }
     
@@ -133,6 +132,9 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         var height = data.title.stringHeightWith(13, width: 80)
         bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    }
 }
 
 class ExploreNewCell: UICollectionViewCell {
@@ -140,8 +142,8 @@ class ExploreNewCell: UICollectionViewCell {
     @IBOutlet var imageCover: UIImageView!
     
     
-     override func prepareForReuse() {
-        super.prepareForReuse()
-        self.imageCover.image = nil
-    }
+//     override func prepareForReuse() {
+//        super.prepareForReuse()
+//        self.imageCover.image = nil
+//    }
 }

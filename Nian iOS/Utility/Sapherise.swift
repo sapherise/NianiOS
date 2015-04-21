@@ -375,6 +375,13 @@ class SAActivity: UIActivity {
     override func prepareWithActivityItems(activityItems: [AnyObject]) {
         saActivityFunction!()
     }
+    override class func activityCategory() -> UIActivityCategory {
+       return .Action
+    }
+    override func performActivity() {
+        
+    }
+    
 }
 
 extension UIImage{

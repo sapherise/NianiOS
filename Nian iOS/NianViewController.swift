@@ -165,18 +165,18 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//        var visiblePaths = self.collectionView!.indexPathsForVisibleItems() as Array
-//        
-//        for item in visiblePaths {
-//            let indexPath = item as! NSIndexPath
-//            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! NianCell
-//            
-//            if cell.imageCover.image == nil {
-//                
-//            }
-//        }
-//    }
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        var visiblePaths = self.collectionView!.indexPathsForVisibleItems() as Array
+        
+        for item in visiblePaths {
+            let indexPath = item as! NSIndexPath
+            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! NianCell
+            
+            if cell.imageCover.image == nil {
+            
+            }
+        }
+    }
     
     func scrollHidden(theView:UIView, scrollY:CGFloat){
         if ( self.heightScroll > scrollY - 50 && self.heightScroll <= scrollY ) {
@@ -306,14 +306,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         c.labelTitle.text = data.stringAttributeForKey("title")
         c.imageCover.setHolder()
-        
-        //使用这个方法让 table 响应更顺畅
-        if !self.collectionView.decelerating && !self.collectionView.dragging {
-            var img = data.stringAttributeForKey("img")
-            if img != "" {
-                img = "http://img.nian.so/dream/\(img)!dream"
-                c.imageCover.setCover(img, placeHolder: IconColor, bool: false)
-            }
+
+        var img = data.stringAttributeForKey("img")
+        if img != "" {
+            img = "http://img.nian.so/dream/\(img)!dream"
+            c.imageCover.setCover(img, placeHolder: IconColor, bool: false)
         }
 
         cell = c

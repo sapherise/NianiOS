@@ -38,7 +38,7 @@ extension UIImageView {
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
             //todo:加载缓存图片
-            self.loadCacheImage(req, placeholderImage: UIImage(named: "drop")!)
+            self.loadCacheImage(req, placeholderImage: self.image!)
             if animated {
                 self.setAnimated()
             }
@@ -72,7 +72,7 @@ extension UIImageView {
         var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {    //如果是开启了同时还是在2G下
-            self.loadCacheImage(req, placeholderImage: UIImage(named: "drop")!)
+            self.loadCacheImage(req, placeholderImage: self.image!)
             if animated {
                 self.setAnimated()
             }
@@ -101,7 +101,7 @@ extension UIImageView {
         var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) {    //如果是开启了同时还是在2G下
-            self.loadCacheImage(req, placeholderImage: UIImage(named: "drop")!)
+            self.loadCacheImage(req, placeholderImage: self.image!)
         } else {
             self.setImageWithURLRequest(req,
                                         placeholderImage: nil,

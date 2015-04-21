@@ -109,7 +109,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         go {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as! String
-            sql_error = ""
+            sql_error = "内存错误，重启应用试试"
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             if errCircle != nil {
                 back {

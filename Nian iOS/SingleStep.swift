@@ -92,19 +92,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
                 }
             })
         }
-        //删除按钮
-        var deleteActivity = SAActivity()
-        deleteActivity.saActivityTitle = "删除"
-        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
-        deleteActivity.saActivityFunction = {
-            self.deleteId = sid
-            self.deleteViewId = row
-            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.deleteSheet!.addButtonWithTitle("确定")
-            self.deleteSheet!.addButtonWithTitle("取消")
-            self.deleteSheet!.cancelButtonIndex = 1
-            self.deleteSheet!.showInView(self.view)
-        }
         //编辑按钮
         var editActivity = SAActivity()
         editActivity.saActivityTitle = "编辑"
@@ -118,9 +105,24 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
             addstepVC.delegate = self
             self.navigationController!.pushViewController(addstepVC, animated: true)
         }
+        
+        //删除按钮
+        var deleteActivity = SAActivity()
+        deleteActivity.saActivityTitle = "删除"
+        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
+        deleteActivity.saActivityFunction = {
+            self.deleteId = sid
+            self.deleteViewId = row
+            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.deleteSheet!.addButtonWithTitle("确定")
+            self.deleteSheet!.addButtonWithTitle("取消")
+            self.deleteSheet!.cancelButtonIndex = 1
+            self.deleteSheet!.showInView(self.view)
+        }
+
         var ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
         if self.dreamowner == 1 {
-            ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), editActivity, deleteActivity ]
+            ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
         }
         
         

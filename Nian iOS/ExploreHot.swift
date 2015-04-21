@@ -112,13 +112,10 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         return cell!
     }
     
-//    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-////        NSLog("即将 display cell %@", cell)
-//        var reuseCell = cell as? ExploreHotCell
-//        reuseCell?.imageDream.image = nil
-//        reuseCell!.bindData(dataSource[indexPath.row], tableview: tableView)
-//    }
-    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 50;
+    }
+
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
         
@@ -133,26 +130,7 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         }
         
     }
-    
-//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if decelerate {
-//            var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
-//            
-//            for item in visiblePaths {
-//                let indexPath = item as! NSIndexPath
-//                
-//                let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreHotCell
-//                
-//                if cell.imageDream.image == nil {
-//                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
-//                }
-//            }
-//        } else {
-//            
-//        }
-//        
-//    }
-    
+
     func onDreamTap(sender: UITapGestureRecognizer) {
         var viewController = DreamViewController()
         viewController.Id = dataSource[findTableCell(sender.view)!.tag].id
@@ -187,16 +165,15 @@ class ExploreHotCell: UITableViewCell {
         labelTitle.text = data.title
         labelStep.text = data.step
         labelLike.text = data.like
-        
-        if !tableview.dragging && !tableview.decelerating {   //
-            imageDream.setImage(V.urlDreamImage(data.img, tag: .iOS), placeHolder: IconColor)
-        }
-        
+
+        imageDream.setImage(V.urlDreamImage(data.img, tag: .iOS), placeHolder: IconColor)
         btnMain.tag = data.id.toInt()!
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        self.imageDream.cancelImageRequestOperation()   
         self.imageDream.image = nil
     }
 }

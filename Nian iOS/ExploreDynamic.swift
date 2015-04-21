@@ -190,27 +190,9 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         return cell!
     }
     
-//    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-////        NSLog("即将 display cell %@", cell)
-//        var data = dataSource[indexPath.row]
-//        
-//        switch data.type {
-//        case 0:
-//            var dreamCell = cell as? ExploreDynamicDreamCell
-//            dreamCell!.imageHead.image = nil
-//            dreamCell!.imageCover.image = nil
-//            dreamCell!.bindData(data, tableview: tableView)
-//        case 1:
-//            var stepCell = cell as? ExploreDynamicStepCell
-//            //        self.imageHead.image = nil
-//            //        self.imageContent.image = nil
-//            stepCell!.imageHead.image = nil
-//            stepCell!.imageContent.image = nil
-//            stepCell!.bindData(data, tableview: tableView)
-//        default:
-//            break
-//        }
-//    }
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 50;
+    }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
@@ -241,39 +223,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         }
         
     }
-    
-//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if decelerate {
-//            var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
-//            
-//            for item in visiblePaths {
-//                let indexPath = item as! NSIndexPath
-//                
-//                var data = dataSource[indexPath.row]
-//                
-//                switch data.type {
-//                case 0:
-//                    let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicDreamCell
-//                    
-//                    if cell.imageCover.image == nil || cell.imageHead.image == nil {
-//                        cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
-//                    }
-//                    
-//                case 1:
-//                    let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicStepCell
-//                    
-//                    if cell.imageContent.image == nil {
-//                        cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
-//                    }
-//                    
-//                default:
-//                    break
-//                }
-//            }
-//        } else {
-//            
-//        }
-//    }
     
     func onUserTap(sender: UITapGestureRecognizer) {
         var viewController = PlayerViewController()
@@ -381,7 +330,9 @@ class ExploreDynamicStepCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        self.imageHead.cancelImageRequestOperation()
         self.imageHead.image = nil
+        self.imageContent.cancelImageRequestOperation()
         self.imageContent.image = nil
     }
     
@@ -391,10 +342,8 @@ class ExploreDynamicStepCell: UITableViewCell {
         if !data.img0.isZero && !data.img1.isZero {
             imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
             
-            if !tableview.dragging && !tableview.decelerating {      //
-                imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
-            }
             // data.img.pathExtension
+            imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
             imageContent.setHeight(imageDelta)
             imageContent.setWidth(globalWidth)
             imageContent.setX(0)
@@ -521,16 +470,21 @@ class ExploreDynamicDreamCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        self.imageHead.cancelImageRequestOperation()
         self.imageHead.image = nil
+        self.imageCover.cancelImageRequestOperation()
         self.imageCover.image = nil
     }
     
     func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
-        if !tableview.dragging && !tableview.decelerating {    //
-            imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
-            imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
-        }
+        //不需要判断是不是 view 在被拖动或者 view 在减速, 因为
+        //1,有可能图片缓存在本地
+        //2,没有本地缓存，需要网络连接。 AFNetworking 不会阻塞主队列(线程)
+//        if !tableview.dragging && !tableview.decelerating {    //
+//        }
         
+        imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
+        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
         labelName.text = data.userlike
         labelDream.text = "赞了「\(data.title)」"
     }
