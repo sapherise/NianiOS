@@ -112,9 +112,9 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         return cell!
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50;
-    }
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 50;
+//    }
 
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
