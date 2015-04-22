@@ -63,7 +63,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var nib2 = UINib(nibName:"BBSCellTop", bundle: nil)
         
         
-        self.title = "梦想"
+        self.title = "记本"
         self.tableView.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.view.addSubview(self.tableView)

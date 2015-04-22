@@ -165,7 +165,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func shareDream(){
         var url:NSURL = NSURL(string: "http://nian.so/m/dream/\(self.Id)")!
         let activityViewController = UIActivityViewController(
-            activityItems: [ "喜欢念上的这个梦想！「\(self.titleJson)」", url ],
+            activityItems: [ "喜欢念上的这个记本！「\(self.titleJson)」", url ],
             applicationActivities: [WeChatSessionActivity(), WeChatMomentsActivity()])
         self.presentViewController(activityViewController, animated: true, completion: nil)
     }
@@ -239,14 +239,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func ownerMore(){
         self.ownerMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.ownerMoreSheet!.addButtonWithTitle("编辑梦想")
+        self.ownerMoreSheet!.addButtonWithTitle("编辑记本")
         if self.percentJson == "1" {
-            self.ownerMoreSheet!.addButtonWithTitle("还未完成梦想")
+            self.ownerMoreSheet!.addButtonWithTitle("还未完成记本")
         }else if self.percentJson == "0" {
-            self.ownerMoreSheet!.addButtonWithTitle("完成梦想")
+            self.ownerMoreSheet!.addButtonWithTitle("完成记本")
         }
-        self.ownerMoreSheet!.addButtonWithTitle("分享梦想")
-        self.ownerMoreSheet!.addButtonWithTitle("删除梦想")
+        self.ownerMoreSheet!.addButtonWithTitle("分享记本")
+        self.ownerMoreSheet!.addButtonWithTitle("删除记本")
         self.ownerMoreSheet!.addButtonWithTitle("取消")
         self.ownerMoreSheet!.cancelButtonIndex = 4
         self.ownerMoreSheet!.showInView(self.view)
@@ -255,16 +255,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func guestMore(){
         self.guestMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if self.followJson == "1" {
-            self.guestMoreSheet!.addButtonWithTitle("取消关注梦想")
+            self.guestMoreSheet!.addButtonWithTitle("取消关注记本")
         }else if self.followJson == "0" {
-            self.guestMoreSheet!.addButtonWithTitle("关注梦想")
+            self.guestMoreSheet!.addButtonWithTitle("关注记本")
         }
         if self.likeJson == "1" {
             self.guestMoreSheet!.addButtonWithTitle("取消赞")
         }else if self.likeJson == "0" {
-            self.guestMoreSheet!.addButtonWithTitle("赞梦想")
+            self.guestMoreSheet!.addButtonWithTitle("赞记本")
         }
-        self.guestMoreSheet!.addButtonWithTitle("分享梦想")
+        self.guestMoreSheet!.addButtonWithTitle("分享记本")
         self.guestMoreSheet!.addButtonWithTitle("标记为不合适")
         self.guestMoreSheet!.addButtonWithTitle("取消")
         self.guestMoreSheet!.cancelButtonIndex = 4
@@ -294,7 +294,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var safeuid = Sa.objectForKey("uid") as! String
                 if thePrivate == "2" {
                     // 删除
-                    var viewTop = viewEmpty(globalWidth, content: "这个梦想\n不见了")
+                    var viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
                     viewTop.setY(104)
                     var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     viewHolder.addSubview(viewTop)
@@ -303,7 +303,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     self.navigationItem.rightBarButtonItems = []
                 }else if thePrivate == "1" && uid != safeuid {
                     // 私密
-                    var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的梦想\n里面记着什么？")
+                    var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
                     viewTop.setY(104)
                     var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     viewHolder.addSubview(viewTop)
@@ -534,7 +534,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 })
             }
         }else if actionSheet == self.deleteDreamSheet {
-            if buttonIndex == 0 {       //删除梦想
+            if buttonIndex == 0 {       //删除记本
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 globalWillNianReload = 1
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -547,9 +547,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 })
             }
         }else if actionSheet == self.ownerMoreSheet {
-            if buttonIndex == 0 {   //编辑梦想
+            if buttonIndex == 0 {   //编辑记本
                 self.editMyDream()
-            }else if buttonIndex == 1 { //完成梦想
+            }else if buttonIndex == 1 { //完成记本
                 var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
                 moreButton.image = UIImage(named:"more")
                 if self.percentJson == "1" {
@@ -563,9 +563,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     if sa != "" && sa != "err" {
                     }
                 })
-            }else if buttonIndex == 2 {     //分享梦想
+            }else if buttonIndex == 2 {     //分享记本
                 shareDream()
-            }else if buttonIndex == 3 {     //删除梦想
+            }else if buttonIndex == 3 {     //删除记本
                 self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 self.deleteDreamSheet!.addButtonWithTitle("确定删除")
                 self.deleteDreamSheet!.addButtonWithTitle("取消")
@@ -573,7 +573,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.deleteDreamSheet!.showInView(self.view)
             }
         }else if actionSheet == self.guestMoreSheet {
-            if buttonIndex == 0 {   //关注梦想
+            if buttonIndex == 0 {   //关注记本
                 if self.followJson == "1" {
                     self.followJson = "0"
                 }else if self.followJson == "0" {
@@ -584,16 +584,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     if sa != "" && sa != "err" {
                     }
                 })
-            }else if buttonIndex == 1 {     //赞梦想
+            }else if buttonIndex == 1 {     //赞记本
                 onDreamLikeClick()
-            }else if buttonIndex == 2 { //分享梦想
+            }else if buttonIndex == 2 { //分享记本
                 shareDream()
             }else if buttonIndex == 3 { //不合适
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/a.php")
                     if(sa == "1"){
                         dispatch_async(dispatch_get_main_queue(), {
-                            UIView.showAlertView("谢谢", message: "如果这个梦想不合适，我们会将其移除。")
+                            UIView.showAlertView("谢谢", message: "如果这个记本不合适，我们会将其移除。")
                         })
                     }
                 })

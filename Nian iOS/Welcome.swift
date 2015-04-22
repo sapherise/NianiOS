@@ -48,7 +48,7 @@ class WelcomeViewController: UIViewController {
         self.view.addSubview(sign)
         
         var des:UILabel = UILabel(frame: CGRectMake(20, 120, globalWidth-40, 128))
-        var content:String = "在这个宇宙最残酷\n记梦应用里，\n只有每天坚持\n更新你的梦想，\n才不会被停用账号。"
+        var content:String = "在这个宇宙最残酷的\n记录应用里\n只有每天坚持更新\n才不会被停用账号"
         des.font = UIFont.systemFontOfSize(14)
         des.setHeight(128)
         des.text = content

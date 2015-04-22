@@ -94,7 +94,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.scrollView.addSubview(viewErr)
         
         viewHeader = UIView(frame: CGRectMake(0, 375, globalWidth, 200))
-        var viewQuestionHeader = viewEmpty(globalWidth, content: "先随便写个梦想吧\n比如日记、英语、画画...")
+        var viewQuestionHeader = viewEmpty(globalWidth, content: "先随便写个记本吧\n比如日记、英语、画画...")
         viewQuestionHeader.setY(0)
         var btnGoHeader = UIButton()
         btnGoHeader.setButtonNice("  嗯！")
@@ -219,7 +219,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 self.UserHead.setHead(safeuid)
                 self.imageBadge.setType(vip)
                 if deadLine == "0" {
-                    self.UserStep.text = "\(dream) 梦想，\(step) 进展"
+                    self.UserStep.text = "\(dream) 记本，\(step) 进展"
                 }else{
                     self.UserStep.text = "倒计时 \(deadLine)"
                 }

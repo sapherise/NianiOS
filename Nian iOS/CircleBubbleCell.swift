@@ -41,7 +41,7 @@ class CircleBubbleCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var content = self.data.stringAttributeForKey("content")
         if isDream == 1 {
-            content = "更新了梦想「\(content)」"
+            content = "更新了记本「\(content)」"
         }
         var cid = self.data.stringAttributeForKey("cid")
         var type = (self.data.objectForKey("type") as! String).toInt()!

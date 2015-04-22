@@ -218,7 +218,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         }else if self.uploadUrl == "" {
             self.view.showTipText("你的梦境还没有封面...", delay: 2)
         }else if self.tagType == 0 {
-            self.view.showTipText("你的梦境还没绑定梦想和标签...", delay: 2)
+            self.view.showTipText("你的梦境还没绑定记本和标签...", delay: 2)
         }else{
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))

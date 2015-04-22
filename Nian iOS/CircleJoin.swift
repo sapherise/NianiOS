@@ -69,7 +69,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 self.tableView!.reloadData()
                 if self.dataArray.count == 0 {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, 278, 200))
-                    var viewQuestion = viewEmpty(278, content: "还没有梦想")
+                    var viewQuestion = viewEmpty(278, content: "还没有记本")
                     viewQuestion.setY(20)
                     var btnGo = UIButton()
                     btnGo.setButtonNice("创建一个")
@@ -84,7 +84,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                     self.tableView.tableHeaderView = UIView()
                 }
                 self.btnOK.enabled = true
-                self.labelDream.text = "绑定梦想"
+                self.labelDream.text = "绑定记本"
             }
         }
     }
@@ -114,9 +114,9 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as? NSDictionary
-        var id = data!.objectForKey("id") as! String     //选中梦想的编号
-        var title = data!.objectForKey("title") as! String     //选中梦想的编号
-        var image = data!.objectForKey("img") as! String     //选中梦想的编号
+        var id = data!.objectForKey("id") as! String
+        var title = data!.objectForKey("title") as! String
+        var image = data!.objectForKey("img") as! String
         var userImageURL = "http://img.nian.so/dream/\(image)!dream"
         self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
         self.labelDream.text = title
@@ -216,7 +216,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                 }
             }
         }else{
-            self.showTipText("还没绑定一个梦想", delay: 2)
+            self.showTipText("还没绑定一个记本", delay: 2)
         }
     }
 }
