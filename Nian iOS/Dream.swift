@@ -133,33 +133,23 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.deleteSheet!.cancelButtonIndex = 1
             self.deleteSheet!.showInView(self.view)
         }
-
-        var ActivityArray: Array<UIActivity>  //= [ WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
+        
+        var ActivityArray: Array<UIActivity>
         if self.dreamowner == 1 {
             ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
         } else {
             ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
         }
-        
-        
-        if content[1] as! NSString != "" {
-            var theimgurl:String = content[1] as! String
-            var imgurl = NSURL(string: theimgurl)!
-            var cacheFilename = imgurl.lastPathComponent
-            var cachePath = FileUtility.cachePath(cacheFilename!)
-            var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
-            self.activityViewController = UIActivityViewController( activityItems: [ content[0], url, image ], applicationActivities: ActivityArray)
-            self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint //, UIActivityTypeCopyToPasteboard
-            ]
-            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
-        }else{
-            self.activityViewController = UIActivityViewController( activityItems: [ content[0], url ], applicationActivities: ActivityArray)
-            self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint //, UIActivityTypeCopyToPasteboard
-            ]
-            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
+        var image = getCacheImage("\(content[1])")
+        var arr = [content[0], url]
+        if image != nil {
+            arr.append(image!)
         }
+        self.activityViewController = UIActivityViewController(activityItems: arr, applicationActivities: ActivityArray)
+        self.activityViewController?.excludedActivityTypes = [
+            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+        ]
+        self.presentViewController(self.activityViewController!, animated: true, completion: nil)
     }
     
     func shareDream(){

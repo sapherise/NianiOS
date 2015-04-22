@@ -144,9 +144,16 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         var data = dataSource[indexPath.row]
         switch data.type {
         case 0:
+            if indexPath.row == self.dataSource.count - 1 {
+                return 70
+            }
             return 85
         case 1:
-            return ExploreDynamicStepCell.heightWithData(data.content, w: data.img0, h: data.img1)
+            var h = ExploreDynamicStepCell.heightWithData(data.content, w: data.img0, h: data.img1)
+            if indexPath.row == self.dataSource.count - 1 {
+                return h - 15
+            }
+            return h
         default:
             break
         }
@@ -164,6 +171,11 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             dreamCell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
             dreamCell!.labelDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
             dreamCell!.imageCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
+            if indexPath.row == self.dataSource.count - 1 {
+                dreamCell!.viewLine.hidden = true
+            }else{
+                dreamCell!.viewLine.hidden = false
+            }
             cell = dreamCell
             break
         case 1:
@@ -280,7 +292,10 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         }
         var items: [AnyObject] = [ data.content, V.urlShareDream(data.id)]
         if data.img != "" {
-            items.append(FileUtility.imageDataFromPath(V.imageCachePath(V.urlStepImage(data.img, tag: .Large))))
+            var image = getCacheImage("http://img.nian.so/step/\(data.img)!large")
+            if image != nil {
+                items.append(image!)
+            }
         }
         sender.popupActivity(items, activities: [WeChatSessionActivity(), WeChatMomentsActivity(), reportActivity], exclude: [
             UIActivityTypeAddToReadingList,
@@ -477,14 +492,8 @@ class ExploreDynamicDreamCell: UITableViewCell {
     }
     
     func bindData(data: ExploreDynamicProvider.Data, tableview: UITableView) {
-        //不需要判断是不是 view 在被拖动或者 view 在减速, 因为
-        //1,有可能图片缓存在本地
-        //2,没有本地缓存，需要网络连接。 AFNetworking 不会阻塞主队列(线程)
-//        if !tableview.dragging && !tableview.decelerating {    //
-//        }
-        
+        imageHead.setHead(data.uidlike)
         imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
-        imageHead.setImage(V.urlHeadImage(data.uidlike, tag: .Dream), placeHolder: IconColor)
         labelName.text = data.userlike
         labelDream.text = "赞了「\(data.title)」"
     }

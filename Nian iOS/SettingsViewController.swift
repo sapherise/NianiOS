@@ -449,7 +449,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true, completion: nil)
-        self.btnCover.startLoading()
         self.uploadFile(image)
     }
     
@@ -459,38 +458,19 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         var safeshell = Sa.objectForKey("shell") as! String
         var uy = UpYun()
         if self.uploadWay == 1 {
-            uy.successBlocker = ({(data:AnyObject!) in
-                self.uploadUrl = data.objectForKey("url") as! String
-                self.uploadUrl = SAReplace(self.uploadUrl, "/headtmp/", "") as String
-                var userImageURL = "http://img.nian.so/headtmp/\(self.uploadUrl)!dream"
-                var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-                var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
-                var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
-                var queue = NSOperationQueue();
-                NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
-                    dispatch_async(dispatch_get_main_queue(),{
-                        var image:UIImage? = UIImage(data: data)
-                        if image != nil{
-                            globalWillNianReload = 1
-                            var filePath = cachePath.stringByAppendingPathComponent("\(safeuid).jpg!dream")
-                            FileUtility.imageCacheToPath(filePath,image:data)
-                            self.head.image = image
-                        }
-                    })
-                })
+            self.navigationItem.rightBarButtonItems = buttonArray()
+            var uy = UpYun()
+            uy.successBlocker = ({(data2:AnyObject!) in
+                globalWillNianReload = 1
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as! String
+                self.navigationItem.rightBarButtonItems = []
+                self.head.image = img
+                setCacheImage("http://img.nian.so/head/\(safeuid).jpg!dream", img, 150)
             })
-            uy.uploadImage(resizedImage(img, 250), savekey: getSaveKey("headtmp", "jpg") as String)
-            
-            var uy2 = UpYun()
-            uy2.successBlocker = ({(data2:AnyObject!) in
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)", "http://nian.so/api/upyun_cache.php")
-                    if sa != "" && sa != "err" {
-                    }
-                })
-            })
-            uy2.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head") as String)
+            uy.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head") as String)
         }else{
+            self.btnCover.startLoading()
             uy.successBlocker = ({(data:AnyObject!) in
                 self.uploadUrl = data.objectForKey("url") as! String
                 self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
@@ -508,8 +488,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                         if image != nil{
                             globalWillNianReload = 1
                             self.btnCover.endLoading("设定封面")
-                            var filePath = cachePath.stringByAppendingPathComponent("\(self.uploadUrl).jpg!cover")
-                            FileUtility.imageCacheToPath(filePath,image:data)
+                            setCacheImage(userImageURL, img, 500)
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                                 var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&cover=\(self.uploadUrl)", "http://nian.so/api/change_cover.php")
                             })

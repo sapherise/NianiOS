@@ -632,3 +632,18 @@ func SAPush(content: String, pushDate: NSDate) {
     notification.alertBody = content
     UIApplication.sharedApplication().scheduleLocalNotification(notification)
 }
+
+func getCacheImage(url: String) -> UIImage? {
+    var urlImage = NSURL(string: url)!
+    var req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+    var cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(req)
+    return cachedImage
+}
+
+func setCacheImage(url: String, img: UIImage, width: CGFloat) {
+    var urlImage = NSURL(string: url)!
+    var req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+    UIImageView.sharedImageCache().cacheImage(resizedImage(img, width), forRequest: req)
+}
+
+
