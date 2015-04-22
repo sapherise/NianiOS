@@ -176,6 +176,9 @@
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */; };
+		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
+		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
+		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -383,6 +386,9 @@
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
+		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
+		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -972,6 +978,9 @@
 		3252850B1A10C2A200316021 /* 发现 */ = {
 			isa = PBXGroup;
 			children = (
+				C472F7591AE745D400ECC011 /* ExploreNewHot.swift */,
+				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
+				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
 				3252850C1A10C2B600316021 /* Explore.storyboard */,
 				3252850E1A10C2C300316021 /* Explore.swift */,
 				3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */,
@@ -1072,7 +1081,7 @@
 		12FB4891196AE76E0026DD51 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Sa;
 				TargetAttributes = {
 					12FB4898196AE76E0026DD51 = {
@@ -1147,6 +1156,7 @@
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				128C4E371A5038C3000D2B7C /* CircleType.xib in Resources */,
+				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
@@ -1299,6 +1309,7 @@
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
 				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
+				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				12028E301A3EDA770072FBE1 /* AddCircle.swift in Sources */,
@@ -1316,6 +1327,7 @@
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
+				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
 				32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */,
 				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
@@ -1387,7 +1399,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				METAL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

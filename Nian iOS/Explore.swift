@@ -114,6 +114,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
             ExploreHotProvider(viewController: self),
+//            ExploreNewHot(viewController: self),
             ExploreNewProvider(viewController: self)
         ]
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
