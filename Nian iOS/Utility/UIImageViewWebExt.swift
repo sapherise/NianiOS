@@ -102,6 +102,8 @@ extension UIImageView {
         
         if (saveMode == "1") && (networkStatus != 2) {    //如果是开启了同时还是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
+//            NSLog("使用缓存头像")
+            self.contentMode = .ScaleAspectFill
         } else {
             self.setImageWithURLRequest(req,
                                         placeholderImage: nil,

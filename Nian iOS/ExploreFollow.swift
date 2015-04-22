@@ -226,9 +226,9 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50;
-    }
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 50;
+//    }
 
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         var visiblePaths =  bindViewController!.tableView.indexPathsForVisibleRows()! as Array

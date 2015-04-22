@@ -131,7 +131,7 @@
     UIImage *cachedImage = [[[self class] sharedImageCache] cachedImageForRequest:urlRequest];
     if (cachedImage) {
         if (success) {
-            NSLog(@"使用缓存图片");
+//            NSLog(@"使用缓存图片");
             success(nil, nil, cachedImage);
         } else {
             self.image = cachedImage;
@@ -143,7 +143,7 @@
             self.image = placeholderImage;
         }
 
-        NSLog(@"开始网络请求");
+//        NSLog(@"开始网络请求");
         __weak __typeof(self)weakSelf = self;
         self.af_imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
         self.af_imageRequestOperation.responseSerializer = self.imageResponseSerializer;
@@ -257,7 +257,7 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
     if (image && request) {
         [self setObject:image forKey:AFImageCacheKeyFromURLRequest(request)];
         NSURL *cacheDir = [AFImageCache cacheDir];
-//        NSLog(@"cacheDir %@", cacheDir);
+//        NSLog(@"cacheDir 存 %@", cacheDir);
         cacheDir = [cacheDir URLByAppendingPathComponent:AFImageCacheKeyFromURLRequest(request)];
 	
         NSData *data = [AFImageCache imageToData:image withExt:cacheDir.pathExtension];
@@ -265,7 +265,7 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
         if (data) {
             [data writeToURL:cacheDir atomically:YES];
         }else{
-            NSLog(@"Trying alertnate image store method: %@", request);
+//            NSLog(@"Trying alertnate image store method: %@", request);
             UIGraphicsBeginImageContext(image.size);
             [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
             UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
