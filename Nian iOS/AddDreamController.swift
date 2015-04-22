@@ -171,9 +171,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if self.isEdit == 1 {
-            titleLabel.text = "编辑梦想"
+            titleLabel.text = "编辑记本"
         }else{
-            titleLabel.text = "新梦想！"
+            titleLabel.text = "新记本！"
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -211,7 +211,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func addDreamOK(){
         var title = self.field1?.text
         var content = self.field2.text
-        if content == "梦想简介（可选）" {
+        if content == "记本简介（可选）" {
             content = ""
         }
         if title != "" {
@@ -263,7 +263,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
-        if textView.text == "梦想简介（可选）" {
+        if textView.text == "记本简介（可选）" {
             textView.text = ""
         }
         textView.textColor = UIColor.blackColor()

@@ -303,14 +303,14 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func ownerMore(){
         self.ownerMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.ownerMoreSheet!.addButtonWithTitle("编辑梦想")
+        self.ownerMoreSheet!.addButtonWithTitle("编辑记本")
         if self.percentJson == "1" {
-            self.ownerMoreSheet!.addButtonWithTitle("还未完成梦想")
+            self.ownerMoreSheet!.addButtonWithTitle("还未完成记本")
         }else if self.percentJson == "0" {
-            self.ownerMoreSheet!.addButtonWithTitle("完成梦想")
+            self.ownerMoreSheet!.addButtonWithTitle("完成记本")
         }
-        self.ownerMoreSheet!.addButtonWithTitle("分享梦想")
-        self.ownerMoreSheet!.addButtonWithTitle("删除梦想")
+        self.ownerMoreSheet!.addButtonWithTitle("分享记本")
+        self.ownerMoreSheet!.addButtonWithTitle("删除记本")
         self.ownerMoreSheet!.addButtonWithTitle("取消")
         self.ownerMoreSheet!.cancelButtonIndex = 4
         self.ownerMoreSheet!.showInView(self.view)
@@ -319,16 +319,16 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func guestMore(){
         self.guestMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if self.followJson == "1" {
-            self.guestMoreSheet!.addButtonWithTitle("取消关注梦想")
+            self.guestMoreSheet!.addButtonWithTitle("取消关注记本")
         }else if self.followJson == "0" {
-            self.guestMoreSheet!.addButtonWithTitle("关注梦想")
+            self.guestMoreSheet!.addButtonWithTitle("关注记本")
         }
         if self.likeJson == "1" {
             self.guestMoreSheet!.addButtonWithTitle("取消赞")
         }else if self.likeJson == "0" {
-            self.guestMoreSheet!.addButtonWithTitle("赞梦想")
+            self.guestMoreSheet!.addButtonWithTitle("赞记本")
         }
-        self.guestMoreSheet!.addButtonWithTitle("分享梦想")
+        self.guestMoreSheet!.addButtonWithTitle("分享记本")
         self.guestMoreSheet!.addButtonWithTitle("标记为不合适")
         self.guestMoreSheet!.addButtonWithTitle("取消")
         self.guestMoreSheet!.cancelButtonIndex = 4

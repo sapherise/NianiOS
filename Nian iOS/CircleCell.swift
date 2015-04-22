@@ -81,7 +81,7 @@ class CircleCell: MKTableViewCell {
                                 break
                             case "2":   textContent = "发来一张图片"
                                 break
-                            case "3":   textContent = "更新了梦想"
+                            case "3":   textContent = "更新了记本"
                                 break
                             case "4":   textContent = "获得了成就"
                                 break

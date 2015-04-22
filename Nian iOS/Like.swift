@@ -53,7 +53,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }else if self.urlIdentify == 2 {
             titleLabel.text = "听众"
         }else if self.urlIdentify == 3 {
-            titleLabel.text = "赞过梦想"
+            titleLabel.text = "赞过记本"
         }else if self.urlIdentify == 4 {
             titleLabel.text = "邀请"
         }

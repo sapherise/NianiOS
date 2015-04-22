@@ -38,7 +38,7 @@ class CircleTypeCell: UITableViewCell {
         // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
         
         switch type {
-        case "3":   textContent = "更新了梦想"
+        case "3":   textContent = "更新了记本"
             break
         case "4":   textContent = "获得了成就"
             break

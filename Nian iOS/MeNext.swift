@@ -174,7 +174,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         var BBSVC = BBSViewController()
         var StepVC = SingleStepViewController()
         var circleVC = CircleDetailController()
-        if type == "0" {    //在你的梦想留言
+        if type == "0" {    //在你的记本留言
             if step != "0" {
                 StepVC.Id = step
                 self.navigationController!.pushViewController(StepVC, animated: true)
@@ -182,7 +182,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 DreamVC.Id = dream
                 self.navigationController!.pushViewController(DreamVC, animated: true)
             }
-        }else if type == "1" {  //在某个梦想提及你
+        }else if type == "1" {  //在某个记本提及你
             if step != "0" {
                 StepVC.Id = step
                 self.navigationController!.pushViewController(StepVC, animated: true)
@@ -190,7 +190,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 DreamVC.Id = dream
                 self.navigationController!.pushViewController(DreamVC, animated: true)
             }
-        }else if type == "2" {  //赞了你的梦想
+        }else if type == "2" {  //赞了你的记本
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
         }else if type == "3" {  //关注了你
@@ -207,7 +207,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             BBSVC.getContent = 1
             self.navigationController!.pushViewController(BBSVC, animated: true)
             //BBS要倒叙
-        }else if type == "6" {  //为你更新了梦想
+        }else if type == "6" {  //为你更新了记本
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
             //头像不对哦

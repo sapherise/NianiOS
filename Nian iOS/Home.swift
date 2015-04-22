@@ -330,7 +330,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }else if index == idBBS {     // 梦境
             self.dotCircle!.hidden = true
             self.dotCircle!.text = "0"
-        }else if index == idDream {     // 梦想
+        }else if index == idDream {     // 记本
         }else if index == idMe {     // 消息
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")

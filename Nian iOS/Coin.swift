@@ -24,7 +24,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     let propItems: [CoinCellData] = [
         ("trip", "请假", "72小时不被停号", "2 念币"),
         ("star_line", "毕业证", "永不停号", "100 念币"),
-        ("promo", "推广", "推广你的梦想", "20 念币")
+        ("promo", "推广", "推广你的记本", "20 念币")
     ]
     
     @IBOutlet var tableView: UITableView!
@@ -252,8 +252,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             break
         case 102:   //推广
             title = "推广"
-            des = "在接下来的 24 小时里\n置顶你的梦想到发现页面"
-            button = "选择梦想"
+            des = "在接下来的 24 小时里\n置顶你的记本到发现页面"
+            button = "选择记本"
             break
         default:
             break

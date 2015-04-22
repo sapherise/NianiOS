@@ -45,7 +45,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if dreamPromoDelegate != nil {
-            titleLabel.text = "推广梦想"
+            titleLabel.text = "推广记本"
         }else{
             titleLabel.text = "选择标签"
         }
@@ -74,7 +74,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as! NSDictionary
-        if dreamPromoDelegate != nil {  // 如果是推广梦想
+        if dreamPromoDelegate != nil {  // 如果是推广记本
             var id = data.stringAttributeForKey("id")
             var title = data.stringAttributeForKey("title")
             if let v = id.toInt() {
@@ -113,9 +113,9 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
                     self.dataArray.addObject(data)
                 }
                 if self.dataArray.count == 0 {
-                    var textEmpty = "要先有一个\n公开中的梦想"
+                    var textEmpty = "要先有一个\n公开中的记本"
                     if self.dreamPromoDelegate == nil {
-                        textEmpty = "你的梦想\n都没有标签"
+                        textEmpty = "你的记本\n都没有标签"
                     }
                     var viewTop = viewEmpty(globalWidth, content: textEmpty)
                     viewTop.setY(104)

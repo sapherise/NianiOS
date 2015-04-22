@@ -94,9 +94,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as? NSDictionary
-        var id = data!.objectForKey("id") as! String     //选中梦想的编号
-        var title = data!.objectForKey("title") as! String     //选中梦想的编号
-        var image = data!.objectForKey("img") as! String     //选中梦想的编号
+        var id = data!.objectForKey("id") as! String
+        var title = data!.objectForKey("title") as! String
+        var image = data!.objectForKey("img") as! String
         var userImageURL = "http://img.nian.so/dream/\(image)!dream"
         self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
         self.labelDream.text = title

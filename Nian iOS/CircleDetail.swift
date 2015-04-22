@@ -598,7 +598,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 if self.theLevel == "9" {
                     if level == "9" {
                         self.actionSheetPromote!.addButtonWithTitle("看看自己")
-                        self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                        self.actionSheetPromote!.addButtonWithTitle("看看记本")
                     }else if level == "8" {
                         self.actionSheetPromote!.addButtonWithTitle("降职为成员")
                         self.actionSheetPromote!.addButtonWithTitle("移出梦境")
@@ -615,7 +615,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                         }else{
                             self.actionSheetPromote!.addButtonWithTitle("看看对方")
                         }
-                        self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                        self.actionSheetPromote!.addButtonWithTitle("看看记本")
                         self.actionSheetPromote!.addButtonWithTitle("取消")
                         self.actionSheetPromote!.cancelButtonIndex = 2
                     }else if level == "0" {
@@ -629,7 +629,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     }else{
                         self.actionSheetPromote!.addButtonWithTitle("看看对方")
                     }
-                    self.actionSheetPromote!.addButtonWithTitle("看看梦想")
+                    self.actionSheetPromote!.addButtonWithTitle("看看记本")
                     self.actionSheetPromote!.addButtonWithTitle("取消")
                     self.actionSheetPromote!.cancelButtonIndex = 2
                 }
