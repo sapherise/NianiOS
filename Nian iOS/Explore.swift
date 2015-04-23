@@ -39,6 +39,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var btnHot: UILabel!
     @IBOutlet var btnNew: UILabel!
     @IBOutlet var imageFriend: UIImageView!
+    @IBOutlet weak var imageSearch: UIImageView!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
@@ -139,6 +140,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navView.setWidth(globalWidth)
         self.navHolder.setX(globalWidth/2-120)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
+        self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
         view.backgroundColor = UIColor.whiteColor()
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
@@ -197,5 +199,9 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func onFriendClick() {
         self.navigationController?.pushViewController(FindViewController(), animated: true)
+    }
+    
+    func onSearchClick() {
+        self.navigationController?.pushViewController(ExploreSearch(), animated: true)
     }
 }

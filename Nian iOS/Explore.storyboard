@@ -44,7 +44,7 @@
                                         <rect key="frame" x="4" y="21" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" id="61j-UB-Mnd">
+                                    <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" id="61j-UB-Mnd">
                                         <rect key="frame" x="276" y="21" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -99,16 +99,67 @@
                         <outlet property="btnNew" destination="jRq-Xx-k5k" id="hO6-nm-1uh"/>
                         <outlet property="collectionView" destination="Vs2-YU-bNb" id="ZHh-on-eGv"/>
                         <outlet property="imageFriend" destination="jqu-kN-EO5" id="SuY-Ac-4Pu"/>
+                        <outlet property="imageSearch" destination="61j-UB-Mnd" id="e4B-vV-80R"/>
                         <outlet property="navHolder" destination="3Ff-aN-0AE" id="pL3-iD-XQi"/>
                         <outlet property="navTitle" destination="EYQ-GW-nhN" id="ufH-ru-Pnl"/>
                         <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
                         <outlet property="navView" destination="ZF6-an-RPQ" id="sQY-sa-H4n"/>
                         <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
+                        <segue destination="9k3-mV-xr1" kind="push" identifier="toSearch" id="dUY-T8-9m2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F41-Ti-KIl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-198" y="-264"/>
+        </scene>
+        <!--Explore Search-->
+        <scene sceneID="q3e-ba-Vwe">
+            <objects>
+                <tableViewController id="9k3-mV-xr1" customClass="ExploreSearch" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jqS-wO-kGJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="e4P-EL-8YI">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="9k3-mV-xr1" id="N3V-fn-tA0"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchCell" id="RWG-rb-ug8">
+                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RWG-rb-ug8" id="5dN-Z0-9Ya">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="9k3-mV-xr1" id="8ja-rB-gB5"/>
+                            <outlet property="delegate" destination="9k3-mV-xr1" id="Xv0-EY-bk1"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Tkq-8C-EMS"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="hPx-WE-3BM" id="814-pd-xbr"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rZq-Dp-3Zd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="hPx-WE-3BM">
+                    <connections>
+                        <outlet property="delegate" destination="9k3-mV-xr1" id="p02-p9-RgT"/>
+                        <outlet property="searchBar" destination="e4P-EL-8YI" id="bcc-ib-c5Y"/>
+                        <outlet property="searchContentsController" destination="9k3-mV-xr1" id="cNX-lv-d8N"/>
+                        <outlet property="searchResultsDataSource" destination="9k3-mV-xr1" id="lmx-Oh-3Vh"/>
+                        <outlet property="searchResultsDelegate" destination="9k3-mV-xr1" id="J5b-rf-gvR"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="441" y="-264"/>
         </scene>
     </scenes>
     <resources>

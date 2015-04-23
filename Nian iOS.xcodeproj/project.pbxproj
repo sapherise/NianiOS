@@ -179,6 +179,7 @@
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
+		C4B3F6141AE90F490028EEB9 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B3F6131AE90F490028EEB9 /* ExploreSearch.swift */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -389,6 +390,7 @@
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
+		C4B3F6131AE90F490028EEB9 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -992,6 +994,7 @@
 				324716EE1A1C303700EF1305 /* ExploreNewCell.xib */,
 				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
 				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
+				C4B3F6131AE90F490028EEB9 /* ExploreSearch.swift */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1251,6 +1254,7 @@
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
+				C4B3F6141AE90F490028EEB9 /* ExploreSearch.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
