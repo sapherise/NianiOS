@@ -103,6 +103,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
+            setCacheImage(url, img, 150)
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true

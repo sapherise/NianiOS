@@ -28,6 +28,11 @@ class NianCell: UICollectionViewCell{
         if inner.counter == self.total {
             globalhasLaunched = 1
         }
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as! String
+        if safeuid == "171264" {
+            self.imageCover.layer.cornerRadius = 0
+        }
     }
     
     override func awakeFromNib() {
@@ -52,12 +57,6 @@ class NianCell: UICollectionViewCell{
             inner.counter++
         }
     }
-    
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        self.imageCover.image = nil
-//        self.labelTitle.text  = ""
-//    }
 }
 
 func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform3D {

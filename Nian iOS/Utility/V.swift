@@ -188,13 +188,6 @@ struct V {
         return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
     }
     
-    static func imageCachePath(imageURL: String) -> String {
-        var url = NSURL(string: imageURL)
-        var cacheFilename = url!.lastPathComponent
-        var cachePath = FileUtility.cachePath(cacheFilename!)
-        return cachePath
-    }
-    
     static func dataFromPath(path: String) -> NSData? {
         if NSFileManager.defaultManager().fileExistsAtPath(path) {
             return NSData(contentsOfFile: path)

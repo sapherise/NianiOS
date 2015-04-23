@@ -48,7 +48,7 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
                     data.title = item["title"] as! String
                     data.img = item["img"] as! String
                     data.content = item["content"] as! String
-                    data.type = item["img"] as! String
+                    data.type = item["type"] as! String
                     self.dataSource.append(data)
                 }
             }
@@ -114,19 +114,26 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        var data = self.dataSource[indexPath.row] as! NSDictionary
-//        var id = data.objectForKey("id") as! String
-//        var title = data.objectForKey("title") as! String
-//        
-//        if id != "0" {
-//            
-//        } else {
-//            
-//        }
-        
+        var viewController = DreamViewController()
+        viewController.Id = dataSource[indexPath.row].id
+        var data = dataSource[indexPath.row]
+       
+        bindViewController!.navigationController!.pushViewController(viewController, animated: true)
     }
 
 
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+        
+        for item in visiblePaths {
+            let indexPath = item as! NSIndexPath
+            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreNewHotCell
+            
+            if cell.imageHead.image == nil {
+                cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+            }
+        }
+    }
     
 
     

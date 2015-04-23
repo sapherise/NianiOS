@@ -125,29 +125,18 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
             ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
         }
         
-        
-        if content[1] as! NSString != "" {
-            var theimgurl:String = content[1] as! String
-            var imgurl = NSURL(string: theimgurl)!
-            var cacheFilename = imgurl.lastPathComponent
-            var cachePath = FileUtility.cachePath(cacheFilename!)
-            var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
-            self.activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url, image ],
-                applicationActivities: ActivityArray)
-            self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-            ]
-            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
-        }else{
-            self.activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url ],
-                applicationActivities: ActivityArray)
-            self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-            ]
-            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
+        var arr = [content[0], url]
+        var image = getCacheImage("\(content[1])")
+        if image != nil {
+            arr.append(image!)
         }
+        self.activityViewController = UIActivityViewController(
+            activityItems: arr,
+            applicationActivities: ActivityArray)
+        self.activityViewController?.excludedActivityTypes = [
+            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+        ]
+        self.presentViewController(self.activityViewController!, animated: true, completion: nil)
     }
     
     func setupViews()

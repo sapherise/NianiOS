@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlayerCell" rowHeight="438" id="Nxi-zM-L6x" customClass="PlayerCell" customModule="Nian_iOS" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SAStepCell" rowHeight="438" id="Nxi-zM-L6x" customClass="SAStepCell" customModule="Nian_iOS" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="438"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nxi-zM-L6x" id="kE4-Ol-CVT">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hfy-Ik-GGq">
@@ -126,20 +126,19 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <connections>
-                <outlet property="View" destination="kE4-Ol-CVT" id="OlR-1T-PHW"/>
-                <outlet property="avatarView" destination="Hfy-Ik-GGq" id="6qj-GH-kA4"/>
-                <outlet property="btnLike" destination="O6F-EI-cXU" id="niV-x8-Q1P"/>
-                <outlet property="btnLiked" destination="ZUe-nI-fHY" id="Znw-S3-1lw"/>
-                <outlet property="contentLabel" destination="QFB-Pf-uQa" id="raw-iF-5Lf"/>
-                <outlet property="imageholder" destination="Q6N-Zz-AKw" id="Xe6-0U-irc"/>
-                <outlet property="labelComment" destination="bpT-v0-Xdd" id="91G-NM-eka"/>
-                <outlet property="labelDream" destination="OO1-kA-hFx" id="iyH-Oa-Rl9"/>
-                <outlet property="lastdate" destination="JXg-LT-7fS" id="l2P-y2-m7n"/>
-                <outlet property="like" destination="VRe-0O-EcS" id="lYG-aF-6bo"/>
-                <outlet property="menuHolder" destination="GPc-10-oYe" id="z7m-0T-310"/>
-                <outlet property="nickLabel" destination="RaU-Rm-cQH" id="s9x-PH-ssd"/>
-                <outlet property="share" destination="l8C-pG-vns" id="AIu-pQ-yVr"/>
-                <outlet property="viewLine" destination="fC1-fX-zWk" id="zNN-1s-Ihe"/>
+                <outlet property="btnLike" destination="O6F-EI-cXU" id="mnZ-13-Znb"/>
+                <outlet property="btnMore" destination="l8C-pG-vns" id="YJE-f7-0WD"/>
+                <outlet property="btnUnLike" destination="ZUe-nI-fHY" id="KwJ-ik-xOj"/>
+                <outlet property="imageHead" destination="Hfy-Ik-GGq" id="Nfo-3i-1tn"/>
+                <outlet property="imageHolder" destination="Q6N-Zz-AKw" id="3N3-1p-9Oe"/>
+                <outlet property="labelComment" destination="bpT-v0-Xdd" id="ALf-VU-tfa"/>
+                <outlet property="labelContent" destination="QFB-Pf-uQa" id="Vhp-4p-0FY"/>
+                <outlet property="labelDream" destination="OO1-kA-hFx" id="H6o-xj-ULj"/>
+                <outlet property="labelLike" destination="VRe-0O-EcS" id="6fD-ja-xR1"/>
+                <outlet property="labelName" destination="RaU-Rm-cQH" id="r7G-Tb-wOh"/>
+                <outlet property="labelTime" destination="JXg-LT-7fS" id="O0F-Ru-ag4"/>
+                <outlet property="viewLine" destination="fC1-fX-zWk" id="DyE-3F-P3n"/>
+                <outlet property="viewMenu" destination="GPc-10-oYe" id="MSZ-Az-ylM"/>
             </connections>
             <point key="canvasLocation" x="212" y="312"/>
         </tableViewCell>

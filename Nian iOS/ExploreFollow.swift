@@ -194,7 +194,11 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = dataSource[indexPath.row]
-        return ExploreFollowCell.heightWithData(data.content, w: data.img0, h: data.img1)
+        var h = ExploreFollowCell.heightWithData(data.content, w: data.img0, h: data.img1)
+        if indexPath.row == self.dataSource.count - 1 {
+            return h - 15
+        }
+        return h
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -324,7 +328,10 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         }
         var items: [AnyObject] = [ data.content, V.urlShareDream(data.id)]
         if data.img != "" {
-            items.append(FileUtility.imageDataFromPath(V.imageCachePath(V.urlStepImage(data.img, tag: .Large))))
+            var image = getCacheImage("http://img.nian.so/step/\(data.img)!large")
+            if image != nil {
+                items.append(image!)
+            }
         }
         sender.popupActivity(items, activities: [WeChatSessionActivity(), WeChatMomentsActivity(), reportActivity], exclude: [
             UIActivityTypeAddToReadingList,

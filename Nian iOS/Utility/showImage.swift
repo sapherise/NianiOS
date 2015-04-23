@@ -126,14 +126,16 @@ extension UIImageView {
     func onImageViewLongPress(sender: UIGestureRecognizer) {
         if let imageView = sender.view as? SAImageZoomingView {
             if sender.state == UIGestureRecognizerState.Began {
-                var imageData: AnyObject = FileUtility.imageDataFromPath(V.imageCachePath(imageView.imageURL))
-                popupActivity([ "喜欢念上的这张照片。http://nian.so", imageData ], activities: [WeChatSessionActivity(), WeChatMomentsActivity()], exclude: [
-                    UIActivityTypeAssignToContact,
-                    UIActivityTypePrint,
-                    UIActivityTypeCopyToPasteboard,
-                    UIActivityTypeMail,
-                    UIActivityTypeMessage
-                    ])
+                var image = getCacheImage(imageView.imageURL)
+                if image != nil {
+                    popupActivity([ "喜欢念上的这张照片。http://nian.so", image!], activities: [WeChatSessionActivity(), WeChatMomentsActivity()], exclude: [
+                        UIActivityTypeAssignToContact,
+                        UIActivityTypePrint,
+                        UIActivityTypeCopyToPasteboard,
+                        UIActivityTypeMail,
+                        UIActivityTypeMessage
+                        ])
+                }
             }
         }
     }

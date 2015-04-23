@@ -18,6 +18,7 @@ class ExploreNewHotCell: MKTableViewCell {
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var footImage: UIView!
     
+    
     var largeImageURL: String = ""
     var data: NSDictionary?
     
@@ -32,6 +33,9 @@ class ExploreNewHotCell: MKTableViewCell {
         self.footImage.setX(72)
         self.footImage.setWidth(globalWidth - 72)
         
+        self.imageHead.layer.cornerRadius = 4.0
+        self.imageHead.layer.masksToBounds = true
+        
         self.followButton.setX(globalWidth - 73)
         self.followButton.layer.cornerRadius = 12.0
         self.followButton.layer.masksToBounds = true
@@ -43,7 +47,20 @@ class ExploreNewHotCell: MKTableViewCell {
 
     func bindData(data: ExploreNewHot.Data, tableview: UITableView) {
         labelTitle.text = data.title
-        labelContent.text = data.content
+        
+        switch data.type.toInt()! {
+        case 0:
+            labelContent.text = "最近更新"
+        case 1:
+            labelContent.text = "榜单第 \(data.content) 位"
+        case 2:
+            labelContent.text = data.content
+        case 3:
+            labelContent.text = "热门"
+            labelContent.textColor = GoldColor
+        default:
+            break
+        }
         
         imageHead.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
     }

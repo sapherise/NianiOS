@@ -113,8 +113,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.providers = [
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
-            ExploreHotProvider(viewController: self),
-//            ExploreNewHot(viewController: self),
+//            ExploreHotProvider(viewController: self),
+            ExploreNewHot(viewController: self),
             ExploreNewProvider(viewController: self)
         ]
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
@@ -134,7 +134,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
-        self.imageFriend.setX(globalWidth-44)
+//        self.imageFriend.setX(globalWidth-44)
         self.navTitle.setX(globalWidth/2-22)
         self.navView.setWidth(globalWidth)
         self.navHolder.setX(globalWidth/2-120)

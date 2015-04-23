@@ -130,30 +130,18 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         if self.dreamowner == 1 {
             ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
         }
-        
-        
-        if content[1] as! NSString != "" {
-            var theimgurl:String = content[1] as! String
-            var imgurl = NSURL(string: theimgurl)!
-            var cacheFilename = imgurl.lastPathComponent
-            var cachePath = FileUtility.cachePath(cacheFilename!)
-            var image:AnyObject = FileUtility.imageDataFromPath(cachePath)
-            self.activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url, image ],
-                applicationActivities: ActivityArray)
-            self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-            ]
-            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
-        }else{
-            self.activityViewController = UIActivityViewController(
-                activityItems: [ content[0], url ],
-                applicationActivities: ActivityArray)
-            self.activityViewController?.excludedActivityTypes = [
-                UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-            ]
-            self.presentViewController(self.activityViewController!, animated: true, completion: nil)
+        var arr = [content[0], url]
+        var image = getCacheImage("\(content[1])")
+        if image != nil {
+            arr.append(image!)
         }
+        self.activityViewController = UIActivityViewController(
+            activityItems: arr,
+            applicationActivities: ActivityArray)
+        self.activityViewController?.excludedActivityTypes = [
+            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
+        ]
+        self.presentViewController(self.activityViewController!, animated: true, completion: nil)
     }
     
     func setupViews() {
@@ -179,7 +167,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.topCell = (NSBundle.mainBundle().loadNibNamed("PlayerCellTop", owner: self, options: nil) as NSArray).objectAtIndex(0) as! PlayerCellTop
         self.topCell.frame = CGRectMake(0, -64, globalWidth, 364)
         self.setupPlayerTop(self.Id.toInt()!)
-        var nib = UINib(nibName:"PlayerCell", bundle: nil)
+        var nib = UINib(nibName:"SAStepCell", bundle: nil)
         var nib3 = UINib(nibName:"StepCell", bundle: nil)
         self.tableViewDream = UITableView(frame:CGRectMake(0, -64, globalWidth,globalHeight))
         self.tableViewDream.delegate = self
@@ -191,7 +179,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableViewStep.delegate = self
         self.tableViewStep.dataSource = self
         self.tableViewStep.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableViewStep.registerNib(nib, forCellReuseIdentifier: "PlayerCell")
+        self.tableViewStep.registerNib(nib, forCellReuseIdentifier: "SAStepCell")
         self.tableViewStep.showsVerticalScrollIndicator = false
         self.tableViewStep.hidden = true
         
@@ -441,21 +429,21 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
                 cell = c!
             }else{
-                var c = tableView.dequeueReusableCellWithIdentifier("PlayerCell", forIndexPath: indexPath) as! PlayerCell
+                var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
                 var index = indexPath.row
                 var data = self.dataArrayStep[index] as! NSDictionary
                 c.data = data
                 c.indexPathRow = index
                 c.tag = index + 10
-                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
+                c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                c.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+                c.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
                 c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
-                c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+                c.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
                 c.btnLike.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
-                c.btnLiked.addTarget(self, action: "onUnLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+                c.btnUnLike.addTarget(self, action: "onUnLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
                 c.btnLike.tag = index + 10
-                c.btnLiked.tag = index + 10
+                c.btnUnLike.tag = index + 10
                 if indexPath.row == self.dataArrayStep.count - 1 {
                     c.viewLine.hidden = true
                 }else{
@@ -562,7 +550,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             }else{
                 var index = indexPath.row
                 var data = self.dataArrayStep[index] as! NSDictionary
-                return  PlayerCell.cellHeightByData(data)
+                return  SAStepCell.cellHeightByData(data)
             }
         }
     }

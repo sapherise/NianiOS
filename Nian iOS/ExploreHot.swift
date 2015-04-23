@@ -121,14 +121,12 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         
         for item in visiblePaths {
             let indexPath = item as! NSIndexPath
-            
             let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreHotCell
             
             if cell.imageDream.image == nil {
                 cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
             }
         }
-        
     }
 
     func onDreamTap(sender: UITapGestureRecognizer) {

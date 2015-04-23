@@ -118,6 +118,11 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
         cell!.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         cell!.imageCover.layer.borderWidth = 0.5
         
+        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var safeuid = Sa.objectForKey("uid") as! String
+        if safeuid == "171264" {
+            cell!.imageCover.layer.cornerRadius = 0
+        }
         if data.img != "" {
             cell!.imageCover.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor, bool: false)
         }

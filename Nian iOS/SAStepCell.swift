@@ -9,21 +9,21 @@
 import UIKit
 
 
-class PlayerCell: UITableViewCell {
-    @IBOutlet var avatarView:UIImageView?
-    @IBOutlet var nickLabel:UILabel?
-    @IBOutlet var contentLabel:UILabel?
-    @IBOutlet var lastdate:UILabel?
-    @IBOutlet var imageholder:UIImageView!
-    @IBOutlet var View:UIView?
-    @IBOutlet var menuHolder:UIView?
-    @IBOutlet weak var like: UILabel!
-    @IBOutlet weak var share: UIButton!
-    @IBOutlet weak var btnLike:UIButton!
-    @IBOutlet weak var btnLiked:UIButton!
-    @IBOutlet var labelComment:UILabel!
-    @IBOutlet var viewLine: UIView!
+class SAStepCell: UITableViewCell {
+    
+    @IBOutlet var imageHead: UIImageView!
+    @IBOutlet var imageHolder: UIImageView!
+    @IBOutlet var viewMenu: UIView!
+    @IBOutlet var btnMore: UIButton!
+    @IBOutlet var btnLike: UIButton!
+    @IBOutlet var btnUnLike: UIButton!
+    @IBOutlet var labelName: UILabel!
+    @IBOutlet var labelContent: UILabel!
+    @IBOutlet var labelLike: UILabel!
+    @IBOutlet var labelComment: UILabel!
     @IBOutlet var labelDream: UILabel!
+    @IBOutlet var labelTime: UILabel!
+    @IBOutlet var viewLine: UIView!
     var largeImageURL:String = ""
     var data :NSDictionary!
     var imgHeight:Float = 0.0
@@ -38,15 +38,15 @@ class PlayerCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.share.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
-        self.menuHolder?.setWidth(globalWidth)
+        self.btnMore.addTarget(self, action: "SAshare", forControlEvents: UIControlEvents.TouchUpInside)
+        self.viewMenu.setWidth(globalWidth)
         self.setWidth(globalWidth)
-        self.lastdate?.setX(globalWidth - 92 - 15)
-        self.share.setX(globalWidth - 50)
+        self.labelTime.setX(globalWidth - 92 - 15)
+        self.btnMore.setX(globalWidth - 50)
         self.btnLike.setX(globalWidth - 50)
-        self.btnLiked.setX(globalWidth - 50)
+        self.btnUnLike.setX(globalWidth - 50)
         self.viewLine.setWidth(globalWidth)
-        self.contentLabel?.setWidth(globalWidth-30)
+        self.labelContent.setWidth(globalWidth-30)
     }
     
     override func layoutSubviews() {
@@ -66,20 +66,20 @@ class PlayerCell: UITableViewCell {
             var comment = self.data.stringAttributeForKey("comment") as String
             var dreamtitle = self.data.stringAttributeForKey("dreamtitle") as String
             
-            self.nickLabel!.text = user
-            self.lastdate!.text = lastdate
+            self.labelName.text = user
+            self.labelTime.text = lastdate
             self.labelDream.text = dreamtitle
-            self.avatarView?.setHead(uid)
-            self.avatarView!.tag = uid.toInt()!
-            self.nickLabel!.tag = uid.toInt()!
-            self.like!.tag = sid.toInt()!
+            self.imageHead.setHead(uid)
+            self.imageHead.tag = uid.toInt()!
+            self.labelName.tag = uid.toInt()!
+            self.labelLike.tag = sid.toInt()!
             var height = content.stringHeightWith(16,width:globalWidth-30)
             if content == "" {
                 height = 0
             }
-            self.contentLabel!.setHeight(height)
-            self.contentLabel!.text = content
-            self.share.tag = sid.toInt()!
+            self.labelContent.setHeight(height)
+            self.labelContent.text = content
+            self.btnMore.tag = sid.toInt()!
             self.labelComment.tag = sid.toInt()!
             if comment != "0" {
                 comment = "\(comment) 评论"
@@ -87,61 +87,61 @@ class PlayerCell: UITableViewCell {
                 comment = "评论"
             }
             if like == "0" {
-                self.like.hidden = true
+                self.labelLike.hidden = true
             }else{
-                self.like.hidden = false
+                self.labelLike.hidden = false
             }
             like = "\(like) 赞"
-            self.like.text = like
+            self.labelLike.text = like
             var likeWidth = like.stringWidthWith(13, height: 30) + 17
-            self.like.setWidth(likeWidth)
+            self.labelLike.setWidth(likeWidth)
             self.labelComment.text = comment
             var commentWidth = comment.stringWidthWith(13, height: 30) + 17
             self.labelComment.setWidth(commentWidth)
-            self.like.setX(commentWidth+23)
+            self.labelLike.setX(commentWidth+23)
             
             if img0 == 0.0 {
                 if content == "" {  // 没有图片，没有文字
-                    self.imageholder.hidden = false
-                    self.imageholder.image = UIImage(named: "check")
-                    self.imageholder.frame.size = CGSizeMake(50, 23)
-                    self.imageholder.setX(15)
+                    self.imageHolder.hidden = false
+                    self.imageHolder.image = UIImage(named: "check")
+                    self.imageHolder.frame.size = CGSizeMake(50, 23)
+                    self.imageHolder.setX(15)
                 }else{  // 没有图片，有文字
-                    self.imageholder.hidden = true
+                    self.imageHolder.hidden = true
                     imgHeight = 0
-                    self.contentLabel!.setY(70)
+                    self.labelContent.setY(70)
                 }
             }else{
                 imgHeight = img1 * Float(globalWidth) / img0
                 ImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
                 largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
-                self.imageholder!.setImage(ImageURL,placeHolder: IconColor)
-                self.imageholder!.setHeight(CGFloat(imgHeight))
-                self.imageholder?.setWidth(globalWidth)
-                self.imageholder!.hidden = false
-                self.contentLabel!.setY(self.imageholder!.bottom()+15)
+                self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
+                self.imageHolder.setHeight(CGFloat(imgHeight))
+                self.imageHolder.setWidth(globalWidth)
+                self.imageHolder.hidden = false
+                self.labelContent.setY(self.imageHolder.bottom()+15)
             }
             if content == "" {
-                self.menuHolder!.setY(self.imageholder!.bottom()+5)
+                self.viewMenu.setY(self.imageHolder.bottom()+5)
             }else{
-                self.menuHolder!.setY(self.contentLabel!.bottom()+5)
+                self.viewMenu.setY(self.labelContent.bottom()+5)
             }
-            self.viewLine.setY(self.menuHolder!.bottom()+10)
+            self.viewLine.setY(self.viewMenu.bottom()+10)
             
             //主人
             var Sa = NSUserDefaults.standardUserDefaults()
             var cookieuid: String = Sa.objectForKey("uid") as! String
             if cookieuid == uid {
-                self.btnLike!.hidden = true
-                self.btnLiked!.hidden = true
+                self.btnLike.hidden = true
+                self.btnUnLike.hidden = true
             }else{
-                self.share!.setX(globalWidth - 90)
+                self.btnMore.setX(globalWidth - 90)
                 if liked == "0" {
-                    self.btnLike!.hidden = false
-                    self.btnLiked!.hidden = true
+                    self.btnLike.hidden = false
+                    self.btnUnLike.hidden = true
                 }else{
-                    self.btnLike!.hidden = true
-                    self.btnLiked!.hidden = false
+                    self.btnLike.hidden = true
+                    self.btnUnLike.hidden = false
                 }
             }
         }
@@ -160,18 +160,13 @@ class PlayerCell: UITableViewCell {
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
         var height = content.stringHeightWith(16,width:globalWidth-30)
-        if(img0 == 0.0){
-            if content == "" {
-                return 156 + 23
-            } else {
-                return height + 151
-            }
-        }else{
-            if content == "" {
-                return 156 + CGFloat(img1 * Float(globalWidth) / img0)
-            } else {
-                return height + 171 + CGFloat(img1 * Float(globalWidth) / img0)
-            }
+        if (img0 == 0.0) {
+            var h = content == "" ? 179 : height + 151
+            return h
+        } else {
+            var heightImage = CGFloat(img1 * Float(globalWidth) / img0)
+            var h = content == "" ? 156 + heightImage : height + 171 + heightImage
+            return h
         }
     }
 }
