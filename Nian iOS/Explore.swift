@@ -139,6 +139,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navTitle.setX(globalWidth/2-22)
         self.navView.setWidth(globalWidth)
         self.navHolder.setX(globalWidth/2-120)
+        self.imageSearch.setX(globalWidth - 43)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
         view.backgroundColor = UIColor.whiteColor()
@@ -202,6 +203,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func onSearchClick() {
-        self.navigationController?.pushViewController(ExploreSearch(), animated: true)
+//        self.navigationController?.pushViewController(ExploreSearch(), animated: true)
+        self.performSegueWithIdentifier("toSearch", sender: nil)
+        self.navigationController?.navigationBarHidden = true
     }
 }
