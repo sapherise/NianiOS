@@ -13,9 +13,23 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     class Data {
     
     }
+   
+    class DreamSearchData {
+        var id: String!
+        var title: String!
+        var lastdate: String!
+        var img: String!
+        var sid: String!
+    }
     
+    class UserSearchData  {
+        var uid: String!
+        var user: String!
+        var follow: String!
+    }
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var navView: UIView!
     
     @IBOutlet weak var searchText: UITextField!
     @IBOutlet weak var cancelButton: UIButton!
@@ -27,6 +41,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     var index: Int = 0
     var dataSource = [Data]()
+    var dreamSearchDataSource = [DreamSearchData]()
+    var userSearchDataSource = [UserSearchData]()
     var netResult: Bool = false
     
     override func viewDidLoad() {
@@ -35,12 +51,51 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         setupView()
         self.searchText.delegate = self
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.navView.hidden = true
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navView.hidden = false
+    }
 
     func load(clear: Bool, callback: Bool -> Void) {
-    
         
-        
+    }
     
+    func load(index: Int, clear: Bool, callback: Bool -> Void) {
+        if index == 0 {
+            
+        } else {
+            Api.getSearchUsers() {
+                json in
+                var success = false
+                
+                if json != nil {
+                    var items = json!["user"] as! NSArray
+                    
+                    if items.count != 0 {
+                        if clear {
+                            self.userSearchDataSource.removeAll(keepCapacity: true)
+                        }
+                        success = true
+                        
+                        for item in items {
+                            var userSearchData = UserSearchData()
+                            userSearchData.uid = item["uid"] as! String
+                            userSearchData.user = item["user"] as! String
+                            userSearchData.follow = item["follow"] as! String
+                        }
+                        
+                    }
+                    
+                }
+                
+                
+            }
+        }
+        
     }
 
     
@@ -48,6 +103,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func setupView() {
         setupButtonColor(index)
         
+//        self.navView.setX(globalWidth)
         self.searchText.setWidth(globalWidth - 98)
         self.searchText.leftViewMode = .Always
         self.searchText.leftView = UIImageView(image: UIImage(named: "search"))
@@ -71,7 +127,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBAction func dream(sender: AnyObject) {
         index = 0
         setupButtonColor(index)
-        self.searchText.placeholder = "search dream"
+        self.searchText.placeholder = "搜索梦想"
         
         self.tableView.reloadData()
     }
@@ -79,7 +135,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBAction func user(sender: AnyObject) {
         index = 1
         setupButtonColor(index)
-        self.searchText.placeholder = "search user"
+        self.searchText.placeholder = "搜索用户"
         
         self.tableView.reloadData()
     }
@@ -89,9 +145,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.text = ""
     }
     
+    @IBAction func back(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     func clearAll() {
         
-       println("干活")
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -121,7 +180,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             headerView.addSubview(label)
             
             var button = UIButton(frame: CGRectMake(globalWidth - 110, 0, 100, 22))
-//            button.titleLabel!.text = "全部清空"
             button.setTitle("全部清空", forState: .Normal)
             button.addTarget(self, action: "clearAll", forControlEvents: .TouchUpInside)
             headerView.addSubview(button)
@@ -141,14 +199,23 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             if index == 0 {
                 cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! searchCell
                 
+//                cell = dreamCell
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("searchHistoryCell", forIndexPath: indexPath) as! searchHistoryCell
             }
         } else {
             if index == 0 {
                 cell = tableView.dequeueReusableCellWithIdentifier("searchResultCell", forIndexPath: indexPath) as! searchResultCell
+                
+        
+                
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("searchUserResultCell", forIndexPath: indexPath) as! searchUserResultCell
+//                userCell.bindData(userSearchDataSource[indexPath.row], tableview: tableView)
+                
+                
+//                cell = userCell
+                
             }
         }
         

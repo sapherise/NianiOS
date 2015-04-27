@@ -27,7 +27,6 @@ class ExploreNewHotCell: MKTableViewCell {
         // Initialization code
         
         self.selectionStyle = .None
-//        self.setWidth(globalWidth)
         self.contView.setWidth(globalWidth)
         
         self.footImage.setX(72)
@@ -36,8 +35,8 @@ class ExploreNewHotCell: MKTableViewCell {
         self.imageHead.layer.cornerRadius = 4.0
         self.imageHead.layer.masksToBounds = true
         
-        self.followButton.setX(globalWidth - 73)
-        self.followButton.layer.cornerRadius = 12.0
+        self.followButton.setX(globalWidth - 85)
+        self.followButton.layer.cornerRadius = 15.0
         self.followButton.layer.masksToBounds = true
         self.followButton.layer.borderColor = SeaColor.CGColor
         self.followButton.layer.borderWidth = 1

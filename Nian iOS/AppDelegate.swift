@@ -36,11 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
-        //设置 cache
-//        var urlCache = NSURLCache(memoryCapacity: 10*1024*1024, diskCapacity: 100*1024*1024, diskPath: nil)
-//        NSURLCache.setSharedURLCache(urlCache)
-//        UIImageView.setSharedImageCache(UIImageView.sharedImageCache())
-        
         return true
     }
     
@@ -49,9 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
+        //todo: 不读写数据库
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
+        //todo: 重新读写数据库
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
