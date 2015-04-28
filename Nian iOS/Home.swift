@@ -103,14 +103,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         super.viewDidAppear(animated)
         navHide()
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive:", name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
         // 当前账户退出，载入其他账户时使用
         if globalWillReEnter == 1 {
             globalWillReEnter = 0
-            self.enter()
-            self.loadCircle()
-            self.loadLetter()
+            onCircleEnter()
         }
     }
 
@@ -125,10 +124,24 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     override func viewDidDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "CircleLeave", object: nil)
     }
     
-    func onObserveActive(sender: NSNotification) {
+    func onObserveActive() {
         launchTimer()
+        onCircleEnter()
+    }
+    
+    // 连接数据库
+    func onCircleEnter() {
+        self.enter()
+        self.loadCircle()
+        self.loadLetter()
+    }
+    
+    // 断开数据库
+    func onCircleLeave() {
+        client.leave()
     }
     
     func onObserveDeactive(sender: NSNotification) {
@@ -443,7 +456,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func on_state(st: ImClient.State) {
         if st == .authed {
-            // 创建表格
             client.pollBegin(self.on_poll)
         } else if st == .live {
             self.loadCircle()
@@ -484,7 +496,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             }
                             SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
                                 if (type == "1" || type == "2") && (uid != safeuid) {
-                                    shake()
+                                    // shake()
+                                    // 替换成顶部的 statusbar 出现提示
                                 }
                                 if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                     Api.getCircleStatus(circle) { json in

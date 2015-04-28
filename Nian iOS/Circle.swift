@@ -642,7 +642,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             var uploadUrl = data.objectForKey("url") as! String
-            println("http://img.nian.so/\(uploadUrl)!large")
             setCacheImage("http://img.nian.so\(uploadUrl)!large", img, 500)
             uploadUrl = SAReplace(uploadUrl, "/circle/", "") as String
             uploadUrl = SAReplace(uploadUrl, ".png", "") as String
