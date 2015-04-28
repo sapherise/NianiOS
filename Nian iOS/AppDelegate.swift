@@ -44,11 +44,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        //todo: 不读写数据库
+        NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
-        //todo: 重新读写数据库
     }
     
     func applicationDidBecomeActive(application: UIApplication) {

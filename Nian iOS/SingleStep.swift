@@ -95,6 +95,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         //编辑按钮
         var editActivity = SAActivity()
         editActivity.saActivityTitle = "编辑"
+        editActivity.saActivityType = "编辑"
         editActivity.saActivityImage = UIImage(named: "edit")!
         editActivity.saActivityFunction = {
             var data = self.dataArray[row] as! NSDictionary
@@ -109,6 +110,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         //删除按钮
         var deleteActivity = SAActivity()
         deleteActivity.saActivityTitle = "删除"
+        deleteActivity.saActivityType = "删除"
         deleteActivity.saActivityImage = UIImage(named: "goodbye")!
         deleteActivity.saActivityFunction = {
             self.deleteId = sid

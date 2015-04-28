@@ -109,6 +109,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var editActivity = SAActivity()
         editActivity.saActivityTitle = "编辑"
         editActivity.saActivityImage = UIImage(named: "edit")!
+        editActivity.saActivityType = "编辑"
         editActivity.saActivityFunction = {
             self.activityViewController!.dismissViewControllerAnimated(true, completion: nil)
             var data = self.dataArray[row] as! NSDictionary
@@ -124,6 +125,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var deleteActivity = SAActivity()
         deleteActivity.saActivityTitle = "删除"
         deleteActivity.saActivityImage = UIImage(named: "goodbye")!
+        deleteActivity.saActivityType = "删除"
         deleteActivity.saActivityFunction = {
             self.deleteId = sid
             self.deleteViewId = row

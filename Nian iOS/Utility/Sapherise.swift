@@ -360,8 +360,9 @@ class SAActivity: UIActivity {
     var saActivityTitle:String = ""
     var saActivityImage:UIImage! = UIImage()
     var saActivityFunction: (() -> Void)?
+    var saActivityType: String = ""
     override func activityType() -> String {
-        return ""
+        return saActivityType
     }
     override func activityTitle() -> String  {
         return saActivityTitle
