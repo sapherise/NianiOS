@@ -53,7 +53,6 @@ class searchHistoryCell: UITableViewCell {
     
     @IBOutlet weak var headImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var content: UILabel!
     
     override func awakeFromNib() {
         self.headImageView.layer.cornerRadius = 20.0
@@ -74,12 +73,14 @@ class searchUserResultCell: UITableViewCell {
     
     @IBOutlet weak var headImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var content: UILabel!
     @IBOutlet weak var followButton: UIButton!
+    @IBOutlet weak var footView: UIView!
     
     override func awakeFromNib() {
         self.headImageView.layer.cornerRadius = 20.0
         self.headImageView.layer.masksToBounds = true
+        self.footView.setWidth(globalWidth - 85)
+        
     }
    
     func bindData(data: ExploreSearch.UserSearchData, tableview: UITableView) {
@@ -87,6 +88,7 @@ class searchUserResultCell: UITableViewCell {
         
         self.followButton.layer.cornerRadius = 15
         self.followButton.layer.masksToBounds = true
+        self.followButton.setX(globalWidth - 85)
         
         if data.follow == "0" {
             self.followButton.layer.borderColor = SeaColor.CGColor

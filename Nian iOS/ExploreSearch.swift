@@ -10,10 +10,6 @@ import UIKit
 
 class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
-    class Data {
-    
-    }
-   
     class DreamSearchData {
         var id: String!
         var title: String!
@@ -28,19 +24,22 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var follow: String!
     }
     
+    class NITextfield: UITextField {
+        override func leftViewRectForBounds(bounds: CGRect) -> CGRect {
+            return CGRectMake(bounds.origin.x, bounds.origin.y, 25 , 25)
+        }
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navView: UIView!
-    
-    @IBOutlet weak var searchText: UITextField!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var userButton: UIButton!
+    @IBOutlet weak var indiView: UIView!
     @IBOutlet weak var dreamButton: UIButton!
+    @IBOutlet weak var userButton: UIButton!
+
+    @IBOutlet weak var floatView: UIView!
     
-    @IBOutlet weak var verticalLine: UIView!
-    @IBOutlet weak var seperateLine: UIView!
-    
+    var searchText = UITextField()
     var index: Int = 0
-    var dataSource = [Data]()
     var dreamSearchDataSource = [DreamSearchData]()
     var userSearchDataSource = [UserSearchData]()
     var netResult: Bool = false
@@ -49,85 +48,110 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
 
         setupView()
-        self.searchText.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.navView.hidden = true
+        super.viewWillDisappear(true)
+        
+        searchText.removeFromSuperview()
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navView.hidden = false
+        super.viewWillAppear(true)
+        
+        self.navigationController?.navigationBar.addSubview(searchText)
     }
 
-    func load(clear: Bool, callback: Bool -> Void) {
-        
-    }
-    
     func load(index: Int, clear: Bool, callback: Bool -> Void) {
         if index == 0 {
             
         } else {
-            Api.getSearchUsers() {
-                json in
-                var success = false
-                
-                if json != nil {
-                    var items = json!["user"] as! NSArray
-                    
-                    if items.count != 0 {
-                        if clear {
-                            self.userSearchDataSource.removeAll(keepCapacity: true)
-                        }
-                        success = true
-                        
-                        for item in items {
-                            var userSearchData = UserSearchData()
-                            userSearchData.uid = item["uid"] as! String
-                            userSearchData.user = item["user"] as! String
-                            userSearchData.follow = item["follow"] as! String
-                        }
-                        
-                    }
-                    
-                }
-                
-                
-            }
+            self.userSearch(callback)
         }
         
     }
-
     
+    func onRefresh() {
+        load(index, clear: true) {
+            success in
+            self.tableView.headerBeginRefreshing()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func onLoad() {
+        load(index, clear: false) {
+            success in
+            
+            if success {
+                self.tableView.headerBeginRefreshing()
+                self.tableView.reloadData()
+            } else {
+                self.view.showTipText("已经到底了", delay: 1)
+            }
+        }
+    }
+    
+    func onPullDown() {
+        if !netResult {
+            self.onRefresh()
+        } else {
+            self.tableView.headerEndRefreshing(animated: true)
+        }
+    }
+    
+    func onPullUp() {
+        self.onLoad()
+    }
     
     func setupView() {
+        viewBack()
+        
         setupButtonColor(index)
         
-//        self.navView.setX(globalWidth)
-        self.searchText.setWidth(globalWidth - 98)
-        self.searchText.leftViewMode = .Always
-        self.searchText.leftView = UIImageView(image: UIImage(named: "search"))
-        self.seperateLine.setWidth(globalWidth)
-        self.verticalLine.setX(globalWidth/2)
-        self.dreamButton.setX(globalWidth/4 - dreamButton.width()/2)
-        self.userButton.setX(globalWidth/4*3 - userButton.width()/2)
-        self.cancelButton.setX(globalWidth - 52)
+        tableView.setHeight(globalHeight - 104)
+        navView.setWidth(globalWidth)
+        indiView.setWidth(globalWidth)
+        dreamButton.setX(globalWidth/2 - 104)
+        userButton.setX(globalWidth/2 + 24)
+        floatView.setX(globalWidth/2 - 89)
+        //globalWidth/2 + 49
+        
+        searchText = NITextfield(frame: CGRectMake(30, 10, globalWidth-45, 25))
+        searchText.layer.cornerRadius = 12.5
+        searchText.layer.masksToBounds = true
+        searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)
+        searchText.leftViewMode = .Always
+        searchText.leftView  = UIImageView(image: UIImage(named: "search"))
+        searchText.leftView?.contentMode = .Center
+        searchText.placeholder = "点此搜索梦想、用户"
+        searchText.font.fontWithSize(24)
+        searchText.returnKeyType = .Search
+        searchText.clearsOnBeginEditing = true  
+        self.navigationController?.navigationBar.addSubview(searchText)
+        
+        searchText.delegate = self
+        
+        tableView.addHeaderWithCallback(onPullDown)
+        tableView.addFooterWithCallback(onPullUp)
     }
     
     func setupButtonColor(index: Int) {
-        if index != 0 {
-            userButton.setTitleColor(nil, forState:.Normal)
-            dreamButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-        } else  {
-            dreamButton.setTitleColor(nil, forState:.Normal)
-            userButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+        if index == 0 {
+            dreamButton.setTitleColor(UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1), forState: .Normal)
+            userButton.setTitleColor(UIColor(red: 0x1c/255, green: 0x1f/255, blue: 0x21/255, alpha: 1), forState: .Normal)
+        } else {
+            userButton.setTitleColor(UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1), forState: .Normal)
+            dreamButton.setTitleColor(UIColor(red: 0x1c/255, green: 0x1f/255, blue: 0x21/255, alpha: 1), forState: .Normal)
         }
     }
     
     @IBAction func dream(sender: AnyObject) {
         index = 0
         setupButtonColor(index)
-        self.searchText.placeholder = "搜索梦想"
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.floatView.setX(globalWidth/2 - 89)
+        })
         
         self.tableView.reloadData()
     }
@@ -135,7 +159,9 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBAction func user(sender: AnyObject) {
         index = 1
         setupButtonColor(index)
-        self.searchText.placeholder = "搜索用户"
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.floatView.setX(globalWidth/2 + 39)
+        })
         
         self.tableView.reloadData()
     }
@@ -145,76 +171,67 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.text = ""
     }
     
-    @IBAction func back(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
-    }
-    
     func clearAll() {
         
     }
+    
+    func userSearch(callback: Bool -> Void) {
+        Api.getSearchUsers() {
+            json in
+            var success = false
+            
+            if json != nil {
+                var items = json!["user"] as! NSArray
+                
+                if items.count != 0 {
+                    success = true
+                    
+                    for item in items {
+                        var userSearchData = UserSearchData()
+                        userSearchData.uid = item["uid"] as! String
+                        userSearchData.user = item["user"] as! String
+                        userSearchData.follow = item["follow"] as! String
+                        
+                        self.userSearchDataSource.append(userSearchData)
+                    }
+                    
+                }
+                callback(success)
+                self.netResult = true
+                self.tableView.headerEndRefreshing(animated: true)
+                self.tableView.reloadData()
+            }
+            
+        }
+    }
+    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView: UIView
-        headerView = UIView(frame: CGRectMake(0, 0, globalWidth, 22))
-        headerView.backgroundColor = UIColor.lightGrayColor()
-        
-        if index == 0 {
-            if section == 0 {
-                var label = UILabel()
-                label.text = "标签"
-                label.frame = CGRectMake(10, 0, 100, 22)
-                headerView.addSubview(label)
-                
-                var result = UILabel(frame: CGRectMake(globalWidth - 110, 0, 100, 22))
-                result.text = "多少条"
-                headerView.addSubview(result)
-            } else {
-            }
-        } else {
-            var label = UILabel(frame: CGRectMake(10, 0, 100, 22))
-            label.text = "历史记录"
-            headerView.addSubview(label)
-            
-            var button = UIButton(frame: CGRectMake(globalWidth - 110, 0, 100, 22))
-            button.setTitle("全部清空", forState: .Normal)
-            button.addTarget(self, action: "clearAll", forControlEvents: .TouchUpInside)
-            headerView.addSubview(button)
-        }
-        
-       return headerView
-    }
+
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        if index == 0{
+            return dreamSearchDataSource.count
+        } else {
+            return userSearchDataSource.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell
         
         if !netResult {
-            if index == 0 {
-                cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! searchCell
-                
-//                cell = dreamCell
-            } else {
-                cell = tableView.dequeueReusableCellWithIdentifier("searchHistoryCell", forIndexPath: indexPath) as! searchHistoryCell
-            }
+            cell = UITableViewCell()
         } else {
             if index == 0 {
                 cell = tableView.dequeueReusableCellWithIdentifier("searchResultCell", forIndexPath: indexPath) as! searchResultCell
-                
-        
-                
             } else {
-                cell = tableView.dequeueReusableCellWithIdentifier("searchUserResultCell", forIndexPath: indexPath) as! searchUserResultCell
-//                userCell.bindData(userSearchDataSource[indexPath.row], tableview: tableView)
-                
-                
-//                cell = userCell
+                var userCell = tableView.dequeueReusableCellWithIdentifier("searchUserResultCell", forIndexPath: indexPath) as! searchUserResultCell
+                userCell.bindData(userSearchDataSource[indexPath.row], tableview: tableView)
+                cell = userCell
                 
             }
         }
@@ -223,29 +240,20 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 80
+        return 71
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        self.navigationController?.pushViewController(PlayerViewController(), animated: true)
     }
     
-    
-    
-    
-    
-    
-    
     func textFieldDidBeginEditing(textField: UITextField) {
-//        self.searchText.becomeFirstResponder()
-        //取消原来的联网查询
-        
+        self.netResult = false
     }
 
     func textFieldDidEndEditing(textField: UITextField) {
-//        self.searchText.resignFirstResponder()
-        //查询
-        
+        self.tableView.headerBeginRefreshing()
+        self.onPullDown()
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -254,3 +262,4 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         return true
     }
 }
+

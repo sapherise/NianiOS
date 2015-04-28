@@ -204,8 +204,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func onSearchClick() {
-//        self.navigationController?.pushViewController(ExploreSearch(), animated: true)
         self.performSegueWithIdentifier("toSearch", sender: nil)
-        self.navigationController?.navigationBarHidden = true
     }
 }

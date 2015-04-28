@@ -402,7 +402,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         if indexPath.section == 0 {
             var c = UITableViewCell()
             c.hidden = true
-            c.selectionStyle = UITableViewCellSelectionStyle.None
+            c.selectionStyle = .None
             return c
         }else{
             if tableView == self.tableViewDream {
