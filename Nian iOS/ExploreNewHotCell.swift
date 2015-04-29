@@ -62,6 +62,19 @@ class ExploreNewHotCell: MKTableViewCell {
         }
         
         imageHead.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
+        
+//        if data.follow == "0" {
+//            self.followButton.layer.borderColor = SeaColor.CGColor
+//            self.followButton.layer.borderWidth = 1
+//            self.followButton.setTitleColor(SeaColor, forState: .Normal)
+//            self.followButton.backgroundColor = .whiteColor()
+//            self.followButton.setTitle("关注", forState: .Normal)
+//        } else {
+//            self.followButton.layer.borderWidth = 0
+//            self.followButton.setTitleColor(SeaColor, forState: .Normal)
+//            self.followButton.backgroundColor = SeaColor
+//            self.followButton.setTitle("关注中", forState: .Normal)
+//        }
     }
     
     override func prepareForReuse() {

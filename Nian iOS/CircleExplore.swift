@@ -60,9 +60,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
 //        var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
 //        self.navigationController?.pushViewController(addcircleVC, animated: true)
     
-        
-    
-    
     func onAddCircleClick() {
         showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
             var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
