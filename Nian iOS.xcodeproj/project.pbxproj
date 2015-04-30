@@ -984,10 +984,10 @@
 			children = (
 				C472F7591AE745D400ECC011 /* ExploreNewHot.swift */,
 				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
-				C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */,
 				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
 				C483CF901AEB435200E1C550 /* ExploreSearch.swift */,
 				C411A7181AEB91E100E84CA2 /* SearchCell.swift */,
+				C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */,
 				3252850C1A10C2B600316021 /* Explore.storyboard */,
 				3252850E1A10C2C300316021 /* Explore.swift */,
 				3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */,

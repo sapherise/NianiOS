@@ -40,6 +40,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var btnNew: UILabel!
     @IBOutlet var imageFriend: UIImageView!
     @IBOutlet weak var imageSearch: UIImageView!
+    @IBOutlet weak var floatView: UIView!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
@@ -60,7 +61,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             btnFollow,
             btnDynamic,
             btnHot,
-            btnNew
+//            btnNew
         ]
         setupViews()
     }
@@ -117,26 +118,14 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             ExploreDynamicProvider(viewController: self),
 //            ExploreHotProvider(viewController: self),
             ExploreNewHot(viewController: self),
-            ExploreNewProvider(viewController: self)
+//            ExploreNewProvider(viewController: self)
         ]
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         tableView.setWidth(globalWidth)
-        collectionView.frame = CGRectMake(0, 108, globalWidth, globalHeight - 49 - 108)
-        collectionView.alwaysBounceVertical = true
-        var layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset.top = 20
-        var w: CGFloat = 20
-        if isiPhone6 {
-            w = 47.5
-        }else if isiPhone6P {
-            w = 17
-        }
-        layout.sectionInset.left = w
-        layout.sectionInset.right = w
+        self.collectionView.hidden = true
         
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
-//        self.imageFriend.setX(globalWidth-44)
         self.navTitle.setX(globalWidth/2-22)
         self.navView.setWidth(globalWidth)
         self.navHolder.setX(globalWidth/2-120)
@@ -148,12 +137,9 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-        btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
-        collectionView.addHeaderWithCallback(onPullDown)
-        collectionView.addFooterWithCallback(onPullUp)
     }
     
     func onPullDown() {
@@ -173,23 +159,12 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         var loading = current == tab ? true : false
         current = tab
         currentProvider = self.providers[tab]
-   //     buttons[tab].selected = true
         buttons[tab].textColor = SeaColor
-        if tab < 3 {
-            collectionView.dataSource = nil
-            collectionView.delegate = nil
-            collectionView.hidden = true
-            tableView.delegate = currentProvider as? UITableViewDelegate
-            tableView.dataSource = currentProvider as? UITableViewDataSource
-            tableView.hidden = false
-        } else {
-            tableView.dataSource = nil
-            tableView.delegate = nil
-            tableView.hidden = true
-            collectionView.delegate = currentProvider as? UICollectionViewDelegate
-            collectionView.dataSource = currentProvider as? UICollectionViewDataSource
-            collectionView.hidden = false
-        }
+
+        tableView.delegate = currentProvider as? UITableViewDelegate
+        tableView.dataSource = currentProvider as? UITableViewDataSource
+        tableView.hidden = false
+
         currentProvider.onShow(loading)
     }
     
@@ -197,6 +172,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         switchTab(sender.view!.tag - 1100)
         globalNumExploreBar = sender.view!.tag - 1100
         tableView.tableHeaderView = UIView()
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.floatView.setX(19 + 76 * CGFloat(globalNumExploreBar))
+        })
+        
     }
     
     func onFriendClick() {

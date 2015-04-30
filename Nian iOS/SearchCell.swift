@@ -130,7 +130,7 @@ class dreamSearchStepCell: MKTableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.setWidth(globalWidth)
-        self.followButton.setX(globalWidth-15-92)
+        self.followButton.setX(globalWidth-15-70)
         self.viewControl.setWidth(globalWidth)
         self.labelContent.setWidth(globalWidth-30)
         self.viewLine.setWidth(globalWidth)
@@ -141,7 +141,7 @@ class dreamSearchStepCell: MKTableViewCell {
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         
         self.followButton.layer.cornerRadius = 15.0
-        self.followButton.layer.masksToBounds = true    
+        self.followButton.layer.masksToBounds = true
     }
     
     override func prepareForReuse() {

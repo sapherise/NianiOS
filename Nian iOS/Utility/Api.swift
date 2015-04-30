@@ -67,15 +67,26 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_test.php?page=\(page)", callback: callback)
     }
     
+    static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/searchdream.php?keyword=\(keyword)&&page=\(page)", callback: callback)
+    }
+    
+    static func getSearchUsers(keyword: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/searchuser.php?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
+    }
+    
     static func getSearchDream(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/search_dream.php", callback: callback)
     }
-    
+        
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/search_user.php", callback: callback)
     }
+
     
     static func postReport(type: String, id: String, callback: V.StringCallback) {
         loadCookies()
