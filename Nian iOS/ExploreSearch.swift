@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate {
 
     class DreamSearchData {
         var id: String!
@@ -44,6 +44,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     class NITextfield: UITextField {
         override func leftViewRectForBounds(bounds: CGRect) -> CGRect {
             return CGRectMake(bounds.origin.x, bounds.origin.y, 25 , 25)
+        }
+        
+        override func rightViewRectForBounds(bounds: CGRect) -> CGRect {
+            return CGRectMake(bounds.size.width - 19, (bounds.size.height - 12)/2, 12, 12)
         }
     }
     
@@ -147,6 +151,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.leftViewMode = .Always
         searchText.leftView  = UIImageView(image: UIImage(named: "search"))
         searchText.leftView?.contentMode = .Center
+        searchText.rightViewMode = .WhileEditing
+        searchText.rightView = UIImageView(image: UIImage(named: "close-1"))
+        searchText.rightView!.contentMode = .Center
+        searchText.rightView!.userInteractionEnabled = true
+        searchText.rightView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearText:"))
         searchText.attributedPlaceholder = NSAttributedString(string: "点此搜索梦想、用户", attributes: [NSForegroundColorAttributeName: color, NSFontAttributeName: UIFont.systemFontOfSize(12.0)])
         searchText.contentVerticalAlignment = .Center
         searchText.font = UIFont.systemFontOfSize(12.0)
@@ -178,9 +187,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 - 70)
         })
-        
-        self.searchText.text = ""
-        self.tableView.reloadData()
+
+        if count(searchText.text) > 0 {
+            self.onPullDown()
+        }
     }
     
     @IBAction func user(sender: AnyObject) {
@@ -189,9 +199,15 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 + 20)
         })
+
+        if count(searchText.text) > 0 {
+           self.onPullDown()
+        }
         
-        self.searchText.text = ""
-        self.tableView.reloadData()
+    }
+    
+    func clearText(sender: UITapGestureRecognizer) {
+        searchText.text = ""
     }
     
     // MARK: several abstract method
@@ -201,13 +217,13 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func userSearch(clear: Bool, callback: Bool -> Void) {
-//        Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++) {
-        Api.getSearchUsers() {
+        Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++) {
+//        Api.getSearchUsers() {
             json in
             var success = false
             
             if json != nil {
-                var items = json!["user"] as? NSArray
+                var items = json!["users"] as? NSArray
                 
                 if (items != nil && items!.count != 0) {
                     if clear {
@@ -236,14 +252,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func dreamSearch(clear: Bool, callback: Bool -> Void) {
-//        Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++) {
-        Api.getSearchDream() {
+        Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++) {
+//        Api.getSearchDream() {
             json in
             var success = false
             
             if json != nil {
-                var items = json!["dream"] as? NSArray
-                var stepItems = json!["step"] as? NSArray
+                var items = json!["dreams"] as? NSArray
+                var stepItems = json!["steps"] as? NSArray
                 
                 if (items != nil && items?.count != 0) {
 //                    if clear {
@@ -253,11 +269,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     for item in items! {
                         var dreamSearchData = DreamSearchData()
 //                        dreamSearchData.sid = item["sid"] as! String
-                        dreamSearchData.id = item["id"] as! String
-                        dreamSearchData.title = item["title"] as! String
+                        dreamSearchData.id = item["id"] as? String
+                        dreamSearchData.title = item["title"] as? String
 //                        dreamSearchData.content = item["content"] as! String
-                        dreamSearchData.lastdate = item["lastdate"] as! String
-                        dreamSearchData.img = item["img"] as! String
+                        dreamSearchData.lastdate = item["lastdate"] as? String
+                        dreamSearchData.img = item["img"] as? String
                         
                         self.dreamSearchDataSource.append(dreamSearchData)
                     }
@@ -270,18 +286,18 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     
                     for item in stepItems! {
                         var stepdata = DreamStepData()
-                        stepdata.sid = item["sid"] as! String
-                        stepdata.uid = item["uid"] as! String
-                        stepdata.user = item["user"] as! String
-                        stepdata.content = item["content"] as! String
-                        stepdata.lastdate = item["lastdate"] as! String
+                        stepdata.sid = item["sid"] as? String
+                        stepdata.uid = item["uid"] as? String
+                        stepdata.user = item["user"] as? String
+                        stepdata.content = item["content"] as? String
+                        stepdata.lastdate = item["lastdate"] as? String
 //                        stepdata.title = item["title"] as! String
-                        stepdata.img = item["img"] as! String
-                        stepdata.img0 = (item["img0"] as! NSString).floatValue
-                        stepdata.img1 = (item["img1"] as! NSString).floatValue
-                        stepdata.like = (item["like"] as! String).toInt()
-                        stepdata.liked = (item["liked"] as! String).toInt()
-                        stepdata.comment = (item["comment"] as! String).toInt()
+                        stepdata.img = item["img"] as? String
+                        stepdata.img0 = (item["img0"] as? NSString)?.floatValue
+                        stepdata.img1 = (item["img1"] as? NSString)?.floatValue
+                        stepdata.like = (item["like"] as? String)?.toInt()
+                        stepdata.liked = (item["liked"] as? String)?.toInt()
+                        stepdata.comment = (item["comment"] as? String)?.toInt()
                         
                         self.dreamStepDataSource.append(stepdata)
                     }
@@ -364,6 +380,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             } else {
                 var userCell = tableView.dequeueReusableCellWithIdentifier("searchUserResultCell", forIndexPath: indexPath) as! searchUserResultCell
                 userCell.bindData(userSearchDataSource[indexPath.row], tableview: tableView)
+                userCell.userData = self.userSearchDataSource[indexPath.row] as ExploreSearch.UserSearchData   
                 cell = userCell
             }
         }

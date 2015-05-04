@@ -17,6 +17,7 @@ class searchResultCell: MKTableViewCell {
     @IBOutlet weak var headImageView: UIImageView!
     @IBOutlet weak var footView: UIView!
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -35,6 +36,7 @@ class searchResultCell: MKTableViewCell {
         self.headImageView.setImage("http://img.nian.so/dream/\(data.img)!dream", placeHolder: IconColor)
         
 //        if data.follow == "0" {
+            self.followButton.tag = 100
             self.followButton.layer.borderColor = SeaColor.CGColor
             self.followButton.layer.borderWidth = 1
             self.followButton.setTitleColor(SeaColor, forState: .Normal)
@@ -49,8 +51,44 @@ class searchResultCell: MKTableViewCell {
     }
     
     
-    @IBAction func follow(sender: AnyObject) {
-        
+    @IBAction func follow(sender: UIButton) {
+//        var tag = sender.tag
+//        if tag == 100 {     //没有关注
+//            var mutableItem = ExploreSearch
+//            mutableItem.setObject("1", forKey: "follow")
+//            self.data = mutableItem
+//            sender.tag = 200
+//            sender.layer.borderWidth = 0
+//            sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+//            sender.backgroundColor = SeaColor
+//            sender.setTitle("关注中", forState: UIControlState.Normal)
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+//                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//                var safeuid = Sa.objectForKey("uid") as! String
+//                var safeshell = Sa.objectForKey("shell") as! String
+//                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+//                if sa != "" && sa != "err" {
+//                }
+//            })
+//        }else if tag == 200 {   //正在关注
+//            var mutableItem = NSMutableDictionary(dictionary: data)
+//            mutableItem.setObject("0", forKey: "follow")
+//            self.data = mutableItem
+//            sender.tag = 100
+//            sender.layer.borderColor = SeaColor.CGColor
+//            sender.layer.borderWidth = 1
+//            sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+//            sender.backgroundColor = UIColor.whiteColor()
+//            sender.setTitle("关注", forState: UIControlState.Normal)
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+//                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//                var safeuid = Sa.objectForKey("uid") as! String
+//                var safeshell = Sa.objectForKey("shell") as! String
+//                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+//                if sa != "" && sa != "err" {
+//                }
+//            })
+//        }
         
     }
     
@@ -70,6 +108,9 @@ class searchUserResultCell: MKTableViewCell {
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var footView: UIView!
     
+    var userData: ExploreSearch.UserSearchData!
+    var uid: String = ""
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -82,7 +123,9 @@ class searchUserResultCell: MKTableViewCell {
     }
    
     func bindData(data: ExploreSearch.UserSearchData, tableview: UITableView) {
+//        self.userData = data
         self.title.text = data.user
+        self.uid = data.uid
         
         if data.follow == "0" {
             self.followButton.layer.borderColor = SeaColor.CGColor
@@ -98,6 +141,41 @@ class searchUserResultCell: MKTableViewCell {
         }
         
         self.headImageView.setImage(V.urlHeadImage(data.uid, tag: .Head), placeHolder: IconColor)
+    }
+    
+    @IBAction func onFollowClick(sender: UIButton) {
+        var tag = sender.tag
+        if tag == 100 {     //没有关注
+            sender.tag = 200
+            sender.layer.borderWidth = 0
+            sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            sender.backgroundColor = SeaColor
+            sender.setTitle("关注中", forState: UIControlState.Normal)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var uid = Sa.objectForKey("uid") as! String
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeshell = Sa.objectForKey("shell") as! String
+                var sa = SAPost("uid=\(uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+                if sa != "" && sa != "err" {
+                }
+            })
+        } else if tag == 200 {   //正在关注
+            sender.tag = 100
+            sender.layer.borderColor = SeaColor.CGColor
+            sender.layer.borderWidth = 1
+            sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+            sender.backgroundColor = UIColor.whiteColor()
+            sender.setTitle("关注", forState: UIControlState.Normal)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeshell = Sa.objectForKey("shell") as! String
+                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+                if sa != "" && sa != "err" {
+                }
+            })
+        }
     }
     
     override func prepareForReuse() {
@@ -193,7 +271,7 @@ class dreamSearchStepCell: MKTableViewCell {
         labelName.text = data.user
         labelDream.text = data.title
         labelContent.text = data.content
-        var liked = (data.liked != 0)
+        var liked = (data.liked != nil && data.liked != 0)
         btnLike.hidden = liked
         btnUnlike.hidden = !liked
         setCommentText(data.comment)
