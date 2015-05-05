@@ -12,11 +12,13 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     class DreamSearchData {
         var id: String!
+        var uid: String!
         var title: String!
         var lastdate: String!
         var content: String!
         var img: String!
         var sid: String!
+        var follow: String!
     }
     
     class UserSearchData  {
@@ -38,6 +40,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var like: Int!
         var liked: Int!
         var comment: Int!
+        var follow: String!
     }
     
     
@@ -61,8 +64,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     var searchText = NITextfield()
     var index: Int = 0
-    var dreamPage: Int = 0
-    var userPage: Int = 0
+    var dreamPage: Int = 1
+    var userPage: Int = 1
     var dreamSearchDataSource = [DreamSearchData]()
     var dreamStepDataSource = [DreamStepData]()
     var userSearchDataSource = [UserSearchData]()
@@ -82,14 +85,16 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.removeFromSuperview()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         
         self.navigationController?.navigationBar.addSubview(searchText)
     }
 
     func load(index: Int, clear: Bool, callback: Bool -> Void) {
         if index == 0 {
+//            self.dreamSearchDataSource.removeAll(keepCapacity: true)
+//            self.dreamStepDataSource.removeAll(keepCapacity: true)
             self.dreamSearch(clear, callback: callback)
         } else {
             self.userSearch(clear, callback: callback)
@@ -99,7 +104,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func onRefresh() {
         load(index, clear: true) {
             success in
-            self.tableView.headerBeginRefreshing()
+            self.tableView.headerEndRefreshing(animated: true)
             self.tableView.reloadData()
         }
     }
@@ -109,21 +114,15 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             success in
             
             if success {
-                self.tableView.footerBeginRefreshing()
+                self.tableView.footerEndRefreshing(animated: true)
                 self.tableView.reloadData()
             } else {
                 self.view.showTipText("已经到底啦", delay: 1)
-                self.tableView.footerEndRefreshing(animated: true)
             }
         }
     }
     
     func onPullDown() {
-//        if !netResult {
-//            self.onRefresh()
-//        } else {
-//            self.tableView.headerEndRefreshing(animated: true)
-//        }
         self.onRefresh()
     }
     
@@ -162,7 +161,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.font = UIFont.systemFontOfSize(12.0)
         searchText.textColor = UIColor(red: 0xff/255, green: 0xff/255, blue: 0xff/255, alpha: 1)
         searchText.returnKeyType = .Search
-        searchText.clearsOnBeginEditing = true
+        searchText.clearsOnBeginEditing = false
         searchText.clearButtonMode = .WhileEditing
         searchText.delegate = self
         self.navigationController?.navigationBar.addSubview(searchText)
@@ -183,7 +182,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    func dismissKbd(sender: UITapGestureRecognizer) {
+    func dismissKbd(sender: UITapGestureRecognizer) { //点击界面收键盘
         if !searchText.exclusiveTouch {
             searchText.resignFirstResponder()
         }
@@ -191,25 +190,29 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     @IBAction func dream(sender: AnyObject) {
         index = 0
+        dreamPage = 1
         setupButtonColor(index)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 - 70)
         })
 
         if count(searchText.text) > 0 {
+            self.tableView.headerBeginRefreshing()
             self.onPullDown()
         }
     }
     
     @IBAction func user(sender: AnyObject) {
         index = 1
+        userPage = 1
         setupButtonColor(index)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 + 20)
         })
 
         if count(searchText.text) > 0 {
-           self.onPullDown()
+            self.tableView.headerBeginRefreshing()
+            self.onPullDown()
         }
         
     }
@@ -225,21 +228,21 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func userSearch(clear: Bool, callback: Bool -> Void) {
-        Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++) {
+        Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++, callback: {
             json in
             var success = false
             
             if json != nil {
-                var items = json!["users"] as? NSArray
+                var items = json!["users"] as! NSArray
                 
-                if (items != nil && items!.count != 0) {
+                if (items.count != 0) {
                     if clear {
                         self.userSearchDataSource.removeAll(keepCapacity: true)
                     }
                     
                     success = true
                     
-                    for item in items! {
+                    for item in items {
                         var userSearchData = UserSearchData()
                         userSearchData.uid = item["uid"] as! String
                         userSearchData.user = item["user"] as! String
@@ -248,18 +251,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                         self.userSearchDataSource.append(userSearchData)
                     }
                 }
-                callback(success)
-                self.netResult = true
-                self.tableView.headerEndRefreshing(animated: true)
-                self.tableView.footerEndRefreshing(animated: true)
-                self.tableView.reloadData()
             }
-            
-        }
+            self.netResult = true
+            callback(success)
+        })
     }
     
     func dreamSearch(clear: Bool, callback: Bool -> Void) {
-        Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++) {
+        Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++, callback: {
             json in
             var success = false
             
@@ -267,19 +266,22 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 var items = json!["dreams"] as? NSArray
                 var stepItems = json!["steps"] as? NSArray
                 
+                success = true
+                
                 if (items != nil && items?.count != 0) {
-//                    if clear {
+                    if clear {
                         self.dreamSearchDataSource.removeAll(keepCapacity: true)
-//                    }
+                    }
                     
                     for item in items! {
                         var dreamSearchData = DreamSearchData()
-//                        dreamSearchData.sid = item["sid"] as! String
                         dreamSearchData.id = item["id"] as? String
                         dreamSearchData.title = item["title"] as? String
-//                        dreamSearchData.content = item["content"] as! String
                         dreamSearchData.lastdate = item["lastdate"] as? String
+                        dreamSearchData.content = item["content"] as? String
                         dreamSearchData.img = item["img"] as? String
+                        dreamSearchData.follow = item["follow"] as? String
+                        dreamSearchData.uid = item["uid"] as? String
                         
                         self.dreamSearchDataSource.append(dreamSearchData)
                     }
@@ -292,32 +294,27 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     
                     for item in stepItems! {
                         var stepdata = DreamStepData()
-                        stepdata.sid = item["sid"] as? String
-                        stepdata.uid = item["uid"] as? String
+                        stepdata.sid = item["sid"] as! String
+                        stepdata.uid = item["uid"] as! String
                         stepdata.user = item["user"] as? String
-                        stepdata.content = item["content"] as? String
-                        stepdata.lastdate = item["lastdate"] as? String
-//                        stepdata.title = item["title"] as! String
-                        stepdata.img = item["img"] as? String
-                        stepdata.img0 = (item["img0"] as? NSString)?.floatValue
-                        stepdata.img1 = (item["img1"] as? NSString)?.floatValue
-                        stepdata.like = (item["like"] as? String)?.toInt()
-                        stepdata.liked = (item["liked"] as? String)?.toInt()
-                        stepdata.comment = (item["comment"] as? String)?.toInt()
+                        stepdata.content = item["content"] as! String
+                        stepdata.lastdate = item["lastdate"] as! String
+                        stepdata.title = item["title"] as? String
+                        stepdata.img = item["img"] as! String
+                        stepdata.img0 = (item["img0"] as! NSNumber).floatValue
+                        stepdata.img1 = (item["img1"] as! NSNumber).floatValue
+                        stepdata.like = (item["like"] as! NSNumber).integerValue
+                        stepdata.liked = (item["liked"] as! NSNumber).integerValue
+                        stepdata.comment = (item["comment"] as! NSNumber).integerValue
+                        stepdata.follow = item["follow"] as! String
                         
                         self.dreamStepDataSource.append(stepdata)
                     }
                 }
-                
-                success = (items?.count != 0 && stepItems?.count != 0)
-                
-                callback(success)
-                self.netResult = true
-                self.tableView.headerEndRefreshing(animated: true)
-                self.tableView.footerEndRefreshing(animated: true)
-                self.tableView.reloadData()
             }
-        }
+            self.netResult = true
+            callback(success)
+        })
     }
     
     // MARK: table view delegate
@@ -353,7 +350,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             if index == 0 {
                 if section == 0 {
                     if self.dreamSearchDataSource.count != 0 {
-                        view = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
+                        view = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
                         view.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
                         
                         return view
@@ -363,6 +360,17 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         
         return view
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if index == 0 {
+            if section == 0 {
+                if self.dreamSearchDataSource.count != 0 {
+                    return 15
+                }
+            }
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -415,9 +423,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if index == 0 {
-            
-            
-            
+            if indexPath.section == 0 {
+                var viewController = DreamViewController()
+                viewController.Id = dreamSearchDataSource[indexPath.row].id
+                var data = dreamSearchDataSource[indexPath.row]
+                self.navigationController?.pushViewController(viewController, animated: true)
+            } else {
+                
+            }
         } else {
             var playerViewController = PlayerViewController()
             playerViewController.Id = userSearchDataSource[indexPath.row].uid
@@ -429,17 +442,24 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: text field delegate
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        self.userSearchDataSource.removeAll(keepCapacity: false)
-        self.dreamSearchDataSource.removeAll(keepCapacity: false)
-        self.tableView.reloadData()
-        
-        self.netResult = false
+//        self.userSearchDataSource.removeAll(keepCapacity: false)
+//        self.dreamSearchDataSource.removeAll(keepCapacity: false)
+//        self.tableView.reloadData()
+//        
+//        self.netResult = false
+        dreamPage = 1
+        userPage = 1
     }
 
     func textFieldDidEndEditing(textField: UITextField) {
         if searchText.text != "" {
             self.tableView.headerBeginRefreshing()
-            self.onPullDown()
+            
+            load(index, clear: true) {
+                success in
+                self.tableView.headerEndRefreshing(animated: true)
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -448,5 +468,19 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         return true
     }
+    
+    // MARK: gesture 
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        return  !(touch.view is UITableViewCell)
+//        if !touch.view.isKindOfClass(UITableView) {
+//            return false
+//        } else {
+//            return true
+//        }
+    }
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
 }
 

@@ -12,3 +12,4 @@
 #import "NSObject+Swift.h"
 #import "AFNetworking.h"
 #import "UIImageView+AFNetworking.h"
+#import "NSString+HTML.h"

@@ -18,7 +18,6 @@ class ExploreNewHotCell: MKTableViewCell {
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var footImage: UIView!
     
-    
     var largeImageURL: String = ""
 //    var data: ExploreNewHot.Data!
     var uid: String = ""

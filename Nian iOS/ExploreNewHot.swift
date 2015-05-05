@@ -20,7 +20,7 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     
     weak var bindViewController: ExploreViewController?
     var dataSource = [Data]()
-    var page = 0
+    var page = 1
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController

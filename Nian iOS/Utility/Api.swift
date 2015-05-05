@@ -69,7 +69,7 @@ struct Api {
     
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/searchdream.php?keyword=\(keyword)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/searchdream.php?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
     }
     
     static func getSearchUsers(keyword: String, page: Int, callback: V.JsonCallback) {
