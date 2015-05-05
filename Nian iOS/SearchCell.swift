@@ -186,7 +186,7 @@ class searchUserResultCell: MKTableViewCell {
     }
 }
 
-class dreamSearchStepCell: MKTableViewCell {
+class dreamSearchStepCell: UITableViewCell {
     
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
@@ -359,54 +359,3 @@ class dreamSearchStepCell: MKTableViewCell {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

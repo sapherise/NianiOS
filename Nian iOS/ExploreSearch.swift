@@ -66,12 +66,13 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var dreamSearchDataSource = [DreamSearchData]()
     var dreamStepDataSource = [DreamStepData]()
     var userSearchDataSource = [UserSearchData]()
-    var netResult: Bool = false
+    var netResult: Bool = false  //将要显示的数据是否是服务器返回的数据
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.registerNib(UINib(nibName: "DreamSearchStepCell", bundle: nil), forCellReuseIdentifier: "dreamSearchStepCell")
+        self.tableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         setupView()
     }
     
@@ -163,9 +164,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.returnKeyType = .Search
         searchText.clearsOnBeginEditing = true
         searchText.clearButtonMode = .WhileEditing
-        self.navigationController?.navigationBar.addSubview(searchText)
-        
         searchText.delegate = self
+        self.navigationController?.navigationBar.addSubview(searchText)
+       
+        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
@@ -178,6 +180,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         } else {
             userButton.setTitleColor(UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1), forState: .Normal)
             dreamButton.setTitleColor(UIColor(red: 0x1c/255, green: 0x1f/255, blue: 0x21/255, alpha: 1), forState: .Normal)
+        }
+    }
+    
+    func dismissKbd(sender: UITapGestureRecognizer) {
+        if !searchText.exclusiveTouch {
+            searchText.resignFirstResponder()
         }
     }
     
@@ -218,7 +226,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func userSearch(clear: Bool, callback: Bool -> Void) {
         Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++) {
-//        Api.getSearchUsers() {
             json in
             var success = false
             
@@ -253,7 +260,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func dreamSearch(clear: Bool, callback: Bool -> Void) {
         Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++) {
-//        Api.getSearchDream() {
             json in
             var success = false
             
@@ -380,7 +386,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             } else {
                 var userCell = tableView.dequeueReusableCellWithIdentifier("searchUserResultCell", forIndexPath: indexPath) as! searchUserResultCell
                 userCell.bindData(userSearchDataSource[indexPath.row], tableview: tableView)
-                userCell.userData = self.userSearchDataSource[indexPath.row] as ExploreSearch.UserSearchData   
+                userCell.userData = self.userSearchDataSource[indexPath.row] as ExploreSearch.UserSearchData
                 cell = userCell
             }
         }
