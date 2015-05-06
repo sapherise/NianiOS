@@ -58,7 +58,7 @@ class SAStepCell: UITableViewCell {
             var user = self.data.stringAttributeForKey("user")
             var lastdate = self.data.stringAttributeForKey("lastdate") as String
             var liked = self.data.stringAttributeForKey("liked")
-            content = self.data.stringAttributeForKey("content")
+            content = SADecode(self.data.stringAttributeForKey("content"))
             img = self.data.stringAttributeForKey("img") as NSString as String
             img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
             img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
@@ -156,15 +156,17 @@ class SAStepCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var content = data.stringAttributeForKey("content")
+        var content = SADecode(data.stringAttributeForKey("content"))
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
+        NSLog("img0 = %f, img1 = %f ", img0, img1)
         var height = content.stringHeightWith(16,width:globalWidth-30)
         if (img0 == 0.0) {
             var h = content == "" ? 179 : height + 151
             return h
         } else {
             var heightImage = CGFloat(img1 * Float(globalWidth) / img0)
+            NSLog("heightImage = %f", heightImage)
             var h = content == "" ? 156 + heightImage : height + 171 + heightImage
             return h
         }

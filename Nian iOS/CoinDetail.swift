@@ -80,7 +80,7 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
                 if success {
                     self.tableView.reloadData()
                 } else {
-                    self.tableView.showTipText("已经到底了", delay: 1)
+                    self.tableView.showTipText("已经到底啦", delay: 1)
                 }
             }
             switch forWhich {

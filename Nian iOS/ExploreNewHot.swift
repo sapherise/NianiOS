@@ -16,11 +16,13 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
         var img: String!
         var type: String!
         var content: String!
+        var lastdate: String!
+        var follow: String!
     }
     
     weak var bindViewController: ExploreViewController?
     var dataSource = [Data]()
-    var page = 1
+    var page = 0
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
@@ -48,7 +50,10 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
                     data.title = item["title"] as! String
                     data.img = item["img"] as! String
                     data.content = item["content"] as! String
-                    data.type = item["type"] as! String
+                    data.lastdate = item["lastdate"] as! String
+                    data.follow = item["follow"] as! String
+                    data.type = (item["type"] as! NSNumber).stringValue
+                    
                     self.dataSource.append(data)
                 }
             }
@@ -58,11 +63,9 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     
     override func onHide() {
         bindViewController!.tableView.headerEndRefreshing(animated: false)
-        self.bindViewController!.tableView.setFooterHidden(false)
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.tableView.setFooterHidden(true)
         bindViewController!.tableView.reloadData()
         
         if dataSource.isEmpty {
@@ -72,12 +75,15 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
                 animations: { () -> Void in
                     self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
             }, completion: { (Bool) -> Void in
+                if loading {
                     self.bindViewController!.tableView.headerBeginRefreshing()
+                }
             })
         }
     }
     
     override func onRefresh() {
+        page = 0
         load(true) {
             success in
             if self.bindViewController!.current == 2 {
@@ -87,10 +93,23 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+    override func onLoad() {
+        load(false) {
+            success in
+            if self.bindViewController!.current == 2 {
+                if success {
+                    self.bindViewController!.tableView.footerEndRefreshing()
+                    self.bindViewController!.tableView.reloadData()
+                } else {
+                    self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
+                }
+            }
+        }
     }
+    
+//    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        return true
+//    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return  81

@@ -45,8 +45,7 @@ class ExploreNewHotCell: MKTableViewCell {
     }
 
     func bindData(data: ExploreNewHot.Data, tableview: UITableView) {
-        labelTitle.text = data.title
-//        self.data = data
+        labelTitle.text = SADecode(data.title)
         self.uid = data.id
         
         switch data.type.toInt()! {
@@ -55,7 +54,7 @@ class ExploreNewHotCell: MKTableViewCell {
         case 1:
             labelContent.text = "榜单第 \(data.content) 位"
         case 2:
-            labelContent.text = data.content
+            labelContent.text = SADecode(data.content)
         case 3:
             labelContent.text = "热门"
             labelContent.textColor = GoldColor
@@ -65,18 +64,20 @@ class ExploreNewHotCell: MKTableViewCell {
         
         imageHead.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
         
-//        if data.follow == "0" {
-//            self.followButton.layer.borderColor = SeaColor.CGColor
-//            self.followButton.layer.borderWidth = 1
-//            self.followButton.setTitleColor(SeaColor, forState: .Normal)
-//            self.followButton.backgroundColor = .whiteColor()
-//            self.followButton.setTitle("关注", forState: .Normal)
-//        } else {
-//            self.followButton.layer.borderWidth = 0
-//            self.followButton.setTitleColor(SeaColor, forState: .Normal)
-//            self.followButton.backgroundColor = SeaColor
-//            self.followButton.setTitle("关注中", forState: .Normal)
-//        }
+        if data.follow == "0" {
+            self.followButton.tag = 100
+            self.followButton.layer.borderColor = SeaColor.CGColor
+            self.followButton.layer.borderWidth = 1
+            self.followButton.setTitleColor(SeaColor, forState: .Normal)
+            self.followButton.backgroundColor = .whiteColor()
+            self.followButton.setTitle("关注", forState: .Normal)
+        } else {
+            self.followButton.tag = 200
+            self.followButton.layer.borderWidth = 0
+            self.followButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            self.followButton.backgroundColor = SeaColor
+            self.followButton.setTitle("关注中", forState: .Normal)
+        }
     }
     
     @IBAction func onFollowClick(sender: UIButton) {
@@ -88,12 +89,12 @@ class ExploreNewHotCell: MKTableViewCell {
             sender.backgroundColor = SeaColor
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                Api.postFollowDream(self.uid, follow: "1", callback: {
+                    String in
+                    if String == "fo" {
+                    } else {
+                    }
+                })
             })
         }else if tag == 200 {   //正在关注
             sender.tag = 100
@@ -103,22 +104,21 @@ class ExploreNewHotCell: MKTableViewCell {
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                Api.postFollowDream(self.uid, follow: "0", callback: {
+                    String in
+                    if String == "" {
+                    } else {
+                    }
+                })
             })
         }
-        
-        
     }
     override func prepareForReuse() {
         super.prepareForReuse()
         
         self.imageHead.cancelImageRequestOperation()
-        imageHead.image = nil   
+        imageHead.image = nil
+        self.labelContent.textColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1)
     }
     
 }

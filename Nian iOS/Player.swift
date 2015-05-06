@@ -381,6 +381,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.dataArrayStep.removeAllObjects()
                 }
                 for data: AnyObject in arr {
+                    NSLog("data = %@", data as! NSDictionary)
                     self.dataArrayStep.addObject(data)
                 }
                 self.tableViewStep.reloadData()

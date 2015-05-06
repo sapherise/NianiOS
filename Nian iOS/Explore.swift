@@ -61,7 +61,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             btnFollow,
             btnDynamic,
             btnHot,
-//            btnNew
         ]
         setupViews()
     }
@@ -118,7 +117,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
             ExploreDynamicProvider(viewController: self),
 //            ExploreHotProvider(viewController: self),
             ExploreNewHot(viewController: self),
-//            ExploreNewProvider(viewController: self)
         ]
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         tableView.setWidth(globalWidth)

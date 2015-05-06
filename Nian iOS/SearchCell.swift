@@ -24,6 +24,7 @@ class searchResultCell: MKTableViewCell {
         
         self.headImageView.layer.cornerRadius = 4.0
         self.headImageView.layer.masksToBounds = true
+        self.headImageView.contentMode = .Center
         self.footView.setWidth(globalWidth - 70)
         self.footView.setX(70)
         self.followButton.layer.cornerRadius = 15
@@ -32,7 +33,7 @@ class searchResultCell: MKTableViewCell {
     }
     
     func bindData(data: ExploreSearch.DreamSearchData, tableView: UITableView) {
-        self.title.text = data.title
+        self.title.text = SADecode(data.title.stringByDecodingHTMLEntities())
         self.content.text = SADecode(data.content.stringByDecodingHTMLEntities())
         self.uid = data.uid
         self.headImageView.setImage("http://img.nian.so/dream/\(data.img)!dream", placeHolder: IconColor)
@@ -53,7 +54,6 @@ class searchResultCell: MKTableViewCell {
         }
     }
     
-    
     @IBAction func follow(sender: UIButton) {
         var tag = sender.tag
         if tag == 100 {     //没有关注
@@ -63,27 +63,27 @@ class searchResultCell: MKTableViewCell {
             sender.backgroundColor = SeaColor
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                Api.postFollowDream(self.uid, follow: "1", callback: {
+                    String in
+                    if String == "fo"{
+                    } else if String == "err" {
+                    }
+                })
             })
         }else if tag == 200 {   //正在关注
-            sender.tag = 100
-            sender.layer.borderColor = SeaColor.CGColor
-            sender.layer.borderWidth = 1
-            sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
-            sender.backgroundColor = UIColor.whiteColor()
-            sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                sender.tag = 100
+                sender.layer.borderColor = SeaColor.CGColor
+                sender.layer.borderWidth = 1
+                sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+                sender.backgroundColor = UIColor.whiteColor()
+                sender.setTitle("关注", forState: UIControlState.Normal)
+                Api.postFollowDream(self.uid, follow: "0", callback: {
+                    String in
+                    if String == "" {
+                    } else if String == "err" {
+                    }
+                })
             })
         }
         
@@ -113,6 +113,7 @@ class searchUserResultCell: MKTableViewCell {
         
         self.headImageView.layer.cornerRadius = 20.0
         self.headImageView.layer.masksToBounds = true
+        self.headImageView.contentMode = .Center
         self.footView.setWidth(globalWidth - 85)
         self.followButton.layer.cornerRadius = 15
         self.followButton.layer.masksToBounds = true
@@ -120,8 +121,7 @@ class searchUserResultCell: MKTableViewCell {
     }
    
     func bindData(data: ExploreSearch.UserSearchData, tableview: UITableView) {
-//        self.userData = data
-        self.title.text = data.user
+        self.title.text = SADecode(data.user.stringByDecodingHTMLEntities())
         self.uid = data.uid
         
         if data.follow == "0" {
@@ -134,7 +134,7 @@ class searchUserResultCell: MKTableViewCell {
         } else {
             self.followButton.tag = 200
             self.followButton.layer.borderWidth = 0
-            self.followButton.setTitleColor(SeaColor, forState: .Normal)
+            self.followButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             self.followButton.backgroundColor = SeaColor
             self.followButton.setTitle("关注中", forState: .Normal)
         }
@@ -150,13 +150,14 @@ class searchUserResultCell: MKTableViewCell {
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             sender.backgroundColor = SeaColor
             sender.setTitle("关注中", forState: UIControlState.Normal)
+            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                Api.postFollow(self.uid, follow: 1, callback: {
+                    String in
+                    if String == "fo" {
+                    } else if String == "err" {
+                    }
+                })
             })
         } else if tag == 200 {   //正在关注
             sender.tag = 100
@@ -165,13 +166,14 @@ class searchUserResultCell: MKTableViewCell {
             sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
+            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                Api.postUnfollow(self.uid, callback: {
+                    String in
+                    if String == "" {
+                    } else if String == "err" {
+                    }
+                })
             })
         }
     }
@@ -269,8 +271,8 @@ class dreamSearchStepCell: UITableViewCell {
         viewLine.setY(viewControl.bottom()+10)
         imageHead.setHead(data.uid)
         
-        labelName.text = data.user
-        labelDream.text = data.title
+        labelName.text = SADecode(data.user.stringByDecodingHTMLEntities())
+        labelDream.text = SADecode(data.title.stringByDecodingHTMLEntities())
         labelContent.text = SADecode(data.content.stringByDecodingHTMLEntities())
         self.uid = data.uid
         var liked = (data.liked != nil && data.liked != 0)
@@ -304,13 +306,13 @@ class dreamSearchStepCell: UITableViewCell {
             sender.backgroundColor = SeaColor
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
-//                sa = Api.postFollowDream(<#dream: String#>, follow: <#String#>, callback: <#StringCallback##String? -> Void#>)
-                if sa != "" && sa != "err" {
-                }
+                Api.postFollowDream(self.uid, follow: "1", callback: {
+                    String in
+                    if String == "fo" {
+                    } else {
+                    }
+                })
+                
             })
         }else if tag == 200 {   //正在关注
             sender.tag = 100
@@ -320,12 +322,12 @@ class dreamSearchStepCell: UITableViewCell {
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
+                Api.postFollowDream(self.uid, follow: "0", callback: {
+                    String in
+                    if String == " " {
+                    } else {
+                    }
+                })
             })
         }
         
