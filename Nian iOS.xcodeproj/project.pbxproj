@@ -1109,6 +1109,12 @@
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = 59CQC84C9S;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.DataProtection = {
+								enabled = 0;
+							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
