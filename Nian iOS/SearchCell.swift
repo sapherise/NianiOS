@@ -37,6 +37,7 @@ class searchResultCell: MKTableViewCell {
         self.content.text = SADecode(data.content.stringByDecodingHTMLEntities())
         self.uid = data.uid
         self.headImageView.setImage("http://img.nian.so/dream/\(data.img)!dream", placeHolder: IconColor)
+        self.headImageView.tag = data.id.toInt()!
         
         if data.follow == "0" {
             self.followButton.tag = 100
@@ -48,7 +49,7 @@ class searchResultCell: MKTableViewCell {
         } else {
             self.followButton.tag = 200
             self.followButton.layer.borderWidth = 0
-            self.followButton.setTitleColor(SeaColor, forState: .Normal)
+            self.followButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             self.followButton.backgroundColor = SeaColor
             self.followButton.setTitle("关注中", forState: .Normal)
         }
@@ -71,13 +72,13 @@ class searchResultCell: MKTableViewCell {
                 })
             })
         }else if tag == 200 {   //正在关注
+            sender.tag = 100
+            sender.layer.borderColor = SeaColor.CGColor
+            sender.layer.borderWidth = 1
+            sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+            sender.backgroundColor = UIColor.whiteColor()
+            sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                sender.tag = 100
-                sender.layer.borderColor = SeaColor.CGColor
-                sender.layer.borderWidth = 1
-                sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
-                sender.backgroundColor = UIColor.whiteColor()
-                sender.setTitle("关注", forState: UIControlState.Normal)
                 Api.postFollowDream(self.uid, follow: "0", callback: {
                     String in
                     if String == "" {
@@ -118,6 +119,8 @@ class searchUserResultCell: MKTableViewCell {
         self.followButton.layer.cornerRadius = 15
         self.followButton.layer.masksToBounds = true
         self.followButton.setX(globalWidth - 85)
+        
+//        self.headImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toPlayer"))
     }
    
     func bindData(data: ExploreSearch.UserSearchData, tableview: UITableView) {
@@ -140,8 +143,9 @@ class searchUserResultCell: MKTableViewCell {
         }
         
         self.headImageView.setImage(V.urlHeadImage(data.uid, tag: .Head), placeHolder: IconColor)
+        self.headImageView.tag = self.uid.toInt()!
     }
-    
+
     @IBAction func onFollowClick(sender: UIButton) {
         var tag = sender.tag
         if tag == 100 {     //没有关注

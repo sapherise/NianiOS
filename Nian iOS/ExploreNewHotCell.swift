@@ -65,14 +65,14 @@ class ExploreNewHotCell: MKTableViewCell {
         imageHead.setImage(V.urlDreamImage(data.img, tag: .Dream), placeHolder: IconColor)
         
         if data.follow == "0" {
-            self.followButton.tag = 100
+            self.followButton.tag = 1000
             self.followButton.layer.borderColor = SeaColor.CGColor
             self.followButton.layer.borderWidth = 1
             self.followButton.setTitleColor(SeaColor, forState: .Normal)
             self.followButton.backgroundColor = .whiteColor()
             self.followButton.setTitle("关注", forState: .Normal)
         } else {
-            self.followButton.tag = 200
+            self.followButton.tag = 2000
             self.followButton.layer.borderWidth = 0
             self.followButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             self.followButton.backgroundColor = SeaColor
@@ -82,8 +82,8 @@ class ExploreNewHotCell: MKTableViewCell {
     
     @IBAction func onFollowClick(sender: UIButton) {
         var tag = sender.tag
-        if tag == 100 {     //没有关注
-            sender.tag = 200
+        if tag == 1000 {     //没有关注
+            sender.tag = 2000
             sender.layer.borderWidth = 0
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             sender.backgroundColor = SeaColor
@@ -96,8 +96,8 @@ class ExploreNewHotCell: MKTableViewCell {
                     }
                 })
             })
-        }else if tag == 200 {   //正在关注
-            sender.tag = 100
+        }else if tag == 2000 {   //正在关注
+            sender.tag = 1000
             sender.layer.borderColor = SeaColor.CGColor
             sender.layer.borderWidth = 1
             sender.setTitleColor(SeaColor, forState: UIControlState.Normal)

@@ -37,12 +37,10 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var btnFollow: UILabel!
     @IBOutlet var btnDynamic: UILabel!
     @IBOutlet var btnHot: UILabel!
-    @IBOutlet var btnNew: UILabel!
     @IBOutlet var imageFriend: UIImageView!
     @IBOutlet weak var imageSearch: UIImageView!
     @IBOutlet weak var floatView: UIView!
     
-    @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var navView: UIView!
     @IBOutlet var navTopView: UIView!
@@ -87,24 +85,13 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         }else{
             if let v = "\(noti.object!)".toInt() {
                 if v > 0 {
-                    if current == 3 {
-                        switchTab(current)
-                        if self.collectionView.contentOffset.y  > 0 {
-                            delay(0.2, {
-                                self.collectionView.headerBeginRefreshing()
-                            })
-                        }else{
-                            self.collectionView.headerBeginRefreshing()
-                        }
-                    }else{
-                        switchTab(current)
-                        if self.tableView.contentOffset.y  > 0 {
-                            delay(0.2, {
-                                self.tableView.headerBeginRefreshing()
-                            })
-                        }else{
+                    switchTab(current)
+                    if self.tableView.contentOffset.y  > 0 {
+                        delay(0.2, {
                             self.tableView.headerBeginRefreshing()
-                        }
+                        })
+                    }else{
+                        self.tableView.headerBeginRefreshing()
                     }
                 }
             }
@@ -115,12 +102,10 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.providers = [
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
-//            ExploreHotProvider(viewController: self),
             ExploreNewHot(viewController: self),
         ]
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         tableView.setWidth(globalWidth)
-        self.collectionView.hidden = true
         
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
@@ -161,7 +146,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
 
         tableView.delegate = currentProvider as? UITableViewDelegate
         tableView.dataSource = currentProvider as? UITableViewDataSource
-        tableView.hidden = false
 
         currentProvider.onShow(loading)
     }

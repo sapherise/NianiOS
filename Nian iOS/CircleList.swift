@@ -73,7 +73,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundColor = BGColor
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.separatorStyle = .None
         
         var nib = UINib(nibName:"CircleCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: identifier)
@@ -192,7 +192,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
         return cell
     }
     
-    func tableView(tableView: UITableView,didSelectRowAtIndexPath indexPath: NSIndexPath){
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         var data = self.dataArray[indexPath.row] as! NSDictionary
         var id = data.objectForKey("id") as! String
         var title = data.objectForKey("title") as! String

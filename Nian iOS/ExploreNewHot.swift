@@ -22,7 +22,8 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     
     weak var bindViewController: ExploreViewController?
     var dataSource = [Data]()
-    var page = 0
+    var page = 1
+    var lastID = "0"
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
@@ -30,7 +31,7 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     }
 
     func load(clear: Bool, callback: Bool -> Void) {
-        Api.getExploreNewHot("\(page++)", callback: {
+        Api.getExploreNewHot("\(lastID)",page: "\(page++)", callback: {
             json in
             var success = false
             
@@ -55,6 +56,12 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
                     data.type = (item["type"] as! NSNumber).stringValue
                     
                     self.dataSource.append(data)
+                }
+                
+                var count = self.dataSource.count
+                if count >= 1 {
+                    var data = self.dataSource[count - 1]
+                    self.lastID = data.id
                 }
             }
             callback(success)
@@ -83,7 +90,8 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     }
     
     override func onRefresh() {
-        page = 0
+        page = 1
+        self.lastID = "0"
         load(true) {
             success in
             if self.bindViewController!.current == 2 {
@@ -106,11 +114,7 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
             }
         }
     }
-    
-//    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        return true
-//    }
-    
+
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return  81
     }

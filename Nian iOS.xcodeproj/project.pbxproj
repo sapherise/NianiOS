@@ -156,8 +156,6 @@
 		323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */; };
 		323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */; };
 		323F783E1A105C93003C3755 /* V.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323F783D1A105C93003C3755 /* V.swift */; };
-		3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3240B4FA1A1985A8000CDAB6 /* ExploreNew.swift */; };
-		324716EF1A1C303700EF1305 /* ExploreNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 324716EE1A1C303700EF1305 /* ExploreNewCell.xib */; };
 		324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324C2AEC1A28119E00E6A299 /* StoreKit.framework */; };
 		3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */; };
 		3252850D1A10C2B600316021 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3252850C1A10C2B600316021 /* Explore.storyboard */; };
@@ -368,8 +366,6 @@
 		323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
 		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
-		3240B4FA1A1985A8000CDAB6 /* ExploreNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNew.swift; sourceTree = "<group>"; };
-		324716EE1A1C303700EF1305 /* ExploreNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewCell.xib; sourceTree = "<group>"; };
 		324C2AEC1A28119E00E6A299 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicDreamCell.xib; sourceTree = "<group>"; };
 		3252850C1A10C2B600316021 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
@@ -1004,8 +1000,6 @@
 				323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */,
 				32871D141A14ABE0002C9486 /* ExploreHot.swift */,
 				32871D121A14AB0E002C9486 /* ExploreHotCell.xib */,
-				3240B4FA1A1985A8000CDAB6 /* ExploreNew.swift */,
-				324716EE1A1C303700EF1305 /* ExploreNewCell.xib */,
 				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
 				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
 			);
@@ -1194,7 +1188,6 @@
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
-				324716EF1A1C303700EF1305 /* ExploreNewCell.xib in Resources */,
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 				12D846071A233F46005DCC08 /* AddStep.xib in Resources */,
@@ -1301,7 +1294,6 @@
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
 				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
-				3240B4FB1A1985A8000CDAB6 /* ExploreNew.swift in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
 				127155131A3FE84500E27EC5 /* CircleDetailTop.swift in Sources */,

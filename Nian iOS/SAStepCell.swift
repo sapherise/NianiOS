@@ -65,10 +65,11 @@ class SAStepCell: UITableViewCell {
             var like = self.data.stringAttributeForKey("like") as String
             var comment = self.data.stringAttributeForKey("comment") as String
             var dreamtitle = self.data.stringAttributeForKey("dreamtitle") as String
+            var dream = SADecode(self.data.stringAttributeForKey("title") as String)
             
             self.labelName.text = user
             self.labelTime.text = lastdate
-            self.labelDream.text = dreamtitle
+            self.labelDream.text = (count(dreamtitle) != 0) ? dreamtitle : dream
             self.imageHead.setHead(uid)
             self.imageHead.tag = uid.toInt()!
             self.labelName.tag = uid.toInt()!
@@ -147,6 +148,15 @@ class SAStepCell: UITableViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageHolder.cancelImageRequestOperation()
+        self.imageHead.cancelImageRequestOperation()
+        self.imageHolder.image = nil
+        self.imageHead.image = nil
+    }
+    
     func SAshare(){
         if img0 == 0.0 {
             NSNotificationCenter.defaultCenter().postNotificationName("ShareContent", object:[ content, "", self.sid, self.indexPathRow + 10 ])
@@ -159,14 +169,12 @@ class SAStepCell: UITableViewCell {
         var content = SADecode(data.stringAttributeForKey("content"))
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        NSLog("img0 = %f, img1 = %f ", img0, img1)
         var height = content.stringHeightWith(16,width:globalWidth-30)
         if (img0 == 0.0) {
             var h = content == "" ? 179 : height + 151
             return h
         } else {
             var heightImage = CGFloat(img1 * Float(globalWidth) / img0)
-            NSLog("heightImage = %f", heightImage)
             var h = content == "" ? 156 + heightImage : height + 171 + heightImage
             return h
         }
