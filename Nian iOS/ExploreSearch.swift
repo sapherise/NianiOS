@@ -119,6 +119,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func onPullDown() {
+        println("onPullDown")
         self.onRefresh()
     }
     

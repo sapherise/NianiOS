@@ -14,7 +14,7 @@ class CircleExploreCell: UITableViewCell {
     
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var viewLine: UIView!
-    @IBOutlet var labelTag: UILabel!
+    @IBOutlet var labelTag: UILabel! //标签
     @IBOutlet var labelPeople: UILabel!
     @IBOutlet var labelChat: UILabel!
     @IBOutlet var labelContent: UILabel!
@@ -86,5 +86,9 @@ class CircleExploreCell: UITableViewCell {
         var height = content.stringHeightWith(13, width: 250)
         return height + 309
     }
+    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//    }
     
 }
