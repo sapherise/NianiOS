@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func applicationWillResignActive(application: UIApplication) {
+        NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("AppDeactive", object: nil)
     }
     

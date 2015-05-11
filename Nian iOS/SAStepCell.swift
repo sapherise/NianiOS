@@ -81,7 +81,7 @@ class SAStepCell: UITableViewCell {
             self.labelContent.setHeight(height)
             self.labelContent.text = content
             self.btnMore.tag = sid.toInt()!
-            self.labelComment.tag = sid.toInt()!
+            // todo player 会闪退
             if comment != "0" {
                 comment = "\(comment) 评论"
             }else{
@@ -165,7 +165,7 @@ class SAStepCell: UITableViewCell {
         }
     }
     
-    class func cellHeightByData(data:NSDictionary)->CGFloat {
+    class func cellHeightByData(data: NSDictionary)->CGFloat {
         var content = SADecode(data.stringAttributeForKey("content"))
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue

@@ -10,7 +10,9 @@ import UIKit
 import Foundation
 
 class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate {
-
+    var dataArrayUser = NSMutableArray()
+    var dataArrayDream = NSMutableArray()
+    var dataArrayStep = NSMutableArray()
     class DreamSearchData {
         var id: String!
         var uid: String!
@@ -19,12 +21,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var content: String!
         var img: String!
         var sid: String!
-        var follow: String!
-    }
-    
-    class UserSearchData  {
-        var uid: String!
-        var user: String!
         var follow: String!
     }
     
@@ -55,7 +51,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    @IBOutlet weak var tableView: UITableView!  //user table view 
+    @IBOutlet weak var tableView: UITableView!  //user table view
     @IBOutlet weak var dreamTableView: UITableView! //dream table view
     @IBOutlet weak var navView: UIView!
     @IBOutlet weak var indiView: UIView!   //indication view
@@ -63,38 +59,23 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var userButton: UIButton!
     @IBOutlet weak var floatView: UIView!
     
-     private var kvoContext: UInt8 = 1
+    private var kvoContext: UInt8 = 1
     
     var searchText = NITextfield()
     var index: Int = 0
     var dreamPage: Int = 1
     var userPage: Int = 1
-    var dreamSearchDataSource = [DreamSearchData]()
-    var dreamStepDataSource = [DreamStepData]()
     var dreamStepArray = NSMutableArray()
-    dynamic var userSearchDataSource = [UserSearchData]()
-    var netResult: Bool = false  //将要显示的数据是否是服务器返回的数据
     var dreamLastSearch: String = ""
     var userLastSearch: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.dreamTableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
-//        self.dreamTableView.registerClass(searchResultCell.self, forCellReuseIdentifier: "searchResultCell")
-//        self.tableView.registerClass(searchUserResultCell.self, forCellReuseIdentifier: "searchUserResultCell")
-        
         setupView()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTextFieldTextDidChangeNotification:", name: UITextFieldTextDidChangeNotification, object: searchText)
-        self.addObserver(self, forKeyPath: "userSearchDataSource", options: NSKeyValueObservingOptions.New, context: &kvoContext)
-        self.addObserver(self, forKeyPath: "dreamSearchDataSource", options: NSKeyValueObservingOptions.New, context: &kvoContext)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextFieldTextDidChangeNotification, object: nil)
-        
         searchText.removeFromSuperview()
     }
     
@@ -104,11 +85,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         //index = 0, dream table view 应该显示
         self.dreamTableView.hidden = !(index == 0)
         self.tableView.hidden = !self.dreamTableView.hidden
-    }
-
-    deinit {
-        self.removeObserver(self, forKeyPath: "userSearchDataSource")
-        self.removeObserver(self, forKeyPath: "dreamSearchDataSource")
+        self.viewBackFix()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -117,83 +94,27 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.navigationBar.addSubview(searchText)
     }
     
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        if context == &kvoContext {
-            if keyPath == "userSearchDataSource" {
-                if count(userSearchDataSource) > 0 {
-                    self.tableView.removeGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                    self.dreamTableView.removeGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                } else {
-                    self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                    self.dreamTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                }
-            } else if keyPath == "dreamSearchDataSource" {
-                if count(dreamSearchDataSource) > 0 || count(dreamStepDataSource) > 0 {
-                    self.tableView.removeGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                    self.dreamTableView.removeGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                } else {
-                    self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                    self.dreamTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
-                }
-            } else {
-                    super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-            
-            }
-        }
-    }
-    
-
-    func load(index: Int, clear: Bool, callback: Bool -> Void) {
+    func load(index: Int, clear: Bool) {
         if index == 0 {
-            self.dreamSearch(clear, callback: callback)
+            self.dreamSearch(clear)
         } else {
-            self.userSearch(clear, callback: callback)
+            self.userSearch(clear)
         }
     }
     
     func onRefresh() {
         if self.index == 0 {
-            dreamPage = 1
-            
-            load(index, clear: true) {
-                success in
-                self.dreamTableView.headerEndRefreshing()
-                self.dreamTableView.reloadData()
-            }
+            load(index, clear: true)
         } else {
-            userPage = 1
-            
-            load(index, clear: true) {
-                success in
-                self.tableView.headerEndRefreshing(animated: true)
-                self.tableView.reloadData()
-            }
+            load(index, clear: true)
         }
     }
     
     func onLoad() {
         if index == 0 {
-            load(index, clear: false) {
-                success in
-                    if success {
-                        self.dreamTableView.footerEndRefreshing(animated: true)
-                        self.dreamTableView.reloadData()
-                    } else {
-                        self.view.showTipText("已经到底啦", delay: 1)
-                        self.dreamTableView.footerEndRefreshing(animated: true)
-                    }
-            }
+            load(index, clear: false)
         } else {
-            load(index, clear: false) {
-                success in
-                if success {
-                    self.tableView.footerEndRefreshing(animated: true)
-                    self.tableView.reloadData()
-                }  else {
-                    self.view.showTipText("已经到底啦", delay: 1)
-                    self.tableView.footerEndRefreshing(animated: true)
-                }
-            }
+            load(index, clear: false)
         }
     }
     
@@ -209,6 +130,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         viewBack()
         
         setupButtonColor(index)
+        self.dreamTableView.registerNib(UINib(nibName: "SADoubleCell", bundle: nil), forCellReuseIdentifier: "SADoubleCell")
+        self.dreamTableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
+        
+        self.tableView.registerNib(UINib(nibName: "SAUserCell", bundle: nil), forCellReuseIdentifier: "SAUserCell")
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.dreamTableView.delegate = self
+        self.dreamTableView.dataSource = self
         
         tableView.setHeight(globalHeight - 104)
         tableView.setWidth(globalWidth)
@@ -219,7 +148,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         dreamButton.setX(globalWidth/2 - 85)
         userButton.setX(globalWidth/2 + 5)
         floatView.setX(globalWidth/2 - 70)
-        //globalWidth/2 + 49
         
         searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth-60, 26))
         var color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
@@ -241,7 +169,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.clearsOnBeginEditing = false
         searchText.delegate = self
         self.navigationController?.navigationBar.addSubview(searchText)
-       
+        
         self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
         self.dreamTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKbd:"))
         
@@ -261,6 +189,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        searchText.resignFirstResponder()
+    }
+    
     func dismissKbd(sender: UITapGestureRecognizer) { //点击界面收键盘
         if !searchText.exclusiveTouch {
             searchText.resignFirstResponder()
@@ -269,40 +201,37 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     @IBAction func dream(sender: AnyObject) {
         index = 0
-        dreamPage = 1
         setupButtonColor(index)
         self.dreamTableView.hidden = false
         self.tableView.hidden =  true
+        self.tableView.headerEndRefreshing()
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 - 70)
         })
-
-        if (dreamSearchDataSource.count == 0 && dreamStepDataSource.count == 0) || searchText.text != dreamLastSearch {
+        
+        if (self.dataArrayDream.count == 0 && self.dataArrayStep.count == 0) || searchText.text != dreamLastSearch {
             if count(searchText.text) > 0 {
                 dreamLastSearch = searchText.text
                 self.dreamTableView.headerBeginRefreshing()
-                self.onPullDown()
             }
         }
     }
     
     @IBAction func user(sender: AnyObject) {
         index = 1
-        userPage = 1
         setupButtonColor(index)
         self.tableView.hidden = false
         self.dreamTableView.hidden = true
-        
+        self.dreamTableView.headerEndRefreshing()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 + 20)
         })
-
-        if userSearchDataSource.count == 0 || searchText.text != userLastSearch {
+        
+        if self.dataArrayUser.count == 0 || searchText.text != userLastSearch {
             if count(searchText.text) > 0 {
                 userLastSearch = searchText.text
                 self.tableView.headerBeginRefreshing()
-                self.onPullDown()
             }
         }
     }
@@ -313,150 +242,99 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     // MARK: several abstract method
-
-    func userSearch(clear: Bool, callback: Bool -> Void) {
+    
+    func userSearch(clear: Bool) {
+        if clear {
+            userPage = 1
+        }
         Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++, callback: {
             json in
-            var success = false
-            
             if json != nil {
+                if clear {
+                    self.dataArrayUser.removeAllObjects()
+                }
                 var items = json!["users"] as! NSArray
-                
-                if (items.count != 0) {
-                    if clear {
-                        self.userSearchDataSource.removeAll(keepCapacity: true)
-                    }
-                    
-                    success = true
-                    
-                    for item in items {
-                        var userSearchData = UserSearchData()
-                        userSearchData.uid = item["uid"] as! String
-                        userSearchData.user = item["user"] as! String
-                        userSearchData.follow = item["follow"] as! String
-                        
-                        self.userSearchDataSource.append(userSearchData)
-                    }
+                for item in items {
+                    self.dataArrayUser.addObject(item)
+                }
+                if items.count < 30 {
+                    self.tableView.setFooterHidden(true)
                 }
             }
-            self.netResult = true
-            callback(success)
+            self.tableView.reloadData()
+            self.tableView.headerEndRefreshing()
+            self.tableView.footerEndRefreshing()
         })
     }
     
-    func dreamSearch(clear: Bool, callback: Bool -> Void) {
+    func dreamSearch(clear: Bool) {
+        if clear {
+            dreamPage = 1
+        }
         Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++, callback: {
             json in
-            var success = false
-            
             if json != nil {
-                var items = json!["dreams"] as? NSArray
-                var stepItems = json!["steps"] as? NSArray
-                
-                success = true
-                
-                if (items != nil && items?.count != 0) {
-                    if clear {
-                        self.dreamSearchDataSource.removeAll(keepCapacity: true)
-                    }
-                    
-                    for item in items! {
-                        var dreamSearchData = DreamSearchData()
-                        dreamSearchData.id = item["id"] as? String
-                        dreamSearchData.title = item["title"] as? String
-                        dreamSearchData.lastdate = item["lastdate"] as? String
-                        dreamSearchData.content = item["content"] as? String
-                        dreamSearchData.img = item["img"] as? String
-                        dreamSearchData.follow = item["follow"] as? String
-                        dreamSearchData.uid = item["uid"] as? String
-                        dreamSearchData.sid = item["sid"] as? String
-                        
-                        self.dreamSearchDataSource.append(dreamSearchData)
-                    }
+                if clear {
+                    self.dataArrayDream.removeAllObjects()
+                    self.dataArrayStep.removeAllObjects()
                 }
-                
-                if (stepItems != nil && stepItems?.count != 0) {
-                    if clear {
-                        self.dreamStepDataSource.removeAll(keepCapacity: true)
-                    }
-                    
-                    for item in stepItems! {
-                        var stepdata = DreamStepData()
-                        stepdata.sid = item["sid"] as! String
-                        stepdata.uid = item["uid"] as! String
-                        stepdata.user = item["user"] as? String
-                        stepdata.content = item["content"] as! String
-                        stepdata.lastdate = item["lastdate"] as! String
-                        stepdata.title = item["title"] as? String
-                        stepdata.img = item["img"] as! String
-                        stepdata.img0 = (item["img0"] as! NSNumber).floatValue
-                        stepdata.img1 = (item["img1"] as! NSNumber).floatValue
-                        stepdata.like = (item["like"] as! NSNumber).integerValue
-                        stepdata.liked = (item["liked"] as! NSNumber).integerValue
-                        stepdata.comment = (item["comment"] as! NSNumber).integerValue
-                        stepdata.follow = item["follow"] as! String
-                        
-                        self.dreamStepDataSource.append(stepdata)
-                        self.dreamStepArray.addObject(item)
-                    }
+                var itemsDream = json!["dreams"] as! NSArray
+                var itemsStep = json!["steps"] as! NSArray
+                for item in itemsDream {
+                    self.dataArrayDream.addObject(item)
+                }
+                for item in itemsStep {
+                    self.dataArrayStep.addObject(item)
                 }
             }
-            self.netResult = true
-            callback(success)
+            self.dreamTableView.reloadData()
+            self.dreamTableView.headerEndRefreshing()
+            self.dreamTableView.footerEndRefreshing()
         })
     }
     
     // MARK: table view delegate
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if netResult {
-            if index == 0 {
-                if self.dreamSearchDataSource.count != 0 && self.dreamStepDataSource.count != 0 {
-                    return 2
-                }
+        if index == 0 {
+            if self.dataArrayDream.count != 0 && self.dataArrayStep.count != 0 {
+                return 2
             }
         }
-        
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if index == 0{
             if section == 0 {
-                return dreamSearchDataSource.count
+                return self.dataArrayDream.count
             } else if section == 1 {
-                return dreamStepDataSource.count
+                return self.dataArrayStep.count
             } else {
                 return 0
             }
         } else {
-            return userSearchDataSource.count
+            return self.dataArrayUser.count
         }
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        var view = UIView()
-        
-        if netResult {
-            if index == 0 {
-                if section == 0 {
-                    if self.dreamSearchDataSource.count != 0 {
-                        view = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
-                        view.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
-                        
-                        return view
-                    }
+        if index == 0 {
+            if section == 0 {
+                if self.dataArrayDream.count != 0 {
+                    var viewFooter = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
+                    viewFooter.backgroundColor = IconColor
+                    return viewFooter
                 }
             }
         }
-        
-        return view
+        return nil
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if index == 0 {
             if section == 0 {
-                if self.dreamSearchDataSource.count != 0 {
+                if self.dataArrayDream.count != 0 {
                     return 15
                 }
             }
@@ -465,139 +343,158 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell
-        
-        if !netResult {
-            cell = UITableViewCell()
-        } else {
-            if index == 0 {
-                if indexPath.section == 0 {
-                    var dreamCell = tableView.dequeueReusableCellWithIdentifier("searchResultCell", forIndexPath: indexPath) as? searchResultCell
-                    
-                    if dreamCell == nil {
-                        dreamCell = searchResultCell(style: .Default, reuseIdentifier: "searchResultCell")
-                    }
-                    
-                    dreamCell!.bindData(dreamSearchDataSource[indexPath.row], tableView: tableView)
-                    dreamCell!.headImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toDream:"))
-                    cell = dreamCell!
-                } else if indexPath.section == 1 {
-                    var stepCell = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
-                    stepCell.labelTime.hidden = true
-                    stepCell.labelDream.setWidth(globalWidth - 148)
-                    var data = self.dreamStepArray[indexPath.row] as! NSDictionary
-                    stepCell.data = data
-                    stepCell.indexPathRow = index
-                    stepCell.tag = index + 10
-                    stepCell.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                    stepCell.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                    stepCell.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-                    stepCell.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
-                    stepCell.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-                    stepCell.btnLike.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
-                    stepCell.btnUnLike.addTarget(self, action: "onUnLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
-                    stepCell.btnLike.tag = index + 10
-                    stepCell.btnUnLike.tag = index + 10
-                    var followButton = UIButton(frame: CGRectMake(globalWidth - 85, 20, 70, 30))
-                    followButton.layer.cornerRadius = 15.0
-                    followButton.layer.masksToBounds = true
-                    followButton.titleLabel?.font = UIFont.systemFontOfSize(12.0)
-                    followButton.addTarget(self, action: "onFollowClick:", forControlEvents: .TouchUpInside)
-                    
-                    if dreamStepDataSource[indexPath.row].follow == "0" {
-                        followButton.tag = 100
-                        followButton.layer.borderColor = SeaColor.CGColor
-                        followButton.layer.borderWidth = 1
-                        followButton.setTitleColor(SeaColor, forState: .Normal)
-                        followButton.backgroundColor = .whiteColor()
-                        followButton.setTitle("关注", forState: .Normal)
-                    } else {
-                        followButton.tag = 200
-                        followButton.layer.borderWidth = 0
-                        followButton.setTitleColor(SeaColor, forState: .Normal)
-                        followButton.backgroundColor = SeaColor
-                        followButton.setTitle("关注中", forState: .Normal)
-                    }
-                    stepCell.addSubview(followButton)
-                    
-                    if indexPath.row == self.dreamStepArray.count - 1 {
-                        stepCell.viewLine.hidden = true
-                    } else {
-                        stepCell.viewLine.hidden = false
-                    }
-                    cell = stepCell
-                    
-                } else {
-                    cell = UITableViewCell()
-                }
+        if index == 0 {
+            if indexPath.section == 0 {
+                var cell = tableView.dequeueReusableCellWithIdentifier("SADoubleCell", forIndexPath: indexPath) as? SADoubleCell
+                var data = self.dataArrayDream[indexPath.row] as! NSDictionary
+                cell?.data = data
+                cell?.btnMain.tag = indexPath.row
+                cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toDream:"))
+                cell?.btnMain.addTarget(self, action: "onFollowDream:", forControlEvents: UIControlEvents.TouchUpInside)
+                return cell!
             } else {
-                var userCell = tableView.dequeueReusableCellWithIdentifier("searchUserResultCell", forIndexPath: indexPath) as? searchUserResultCell
-                
-                if userCell == nil {
-                    userCell = searchUserResultCell(style: .Default, reuseIdentifier: "searchUserResultCell")
+                var cell = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as? SAStepCell
+                var index = indexPath.row
+                cell?.data = self.dataArrayStep[index] as! NSDictionary
+                cell?.tag = index + 10
+                cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
+                cell?.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
+                cell?.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toLike:"))
+                cell?.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toComment:"))
+                cell?.btnLike.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell?.btnUnLike.addTarget(self, action: "onUnLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell?.labelComment.tag = index
+                cell?.btnLike.tag = index + 10
+                cell?.btnUnLike.tag = index + 10
+                if index == self.dataArrayStep.count - 1 {
+                    cell?.viewLine.hidden = true
+                } else {
+                    cell?.viewLine.hidden = false
                 }
-                
-                userCell!.bindData(userSearchDataSource[indexPath.row], tableview: tableView)
-                userCell!.headImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toPlayer:"))
-                cell = userCell!
+                return cell!
+            }
+        } else {
+            var cell = tableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
+            var data = self.dataArrayUser[indexPath.row] as! NSDictionary
+            cell?.data = data
+            cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
+            cell?.btnMain.tag = indexPath.row
+            cell?.btnMain.addTarget(self, action: "onFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+            return cell!
+        }
+    }
+    
+    func toLike(sender: UIGestureRecognizer) {
+        var LikeVC = LikeViewController()
+        LikeVC.Id = "\(sender.view!.tag)"
+        self.navigationController?.pushViewController(LikeVC, animated: true)
+    }
+    
+    func toComment(sender: UIGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            var data = self.dataArrayStep[tag] as! NSDictionary
+            println(data)
+            var id = data.stringAttributeForKey("dream")
+            var sid = data.stringAttributeForKey("sid")
+            var uid = data.stringAttributeForKey("uid")
+            var dreamCommentVC = DreamCommentViewController()
+            dreamCommentVC.dreamID = id.toInt()!
+            dreamCommentVC.stepID = sid.toInt()!
+            var UserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = UserDefaults.objectForKey("uid") as! String
+            dreamCommentVC.dreamowner = uid == safeuid ? 1 : 0
+            self.navigationController?.pushViewController(dreamCommentVC, animated: true)
+        }
+    }
+    
+    func toUser(sender: UIGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            SAUser("\(tag)")
+        }
+    }
+    
+    func toDream(sender: UIGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            SADream("\(tag)")
+        }
+    }
+    
+    func onFollowDream(sender: UIButton) {
+        var tag = sender.tag
+        var data = self.dataArrayDream[tag] as! NSDictionary
+        var id = data.stringAttributeForKey("id")
+        var follow = data.stringAttributeForKey("follow")
+        var newFollow = follow == "0" ? "1" : "0"
+        var mutableData = NSMutableDictionary(dictionary: data)
+        mutableData.setValue(newFollow, forKey: "follow")
+        self.dataArrayDream[tag] = mutableData
+        self.dreamTableView.reloadData()
+        //todo
+        Api.postFollowDream(id, follow: newFollow) { json in
+        }
+    }
+    
+    func onFollow(sender: UIButton) {
+        var tag = sender.tag
+        var data = self.dataArrayUser[tag] as! NSDictionary
+        var uid = data.stringAttributeForKey("uid")
+        var follow = data.stringAttributeForKey("follow")
+        var newFollow = follow == "0" ? "1" : "0"
+        var mutableData = NSMutableDictionary(dictionary: data)
+        mutableData.setValue(newFollow, forKey: "follow")
+        self.dataArrayUser[tag] = mutableData
+        self.tableView.reloadData()
+        if follow == "1" {
+            Api.postUnfollow(uid) { string in
+            }
+        } else {
+            Api.postFollow(uid, follow: 1) { string in
             }
         }
-        
-        return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if netResult {
-            if index == 0{
-                if indexPath.section == 0 {
-                    return 80
-                } else {
-                    var data = self.dreamStepArray[indexPath.row] as! NSDictionary
-                    var height = SAStepCell.cellHeightByData(data)
-                    return height
-                }
+        if index == 0{
+            if indexPath.section == 0 {
+                return 81
             } else {
-                return 71
+                var data = self.dataArrayStep[indexPath.row] as! NSDictionary
+                var height = SAStepCell.cellHeightByData(data)
+                return height
             }
+        } else {
+            return 71
         }
-        
-        return 71
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        if index == 0 {
-//            if indexPath.section == 0 {
-//                var viewController = DreamViewController()
-//                viewController.Id = dreamSearchDataSource[indexPath.row].id
-//                var data = dreamSearchDataSource[indexPath.row]
-//                self.navigationController?.pushViewController(viewController, animated: true)
-//            } else {
-//                var data = self.dreamStepArray[indexPath.row] as! NSDictionary
-//                var dream = data.stringAttributeForKey("dream")
-//                var dreamVC = DreamViewController()
-//                dreamVC.Id = dream
-//                self.navigationController!.pushViewController(dreamVC, animated: true)
-//            }
-//        } else {
-//            var playerViewController = PlayerViewController()
-//            playerViewController.Id = userSearchDataSource[indexPath.row].uid
-//            var data = userSearchDataSource[indexPath.row]
-//            self.navigationController?.pushViewController(playerViewController, animated: true)
-//        }
-//    }
+    //    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    //        if index == 0 {
+    //            if indexPath.section == 0 {
+    //                var viewController = DreamViewController()
+    //                viewController.Id = dreamSearchDataSource[indexPath.row].id
+    //                var data = dreamSearchDataSource[indexPath.row]
+    //                self.navigationController?.pushViewController(viewController, animated: true)
+    //            } else {
+    //                var data = self.dreamStepArray[indexPath.row] as! NSDictionary
+    //                var dream = data.stringAttributeForKey("dream")
+    //                var dreamVC = DreamViewController()
+    //                dreamVC.Id = dream
+    //                self.navigationController!.pushViewController(dreamVC, animated: true)
+    //            }
+    //        } else {
+    //            var playerViewController = PlayerViewController()
+    //            playerViewController.Id = userSearchDataSource[indexPath.row].uid
+    //            var data = userSearchDataSource[indexPath.row]
+    //            self.navigationController?.pushViewController(playerViewController, animated: true)
+    //        }
+    //    }
     
     // MARK: text field delegate
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        dreamPage = 1
-        userPage = 1
-        
         if count(textField.text) > 0 {
             searchText.rightViewMode = .Always
         }
-    }
-
-    func textFieldDidEndEditing(textField: UITextField) {
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -605,27 +502,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         if searchText.text != "" {
             if index == 0 {
-                if searchText.text != dreamLastSearch {
-                    self.dreamTableView.headerBeginRefreshing()
-                    dreamLastSearch = searchText.text
-                    
-                    load(index, clear: true) {
-                        success in
-                        self.dreamTableView.reloadData()
-                        self.dreamTableView.headerEndRefreshing(animated: true)
-                    }
-                }
+                self.dreamTableView.headerBeginRefreshing()
+                dreamLastSearch = searchText.text
             } else {
-                if searchText.text != userLastSearch {
-                    self.tableView.headerBeginRefreshing()
-                    userLastSearch = searchText.text
-                    
-                    load(index, clear: true) {
-                        success in
-                        self.tableView.reloadData()
-                        self.tableView.headerEndRefreshing(animated: true)
-                    }
-                }
+                self.tableView.headerBeginRefreshing()
+                userLastSearch = searchText.text
             }
         }
         
@@ -640,27 +521,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         } else {
             searchText.rightViewMode = .Never
         }
-    }
-    
-    // MARK: gesture 
-//    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-//        return  !(touch.view is UITableViewCell)
-//    }
-//    
-//    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        return true
-//    }
-    
-    func toPlayer(sender: UITapGestureRecognizer) {
-        var playerViewController = PlayerViewController()
-        playerViewController.Id = "\(sender.view!.tag)"
-        self.navigationController?.pushViewController(playerViewController, animated: true)
-    }
-    
-    func toDream(sender: UITapGestureRecognizer) {
-        var viewController = DreamViewController()
-        viewController.Id = "\(sender.view!.tag)"
-        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onLikeTap(sender: UIButton) {
@@ -781,7 +641,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         
     }
-
+    
     
 }
 

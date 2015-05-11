@@ -268,6 +268,19 @@ extension UIViewController: UIGestureRecognizerDelegate {
     func navHide() {
         navMove(-44)
     }
+    
+    func SAUser(uid: String) {
+        var UserVC = PlayerViewController()
+        UserVC.Id = uid
+        self.navigationController?.pushViewController(UserVC, animated: true)
+    }
+    
+    func SADream(id: String) {
+        var DreamVC = DreamViewController()
+        DreamVC.Id = id
+        self.navigationController?.pushViewController(DreamVC, animated: true)
+    }
+    
 }
 
 func SAstrlen(stremp:NSString)->Int{
