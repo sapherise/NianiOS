@@ -14,21 +14,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ts0-AT-mHQ">
-                                <rect key="frame" x="0.0" y="104" width="320" height="415"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <view contentMode="scaleToFill" id="Uw6-ed-oOx">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发现" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EYQ-GW-nhN">
-                                        <rect key="frame" x="138" y="20" width="44" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addFriend" id="jqu-kN-EO5">
                                         <rect key="frame" x="4" y="20" width="40" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -37,65 +30,75 @@
                                         <rect key="frame" x="276" y="20" width="40" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="ZF6-an-RPQ">
-                                <rect key="frame" x="0.0" y="64" width="320" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
                                     <view contentMode="scaleToFill" id="3Ff-aN-0AE">
-                                        <rect key="frame" x="40" y="0.0" width="240" height="40"/>
+                                        <rect key="frame" x="64" y="20" width="192" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" tag="1100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="关注" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="epf-4H-XeU">
-                                                <rect key="frame" x="14" y="0.0" width="60" height="40"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="64" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" tag="1101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="动态" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bRx-v7-VHB">
-                                                <rect key="frame" x="90" y="0.0" width="60" height="40"/>
+                                            <label opaque="NO" alpha="0.40000000000000002" tag="1101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="动态" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bRx-v7-VHB">
+                                                <rect key="frame" x="64" y="0.0" width="64" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" tag="1102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="推荐" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ihu-IS-EzL">
-                                                <rect key="frame" x="166" y="0.0" width="60" height="40"/>
+                                            <label opaque="NO" alpha="0.40000000000000002" tag="1102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="推荐" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ihu-IS-EzL">
+                                                <rect key="frame" x="128" y="0.0" width="64" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" id="Xne-it-L6p">
-                                                <rect key="frame" x="19" y="38" width="50" height="2"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="B0a-pP-S14" appends="YES" id="F4s-Ys-e39"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="zaS-HR-LFU" appends="YES" id="6va-jp-k7l"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="btnDynamic" destination="bRx-v7-VHB" id="x5B-ni-kJ3"/>
                         <outlet property="btnFollow" destination="epf-4H-XeU" id="86z-bc-aCC"/>
                         <outlet property="btnHot" destination="Ihu-IS-EzL" id="u3L-E0-MRv"/>
-                        <outlet property="floatView" destination="Xne-it-L6p" id="GxE-0G-md3"/>
                         <outlet property="imageFriend" destination="jqu-kN-EO5" id="SuY-Ac-4Pu"/>
                         <outlet property="imageSearch" destination="61j-UB-Mnd" id="e4B-vV-80R"/>
                         <outlet property="navHolder" destination="3Ff-aN-0AE" id="pL3-iD-XQi"/>
-                        <outlet property="navTitle" destination="EYQ-GW-nhN" id="ufH-ru-Pnl"/>
                         <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
-                        <outlet property="navView" destination="ZF6-an-RPQ" id="sQY-sa-H4n"/>
+                        <outlet property="swipeLeftGesture" destination="B0a-pP-S14" id="nFQ-vi-aha"/>
+                        <outlet property="swipeRightGesture" destination="zaS-HR-LFU" id="dWX-L5-DB0"/>
                         <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
                         <segue destination="Til-rz-lZK" kind="push" identifier="toSearch" id="lzX-aU-Vnp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F41-Ti-KIl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="zaS-HR-LFU">
+                    <connections>
+                        <action selector="swipe:" destination="EG5-tm-T0U" id="BIx-7i-XTu"/>
+                        <outlet property="delegate" destination="EG5-tm-T0U" id="6Ph-vf-3kB"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="B0a-pP-S14">
+                    <connections>
+                        <action selector="swipe:" destination="EG5-tm-T0U" id="PUE-N5-xQo"/>
+                        <outlet property="delegate" destination="EG5-tm-T0U" id="RQa-xA-sWL"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-224" y="-52"/>
         </scene>

@@ -201,6 +201,10 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         return h
     }
     
+//    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+//        println("\(dataSource[indexPath.row])")
+//    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("ExploreFollowCell", forIndexPath: indexPath) as? ExploreFollowCell
         cell!.bindData(dataSource[indexPath.row], tableview: tableView)
@@ -362,6 +366,7 @@ class ExploreFollowCell: UITableViewCell {
     @IBOutlet var viewLine: UIView!
     
     var cellData: ExploreFollowProvider.Data?
+    private let _headerView = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -376,6 +381,18 @@ class ExploreFollowCell: UITableViewCell {
         self.btnMore.setX(globalWidth-90)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        _headerView.backgroundColor = SeaColor
+        self.addSubview(_headerView)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+//        let location = CGPointMake(0, (self.superview!.superview as! UITableView).contentOffset.y)
+//        let size = _headerView.frame.size
+//        
+//        _headerView.frame = CGRect(origin: location, size: size)
     }
     
     override func prepareForReuse() {
