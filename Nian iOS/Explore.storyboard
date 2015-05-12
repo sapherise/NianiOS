@@ -13,11 +13,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ts0-AT-mHQ">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="CmH-Mi-Llu">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ts0-AT-mHQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3gy-pV-BXd" userLabel="Dynamic Table View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="EI2-L7-TyB" userLabel="Recommend Table View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="EG5-tm-T0U" id="k7o-sI-hBa"/>
+                                </connections>
+                            </scrollView>
                             <view contentMode="scaleToFill" id="Uw6-ed-oOx">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -61,44 +80,27 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="B0a-pP-S14" appends="YES" id="F4s-Ys-e39"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="zaS-HR-LFU" appends="YES" id="6va-jp-k7l"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="btnDynamic" destination="bRx-v7-VHB" id="x5B-ni-kJ3"/>
                         <outlet property="btnFollow" destination="epf-4H-XeU" id="86z-bc-aCC"/>
                         <outlet property="btnHot" destination="Ihu-IS-EzL" id="u3L-E0-MRv"/>
+                        <outlet property="dynamicTableView" destination="3gy-pV-BXd" id="kWM-Hw-L37"/>
                         <outlet property="imageFriend" destination="jqu-kN-EO5" id="SuY-Ac-4Pu"/>
                         <outlet property="imageSearch" destination="61j-UB-Mnd" id="e4B-vV-80R"/>
                         <outlet property="navHolder" destination="3Ff-aN-0AE" id="pL3-iD-XQi"/>
                         <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
-                        <outlet property="swipeLeftGesture" destination="B0a-pP-S14" id="nFQ-vi-aha"/>
-                        <outlet property="swipeRightGesture" destination="zaS-HR-LFU" id="dWX-L5-DB0"/>
+                        <outlet property="recomTableView" destination="EI2-L7-TyB" id="Cg4-Xo-mu2"/>
+                        <outlet property="scrollView" destination="CmH-Mi-Llu" id="rmT-bo-kzx"/>
                         <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
                         <segue destination="Til-rz-lZK" kind="push" identifier="toSearch" id="lzX-aU-Vnp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F41-Ti-KIl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="zaS-HR-LFU">
-                    <connections>
-                        <action selector="swipe:" destination="EG5-tm-T0U" id="BIx-7i-XTu"/>
-                        <outlet property="delegate" destination="EG5-tm-T0U" id="6Ph-vf-3kB"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" id="B0a-pP-S14">
-                    <connections>
-                        <action selector="swipe:" destination="EG5-tm-T0U" id="PUE-N5-xQo"/>
-                        <outlet property="delegate" destination="EG5-tm-T0U" id="RQa-xA-sWL"/>
-                    </connections>
-                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-224" y="-52"/>
         </scene>

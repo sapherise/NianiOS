@@ -32,18 +32,20 @@ class ExploreProvider: NSObject {
     }
 }
 
-class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
+class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UIScrollViewDelegate {
     
     @IBOutlet var btnFollow: UILabel!
     @IBOutlet var btnDynamic: UILabel!
     @IBOutlet var btnHot: UILabel!
+    
+    @IBOutlet weak var imageSearch: UIImageView!
     @IBOutlet var imageFriend: UIImageView!
     
-    @IBOutlet var swipeLeftGesture: UISwipeGestureRecognizer!
-    @IBOutlet var swipeRightGesture: UISwipeGestureRecognizer!
-    @IBOutlet weak var imageSearch: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var dynamicTableView: UITableView!
+    @IBOutlet weak var recomTableView: UITableView!
     
-    @IBOutlet var tableView: UITableView!
     @IBOutlet var navTopView: UIView!
     @IBOutlet var navHolder: UIView!
     
@@ -58,16 +60,22 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.buttons = [
             btnFollow,
             btnDynamic,
-            btnHot,
+            btnHot, // 推荐
         ]
         setupViews()
+        
+        // brief: tableView = followTableView
+        tableView.dataSource = providers[0] as? UITableViewDataSource
+        tableView.delegate = providers[0] as? UITableViewDelegate
+        dynamicTableView.dataSource = providers[1] as? UITableViewDataSource
+        dynamicTableView.delegate = providers[1] as? UITableViewDelegate
+        recomTableView.dataSource = providers[2] as? UITableViewDataSource
+        recomTableView.delegate = providers[2] as? UITableViewDelegate
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
-        self.view.addGestureRecognizer(swipeLeftGesture)
-        self.view.addGestureRecognizer(swipeRightGesture)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "exploreTop:", name: "exploreTop", object: nil)
     }
     
@@ -108,8 +116,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         ]
         globalNumExploreBar = 0
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
-        tableView.setWidth(globalWidth)
-        
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
         self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
@@ -118,12 +124,22 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
         view.backgroundColor = UIColor.whiteColor()
         
+        scrollView.setWidth(globalWidth)
+        scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
+        tableView.frame.origin.x = 0
+        dynamicTableView.frame.origin.x = globalWidth
+        recomTableView.frame.origin.x = globalWidth * 2
+        
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
+        dynamicTableView.addHeaderWithCallback(onPullDown)
+        dynamicTableView.addFooterWithCallback(onPullUp)
+        recomTableView.addHeaderWithCallback(onPullDown)
+        recomTableView.addFooterWithCallback(onPullUp)
     }
     
     func onPullDown() {
@@ -142,9 +158,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
         current = tab
         currentProvider = self.providers[tab]
 
-        tableView.delegate = currentProvider as? UITableViewDelegate
-        tableView.dataSource = currentProvider as? UITableViewDataSource
-        
         switch tab {
         case 0:
             self.btnFollow.alpha = 1.0
@@ -168,18 +181,15 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate {
     func onTabClick(sender: UIGestureRecognizer) {
         switchTab(sender.view!.tag - 1100)
         globalNumExploreBar = sender.view!.tag - 1100
+        
+        scrollView.setContentOffset(CGPointMake(globalWidth * CGFloat(globalNumExploreBar), 0), animated: true)
     }
     
-    @IBAction func swipe(sender: UISwipeGestureRecognizer) {
-        if sender.direction == .Right {
-            if globalNumExploreBar < 3 && globalNumExploreBar > 0 {
-                switchTab(--globalNumExploreBar)
-            }
-        } else if sender.direction == .Left {
-            if globalNumExploreBar >= 0 && globalNumExploreBar < 2 {
-                switchTab(++globalNumExploreBar)
-            }
-        }
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        var xOffset = scrollView.contentOffset.x
+        var page: Int = Int(xOffset / globalWidth)
+        
+        switchTab(page)
     }
     
     func onFriendClick() {
