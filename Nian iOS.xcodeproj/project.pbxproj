@@ -19,6 +19,8 @@
 		12216F941A61471C003701BF /* MeNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12216F931A61471C003701BF /* MeNext.swift */; };
 		1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227F0EF1A615EB70088DEB1 /* LetterCell.swift */; };
 		1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1227F0F11A615EC20088DEB1 /* LetterCell.xib */; };
+		1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */; };
+		1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */; };
 		122AFE031A80864800464641 /* SqliteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122AFE021A80864800464641 /* SqliteData.swift */; };
 		122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 122AFE041A80869D00464641 /* libsqlite3.dylib */; };
 		122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D73E9197EB8EB00310C6B /* AddDreamController.swift */; };
@@ -48,6 +50,8 @@
 		1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1258C3081A49A9BC008FA4EF /* CircleExplore.swift */; };
 		1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */; };
 		1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1258C30C1A49A9E6008FA4EF /* CircleExploreCell.swift */; };
+		125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125D93C91AFCC198006FFDED /* SADoubleCell.xib */; };
+		125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */; };
 		1265282E196C6460005765D2 /* Dream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282D196C6460005765D2 /* Dream.swift */; };
 		12652830196C6468005765D2 /* DreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282F196C6468005765D2 /* DreamCell.swift */; };
 		12652832196C6474005765D2 /* DreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12652831196C6474005765D2 /* DreamCell.xib */; };
@@ -217,6 +221,8 @@
 		12216F931A61471C003701BF /* MeNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeNext.swift; sourceTree = "<group>"; };
 		1227F0EF1A615EB70088DEB1 /* LetterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterCell.swift; sourceTree = "<group>"; };
 		1227F0F11A615EC20088DEB1 /* LetterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LetterCell.xib; sourceTree = "<group>"; };
+		1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAUserCell.xib; sourceTree = "<group>"; };
+		1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAUserCell.swift; sourceTree = "<group>"; };
 		122AFE021A80864800464641 /* SqliteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqliteData.swift; sourceTree = "<group>"; };
 		122AFE041A80869D00464641 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		122D73E9197EB8EB00310C6B /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
@@ -247,6 +253,8 @@
 		1258C3081A49A9BC008FA4EF /* CircleExplore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleExplore.swift; sourceTree = "<group>"; };
 		1258C30A1A49A9DB008FA4EF /* CircleExploreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleExploreCell.xib; sourceTree = "<group>"; };
 		1258C30C1A49A9E6008FA4EF /* CircleExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleExploreCell.swift; sourceTree = "<group>"; };
+		125D93C91AFCC198006FFDED /* SADoubleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SADoubleCell.xib; sourceTree = "<group>"; };
+		125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SADoubleCell.swift; sourceTree = "<group>"; };
 		1265282D196C6460005765D2 /* Dream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dream.swift; sourceTree = "<group>"; };
 		1265282F196C6468005765D2 /* DreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCell.swift; sourceTree = "<group>"; };
 		12652831196C6474005765D2 /* DreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamCell.xib; sourceTree = "<group>"; };
@@ -1002,6 +1010,10 @@
 				32871D121A14AB0E002C9486 /* ExploreHotCell.xib */,
 				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
 				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
+				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
+				1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */,
+				125D93C91AFCC198006FFDED /* SADoubleCell.xib */,
+				125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1160,9 +1172,11 @@
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
+				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12521B7D1AA85FCD006FEC6D /* CircleDreamCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
+				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
@@ -1338,6 +1352,7 @@
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
 				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
+				1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */,
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
@@ -1356,6 +1371,7 @@
 				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				122D73EA197EB8EB00310C6B /* AddDreamController.swift in Sources */,
+				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,

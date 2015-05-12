@@ -76,11 +76,6 @@ struct Api {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/searchuser.php?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
     }
-    
-    static func getSearchDream(callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/search_dream.php", callback: callback)
-    }
         
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()
