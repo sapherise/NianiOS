@@ -116,11 +116,11 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         
         if self.isEdit == 1 {
             self.Id = self.data!.objectForKey("sid") as! String
-            self.TextView.text =  self.data!.objectForKey("content") as! String
+            self.TextView.text =  SADecode(self.data!.stringAttributeForKey("content"))
             
-            self.uploadUrl = self.data!.objectForKey("img") as! String
-            self.uploadWidth = self.data!.objectForKey("img0") as! String
-            self.uploadHeight = self.data!.objectForKey("img1") as! String
+            self.uploadUrl = self.data!.stringAttributeForKey("img")
+            self.uploadWidth = self.data!.stringAttributeForKey("img0")
+            self.uploadHeight = self.data!.stringAttributeForKey("img1")
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];

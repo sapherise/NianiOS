@@ -660,4 +660,33 @@ func setCacheImage(url: String, img: UIImage, width: CGFloat) {
     UIImageView.sharedImageCache().cacheImage(resizedImage(img, width), forRequest: req)
 }
 
+func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: String, tableView: UITableView) {
+    var data = dataArray[index] as! NSDictionary
+    var mutableItem = NSMutableDictionary(dictionary: data)
+    mutableItem.setValue(value, forKey: key)
+    dataArray.replaceObjectAtIndex(index, withObject: mutableItem)
+}
+
+func SAUpdate(index: Int, section: Int, tableView: UITableView) {
+    tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
+}
+
+func SAUpdate(tableView: UITableView) {
+    tableView.reloadData()
+}
+
+func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UITableView, section: Int) {
+    if delete {
+        dataArray.removeObjectAtIndex(index)
+        tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
+    }
+}
+
+func getuid() -> String {
+    var uid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
+    if uid != nil {
+        return uid!
+    }
+    return "0"
+}
 

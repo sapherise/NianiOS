@@ -621,9 +621,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.topCell.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
                 var vip = data.stringAttributeForKey("vip")
                 self.topCell.imageBadge.setType(vip)
-                var wantPress = UILongPressGestureRecognizer(target: self, action: "onIWANTYOU:")
-                wantPress.minimumPressDuration = 10
-                self.topCell.viewHolderHead.addGestureRecognizer(wantPress)
                 
                 self.topCell.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                 self.topCell.btnLetter.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
@@ -668,15 +665,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func SASettings() {
         var vc = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func onIWANTYOU(sender: UILongPressGestureRecognizer) {
-        if let duid = self.Id.toInt() {
-            if FollowBlacklist.isblacked(duid) {
-                FollowBlacklist.unblack(duid)
-                sender.view!.showTipText("I WANT YOU", delay: 1)
-            }
-        }
     }
     
     func onUserHeadClick(sender:UIGestureRecognizer) {

@@ -39,7 +39,7 @@ class SADoubleCell: MKTableViewCell {
         var title = SADecode(data.stringAttributeForKey("title"))
         var des = SADecode(data.stringAttributeForKey("content"))
         self.labelName.text = type == 0 ? title : user
-        self.labelContent.text = des
+        self.labelContent.text = des == "" ? "暂无简介" : des
         if type == 0 {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             if let tag = id.toInt() {

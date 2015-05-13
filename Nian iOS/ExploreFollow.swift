@@ -8,69 +8,6 @@
 
 import UIKit
 
-struct FollowBlacklist {
-    
-    private static let blackfile: String = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String).stringByAppendingPathComponent("blacklist.gift")
-    
-    private static var blacklist = [Int]()
-    private static var loaded = false
-    
-    static func load() {
-        if loaded {
-            return
-        }
-        loaded = true
-        blacklist = [] //[Int]()
-        if let data = NSData(contentsOfFile: blackfile) {
-            var json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.allZeros, error: nil)
-            if json == nil {
-                return
-            }
-            if let items = json!["blacked"] as? NSArray {
-                for item in items {
-                    if let id = item as? Int {
-                        blacklist.append(id)
-                    }
-                }
-            }
-        }
-    }
-    
-    static func save() {
-        var data = NSJSONSerialization.dataWithJSONObject(["blacked": blacklist], options: NSJSONWritingOptions.allZeros, error: nil)
-        data!.writeToFile(blackfile, atomically: true)
-    }
-    
-    static func isblacked(uid: Int) -> Bool {
-        load()
-        for id in blacklist {
-            if id == uid {
-                return true
-            }
-        }
-        return false
-    }
-    
-    static func black(uid: Int) {
-        load()
-        if !isblacked(uid) {
-            blacklist.append(uid)
-            save()
-        }
-    }
-    
-    static func unblack(uid: Int) {
-        load()
-        for var i = 0; i < blacklist.count; i++ {
-            if blacklist[i] == uid {
-                blacklist.removeAtIndex(i)
-                save()
-                break
-            }
-        }
-    }
-}
-
 class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     class Data {
@@ -182,13 +119,6 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        for var i = dataSource.count; i > 0; i-- {
-            if let suid = dataSource[i - 1].uid.toInt() {
-                if FollowBlacklist.isblacked(suid) {
-                    dataSource.removeAtIndex(i - 1)
-                }
-            }
-        }
         return dataSource.count
     }
     
@@ -206,11 +136,6 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         cell!.bindData(dataSource[indexPath.row], tableview: tableView)
         cell!.tag = indexPath.row
         cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadTap:"))
-        ///=======
-        var hatePress = UILongPressGestureRecognizer(target: self, action: "onIHATEYOU:")
-        hatePress.minimumPressDuration = 10
-        cell!.imageHead.addGestureRecognizer(hatePress)
-        ///=======
         cell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNameTap:"))
         cell!.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeTap:"))
         cell!.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentTap:"))
@@ -247,29 +172,6 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
             }
         }
         
-    }
-
-    func onIHATEYOU(sender: UILongPressGestureRecognizer) {
-        if locked {
-            return
-        }
-        var tag = findTableCell(sender.view)!.tag
-        if dataSource.count <= tag {
-            return
-        }
-        var uid = dataSource[tag].uid
-        if let duid = uid.toInt() {
-            if FollowBlacklist.isblacked(duid) {
-                return
-            }
-            FollowBlacklist.black(duid)
-            locked = true
-            delay(9) {
-                self.locked = false
-            }
-            sender.view!.showTipText("I LOVE \(dataSource[tag].user)", delay: 1)
-            bindViewController!.tableView.reloadData()
-        }
     }
     
     func onHeadTap(sender: UITapGestureRecognizer) {
