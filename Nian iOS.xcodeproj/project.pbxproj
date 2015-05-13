@@ -171,8 +171,6 @@
 		3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */; };
 		3274A3851A15F0FF00D2425A /* ExploreDynamicStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3274A3841A15F0FF00D2425A /* ExploreDynamicStepCell.xib */; };
 		328181E71A08CE2700768D7D /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328181E61A08CE2700768D7D /* CoinCell.swift */; };
-		32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32871D121A14AB0E002C9486 /* ExploreHotCell.xib */; };
-		32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32871D141A14ABE0002C9486 /* ExploreHot.swift */; };
 		32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A2197B1A25C5B800B5BC35 /* Payment.swift */; };
 		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
@@ -385,8 +383,6 @@
 		3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDynamic.swift; sourceTree = "<group>"; };
 		3274A3841A15F0FF00D2425A /* ExploreDynamicStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicStepCell.xib; sourceTree = "<group>"; };
 		328181E61A08CE2700768D7D /* CoinCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
-		32871D121A14AB0E002C9486 /* ExploreHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreHotCell.xib; sourceTree = "<group>"; };
-		32871D141A14ABE0002C9486 /* ExploreHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHot.swift; sourceTree = "<group>"; };
 		32A2197B1A25C5B800B5BC35 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
 		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
@@ -1006,8 +1002,6 @@
 				3274A3841A15F0FF00D2425A /* ExploreDynamicStepCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
 				323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */,
-				32871D141A14ABE0002C9486 /* ExploreHot.swift */,
-				32871D121A14AB0E002C9486 /* ExploreHotCell.xib */,
 				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
 				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
 				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
@@ -1165,7 +1159,6 @@
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
 				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
-				32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
@@ -1375,7 +1368,6 @@
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
-				32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */,
 				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,

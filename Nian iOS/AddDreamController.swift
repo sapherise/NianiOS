@@ -12,16 +12,14 @@ protocol editDreamDelegate {
     func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UIScrollViewDelegate {
     
-    @IBOutlet var uploadButton: UIButton?
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var uploadWait: UIActivityIndicatorView?
     @IBOutlet var field1:UITextField?
     @IBOutlet var field2:UITextView!
-    @IBOutlet var setButton: UIButton!
-    @IBOutlet var labelTag: UILabel?
-    @IBOutlet var viewHolder: UIView!
-    @IBOutlet var imageEyeClosed: UIImageView!
+//    @IBOutlet var labelTag: UILabel?
+    @IBOutlet var setPrivate: UIImageView!
     @IBOutlet var imageDreamHead: UIImageView!
     @IBOutlet var imageTag: UIImageView!
     var actionSheet:UIActionSheet?
@@ -74,12 +72,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             if buttonIndex == 0 {
                 self.isPrivate = 0
                 self.editPrivate = "0"
-                self.imageEyeClosed.hidden = true
+                self.setPrivate.hidden = true
                 // 变为公开
             }else if buttonIndex == 1 {
                 self.isPrivate = 1
                 self.editPrivate = "1"
-                self.imageEyeClosed.hidden = false
+                self.setPrivate.hidden = false
                 // 变为私密
             }
         }
@@ -93,12 +91,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
         self.uploadWait!.startAnimating()
-        self.uploadButton!.hidden = true
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
-            self.uploadButton!.hidden = false
             self.uploadUrl = data.objectForKey("url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
@@ -108,7 +104,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
-            self.uploadButton!.hidden = false
         })
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
@@ -121,23 +116,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         super.didReceiveMemoryWarning()
     }
     func setupViews(){
-        self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
-        self.viewHolder.layer.borderWidth = 1
-        self.viewHolder.setX(globalWidth/2-140)
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         
-        self.uploadButton?.addTarget(self, action: "uploadClick", forControlEvents: UIControlEvents.TouchUpInside)
         self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
         self.view.addSubview(navView)
         if self.tagType >= 1 {
-            self.labelTag?.text = V.Tags[self.tagType - 1]
-        }
-        
-        if self.editPrivate == "1" {
-            self.imageEyeClosed.hidden = false
-        }else{
-            self.imageEyeClosed.hidden = true
+//            self.labelTag?.text = V.Tags[self.tagType - 1]
         }
         
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
@@ -168,7 +153,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.uploadWait!.hidden = true
         
         
-        
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if self.isEdit == 1 {
@@ -181,8 +165,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.viewBack()
         
-        self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
-        self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
+        self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
+//        self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
     }
     
@@ -270,8 +254,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         textView.textColor = UIColor.blackColor()
     }
     
+    // MARK: DreamTagDelegate
+    
     func onTagSelected(tag: String, tagType: Int) {
-        self.labelTag?.text = tag
-        self.tagType = tagType + 1
+//        self.labelTag?.text = tag
+//        self.tagType = tagType + 1
     }
 }

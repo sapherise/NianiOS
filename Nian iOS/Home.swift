@@ -364,7 +364,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if globalNumberDream == 0 {
             var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
             self.navigationController!.pushViewController(adddreamVC, animated: true)
-        }else{
+        } else {
             self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
             self.addView.translucentAlpha = 1
             self.addView.translucentStyle = UIBarStyle.Default

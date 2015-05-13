@@ -64,7 +64,7 @@ struct Api {
     
     static func getExploreNewHot(lastid: String, page: String,callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_test.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/explore_recommend.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
