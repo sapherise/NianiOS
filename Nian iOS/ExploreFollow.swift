@@ -34,6 +34,8 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
         viewController.tableView.registerNib(UINib(nibName: "ExploreFollowCell", bundle: nil), forCellReuseIdentifier: "ExploreFollowCell")
+//        bindViewController.view.addSubview(_headerView)
+//        self.bindViewController?._headerView.addSubview(<#view: UIView#>)
     }
     
     func load(clear: Bool, callback: Bool -> Void) {
@@ -64,7 +66,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                         data.comment = (item["comment"] as! String).toInt()
                         self.dataSource.append(data)
                     }
-                }else if clear {
+                } else if clear {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     var viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
                     viewQuestion.setY(50)
@@ -85,13 +87,13 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         if dataSource.isEmpty {
             bindViewController!.tableView.headerBeginRefreshing()
         } else {
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
-                }, completion: { (Bool) -> Void in
-                    if loading {
-                        self.bindViewController!.tableView.headerBeginRefreshing()
-                    }
-            })
+//            UIView.animateWithDuration(0.2, animations: { () -> Void in
+//                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
+//                }, completion: { (Bool) -> Void in
+//                    if loading {
+//                        self.bindViewController!.tableView.headerBeginRefreshing()
+//                    }
+//            })
         }
     }
     
@@ -125,11 +127,16 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = dataSource[indexPath.row]
         var h = ExploreFollowCell.heightWithData(data.content, w: data.img0, h: data.img1)
+        
         if indexPath.row == self.dataSource.count - 1 {
             return h - 15
         }
         return h
     }
+    
+//    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+//        println("\(dataSource[indexPath.row])")
+//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("ExploreFollowCell", forIndexPath: indexPath) as? ExploreFollowCell
@@ -146,6 +153,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         }else{
             cell!.viewLine.hidden = false
         }
+        
         return cell!
     }
     
@@ -171,7 +179,25 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                 cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
             }
         }
+//        bindViewController?.view.layoutIfNeeded()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
         
+        if count(visiblePaths) > 0 {
+//            self.bindViewController?._headerView.subviews.map({ $0.removeFromSuperview() })
+            
+            let indexPath = visiblePaths[0] as? NSIndexPath
+            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath!) as! ExploreFollowCell
+            
+            
+        }
+        
+//        var yOffset = scrollView.contentOffset.y
+//        var headerViewFrame = self.bindViewController?._headerView.frame
+//        headerViewFrame?.origin = CGPointMake(0, yOffset)
+//        self.bindViewController?._headerView.frame = headerViewFrame!
     }
     
     func onHeadTap(sender: UITapGestureRecognizer) {
@@ -249,6 +275,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
 
 class ExploreFollowCell: UITableViewCell {
     
+    @IBOutlet weak var floatHeader: UIView!
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
     @IBOutlet var labelDream: UILabel!
@@ -264,11 +291,13 @@ class ExploreFollowCell: UITableViewCell {
     @IBOutlet var viewLine: UIView!
     
     var cellData: ExploreFollowProvider.Data?
+    var cellHeight: CGFloat = 0.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.setWidth(globalWidth)
+        self.floatHeader.setWidth(globalWidth)
         self.labelLastdate.setX(globalWidth-15-92)
         self.viewControl.setWidth(globalWidth)
         self.labelContent.setWidth(globalWidth-30)
@@ -286,7 +315,7 @@ class ExploreFollowCell: UITableViewCell {
         self.imageHead.cancelImageRequestOperation()
         self.imageHead.image = nil
         self.imageContent.cancelImageRequestOperation()
-        self.imageContent.image = nil   
+        self.imageContent.image = nil
     }
     
     func bindData(data: ExploreFollowProvider.Data, tableview: UITableView) {

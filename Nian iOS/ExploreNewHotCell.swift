@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore   
 
 class ExploreNewHotCell: UITableViewCell {
-    
+
     @IBOutlet weak var imageHead: UIImageView!
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelContent: UILabel!
@@ -25,6 +25,7 @@ class ExploreNewHotCell: UITableViewCell {
     var data :NSDictionary!
     var largeImageURL: String = ""
     var uid: String = ""
+    var tmpLineHeight: CGFloat = 0.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -60,13 +61,21 @@ class ExploreNewHotCell: UITableViewCell {
             break
         }
         
-        var height = content.stringHeightWith(13, width: 250)
+        // 设置 content label 最多为 4 行
+        self.labelContent.numberOfLines = 4
+        tmpLineHeight = CGFloat(self.labelContent.numberOfLines) * self.labelContent.font.lineHeight
+        var maxSize: CGSize = CGSizeMake(self.labelContent.frame.size.width, tmpLineHeight)
+        var tmpContentHeight = content.stringHeightWith(13, width: 250)
+        var fitHeight: CGFloat = 4 * self.labelContent.font.lineHeight > tmpContentHeight ? tmpContentHeight : 4 * self.labelContent.font.lineHeight
+        var newFrame = CGRectMake(self.labelContent.frame.origin.x, self.labelContent.frame.origin.y, self.labelContent.frame.size.width, fitHeight)
+        self.labelContent.frame = newFrame
+        
         var titleHeight = title.stringHeightBoldWith(19, width: 242)
         self.labelSupport.text = likes  //点赞
         self.labelTitle.text = SADecode(title)
         self.labelStep.text = steps
         self.labelContent.text = SADecode(content)
-        self.labelContent.setHeight(height)
+        self.labelContent.setHeight(fitHeight) // 最多为 4 行，如果 content 少于 4 行，那就按实际 content 的行数
         self.labelTitle.setHeight(titleHeight)
         self.labelContent.setY(self.labelTitle.frame.origin.y + titleHeight + 8)
         var bottom = self.labelContent.bottom()
@@ -93,6 +102,7 @@ class ExploreNewHotCell: UITableViewCell {
             return 256 + titleHeight - 31
         }
         var height = content.stringHeightWith(13, width: 250)
+        height = 61.36 > height ? height : 61.36  // 61.36 = (self.labelContent.numberOfLines = 4) * self.labelContent.font.lineHeight
         return height + 264 + titleHeight - 31
     }
     

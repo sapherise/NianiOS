@@ -37,8 +37,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
-        viewController.tableView.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
-        viewController.tableView.registerNib(UINib(nibName: "ExploreDynamicStepCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicStepCell")
+        viewController.dynamicTableView.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
+        viewController.dynamicTableView.registerNib(UINib(nibName: "ExploreDynamicStepCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicStepCell")
     }
     
     func load(clear: Bool, callback: Bool -> Void) {
@@ -79,7 +79,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                     var viewQuestion = viewEmpty(globalWidth, content: "这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
                     viewQuestion.setY(50)
                     viewHeader.addSubview(viewQuestion)
-                    self.bindViewController?.tableView.tableHeaderView = viewHeader
+                    self.bindViewController?.dynamicTableView.tableHeaderView = viewHeader
                 }
             }
             callback(success)
@@ -87,21 +87,21 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     override func onHide() {
-        bindViewController!.tableView.headerEndRefreshing(animated: false)
+        bindViewController!.dynamicTableView.headerEndRefreshing(animated: false)
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.tableView.reloadData()
+        bindViewController!.dynamicTableView.reloadData()
         if dataSource.isEmpty {
-            bindViewController!.tableView.headerBeginRefreshing()
+            bindViewController!.dynamicTableView.headerBeginRefreshing()
         } else {
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
-                }, completion: { (Bool) -> Void in
-                    if loading {
-                        self.bindViewController!.tableView.headerBeginRefreshing()
-                    }
-            })
+//            UIView.animateWithDuration(0.2, animations: { () -> Void in
+//                self.bindViewController!.dynamicTableView.setContentOffset(CGPointZero, animated: false)
+//                }, completion: { (Bool) -> Void in
+//                    if loading {
+//                        self.bindViewController!.dynamicTableView.headerBeginRefreshing()
+//                    }
+//            })
         }
     }
     
@@ -110,8 +110,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         load(true) {
             success in
             if self.bindViewController!.current == 1 {
-                self.bindViewController!.tableView.headerEndRefreshing()
-                self.bindViewController!.tableView.reloadData()
+                self.bindViewController!.dynamicTableView.headerEndRefreshing()
+                self.bindViewController!.dynamicTableView.reloadData()
             }
         }
     }
@@ -121,8 +121,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             success in
             if self.bindViewController!.current == 1 {
                 if success {
-                    self.bindViewController!.tableView.footerEndRefreshing()
-                    self.bindViewController!.tableView.reloadData()
+                    self.bindViewController!.dynamicTableView.footerEndRefreshing()
+                    self.bindViewController!.dynamicTableView.reloadData()
                 } else {
                     self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
                 }
@@ -207,7 +207,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
 //    }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+        var visiblePaths = bindViewController!.dynamicTableView.indexPathsForVisibleRows()! as Array
         
         for item in visiblePaths {
             let indexPath = item as! NSIndexPath
@@ -216,17 +216,17 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             
             switch data.type {
             case 0:
-               let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicDreamCell
+               let cell = bindViewController!.dynamicTableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicDreamCell
                 
                if cell.imageCover.image == nil || cell.imageHead.image == nil {
-                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.dynamicTableView)
                 }
             
             case 1:
-                let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicStepCell
+                let cell = bindViewController!.dynamicTableView.cellForRowAtIndexPath(indexPath) as! ExploreDynamicStepCell
                 
                 if cell.imageContent.image == nil {
-                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+                    cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.dynamicTableView)
                 }
                 
             default:

@@ -17,7 +17,7 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
-        viewController.tableView.registerNib(UINib(nibName: "ExploreNewHotCell", bundle: nil), forCellReuseIdentifier: "ExploreNewHotCell")
+        viewController.recomTableView.registerNib(UINib(nibName: "ExploreNewHotCell", bundle: nil), forCellReuseIdentifier: "ExploreNewHotCell")
     }
     
     func load(clear: Bool, callback: Bool -> Void) {
@@ -51,23 +51,23 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     
     
     override func onHide() {
-        bindViewController!.tableView.headerEndRefreshing(animated: false)
+        bindViewController!.recomTableView.headerEndRefreshing(animated: false)
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.tableView.reloadData()
+        bindViewController!.recomTableView.reloadData()
         
         if dataArray.count == 0 {
-            bindViewController!.tableView.headerBeginRefreshing()
+            bindViewController!.recomTableView.headerBeginRefreshing()
         } else {
-            UIView.animateWithDuration(0.2,
-                animations: { () -> Void in
-                    self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
-                }, completion: { (Bool) -> Void in
-                    if loading {
-                        self.bindViewController!.tableView.headerBeginRefreshing()
-                    }
-            })
+//            UIView.animateWithDuration(0.2,
+//                animations: { () -> Void in
+//                    self.bindViewController!.recomTableView.setContentOffset(CGPointZero, animated: false)
+//                }, completion: { (Bool) -> Void in
+//                    if loading {
+//                        self.bindViewController!.recomTableView.headerBeginRefreshing()
+//                    }
+//            })
         }
     }
     
@@ -77,8 +77,8 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
         load(true) {
             success in
             if self.bindViewController!.current == 2 {
-                self.bindViewController!.tableView.headerEndRefreshing()
-                self.bindViewController!.tableView.reloadData()
+                self.bindViewController!.recomTableView.headerEndRefreshing()
+                self.bindViewController!.recomTableView.reloadData()
             }
         }
     }
@@ -88,8 +88,8 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
             success in
             if self.bindViewController!.current == 2 {
                 if success {
-                    self.bindViewController!.tableView.footerEndRefreshing()
-                    self.bindViewController!.tableView.reloadData()
+                    self.bindViewController!.recomTableView.footerEndRefreshing()
+                    self.bindViewController!.recomTableView.reloadData()
                 } else {
                     self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
                 }

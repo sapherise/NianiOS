@@ -26,7 +26,7 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
-        viewController.tableView.registerNib(UINib(nibName: "ExploreHotCell", bundle: nil), forCellReuseIdentifier: "ExploreHotCell")
+        viewController.recomTableView.registerNib(UINib(nibName: "ExploreHotCell", bundle: nil), forCellReuseIdentifier: "ExploreHotCell")
     }
     
     func load(clear: Bool, callback: Bool -> Void) {
@@ -59,21 +59,21 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
     }
     
     override func onHide() {
-        bindViewController!.tableView.headerEndRefreshing(animated: false)
-        self.bindViewController!.tableView.setFooterHidden(false)
+        bindViewController!.recomTableView.headerEndRefreshing(animated: false)
+        self.bindViewController!.recomTableView.setFooterHidden(false)
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.tableView.setFooterHidden(true)
-        bindViewController!.tableView.reloadData()
+        bindViewController!.recomTableView.setFooterHidden(true)
+        bindViewController!.recomTableView.reloadData()
         if dataSource.isEmpty {
-            bindViewController!.tableView.headerBeginRefreshing()
+            bindViewController!.recomTableView.headerBeginRefreshing()
         } else {
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
+                self.bindViewController!.recomTableView.setContentOffset(CGPointZero, animated: false)
                 }, completion: { (Bool) -> Void in
                     if loading {
-                        self.bindViewController!.tableView.headerBeginRefreshing()
+                        self.bindViewController!.recomTableView.headerBeginRefreshing()
                     }
             })
         }
@@ -83,8 +83,8 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
         load(true) {
             success in
             if self.bindViewController!.current == 2 {
-                self.bindViewController!.tableView.headerEndRefreshing()
-                self.bindViewController!.tableView.reloadData()
+                self.bindViewController!.recomTableView.headerEndRefreshing()
+                self.bindViewController!.recomTableView.reloadData()
             }
         }
     }
@@ -117,14 +117,14 @@ class ExploreHotProvider: ExploreProvider, UITableViewDelegate, UITableViewDataS
 //    }
 
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-       var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
+       var visiblePaths = bindViewController!.recomTableView.indexPathsForVisibleRows()! as Array
         
         for item in visiblePaths {
             let indexPath = item as! NSIndexPath
-            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreHotCell
+            let cell = bindViewController!.recomTableView.cellForRowAtIndexPath(indexPath) as! ExploreHotCell
             
             if cell.imageDream.image == nil {
-                cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
+                cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.recomTableView)
             }
         }
     }
