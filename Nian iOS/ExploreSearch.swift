@@ -74,8 +74,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         setupView()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(true)
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
         searchText.removeFromSuperview()
     }
     

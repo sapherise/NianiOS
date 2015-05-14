@@ -176,6 +176,10 @@
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */; };
+		C4077BC51B04A621004E0D03 /* KSToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4077BC11B04A621004E0D03 /* KSToken.swift */; };
+		C4077BC61B04A621004E0D03 /* KSTokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4077BC21B04A621004E0D03 /* KSTokenField.swift */; };
+		C4077BC71B04A621004E0D03 /* KSTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4077BC31B04A621004E0D03 /* KSTokenView.swift */; };
+		C4077BC81B04A621004E0D03 /* KSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4077BC41B04A621004E0D03 /* KSUtils.swift */; };
 		C411A7191AEB91E100E84CA2 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A7181AEB91E100E84CA2 /* SearchCell.swift */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
@@ -391,6 +395,10 @@
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C4077BC11B04A621004E0D03 /* KSToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSToken.swift; sourceTree = "<group>"; };
+		C4077BC21B04A621004E0D03 /* KSTokenField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSTokenField.swift; sourceTree = "<group>"; };
+		C4077BC31B04A621004E0D03 /* KSTokenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSTokenView.swift; sourceTree = "<group>"; };
+		C4077BC41B04A621004E0D03 /* KSUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSUtils.swift; sourceTree = "<group>"; };
 		C411A7181AEB91E100E84CA2 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
@@ -933,6 +941,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C4077BC01B04A5FB004E0D03 /* KSTokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
 				129492801AD93211000E7461 /* MaterialKit */,
 				1248FB9D1A91B44A00110EEF /* performSelector */,
@@ -1049,6 +1058,17 @@
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4077BC01B04A5FB004E0D03 /* KSTokenView */ = {
+			isa = PBXGroup;
+			children = (
+				C4077BC11B04A621004E0D03 /* KSToken.swift */,
+				C4077BC21B04A621004E0D03 /* KSTokenField.swift */,
+				C4077BC31B04A621004E0D03 /* KSTokenView.swift */,
+				C4077BC41B04A621004E0D03 /* KSUtils.swift */,
+			);
+			name = KSTokenView;
 			sourceTree = "<group>";
 		};
 		C4CDB41A1AF8C77C00936E03 /* htmlParse */ = {
@@ -1301,6 +1321,7 @@
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
+				C4077BC61B04A621004E0D03 /* KSTokenField.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
@@ -1321,6 +1342,7 @@
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */,
 				1271550F1A3FE83400E27EC5 /* CircleDetailCell.swift in Sources */,
+				C4077BC51B04A621004E0D03 /* KSToken.swift in Sources */,
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
@@ -1354,7 +1376,9 @@
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
+				C4077BC71B04A621004E0D03 /* KSTokenView.swift in Sources */,
 				1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */,
+				C4077BC81B04A621004E0D03 /* KSUtils.swift in Sources */,
 				C411A7191AEB91E100E84CA2 /* SearchCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,

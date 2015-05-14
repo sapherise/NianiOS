@@ -12,33 +12,36 @@ protocol editDreamDelegate {
     func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UIScrollViewDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var tagSearchTableView: UITableView!
     @IBOutlet var uploadWait: UIActivityIndicatorView?
-    @IBOutlet var field1:UITextField?
-    @IBOutlet var field2:UITextView!
-//    @IBOutlet var labelTag: UILabel?
+    @IBOutlet var field1: UITextField?  //title text field
+    @IBOutlet var field2: UITextView!   //brief introduction text field
+    @IBOutlet var field3: KSTokenView!
     @IBOutlet var setPrivate: UIImageView!
     @IBOutlet var imageDreamHead: UIImageView!
     @IBOutlet var imageTag: UIImageView!
-    var actionSheet:UIActionSheet?
-    var setDreamActionSheet:UIActionSheet?
-    var imagePicker:UIImagePickerController?
-    var delegate:editDreamDelegate?
-    var tagType:Int = 0
-    var readyForTag:Int = 0     //当为1时自动跳转到Tag去
     
-    var uploadUrl:String = ""
+    var actionSheet: UIActionSheet?
+    var setDreamActionSheet: UIActionSheet?
+    var imagePicker: UIImagePickerController?
+    var delegate: editDreamDelegate?
+    var tagType: Int = 0
+    var readyForTag: Int = 0     //当为1时自动跳转到Tag去
     
-    var isEdit:Int = 0
-    var editId:String = ""
-    var editTitle:String = ""
-    var editContent:String = ""
-    var editImage:String = ""
-    var editPrivate:String = ""
+    var uploadUrl: String = ""
     
-    var isPrivate:Int = 0
+    var isEdit: Int = 0
+    var editId: String = ""
+    var editTitle: String = ""
+    var editContent: String = ""
+    var editImage: String = ""
+    var editPrivate: String = ""
+    
+    var isPrivate: Int = 0  // 0: 公开；1：私密
     
     func uploadClick() {
         self.field1!.resignFirstResponder()
@@ -59,7 +62,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 self.imagePicker!.allowsEditing = true
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-            }else if buttonIndex == 1 {
+            } else if buttonIndex == 1 {
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.allowsEditing = true
@@ -68,17 +71,19 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
                 }
             }
-        }else if actionSheet == self.setDreamActionSheet {
+        } else if actionSheet == self.setDreamActionSheet {
             if buttonIndex == 0 {
-                self.isPrivate = 0
-                self.editPrivate = "0"
-                self.setPrivate.hidden = true
-                // 变为公开
-            }else if buttonIndex == 1 {
-                self.isPrivate = 1
-                self.editPrivate = "1"
-                self.setPrivate.hidden = false
-                // 变为私密
+                if self.isPrivate == 0 {
+                    //设置为私密
+                    self.isPrivate = 1
+                    self.editPrivate = "0"
+                    self.setPrivate.image = UIImage(named: "lock")
+                } else if self.isPrivate == 1 {
+                    //设置为公开
+                    self.isPrivate = 0
+                    self.editPrivate = "1"
+                    self.setPrivate.image = UIImage(named: "unlock")
+                }
             }
         }
     }
@@ -112,19 +117,34 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         setupViews()
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func viewDidLayoutSubviews() {
+        // 根据 self.tagSearchTableView 是否出现来决定 tmpSize 的高度是否增加一个 table
+        
+//        var height = 64 + 182 - 112 + field2.frame.size.height - 22 + field3.frame.size.height
+        var height = 101 + field2.frame.size.height + field3.frame.size.height + (self.tagSearchTableView.hidden ? 0 : self.tagSearchTableView.frame.size.height)
+        var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, self.containerView.frame.size.height))
+        self.scrollView.contentSize = tmpSize
+    }
+    
     func setupViews(){
+        //刚一开始的时候, tagSearchTableView 应该隐藏，因为 field3(tag text view) 不是 firstResponser
+        self.tagSearchTableView.hidden = true
+        
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         
         self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
         self.view.addSubview(navView)
-        if self.tagType >= 1 {
-//            self.labelTag?.text = V.Tags[self.tagType - 1]
-        }
-        
+
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field2.delegate = self
@@ -152,7 +172,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         self.uploadWait!.hidden = true
         
-        
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if self.isEdit == 1 {
@@ -166,8 +185,16 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.viewBack()
         
         self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
-//        self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
+        
+        //设置 tag view ---- 引用了第三方库
+        field3.delegate = self    
+        field3.promptText = "Top 5: "
+        field3.placeholder = "Type to search"
+        field3.descriptionText = "Languages"
+        field3.maxTokenLimit = 5 //default is -1 for unlimited number of tokens
+        field3.style = .Squared
+        
     }
     
     func onTagClick(){
@@ -181,10 +208,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
         self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.setDreamActionSheet!.addButtonWithTitle("设为公开")
-        self.setDreamActionSheet!.addButtonWithTitle("设为私密")
+        
+        if self.isPrivate == 0 {
+            self.setDreamActionSheet!.addButtonWithTitle("设为私密")
+        } else if self.isPrivate == 1 {
+            self.setDreamActionSheet!.addButtonWithTitle("设为公开")
+        }
+        
         self.setDreamActionSheet!.addButtonWithTitle("取消")
-        self.setDreamActionSheet!.cancelButtonIndex = 2
+        self.setDreamActionSheet!.cancelButtonIndex = 1
         self.setDreamActionSheet!.showInView(self.view)
     }
     
@@ -242,7 +274,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     })
                 }
             })
-        }else{
+        } else {
             self.field1!.becomeFirstResponder()
         }
     }
@@ -250,8 +282,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func textViewDidBeginEditing(textView: UITextView) {
         if textView.text == "记本简介（可选）" {
             textView.text = ""
+            textView.textColor = UIColor.blackColor()
         }
-        textView.textColor = UIColor.blackColor()
     }
     
     // MARK: DreamTagDelegate
@@ -260,4 +292,57 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //        self.labelTag?.text = tag
 //        self.tagType = tagType + 1
     }
+    
+//    func handleTextFieldTextDidChangeNotification(notification: NSNotification) {
+//        let textField = notification.object as! UITextField
+//        
+//        if count(textField.text) < 5 {
+//            textField.text = "     "
+//        }
+//    }
+//    
+//    func handleTextFieldTextDidBeginEditingNotification(notification: NSNotification) {
+//        let textField = notification.object as! UITextField
+//        
+//        if count(textField.text) < 5 {
+//            textField.text = "     "
+//        }
+//    }
 }
+
+
+extension AddDreamController: KSTokenViewDelegate {
+    func tokenView(token: KSTokenView, performSearchWithString string: String, completion: ((results: Array<AnyObject>) -> Void)?) {
+        
+    }
+    
+    
+    func tokenView(token: KSTokenView, displayTitleForObject object: AnyObject) -> String {
+        return object as! String
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
