@@ -53,8 +53,6 @@
 		125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125D93C91AFCC198006FFDED /* SADoubleCell.xib */; };
 		125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */; };
 		1265282E196C6460005765D2 /* Dream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282D196C6460005765D2 /* Dream.swift */; };
-		12652830196C6468005765D2 /* DreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1265282F196C6468005765D2 /* DreamCell.swift */; };
-		12652832196C6474005765D2 /* DreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12652831196C6474005765D2 /* DreamCell.xib */; };
 		12652834196C671E005765D2 /* DreamCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12652833196C671E005765D2 /* DreamCellTop.xib */; };
 		12652836196C673A005765D2 /* DreamCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652835196C673A005765D2 /* DreamCellTop.swift */; };
 		12652838196C6755005765D2 /* Sapherise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652837196C6755005765D2 /* Sapherise.swift */; };
@@ -155,7 +153,6 @@
 		12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C2196AE8010026DD51 /* UIViewExt.swift */; };
 		12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
-		323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */; };
 		323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EA1A11EEF300FFE3F4 /* Group.swift */; };
 		323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */; };
 		323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */; };
@@ -171,14 +168,11 @@
 		3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */; };
 		3274A3851A15F0FF00D2425A /* ExploreDynamicStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3274A3841A15F0FF00D2425A /* ExploreDynamicStepCell.xib */; };
 		328181E71A08CE2700768D7D /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328181E61A08CE2700768D7D /* CoinCell.swift */; };
-		32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32871D121A14AB0E002C9486 /* ExploreHotCell.xib */; };
-		32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32871D141A14ABE0002C9486 /* ExploreHot.swift */; };
 		32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A2197B1A25C5B800B5BC35 /* Payment.swift */; };
 		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */; };
-		C411A7191AEB91E100E84CA2 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A7181AEB91E100E84CA2 /* SearchCell.swift */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
@@ -256,8 +250,6 @@
 		125D93C91AFCC198006FFDED /* SADoubleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SADoubleCell.xib; sourceTree = "<group>"; };
 		125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SADoubleCell.swift; sourceTree = "<group>"; };
 		1265282D196C6460005765D2 /* Dream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dream.swift; sourceTree = "<group>"; };
-		1265282F196C6468005765D2 /* DreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCell.swift; sourceTree = "<group>"; };
-		12652831196C6474005765D2 /* DreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamCell.xib; sourceTree = "<group>"; };
 		12652833196C671E005765D2 /* DreamCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamCellTop.xib; sourceTree = "<group>"; };
 		12652835196C673A005765D2 /* DreamCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCellTop.swift; sourceTree = "<group>"; };
 		12652837196C6755005765D2 /* Sapherise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sapherise.swift; sourceTree = "<group>"; };
@@ -369,7 +361,6 @@
 		12FB48C2196AE8010026DD51 /* UIViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAHttpRequest.swift; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
-		323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreFollowCell.xib; sourceTree = "<group>"; };
 		323CD2EA1A11EEF300FFE3F4 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
@@ -385,8 +376,6 @@
 		3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDynamic.swift; sourceTree = "<group>"; };
 		3274A3841A15F0FF00D2425A /* ExploreDynamicStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicStepCell.xib; sourceTree = "<group>"; };
 		328181E61A08CE2700768D7D /* CoinCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
-		32871D121A14AB0E002C9486 /* ExploreHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreHotCell.xib; sourceTree = "<group>"; };
-		32871D141A14ABE0002C9486 /* ExploreHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHot.swift; sourceTree = "<group>"; };
 		32A2197B1A25C5B800B5BC35 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
 		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
@@ -395,7 +384,6 @@
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		C411A7181AEB91E100E84CA2 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
@@ -445,8 +433,6 @@
 			isa = PBXGroup;
 			children = (
 				1265282D196C6460005765D2 /* Dream.swift */,
-				1265282F196C6468005765D2 /* DreamCell.swift */,
-				12652831196C6474005765D2 /* DreamCell.xib */,
 				12652835196C673A005765D2 /* DreamCellTop.swift */,
 				12652833196C671E005765D2 /* DreamCellTop.xib */,
 				12E4939C19953DD600F8DF32 /* 回应 */,
@@ -997,7 +983,6 @@
 				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
 				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
 				C483CF901AEB435200E1C550 /* ExploreSearch.swift */,
-				C411A7181AEB91E100E84CA2 /* SearchCell.swift */,
 				C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */,
 				3252850C1A10C2B600316021 /* Explore.storyboard */,
 				3252850E1A10C2C300316021 /* Explore.swift */,
@@ -1005,9 +990,6 @@
 				3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */,
 				3274A3841A15F0FF00D2425A /* ExploreDynamicStepCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
-				323CD2E31A11AF5100FFE3F4 /* ExploreFollowCell.xib */,
-				32871D141A14ABE0002C9486 /* ExploreHot.swift */,
-				32871D121A14AB0E002C9486 /* ExploreHotCell.xib */,
 				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
 				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
 				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
@@ -1165,7 +1147,6 @@
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
 				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
-				32871D131A14AB0E002C9486 /* ExploreHotCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
@@ -1181,7 +1162,6 @@
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
 				127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */,
-				323CD2E41A11AF5100FFE3F4 /* ExploreFollowCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
@@ -1195,7 +1175,6 @@
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
-				12652832196C6474005765D2 /* DreamCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				128C4E371A5038C3000D2B7C /* CircleType.xib in Resources */,
@@ -1273,7 +1252,6 @@
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
-				12652830196C6468005765D2 /* DreamCell.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
@@ -1362,7 +1340,6 @@
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1258C30D1A49A9E6008FA4EF /* CircleExploreCell.swift in Sources */,
-				C411A7191AEB91E100E84CA2 /* SearchCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
@@ -1375,7 +1352,6 @@
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
-				32871D151A14ABE0002C9486 /* ExploreHot.swift in Sources */,
 				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,

@@ -44,7 +44,7 @@ struct Api {
     
     static func getExploreFollow(page: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_fo.php?page=\(page)&uid=\(s_uid)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/explore_fo_optimize.php?page=\(page)&uid=\(s_uid)", callback: callback)
     }
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
@@ -64,7 +64,7 @@ struct Api {
     
     static func getExploreNewHot(lastid: String, page: String,callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_test.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/explore_recommend.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
@@ -110,12 +110,12 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/step.php?uid=\(s_uid)&id=\(id)&page=\(page)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/step3.php?uid=\(s_uid)&id=\(id)&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
     static func getSingleStep(id: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/step_single.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/step_single2.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
     }
     
     static func getSingleStepSync(id: String, callback: V.JsonCallback) {
@@ -537,7 +537,7 @@ struct Api {
     
     static func getUserActive(uid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/user_active.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/user_active2.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
     }
     
     

@@ -55,6 +55,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     var buttons: [UILabel]!
     var providers: [ExploreProvider]!
+    var pointLast: CGFloat = 0
+    var direction: Int = 0  // 当为 1 时为向左，为 2 时为向右
     
     override func viewDidLoad() {
         self.buttons = [
@@ -158,23 +160,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         current = tab
         currentProvider = self.providers[tab]
 
-        switch tab {
-        case 0:
-            self.btnFollow.alpha = 1.0
-            self.btnDynamic.alpha = 0.4
-            self.btnHot.alpha = 0.4
-        case 1:
-            self.btnFollow.alpha = 0.4
-            self.btnDynamic.alpha = 1.0
-            self.btnHot.alpha = 0.4
-        case 2:
-            self.btnFollow.alpha = 0.4
-            self.btnDynamic.alpha = 0.4
-            self.btnHot.alpha = 1.0
-        default:
-            break
-        }
-
         currentProvider.onShow(loading)
     }
     
@@ -189,7 +174,33 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         var xOffset = scrollView.contentOffset.x
         var page: Int = Int(xOffset / globalWidth)
         
-        switchTab(page)
+        if current != -1 {
+            currentProvider.onHide()
+        }
+        current = page
+        currentProvider = self.providers[page]
+        
+        if globalTab[1] && page == 1 {
+            switchTab(page)
+        } else if globalTab[2] && page == 2 {
+            switchTab(page)
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var x = scrollView.contentOffset.x
+        var pointCurrent = scrollView.contentOffset.x
+        if pointCurrent - pointLast > 25 {
+            pointLast = pointCurrent
+            direction = 1
+        } else if pointLast - pointCurrent > 25 {
+            pointLast = pointCurrent
+            direction = 2
+        }
+        
+        self.btnFollow.setTabAlpha(x, index: 0)
+        self.btnDynamic.setTabAlpha(x, index: 1)
+        self.btnHot.setTabAlpha(x, index: 2)
     }
     
     func onFriendClick() {
@@ -198,5 +209,22 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     func onSearchClick() {
         self.performSegueWithIdentifier("toSearch", sender: nil)
+    }
+}
+
+extension UILabel {
+    func setTabAlpha(x: CGFloat, index: CGFloat) {
+        var a:CGFloat = 0
+        var big = globalWidth * (index + 1)
+        var middle = globalWidth * index
+        var small = globalWidth * (index - 1)
+        if x <= big && x >= middle {
+            a = (big - x) * 0.6 / globalWidth + 0.4
+        } else if x <= middle && x >= small {
+            a = (x - small) * 0.6 / globalWidth + 0.4
+        } else {
+            a = 0.4
+        }
+        self.alpha = a
     }
 }

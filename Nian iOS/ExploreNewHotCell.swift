@@ -40,13 +40,13 @@ class ExploreNewHotCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.objectForKey("id") as! String
-        var title = self.data.objectForKey("title") as! String
-        var img = self.data.objectForKey("img") as! String
-        var tag = self.data.objectForKey("type") as! String
-        var likes = self.data.objectForKey("likes") as! String
-        var content = self.data.objectForKey("content") as! String
-        var steps = self.data.objectForKey("steps") as! String
+        var id = self.data.stringAttributeForKey("id")
+        var title = self.data.stringAttributeForKey("title")
+        var img = self.data.stringAttributeForKey("img")
+        var tag = self.data.stringAttributeForKey("type")
+        var likes = self.data.stringAttributeForKey("likes")
+        var content = self.data.stringAttributeForKey("content")
+        var steps = self.data.stringAttributeForKey("steps")
   
         switch tag.toInt()! {
         case 0:

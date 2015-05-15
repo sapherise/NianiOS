@@ -383,12 +383,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    func toLike(sender: UIGestureRecognizer) {
-        var LikeVC = LikeViewController()
-        LikeVC.Id = "\(sender.view!.tag)"
-        self.navigationController?.pushViewController(LikeVC, animated: true)
-    }
-    
     func toDream(sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             SADream("\(tag)")
@@ -435,8 +429,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 return 81
             } else {
                 var data = self.dataArrayStep[indexPath.row] as! NSDictionary
-                var height = SAStepCell.cellHeightByData(data)
-                return height
+                var h = SAStepCell.cellHeightByData(data)
+                if indexPath.row == self.dataArrayStep.count - 1 {
+                    return h - 15
+                }
+                return h
             }
         } else {
             return 71

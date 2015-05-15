@@ -8,12 +8,12 @@
 
 import UIKit
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate{
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate, delegateSAStepCell{
     
     let identifier = "dream"
     let identifier2 = "dreamtop"
     let identifier3 = "comment"
-    var tableView:UITableView?
+    var tableView:UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
     var Id:String = "1"
@@ -178,6 +178,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView?.registerNib(nib2, forCellReuseIdentifier: identifier2)
+        self.tableView?.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.tableView!)
         
         //标题颜色
@@ -338,27 +339,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.topCell = c
             cell = c
         }else{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DreamCell
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
-            c.data = data
-            c.indexPathRow = index
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-            c.likebutton.tag = index
-            c.liked.tag = index
-            c.likebutton.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
-            c.liked.addTarget(self, action: "onLikedTap:", forControlEvents: UIControlEvents.TouchUpInside)
-            c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
-            c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-            c.tag = index + 10
+            var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+            c.delegate = self
+            c.data = self.dataArray[indexPath.row] as! NSDictionary
+            c.index = indexPath.row
             if indexPath.row == self.dataArray.count - 1 {
                 c.viewLine.hidden = true
-            }else{
+            } else {
                 c.viewLine.hidden = false
             }
-            cell = c
+            return c
         }
         return cell
     }
@@ -454,9 +444,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             return  text.stringHeightBoldWith(19, width: 242) + 256 + 14
         }else{
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
-            return  DreamCell.cellHeightByData(data)
+            var data = self.dataArray[indexPath.row] as! NSDictionary
+            var h = SAStepCell.cellHeightByData(data)
+            if indexPath.row == self.dataArray.count - 1 {
+                return h - 15
+            }
+            return h
         }
     }
     
@@ -781,5 +774,26 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
         return false
     }
+    
+    // 更新数据
+    func updateStep(index: Int, key: String, value: String) {
+        SAUpdate(self.dataArray, index, key, value, self.tableView)
+    }
+    
+    // 更新某个格子
+    func updateStep(index: Int) {
+        SAUpdate(index, 1, self.tableView)
+    }
+    
+    // 重载表格
+    func updateStep() {
+        SAUpdate(self.tableView)
+    }
+    
+    // 删除某个格子
+    func updateStep(index: Int, delete: Bool) {
+        SAUpdate(delete, self.dataArray, index, self.tableView, 1)
+    }
+    
 }
 

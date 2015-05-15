@@ -50,6 +50,7 @@ var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
+var globalTab = [true, true, true]
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
@@ -679,6 +680,7 @@ func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UI
     if delete {
         dataArray.removeObjectAtIndex(index)
         tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
+        tableView.reloadData()
     }
 }
 

@@ -41,11 +41,15 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         viewController.dynamicTableView.registerNib(UINib(nibName: "ExploreDynamicStepCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicStepCell")
     }
     
-    func load(clear: Bool, callback: Bool -> Void) {
+    func load(clear: Bool) {
+        if clear {
+            page = 0
+        }
         Api.getExploreDynamic("\(page++)", callback: {
             json in
             var success = false
             if json != nil {
+                globalTab[1] = false
                 var items = json!["items"] as! NSArray
                 if items.count != 0 {
                     if clear {
@@ -81,8 +85,12 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                     viewHeader.addSubview(viewQuestion)
                     self.bindViewController?.dynamicTableView.tableHeaderView = viewHeader
                 }
+                if self.bindViewController!.current == 1 {
+                    self.bindViewController?.dynamicTableView.headerEndRefreshing()
+                    self.bindViewController?.dynamicTableView.footerEndRefreshing()
+                    self.bindViewController?.dynamicTableView.reloadData()
+                }
             }
-            callback(success)
         })
     }
     
@@ -95,39 +103,22 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         if dataSource.isEmpty {
             bindViewController!.dynamicTableView.headerBeginRefreshing()
         } else {
-//            UIView.animateWithDuration(0.2, animations: { () -> Void in
-//                self.bindViewController!.dynamicTableView.setContentOffset(CGPointZero, animated: false)
-//                }, completion: { (Bool) -> Void in
-//                    if loading {
-//                        self.bindViewController!.dynamicTableView.headerBeginRefreshing()
-//                    }
-//            })
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.bindViewController!.dynamicTableView.setContentOffset(CGPointZero, animated: false)
+                }, completion: { (Bool) -> Void in
+                    if loading {
+                        self.bindViewController!.dynamicTableView.headerBeginRefreshing()
+                    }
+            })
         }
     }
     
     override func onRefresh() {
-        page = 0
-        load(true) {
-            success in
-            if self.bindViewController!.current == 1 {
-                self.bindViewController!.dynamicTableView.headerEndRefreshing()
-                self.bindViewController!.dynamicTableView.reloadData()
-            }
-        }
+        load(true)
     }
     
     override func onLoad() {
-        load(false) {
-            success in
-            if self.bindViewController!.current == 1 {
-                if success {
-                    self.bindViewController!.dynamicTableView.footerEndRefreshing()
-                    self.bindViewController!.dynamicTableView.reloadData()
-                } else {
-                    self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
-                }
-            }
-        }
+        load(false)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

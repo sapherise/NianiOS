@@ -1,10 +1,24 @@
 //
-//  YRJokeCell.swift
-//  JokeClient-Swift
+//  SAStepCell.swift
+//  Nian iOS
 //
-//  Created by YANGReal on 14-6-6.
-//  Copyright (c) 2014年 YANGReal. All rights reserved.
-//
+//  Created by Sa on 15/5/14.
+//  Copyright (c) 2015年 Sa. All rights reserved.
+//  食用指南
+//  a) 添加 delegate：delegateSAStepCell
+//  b) 添加 delegate 中的 4 个函数
+//  c) 记得注册这个 Cell
+//  d) 修改 cellfor 里的
+//    var c = dreamTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+//    c.delegate = self
+//    c.data = self.dataArrayStep[indexPath.row] as! NSDictionary
+//    c.index = indexPath.row
+//    if indexPath.row == self.dataArrayStep.count - 1 {
+//        c.viewLine.hidden = true
+//    } else {
+//        c.viewLine.hidden = false
+//    }
+//    return c
 
 import UIKit
 
@@ -83,7 +97,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
             var like = self.data.stringAttributeForKey("like") as String
             var comment = self.data.stringAttributeForKey("comment")
-            var dreamtitle = self.data.stringAttributeForKey("dreamtitle")
+            var dreamtitle = SADecode(self.data.stringAttributeForKey("dreamtitle"))
             var dream = SADecode(self.data.stringAttributeForKey("title"))
             var time = (data.stringAttributeForKey("lastdate") as NSString).doubleValue
             var absoluteTime = V.absoluteTime(time)
@@ -193,7 +207,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     func onMoreClick(){
         var sid = data.stringAttributeForKey("sid")
-        var content = data.stringAttributeForKey("content")
+        var content = SADecode(data.stringAttributeForKey("content"))
         var uid = data.stringAttributeForKey("uid")
         var url = NSURL(string: "http://nian.so/m/step/\(sid)")!
         var row = index
@@ -276,6 +290,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onCommentClick() {
+        println(data)
         var id = data.stringAttributeForKey("dream")
         var sid = data.stringAttributeForKey("sid")
         var uid = data.stringAttributeForKey("uid")
