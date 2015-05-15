@@ -16,11 +16,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var tagSearchTableView: UITableView!
     @IBOutlet var uploadWait: UIActivityIndicatorView?
     @IBOutlet var field1: UITextField?  //title text field
     @IBOutlet var field2: UITextView!   //brief introduction text field
-    @IBOutlet var field3: KSTokenView!
+    @IBOutlet var tokenView: KSTokenView!
     @IBOutlet var setPrivate: UIImageView!
     @IBOutlet var imageDreamHead: UIImageView!
     @IBOutlet var imageTag: UIImageView!
@@ -127,18 +126,16 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     override func viewDidLayoutSubviews() {
-        // 根据 self.tagSearchTableView 是否出现来决定 tmpSize 的高度是否增加一个 table
-        
-//        var height = 64 + 182 - 112 + field2.frame.size.height - 22 + field3.frame.size.height
-        var height = 101 + field2.frame.size.height + field3.frame.size.height + (self.tagSearchTableView.hidden ? 0 : self.tagSearchTableView.frame.size.height)
+//        var height = 64 + 182 - 112 + field2.frame.size.height - 22 + tokenView.frame.size.height
+        var height = 101 + field2.frame.size.height + tokenView.frame.size.height
         var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, self.containerView.frame.size.height))
         self.scrollView.contentSize = tmpSize
+        if self.tokenView._tokenField.isFirstResponder() {
+            self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 16), animated: true)
+        }
     }
     
     func setupViews(){
-        //刚一开始的时候, tagSearchTableView 应该隐藏，因为 field3(tag text view) 不是 firstResponser
-        self.tagSearchTableView.hidden = true
-        
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         
@@ -148,7 +145,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field2.delegate = self
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+//        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         delay(0.5, { () -> () in
             if self.readyForTag == 1 {
                 self.onTagClick()
@@ -188,13 +185,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         
         //设置 tag view ---- 引用了第三方库
-        field3.delegate = self    
-        field3.promptText = "Top 5: "
-        field3.placeholder = "Type to search"
-        field3.descriptionText = "Languages"
-        field3.maxTokenLimit = 5 //default is -1 for unlimited number of tokens
-        field3.style = .Squared
-        
+        tokenView.delegate = self    
+        tokenView.promptText = "    "
+        tokenView.placeholder = ""
+//        tokenView.descriptionText = "Languages"
+        tokenView.maxTokenLimit = 20 //default is -1 for unlimited number of tokens
+        tokenView.style = .Squared
+        tokenView.font = UIFont.systemFontOfSize(14)
     }
     
     func onTagClick(){
@@ -308,14 +305,28 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //            textField.text = "     "
 //        }
 //    }
+    
+//    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+//        return touch.view == self.view
+//    }
 }
-
 
 extension AddDreamController: KSTokenViewDelegate {
     func tokenView(token: KSTokenView, performSearchWithString string: String, completion: ((results: Array<AnyObject>) -> Void)?) {
-        
+        var data: Array<String> = []
+        if count(string) > 0 {
+            
+            //用户有可能输入汉字、空格等，要先转义
+            var _String = SAEncode(SAHtml(string))
+            Api.getAutoComplete(_String, callback: {
+                json in
+                if json != nil {
+                    data = json as! Array
+                }
+                completion!(results: data)
+            })
+        }
     }
-    
     
     func tokenView(token: KSTokenView, displayTitleForObject object: AnyObject) -> String {
         return object as! String

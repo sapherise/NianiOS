@@ -92,7 +92,7 @@ class KSTokenView: UIView {
    //MARK: - Private Properties
    //__________________________________________________________________________________
    //
-   private var _tokenField: KSTokenField!
+   var _tokenField: KSTokenField!
    private var _searchTableView: UITableView = UITableView(frame: .zeroRect, style: UITableViewStyle.Plain)
    private var _resultArray = [AnyObject]()
    private var _showingSearchResult = false
@@ -156,8 +156,8 @@ class KSTokenView: UIView {
       }
    }
    
-   /// default is UIColor.blueColor()
-   var activityIndicatorColor: UIColor = UIColor.blueColor() {
+   /// default is UIColor.grayColor()
+   var activityIndicatorColor: UIColor = UIColor.grayColor() {
       didSet {
          _indicator.color = activityIndicatorColor
       }
@@ -341,6 +341,7 @@ class KSTokenView: UIView {
    
    override func awakeFromNib() {
       _commonSetup()
+//      NSNotificationCenter.defaultCenter().addObserver(self, selector: "handlTextFieldDidChangeNotification:", name: UITextFieldTextDidChangeNotification, object: self)
    }
    
    //MARK: - Common Setup
@@ -364,7 +365,7 @@ class KSTokenView: UIView {
       _indicator.color = activityIndicatorColor
       
       searchResultSize = CGSize(width: frame.width, height: _searchResultHeight)
-      _searchTableView.frame = CGRectMake(0, frame.height, searchResultSize.width, searchResultSize.height)
+      _searchTableView.frame = CGRectMake(0, frame.height + 64, searchResultSize.width, searchResultSize.height)
       _searchTableView.delegate = self
       _searchTableView.dataSource = self
       
@@ -624,7 +625,7 @@ class KSTokenView: UIView {
    
    func tokenFieldDidEndEditing(tokenField: KSTokenField) {
       delegate?.tokenViewDidEndEditing?(self)
-      tokenField.untokenize()
+//      tokenField.untokenize()
       _hideSearchResults()
    }
    
@@ -649,13 +650,18 @@ class KSTokenView: UIView {
    :param: string Search keyword
    */
    func startSearchWithString(string: String) {
+    if count(string) == 0  || string.isEmpty || string == "" {
+        self._hideActivityIndicator()
+        return
+    }
+    
       if (!_canAddMoreToken()) {
          return
       }
       _showEmptyResults()
       _showActivityIndicator()
       
-      let trimmedSearchString = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+      let trimmedSearchString = string //.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
       delegate?.tokenView(self, performSearchWithString:trimmedSearchString, completion: { (results) -> Void in
          self._hideActivityIndicator()
          if (results.count > 0) {
@@ -684,7 +690,7 @@ class KSTokenView: UIView {
             
          } else {
             addSubview(_searchTableView)
-            _searchTableView.frame.origin = CGPoint(x: 0, y: bounds.height)
+            _searchTableView.frame.origin = CGPoint(x: 0, y: bounds.height + 19)
             _searchTableView.hidden = false
          }
       }
@@ -715,7 +721,7 @@ class KSTokenView: UIView {
          }
          
       } else {
-         _searchTableView.frame.origin = CGPoint(x: 0, y: bounds.height)
+         _searchTableView.frame.origin = CGPoint(x: 0, y: bounds.height + 19)
          _searchTableView.layoutIfNeeded()
       }
       
@@ -863,16 +869,16 @@ extension KSTokenView : UITextFieldDelegate {
          let second: String = olderText.substringFromIndex(advance(olderText.startIndex, range.location+1)) as String
          searchString = first + second
          
-      }  else { // new character added
+      } else { // new character added
          if (contains(tokenizingCharacters, string) && olderText != KSTextEmpty && olderText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "") {
             addTokenWithTitle(olderText, tokenObject: nil)
             return false
          }
          searchString = olderText+string
       }
-      
+    
       // Allow all other characters
-      if (count(searchString) >= minimumCharactersToSearch && searchString != "\n") {
+      if (count(searchString) >= minimumCharactersToSearch && searchString != "\n" && searchString != "") {
          _lastSearchString = searchString
          startSearchWithString(_lastSearchString)
       }

@@ -10,12 +10,11 @@
                 <outlet property="containerView" destination="dod-yq-bOE" id="9W0-yY-w3a"/>
                 <outlet property="field1" destination="aat-4T-03D" id="he5-SR-znw"/>
                 <outlet property="field2" destination="EZL-oA-Yx2" id="IRs-SO-YwF"/>
-                <outlet property="field3" destination="vVt-sJ-Dbr" id="s84-jJ-OQj"/>
                 <outlet property="imageDreamHead" destination="guS-s7-Kow" id="Ika-56-ayB"/>
                 <outlet property="imageTag" destination="EGu-fd-m18" id="B3i-OS-swX"/>
                 <outlet property="scrollView" destination="duq-5f-H8d" id="9h3-rM-aux"/>
                 <outlet property="setPrivate" destination="b7H-ca-LRC" id="oje-HW-QQV"/>
-                <outlet property="tagSearchTableView" destination="r9O-hq-X87" id="cF2-80-5Kd"/>
+                <outlet property="tokenView" destination="vVt-sJ-Dbr" id="ZUl-zH-7NI"/>
                 <outlet property="uploadWait" destination="kNK-8U-Rh7" id="rqV-3E-jro"/>
                 <outlet property="view" destination="GFo-cZ-YNp" id="B3b-Fz-IGk"/>
             </connections>
@@ -26,10 +25,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duq-5f-H8d">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="310"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="305"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dod-yq-bOE" userLabel="Container View">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="310"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="305"/>
                             <subviews>
                                 <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_plus" translatesAutoresizingMaskIntoConstraints="NO" id="guS-s7-Kow">
                                     <rect key="frame" x="12" y="12" width="40" height="40"/>
@@ -96,17 +95,9 @@
                                 <activityIndicatorView opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kNK-8U-Rh7">
                                     <rect key="frame" x="22" y="22" width="20" height="20"/>
                                 </activityIndicatorView>
-                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="r9O-hq-X87" userLabel="Tag Search Table View">
-                                    <rect key="frame" x="16" y="241" width="568" height="188"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="188" id="Cxj-lp-onh"/>
-                                    </constraints>
-                                </tableView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="r9O-hq-X87" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" constant="16" id="3vy-1t-jMT"/>
                                 <constraint firstItem="EGu-fd-m18" firstAttribute="top" secondItem="EZL-oA-Yx2" secondAttribute="bottom" constant="8" id="5VN-BN-h6L"/>
                                 <constraint firstItem="EGu-fd-m18" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" constant="16" id="7nn-43-q65"/>
                                 <constraint firstAttribute="trailing" secondItem="EZL-oA-Yx2" secondAttribute="trailing" constant="16" id="7x4-OL-Uho"/>
@@ -126,19 +117,17 @@
                                 <constraint firstItem="bzo-NM-uTw" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" id="VW8-Xs-B03"/>
                                 <constraint firstAttribute="trailing" secondItem="vVt-sJ-Dbr" secondAttribute="trailing" constant="16" id="crv-bn-E3J"/>
                                 <constraint firstItem="Ycj-St-0L0" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" id="doY-ud-zuY"/>
-                                <constraint firstAttribute="trailing" secondItem="r9O-hq-X87" secondAttribute="trailing" constant="16" id="hL2-UC-aoi"/>
                                 <constraint firstItem="Ycj-St-0L0" firstAttribute="top" secondItem="vVt-sJ-Dbr" secondAttribute="bottom" constant="19" id="hYg-A5-V0V"/>
                                 <constraint firstItem="guS-s7-Kow" firstAttribute="top" secondItem="dod-yq-bOE" secondAttribute="top" constant="12" id="lEx-hE-EHS"/>
                                 <constraint firstItem="vVt-sJ-Dbr" firstAttribute="top" secondItem="EZL-oA-Yx2" secondAttribute="bottom" id="mpg-am-3Fa"/>
                                 <constraint firstItem="guS-s7-Kow" firstAttribute="centerX" secondItem="kNK-8U-Rh7" secondAttribute="centerX" id="x7o-Vo-rt9"/>
-                                <constraint firstItem="r9O-hq-X87" firstAttribute="top" secondItem="Ycj-St-0L0" secondAttribute="bottom" id="zJt-ck-zp0"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="dod-yq-bOE" secondAttribute="bottom" id="39c-Wu-jhd"/>
                         <constraint firstAttribute="trailing" secondItem="dod-yq-bOE" secondAttribute="trailing" id="NUs-M9-638"/>
-                        <constraint firstAttribute="height" constant="310" id="Oqd-mB-Cha"/>
+                        <constraint firstAttribute="height" constant="305" id="Oqd-mB-Cha"/>
                         <constraint firstAttribute="top" secondItem="dod-yq-bOE" secondAttribute="top" id="S7p-2O-8cV"/>
                         <constraint firstAttribute="centerY" secondItem="dod-yq-bOE" secondAttribute="centerY" id="cxo-Mb-9c8"/>
                         <constraint firstAttribute="centerX" secondItem="dod-yq-bOE" secondAttribute="centerX" id="fvI-78-opq"/>

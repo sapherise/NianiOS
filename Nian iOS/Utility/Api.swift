@@ -82,6 +82,23 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/search_user.php", callback: callback)
     }
 
+    // 自动提示
+    static func getAutoComplete(keyword: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/autocompletetags.php?keyword=\(keyword)", callback: callback)
+    }
+    
+    // 搜索标签
+    static func getSearchTags(keyword: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/searchtags.php?keyword=\(keyword)", callback: callback)
+    }
+    
+    // 添加标签
+    static func getTags(tag: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/tags.php?tag=\(tag)", callback: callback)
+    }
     
     static func postReport(type: String, id: String, callback: V.StringCallback) {
         loadCookies()

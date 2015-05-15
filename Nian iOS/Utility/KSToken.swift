@@ -51,10 +51,10 @@ class KSToken : UIControl {
    var sticky = false
    
    /// Token Title color
-   var tokenTextColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+   var tokenTextColor = UIColor(red: 0xaf/255, green: 0xaf/255, blue: 0xaf/255, alpha: 1)
    
    /// Token background color
-   var tokenBackgroundColor = UIColor(red: 50/255, green: 50/255, blue: 255/255, alpha: 1)
+   var tokenBackgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
    
    /// Token title color in selected state
    var tokenTextHighlightedColor: UIColor?
@@ -96,20 +96,20 @@ class KSToken : UIControl {
    //MARK: - Constructors
    //__________________________________________________________________________________
    //
-   convenience required init(coder aDecoder: NSCoder) {
-      self.init(title: "")
-   }
-   
-   convenience init(title: String) {
-      self.init(title: title, object: title);
-   }
-   
-   init(title: String, object: AnyObject?) {
-      self.title = title
-      self.object = object
-      super.init(frame: CGRect.zeroRect)
-      backgroundColor = UIColor.clearColor()
-   }
+    convenience required init(coder aDecoder: NSCoder) {
+        self.init(title: "#")
+    }
+    
+    convenience init(title: String) {
+        self.init(title: "#" + title, object: title);
+    }
+    
+    init(title: String, object: AnyObject?) {
+        self.title = "#" + title
+        self.object = object
+        super.init(frame: CGRect.zeroRect)
+        backgroundColor = UIColor.clearColor()
+    }
    
    //MARK: - Drawing code
    //__________________________________________________________________________________
