@@ -60,18 +60,19 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     var activityViewController: UIActivityViewController!
+    var isDynamic: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.viewMenu.setWidth(globalWidth)
         self.setWidth(globalWidth)
-        self.labelTime.setX(globalWidth - 92 - 15)
-        self.btnMore.setX(globalWidth - 50)
-        self.btnLike.setX(globalWidth - 50)
-        self.btnUnLike.setX(globalWidth - 50)
-        self.viewLine.setWidth(globalWidth)
-        self.labelContent.setWidth(globalWidth-30)
+        self.labelTime.setX(globalWidth - 82 - 20)
+        self.btnMore.setX(globalWidth - 52)
+        self.btnLike.setX(globalWidth - 52)
+        self.btnUnLike.setX(globalWidth - 52)
+        self.viewLine.setWidth(globalWidth - 40)
+        self.labelContent.setWidth(globalWidth-40)
         self.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageClick"))
         self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
         self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
@@ -80,10 +81,15 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnMore.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMoreClick"))
         self.btnLike.addTarget(self, action: "onLike", forControlEvents: UIControlEvents.TouchUpInside)
         self.btnUnLike.addTarget(self, action: "onUnLike", forControlEvents: UIControlEvents.TouchUpInside)
+        self.btnLike.layer.borderColor = lineColor.CGColor
+        self.btnMore.layer.borderColor = lineColor.CGColor
+        self.btnUnLike.layer.borderColor = SeaColor.CGColor
+        self.btnUnLike.backgroundColor = SeaColor
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         var sid = self.data.stringAttributeForKey("sid")
         if sid.toInt() != nil {
             self.sid = sid.toInt()!
@@ -97,19 +103,13 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
             var like = self.data.stringAttributeForKey("like") as String
             var comment = self.data.stringAttributeForKey("comment")
-            var dreamtitle = SADecode(self.data.stringAttributeForKey("dreamtitle"))
-            var dream = SADecode(self.data.stringAttributeForKey("title"))
-            var time = (data.stringAttributeForKey("lastdate") as NSString).doubleValue
-            var absoluteTime = V.absoluteTime(time)
+            var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
+            lastdate = V.relativeTime(lastdate)
             
-            self.labelName.text = user
-            self.labelTime.text = absoluteTime
-            self.labelDream.text = (count(dreamtitle) != 0) ? dreamtitle : dream
+            self.labelTime.text = lastdate
             self.imageHead.setHead(uid)
-            self.imageHead.tag = uid.toInt()!
-            self.labelName.tag = uid.toInt()!
             self.labelLike.tag = sid.toInt()!
-            var height = content.stringHeightWith(16,width:globalWidth-30)
+            var height = content.stringHeightWith(16,width:globalWidth-40)
             if content == "" {
                 height = 0
             }
@@ -127,49 +127,51 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.labelLike.hidden = false
                 like = "\(like) 赞"
                 self.labelLike.text = like
-                var likeWidth = like.stringWidthWith(13, height: 30) + 17
+                var likeWidth = like.stringWidthWith(13, height: 32) + 16
+                likeWidth = SACeil(likeWidth, 0)
                 self.labelLike.setWidth(likeWidth)
             }
             self.labelComment.text = comment
-            var commentWidth = comment.stringWidthWith(13, height: 30) + 17
+            var commentWidth = comment.stringWidthWith(13, height: 32) + 16
+            commentWidth = SACeil(commentWidth, 0)
             self.labelComment.setWidth(commentWidth)
-            self.labelLike.setX(commentWidth+23)
+            self.labelLike.setX(commentWidth+28)
             if img0 == 0.0 {
                 if content == "" {  // 没有图片，没有文字
                     self.imageHolder.hidden = false
                     self.imageHolder.image = UIImage(named: "check")
                     self.imageHolder.frame.size = CGSizeMake(50, 23)
-                    self.imageHolder.setX(15)
+                    self.imageHolder.setX(20)
                 }else{  // 没有图片，有文字
                     self.imageHolder.hidden = true
                     imgHeight = 0
-                    self.labelContent.setY(70)
+                    self.labelContent.setY(self.imageHead.bottom() + 20)
                 }
             }else{
-                imgHeight = img1 * Float(globalWidth) / img0
+                imgHeight = img1 * Float(globalWidth - 40) / img0
                 ImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
                 largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
                 self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
                 self.imageHolder.setHeight(CGFloat(imgHeight))
-                self.imageHolder.setWidth(globalWidth)
+                self.imageHolder.setWidth(globalWidth - 40)
                 self.imageHolder.hidden = false
-                self.labelContent.setY(self.imageHolder.bottom()+15)
+                self.labelContent.setY(self.imageHolder.bottom()+20)
             }
             if content == "" {
-                self.viewMenu.setY(self.imageHolder.bottom()+5)
+                self.viewMenu.setY(self.imageHolder.bottom()+20)
             }else{
-                self.viewMenu.setY(self.labelContent.bottom()+5)
+                self.viewMenu.setY(self.labelContent.bottom()+20)
             }
-            self.viewLine.setY(self.viewMenu.bottom()+10)
+            self.viewLine.setY(self.viewMenu.bottom()+25)
             
             //主人
             var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String
             if cookieuid == uid {
                 self.btnLike.hidden = true
                 self.btnUnLike.hidden = true
-                self.btnMore.setX(globalWidth - 50)
+                self.btnMore.setX(globalWidth - 52)
             }else{
-                self.btnMore.setX(globalWidth - 90)
+                self.btnMore.setX(globalWidth - 52 - 32 - 8)
                 if liked == "0" {
                     self.btnLike.hidden = false
                     self.btnUnLike.hidden = true
@@ -178,6 +180,29 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                     self.btnUnLike.hidden = false
                 }
             }
+            //==
+            
+            if !isDynamic {
+                self.imageHead.setHead(uid)
+                self.labelName.text = user
+                if title == "" {
+                    self.labelDream.text = lastdate
+                    self.labelTime.hidden = true
+                } else {
+                    self.labelDream.text = title
+                    self.labelTime.hidden = false
+                }
+            } else {
+                var uidlike = data.stringAttributeForKey("uidlike")
+                var userlike = data.stringAttributeForKey("userlike")
+                self.imageHead.setHead(uidlike)
+                self.labelName.text = userlike
+                self.labelDream.text = "赞了「\(title)」"
+            }
+            
+            //==
+            
+            
         }
     }
     
@@ -283,14 +308,13 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         var height = CGFloat((data.stringAttributeForKey("img1") as NSString).floatValue)
         var point = self.imageHolder.getPoint()
         if width * height != 0 {
-            height = height * globalWidth / width
-            var rect = CGRectMake(-point.x, -point.y, globalWidth, height)
+            height = height * (globalWidth - 40) / width
+            var rect = CGRectMake(-point.x, -point.y, globalWidth - 40, height)
             self.imageHolder.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
         }
     }
     
     func onCommentClick() {
-        println(data)
         var id = data.stringAttributeForKey("dream")
         var sid = data.stringAttributeForKey("sid")
         var uid = data.stringAttributeForKey("uid")
@@ -312,6 +336,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     func onUserClick() {
         var uid = data.stringAttributeForKey("uid")
+        if isDynamic {
+            uid = data.stringAttributeForKey("uidlike")
+        }
         var userVC = PlayerViewController()
         userVC.Id = uid
         self.findRootViewController()?.navigationController?.pushViewController(userVC, animated: true)
@@ -321,13 +348,13 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         var content = SADecode(data.stringAttributeForKey("content"))
         var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
-        var height = content.stringHeightWith(16,width:globalWidth-30)
+        var height = content.stringHeightWith(16,width:globalWidth-40)
         if (img0 == 0.0) {
-            var h = content == "" ? 179 : height + 151
+            var h = content == "" ? 155 + 23 : height + 155
             return h
         } else {
-            var heightImage = CGFloat(img1 * Float(globalWidth) / img0)
-            var h = content == "" ? 156 + heightImage : height + 171 + heightImage
+            var heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+            var h = content == "" ? 155 + heightImage : height + 175 + heightImage
             return h
         }
     }

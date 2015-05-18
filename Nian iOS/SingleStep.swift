@@ -148,9 +148,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = self.dataArray[indexPath.row] as! NSDictionary
         var h = SAStepCell.cellHeightByData(data)
-        if indexPath.row == self.dataArray.count - 1 {
-            return h - 15
-        }
         return h
     }
     

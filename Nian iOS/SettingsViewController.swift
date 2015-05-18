@@ -140,6 +140,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.head!.setHead(safeuid)
         self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick"))
         self.btnCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoverClick"))
+        self.btnCover.backgroundColor = SeaColor
         
         self.inputName!.delegate = self
         self.inputEmail!.delegate = self
@@ -622,15 +623,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func niceTry(sender:UILongPressGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Began {
-            var arr = ["你发现了第二枚彩蛋", "- The Laughing Heart -", "you can't beat death,", "but you can beat death in life, sometimes.", "and the more often you learn to do it,", "the more light there will be.", "your life is your life.", "know it while you have it.", "you are marvelous,", "the gods wait to delight", "in you.", "Nian ❤ You"]
-            var t: Double = 0
-            var count = arr.count - 1
-            for i in 0...count {
-                delay(t, {
-                    self.view.showTipText(arr[i], delay: 2)
-                })
-                t = t + 2.3
-            }
+            self.view.showTipText("-  念 爱 你  -", delay: 2)
         }
     }
     

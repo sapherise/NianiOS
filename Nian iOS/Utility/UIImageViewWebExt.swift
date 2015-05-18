@@ -37,7 +37,6 @@ extension UIImageView {
         var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
-            //todo:加载缓存图片
             self.loadCacheImage(req, placeholderImage: self.image!)
             if animated {
                 self.setAnimated()

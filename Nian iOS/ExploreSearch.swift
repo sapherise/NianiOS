@@ -40,8 +40,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var dreamPage: Int = 1
     var userPage: Int = 1
     var dreamStepArray = NSMutableArray()
-    var dreamLastSearch: String = ""
-    var userLastSearch: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,17 +71,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewWillDisappear(animated: Bool) {
         searchText.removeFromSuperview()
     }
-    
-//    
-//    var observer = notificationCenter.addObserverForName(UITextFieldTextDidChangeNotification, object: nil, queue: mainQueue) { _ in
-//        self.sendButton.enabled = self.messageField.text.utf16count > 0
-//    }
-//}
-//
-//override func viewWillUnload() {
-//    super.viewWillUnload()
-//    
-//    let notificationCenter = NSNotificationCenter.defaultCenter()
     
     func load(index: Int, clear: Bool) {
         if index == 0 {
@@ -139,6 +126,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         dreamButton.setX(globalWidth/2 - 85)
         userButton.setX(globalWidth/2 + 5)
         floatView.setX(globalWidth/2 - 70)
+        floatView.backgroundColor = SeaColor
         
         searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth-60, 26))
         var color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
@@ -169,11 +157,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func setupButtonColor(index: Int) {
         if index == 0 {
-            dreamButton.setTitleColor(UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1), forState: .Normal)
-            userButton.setTitleColor(UIColor(red: 0x1c/255, green: 0x1f/255, blue: 0x21/255, alpha: 1), forState: .Normal)
+            dreamButton.setTitleColor(SeaColor, forState: .Normal)
+            userButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         } else {
-            userButton.setTitleColor(UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1), forState: .Normal)
-            dreamButton.setTitleColor(UIColor(red: 0x1c/255, green: 0x1f/255, blue: 0x21/255, alpha: 1), forState: .Normal)
+            userButton.setTitleColor(SeaColor, forState: .Normal)
+            dreamButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         }
     }
     
@@ -194,6 +182,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @IBAction func dream(sender: AnyObject) {
+        var tmp = index
         index = 0
         setupButtonColor(index)
         self.dreamTableView.hidden = false
@@ -204,33 +193,29 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.floatView.setX(globalWidth/2 - 70)
         })
         
-        if (self.dataArrayDream.count == 0 && self.dataArrayStep.count == 0) || searchText.text != dreamLastSearch {
-            if count(searchText.text) > 0 {
-                dreamLastSearch = searchText.text
+            if searchText.text != "" && (dataArrayDream.count + dataArrayStep.count == 0) {
                 self.dreamTableView.headerBeginRefreshing()
-            }
+            } else if tmp == 0 {
+                self.dreamTableView.headerBeginRefreshing()
         }
     }
     
     @IBAction func user(sender: AnyObject) {
+        var tmp = index
         index = 1
-        setupButtonColor(index)
+        setupButtonColor(1)
         self.tableView.hidden = false
         self.dreamTableView.hidden = true
         self.dreamTableView.headerEndRefreshing()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 + 20)
         })
-        
-        if self.dataArrayUser.count == 0 || searchText.text != userLastSearch {
-            if count(searchText.text) > 0 {
-                userLastSearch = searchText.text
-                self.tableView.headerBeginRefreshing()
-            }
+        if searchText.text != "" && dataArrayUser.count == 0 {
+            self.tableView.headerBeginRefreshing()
+        } else if tmp == 1 {
+            self.tableView.headerBeginRefreshing()
         }
     }
-    
-    // MARK: several abstract method
     
     func userSearch(clear: Bool) {
         if clear {
@@ -242,12 +227,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if clear {
                     self.dataArrayUser.removeAllObjects()
                 }
-                var items = json!["users"] as! NSArray
-                for item in items {
-                    self.dataArrayUser.addObject(item)
-                }
-                if items.count < 30 {
-                    self.tableView.setFooterHidden(true)
+                var items = json!["users"] as? NSArray
+                if items != nil {
+                    for item in items! {
+                        self.dataArrayUser.addObject(item)
+                    }
+                    if items!.count < 30 {
+                        self.tableView.setFooterHidden(true)
+                    }
                 }
             }
             self.tableView.reloadData()
@@ -273,9 +260,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                         self.dataArrayDream.addObject(item)
                     }
                 }
-                var itemsStep = json!["steps"] as! NSArray
-                for item in itemsStep {
-                    self.dataArrayStep.addObject(item)
+                var itemsStep = json!["steps"] as? NSArray
+                if itemsStep != nil {
+                    for item in itemsStep! {
+                        self.dataArrayStep.addObject(item)
+                    }
                 }
             }
             self.dreamTableView.reloadData()
@@ -399,7 +388,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         mutableData.setValue(newFollow, forKey: "follow")
         self.dataArrayDream[tag] = mutableData
         self.dreamTableView.reloadData()
-        //todo
         Api.postFollowDream(id, follow: newFollow) { json in
         }
     }
@@ -430,9 +418,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             } else {
                 var data = self.dataArrayStep[indexPath.row] as! NSDictionary
                 var h = SAStepCell.cellHeightByData(data)
-                if indexPath.row == self.dataArrayStep.count - 1 {
-                    return h - 15
-                }
                 return h
             }
         } else {
@@ -446,10 +431,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             searchText.rightViewMode = .Always
             if index == 0 {
                 self.dreamTableView.headerBeginRefreshing()
-                dreamLastSearch = searchText.text
             } else {
                 self.tableView.headerBeginRefreshing()
-                userLastSearch = searchText.text
             }
         }
         return true

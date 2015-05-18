@@ -24,7 +24,7 @@ class BBSCell: UITableViewCell {
         self.selectionStyle = .None
         self.setWidth(globalWidth)
         self.contentLabel?.setWidth(globalWidth-85)
-        self.Line?.setWidth(globalWidth)
+        self.Line?.setWidth(globalWidth - 40)
     }
     
     override func layoutSubviews() {
@@ -43,13 +43,13 @@ class BBSCell: UITableViewCell {
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        self.Line!.setY(self.contentLabel!.bottom()+16)
+        self.Line!.setY(self.contentLabel!.bottom()+25)
         
     }
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
         var content = data.stringAttributeForKey("content")
         var height = content.stringHeightWith(16,width:globalWidth-85)
-        return height + 95
+        return height + 77 + 26
     }
 }

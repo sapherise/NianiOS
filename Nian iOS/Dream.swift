@@ -446,9 +446,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }else{
             var data = self.dataArray[indexPath.row] as! NSDictionary
             var h = SAStepCell.cellHeightByData(data)
-            if indexPath.row == self.dataArray.count - 1 {
-                return h - 15
-            }
             return h
         }
     }

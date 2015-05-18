@@ -60,14 +60,14 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
         if dataArray.count == 0 {
             bindViewController!.recomTableView.headerBeginRefreshing()
         } else {
-            UIView.animateWithDuration(0.2,
-                animations: { () -> Void in
-                    self.bindViewController!.recomTableView.setContentOffset(CGPointZero, animated: false)
-                }, completion: { (Bool) -> Void in
-                    if loading {
+            if loading {
+                UIView.animateWithDuration(0.2,
+                    animations: { () -> Void in
+                        self.bindViewController!.recomTableView.setContentOffset(CGPointZero, animated: false)
+                    }, completion: { (Bool) -> Void in
                         self.bindViewController!.recomTableView.headerBeginRefreshing()
-                    }
-            })
+                })
+            }
         }
     }
     
@@ -96,11 +96,6 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var index = indexPath.row
         var data = self.dataArray[index] as! NSDictionary
-        
-        if index == self.dataArray.count - 1 {
-            return ExploreNewHotCell.cellHeightByData(data) - 15
-        }
-        
         return  ExploreNewHotCell.cellHeightByData(data)
     }
     

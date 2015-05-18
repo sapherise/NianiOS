@@ -32,7 +32,7 @@ class BBSCellTop: UITableViewCell{
         self.BBStitle?.setWidth(globalWidth-40)
         self.setWidth(globalWidth)
         self.contentLabel?.setWidth(globalWidth-85)
-        self.Line?.setWidth(globalWidth)
+        self.Line?.setWidth(globalWidth - 40)
     }
     
     override func layoutSubviews(){
@@ -54,10 +54,10 @@ class BBSCellTop: UITableViewCell{
         
         self.dreamhead!.setY(self.BBStitle!.bottom()+20)
         self.nickLabel!.setY(self.BBStitle!.bottom()+20)
-        self.lastdate!.setY(self.BBStitle!.bottom()+39)
-        self.contentLabel!.setY(self.BBStitle!.bottom()+68)
-        self.viewFlow.setY(self.contentLabel!.bottom()+26)
-        self.Line!.setY(self.viewFlow!.bottom()+18)
+        self.lastdate!.setY(self.nickLabel!.bottom()+6)
+        self.contentLabel!.setY(self.dreamhead!.bottom()+20)
+        self.viewFlow.setY(self.contentLabel!.bottom()+20)
+        self.Line!.setY(self.viewFlow!.bottom()+25)
         if self.topuid == "" {
             self.View?.hidden = true
         }else{
@@ -67,7 +67,7 @@ class BBSCellTop: UITableViewCell{
     class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
         var height = topcontent.stringHeightWith(16,width:globalWidth-85)
         var titleHeight = toptitle.stringHeightWith(16,width:globalWidth-40)
-        return height + 120 + titleHeight + 58
+        return height + 178 + titleHeight
     }
     
 }

@@ -49,7 +49,7 @@ struct Api {
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_like.php?page=\(page)&uid=\(s_uid)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/explore_like_optimize.php?page=\(page)&uid=\(s_uid)", callback: callback)
     }
     
     static func getExploreHot(callback: V.JsonCallback) {

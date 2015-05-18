@@ -55,14 +55,12 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     var buttons: [UILabel]!
     var providers: [ExploreProvider]!
-    var pointLast: CGFloat = 0
-    var direction: Int = 0  // 当为 1 时为向左，为 2 时为向右
     
     override func viewDidLoad() {
         self.buttons = [
             btnFollow,
             btnDynamic,
-            btnHot, // 推荐
+            btnHot,
         ]
         setupViews()
         
@@ -189,15 +187,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var x = scrollView.contentOffset.x
-        var pointCurrent = scrollView.contentOffset.x
-        if pointCurrent - pointLast > 25 {
-            pointLast = pointCurrent
-            direction = 1
-        } else if pointLast - pointCurrent > 25 {
-            pointLast = pointCurrent
-            direction = 2
-        }
-        
         self.btnFollow.setTabAlpha(x, index: 0)
         self.btnDynamic.setTabAlpha(x, index: 1)
         self.btnHot.setTabAlpha(x, index: 2)

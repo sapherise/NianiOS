@@ -10,21 +10,6 @@ import UIKit
 import Foundation
 import AudioToolbox
 
-
-let IconColor:UIColor = UIColor(red:0.97, green:0.97,blue:0.97,alpha: 1)    //字体灰
-let BGColor:UIColor = UIColor.whiteColor()
-let FontColor:UIColor = UIColor(red:0.78, green:0.26,blue:0.26,alpha: 1)   //字体灰
-let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
-let DarkColor:UIColor = UIColor(red:0.15, green:0.15, blue:0.15, alpha:1)   //图片底色
-let LightBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 1)   //念蓝
-let LessBlueColor:UIColor = UIColor(red:0.00, green:0.67,blue:0.93,alpha: 0.2)   //念蓝
-let LineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 1)   //线条
-let LittleLineColor:UIColor = UIColor(red:0.30, green:0.35,blue:0.40,alpha: 0.2)   //线条
-let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
-let NavColor:UIColor = UIColor(red:0, green:0, blue:0, alpha:1)
-let SeaColor:UIColor = UIColor(red:0.42, green:0.81, blue:0.99, alpha:1) //深海蓝
-let GreyColor: UIColor = UIColor(red:0.69, green:0.69, blue:0.69, alpha:1)  // 高级灰
-
 let product_coin12 = "so.nian.c12"
 let product_coin30 = "so.nian.c30"
 let product_coin65 = "so.nian.c65"
@@ -188,6 +173,7 @@ func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
     var newheight:CGFloat = 0
     if width != 0 {
         newheight = height * newWidth / width
+        newheight = SACeil(newheight, 0, isCeil: false)
     }
     var newImage:UIImage
     if width >= newWidth {
@@ -692,3 +678,62 @@ func getuid() -> String {
     return "0"
 }
 
+func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
+    var a = pow(10, Double(dot))
+    var b: CGFloat
+    if isCeil {
+        b = CGFloat(ceil(Double(num) * a) / a)
+    } else {
+        b = CGFloat(floor(Double(num) * a) / a)
+    }
+    return b
+}
+//
+//+ (UIColor *)colorFromHexString:(NSString *)hexString {
+//    unsigned rgbValue = 0;
+//    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+//    [scanner setScanLocation:1]; // bypass '#' character
+//    [scanner scanHexInt:&rgbValue];
+//    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
+//}
+
+func colorWithHex(hexString: String) -> UIColor? {
+    let regexp = NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
+        options: .CaseInsensitive,
+        error: nil)
+    let num = regexp?.numberOfMatchesInString(hexString,
+        options: .ReportProgress,
+        range: NSMakeRange(0, count(hexString)))
+    if num != 1 {
+        return nil
+    }
+    var rgbValue : UInt32 = 0
+    let scanner = NSScanner(string: hexString)
+    scanner.scanLocation = 1
+    scanner.scanHexInt(&rgbValue)
+    let red   = CGFloat( (rgbValue & 0xFF0000) >> 16) / 255.0
+    let green = CGFloat( (rgbValue & 0xFF00) >> 8) / 255.0
+    let blue  = CGFloat( (rgbValue & 0xFF) ) / 255.0
+    return UIColor(red: red, green: green, blue: blue, alpha: 1)
+}
+
+
+let SeaColor:UIColor = UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1)
+let IconColor:UIColor = UIColor(red:0.97, green:0.97,blue:0.97,alpha: 1)    //字体灰
+let BGColor:UIColor = UIColor.whiteColor()
+let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
+let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
+let lineColor: UIColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+
+func SAThousand(num: String) -> String {
+    if var IntNum = num.toInt() {
+        if IntNum >= 1000 {
+            IntNum = IntNum / 100
+            var FloatNum = Float(IntNum) / 10
+            return "\(FloatNum)K"
+        } else {
+            return num
+        }
+    }
+    return ""
+}

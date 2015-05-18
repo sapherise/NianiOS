@@ -470,21 +470,14 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             if tableView == self.tableViewDream {
                 return 364 + 30
             }else{
-                return 364 + 14
+                return 364
             }
         }else{
             if tableView == self.tableViewDream {
                 return  129
             }else{
-//                var index = indexPath.row
-//                var data = self.dataArrayStep[index] as! NSDictionary
-//                return  SAStepCell.cellHeightByData(data)
-                
                 var data = self.dataArrayStep[indexPath.row] as! NSDictionary
                 var h = SAStepCell.cellHeightByData(data)
-                if indexPath.row == self.dataArrayStep.count - 1 {
-                    return h - 15
-                }
                 return h
             }
         }

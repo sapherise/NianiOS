@@ -31,9 +31,10 @@ class CircleExploreCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.setWidth(globalWidth)
-        self.labelTag.setX(globalWidth-64)
-        self.viewLine.setWidth(globalWidth)
+        self.labelTag.setX(globalWidth-72)
+        self.viewLine.setWidth(globalWidth - 40)
         self.viewHolder.setX(globalWidth/2-160)
+        self.btnScan.backgroundColor = SeaColor
     }
     
     override func layoutSubviews() {
@@ -55,12 +56,15 @@ class CircleExploreCell: UITableViewCell {
                 chat = "\(FloatChat)K"
             }
         }
+        var heightTitle = title.stringHeightBoldWith(19, width: 242)
         var height = content.stringHeightWith(13, width: 250)
         self.labelPeople.text = people
         self.labelTitle.text = title
+        self.labelTitle.setHeight(heightTitle)
         self.labelChat.text = chat
         self.labelContent.text = content
         self.labelContent.setHeight(height)
+        self.labelContent.setY(self.labelTitle.bottom()+8)
         var bottom = self.labelContent.bottom()
         if content == "" {
             bottom = self.labelTitle.bottom()
@@ -80,11 +84,13 @@ class CircleExploreCell: UITableViewCell {
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
         var content = data.stringAttributeForKey("content")
+        var title = data.stringAttributeForKey("title")
+        var heightTitle = title.stringHeightBoldWith(19, width: 242)
         if content == "" {
-            return 301
+            return 256 + heightTitle
         }
         var height = content.stringHeightWith(13, width: 250)
-        return height + 309
+        return height + 264 + heightTitle
     }
     
 //    override func prepareForReuse() {

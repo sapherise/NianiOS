@@ -43,14 +43,15 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         Api.getExploreFollow("\(page++)", callback: {
             json in
             if json != nil {
+                if clear {
+                    self.dataArray.removeAllObjects()
+                }
                 var items = json!["items"] as! NSArray
                 if items.count != 0 {
-                    if clear {
-                        self.dataArray.removeAllObjects()
-                    }
                     for item in items {
                         self.dataArray.addObject(item)
                     }
+                    self.bindViewController?.tableView.tableHeaderView = nil
                 } else if clear {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     var viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
@@ -76,13 +77,13 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         if dataArray.count == 0 {
             bindViewController!.tableView.headerBeginRefreshing()
         } else {
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
-                }, completion: { (Bool) -> Void in
-                    if loading {
+            if loading {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
+                    }, completion: { (Bool) -> Void in
                         self.bindViewController!.tableView.headerBeginRefreshing()
-                    }
-            })
+                })
+            }
         }
     }
     
@@ -101,9 +102,6 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = self.dataArray[indexPath.row] as! NSDictionary
         var h = SAStepCell.cellHeightByData(data)
-        if indexPath.row == self.dataArray.count - 1 {
-            return h - 15
-        }
         return h
     }
     
