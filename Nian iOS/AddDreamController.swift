@@ -45,6 +45,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func uploadClick() {
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
+        self.tokenView.resignFirstResponder()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheet!.addButtonWithTitle("相册")
         self.actionSheet!.addButtonWithTitle("拍照")
@@ -113,6 +114,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     override func viewDidLoad() {
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.scrollView.delaysContentTouches = false
+        self.scrollView.canCancelContentTouches = false
         setupViews()
     }
     
@@ -129,9 +133,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //        var height = 64 + 182 - 112 + field2.frame.size.height - 22 + tokenView.frame.size.height
         var height = 101 + field2.frame.size.height + tokenView.frame.size.height
         var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, self.containerView.frame.size.height))
-        self.scrollView.contentSize = tmpSize
         if self.tokenView._tokenField.isFirstResponder() {
-            self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 16), animated: true)
+            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, height + 300)
+            self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 76), animated: true)
+        } else {
+            self.scrollView.contentSize = tmpSize
         }
     }
     
@@ -143,8 +149,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.view.addSubview(navView)
 
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        self.view.backgroundColor = UIColor.whiteColor()
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field2.delegate = self
+        self.scrollView.delegate = self
 //        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         delay(0.5, { () -> () in
             if self.readyForTag == 1 {
@@ -187,11 +195,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         //设置 tag view ---- 引用了第三方库
         tokenView.delegate = self    
         tokenView.promptText = "    "
-        tokenView.placeholder = ""
-//        tokenView.descriptionText = "Languages"
+        tokenView.placeholder = "按空格输入多个标签"
         tokenView.maxTokenLimit = 20 //default is -1 for unlimited number of tokens
         tokenView.style = .Squared
         tokenView.font = UIFont.systemFontOfSize(14)
+//        tokenView.direction = KSTokenViewScrollDirection.Horizontal
     }
     
     func onTagClick(){
@@ -204,6 +212,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setDream(){
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
+        self.tokenView.resignFirstResponder()
         self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         
         if self.isPrivate == 0 {
@@ -220,11 +229,29 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func dismissKeyboard(sender:UITapGestureRecognizer){
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
+        self.tokenView.resignFirstResponder()   
     }
+    
+    @IBAction func dismissKbd(sender: UIControl) {
+        self.field1!.resignFirstResponder()
+        self.field2.resignFirstResponder()
+        self.tokenView.resignFirstResponder()
+    }
+    
     
     func addDreamOK(){
         var title = self.field1?.text
         var content = self.field2.text
+        var tags = self.tokenView.tokens()
+        var text = [String]()
+
+        if count(tags!) > 0 {
+            for i in 0...(count(tags!) - 1){
+                var tmpString: String = dropFirst((tags![i] as KSToken).title)
+                text.append(tmpString)
+            }
+        }
+        
         if content == "记本简介（可选）" {
             content = ""
         }
@@ -237,12 +264,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var safeuid = Sa.objectForKey("uid") as! String
             var safeshell = Sa.objectForKey("shell") as! String
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.isPrivate)&&hashtag=\(self.tagType)", "http://nian.so/api/add_query.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        globalWillNianReload = 1
-                        self.navigationController?.popViewControllerAnimated(true)
-                    })
+                Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: text) {
+                    result in
+                    if result == "1" {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            globalWillNianReload = 1
+                            self.navigationController?.popViewControllerAnimated(true)
+                        })
+                    }
                 }
             })
         }else{
@@ -253,6 +282,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func editDreamOK(){
         var title = self.field1?.text
         var content = self.field2.text
+        var tags = self.tokenView.tokens()
+        var text = [String]()
+        
+        if count(tags!) > 0 {
+            for i in 0...(count(tags!) - 1) {
+                var tmpString: String = dropFirst((tags![i] as KSToken).title)
+                text.append(tmpString)
+            }
+        }
+        
+        
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
@@ -262,13 +302,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var safeuid = Sa.objectForKey("uid") as! String
             var safeshell = Sa.objectForKey("shell") as! String
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)&&img=\(self.uploadUrl)&&private=\(self.editPrivate)&&id=\(self.editId)&&hashtag=\(self.tagType)", "http://nian.so/api/editdream.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        globalWillNianReload = 1
-                        self.navigationController?.popViewControllerAnimated(true)
-                        self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)")
-                    })
+                Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: text) {
+                    result in
+                    if result == "1" {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            globalWillNianReload = 1
+                            self.navigationController?.popViewControllerAnimated(true)
+                            self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)")
+                        })
+                    }
                 }
             })
         } else {
@@ -305,10 +347,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //            textField.text = "     "
 //        }
 //    }
-    
+//    
 //    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-//        return touch.view == self.view
+//        return touch.view == gestureRecognizer.view
 //    }
+    
 }
 
 extension AddDreamController: KSTokenViewDelegate {
@@ -317,8 +360,8 @@ extension AddDreamController: KSTokenViewDelegate {
         if count(string) > 0 {
             
             //用户有可能输入汉字、空格等，要先转义
-            var _String = SAEncode(SAHtml(string))
-            Api.getAutoComplete(_String, callback: {
+            var _string = SAEncode(SAHtml(string))
+            Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
                     data = json as! Array
@@ -331,6 +374,35 @@ extension AddDreamController: KSTokenViewDelegate {
     func tokenView(token: KSTokenView, displayTitleForObject object: AnyObject) -> String {
         return object as! String
     }
+    
+    func tokenViewDidBeginEditing(tokenView: KSTokenView) {
+    }
+    
+    func tokenViewDidEndEditing(tokenView: KSTokenView) {
+        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
+
+    }
+    
+    func tokenView(tokenView: KSTokenView, didAddToken token: KSToken) {
+        // 用户已经添加了 token
+        var _string = token.title.stringByReplacingOccurrencesOfString("#", withString: "", options:  NSStringCompareOptions.LiteralSearch, range: nil)
+        
+        Api.getTags(SAEncode(SAHtml(_string)), callback:{
+            json in
+                var status = json!["status"] as! NSNumber
+        })
+    }
+    
+    func tokenView(tokenView: KSTokenView, didDeleteToken token: KSToken) {
+        var number = count(self.tokenView.tokens()!)
+        
+        if number == 0 {
+            self.tokenView._searchTableView.hidden == true
+        } else {
+            self.tokenView._searchTableView.hidden = false 
+        }
+    }
+    
 }
 
 

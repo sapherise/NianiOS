@@ -71,6 +71,20 @@ struct V {
         })
     }
     
+    static func httpGetForJson_AFN(requestURL: String, callback: JsonCallback) {
+        var manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.GET(requestURL,
+            parameters: nil,
+            success: { (op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+                callback(obj)
+        },
+            failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("\(error)")
+        })
+    }
+    
     static func httpGetForJsonSync(requestURL: String, callback: JsonCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var url = NSURL(string: requestURL)

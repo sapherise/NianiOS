@@ -121,7 +121,7 @@ class KSToken : UIControl {
       //// Rectangle Drawing
       
       // fill background
-      let rectanglePath = UIBezierPath(roundedRect: rect, cornerRadius: 15)
+      let rectanglePath = UIBezierPath(roundedRect: rect, cornerRadius: 5)  //由原来的圆形改成圆角矩形
       
       var textColor: UIColor
       var backgroundColor: UIColor

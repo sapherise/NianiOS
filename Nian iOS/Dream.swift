@@ -8,6 +8,15 @@
 
 import UIKit
 
+// label 文字距边界为 4px
+class NILabel: UILabel {
+    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+        var rect = CGRectInset(bounds, 4, 0)
+        
+        return rect
+    }
+}
+
 class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate{
     
     let identifier = "dream"
@@ -25,6 +34,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
+    var scrollView: UIScrollView!
     var viewCoin: Popup!
     
     var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
@@ -54,6 +64,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var liketotalJson: Int = 0
     var stepJson: String = ""
     var desJson:String = ""
+    var tagArray: Array<NSString> = []  // 加 tag
     
     var desHeight:CGFloat = 0
     
@@ -66,6 +77,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        //缺少这一句，会导致 UIScrollview 出现莫名其妙的偏移
+        //https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/TransitionGuide/TransitionGuide.pdf
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         setupViews()
         setupRefresh()
         SALoadData()
@@ -187,7 +203,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        //主人
+        self.scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, 44))
+        self.scrollView.showsHorizontalScrollIndicator = false
+        self.scrollView.showsVerticalScrollIndicator = false
+        self.scrollView.contentSize =  CGSizeMake(8, 0)
+        
+        //主人 -- 已经返回 tags --05.17
         Api.getDreamTop(self.Id) { json in
             if json != nil {
                 var dream: AnyObject! = json!.objectForKey("dream")
@@ -205,6 +226,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.likestepJson = dream.objectForKey("like_step") as! String
                 self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
                 self.stepJson = dream.objectForKey("step") as! String
+                self.tagArray = dream.objectForKey("tags") as! Array
                 self.desHeight = self.contentJson.stringHeightWith(11,width:200)
                 var Sa = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
@@ -227,7 +249,44 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.loadDreamTopcell()
             }
         }
+        
+        for var i = 0; i < count(self.tagArray); i++ {
+            var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+            label.text = self.tagArray[i] as String
+            self.labelWidthWithItsContent(label, content: self.tagArray[i])
+        }
+        
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width + CGFloat(8), self.scrollView.frame.height)
+        
+//        if count(self.tagArray) > 0 {
+            self.view.addSubview(self.scrollView)
+//        }
     }
+    
+    // 自定义 label 
+    func labelWidthWithItsContent(label: NILabel, content: NSString) {
+        label.frame = CGRectMake(0, 0, 0, 0)
+        label.numberOfLines = 1
+        label.textAlignment = .Center
+        label.font = UIFont.systemFontOfSize(12)
+        label.layer.borderWidth = 0.5
+        label.layer.borderColor = UIColor(red: 228/255, green: 228/255, blue: 228/255, alpha: 1).CGColor
+        label.layer.cornerRadius = 4.0
+        label.layer.masksToBounds = true
+        label.textColor = UIColor(red: 171/255, green: 179/255, blue: 180/255, alpha: 1)
+        label.backgroundColor = UIColor.whiteColor()
+        
+        var size = CGSizeMake(320, 24)
+        var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
+        var labelSize = content.sizeWithAttributes(dict)
+        
+        label.frame = CGRectMake(0, 0, labelSize.width + 16, 24)
+        label.frame.origin.x = self.scrollView.contentSize.width + 8
+        label.frame.origin.y = 10
+        self.scrollView.addSubview(label)
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width + 8 + label.frame.width , self.scrollView.frame.height)
+    }
+    
     
     func ownerMore(){
         self.ownerMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)

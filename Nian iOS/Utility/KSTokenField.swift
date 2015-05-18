@@ -51,6 +51,7 @@ class KSTokenField: UITextField {
    private var _caretPoint: CGPoint?
    private var _placeholderValue: String?
    private var _placeholderLabel: UILabel?
+//   private var _attribute  NSAttributedString(string: "点此搜索梦想、用户", attributes: [NSForegroundColorAttributeName: color, NSFontAttributeName: UIFont.systemFontOfSize(12.0)])
    private var _state: KSTokenFieldState = .Opened
    private var _minWidthForInput: CGFloat = 50.0
    private var _separatorText: String?
@@ -163,6 +164,8 @@ class KSTokenField: UITextField {
       
       _setScrollRect()
       _scrollView.backgroundColor = UIColor.clearColor()
+      _scrollView.showsHorizontalScrollIndicator = false
+      _scrollView.showsVerticalScrollIndicator = false
       _scrollView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
       let gestureRecognizer = UITapGestureRecognizer(target: self, action: "becomeFirstResponder")
       gestureRecognizer.cancelsTouchesInView = false
@@ -575,6 +578,8 @@ class KSTokenField: UITextField {
    private func _updatePlaceHolderVisibility() {
       if tokens.count == 0 && (text == KSTextEmpty || text.isEmpty) {
          _placeholderLabel?.text = _placeholderValue!
+         _placeholderLabel?.textColor = UIColor(red: 0xaf/255, green: 0xaf/255, blue: 0xaf/255, alpha: 1)
+         _placeholderLabel?.font = UIFont.systemFontOfSize(14)
          _placeholderLabel?.hidden = false
          
       } else {

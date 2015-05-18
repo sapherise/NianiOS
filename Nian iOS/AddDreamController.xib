@@ -20,15 +20,15 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="GFo-cZ-YNp">
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="GFo-cZ-YNp" customClass="UIControl">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duq-5f-H8d">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="305"/>
+                <scrollView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duq-5f-H8d">
+                    <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dod-yq-bOE" userLabel="Container View">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="305"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                             <subviews>
                                 <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_plus" translatesAutoresizingMaskIntoConstraints="NO" id="guS-s7-Kow">
                                     <rect key="frame" x="12" y="12" width="40" height="40"/>
@@ -127,7 +127,7 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="dod-yq-bOE" secondAttribute="bottom" id="39c-Wu-jhd"/>
                         <constraint firstAttribute="trailing" secondItem="dod-yq-bOE" secondAttribute="trailing" id="NUs-M9-638"/>
-                        <constraint firstAttribute="height" constant="305" id="Oqd-mB-Cha"/>
+                        <constraint firstAttribute="height" constant="492" id="Oqd-mB-Cha"/>
                         <constraint firstAttribute="top" secondItem="dod-yq-bOE" secondAttribute="top" id="S7p-2O-8cV"/>
                         <constraint firstAttribute="centerY" secondItem="dod-yq-bOE" secondAttribute="centerY" id="cxo-Mb-9c8"/>
                         <constraint firstAttribute="centerX" secondItem="dod-yq-bOE" secondAttribute="centerX" id="fvI-78-opq"/>
@@ -135,13 +135,15 @@
                     </constraints>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="duq-5f-H8d" secondAttribute="trailing" id="IWq-3B-qsd"/>
                 <constraint firstItem="duq-5f-H8d" firstAttribute="leading" secondItem="GFo-cZ-YNp" secondAttribute="leading" id="PZ0-Em-Wzs"/>
-                <constraint firstItem="duq-5f-H8d" firstAttribute="top" secondItem="GFo-cZ-YNp" secondAttribute="top" id="uSX-kZ-fey"/>
+                <constraint firstItem="duq-5f-H8d" firstAttribute="top" secondItem="GFo-cZ-YNp" secondAttribute="top" constant="64" id="uSX-kZ-fey"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <action selector="dismissKbd:" destination="-1" eventType="touchUpInside" id="wVP-wG-mhX"/>
+            </connections>
             <point key="canvasLocation" x="-1342" y="661"/>
         </view>
     </objects>

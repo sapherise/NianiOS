@@ -93,7 +93,7 @@ class KSTokenView: UIView {
    //__________________________________________________________________________________
    //
    var _tokenField: KSTokenField!
-   private var _searchTableView: UITableView = UITableView(frame: .zeroRect, style: UITableViewStyle.Plain)
+   var _searchTableView: UITableView = UITableView(frame: .zeroRect, style: UITableViewStyle.Plain)
    private var _resultArray = [AnyObject]()
    private var _showingSearchResult = false
    private var _indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
@@ -304,7 +304,7 @@ class KSTokenView: UIView {
          _tokenField.placeholder = newValue
       }
    }
-   
+
    /// default is .Rounded, creates rounded corner
    var style: KSTokenViewStyle = .Rounded {
       didSet(newValue) {
@@ -341,7 +341,8 @@ class KSTokenView: UIView {
    
    override func awakeFromNib() {
       _commonSetup()
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: "handlTextFieldDidChangeNotification:", name: UITextFieldTextDidChangeNotification, object: self)
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTextFieldDidChangeNotification:", name: UITextFieldTextDidChangeNotification, object: _tokenField)
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTextFieldTextDidEndEditingNotification:", name: UITextFieldTextDidEndEditingNotification, object: _tokenField)
    }
    
    //MARK: - Common Setup
@@ -436,7 +437,7 @@ class KSTokenView: UIView {
       _tokenField.removeToken(token, removingAll: removingAll)
       if (!removingAll) {
          delegate?.tokenView?(self, didDeleteToken: token)
-         startSearchWithString(_lastSearchString)
+//         startSearchWithString(_lastSearchString)
       }
    }
    
@@ -650,18 +651,20 @@ class KSTokenView: UIView {
    :param: string Search keyword
    */
    func startSearchWithString(string: String) {
-    if count(string) == 0  || string.isEmpty || string == "" {
+    if count(string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())) == 0  || string.isEmpty || string == " " {
         self._hideActivityIndicator()
         return
     }
     
+//    println("start search with: \(string)")
+    
       if (!_canAddMoreToken()) {
          return
       }
-      _showEmptyResults()
+//      _showEmptyResults()
       _showActivityIndicator()
       
-      let trimmedSearchString = string //.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+      let trimmedSearchString = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
       delegate?.tokenView(self, performSearchWithString:trimmedSearchString, completion: { (results) -> Void in
          self._hideActivityIndicator()
          if (results.count > 0) {
@@ -794,6 +797,25 @@ class KSTokenView: UIView {
    deinit {
       
    }
+    
+    //MARK: textfield Delegate
+    
+    func handleTextFieldDidChangeNotification(noti: NSNotification) {
+        println("\(noti)")
+        
+        let textfield = noti.object as! KSTokenField
+        
+        if (count(textfield.text) - 1) == 0 || textfield.text == " " {
+           _searchTableView.hidden = true
+        }
+        
+        if textfield.text != _lastSearchString {
+           startSearchWithString(textfield.text)
+        }
+    }
+    
+    func handleTextFieldTextDidEndEditingNotification(noti: NSNotification) {
+    }
    
 }
 
@@ -868,6 +890,7 @@ extension KSTokenView : UITextFieldDelegate {
          let first: String = olderText.substringToIndex(advance(olderText.startIndex, range.location)) as String
          let second: String = olderText.substringFromIndex(advance(olderText.startIndex, range.location+1)) as String
          searchString = first + second
+        println("string.isEmpty \(searchString)")
          
       } else { // new character added
          if (contains(tokenizingCharacters, string) && olderText != KSTextEmpty && olderText.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != "") {
@@ -875,7 +898,10 @@ extension KSTokenView : UITextFieldDelegate {
             return false
          }
          searchString = olderText+string
+        println("string.isEmpty else \(searchString)")
       }
+    
+//      println("search String \(searchString) ")
     
       // Allow all other characters
       if (count(searchString) >= minimumCharactersToSearch && searchString != "\n" && searchString != "") {
@@ -938,7 +964,9 @@ extension KSTokenView : UITableViewDataSource {
       }
       
       let title = delegate?.tokenView(self, displayTitleForObject: _resultArray[indexPath.row])
-      cell!.textLabel!.text = (title != nil) ? title : "No Title"
+      cell!.textLabel!.text = (title != nil) ? ("#" + title!) : "No Title"
+      cell!.textLabel!.textColor = UIColor(red: 67/255, green: 67/255, blue: 67/255, alpha: 1)
+      cell!.textLabel!.font = UIFont.systemFontOfSize(14)
       cell!.selectionStyle = UITableViewCellSelectionStyle.None
       return cell!
    }

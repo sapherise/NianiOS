@@ -85,7 +85,7 @@ struct Api {
     // 自动提示
     static func getAutoComplete(keyword: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/autocompletetags.php?keyword=\(keyword)", callback: callback)
+        V.httpGetForJson_AFN("http://nian.so/api/autocompletetags.php?keyword=\(keyword)", callback: callback)
     }
     
     // 搜索标签
@@ -152,7 +152,8 @@ struct Api {
     
     static func getDreamTop(id:String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/dream.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
+//        V.httpGetForJson("http://nian.so/api/dream.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/dreamwithtags.php?id=\(id)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func getCircleDetail(circle:String, callback: V.JsonCallback) {
@@ -381,9 +382,9 @@ struct Api {
     }
     
     
-    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, callback: V.StringCallback) {
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: Array<String>, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/add_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)", callback: callback)
+        V.httpPostForString("http://nian.so/api/add_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&tags=\(tags)", callback: callback)
     }
     
     
