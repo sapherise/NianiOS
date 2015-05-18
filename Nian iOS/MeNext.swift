@@ -52,8 +52,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         var nib = UINib(nibName:"MeCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
-        self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
-        self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
         
         self.viewLoadingShow()
@@ -149,12 +147,12 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
-    {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var index = indexPath.row
         var data = self.dataArray[index] as! NSDictionary
         return  MeCell.cellHeightByData(data)
     }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         var index = indexPath.row

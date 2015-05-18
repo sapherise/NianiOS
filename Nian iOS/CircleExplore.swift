@@ -34,7 +34,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1)
+        self.tableView.backgroundColor = UIColor.whiteColor()
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
         var nib = UINib(nibName:"CircleExploreCell", bundle: nil)

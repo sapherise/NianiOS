@@ -19,6 +19,7 @@ class CoinCell : UITableViewCell {
     
     override func awakeFromNib() {
         self.btnBuy.setX(globalWidth-85)
+        self.btnBuy.backgroundColor = SeaColor
         self.viewLine.setWidth(globalWidth-85)
     }
     

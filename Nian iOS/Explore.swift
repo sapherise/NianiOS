@@ -60,7 +60,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         self.buttons = [
             btnFollow,
             btnDynamic,
-            btnHot, // 推荐
+            btnHot,
         ]
         setupViews()
         
@@ -96,13 +96,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             if let v = "\(noti.object!)".toInt() {
                 if v > 0 {
                     switchTab(current)
-                    if self.tableView.contentOffset.y  > 0 {
-                        delay(0.2, {
-                            self.tableView.headerBeginRefreshing()
-                        })
-                    }else{
-                        self.tableView.headerBeginRefreshing()
-                    }
                 }
             }
         }
@@ -158,23 +151,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         current = tab
         currentProvider = self.providers[tab]
 
-        switch tab {
-        case 0:
-            self.btnFollow.alpha = 1.0
-            self.btnDynamic.alpha = 0.4
-            self.btnHot.alpha = 0.4
-        case 1:
-            self.btnFollow.alpha = 0.4
-            self.btnDynamic.alpha = 1.0
-            self.btnHot.alpha = 0.4
-        case 2:
-            self.btnFollow.alpha = 0.4
-            self.btnDynamic.alpha = 0.4
-            self.btnHot.alpha = 1.0
-        default:
-            break
-        }
-
         currentProvider.onShow(loading)
     }
     
@@ -189,7 +165,24 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         var xOffset = scrollView.contentOffset.x
         var page: Int = Int(xOffset / globalWidth)
         
-        switchTab(page)
+        if current != -1 {
+            currentProvider.onHide()
+        }
+        current = page
+        currentProvider = self.providers[page]
+        
+        if globalTab[1] && page == 1 {
+            switchTab(page)
+        } else if globalTab[2] && page == 2 {
+            switchTab(page)
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var x = scrollView.contentOffset.x
+        self.btnFollow.setTabAlpha(x, index: 0)
+        self.btnDynamic.setTabAlpha(x, index: 1)
+        self.btnHot.setTabAlpha(x, index: 2)
     }
     
     func onFriendClick() {
@@ -198,5 +191,22 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     func onSearchClick() {
         self.performSegueWithIdentifier("toSearch", sender: nil)
+    }
+}
+
+extension UILabel {
+    func setTabAlpha(x: CGFloat, index: CGFloat) {
+        var a:CGFloat = 0
+        var big = globalWidth * (index + 1)
+        var middle = globalWidth * index
+        var small = globalWidth * (index - 1)
+        if x <= big && x >= middle {
+            a = (big - x) * 0.6 / globalWidth + 0.4
+        } else if x <= middle && x >= small {
+            a = (x - small) * 0.6 / globalWidth + 0.4
+        } else {
+            a = 0.4
+        }
+        self.alpha = a
     }
 }

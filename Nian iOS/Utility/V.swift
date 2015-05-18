@@ -167,6 +167,33 @@ struct V {
     }
     
     
+    static func relativeTime(timestamp: String) -> String {
+        var current = NSDate().timeIntervalSince1970
+        var time = (timestamp as NSString).doubleValue
+        var d = current - time
+        var formatter = NSDateFormatter()
+        var component = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond, fromDate: NSDate())
+        component.timeZone = NSTimeZone.systemTimeZone()
+        component.hour = 0
+        component.minute = 0
+        component.second = 0
+        var today = NSCalendar.currentCalendar().dateFromComponents(component)!.timeIntervalSince1970
+        if d < 10 {
+            return "刚刚";
+        } else if d < 60 {
+            return "\(Int(d))秒前"
+        } else if d < 3600 {
+            return "\(NSNumber(double: floor(d / 60)).integerValue)分前"
+        }else if time >= today {
+            formatter.dateFormat = "HH:mm"
+        } else if d < 31536000 {
+            formatter.dateFormat = "MM-dd HH:mm"
+        } else {
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        }
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+        return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
+    }
     
     static func relativeTime(time: NSTimeInterval, current: NSTimeInterval) -> String {
         var d = current - time

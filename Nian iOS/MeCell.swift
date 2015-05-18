@@ -29,8 +29,8 @@ class MeCell: UITableViewCell {
         self.View!.backgroundColor = BGColor
         self.imageDream.setX(globalWidth-55)
         self.lastdate!.setX(globalWidth-107)
-        self.contentLabel?.setWidth(globalWidth-30)
-        self.viewLine.setWidth(globalWidth)
+        self.contentLabel?.setWidth(globalWidth-40)
+        self.viewLine.setWidth(globalWidth - 40)
         self.labelConfirm.setX(globalWidth/2-50)
     }
     
@@ -42,10 +42,10 @@ class MeCell: UITableViewCell {
         var dreamtitle = self.data.stringAttributeForKey("dreamtitle")
         var content = self.data.stringAttributeForKey("content")
         var type = self.data.stringAttributeForKey("type")
-        var isread = self.data.stringAttributeForKey("isread") as String
-        var img = self.data.stringAttributeForKey("img") as String
-        var dream = self.data.stringAttributeForKey("dream") as String
-        var isConfirm = self.data.stringAttributeForKey("isConfirm") as String
+        var isread = self.data.stringAttributeForKey("isread")
+        var img = self.data.stringAttributeForKey("img")
+        var dream = self.data.stringAttributeForKey("dream")
+        var isConfirm = self.data.stringAttributeForKey("isConfirm")
         var word:String = ""
         
         switch type {
@@ -83,13 +83,13 @@ class MeCell: UITableViewCell {
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         if type == "9" {
-            self.labelConfirm.setY(self.contentLabel!.bottom()+15)
+            self.labelConfirm.setY(self.contentLabel!.bottom()+20)
             self.imageDream.hidden = false
             self.labelConfirm.hidden = false
             self.imageDream.tag = dream.toInt()!
-            self.imageDream.setImage("http://img.niain.so/dream/\(img)!dream", placeHolder: IconColor)
+            self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             self.lastdate!.hidden = true
-            self.viewLine.setY(self.labelConfirm!.bottom()+15)
+            self.viewLine.setY(self.labelConfirm!.bottom()+25)
             var tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
             if isConfirm == "0" {
                 self.labelConfirm.text = "接受"
@@ -104,7 +104,7 @@ class MeCell: UITableViewCell {
             self.imageDream.hidden = true
             self.labelConfirm.hidden = true
             self.lastdate!.hidden = false
-            self.viewLine.setY(self.contentLabel!.bottom()+15)
+            self.viewLine.setY(self.contentLabel!.bottom()+25)
         }
     }
     
@@ -149,9 +149,9 @@ class MeCell: UITableViewCell {
         }
         var height = content.stringHeightWith(16,width:globalWidth-30)
         if type == "9" {
-            return 151 + height
+            return 159 + height
         }else{
-            return 100 + height
+            return 103 + height
         }
     }
     

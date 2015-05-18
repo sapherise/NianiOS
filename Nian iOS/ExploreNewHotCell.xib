@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExploreController" customModule="Nian_iOS" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ExploreNewHotCell" rowHeight="283" id="Nxi-zM-L6x" customClass="ExploreNewHotCell" customModule="Nian_iOS" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ExploreNewHotCell" rowHeight="364" id="Nxi-zM-L6x" customClass="ExploreNewHotCell" customModule="Nian_iOS" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="364"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nxi-zM-L6x" id="kE4-Ol-CVT">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="282"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="363"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" id="aDw-o8-Ttf">
-                        <rect key="frame" x="0.0" y="268" width="320" height="15"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="标签" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hUL-mN-TRQ">
-                        <rect key="frame" x="248" y="0.0" width="58" height="30"/>
+                        <rect key="frame" x="256" y="0.0" width="50" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" red="0.64313727620000005" green="0.64313727620000005" blue="0.64313727620000005" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                <color key="value" white="0.0" alpha="0.02" colorSpace="calibratedWhite"/>
+                                <color key="value" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="2"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </label>
                     <view contentMode="scaleToFill" id="zTa-Ti-pxX">
@@ -45,7 +36,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="30"/>
+                                        <integer key="value" value="6"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
@@ -54,6 +45,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是一个描述" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0PG-xc-xm0">
+                                <rect key="frame" x="35" y="140" width="250" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.69901315789473684" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" id="Juf-JJ-eIg">
@@ -97,34 +95,32 @@
                                     <view contentMode="scaleToFill" id="QOK-yl-c8J">
                                         <rect key="frame" x="-1" y="8" width="1" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.059999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.94509803920000002" green="0.94509803920000002" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                 </subviews>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是一个描述" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0PG-xc-xm0">
-                                <rect key="frame" x="35" y="140" width="250" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="13"/>
-                                <color key="textColor" white="0.69901315789473684" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
+                    </view>
+                    <view contentMode="scaleToFill" id="aDw-o8-Ttf">
+                        <rect key="frame" x="20" y="321" width="280" height="1"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.94509803920000002" green="0.94509803920000002" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="imageHead" destination="c2E-Yu-22R" id="KmI-YY-tm7"/>
-                <outlet property="labelContent" destination="0PG-xc-xm0" id="CHm-dl-Gxt"/>
-                <outlet property="labelStep" destination="Nyk-03-Xvd" id="JPw-7i-Ef0"/>
-                <outlet property="labelSupport" destination="aAW-SL-66a" id="jmd-44-sUc"/>
-                <outlet property="labelTag" destination="hUL-mN-TRQ" id="ouY-z7-hAd"/>
-                <outlet property="labelTitle" destination="jgG-et-qNX" id="dHJ-cA-E01"/>
-                <outlet property="viewHolder" destination="zTa-Ti-pxX" id="Vim-F2-q1F"/>
-                <outlet property="viewLeft" destination="Juf-JJ-eIg" id="5hs-5p-W7i"/>
-                <outlet property="viewLine" destination="aDw-o8-Ttf" id="FHp-Qg-voV"/>
-                <outlet property="viewRight" destination="d3X-Bp-ALp" id="dVq-C8-85W"/>
+                <outlet property="imageHead" destination="c2E-Yu-22R" id="kJG-8y-ty0"/>
+                <outlet property="labelContent" destination="0PG-xc-xm0" id="1yc-pX-9TX"/>
+                <outlet property="labelStep" destination="Nyk-03-Xvd" id="Gyp-Sy-QG0"/>
+                <outlet property="labelSupport" destination="aAW-SL-66a" id="Zmp-Il-cOG"/>
+                <outlet property="labelTag" destination="hUL-mN-TRQ" id="74s-dT-hBK"/>
+                <outlet property="labelTitle" destination="jgG-et-qNX" id="hnF-aB-wWO"/>
+                <outlet property="viewHolder" destination="zTa-Ti-pxX" id="adH-jJ-RCW"/>
+                <outlet property="viewLeft" destination="Juf-JJ-eIg" id="EK4-9p-D9u"/>
+                <outlet property="viewLine" destination="aDw-o8-Ttf" id="zkp-9C-nsP"/>
+                <outlet property="viewRight" destination="d3X-Bp-ALp" id="9gB-54-BLd"/>
             </connections>
             <point key="canvasLocation" x="216" y="275"/>
         </tableViewCell>

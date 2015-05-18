@@ -25,6 +25,7 @@ class FilmCell: UIView {
         self.layer.cornerRadius = 8
         self.layer.masksToBounds = true
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
+        self.btnBuy.backgroundColor = SeaColor
         self.btnBuy.addTarget(self, action: "onBuyClick", forControlEvents: UIControlEvents.TouchUpInside)
     }
     

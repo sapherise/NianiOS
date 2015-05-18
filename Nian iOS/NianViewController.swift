@@ -363,5 +363,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 globalNumberDream = self.dataArray.count
             }
         }
+        Api.postDeviceToken() { string in
+        }
     }
 }

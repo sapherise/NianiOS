@@ -59,14 +59,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        go {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var newDeviceToken = SAReplace("\(deviceToken)", "<", "")
             newDeviceToken = SAReplace("\(newDeviceToken)", ">", "")
             newDeviceToken = SAReplace("\(newDeviceToken)", " ", "")
             Sa.setObject(newDeviceToken, forKey:"DeviceToken")
             Sa.synchronize()
-        })
+        }
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

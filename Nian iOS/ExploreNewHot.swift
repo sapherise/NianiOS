@@ -20,32 +20,32 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
         viewController.recomTableView.registerNib(UINib(nibName: "ExploreNewHotCell", bundle: nil), forCellReuseIdentifier: "ExploreNewHotCell")
     }
     
-    func load(clear: Bool, callback: Bool -> Void) {
+    func load(clear: Bool) {
+        if clear {
+            page = 1
+        }
         Api.getExploreNewHot("\(lastID)", page: "\(page++)", callback: {
             json in
-            var success = false
-            
             if json != nil {
+                globalTab[2] = false
                 var arr = json!["items"] as! NSArray
-                
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
-                
-                success = true
-                
                 for data: AnyObject in arr {
                     self.dataArray.addObject(data)
                 }
-                
+                if self.bindViewController?.current == 2 {
+                    self.bindViewController?.recomTableView.headerEndRefreshing()
+                    self.bindViewController?.recomTableView.footerEndRefreshing()
+                    self.bindViewController?.recomTableView.reloadData()
+                }
                 var count = self.dataArray.count
-                
                 if count >= 1 {
                     var data = self.dataArray[count - 1] as! NSDictionary
-                    self.lastID = data.stringAttributeForKey("id")
+                    self.lastID = data.stringAttributeForKey("sid")
                 }
             }
-            callback(success)
         })
     }
     
@@ -60,51 +60,42 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
         if dataArray.count == 0 {
             bindViewController!.recomTableView.headerBeginRefreshing()
         } else {
-//            UIView.animateWithDuration(0.2,
-//                animations: { () -> Void in
-//                    self.bindViewController!.recomTableView.setContentOffset(CGPointZero, animated: false)
-//                }, completion: { (Bool) -> Void in
-//                    if loading {
-//                        self.bindViewController!.recomTableView.headerBeginRefreshing()
-//                    }
-//            })
+            if loading {
+                UIView.animateWithDuration(0.2,
+                    animations: { () -> Void in
+                        self.bindViewController!.recomTableView.setContentOffset(CGPointZero, animated: false)
+                    }, completion: { (Bool) -> Void in
+                        self.bindViewController!.recomTableView.headerBeginRefreshing()
+                })
+            }
         }
     }
     
     override func onRefresh() {
         page = 1
         self.lastID = "0"
-        load(true) {
-            success in
-            if self.bindViewController!.current == 2 {
-                self.bindViewController!.recomTableView.headerEndRefreshing()
-                self.bindViewController!.recomTableView.reloadData()
-            }
-        }
+        load(true)
+//            {
+//            if self.bindViewController!.current == 2 {
+//                self.bindViewController!.recomTableView.headerEndRefreshing()
+//                self.bindViewController!.recomTableView.reloadData()
+//            }
+//        }
     }
     
     override func onLoad() {
-        load(false) {
-            success in
-            if self.bindViewController!.current == 2 {
-                if success {
-                    self.bindViewController!.recomTableView.footerEndRefreshing()
-                    self.bindViewController!.recomTableView.reloadData()
-                } else {
-                    self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
-                }
-            }
-        }
+        load(false)
+//            {
+//            if self.bindViewController!.current == 2 {
+//                    self.bindViewController!.recomTableView.footerEndRefreshing()
+//                    self.bindViewController!.recomTableView.reloadData()
+//            }
+//        }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var index = indexPath.row
         var data = self.dataArray[index] as! NSDictionary
-        
-        if index == self.dataArray.count - 1 {
-            return ExploreNewHotCell.cellHeightByData(data) - 15
-        }
-        
         return  ExploreNewHotCell.cellHeightByData(data)
     }
     

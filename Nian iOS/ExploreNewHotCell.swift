@@ -33,58 +33,58 @@ class ExploreNewHotCell: UITableViewCell {
         self.selectionStyle = .None
         self.setWidth(globalWidth)
         self.labelTag.setX(globalWidth-72)
-        self.viewLine.setWidth(globalWidth)
+        self.viewLine.setWidth(globalWidth - 40)
         self.viewHolder.setX(globalWidth/2-160)
     }
 
-    
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.objectForKey("id") as! String
-        var title = self.data.objectForKey("title") as! String
-        var img = self.data.objectForKey("img") as! String
-        var tag = self.data.objectForKey("type") as! String
-        var likes = self.data.objectForKey("likes") as! String
-        var content = self.data.objectForKey("content") as! String
-        var steps = self.data.objectForKey("steps") as! String
+        var id = self.data.stringAttributeForKey("id")
+        var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
+        var img = self.data.stringAttributeForKey("img")
+        var tag = self.data.stringAttributeForKey("type")
+        var likes = self.data.stringAttributeForKey("likes")
+        var content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
+        var steps = self.data.stringAttributeForKey("steps")
+        likes = SAThousand(likes)
+        steps = SAThousand(steps)
   
-        switch tag.toInt()! {
-        case 0:
-            self.labelTag.text = "最近更新"
-        case 1:
+        switch tag {
+        case "0":
+            self.labelTag.text = "最新"
+        case "1":
             self.labelTag.text = "榜单"
-        case 2:
-            self.labelTag.text = "小编精选"
-        case 3:
-            self.labelTag.text = "热门"
+        case "2":
+            self.labelTag.text = "精选"
+        case "3":
+            self.labelTag.text = "推广"
         default:
             break
         }
         
-        // 设置 content label 最多为 4 行
-        self.labelContent.numberOfLines = 4
-        tmpLineHeight = CGFloat(self.labelContent.numberOfLines) * self.labelContent.font.lineHeight
-        var maxSize: CGSize = CGSizeMake(self.labelContent.frame.size.width, tmpLineHeight)
-        var tmpContentHeight = content.stringHeightWith(13, width: 250)
-        var fitHeight: CGFloat = 4 * self.labelContent.font.lineHeight > tmpContentHeight ? tmpContentHeight : 4 * self.labelContent.font.lineHeight
-        var newFrame = CGRectMake(self.labelContent.frame.origin.x, self.labelContent.frame.origin.y, self.labelContent.frame.size.width, fitHeight)
-        self.labelContent.frame = newFrame
+        self.labelTag.setRadius(4, isTop: false)
         
         var titleHeight = title.stringHeightBoldWith(19, width: 242)
         self.labelSupport.text = likes  //点赞
         self.labelTitle.text = SADecode(title)
         self.labelStep.text = steps
-        self.labelContent.text = SADecode(content)
-        self.labelContent.setHeight(fitHeight) // 最多为 4 行，如果 content 少于 4 行，那就按实际 content 的行数
+        self.labelContent.text = content
+        
+        var heightFit = content.stringHeightWith(13, width: 250)
+        var heightMax = "\n\n".stringHeightWith(13, width: 250)
+        var heightContent = heightFit > heightMax ? heightMax : heightFit
+        
+        self.labelContent.setHeight(heightContent)
         self.labelTitle.setHeight(titleHeight)
-        self.labelContent.setY(self.labelTitle.frame.origin.y + titleHeight + 8)
+        self.labelContent.setY(self.labelTitle.bottom() + 8)
         var bottom = self.labelContent.bottom()
         if content == "" {
             bottom = self.labelTitle.bottom()
         }
+        
         self.viewLeft.setY(bottom + 15)
         self.viewRight.setY(bottom + 15)
-        self.viewLine.setY(bottom + 109)
+        self.viewHolder.setHeight(self.viewLeft.bottom() + 33)
         if img != "" {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         } else {
@@ -92,24 +92,21 @@ class ExploreNewHotCell: UITableViewCell {
             self.imageHead.contentMode = .Center
             self.imageHead.backgroundColor = IconColor
         }
+        self.viewLine.setY(self.viewLeft.bottom() + 33)
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var title = data.stringAttributeForKey("title")
-        var content = data.stringAttributeForKey("content")
+        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        var tag = data.stringAttributeForKey("type")
         var titleHeight = title.stringHeightBoldWith(19, width: 242)
         if content == "" {
-            return 256 + titleHeight - 31
+            return 212 + titleHeight - 8
         }
-        var height = content.stringHeightWith(13, width: 250)
-        height = 61.36 > height ? height : 61.36  // 61.36 = (self.labelContent.numberOfLines = 4) * self.labelContent.font.lineHeight
-        return height + 264 + titleHeight - 31
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
         
-        self.imageHead.cancelImageRequestOperation()
-        imageHead.image = nil
+        var heightFit = content.stringHeightWith(13, width: 250)
+        var heightMax = "\n\n".stringHeightWith(13, width: 250)
+        var heightContent = heightFit > heightMax ? heightMax : heightFit
+        return heightContent + 212 + titleHeight
     }
 }

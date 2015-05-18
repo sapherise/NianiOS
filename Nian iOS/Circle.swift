@@ -43,6 +43,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardEndObserve()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
         globalCurrentCircle = 0
         globalCurrentLetter = 0
     }
@@ -50,16 +53,16 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         keyboardStartObserve()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        self.viewBackFix()
         if isCircle {
             globalCurrentCircle = self.ID
         }else{
             globalCurrentLetter = self.ID
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.viewBackFix()
     }
     
     func Poll(noti: NSNotification) {
@@ -75,7 +78,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var type = data.stringAttributeForKey("msgtype")
                 var time = (data.stringAttributeForKey("time") as NSString).doubleValue
                 var cid = data.stringAttributeForKey("cid")
-                content = SADecode(SADecode(content))
+//                content = SADecode(SADecode(content))
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
                 var safeuser = Sa.objectForKey("user") as! String
@@ -297,11 +300,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     //将内容发送至服务器
     func addReply(contentAfter:String, type:Int = 1){
-        var content = SAEncode(SAHtml(contentAfter))
+        var content = SAEncode(contentAfter)
         if isCircle {
             Api.postCircleChat(self.ID, content: content, type: type) { json in
                 if json != nil {
-                    var success = json!["success"] as! String
+                    var success = json!["success"] as? String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
                     }

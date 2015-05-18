@@ -9,8 +9,6 @@
 import UIKit
 import Foundation
 extension NSDictionary {
-   
-    
     func stringAttributeForKey(key:String)->String
     {
         var obj : AnyObject? = self[key]
@@ -22,7 +20,9 @@ extension NSDictionary {
             var num = obj as! NSNumber
             return num.stringValue
         }
-       return obj! as! String
+        if obj! as! NSObject == NSNull() {
+            return ""
+        }
+        return obj! as! String
     }
-    
 }

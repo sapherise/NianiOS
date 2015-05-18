@@ -87,7 +87,7 @@ extension UIImageView {
                     view.removeFromSuperview()
                 }else if NSStringFromClass(view.classForCoder) == "UIImageView"  {
                     UIView.animateWithDuration(0.2, animations: { () -> Void in
-                        view.setY(globalImageYPoint.origin.y)
+                        (view as! UIView).setY(globalImageYPoint.origin.y)
                         }) { (Bool) -> Void in
                             if sender.view != nil {
                                 sender.view!.removeFromSuperview()

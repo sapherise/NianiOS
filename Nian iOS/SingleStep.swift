@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SingleStepViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate{
+class SingleStepViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, delegateSAStepCell{
     
     let identifier = "dream"
     let identifier3 = "comment"
-    var tableView:UITableView?
+    var tableView:UITableView!
     var dataArray = NSMutableArray()
     var Id:String = "1"
     var deleteSheet:UIActionSheet?
@@ -55,90 +55,9 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         SAReloadData()
     }
     
-    override func viewWillDisappear(animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
-    }
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
-    }
-    
-    func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object!
-        var sid:Int = content[2] as! Int
-        var row:Int = (content[3] as! Int)-10
-        var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
-        
-        var customActivity = SAActivity()
-        customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "flag")!
-        customActivity.saActivityFunction = {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
-                    })
-                }
-            })
-        }
-        //编辑按钮
-        var editActivity = SAActivity()
-        editActivity.saActivityTitle = "编辑"
-        editActivity.saActivityType = "编辑"
-        editActivity.saActivityImage = UIImage(named: "edit")!
-        editActivity.saActivityFunction = {
-            var data = self.dataArray[row] as! NSDictionary
-            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-            addstepVC.isEdit = 1
-            addstepVC.data = data
-            addstepVC.row = row
-            addstepVC.delegate = self
-            self.navigationController!.pushViewController(addstepVC, animated: true)
-        }
-        
-        //删除按钮
-        var deleteActivity = SAActivity()
-        deleteActivity.saActivityTitle = "删除"
-        deleteActivity.saActivityType = "删除"
-        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
-        deleteActivity.saActivityFunction = {
-            self.deleteId = sid
-            self.deleteViewId = row
-            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.deleteSheet!.addButtonWithTitle("确定")
-            self.deleteSheet!.addButtonWithTitle("取消")
-            self.deleteSheet!.cancelButtonIndex = 1
-            self.deleteSheet!.showInView(self.view)
-        }
-
-        var ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
-        if self.dreamowner == 1 {
-            ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
-        }
-        
-        var arr = [content[0], url]
-        var image = getCacheImage("\(content[1])")
-        if image != nil {
-            arr.append(image!)
-        }
-        self.activityViewController = UIActivityViewController(
-            activityItems: arr,
-            applicationActivities: ActivityArray)
-        self.activityViewController?.excludedActivityTypes = [
-            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-        ]
-        self.presentViewController(self.activityViewController!, animated: true, completion: nil)
     }
     
     func setupViews()
@@ -155,13 +74,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"DreamCell", bundle: nil)
-        var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
-        var nib3 = UINib(nibName:"CommentCell", bundle: nil)
-        
-        self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView?.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.tableView!)
-        
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -219,117 +133,22 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DreamCell
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSMutableDictionary
-        c.data = data
-        c.indexPathRow = index
-        c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        c.nickLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        c.like!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeclick:"))
-        c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick:"))
-        c.imageholder!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-        c.likebutton.addTarget(self, action: "onLikeTap:", forControlEvents: UIControlEvents.TouchUpInside)
-        c.liked.addTarget(self, action: "onLikedTap:", forControlEvents: UIControlEvents.TouchUpInside)
-        c.tag = index + 10
-        c.likebutton.tag = index
-        c.liked.tag = index
+        var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+        c.delegate = self
+        c.data = self.dataArray[indexPath.row] as! NSDictionary
+        c.index = indexPath.row
         if indexPath.row == self.dataArray.count - 1 {
             c.viewLine.hidden = true
-        }else{
+        } else {
             c.viewLine.hidden = false
         }
-        cell = c
-        return cell
-    }
-    
-    // 赞
-    func onLikeTap(sender: UIButton) {
-        var tag = sender.tag
-        var data = self.dataArray[tag] as! NSDictionary
-        if let numLike = data.stringAttributeForKey("like").toInt() {
-            var numNew = numLike + 1
-            var mutableItem = NSMutableDictionary(dictionary: data)
-            mutableItem.setValue("\(numNew)", forKey: "like")
-            mutableItem.setValue("1", forKey: "liked")
-            self.dataArray.replaceObjectAtIndex(tag, withObject: mutableItem)
-            self.tableView?.reloadData()
-            var sid = data.stringAttributeForKey("sid")
-            Api.postLike(sid, like: "1") { json in
-            }
-        }
-    }
-    
-    // 取消赞
-    func onLikedTap(sender: UIButton) {
-        var tag = sender.tag
-        var data = self.dataArray[tag] as! NSDictionary
-        if let numLike = data.stringAttributeForKey("like").toInt() {
-            var numNew = numLike - 1
-            var mutableItem = NSMutableDictionary(dictionary: data)
-            mutableItem.setValue("\(numNew)", forKey: "like")
-            mutableItem.setValue("0", forKey: "liked")
-            self.dataArray.replaceObjectAtIndex(tag, withObject: mutableItem)
-            self.tableView?.reloadData()
-            var sid = data.stringAttributeForKey("sid")
-            Api.postLike(sid, like: "0") { json in
-            }
-        }
-    }
-    
-    func onImageTap(sender: UITapGestureRecognizer) {
-        var view  = self.findTableCell(sender.view)!
-        var img = dataArray[view.tag - 10].objectForKey("img") as! String
-        var img0 = dataArray[view.tag - 10].objectForKey("img0") as! NSString
-        var img1 = dataArray[view.tag - 10].objectForKey("img1") as! NSString
-        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-        var w = CGFloat(img0.floatValue)
-        var h = CGFloat(img1.floatValue)
-        if w != 0 {
-            h = h * globalWidth / w
-            var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
-            if let v = sender.view as? UIImageView {
-                v.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
-            }
-        }
-    }
-    
-    func findTableCell(view: UIView?) -> UIView? {
-        for var v = view; v != nil; v = v!.superview {
-            if v! is UITableViewCell {
-                return v
-            }
-        }
-        return nil
-    }
-    
-    func onCommentClick(sender:UIGestureRecognizer){
-        var dream:String = self.dataArray[0].objectForKey("dream") as! String
-        var tag = sender.view!.tag
-        var DreamCommentVC = DreamCommentViewController()
-        DreamCommentVC.dreamID = dream.toInt()!
-        DreamCommentVC.stepID = self.Id.toInt()!
-        DreamCommentVC.dreamowner = self.dreamowner
-        self.navigationController!.pushViewController(DreamCommentVC, animated: true)
-    }
-    
-    func likeclick(sender:UITapGestureRecognizer){
-        var LikeVC = LikeViewController()
-        LikeVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(LikeVC, animated: true)
-    }
-    
-    func userclick(sender:UITapGestureRecognizer){
-        var UserVC = PlayerViewController()
-        UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController!.pushViewController(UserVC, animated: true)
+        return c
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
-        return  DreamCell.cellHeightByData(data)
+        var data = self.dataArray[indexPath.row] as! NSDictionary
+        var h = SAStepCell.cellHeightByData(data)
+        return h
     }
     
     func Editstep() {
@@ -344,6 +163,26 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
         })
+    }
+    
+    // 更新数据
+    func updateStep(index: Int, key: String, value: String) {
+        SAUpdate(self.dataArray, index, key, value, self.tableView)
+    }
+    
+    // 更新某个格子
+    func updateStep(index: Int) {
+        SAUpdate(index, 0, self.tableView)
+    }
+    
+    // 重载表格
+    func updateStep() {
+        SAUpdate(self.tableView)
+    }
+    
+    // 删除某个格子
+    func updateStep(index: Int, delete: Bool) {
+        SAUpdate(delete, self.dataArray, index, self.tableView, 0)
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {

@@ -83,12 +83,6 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         self.viewBottom.setWidth(globalWidth)
         self.viewBottomHolder.setX(globalWidth/2-160)
         
-//        self.tableview.delegate = self
-//        self.tableview.dataSource = self
-//        var nib = UINib(nibName:"LevelGame", bundle: nil)
-//        self.tableview.registerNib(nib, forCellReuseIdentifier: "GameCell")
-//        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
-        
         self.viewCircleBackground.layer.cornerRadius = 84
         self.viewCircleBackground.layer.masksToBounds = true
         self.viewCircleBackground.layer.borderColor = UIColor.whiteColor().CGColor
@@ -97,14 +91,16 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         self.labelLevel.textColor = SeaColor
         self.labelLevel.morphingEffect = .Evaporate
         self.labelLevel.delegate = self
+        self.labelMonthLeft.textColor = SeaColor
+        self.labelMonthRight.textColor = SeaColor
         
         Api.getUserMe() { json in
             if json != nil {
-                var sa: AnyObject! = json!.objectForKey("user")
-                var foed: String! = sa.objectForKey("foed") as! String
-                var like: String! = sa.objectForKey("like") as! String
-                var step: String! = sa.objectForKey("step") as! String
-                var level: String! = sa.objectForKey("level") as! String
+                var data = json!["user"] as! NSDictionary
+                var foed = data.stringAttributeForKey("foed")
+                var like = data.stringAttributeForKey("like")
+                var step = data.stringAttributeForKey("step")
+                var level = data.stringAttributeForKey("level")
                 self.menuLeft.text = like
                 self.menuMiddle.text = step
                 self.menuRight.text = foed

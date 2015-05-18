@@ -8,70 +8,7 @@
 
 import UIKit
 
-struct FollowBlacklist {
-    
-    private static let blackfile: String = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String).stringByAppendingPathComponent("blacklist.gift")
-    
-    private static var blacklist = [Int]()
-    private static var loaded = false
-    
-    static func load() {
-        if loaded {
-            return
-        }
-        loaded = true
-        blacklist = [] //[Int]()
-        if let data = NSData(contentsOfFile: blackfile) {
-            var json: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.allZeros, error: nil)
-            if json == nil {
-                return
-            }
-            if let items = json!["blacked"] as? NSArray {
-                for item in items {
-                    if let id = item as? Int {
-                        blacklist.append(id)
-                    }
-                }
-            }
-        }
-    }
-    
-    static func save() {
-        var data = NSJSONSerialization.dataWithJSONObject(["blacked": blacklist], options: NSJSONWritingOptions.allZeros, error: nil)
-        data!.writeToFile(blackfile, atomically: true)
-    }
-    
-    static func isblacked(uid: Int) -> Bool {
-        load()
-        for id in blacklist {
-            if id == uid {
-                return true
-            }
-        }
-        return false
-    }
-    
-    static func black(uid: Int) {
-        load()
-        if !isblacked(uid) {
-            blacklist.append(uid)
-            save()
-        }
-    }
-    
-    static func unblack(uid: Int) {
-        load()
-        for var i = 0; i < blacklist.count; i++ {
-            if blacklist[i] == uid {
-                blacklist.removeAtIndex(i)
-                save()
-                break
-            }
-        }
-    }
-}
-
-class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, delegateSAStepCell {
     
     class Data {
         var id: String!
@@ -90,45 +27,31 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     weak var bindViewController: ExploreViewController?
-    var page = 0
+    var page = 1
     var locked = false
-    var dataSource = [Data]()
+    var dataArray = NSMutableArray()
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
-        viewController.tableView.registerNib(UINib(nibName: "ExploreFollowCell", bundle: nil), forCellReuseIdentifier: "ExploreFollowCell")
-//        bindViewController.view.addSubview(_headerView)
-//        self.bindViewController?._headerView.addSubview(<#view: UIView#>)
+        viewController.tableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
     }
     
-    func load(clear: Bool, callback: Bool -> Void) {
+    func load(clear: Bool) {
+        if clear {
+            page = 1
+        }
         Api.getExploreFollow("\(page++)", callback: {
             json in
-            var success = false
             if json != nil {
+                if clear {
+                    self.dataArray.removeAllObjects()
+                }
                 var items = json!["items"] as! NSArray
                 if items.count != 0 {
-                    if clear {
-                        self.dataSource.removeAll(keepCapacity: true)
-                    }
-                    success = true
                     for item in items {
-                        var data = Data()
-                        data.id = item["id"] as! String
-                        data.sid = item["sid"] as! String
-                        data.uid = item["uid"] as! String
-                        data.user = item["user"] as! String
-                        data.content = item["content"] as! String
-                        data.lastdate = item["lastdate"] as! String
-                        data.title = item["title"] as! String
-                        data.img = item["img"] as! String
-                        data.img0 = (item["img0"] as! NSString).floatValue
-                        data.img1 = (item["img1"] as! NSString).floatValue
-                        data.like = (item["like"] as! String).toInt()
-                        data.liked = (item["liked"] as! String).toInt()
-                        data.comment = (item["comment"] as! String).toInt()
-                        self.dataSource.append(data)
+                        self.dataArray.addObject(item)
                     }
+                    self.bindViewController?.tableView.tableHeaderView = nil
                 } else if clear {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     var viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
@@ -136,8 +59,12 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                     viewHeader.addSubview(viewQuestion)
                     self.bindViewController?.tableView.tableHeaderView = viewHeader
                 }
+                if self.bindViewController!.current == 0 {
+                    self.bindViewController!.tableView.headerEndRefreshing()
+                    self.bindViewController!.tableView.footerEndRefreshing()
+                    self.bindViewController!.tableView.reloadData()
+                }
             }
-            callback(success)
         })
     }
     
@@ -147,390 +74,76 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     override func onShow(loading: Bool) {
         bindViewController!.tableView.reloadData()
-        if dataSource.isEmpty {
+        if dataArray.count == 0 {
             bindViewController!.tableView.headerBeginRefreshing()
         } else {
-//            UIView.animateWithDuration(0.2, animations: { () -> Void in
-//                self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
-//                }, completion: { (Bool) -> Void in
-//                    if loading {
-//                        self.bindViewController!.tableView.headerBeginRefreshing()
-//                    }
-//            })
+            if loading {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.bindViewController!.tableView.setContentOffset(CGPointZero, animated: false)
+                    }, completion: { (Bool) -> Void in
+                        self.bindViewController!.tableView.headerBeginRefreshing()
+                })
+            }
         }
     }
     
     override func onRefresh() {
-        page = 0
-        load(true) { success in
-            if self.bindViewController!.current == 0 {
-                self.bindViewController!.tableView.headerEndRefreshing()
-                self.bindViewController!.tableView.reloadData()
-            }
-        }
+        load(true)
     }
     
     override func onLoad() {
-        load(false) { success in
-            if self.bindViewController!.current == 0 {
-                if success {
-                    self.bindViewController!.tableView.footerEndRefreshing()
-                    self.bindViewController!.tableView.reloadData()
-                } else {
-                    self.bindViewController!.view.showTipText("已经到底啦", delay: 1)
-                }
-            }
-        }
+        load(false)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        for var i = dataSource.count; i > 0; i-- {
-            if let suid = dataSource[i - 1].uid.toInt() {
-                if FollowBlacklist.isblacked(suid) {
-                    dataSource.removeAtIndex(i - 1)
-                }
-            }
-        }
-        return dataSource.count
+        return dataArray.count
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var data = dataSource[indexPath.row]
-        var h = ExploreFollowCell.heightWithData(data.content, w: data.img0, h: data.img1)
-        
-        if indexPath.row == self.dataSource.count - 1 {
-            return h - 15
-        }
+        var data = self.dataArray[indexPath.row] as! NSDictionary
+        var h = SAStepCell.cellHeightByData(data)
         return h
     }
     
-//    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-//        println("\(dataSource[indexPath.row])")
-//    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("ExploreFollowCell", forIndexPath: indexPath) as? ExploreFollowCell
-        cell!.bindData(dataSource[indexPath.row], tableview: tableView)
-        cell!.tag = indexPath.row
-        cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadTap:"))
-        ///=======
-        var hatePress = UILongPressGestureRecognizer(target: self, action: "onIHATEYOU:")
-        hatePress.minimumPressDuration = 10
-        cell!.imageHead.addGestureRecognizer(hatePress)
-        ///=======
-        cell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNameTap:"))
-        cell!.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeTap:"))
-        cell!.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentTap:"))
-        cell!.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-        cell!.btnMore.addTarget(self, action: "onMoreClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        if indexPath.row == self.dataSource.count - 1 {
-            cell!.viewLine.hidden = true
-        }else{
-            cell!.viewLine.hidden = false
+        var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+        c.delegate = self
+        c.data = self.dataArray[indexPath.row] as! NSDictionary
+        c.index = indexPath.row
+        if indexPath.row == self.dataArray.count - 1 {
+            c.viewLine.hidden = true
+        } else {
+            c.viewLine.hidden = false
         }
-        
-        return cell!
+        return c
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var viewController = DreamViewController()
-        viewController.Id = dataSource[indexPath.row].id
+        var data = dataArray[indexPath.row] as! NSDictionary
+        var id = data.stringAttributeForKey("dream")
+        viewController.Id = id
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
-//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 50;
-//    }
-
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        var visiblePaths =  bindViewController!.tableView.indexPathsForVisibleRows()! as Array
-        
-        for item in visiblePaths {
-            let indexPath = item as! NSIndexPath
-            
-            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath) as! ExploreFollowCell
-            
-            if cell.imageContent.image == nil {
-                cell.bindData(dataSource[indexPath.row], tableview: bindViewController!.tableView)
-            }
-        }
-//        bindViewController?.view.layoutIfNeeded()
+    // 更新数据
+    func updateStep(index: Int, key: String, value: String) {
+        SAUpdate(self.dataArray, index, key, value, bindViewController!.tableView!)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        var visiblePaths = bindViewController!.tableView.indexPathsForVisibleRows()! as Array
-        
-        if count(visiblePaths) > 0 {
-//            self.bindViewController?._headerView.subviews.map({ $0.removeFromSuperview() })
-            
-            let indexPath = visiblePaths[0] as? NSIndexPath
-            let cell = bindViewController!.tableView.cellForRowAtIndexPath(indexPath!) as! ExploreFollowCell
-            
-            
-        }
-        
-//        var yOffset = scrollView.contentOffset.y
-//        var headerViewFrame = self.bindViewController?._headerView.frame
-//        headerViewFrame?.origin = CGPointMake(0, yOffset)
-//        self.bindViewController?._headerView.frame = headerViewFrame!
+    // 更新某个格子
+    func updateStep(index: Int) {
+        SAUpdate(index, 0, bindViewController!.tableView!)
     }
     
-    
-    func onIHATEYOU(sender: UILongPressGestureRecognizer) {
-        if locked {
-            return
-        }
-        var tag = findTableCell(sender.view)!.tag
-        if dataSource.count <= tag {
-            return
-        }
-        var uid = dataSource[tag].uid
-        if let duid = uid.toInt() {
-            if FollowBlacklist.isblacked(duid) {
-                return
-            }
-            FollowBlacklist.black(duid)
-            locked = true
-            delay(9) {
-                self.locked = false
-            }
-            sender.view!.showTipText("I LOVE \(dataSource[tag].user)", delay: 1)
-            bindViewController!.tableView.reloadData()
-        }
+    // 重载表格
+    func updateStep() {
+        SAUpdate(bindViewController!.tableView!)
     }
     
-    func onHeadTap(sender: UITapGestureRecognizer) {
-        var viewController = PlayerViewController()
-        viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
-        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func onNameTap(sender: UITapGestureRecognizer) {
-        var viewController = PlayerViewController()
-        viewController.Id = dataSource[findTableCell(sender.view)!.tag].uid
-        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func onImageTap(sender: UITapGestureRecognizer) {
-        var view = findTableCell(sender.view)!
-        var data = dataSource[view.tag]
-        if let imageView = sender.view as? UIImageView {
-            var yPoint = imageView.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-            var w = CGFloat(data.img0)
-            var h = CGFloat(data.img1)
-            if w != 0 {
-                h = h * globalWidth / w
-                var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
-                imageView.showImage(V.urlStepImage(data.img, tag: .Large), rect: rect)
-            }
-        }
-    }
-    
-    func onLikeTap(sender: UITapGestureRecognizer) {
-        var viewController = LikeViewController()
-        viewController.Id = dataSource[findTableCell(sender.view)!.tag].sid
-        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func onCommentTap(sender: UITapGestureRecognizer) {
-        var data = dataSource[findTableCell(sender.view)!.tag]
-        var viewController = DreamCommentViewController()
-        viewController.dataTotal = data.comment
-        viewController.dreamID = data.id.toInt()!
-        viewController.stepID = data.sid.toInt()!
-        viewController.dreamowner = data.uid.toInt()!
-        bindViewController!.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func onMoreClick(sender: UIButton) {
-        var data = dataSource[findTableCell(sender.superview)!.tag]
-        var reportActivity = V.CustomActivity(title: "举报", image: UIImage(named: "flag")) {
-            items in
-            Api.postReport("step", id: data.sid) {
-                result in
-                if result == "1" {
-                    sender.showTipText("打小报告成功", delay: 1)
-                }
-            }
-        }
-        var items: [AnyObject] = [ data.content, V.urlShareDream(data.id)]
-        if data.img != "" {
-            var image = getCacheImage("http://img.nian.so/step/\(data.img)!large")
-            if image != nil {
-                items.append(image!)
-            }
-        }
-        sender.popupActivity(items, activities: [WeChatSessionActivity(), WeChatMomentsActivity(), reportActivity], exclude: [
-            UIActivityTypeAddToReadingList,
-            UIActivityTypeAirDrop,
-            UIActivityTypeAssignToContact,
-            UIActivityTypePostToFacebook,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePrint
-            ])
-    }
-}
-
-class ExploreFollowCell: UITableViewCell {
-    
-    @IBOutlet weak var floatHeader: UIView!
-    @IBOutlet var imageHead: UIImageView!
-    @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelDream: UILabel!
-    @IBOutlet var imageContent: UIImageView!
-    @IBOutlet var labelContent: UILabel!
-    @IBOutlet var viewControl: UIView!
-    @IBOutlet weak var labelLike: UILabel!
-    @IBOutlet weak var btnMore: UIButton!
-    @IBOutlet weak var btnLike: UIButton!
-    @IBOutlet weak var btnUnlike: UIButton!
-    @IBOutlet weak var labelComment: UILabel!
-    @IBOutlet var labelLastdate: UILabel!
-    @IBOutlet var viewLine: UIView!
-    
-    var cellData: ExploreFollowProvider.Data?
-    var cellHeight: CGFloat = 0.0
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.selectionStyle = .None
-        self.setWidth(globalWidth)
-        self.floatHeader.setWidth(globalWidth)
-        self.labelLastdate.setX(globalWidth-15-92)
-        self.viewControl.setWidth(globalWidth)
-        self.labelContent.setWidth(globalWidth-30)
-        self.viewLine.setWidth(globalWidth)
-        self.btnLike.setX(globalWidth-50)
-        self.btnUnlike.setX(globalWidth-50)
-        self.btnMore.setX(globalWidth-90)
-        btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
-        btnUnlike.addTarget(self, action: "onUnlikeClick", forControlEvents: UIControlEvents.TouchUpInside)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        self.imageHead.cancelImageRequestOperation()
-        self.imageHead.image = nil
-        self.imageContent.cancelImageRequestOperation()
-        self.imageContent.image = nil
-    }
-    
-    func bindData(data: ExploreFollowProvider.Data, tableview: UITableView) {
-        cellData = data
-        var imageDelta: CGFloat =  0
-        var textHeight = data.content.stringHeightWith(16, width: globalWidth-30)
-        if data.content == "" {
-            textHeight = 0
-        }
-        var textDelta = CGFloat(textHeight - labelContent.height())
-        labelContent.setHeight(textHeight)
-        if !data.img0.isZero && !data.img1.isZero {     //有图片
-            imageDelta = CGFloat(data.img1 * Float(globalWidth) / data.img0)
-
-            imageContent.setImage(V.urlStepImage(data.img, tag: .Large), placeHolder: IconColor)
-            imageContent.setHeight(imageDelta)
-            imageContent.setWidth(globalWidth)
-            imageContent.setX(0)
-            imageContent.hidden = false
-            labelContent.setY(imageContent.bottom() + 15)
-        }else if data.content == "" {
-            imageContent.image = UIImage(named: "check")
-            imageContent.setHeight(23)
-            imageContent.setWidth(50)
-            imageContent.setX(15)
-            imageContent.hidden = false
-            labelContent.setY(imageContent.bottom() + 15)
-        }else{
-            imageContent.hidden = true
-            labelContent.setY(70)
-        }
-        if data.content == "" {
-            viewControl.setY(labelContent.bottom()-10)
-        }else{
-            viewControl.setY(labelContent.bottom()+5)
-        }
-        viewLine.setY(viewControl.bottom()+10)
-        imageHead.setHead(data.uid)
-        
-        labelName.text = data.user
-        labelDream.text = data.title
-        labelLastdate.text = data.lastdate
-        labelContent.text = data.content
-        var liked = (data.liked != 0)
-        btnLike.hidden = liked
-        btnUnlike.hidden = !liked
-        setCommentText(data.comment)
-        setLikeText(data.like)
-    }
-    
-    func setLikeText(like: Int) {
-        if like == 0 {
-            self.labelLike.hidden = true
-        }else{
-            self.labelLike.hidden = false
-        }
-        var likeText = "\(like) 赞"
-        labelLike.text = likeText
-        var likeWidth = likeText.stringWidthWith(13, height: 30) + 17
-        labelLike.setWidth(likeWidth)
-    }
-    
-    func setCommentText(comment: Int) {
-        var commentText = ""
-        if comment != 0 {
-            commentText = "\(comment) 评论"
-        }else{
-            commentText = "评论"
-        }
-        labelComment.text = commentText
-        var commentWidth = commentText.stringWidthWith(13, height: 30) + 17
-        labelComment.setWidth(commentWidth)
-        labelLike.setX(commentWidth + 23)
-    }
-    
-    func onLikeClick() {
-        self.cellData!.liked = 1
-        self.btnLike.hidden = true
-        self.btnUnlike.hidden = false
-        self.cellData!.like = self.cellData!.like + 1
-        self.setLikeText(self.cellData!.like)
-        Api.postLikeStep(cellData!.sid, like: 1) {
-            result in
-            if result != nil && result == "1" {
-            }
-        }
-    }
-    
-    func onUnlikeClick() {
-        self.cellData!.liked = 0
-        self.btnLike.hidden = false
-        self.btnUnlike.hidden = true
-        self.cellData!.like = self.cellData!.like - 1
-        self.setLikeText(self.cellData!.like)
-        Api.postLikeStep(cellData!.sid, like: 0) {
-            result in
-            if result != nil && result == "1" {
-            }
-        }
-    }
-    
-    class func heightWithData(content: String, w: Float, h: Float) -> CGFloat {
-        var height = content.stringHeightWith(16, width: globalWidth-30)
-        if h == 0.0 || w == 0.0 {
-            if content == "" {
-                return 156 + 23
-            }else{
-                return height + 151
-            }
-        } else {
-            if content == "" {
-                return 156 + CGFloat(h * Float(globalWidth) / w)
-            }else{
-                return height + 171 + CGFloat(h * Float(globalWidth) / w)
-            }
-        }
+    // 删除某个格子
+    func updateStep(index: Int, delete: Bool) {
+        SAUpdate(delete, self.dataArray, index, bindViewController!.tableView!, 0)
     }
     
 }

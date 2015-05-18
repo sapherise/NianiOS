@@ -75,9 +75,10 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         
         Api.getUserMe() { json in
             if json != nil {
-                var sa: AnyObject! = json!.objectForKey("user")
-                var coin: String! = sa.objectForKey("coin") as! String
-                self.levelLabelCount(coin.toInt()!)
+                var data = json!["user"] as! NSDictionary
+                if let coin = data.stringAttributeForKey("coin").toInt() {
+                    self.levelLabelCount(coin)
+                }
             }
         }
     }

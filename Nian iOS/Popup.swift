@@ -29,6 +29,7 @@ class Popup: UIView {
         self.viewBackGround.translucentAlpha = 1
         self.viewBackGround.translucentStyle = UIBarStyle.Default
         self.viewBackGround.translucentTintColor = UIColor.clearColor()
+        self.btnMain.backgroundColor = SeaColor
         self.btnMain.hidden = true
         self.btnSub.hidden = true
     }
