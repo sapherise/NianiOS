@@ -317,17 +317,19 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func tabBarButtonClicked(sender:UIButton){
         var index = sender.tag
         for var i = 0;i<5;i++ {
-            var button = self.view.viewWithTag(i+100) as! UIButton
-            if index != 102 {
-                if button.tag == index{
-                    button.selected = true
-                }else{
-                    button.selected = false
+            var button = self.view.viewWithTag(i+100) as? UIButton
+            if button != nil {
+                if index != 102 {
+                    if button!.tag == index{
+                        button!.selected = true
+                    }else{
+                        button!.selected = false
+                    }
                 }
             }
         }
         if index != 102 {
-            self.selectedIndex = index-100
+            self.selectedIndex = index - 100
         }
         globalTabBarSelected = index
         
@@ -464,104 +466,102 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func on_poll(obj: AnyObject?) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeuser = Sa.objectForKey("user") as! String
+        go {
+            var safeuid = SAUid()
             if obj != nil {
                 var msg: AnyObject? = obj!["msg"]
-                var json = msg!["msg"] as! NSArray
-                var count = json.count - 1
-                if count >= 0 {
-                    for i: Int in 0...count {
-                        var data: NSDictionary = json[i] as! NSDictionary
-                        var id = data.stringAttributeForKey("msgid")
-                        var uid = data.stringAttributeForKey("from")
-                        var name = data.stringAttributeForKey("fromname")
-                        var cid = data.stringAttributeForKey("cid")
-                        var cname = data.stringAttributeForKey("cname")
-                        var content = data.stringAttributeForKey("msg")
-                        var type = data.stringAttributeForKey("msgtype")
-                        var time = data.stringAttributeForKey("time")
-                        var circle = data.stringAttributeForKey("to")
-                        var title = data.stringAttributeForKey("title")
-                        var totype = data.stringAttributeForKey("totype")
-                            content = SADecode(SADecode(content))
-                        title = SADecode(SADecode(title))
-                        var isread = 0
-                        // 如果是群聊
-                        if totype == "1" {
-                            if circle == "\(globalCurrentCircle)" || uid == safeuid {
-                                isread = 1
-                            }
-                            SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-                                if (type == "1" || type == "2") && (uid != safeuid) {
-                                    // shake()
-                                    // 替换成顶部的 statusbar 出现提示
-                                }
-                                if (type == "6") && ((cid == safeuid) || (cid == uid)) {
-                                    Api.getCircleStatus(circle) { json in
-                                        if json != nil {
-                                            var numStatus = json!["count"] as! String
-                                            var titleStatus = json!["title"] as! String
-                                            var imageStatus = json!["img"] as! String
-                                            var postdateStatus = json!["postdate"] as! String
-                                            if numStatus == "1" {
-                                                // 添加
-                                                SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                                NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                                            }
-                                        }
+                if msg != nil {
+                    var json = msg!["msg"] as? NSArray
+                    if json != nil {
+                        var count = json!.count - 1
+                        if count >= 0 {
+                            for i: Int in 0...count {
+                                var data: NSDictionary = json![i] as! NSDictionary
+                                var id = data.stringAttributeForKey("msgid")
+                                var uid = data.stringAttributeForKey("from")
+                                var name = data.stringAttributeForKey("fromname")
+                                var cid = data.stringAttributeForKey("cid")
+                                var cname = data.stringAttributeForKey("cname")
+                                var content = data.stringAttributeForKey("msg")
+                                var type = data.stringAttributeForKey("msgtype")
+                                var time = data.stringAttributeForKey("time")
+                                var circle = data.stringAttributeForKey("to")
+                                var title = data.stringAttributeForKey("title")
+                                var totype = data.stringAttributeForKey("totype")
+                                content = SADecode(SADecode(content))
+                                title = SADecode(SADecode(title))
+                                var isread = 0
+                                // 如果是群聊
+                                if totype == "1" {
+                                    if circle == "\(globalCurrentCircle)" || uid == safeuid {
+                                        isread = 1
                                     }
-                                }else if type == "3" {
-                                    Api.getSingleStepSync(cid) { json in
-                                        if json != nil {
-                                            if let item = json!["items"] as? NSArray {
-                                                if item.count > 0 {
-                                                    var dataStep = item[0] as! NSDictionary
-                                                    var sid = dataStep.stringAttributeForKey("sid")
-                                                    var uid = dataStep.stringAttributeForKey("uid")
-                                                    var dream = dataStep.stringAttributeForKey("dream")
-                                                    var content = dataStep.stringAttributeForKey("content")
-                                                    var img = dataStep.stringAttributeForKey("img")
-                                                    var img0 = dataStep.stringAttributeForKey("img0")
-                                                    var img1 = dataStep.stringAttributeForKey("img1")
-                                                    SQLStepContent(sid, uid, dream, content, img, img0, img1) {
+                                    SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
+                                        if (type == "6") && ((cid == safeuid) || (cid == uid)) {
+                                            Api.getCircleStatus(circle) { json in
+                                                if json != nil {
+                                                    var numStatus = json!["count"] as! String
+                                                    var titleStatus = json!["title"] as! String
+                                                    var imageStatus = json!["img"] as! String
+                                                    var postdateStatus = json!["postdate"] as! String
+                                                    if numStatus == "1" {
+                                                        // 添加
+                                                        SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
                                                         NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                                                     }
+                                                }
+                                            }
+                                        }else if type == "3" {
+                                            Api.getSingleStepSync(cid) { json in
+                                                if json != nil {
+                                                    if let item = json!["items"] as? NSArray {
+                                                        if item.count > 0 {
+                                                            var dataStep = item[0] as! NSDictionary
+                                                            var sid = dataStep.stringAttributeForKey("sid")
+                                                            var uid = dataStep.stringAttributeForKey("uid")
+                                                            var dream = dataStep.stringAttributeForKey("dream")
+                                                            var content = dataStep.stringAttributeForKey("content")
+                                                            var img = dataStep.stringAttributeForKey("img")
+                                                            var img0 = dataStep.stringAttributeForKey("img0")
+                                                            var img1 = dataStep.stringAttributeForKey("img1")
+                                                            SQLStepContent(sid, uid, dream, content, img, img0, img1) {
+                                                                NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }else{
+                                            NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+                                        }
+                                    }
+                                    if safeuid != uid {     // 如果是朋友们发的
+                                        back {
+                                            if globalTabBarSelected != 104 {
+                                                self.dotCircle!.hidden = false
+                                                if let a = self.dotCircle!.text?.toInt() {
+                                                    self.dotCircle!.text = "\(a + 1)"
                                                 }
                                             }
                                         }
                                     }
                                 }else{
-                                    NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                                }
-                            }
-                            if safeuid != uid {     // 如果是朋友们发的
-                                dispatch_async(dispatch_get_main_queue(), {
-                                    if globalTabBarSelected != 104 {
-                                        self.dotCircle!.hidden = false
-                                        if let a = self.dotCircle!.text?.toInt() {
-                                            self.dotCircle!.text = "\(a + 1)"
-                                        }
+                                    // 如果是私聊
+                                    shake()
+                                    if uid == "\(globalCurrentLetter)" || uid == safeuid {
+                                        isread = 1
                                     }
-                                })
-                            }
-                        }else{
-                            // 如果是私聊
-                            shake()
-                            if uid == "\(globalCurrentLetter)" || uid == safeuid {
-                                isread = 1
-                            }
-                            SQLLetterContent(id, uid, name, uid, content, type, time, isread) {
-                                NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
-                                self.noticeDot()
+                                    SQLLetterContent(id, uid, name, uid, content, type, time, isread) {
+                                        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+                                        self.noticeDot()
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        })
+        }
     }
     
     func loadCircle() {
@@ -573,6 +573,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     // 成功
                     var a: Int = 0
                     var arr = json!["items"] as! NSArray
+                    var lastid = json!["lastid"] as! String
                     for i : AnyObject  in arr {
                         var data = i as! NSDictionary
                         var id = data.stringAttributeForKey("id")
@@ -634,15 +635,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             a++
                         }
                     }
+                    Api.postUserCircleLastid(lastid) { json in
+                    }
                     if a != 0 {
-                        dispatch_async(dispatch_get_main_queue(), {
+                        back {
                             if globalTabBarSelected != 104 {
                                 self.dotCircle!.hidden = false
                                 if let b = self.dotCircle!.text?.toInt() {
                                     self.dotCircle!.text = "\(b + a)"
                                 }
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -655,6 +658,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 // 成功
                 var a: Int = 0
                 var arr = json!["items"] as! NSArray
+                var lastid = json!["lastid"] as! String
                 for i : AnyObject  in arr {
                     var data = i as! NSDictionary
                     var id = data.stringAttributeForKey("id")
@@ -678,9 +682,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
                             var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                             NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
-                            self.noticeDot()
                         }
                     }
+                }
+                self.noticeDot()
+                Api.postUserLetterLastid(lastid) { json in
                 }
             }
         }

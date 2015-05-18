@@ -118,6 +118,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
                     back {
 //                        self.view.showTipText(sql_error, delay: 3)
                         self.tableView.headerEndRefreshing()
+                        self.toggle = true
                     }
                     return
                 }

@@ -333,10 +333,7 @@ extension UIViewController {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as? String
         var safeshell = Sa.objectForKey("shell") as? String
-        if (safeuid != nil) && (safeshell != nil) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("devicetoken=&&uid=\(safeuid!)&&shell=\(safeshell!)&&type=1", "http://nian.so/api/user_update.php")
-            })
+        Api.postDeviceTokenClear() { string in
         }
         Sa.removeObjectForKey("uid")
         Sa.removeObjectForKey("shell")
@@ -670,7 +667,7 @@ func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UI
     }
 }
 
-func getuid() -> String {
+func SAUid() -> String {
     var uid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
     if uid != nil {
         return uid!
@@ -737,3 +734,18 @@ func SAThousand(num: String) -> String {
     }
     return ""
 }
+
+extension UIView {
+    func setRadius(size: CGFloat, isTop: Bool) {
+        var rectCorner = UIRectCorner.TopLeft | UIRectCorner.TopRight
+        if !isTop {
+            rectCorner = UIRectCorner.BottomLeft | UIRectCorner.BottomRight
+        }
+        let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: rectCorner, cornerRadii: CGSizeMake(size, size))
+        var maskLayer = CAShapeLayer()
+        maskLayer.frame = self.bounds
+        maskLayer.path = maskPath.CGPath
+        self.layer.mask = maskLayer
+    }
+}
+

@@ -176,7 +176,7 @@ struct Api {
     static func postCircleChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
-        V.httpPostForJsonSync("http://nian.so/api/circle_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/circle_chat2.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCircleQuit(Id: String, callback: V.JsonCallback) {
@@ -289,7 +289,12 @@ struct Api {
     
     static func postCircleInit(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJsonSync("http://nian.so/api/circle_init.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/circle_init2.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func postUserCircleLastid(lastid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=10&&lastid=\(lastid)", callback: callback)
     }
     
     static func getBBSComment(page: Int, flow: Int, id: String, callback: V.JsonCallback) {
@@ -315,7 +320,12 @@ struct Api {
     
     static func postLetterInit(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJsonSync("http://nian.so/api/letter_init.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpPostForJsonSync("http://nian.so/api/letter_init2.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func postUserLetterLastid(lastid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=9&&lastid=\(lastid)", callback: callback)
     }
     
     static func postLike(step: String, like: String, callback: V.JsonCallback) {
@@ -505,11 +515,19 @@ struct Api {
     }
     
     
-    static func postDeviceToken(devicetoken: String, callback: V.StringCallback) {
+    static func postDeviceToken(callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=\(devicetoken)&&uid=\(s_uid)&&shell=\(s_shell)&&type=1", callback: callback)
+        var UserDefaults = NSUserDefaults.standardUserDefaults()
+        var DeviceToken = UserDefaults.objectForKey("DeviceToken") as? String
+        if DeviceToken != nil {
+            V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=\(DeviceToken!)&&uid=\(s_uid)&&shell=\(s_shell)&&type=1", callback: callback)
+        }
     }
     
+    static func postDeviceTokenClear(callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=&uid=\(s_uid)&shell=\(s_shell)&type=1", callback: callback)
+    }
     
     static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
         loadCookies()

@@ -49,6 +49,7 @@ class CircleExploreCell: UITableViewCell {
         if let IntTag = tag.toInt() {
             self.labelTag.text = V.Tags[IntTag-1]
         }
+        self.labelTag.setRadius(4, isTop: false)
         if var IntChat = chat.toInt() {
             if IntChat >= 1000 {
                 IntChat = IntChat / 100

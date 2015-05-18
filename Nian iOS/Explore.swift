@@ -96,13 +96,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             if let v = "\(noti.object!)".toInt() {
                 if v > 0 {
                     switchTab(current)
-                    if self.tableView.contentOffset.y  > 0 {
-                        delay(0.2, {
-                            self.tableView.headerBeginRefreshing()
-                        })
-                    }else{
-                        self.tableView.headerBeginRefreshing()
-                    }
                 }
             }
         }

@@ -83,11 +83,7 @@ class CircleDreamCell: UITableViewCell {
     
     func layoutDream(height: CGFloat, contentStep: String, img: String, img0: String, img1: String, user: String, title: String, lastdate: String, isMe: Bool) {
         self.textContent.setWidth(235)
-        let maskPath = UIBezierPath(roundedRect: self.imageDream.bounds, byRoundingCorners: ( UIRectCorner.TopLeft | UIRectCorner.TopRight ), cornerRadii: CGSizeMake(12, 12))
-        var maskLayer = CAShapeLayer()
-        maskLayer.frame = self.imageDream.bounds
-        maskLayer.path = maskPath.CGPath
-        self.imageDream.layer.mask = maskLayer
+        self.imageDream.setRadius(12, isTop: true)
         self.imageDream.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageDream.layer.borderWidth = 0.5
         if img0.toInt() != 0 || img1.toInt() != 0 {

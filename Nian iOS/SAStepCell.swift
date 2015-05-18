@@ -270,7 +270,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         }
         
         var ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
-        if uid == getuid() {
+        if uid == SAUid() {
             ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
         }
         var arr = [content, url]
