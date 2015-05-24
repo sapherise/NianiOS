@@ -34,7 +34,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
-    var scrollView: UIScrollView!
     var viewCoin: Popup!
     
     var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
@@ -64,7 +63,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var liketotalJson: Int = 0
     var stepJson: String = ""
     var desJson:String = ""
-    var tagArray: Array<NSString> = []  // 加 tag
+    var tagArray: Array<String> = []  // 加 tag
+    var loadTopCellDone: Bool = false
     
     var desHeight:CGFloat = 0
     
@@ -90,12 +90,22 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
+        self.loadTopCellDone = false
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
         self.viewBackFix()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
     }
     
     func ShareContent(noti:NSNotification){
@@ -204,10 +214,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        self.scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, 44))
-        self.scrollView.showsHorizontalScrollIndicator = false
-        self.scrollView.showsVerticalScrollIndicator = false
-        self.scrollView.contentSize =  CGSizeMake(8, 0)
+        self.tableView.headerBeginRefreshing()
         
         //主人 -- 已经返回 tags --05.17
         Api.getDreamTop(self.Id) { json in
@@ -239,7 +246,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     if self.privateJson != "2" {
                         self.navigationItem.rightBarButtonItems = [ moreButton]
                     }
-                }else{
+                } else {
                     self.dreamowner = 0
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
                     moreButton.image = UIImage(named:"more")
@@ -247,26 +254,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                         self.navigationItem.rightBarButtonItems = [ moreButton]
                     }
                 }
-                self.loadDreamTopcell()
+                dispatch_after(1, dispatch_get_main_queue(), {
+                    self.tableView.headerEndRefreshing(animated: true)
+                    self.loadDreamTopcell()
+                })
+                
             }
         }
-        
-        for var i = 0; i < count(self.tagArray); i++ {
-            var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
-            label.text = self.tagArray[i] as String
-            self.labelWidthWithItsContent(label, content: self.tagArray[i])
-        }
-        
-        self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width + CGFloat(8), self.scrollView.frame.height)
-        
-//        if count(self.tagArray) > 0 {
-            self.view.addSubview(self.scrollView)
-//        }
     }
-    
+
     // 自定义 label 
     func labelWidthWithItsContent(label: NILabel, content: NSString) {
-        label.frame = CGRectMake(0, 0, 0, 0)
+        var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
+        var labelSize = content.sizeWithAttributes(dict)
+        
         label.numberOfLines = 1
         label.textAlignment = .Center
         label.font = UIFont.systemFontOfSize(12)
@@ -276,16 +277,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         label.layer.masksToBounds = true
         label.textColor = UIColor(red: 171/255, green: 179/255, blue: 180/255, alpha: 1)
         label.backgroundColor = UIColor.whiteColor()
-        
-        var size = CGSizeMake(320, 24)
-        var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
-        var labelSize = content.sizeWithAttributes(dict)
-        
         label.frame = CGRectMake(0, 0, labelSize.width + 16, 24)
-        label.frame.origin.x = self.scrollView.contentSize.width + 8
-        label.frame.origin.y = 10
-        self.scrollView.addSubview(label)
-        self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width + 8 + label.frame.width , self.scrollView.frame.height)
     }
     
     
@@ -395,6 +387,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStepClick"))
             c.numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeDream"))
             c.numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
+            
+            if (self.topCell != nil && self.topCell.scrollView.hidden == true) {
+                c.moveUp()
+            }
             self.topCell = c
             cell = c
         }else{
@@ -494,14 +490,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section==0{
-            var text = self.titleJson
+        if indexPath.section == 0 {
+            var text = SADecode(SADecode(self.titleJson))
             if self.privateJson == "1" {
                 text = "\(self.titleJson)（私密）"
             }else if self.percentJson == "1" {
                 text = "\(self.titleJson)（已完成）"
             }
-            return  text.stringHeightBoldWith(19, width: 242) + 256 + 14
+            
+            if self.loadTopCellDone {
+                return self.topCell.frame.size.height
+            }
+            return text.stringHeightBoldWith(19, width: 242) + 256 + 14 + 44
         }else{
             var data = self.dataArray[indexPath.row] as! NSDictionary
             var h = SAStepCell.cellHeightByData(data)
@@ -653,16 +653,25 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         editdreamVC.editPrivate = self.privateJson
         editdreamVC.tagType = self.hashtag.toInt()!
         editdreamVC.readyForTag = readyForTag
+        editdreamVC.tagsArray = self.tagArray
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String){
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String, editTags:Array<String>){
+        self.tagArray.removeAll(keepCapacity: false)
+        
+        self.topCell.scrollView.subviews.map({
+            $0.removeFromSuperview()
+        })
+        self.topCell.scrollView.contentSize = CGSizeMake(8, self.topCell.scrollView.frame.height)
+        
         self.titleJson = editTitle
         self.privateJson = editPrivate
         self.contentJson = editDes
         self.desJson = editDes
         self.imgJson = editImage
         self.hashtag = editTag
+        self.tagArray = editTags
         loadDreamTopcell()
     }
     
@@ -719,13 +728,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.topCell.nickLabel.setHeight(h)
         var bottom = self.topCell.nickLabel.bottom()
         self.topCell.viewHolder.setY(bottom + 13)
-        self.topCell.btnMain.setY(bottom + 84)
-        self.topCell.dotLeft.setY(bottom + 137)
-        self.topCell.dotRight.setY(bottom + 137)
+        self.topCell.btnMain.setY(bottom + 128)
+        self.topCell.dotLeft.setY(bottom + 181)
+        self.topCell.dotRight.setY(bottom + 181)
         self.topCell.viewBG.setHeight(h + 256)
         self.topCell.viewLeft.setHeight(h + 256)
         self.topCell.viewRight.setHeight(h + 256)
-        
         self.topCell.numLeftNum.text = "\(self.liketotalJson)"
         self.topCell.numMiddleNum.text = "\(self.stepJson)"
         
@@ -754,8 +762,40 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.topCell.labelDes.setHeight(desHeight)
         self.topCell.labelDes.setY( 110 - desHeight / 2 )
         self.userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
-        self.topCell.dreamhead!.setImage(self.userImageURL,placeHolder: IconColor)
+        self.topCell.dreamhead!.setImage(self.userImageURL, placeHolder: IconColor)
         self.topCell.dreamhead!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
+        
+        if (count(self.tagArray) == 0 || (count(self.tagArray) == 1 && count(tagArray[0]) == 0)) {
+            self.topCell.scrollView.hidden = true
+            self.topCell.frame.size = CGSizeMake(self.topCell.frame.size.width, self.topCell.frame.size.height - 44)
+            self.topCell.frame.origin = CGPointMake(self.topCell.frame.origin.x, self.topCell.frame.origin.y)
+            self.loadTopCellDone = true
+            self.tableView.reloadData()
+        } else {
+            self.topCell.scrollView.hidden = false
+            
+            for var i = 0; i < count(self.tagArray); i++ {
+                var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+                label.userInteractionEnabled = true
+                label.text = self.tagArray[i] as String
+                self.labelWidthWithItsContent(label, content: self.tagArray[i])
+                label.frame.origin.x = self.topCell.scrollView.contentSize.width + 8
+                label.frame.origin.y = 10
+                label.tag = 12000 + i
+                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
+                self.topCell.scrollView.addSubview(label)
+                self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + 8 + label.frame.width , self.topCell.scrollView.frame.height)
+            }
+            
+            self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + CGFloat(8), self.topCell.scrollView.frame.height)
+            self.topCell.scrollView.canCancelContentTouches = false
+            self.topCell.scrollView.delaysContentTouches = false
+            self.topCell.scrollView.userInteractionEnabled = true
+            self.topCell.scrollView.exclusiveTouch = true
+            
+            self.loadTopCellDone = true
+            self.tableView.reloadData()
+        }
     }
     
     func onDreamHeadClick(sender:UIGestureRecognizer) {
@@ -764,6 +804,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var rect = CGRectMake(-yPoint.x, -yPoint.y, 60, 60)
             v.showImage("http://img.nian.so/dream/\(self.imgJson)!large", rect: rect)
         }
+    }
+    
+    func toSearch(sender: UIGestureRecognizer) {
+        let label = sender.view
+        
+        var storyboard = UIStoryboard(name: "Explore", bundle: nil)
+        var searchVC = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
+        searchVC.preSetSearch = self.tagArray[label!.tag - 12000]
+        self.navigationController?.pushViewController(searchVC, animated: true)        
     }
     
     func likeDream(){

@@ -74,6 +74,7 @@ struct V {
     static func httpGetForJson_AFN(requestURL: String, callback: JsonCallback) {
         var manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
+        manager.requestSerializer = AFHTTPRequestSerializer()
         
         manager.GET(requestURL,
             parameters: nil,

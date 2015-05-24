@@ -304,7 +304,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         c.data = data
         c.total = self.dataArray.count
         
-        c.labelTitle.text = data.stringAttributeForKey("title")
+        c.labelTitle.text = (data.stringAttributeForKey("title") as NSString).stringByDecodingHTMLEntities().stringByDecodingHTMLEntities()
         c.imageCover.setHolder()
 
         var img = data.stringAttributeForKey("img")

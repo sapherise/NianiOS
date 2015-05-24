@@ -392,15 +392,15 @@ struct Api {
     }
     
     
-    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: Array<String>, callback: V.StringCallback) {
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: String, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/add_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&tags=\(tags)", callback: callback)
+        V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
     }
     
     
-    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, callback: V.StringCallback) {
+    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, tags: String, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/editdream.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&id=\(id)&&hashtag=\(tagType)", callback: callback)
+        V.httpPostForString("http://nian.so/api/editdream.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&id=\(id)&&hashtag=\(tagType)&&\(tags)", callback: callback)
     }
     
     

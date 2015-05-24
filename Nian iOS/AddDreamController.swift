@@ -9,20 +9,23 @@
 import UIKit
 
 protocol editDreamDelegate {
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String)
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String, editTags: Array<String>)
 }
 
 class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet var uploadWait: UIActivityIndicatorView?
-    @IBOutlet var field1: UITextField?  //title text field
-    @IBOutlet var field2: UITextView!   //brief introduction text field
-    @IBOutlet var tokenView: KSTokenView!
-    @IBOutlet var setPrivate: UIImageView!
-    @IBOutlet var imageDreamHead: UIImageView!
-    @IBOutlet var imageTag: UIImageView!
+    @IBOutlet weak var uploadWait: UIActivityIndicatorView?
+    @IBOutlet weak var field1: UITextField!  //title text field
+    @IBOutlet weak var field2: UITextView!   //brief introduction text field
+    @IBOutlet weak var tokenView: TITokenFieldView!
+    @IBOutlet weak var setPrivate: UIImageView!
+    @IBOutlet weak var imageDreamHead: UIImageView!
+    @IBOutlet weak var imageTag: UIImageView!
+    
+    //可能要变动的一些约束
+    @IBOutlet weak var bottomLineToTokenView: NSLayoutConstraint!
     
     var actionSheet: UIActionSheet?
     var setDreamActionSheet: UIActionSheet?
@@ -39,6 +42,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var editContent: String = ""
     var editImage: String = ""
     var editPrivate: String = ""
+    var tagsArray: Array<String> = [String]()
+    var cursorPosition: CGFloat = 0.0
+    var shownKbd:Bool = false
+    var kbdHeight: CGFloat = 0.0
     
     var isPrivate: Int = 0  // 0: 公开；1：私密
     
@@ -114,9 +121,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         self.automaticallyAdjustsScrollViewInsets = false
         self.scrollView.delaysContentTouches = false
-        self.scrollView.canCancelContentTouches = false
+//        self.scrollView.canCancelContentTouches = false
+        self.scrollView.exclusiveTouch = true
+        
         setupViews()
     }
     
@@ -125,21 +136,41 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewWillDisappear(animated: Bool) {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UITextViewTextDidChangeNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "handleTextViewTextDidChangeNotification:", name: UITextViewTextDidChangeNotification, object: self.field2)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+    }
+
     override func viewDidLayoutSubviews() {
-//        var height = 64 + 182 - 112 + field2.frame.size.height - 22 + tokenView.frame.size.height
-        var height = 101 + field2.frame.size.height + tokenView.frame.size.height
+        var height = 76 + field2.frame.size.height + tokenView.frame.size.height
         var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, self.containerView.frame.size.height))
-        if self.tokenView._tokenField.isFirstResponder() {
-            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, height + 300)
+
+        if self.tokenView.tokenField.isFirstResponder() {
+            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 76 + self.field2.frame.size.height + self.tokenView.frame.size.height)
             self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 76), animated: true)
         } else {
             self.scrollView.contentSize = tmpSize
         }
-    }
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: .BeginFromCurrentState, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+   }
     
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
@@ -153,7 +184,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field2.delegate = self
         self.scrollView.delegate = self
-//        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+        
+        var swipeGesuture = UISwipeGestureRecognizer(target: self, action: "dismissKeyboard:")
+        swipeGesuture.direction = UISwipeGestureRecognizerDirection.Down
+        swipeGesuture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(swipeGesuture)
+        
         delay(0.5, { () -> () in
             if self.readyForTag == 1 {
                 self.onTagClick()
@@ -161,9 +197,30 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             }
         })
         
+        //设置 tag view ---- 引用了第三方库
+        tokenView.delegate = self
+        tokenView.tokenField.delegate = self
+        tokenView.shouldSearchInBackground = false
+        tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
+        tokenView.tokenField.setPromptText("    ")
+        tokenView.tokenField.placeholder = "按空格输入多个标签"
+        tokenView.canCancelContentTouches = false
+        tokenView.delaysContentTouches = false
+        
         if self.isEdit == 1 {
-            self.field1!.text = self.editTitle
-            self.field2.text = self.editContent
+            self.field1!.text = SADecode(self.editTitle)
+            self.field2.text = SADecode(self.editContent)
+            
+            if count(tagsArray) > 0 {
+                for i in 0...(count(tagsArray) - 1) {
+                    if count(tagsArray) == 1 && tagsArray[0] == "" {
+                    } else {
+                        tokenView.tokenField.addTokenWithTitle(tagsArray[i])
+                        tokenView.tokenField.layoutTokensAnimated(true)
+                    }
+                }
+            }
+            
             self.uploadUrl = self.editImage
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
@@ -192,14 +249,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
         self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         
-        //设置 tag view ---- 引用了第三方库
-        tokenView.delegate = self    
-        tokenView.promptText = "    "
-        tokenView.placeholder = "按空格输入多个标签"
-        tokenView.maxTokenLimit = 20 //default is -1 for unlimited number of tokens
-        tokenView.style = .Squared
-        tokenView.font = UIFont.systemFontOfSize(14)
-//        tokenView.direction = KSTokenViewScrollDirection.Horizontal
+        var height = 76 + field2.frame.size.height + tokenView.frame.size.height
+        var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, height)
+        self.scrollView.contentSize = tmpSize
+        
+        var bottomLine = CGRectGetMaxY(self.tokenView.tokenField.frame)
+        bottomLineToTokenView.constant = bottomLine - tokenView.frame.height
+        self.view.setNeedsUpdateConstraints()
     }
     
     func onTagClick(){
@@ -226,29 +282,30 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setDreamActionSheet!.showInView(self.view)
     }
     
-    func dismissKeyboard(sender:UITapGestureRecognizer){
+    func dismissKeyboard(sender: UISwipeGestureRecognizer){
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
-        self.tokenView.resignFirstResponder()   
+        self.tokenView.tokenField.resignFirstResponder()
+
+        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
     }
-    
-    @IBAction func dismissKbd(sender: UIControl) {
-        self.field1!.resignFirstResponder()
-        self.field2.resignFirstResponder()
-        self.tokenView.resignFirstResponder()
-    }
-    
     
     func addDreamOK(){
         var title = self.field1?.text
         var content = self.field2.text
-        var tags = self.tokenView.tokens()
-        var text = [String]()
+        var tags = self.tokenView.tokenTitles
+        var tagsString = ""
 
         if count(tags!) > 0 {
             for i in 0...(count(tags!) - 1){
-                var tmpString: String = dropFirst((tags![i] as KSToken).title)
-                text.append(tmpString)
+                var tmpString = tags![i] as! String
+                tmpString.removeAtIndex(advance(tmpString.startIndex, 0))
+                
+                if i == (count(tags!) - 1) {
+                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))"
+                } else {
+                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))&&"
+                }
             }
         }
         
@@ -263,8 +320,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as! String
             var safeshell = Sa.objectForKey("shell") as! String
+            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: text) {
+                Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: tagsString) {
                     result in
                     if result == "1" {
                         dispatch_async(dispatch_get_main_queue(), {
@@ -277,18 +335,27 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }else{
             self.field1!.becomeFirstResponder()
         }
+
     }
     
     func editDreamOK(){
         var title = self.field1?.text
         var content = self.field2.text
-        var tags = self.tokenView.tokens()
-        var text = [String]()
+        var tags = self.tokenView.tokenTitles
+        var tagsString: String = ""
+        var tagsArray: Array<String> = [String]()
         
         if count(tags!) > 0 {
-            for i in 0...(count(tags!) - 1) {
-                var tmpString: String = dropFirst((tags![i] as KSToken).title)
-                text.append(tmpString)
+            for i in 0...(count(tags!) - 1){
+                var tmpString = tags[i] as! String
+                tmpString.removeAtIndex(advance(tmpString.startIndex, 0))
+                tagsArray.append(tmpString)
+                
+                if i == (count(tags!) - 1) {
+                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))"
+                } else {
+                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))&&"
+                }
             }
         }
         
@@ -301,14 +368,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as! String
             var safeshell = Sa.objectForKey("shell") as! String
+            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: text) {
+                Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tagType: self.tagType, tags:tagsString){
                     result in
                     if result == "1" {
                         dispatch_async(dispatch_get_main_queue(), {
                             globalWillNianReload = 1
                             self.navigationController?.popViewControllerAnimated(true)
-                            self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)")
+                            self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)", editTags:tagsArray)
                         })
                     }
                 }
@@ -332,80 +400,91 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //        self.tagType = tagType + 1
     }
     
-//    func handleTextFieldTextDidChangeNotification(notification: NSNotification) {
-//        let textField = notification.object as! UITextField
-//        
-//        if count(textField.text) < 5 {
-//            textField.text = "     "
-//        }
-//    }
-//    
-//    func handleTextFieldTextDidBeginEditingNotification(notification: NSNotification) {
-//        let textField = notification.object as! UITextField
-//        
-//        if count(textField.text) < 5 {
-//            textField.text = "     "
-//        }
-//    }
-//    
-//    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-//        return touch.view == gestureRecognizer.view
-//    }
+    func handleKeyboardWillShowNotification(notification: NSNotification) {
+        keyboardWillChangeFrameWithNotification(notification, showsKeyboard: true)
+    }
+    
+    func handleKeyboardWillHideNotification(notification: NSNotification) {
+        keyboardWillChangeFrameWithNotification(notification, showsKeyboard: false)
+    }
+    
+    func handleTextViewTextDidChangeNotification(noti: NSNotification) {
+        
+    }
+    
+    func keyboardWillChangeFrameWithNotification(notification: NSNotification, showsKeyboard: Bool) {
+        let userInfo = notification.userInfo!
+        
+        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        
+        // Convert the keyboard frame from screen to view coordinates.
+        let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        let keyboardViewBeginFrame = view.convertRect(keyboardScreenBeginFrame, fromView: view.window)
+        let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
+        let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
+        kbdHeight = originDelta
+
+        UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        
+        // Scroll to the selected text once the keyboard frame changes.
+        let selectedRange = field2.selectedRange
+        field2.scrollRangeToVisible(selectedRange)
+        
+        shownKbd = showsKeyboard
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view .isKindOfClass(UITableView) || touch.view .isKindOfClass(UITableViewCell) {
+            return false
+        }
+
+        return true
+    }
     
 }
 
-extension AddDreamController: KSTokenViewDelegate {
-    func tokenView(token: KSTokenView, performSearchWithString string: String, completion: ((results: Array<AnyObject>) -> Void)?) {
+extension AddDreamController: TITokenFieldDelegate {
+    func tokenField(field: TITokenField!, shouldUseCustomSearchForSearchString searchString: String!) -> Bool {
+        return true
+    }
+    
+    func tokenField(field: TITokenField!, performCustomSearchForSearchString searchString: String!, withCompletionHandler completionHandler: (([AnyObject]!) -> Void)!) {
         var data: Array<String> = []
-        if count(string) > 0 {
+        if count(searchString) > 0 {
             
-            //用户有可能输入汉字、空格等，要先转义
-            var _string = SAEncode(SAHtml(string))
+            var _string = SAEncode(SAHtml(searchString))
             Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
                     data = json as! Array
                 }
-                completion!(results: data)
+                
+                completionHandler(data)
             })
+            
+            
         }
     }
     
-    func tokenView(token: KSTokenView, displayTitleForObject object: AnyObject) -> String {
-        return object as! String
-    }
-    
-    func tokenViewDidBeginEditing(tokenView: KSTokenView) {
-    }
-    
-    func tokenViewDidEndEditing(tokenView: KSTokenView) {
-        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
-
-    }
-    
-    func tokenView(tokenView: KSTokenView, didAddToken token: KSToken) {
-        // 用户已经添加了 token
-        var _string = token.title.stringByReplacingOccurrencesOfString("#", withString: "", options:  NSStringCompareOptions.LiteralSearch, range: nil)
+    func tokenField(tokenField: TITokenField!, didAddToken token: TIToken!) {
+        var _string: String = token.title
         
-        Api.getTags(SAEncode(SAHtml(_string)), callback:{
+        _string.removeAtIndex(advance(token.title.startIndex, 0))
+        if contains(self.tagsArray, _string) {
+            return
+        }
+        
+        Api.getTags(SAEncode(SAHtml(_string)), callback: {
             json in
                 var status = json!["status"] as! NSNumber
         })
     }
     
-    func tokenView(tokenView: KSTokenView, didDeleteToken token: KSToken) {
-        var number = count(self.tokenView.tokens()!)
-        
-        if number == 0 {
-            self.tokenView._searchTableView.hidden == true
-        } else {
-            self.tokenView._searchTableView.hidden = false 
-        }
-    }
-    
 }
-
-
 
 
 

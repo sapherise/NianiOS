@@ -14,6 +14,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var dataArrayDream = NSMutableArray()
     var dataArrayStep = NSMutableArray()
     
+    var preSetSearch: String = ""
+    
     //MARK: custom textfield
     class NITextfield: UITextField {
         override func leftViewRectForBounds(bounds: CGRect) -> CGRect {
@@ -55,6 +57,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.dreamTableView.hidden = !(index == 0)
         self.tableView.hidden = !self.dreamTableView.hidden
         self.viewBackFix()
+        
+        
+        if count(preSetSearch) > 0 {
+            searchText.text = preSetSearch
+        }
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -66,6 +74,15 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 self.searchText.rightViewMode = .Never
             }
         }
+        
+        if count(preSetSearch) > 0 {
+            if index == 0 {
+                self.dreamTableView.headerBeginRefreshing()
+            } else {
+                self.tableView.headerBeginRefreshing()
+            }
+        }
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -81,19 +98,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func onRefresh() {
-        if self.index == 0 {
-            load(index, clear: true)
-        } else {
-            load(index, clear: true)
-        }
+        load(index, clear: true)
     }
     
     func onLoad() {
-        if index == 0 {
-            load(index, clear: false)
-        } else {
-            load(index, clear: false)
-        }
+        load(index, clear: false)
     }
     
     func onPullDown() {
@@ -147,7 +156,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.returnKeyType = .Search
         searchText.clearsOnBeginEditing = false
         searchText.delegate = self
-        self.navigationController?.navigationBar.addSubview(searchText)
+//        self.navigationController?.navigationBar.addSubview(searchText)
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)

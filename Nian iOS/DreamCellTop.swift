@@ -19,6 +19,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var viewLeft:UIView!
     @IBOutlet var dotLeft:UIView!
     @IBOutlet var dotRight:UIView!
+    @IBOutlet var scrollView: UIScrollView!
     
     @IBOutlet var numLeft:UIView!
     @IBOutlet var numMiddle:UIView!
@@ -53,6 +54,34 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.btnMain.setX(globalWidth/2-50)
         self.dotLeft.setX(globalWidth/2-5)
         self.dotRight.setX(globalWidth/2+5)
+        self.scrollView.setWidth(globalWidth)
+        self.scrollView.showsHorizontalScrollIndicator = false
+        self.scrollView.showsVerticalScrollIndicator = false
+        self.scrollView.contentSize =  CGSizeMake(8, 0)
+    }
+    
+    func moveUp() {
+        var bottom = self.nickLabel.bottom()
+        
+        self.viewRight.setY(0)
+        self.viewBG.setY(0)
+        self.btnMain.setY(bottom + 84)
+        self.dotLeft.setY(bottom + 137)
+        self.dotRight.setY(bottom + 137)
+        
+//        self.nickLabel.setY(self.nickLabel.frame.origin.y - 44)
+//        self.dreamhead.setY(self.dreamhead.frame.origin.y - 44)
+//        self.View.setY(self.View.frame.origin.y - 44)
+//        self.viewLeft.setY(self.viewLeft.frame.origin.y - 44)
+//        self.numLeft.setY(self.numLeft.frame.origin.y - 44)
+//        self.numMiddle.setY(self.numMiddle.frame.origin.y - 44)
+//        self.numRight.setY(self.numRight.frame.origin.y - 44)
+//        self.numLeftNum.setY(self.numLeftNum.frame.origin.y - 44)
+//        self.numMiddleNum.setY(self.numMiddleNum.frame.origin.y - 44)
+//        self.numRightNum.setY(self.numRightNum.frame.origin.y - 44)
+//        self.viewLineRight.setY(self.viewLineRight.frame.origin.y - 44)
+//        self.viewLineLeft.setY(self.viewLineLeft.frame.origin.y - 44)
+//        self.viewHolder.setY(self.viewHolder.frame.origin.y - 44)
     }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
