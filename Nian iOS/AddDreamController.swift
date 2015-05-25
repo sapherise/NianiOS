@@ -202,7 +202,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         tokenView.tokenField.delegate = self
         tokenView.shouldSearchInBackground = false
         tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
-        tokenView.tokenField.setPromptText("    ")
+        tokenView.tokenField.setPromptText("   ")
         tokenView.tokenField.placeholder = "按空格输入多个标签"
         tokenView.canCancelContentTouches = false
         tokenView.delaysContentTouches = false
@@ -424,17 +424,27 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let keyboardViewBeginFrame = view.convertRect(keyboardScreenBeginFrame, fromView: view.window)
         let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
         let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
-        kbdHeight = originDelta
 
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
             }, completion: nil)
         
         // Scroll to the selected text once the keyboard frame changes.
-        let selectedRange = field2.selectedRange
-        field2.scrollRangeToVisible(selectedRange)
-        
-        shownKbd = showsKeyboard
+        let location = field2.selectedRange.location
+        println("location = \(location)")
+    }
+    
+    func textViewDidChangeSelection(textView: UITextView) {
+        if textView.tag == 16555 {
+            let location = field2.selectedRange.location
+            let dict: Dictionary = [NSFontAttributeName : UIFont.systemFontOfSize(14)]
+            var size = (textView.text as NSString).sizeWithAttributes(dict)
+            var length = size.height
+            var lines = ceil(textView.contentSize.height/length)
+            
+            
+            println("text view did change: \(location) lines: \(lines)")
+        }
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
@@ -482,6 +492,11 @@ extension AddDreamController: TITokenFieldDelegate {
             json in
                 var status = json!["status"] as! NSNumber
         })
+    }
+    
+    func tokenField(tokenField: TITokenField!, didChangeFrame frame: CGRect) {
+        var bottomLine = CGRectGetMaxY(self.tokenView.tokenField.frame)
+        bottomLineToTokenView.constant = bottomLine - tokenView.frame.height
     }
     
 }

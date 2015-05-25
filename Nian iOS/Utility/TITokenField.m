@@ -241,6 +241,7 @@
 	
     [cell.imageView setImage:[self searchResultImageForRepresentedObject:representedObject]];
 	[cell.textLabel setText:[self searchResultStringForRepresentedObject:representedObject]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:0xaf/255 green:0xaf/255 blue:0xaf/255 alpha:1]];
 	[cell.detailTextLabel setText:subtitle];
 	
     return cell;
@@ -284,6 +285,11 @@
 
 - (void)tokenFieldFrameDidChange:(TITokenField *)field {
 	[self updateContentSize];
+    
+    if ([_tokenField.delegate respondsToSelector:@selector(tokenField:didChangeFrame:)]) {
+        [_tokenField.delegate tokenField:_tokenField didChangeFrame:_tokenField.frame];
+    }
+    
 }
 
 #pragma mark Results Methods
@@ -614,7 +620,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			
 			NSArray * titles = self.tokenTitles;
 			untokenized = [titles componentsJoinedByString:@", "];
-            NSDictionary *dict = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
+            NSDictionary *dict = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
 			CGSize untokSize = [untokenized sizeWithAttributes:dict];
 			CGFloat availableWidth = self.bounds.size.width - self.leftView.bounds.size.width - self.rightView.bounds.size.width;
 			
@@ -667,6 +673,9 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	if (title.length){
         NSString *_title = [NSString stringWithFormat:@"#%@", title];
 		TIToken * token = [[TIToken alloc] initWithTitle:_title representedObject:object font:self.font];
+//        token.textColor = [UIColor colorWithRed:67/255 green:67/255 blue:67/255 alpha:1];
+//        token.tintColor = [UIColor colorWithRed:254/255 green:254/255 blue:254/255 alpha:0.5];
+        
 		[self addToken:token];
 		return token;
 	}
@@ -846,7 +855,10 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			[self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameWillChange];
 			
 		} completion:^(BOOL complete){
-			if (complete) [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
+            if (complete) {
+                [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
+            }
+            
 		}];
 	}
 }
@@ -1114,10 +1126,10 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 		
 		_title = [aTitle copy];
 		_representedObject = object;
-		
+        
 		_font = aFont;
-        _tintColor = [UIColor colorWithRed:245/255 green:245/255 blue:245/255 alpha:0.7];
-        _textColor = [UIColor colorWithRed:0xaf/255 green:0xaf/255 blue:0xaf/255 alpha:1];
+        _tintColor = [TIToken blueTintColor];
+        _textColor = [UIColor colorWithRed:0x99/255 green:0x99/255 blue:0x99/255 alpha:1];
 		_highlightedTextColor = [UIColor whiteColor];
 		
 		_accessoryType = TITokenAccessoryTypeNone;
@@ -1254,17 +1266,17 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 	[self getTintColorRed:&red green:&green blue:&blue alpha:&alpha];
 	
 	if (drawHighlighted){
-		CGContextSetFillColor(context, (CGFloat[4]){red, green, blue, 1});
+		CGContextSetFillColor(context, (CGFloat[4]){0xe6/255, 0xe6/255, 0xe6/255, 0.8});
 		CGContextFillPath(context);
 	}
 	else
 	{
-		CGContextClip(context);
-		CGFloat locations[2] = {0, 0.95};
-		CGFloat components[8] = {red + 0.2, green + 0.2, blue + 0.2, alpha, red, green, blue, 0.8};
-		CGGradientRef gradient = CGGradientCreateWithColorComponents(colorspace, components, locations, 2);
-		CGContextDrawLinearGradient(context, gradient, CGPointZero, endPoint, 0);
-		CGGradientRelease(gradient);
+//		CGContextClip(context);
+//		CGFloat locations[2] = {0, 0.95};
+//		CGFloat components[8] = {red, green, blue, 0.5, red, green, blue, 0.5};
+//		CGGradientRef gradient = CGGradientCreateWithColorComponents(colorspace, components, locations, 2);
+//		CGContextDrawLinearGradient(context, gradient, CGPointZero, endPoint, 0);
+//		CGGradientRelease(gradient);
 	}
 	
 	CGContextRestoreGState(context);
@@ -1285,8 +1297,8 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 	CGContextClip(context);
 	
 	CGFloat locations[2] = {0, (drawHighlighted ? 0.9 : 0.6)};
-    CGFloat highlightedComp[8] = {red, green, blue, 0.7, red, green, blue, 1};
-    CGFloat nonHighlightedComp[8] = {red, green, blue, 0.15, red, green, blue, 0.3};
+    CGFloat highlightedComp[8] = {red, green, blue, 0.7, red, green, blue, 0.7};
+    CGFloat nonHighlightedComp[8] = {red, green, blue, 0.15, red, green, blue, 0.15};
 	
 	CGGradientRef gradient = CGGradientCreateWithColorComponents(colorspace, (drawHighlighted ? highlightedComp : nonHighlightedComp), locations, 2);
 	CGContextDrawLinearGradient(context, gradient, CGPointZero, endPoint, 0);
@@ -1345,21 +1357,24 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 	CGRect textBounds = CGRectMake(floorf(hTextPadding / 2), vPadding - 1, titleWidth + 5, floorf(self.bounds.size.height - (vPadding * 2)));
 	
 	CGContextSetFillColorWithColor(context, (drawHighlighted ? _highlightedTextColor : _textColor).CGColor);
+    UIColor *_fontColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1];
 
-
-    [_title drawInRect:textBounds withAttributes:@{NSFontAttributeName: _font, NSParagraphStyleAttributeName: textStyle}];
+    [_title drawInRect:textBounds withAttributes:@{NSFontAttributeName: _font, NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor}];
 }
 
 CGPathRef CGPathCreateTokenPath(CGSize size, BOOL innerPath) {
 	
-	CGMutablePathRef path = CGPathCreateMutable();
-	CGFloat arcValue = (size.height / 2) - 1;
-	CGFloat radius = arcValue - (innerPath ? (1 / [[UIScreen mainScreen] scale]) : 0);
-	CGPathAddArc(path, NULL, arcValue, arcValue, radius, (M_PI / 2), (M_PI * 3 / 2), NO);
-	CGPathAddArc(path, NULL, size.width - arcValue, arcValue, radius, (M_PI  * 3 / 2), (M_PI / 2), NO);
-	CGPathCloseSubpath(path);
-	
-	return path;
+//	CGMutablePathRef path = CGPathCreateMutable();
+//	CGFloat arcValue = (size.height / 2) - 1;
+//	CGFloat radius = arcValue - (innerPath ? (1 / [[UIScreen mainScreen] scale]) : 0);
+//	CGPathAddArc(path, NULL, arcValue, arcValue, radius, (M_PI / 2), (M_PI * 3 / 2), NO);
+//	CGPathAddArc(path, NULL, size.width - arcValue, arcValue, radius, (M_PI  * 3 / 2), (M_PI / 2), NO);
+//	CGPathCloseSubpath(path);
+    
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:4];
+    
+	return CGPathCreateCopy(bezierPath.CGPath);
 }
 
 CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat height, CGFloat thickness, CGFloat * width) {
@@ -1406,6 +1421,18 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 	
 	return NO;
 }
+
+- (UIColor *)darkenColor:(CGFloat)darkenRatio color: (UIColor *)color {
+    CGFloat h = 0.0, s = 0.0, b = 0.0, a = 0.0;
+   
+    if ([color getHue:&h saturation:&s brightness:&b alpha:&a]) {
+        return [UIColor colorWithHue:h saturation:s brightness:b*darkenRatio alpha:a];
+    } else {
+        return color;
+    }
+}
+
+
 
 #pragma mark Other
 - (NSString *)description {

@@ -50,6 +50,9 @@
 - (UIImage *)tokenField:(TITokenField *)tokenField searchResultImageForRepresentedObject:(id)object;
 - (UITableViewCell *)tokenField:(TITokenField *)tokenField resultsTableView:(UITableView *)tableView cellForRepresentedObject:(id)object;
 - (CGFloat)tokenField:(TITokenField *)tokenField resultsTableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)tokenField:(TITokenField *)tokenField didChangeFrame:(CGRect)frame;
+
 @end
 
 @interface TITokenFieldInternalDelegate : NSObject <UITextFieldDelegate>
