@@ -18,7 +18,7 @@ class SADoubleCell: MKTableViewCell {
     @IBOutlet var viewHolder: UIView!
     var data :NSDictionary!
     var content = ["关注", "关注中"]
-    var type: Int = 0   // 当为 0 时为梦想，当为 1 时为用户
+    var type: Int = 0   // 当为 0 时为记本，当为 1 时为用户
     
     override func awakeFromNib() {
         super.awakeFromNib()
