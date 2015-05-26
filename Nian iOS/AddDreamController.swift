@@ -12,7 +12,7 @@ protocol editDreamDelegate {
     func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String, editTags: Array<String>)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -26,6 +26,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     //可能要变动的一些约束
     @IBOutlet weak var bottomLineToTokenView: NSLayoutConstraint!
+    @IBOutlet weak var tokenViewHeight: NSLayoutConstraint! //修改 tokenView 的高度，（因为按照初始化时的条件，它是包含了 tokenFiled 和 tokenContentTableView 的）
+    @IBOutlet weak var containerViewBottom: NSLayoutConstraint!
     
     var actionSheet: UIActionSheet?
     var setDreamActionSheet: UIActionSheet?
@@ -102,16 +104,18 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
+        self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             self.uploadWait!.hidden = true
-            self.uploadWait!.stopAnimating()
             self.uploadUrl = data.objectForKey("url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
+//            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
+            self.imageDreamHead.image = img
             setCacheImage(url, img, 150)
+            self.uploadWait!.stopAnimating()
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
@@ -154,22 +158,31 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        
+        var btmOfScrollViewContent = 74 + self.field2.contentSize.height + self.tokenView.contentSize.height
+        containerViewBottom.constant = self.scrollView.contentSize.height
+        println("containerViewBottom.constant = \(containerViewBottom.constant)")
+        self.view.setNeedsUpdateConstraints()
     }
 
     override func viewDidLayoutSubviews() {
         var height = 76 + field2.frame.size.height + tokenView.frame.size.height
         var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, self.containerView.frame.size.height))
-
+        self.scrollView.contentSize = tmpSize
+        
         if self.tokenView.tokenField.isFirstResponder() {
-            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 76 + self.field2.frame.size.height + self.tokenView.frame.size.height)
             self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 76), animated: true)
+            println("self.scrollView.contentOffset AAA = \(self.scrollView.contentOffset)")
         } else {
-            self.scrollView.contentSize = tmpSize
+            println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
         }
         
         UIView.animateWithDuration(0.2, delay: 0, options: .BeginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
+        
+        println(" self.scrollView.contentSize = \(self.scrollView.contentSize)")
+        println("layout view containerViewBottom.constant = \(containerViewBottom.constant)")
    }
     
     func setupViews(){
@@ -177,6 +190,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         navView.backgroundColor = BarColor
         
         self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
+        self.imageDreamHead.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
+        self.imageDreamHead.layer.borderWidth = 0.5
+        self.imageDreamHead.layer.cornerRadius = 4.0
+        self.imageDreamHead.layer.masksToBounds = true
         self.view.addSubview(navView)
 
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
@@ -206,6 +223,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         tokenView.tokenField.placeholder = "按空格输入多个标签"
         tokenView.canCancelContentTouches = false
         tokenView.delaysContentTouches = false
+        tokenView.scrollEnabled = false
         
         if self.isEdit == 1 {
             self.field1!.text = SADecode(self.editTitle)
@@ -256,6 +274,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var bottomLine = CGRectGetMaxY(self.tokenView.tokenField.frame)
         bottomLineToTokenView.constant = bottomLine - tokenView.frame.height
         self.view.setNeedsUpdateConstraints()
+
     }
     
     func onTagClick(){
@@ -359,7 +378,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             }
         }
         
-        
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
@@ -442,7 +460,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var length = size.height
             var lines = ceil(textView.contentSize.height/length)
             
-            
             println("text view did change: \(location) lines: \(lines)")
         }
     }
@@ -464,15 +481,20 @@ extension AddDreamController: TITokenFieldDelegate {
     
     func tokenField(field: TITokenField!, performCustomSearchForSearchString searchString: String!, withCompletionHandler completionHandler: (([AnyObject]!) -> Void)!) {
         var data: Array<String> = []
+        
         if count(searchString) > 0 {
-            
             var _string = SAEncode(SAHtml(searchString))
             Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
                     data = json as! Array
+                    
+                    if count(data) > 0 {
+                        for i in 0...(count(data) - 1) {
+                            data[i] = SADecode(SADecode(data[i]))
+                        }
+                    }
                 }
-                
                 completionHandler(data)
             })
             
@@ -501,6 +523,13 @@ extension AddDreamController: TITokenFieldDelegate {
     
 }
 
+extension AddDreamController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.field1.resignFirstResponder()
+        self.field2.resignFirstResponder()
+        self.tokenView.resignFirstResponder()
+    }
+}
 
 
 

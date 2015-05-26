@@ -221,14 +221,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if json != nil {
                 var dream: AnyObject! = json!.objectForKey("dream")
                 self.owneruid = dream.objectForKey("uid") as! String
-                self.titleJson = dream.objectForKey("title") as! String
+                self.titleJson = SADecode(SADecode(dream.objectForKey("title") as! String))
                 self.percentJson = dream.objectForKey("percent") as! String
                 self.followJson = dream.objectForKey("follow") as! String
                 self.likeJson = dream.objectForKey("like") as! String
                 self.imgJson = dream.objectForKey("img") as! String
                 self.privateJson = dream.objectForKey("private") as! String
-                self.contentJson = dream.objectForKey("content") as! String
-                self.desJson = dream.objectForKey("content") as! String
+                self.contentJson = SADecode(SADecode(dream.objectForKey("content") as! String))
+                self.desJson = SADecode(SADecode(dream.objectForKey("content") as! String))
                 self.hashtag = dream.objectForKey("hashtag") as! String
                 self.likedreamJson = dream.objectForKey("like_dream") as! String
                 self.likestepJson = dream.objectForKey("like_step") as! String
@@ -266,16 +266,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     // 自定义 label 
     func labelWidthWithItsContent(label: NILabel, content: NSString) {
         var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
-        var labelSize = content.sizeWithAttributes(dict)
+        var labelSize = CGSizeMake(ceil(content.sizeWithAttributes(dict).width), ceil(content.sizeWithAttributes(dict).height))
         
         label.numberOfLines = 1
         label.textAlignment = .Center
         label.font = UIFont.systemFontOfSize(12)
         label.layer.borderWidth = 0.5
-        label.layer.borderColor = UIColor(red: 228/255, green: 228/255, blue: 228/255, alpha: 1).CGColor
+        label.layer.borderColor = UIColor(red: 0xe6/255, green: 0xe6/255, blue: 0xe6/255, alpha: 1).CGColor
         label.layer.cornerRadius = 4.0
         label.layer.masksToBounds = true
-        label.textColor = UIColor(red: 171/255, green: 179/255, blue: 180/255, alpha: 1)
+        label.textColor = UIColor(red: 0x99/255, green: 0x99/255, blue: 0x99/255, alpha: 1)
         label.backgroundColor = UIColor.whiteColor()
         label.frame = CGRectMake(0, 0, labelSize.width + 16, 24)
     }
@@ -647,8 +647,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         editdreamVC.delegate = self
         editdreamVC.isEdit = 1
         editdreamVC.editId = self.Id
-        editdreamVC.editTitle = self.titleJson
-        editdreamVC.editContent = self.contentJson
+        editdreamVC.editTitle = SADecode(SADecode(self.titleJson))
+        editdreamVC.editContent = SADecode(SADecode(self.contentJson))
         editdreamVC.editImage = self.imgJson
         editdreamVC.editPrivate = self.privateJson
         editdreamVC.tagType = self.hashtag.toInt()!
@@ -663,7 +663,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.topCell.scrollView.subviews.map({
             $0.removeFromSuperview()
         })
-        self.topCell.scrollView.contentSize = CGSizeMake(8, self.topCell.scrollView.frame.height)
+        self.topCell.scrollView.contentSize = CGSizeMake(16, self.topCell.scrollView.frame.height)
         
         self.titleJson = editTitle
         self.privateJson = editPrivate
@@ -686,7 +686,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func loadDreamTopcell(){
         var h: CGFloat = 0
         if self.privateJson == "1" {
-            var text = "\(self.titleJson)（私密）"
+            var _text = SADecode(SADecode(self.titleJson))
+            var text = "\(_text)（私密）"
             var content = NSMutableAttributedString(string: text)
             var len = content.length
             content.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-4))
@@ -694,7 +695,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.topCell.nickLabel.attributedText = content
             h = text.stringHeightBoldWith(19, width: 242)
         }else if self.percentJson == "1" {
-            var text = "\(self.titleJson)（已完成）"
+            var _text = SADecode(SADecode(self.titleJson))
+            var text = "\(_text)（已完成）"
             var content = NSMutableAttributedString(string: text)
             var len = content.length
             content.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, len-5))
@@ -702,7 +704,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.topCell.nickLabel.attributedText = content
             h = text.stringHeightBoldWith(19, width: 242)
         }else{
-            self.topCell.nickLabel.text = self.titleJson
+            self.topCell.nickLabel.text = SADecode(SADecode(self.titleJson))
             h = self.titleJson.stringHeightBoldWith(19, width: 242)
         }
         
@@ -710,23 +712,27 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var safeuid = Sa.objectForKey("uid") as! String
         var safeshell = Sa.objectForKey("shell") as! String
         self.topCell.btnMain.hidden = false
+        
         UIView.animateWithDuration(0.3, animations: {
             self.topCell.btnMain.alpha = 1
         })
+        
         if self.owneruid == safeuid {
             self.topCell.btnMain.setTitle("更新", forState: UIControlState.Normal)
             self.topCell.btnMain.addTarget(self, action: "addStepButton", forControlEvents: UIControlEvents.TouchUpInside)
-        }else{
+        } else {
             if self.likeJson == "0" {
                 self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
                 self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
-            }else{
+            } else {
                 self.topCell.btnMain.setTitle("分享", forState: UIControlState.Normal)
                 self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
         self.topCell.nickLabel.setHeight(h)
         var bottom = self.topCell.nickLabel.bottom()
+        self.topCell.viewRight.setY(44)
+        self.topCell.viewBG.setY(44)
         self.topCell.viewHolder.setY(bottom + 13)
         self.topCell.btnMain.setY(bottom + 128)
         self.topCell.dotLeft.setY(bottom + 181)
@@ -787,7 +793,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + 8 + label.frame.width , self.topCell.scrollView.frame.height)
             }
             
-            self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + CGFloat(8), self.topCell.scrollView.frame.height)
+            self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + CGFloat(16), self.topCell.scrollView.frame.height)
             self.topCell.scrollView.canCancelContentTouches = false
             self.topCell.scrollView.delaysContentTouches = false
             self.topCell.scrollView.userInteractionEnabled = true

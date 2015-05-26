@@ -394,7 +394,7 @@ struct Api {
     
     static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: String, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+        V.httpPostForString("http://api.nian.so/a.php?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
     }
     
     

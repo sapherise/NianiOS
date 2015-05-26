@@ -83,7 +83,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
 //        self.viewLineLeft.setY(self.viewLineLeft.frame.origin.y - 44)
 //        self.viewHolder.setY(self.viewHolder.frame.origin.y - 44)
     }
-    
+
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
             return false
