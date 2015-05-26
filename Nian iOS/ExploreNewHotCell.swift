@@ -11,9 +11,9 @@ import QuartzCore
 
 class ExploreNewHotCell: UITableViewCell {
 
-    @IBOutlet weak var imageHead: UIImageView!
-    @IBOutlet weak var labelTitle: UILabel!
-    @IBOutlet weak var labelContent: UILabel!
+    @IBOutlet var imageHead: UIImageView!
+    @IBOutlet var labelTitle: UILabel!
+    @IBOutlet var labelContent: UILabel!
     @IBOutlet var viewLine: UIView!
     @IBOutlet var labelTag: UILabel! //标签
     @IBOutlet var labelSupport: UILabel!  //点赞
@@ -32,8 +32,8 @@ class ExploreNewHotCell: UITableViewCell {
         // Initialization code
         self.selectionStyle = .None
         self.setWidth(globalWidth)
-        self.labelTag.setX(globalWidth-72)
-        self.viewLine.setWidth(globalWidth - 40)
+        self.labelTag.setX(globalWidth-66)
+        self.viewLine.setWidth(globalWidth - 32)
         self.viewHolder.setX(globalWidth/2-160)
     }
 
@@ -46,8 +46,6 @@ class ExploreNewHotCell: UITableViewCell {
         var likes = self.data.stringAttributeForKey("likes")
         var content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
         var steps = self.data.stringAttributeForKey("steps")
-        likes = SAThousand(likes)
-        steps = SAThousand(steps)
   
         switch tag {
         case "0":
@@ -64,14 +62,14 @@ class ExploreNewHotCell: UITableViewCell {
         
         self.labelTag.setRadius(4, isTop: false)
         
-        var titleHeight = title.stringHeightBoldWith(19, width: 242)
-        self.labelSupport.text = likes  //点赞
+        var titleHeight = title.stringHeightBoldWith(18, width: 240)
         self.labelTitle.text = SADecode(title)
-        self.labelStep.text = steps
         self.labelContent.text = content
+        self.labelSupport.text = SAThousand(likes)  //点赞
+        self.labelStep.text = SAThousand(steps)
         
-        var heightFit = content.stringHeightWith(13, width: 250)
-        var heightMax = "\n\n".stringHeightWith(13, width: 250)
+        var heightFit = content.stringHeightWith(12, width: 248)
+        var heightMax = "\n\n".stringHeightWith(12, width: 248)
         var heightContent = heightFit > heightMax ? heightMax : heightFit
         
         self.labelContent.setHeight(heightContent)
@@ -82,8 +80,8 @@ class ExploreNewHotCell: UITableViewCell {
             bottom = self.labelTitle.bottom()
         }
         
-        self.viewLeft.setY(bottom + 15)
-        self.viewRight.setY(bottom + 15)
+        self.viewLeft.setY(bottom + 16)
+        self.viewRight.setY(bottom + 16)
         self.viewHolder.setHeight(self.viewLeft.bottom() + 33)
         if img != "" {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
@@ -92,21 +90,21 @@ class ExploreNewHotCell: UITableViewCell {
             self.imageHead.contentMode = .Center
             self.imageHead.backgroundColor = IconColor
         }
-        self.viewLine.setY(self.viewLeft.bottom() + 33)
+        self.viewLine.setY(self.viewLeft.bottom() + 32)
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
         var title = SADecode(SADecode(data.stringAttributeForKey("title")))
         var content = SADecode(SADecode(data.stringAttributeForKey("content")))
         var tag = data.stringAttributeForKey("type")
-        var titleHeight = title.stringHeightBoldWith(19, width: 242)
+        var titleHeight = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
-            return 212 + titleHeight - 8
+            return 205 + titleHeight - 8
         }
         
-        var heightFit = content.stringHeightWith(13, width: 250)
-        var heightMax = "\n\n".stringHeightWith(13, width: 250)
+        var heightFit = content.stringHeightWith(12, width: 248)
+        var heightMax = "\n\n".stringHeightWith(12, width: 248)
         var heightContent = heightFit > heightMax ? heightMax : heightFit
-        return heightContent + 212 + titleHeight
+        return heightContent + 205 + titleHeight
     }
 }

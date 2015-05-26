@@ -15,14 +15,15 @@ class CircleExploreCell: UITableViewCell {
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var viewLine: UIView!
     @IBOutlet var labelTag: UILabel! //标签
-    @IBOutlet var labelPeople: UILabel!
-    @IBOutlet var labelChat: UILabel!
     @IBOutlet var labelContent: UILabel!
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var viewLeft: UIView!
+    @IBOutlet var viewMiddle: UIView!
     @IBOutlet var viewRight: UIView!
-    @IBOutlet var btnScan: UIButton!
     @IBOutlet var viewHolder: UIView!
+    @IBOutlet var labelLeft: UILabel!
+    @IBOutlet var labelMiddle: UILabel!
+    @IBOutlet var labelRight: UILabel!
     
     var largeImageURL:String = ""
     var data :NSDictionary!
@@ -31,38 +32,33 @@ class CircleExploreCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.setWidth(globalWidth)
-        self.labelTag.setX(globalWidth-72)
-        self.viewLine.setWidth(globalWidth - 40)
+        self.viewLine.setWidth(globalWidth - 32)
         self.viewHolder.setX(globalWidth/2-160)
-        self.btnScan.backgroundColor = SeaColor
+        self.labelTag.setX(globalWidth-66)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.objectForKey("id") as! String
-        var title = self.data.objectForKey("title") as! String
-        var img = self.data.objectForKey("img") as! String
-        var tag = self.data.objectForKey("tag") as! String
-        var people = self.data.objectForKey("people") as! String
-        var content = self.data.objectForKey("content") as! String
-        var chat = self.data.objectForKey("chat") as! String
+        var id = self.data.stringAttributeForKey("id")
+        var title = self.data.stringAttributeForKey("title")
+        var img = self.data.stringAttributeForKey("img")
+        var tag = self.data.stringAttributeForKey("tag")
+        var people = self.data.stringAttributeForKey("people")
+        var content = self.data.stringAttributeForKey("content")
+        var chat = self.data.stringAttributeForKey("chat")
+        var step = self.data.stringAttributeForKey("step")
+        var bbs = self.data.stringAttributeForKey("bbs")
         if let IntTag = tag.toInt() {
             self.labelTag.text = V.Tags[IntTag-1]
         }
         self.labelTag.setRadius(4, isTop: false)
-        if var IntChat = chat.toInt() {
-            if IntChat >= 1000 {
-                IntChat = IntChat / 100
-                var FloatChat = Float(IntChat) / 10
-                chat = "\(FloatChat)K"
-            }
-        }
-        var heightTitle = title.stringHeightBoldWith(19, width: 242)
-        var height = content.stringHeightWith(13, width: 250)
-        self.labelPeople.text = people
+        var heightTitle = title.stringHeightBoldWith(18, width: 240)
+        var height = content.stringHeightWith(12, width: 248)
+        labelLeft.text = SAThousand(step)
+        labelMiddle.text = SAThousand(bbs)
+        labelRight.text = SAThousand(chat)
         self.labelTitle.text = title
         self.labelTitle.setHeight(heightTitle)
-        self.labelChat.text = chat
         self.labelContent.text = content
         self.labelContent.setHeight(height)
         self.labelContent.setY(self.labelTitle.bottom()+8)
@@ -70,10 +66,10 @@ class CircleExploreCell: UITableViewCell {
         if content == "" {
             bottom = self.labelTitle.bottom()
         }
-        self.viewLeft.setY(bottom + 15)
-        self.viewRight.setY(bottom + 15)
-        self.btnScan.setY(bottom + 84)
-        self.viewLine.setY(bottom + 154)
+        self.viewLeft.setY(bottom + 16)
+        self.viewMiddle.setY(bottom + 16)
+        self.viewRight.setY(bottom + 16)
+        self.viewLine.setY(viewLeft.bottom() + 32)
         if img != "" {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         }else{
@@ -86,16 +82,12 @@ class CircleExploreCell: UITableViewCell {
     class func cellHeightByData(data:NSDictionary)->CGFloat {
         var content = data.stringAttributeForKey("content")
         var title = data.stringAttributeForKey("title")
-        var heightTitle = title.stringHeightBoldWith(19, width: 242)
+        var heightTitle = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
-            return 256 + heightTitle
+            return 205 + heightTitle - 8
         }
-        var height = content.stringHeightWith(13, width: 250)
-        return height + 264 + heightTitle
+        var height = content.stringHeightWith(12, width: 248)
+        return height + 205 + heightTitle
     }
-    
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//    }
     
 }
