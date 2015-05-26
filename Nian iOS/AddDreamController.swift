@@ -160,7 +160,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         super.viewDidAppear(true)
         
         var btmOfScrollViewContent = 74 + self.field2.contentSize.height + self.tokenView.contentSize.height
-        containerViewBottom.constant = self.scrollView.contentSize.height
+        containerViewBottom.constant = -self.scrollView.contentSize.height
         println("containerViewBottom.constant = \(containerViewBottom.constant)")
         self.view.setNeedsUpdateConstraints()
     }
