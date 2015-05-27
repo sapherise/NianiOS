@@ -32,7 +32,7 @@ extension UIImageView {
         self.contentMode = .Center
         
         var networkStatus = checkNetworkStatus()
-        var Sa:NSUserDefaults = .standardUserDefaults()
+        var Sa: NSUserDefaults = .standardUserDefaults()
         var saveMode: String? = Sa.objectForKey("saveMode") as? String
         var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         

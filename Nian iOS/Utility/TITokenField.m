@@ -122,6 +122,8 @@
 		[_resultsTable setDelegate:self];
 		[_resultsTable setDataSource:self];
 		[_resultsTable setHidden:YES];
+        [_resultsTable setBounces:NO];
+        [_resultsTable setAlwaysBounceVertical:NO];
 		[self addSubview:_resultsTable];
 		
 		_popoverController = nil;
@@ -671,8 +673,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 - (TIToken *)addTokenWithTitle:(NSString *)title representedObject:(id)object {
 	
 	if (title.length){
-        NSString *_title = [NSString stringWithFormat:@"#%@", title];
-		TIToken * token = [[TIToken alloc] initWithTitle:_title representedObject:object font:self.font];
+		TIToken * token = [[TIToken alloc] initWithTitle:title representedObject:object font:self.font];
 //        token.textColor = [UIColor colorWithRed:67/255 green:67/255 blue:67/255 alpha:1];
 //        token.tintColor = [UIColor colorWithRed:254/255 green:254/255 blue:254/255 alpha:0.5];
         
@@ -1117,7 +1118,7 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 }
 
 - (instancetype)initWithTitle:(NSString *)aTitle representedObject:(id)object {
-	return [self initWithTitle:aTitle representedObject:object font:[UIFont systemFontOfSize:14]];
+	return [self initWithTitle:aTitle representedObject:object font:[UIFont systemFontOfSize:12]];
 }
 
 - (instancetype)initWithTitle:(NSString *)aTitle representedObject:(id)object font:(UIFont *)aFont {
@@ -1235,6 +1236,9 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
     
     NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
     textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+//    textStyle.lineHeightMultiple = 40.0;
+//    textStyle.maximumLineHeight = 40.0;
+//    textStyle.minimumLineHeight = 40.0;
     CGSize titleSize = [_title boundingRectWithSize:CGSizeMake(_maxWidth - hTextPadding - accessoryWidth, MAXFLOAT)
                                      options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                          attributes:@{NSFontAttributeName: _font, NSParagraphStyleAttributeName: textStyle}
@@ -1359,7 +1363,8 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 	CGContextSetFillColorWithColor(context, (drawHighlighted ? _highlightedTextColor : _textColor).CGColor);
     UIColor *_fontColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1];
 
-    [_title drawInRect:textBounds withAttributes:@{NSFontAttributeName: _font, NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor}];
+    [_title drawInRect:textBounds withAttributes:@{NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor, NSFontAttributeName: _font}];
+
 }
 
 CGPathRef CGPathCreateTokenPath(CGSize size, BOOL innerPath) {
