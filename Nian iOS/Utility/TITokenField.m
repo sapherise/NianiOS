@@ -122,8 +122,7 @@
 		[_resultsTable setDelegate:self];
 		[_resultsTable setDataSource:self];
 		[_resultsTable setHidden:YES];
-        [_resultsTable setBounces:NO];
-        [_resultsTable setAlwaysBounceVertical:NO];
+        [_resultsTable setBackgroundColor:[UIColor whiteColor]];
 		[self addSubview:_resultsTable];
 		
 		_popoverController = nil;
@@ -245,6 +244,8 @@
 	[cell.textLabel setText:[self searchResultStringForRepresentedObject:representedObject]];
     [cell.textLabel setTextColor:[UIColor colorWithRed:0xaf/255 green:0xaf/255 blue:0xaf/255 alpha:1]];
 	[cell.detailTextLabel setText:subtitle];
+    [cell.detailTextLabel setFont:[UIFont systemFontOfSize:14]];
+    [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0x33/255 green:0x33/255 blue:0x33/255 alpha:1]];
 	
     return cell;
 }
@@ -416,6 +417,7 @@
 
 - (void)searchDidFinish:(NSArray *)results
 {
+    [_resultsArray removeAllObjects];
     [_resultsArray addObjectsFromArray:results];
     if (_resultsArray.count > 0) {
         if (_shouldSortResults) {
@@ -521,6 +523,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	[self setAutocorrectionType:UITextAutocorrectionTypeNo];
 	[self setAutocapitalizationType:UITextAutocapitalizationTypeNone];
 	[self setContentVerticalAlignment:UIControlContentVerticalAlignmentTop];
+    
 	
 	[self addTarget:self action:@selector(didBeginEditing) forControlEvents:UIControlEventEditingDidBegin];
 	[self addTarget:self action:@selector(didEndEditing) forControlEvents:UIControlEventEditingDidEnd];
@@ -531,7 +534,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	[self.layer setShadowRadius:12];
 	
 	[self setPromptText:@"To:"];
-    	[self setText:kTextEmpty];
+    [self setText:kTextEmpty];
 	
 	_internalDelegate = [[TITokenFieldInternalDelegate alloc] init];
 	[_internalDelegate setTokenField:self];
@@ -809,8 +812,8 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 - (CGFloat)layoutTokensInternal {
 	
 	CGFloat topMargin = floor(self.font.lineHeight * 4 / 7);
-	CGFloat leftMargin = self.leftViewWidth + 12;
-	CGFloat hPadding = 8;
+	CGFloat leftMargin = self.leftViewWidth + 18;
+	CGFloat hPadding = 16;
 	CGFloat rightMargin = self.rightViewWidth + hPadding;
 	CGFloat lineHeight = ceilf(self.font.lineHeight) + topMargin + 5;
 	
@@ -840,6 +843,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			}
 		}
 	}];
+    NSLog(@"_tokenCaret.x = %f, _tokenCaret.y = %f", _tokenCaret.x, _tokenCaret.y);
 	
 	return ceilf(_tokenCaret.y + lineHeight);
 }
@@ -1096,13 +1100,8 @@ CGFloat const vTextPadding = 8;
 CGFloat const kDisclosureThickness = 2.5;
 NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 
-@interface TIToken (Private)
-CGPathRef CGPathCreateTokenPath(CGSize size, BOOL innerPath);
-CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat height, CGFloat thickness, CGFloat * width);
-- (BOOL)getTintColorRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)alpha;
-@end
-
 @implementation TIToken
+
 @synthesize title = _title;
 @synthesize representedObject = _representedObject;
 @synthesize font = _font;
@@ -1111,6 +1110,7 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 @synthesize highlightedTextColor = _highlightedTextColor;
 @synthesize accessoryType = _accessoryType;
 @synthesize maxWidth = _maxWidth;
+@synthesize boardColor = _boardColor;
 
 #pragma mark Init
 - (instancetype)initWithTitle:(NSString *)aTitle {
@@ -1118,7 +1118,7 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 }
 
 - (instancetype)initWithTitle:(NSString *)aTitle representedObject:(id)object {
-	return [self initWithTitle:aTitle representedObject:object font:[UIFont systemFontOfSize:12]];
+	return [self initWithTitle:aTitle representedObject:object font:[UIFont systemFontOfSize:14]];
 }
 
 - (instancetype)initWithTitle:(NSString *)aTitle representedObject:(id)object font:(UIFont *)aFont {
@@ -1129,12 +1129,14 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 		_representedObject = object;
         
 		_font = aFont;
-        _tintColor = [TIToken blueTintColor];
-        _textColor = [UIColor colorWithRed:0x99/255 green:0x99/255 blue:0x99/255 alpha:1];
+        _tintColor = [[UIColor alloc] initWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0];
+        _textColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1.0];
 		_highlightedTextColor = [UIColor whiteColor];
 		
 		_accessoryType = TITokenAccessoryTypeNone;
 		_maxWidth = 200;
+        _boardColor = [[UIColor alloc] initWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0];
+        self.boardWidth = 0.5f;
 		
 		[self setBackgroundColor:[UIColor clearColor]];
 		[self sizeToFit];
@@ -1224,220 +1226,60 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
 
 #pragma mark Layout
 - (CGSize)sizeThatFits:(CGSize)size {
-	
-	CGFloat accessoryWidth = 0;
-	
-	if (_accessoryType == TITokenAccessoryTypeDisclosureIndicator){
-		CGPathRelease(CGPathCreateDisclosureIndicatorPath(CGPointZero, _font.pointSize, kDisclosureThickness, &accessoryWidth));
-		accessoryWidth += floorf(hTextPadding / 2);
-	}
-	
-//	CGSize titleSize = [_title sizeWithFont:_font forWidth:(_maxWidth - hTextPadding - accessoryWidth) lineBreakMode:kLineBreakMode];
     
     NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
     textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
 //    textStyle.lineHeightMultiple = 40.0;
 //    textStyle.maximumLineHeight = 40.0;
 //    textStyle.minimumLineHeight = 40.0;
-    CGSize titleSize = [_title boundingRectWithSize:CGSizeMake(_maxWidth - hTextPadding - accessoryWidth, MAXFLOAT)
+    CGSize titleSize = [_title boundingRectWithSize:CGSizeMake(_maxWidth - hTextPadding, MAXFLOAT)
                                      options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                          attributes:@{NSFontAttributeName: _font, NSParagraphStyleAttributeName: textStyle}
                                      context:nil].size;
 	CGFloat height = floorf(titleSize.height + vTextPadding);
 	
-    return (CGSize){MAX(floorf(titleSize.width + hTextPadding + accessoryWidth), height - 3), height};
+    return (CGSize){MAX(floorf(titleSize.width + hTextPadding), height - 3), height};
 }
 
 #pragma mark Drawing
 - (void)drawRect:(CGRect)rect {
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
-	
-	// Draw the outline.
-	CGContextSaveGState(context);
-	CGPathRef outlinePath = CGPathCreateTokenPath(self.bounds.size, NO);
-	CGContextAddPath(context, outlinePath);
-	CGPathRelease(outlinePath);
-	
+
 	BOOL drawHighlighted = (self.selected || self.highlighted);
-	CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-	CGPoint endPoint = CGPointMake(0, self.bounds.size.height);
-	
-	CGFloat red = 1;
-	CGFloat green = 1;
-	CGFloat blue = 1;
-	CGFloat alpha = 1;
-	[self getTintColorRed:&red green:&green blue:&blue alpha:&alpha];
-	
-	if (drawHighlighted){
-		CGContextSetFillColor(context, (CGFloat[4]){0xe6/255, 0xe6/255, 0xe6/255, 0.8});
-		CGContextFillPath(context);
-	}
-	else
-	{
-//		CGContextClip(context);
-//		CGFloat locations[2] = {0, 0.95};
-//		CGFloat components[8] = {red, green, blue, 0.5, red, green, blue, 0.5};
-//		CGGradientRef gradient = CGGradientCreateWithColorComponents(colorspace, components, locations, 2);
-//		CGContextDrawLinearGradient(context, gradient, CGPointZero, endPoint, 0);
-//		CGGradientRelease(gradient);
-	}
-	
-	CGContextRestoreGState(context);
-	
-	CGPathRef innerPath = CGPathCreateTokenPath(self.bounds.size, YES);
     
-    // Draw a white background so we can use alpha to lighten the inner gradient
-    CGContextSaveGState(context);
-	CGContextAddPath(context, innerPath);
-    CGContextSetFillColor(context, (CGFloat[4]){1, 1, 1, 1});
-    CGContextFillPath(context);
-    CGContextRestoreGState(context);
+    UIBezierPath *rectanglePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius: 4.0];
+    UIColor *backgroundColor;
+    
+    if (drawHighlighted) {
+        backgroundColor = _tintColor;
+    } else {
+        backgroundColor = [UIColor whiteColor];
+    }
+    
+    [backgroundColor setFill];
+    [rectanglePath fill];
 	
-	// Draw the inner gradient.
-	CGContextSaveGState(context);
-	CGContextAddPath(context, innerPath);
-	CGPathRelease(innerPath);
-	CGContextClip(context);
-	
-	CGFloat locations[2] = {0, (drawHighlighted ? 0.9 : 0.6)};
-    CGFloat highlightedComp[8] = {red, green, blue, 0.7, red, green, blue, 0.7};
-    CGFloat nonHighlightedComp[8] = {red, green, blue, 0.15, red, green, blue, 0.15};
-	
-	CGGradientRef gradient = CGGradientCreateWithColorComponents(colorspace, (drawHighlighted ? highlightedComp : nonHighlightedComp), locations, 2);
-	CGContextDrawLinearGradient(context, gradient, CGPointZero, endPoint, 0);
-	CGGradientRelease(gradient);
-	CGContextRestoreGState(context);
-	
-	CGFloat accessoryWidth = 0;
-	
-	if (_accessoryType == TITokenAccessoryTypeDisclosureIndicator){
-		CGPoint arrowPoint = CGPointMake(self.bounds.size.width - floorf(hTextPadding / 2), (self.bounds.size.height / 2) - 1);
-		CGPathRef disclosurePath = CGPathCreateDisclosureIndicatorPath(arrowPoint, _font.pointSize, kDisclosureThickness, &accessoryWidth);
-		accessoryWidth += floorf(hTextPadding / 2);
-		
-		CGContextAddPath(context, disclosurePath);
-		CGContextSetFillColor(context, (CGFloat[4]){1, 1, 1, 1});
-		
-		if (drawHighlighted){
-			CGContextFillPath(context);
-		}
-		else
-		{
-			CGContextSaveGState(context);
-			CGContextSetShadowWithColor(context, CGSizeMake(0, 1), 1, [[[UIColor whiteColor] colorWithAlphaComponent:0.6] CGColor]);
-			CGContextFillPath(context);
-			CGContextRestoreGState(context);
-			
-			CGContextSaveGState(context);
-			CGContextAddPath(context, disclosurePath);
-			CGContextClip(context);
-			
-			CGGradientRef disclosureGradient = CGGradientCreateWithColorComponents(colorspace, highlightedComp, NULL, 2);
-			CGContextDrawLinearGradient(context, disclosureGradient, CGPointZero, endPoint, 0);
-			CGGradientRelease(disclosureGradient);
-			
-			arrowPoint.y += 0.5;
-			CGPathRef innerShadowPath = CGPathCreateDisclosureIndicatorPath(arrowPoint, _font.pointSize, kDisclosureThickness, NULL);
-			CGContextAddPath(context, innerShadowPath);
-			CGPathRelease(innerShadowPath);
-			CGContextSetStrokeColor(context, (CGFloat[4]){0, 0, 0, 0.3});
-			CGContextStrokePath(context);
-			CGContextRestoreGState(context);
-		}
-		
-		CGPathRelease(disclosurePath);
-	}
-	
-	CGColorSpaceRelease(colorspace);
     NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
     textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    CGSize titleSize = [_title boundingRectWithSize:CGSizeMake(_maxWidth - hTextPadding - accessoryWidth, MAXFLOAT)
+    CGSize titleSize = [_title boundingRectWithSize:CGSizeMake(_maxWidth - hTextPadding, MAXFLOAT)
                                             options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                          attributes:@{NSFontAttributeName: _font, NSParagraphStyleAttributeName: textStyle}
                                             context:nil].size;
 	CGFloat vPadding = floor((self.bounds.size.height - titleSize.height) / 2);
-	CGFloat titleWidth = ceilf(self.bounds.size.width - hTextPadding - accessoryWidth);
+	CGFloat titleWidth = ceilf(self.bounds.size.width - hTextPadding);
 	CGRect textBounds = CGRectMake(floorf(hTextPadding / 2), vPadding - 1, titleWidth + 5, floorf(self.bounds.size.height - (vPadding * 2)));
 	
 	CGContextSetFillColorWithColor(context, (drawHighlighted ? _highlightedTextColor : _textColor).CGColor);
     UIColor *_fontColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1];
 
     [_title drawInRect:textBounds withAttributes:@{NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor, NSFontAttributeName: _font}];
-
-}
-
-CGPathRef CGPathCreateTokenPath(CGSize size, BOOL innerPath) {
-	
-//	CGMutablePathRef path = CGPathCreateMutable();
-//	CGFloat arcValue = (size.height / 2) - 1;
-//	CGFloat radius = arcValue - (innerPath ? (1 / [[UIScreen mainScreen] scale]) : 0);
-//	CGPathAddArc(path, NULL, arcValue, arcValue, radius, (M_PI / 2), (M_PI * 3 / 2), NO);
-//	CGPathAddArc(path, NULL, size.width - arcValue, arcValue, radius, (M_PI  * 3 / 2), (M_PI / 2), NO);
-//	CGPathCloseSubpath(path);
     
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:4];
-    
-	return CGPathCreateCopy(bezierPath.CGPath);
+    [_boardColor setStroke];
+    rectanglePath.lineWidth = self.boardWidth;
+    [rectanglePath stroke];
+
 }
-
-CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat height, CGFloat thickness, CGFloat * width) {
-	
-	thickness /= cosf(M_PI / 4);
-	
-	CGMutablePathRef path = CGPathCreateMutable();
-	CGPathMoveToPoint(path, NULL, arrowPointFront.x, arrowPointFront.y);
-	
-	CGPoint bottomPointFront = CGPointMake(arrowPointFront.x - (height / (2 * tanf(M_PI / 4))), arrowPointFront.y - height / 2);
-	CGPathAddLineToPoint(path, NULL, bottomPointFront.x, bottomPointFront.y);
-	
-	CGPoint bottomPointBack = CGPointMake(bottomPointFront.x - thickness * cosf(M_PI / 4),  bottomPointFront.y + thickness * sinf(M_PI / 4));
-	CGPathAddLineToPoint(path, NULL, bottomPointBack.x, bottomPointBack.y);
-	
-	CGPoint arrowPointBack = CGPointMake(arrowPointFront.x - thickness / cosf(M_PI / 4), arrowPointFront.y);
-	CGPathAddLineToPoint(path, NULL, arrowPointBack.x, arrowPointBack.y);
-	
-	CGPoint topPointFront = CGPointMake(bottomPointFront.x, arrowPointFront.y + height / 2);
-	CGPoint topPointBack = CGPointMake(bottomPointBack.x, topPointFront.y - thickness * sinf(M_PI / 4));
-	
-	CGPathAddLineToPoint(path, NULL, topPointBack.x, topPointBack.y);
-	CGPathAddLineToPoint(path, NULL, topPointFront.x, topPointFront.y);
-	CGPathAddLineToPoint(path, NULL, arrowPointFront.x, arrowPointFront.y);
-	
-	if (width) *width = (arrowPointFront.x - topPointBack.x);
-	return path;
-}
-
-- (BOOL)getTintColorRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)alpha {
-	
-	CGColorSpaceModel colorSpaceModel = CGColorSpaceGetModel(CGColorGetColorSpace(_tintColor.CGColor));
-	const CGFloat * components = CGColorGetComponents(_tintColor.CGColor);
-	
-	if (colorSpaceModel == kCGColorSpaceModelMonochrome || colorSpaceModel == kCGColorSpaceModelRGB){
-		
-		if (red) *red = components[0];
-		if (green) *green = (colorSpaceModel == kCGColorSpaceModelMonochrome ? components[0] : components[1]);
-		if (blue) *blue = (colorSpaceModel == kCGColorSpaceModelMonochrome ? components[0] : components[2]);
-		if (alpha) *alpha = (colorSpaceModel == kCGColorSpaceModelMonochrome ? components[1] : components[3]);
-		
-		return YES;
-	}
-	
-	return NO;
-}
-
-- (UIColor *)darkenColor:(CGFloat)darkenRatio color: (UIColor *)color {
-    CGFloat h = 0.0, s = 0.0, b = 0.0, a = 0.0;
-   
-    if ([color getHue:&h saturation:&s brightness:&b alpha:&a]) {
-        return [UIColor colorWithHue:h saturation:s brightness:b*darkenRatio alpha:a];
-    } else {
-        return color;
-    }
-}
-
-
 
 #pragma mark Other
 - (NSString *)description {

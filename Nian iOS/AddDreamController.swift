@@ -153,15 +153,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "handleKeyboardDidHideNotification:", name: UIKeyboardDidHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleTextViewTextDidChangeNotification:", name: UITextViewTextDidChangeNotification, object: self.field2)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        var btmOfScrollViewContent = 74 + self.field2.contentSize.height + self.tokenView.contentSize.height
-        containerViewBottom.constant = -self.scrollView.contentSize.height
-        println("containerViewBottom.constant = \(containerViewBottom.constant)")
+        containerViewBottom.constant = self.scrollView.contentSize.height - (76 + field2.frame.size.height + tokenView.frame.size.height)
         self.view.setNeedsUpdateConstraints()
     }
 
@@ -171,17 +170,19 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.scrollView.contentSize = tmpSize
         
         if self.tokenView.tokenField.isFirstResponder() {
-            self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 76), animated: true)
+            var height = CGRectGetMaxY(self.tokenView.tokenField.frame)
+            height -= self.tokenView.tokenField.font.lineHeight * (2 + 4/7)
+            self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 76 + height), animated: true)
             println("self.scrollView.contentOffset AAA = \(self.scrollView.contentOffset)")
         } else {
             println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
         }
-        
+
         UIView.animateWithDuration(0.2, delay: 0, options: .BeginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
         
-        println(" self.scrollView.contentSize = \(self.scrollView.contentSize)")
+        println("self.scrollView.contentSize = \(self.scrollView.contentSize)")
         println("layout view containerViewBottom.constant = \(containerViewBottom.constant)")
    }
     
@@ -219,11 +220,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         tokenView.tokenField.delegate = self
         tokenView.shouldSearchInBackground = false
         tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
-        tokenView.tokenField.setPromptText("   ")
+        tokenView.tokenField.setPromptText("       ")
+        tokenView.tokenField.tokenLimit = 20;
         tokenView.tokenField.placeholder = "按空格输入多个标签"
         tokenView.canCancelContentTouches = false
         tokenView.delaysContentTouches = false
         tokenView.scrollEnabled = false
+        tokenView.tokenField.addTarget(self, action: "tokenFieldFrameDidChange:", forControlEvents: UIControlEvents(1<<25))
+
         
         if self.isEdit == 1 {
             self.field1!.text = SADecode(self.editTitle)
@@ -234,7 +238,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     if count(tagsArray) == 1 && tagsArray[0] == "" {
                     } else {
                         tokenView.tokenField.addTokenWithTitle(tagsArray[i])
-                        tokenView.tokenField.layoutTokensAnimated(true)
+                        tokenView.tokenField.layoutTokensAnimated(false)
                     }
                 }
             }
@@ -274,7 +278,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var bottomLine = CGRectGetMaxY(self.tokenView.tokenField.frame)
         bottomLineToTokenView.constant = bottomLine - tokenView.frame.height
         self.view.setNeedsUpdateConstraints()
-
     }
     
     func onTagClick(){
@@ -426,6 +429,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         keyboardWillChangeFrameWithNotification(notification, showsKeyboard: false)
     }
     
+    func handleKeyboardDidHideNotification(notificition: NSNotification) {
+        keyboardWillChangeFrameWithNotification(notificition, showsKeyboard: false)
+    }
+    
     func handleTextViewTextDidChangeNotification(noti: NSNotification) {
         
     }
@@ -442,15 +449,26 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let keyboardViewBeginFrame = view.convertRect(keyboardScreenBeginFrame, fromView: view.window)
         let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
         let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
+        
+        if self.tokenView.tokenField.isFirstResponder() {
+            self.tokenViewHeight.constant = UIScreen.mainScreen().bounds.size.height - originDelta - 64
+            self.view.setNeedsUpdateConstraints()
+        } else {
+            self.tokenViewHeight.constant = 250
+            self.view.setNeedsUpdateConstraints()
+        }
 
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
             }, completion: nil)
         
         // Scroll to the selected text once the keyboard frame changes.
-        let location = field2.selectedRange.location
-        println("location = \(location)")
     }
+    
+    @objc func tokenFieldFrameDidChange(tokenField: TITokenField) {
+        
+    }
+
     
     func textViewDidChangeSelection(textView: UITextView) {
         if textView.tag == 16555 {
@@ -530,7 +548,6 @@ extension AddDreamController: UIScrollViewDelegate {
         self.tokenView.resignFirstResponder()
     }
 }
-
 
 
 
