@@ -685,14 +685,6 @@ func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
     }
     return b
 }
-//
-//+ (UIColor *)colorFromHexString:(NSString *)hexString {
-//    unsigned rgbValue = 0;
-//    NSScanner *scanner = [NSScanner scannerWithString:hexString];
-//    [scanner setScanLocation:1]; // bypass '#' character
-//    [scanner scanHexInt:&rgbValue];
-//    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
-//}
 
 func colorWithHex(hexString: String) -> UIColor? {
     let regexp = NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
@@ -721,6 +713,7 @@ let BGColor:UIColor = UIColor.whiteColor()
 let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
 let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
 let lineColor: UIColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+let greyColor = UIColor(red:0.18, green:0.18, blue:0.18, alpha:1) // #333333
 
 func SAThousand(num: String) -> String {
     if var IntNum = num.toInt() {

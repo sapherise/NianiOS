@@ -82,6 +82,19 @@
                                 <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_step" id="035-jA-4hJ">
+                                <rect key="frame" x="89" y="24" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -90,6 +103,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="imageHead" destination="GGx-On-ViI" id="LO2-Hh-elh"/>
+                <outlet property="imageStep" destination="035-jA-4hJ" id="tWq-ah-ndK"/>
                 <outlet property="labelContent" destination="PpG-6p-kSg" id="Q2F-AS-c3R"/>
                 <outlet property="labelCount" destination="KOA-AZ-Q62" id="miN-wc-8lx"/>
                 <outlet property="labelTitle" destination="QFB-Pf-uQa" id="KpH-ty-RrA"/>
@@ -102,6 +116,9 @@
             <point key="canvasLocation" x="212" y="219.5"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="circle_step" width="32" height="32"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
