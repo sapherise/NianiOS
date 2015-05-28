@@ -23,7 +23,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SALoadData()
     }
     
     func noticeShare() {
@@ -80,7 +79,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SALoadData() {
-        SALoadLetter()
         var isLoaded = 0
         delay(3, {
             if isLoaded == 0 {

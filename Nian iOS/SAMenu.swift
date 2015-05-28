@@ -20,6 +20,7 @@ class SAMenu: UIView {
         viewLeft.tag = 0
         viewMiddle.tag = 1
         viewRight.tag = 2
+        viewLeft.textColor = SeaColor
     }
     
     override func layoutSubviews() {
@@ -43,5 +44,9 @@ class SAMenu: UIView {
         viewMiddle.textColor = greyColor
         viewRight.textColor = greyColor
         arrView[tab].textColor = SeaColor
+        var x = arrView[tab].x()
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.viewLine.setX(x + 15)
+        })
     }
 }
