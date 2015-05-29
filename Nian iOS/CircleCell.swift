@@ -109,7 +109,7 @@ class CircleCell: MKTableViewCell {
                             var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
                             var user = row["name"]!.asString()
                             var content = row["content"]!.asString()
-                            var type = row["type"]!.asString()
+                            var type = (row["type"]!.asString())
                             var textContent = ""
                             switch type {
                             case "1":   textContent = ": \(content)"
