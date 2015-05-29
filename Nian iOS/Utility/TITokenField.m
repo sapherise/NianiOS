@@ -92,9 +92,9 @@
 	
 	CGFloat tokenFieldBottom = CGRectGetMaxY(_tokenField.frame);
 	
-//	_separator = [[UIView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom, self.bounds.size.width, 1)];
-//	[_separator setBackgroundColor:[UIColor colorWithWhite:0.7 alpha:1]];
-//	[self addSubview:_separator];
+	_separator = [[UIView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom, self.bounds.size.width, 1)];
+	[_separator setBackgroundColor:[UIColor colorWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0]];
+	[self addSubview:_separator];
 	
 	// This view is created for convenience, because it resizes and moves with the rest of the subviews.
 	_contentView = [[UIView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom + 1, self.bounds.size.width,
@@ -242,10 +242,10 @@
 	
     [cell.imageView setImage:[self searchResultImageForRepresentedObject:representedObject]];
 	[cell.textLabel setText:[self searchResultStringForRepresentedObject:representedObject]];
-    [cell.textLabel setTextColor:[UIColor colorWithRed:0xaf/255 green:0xaf/255 blue:0xaf/255 alpha:1]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:0xaf/255.0 green:0xaf/255.0 blue:0xaf/255.0 alpha:1]];
 	[cell.detailTextLabel setText:subtitle];
     [cell.detailTextLabel setFont:[UIFont systemFontOfSize:14]];
-    [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0x33/255 green:0x33/255 blue:0x33/255 alpha:1]];
+    [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0x33/255.0 green:0x33/255.0 blue:0x33/255.0 alpha:1]];
 	
     return cell;
 }
@@ -274,8 +274,11 @@
 - (void)tokenFieldTextDidChange:(TITokenField *)field {
     [self resultsForSearchString:_tokenField.text];
     
-    if (_forcePickSearchResult || _alwaysShowSearchResult) [self setSearchResultsVisible:YES];
-	else [self setSearchResultsVisible:(_resultsArray.count > 0)];
+    if (_forcePickSearchResult || _alwaysShowSearchResult) {
+        [self setSearchResultsVisible:YES];
+    } else {
+        [self setSearchResultsVisible:(_resultsArray.count > 0)];
+    }
 }
 
 - (void)tokenFieldFrameWillChange:(TITokenField *)field {
@@ -425,6 +428,8 @@
                 return [[self searchResultStringForRepresentedObject:obj1] localizedCaseInsensitiveCompare:[self searchResultStringForRepresentedObject:obj2]];
             }];
         }
+        
+        [self setSearchResultsVisible:(_resultsArray.count > 0)];
         [self performSelectorOnMainThread:@selector(reloadResultsTable) withObject:nil waitUntilDone:YES];
     }
 }
@@ -518,7 +523,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	
 	[self setBorderStyle:UITextBorderStyleNone];
 	[self setFont:[UIFont systemFontOfSize:14]];
-    [self setTextColor:[UIColor colorWithRed:0xaf/255 green:0xaf/255 blue:0xaf/255 alpha:1]];
+    [self setTextColor:[UIColor colorWithRed:0xaf/255.0 green:0xaf/255.0 blue:0xaf/255.0 alpha:1.0]];
 	[self setBackgroundColor:[UIColor whiteColor]];
 	[self setAutocorrectionType:UITextAutocorrectionTypeNo];
 	[self setAutocapitalizationType:UITextAutocapitalizationTypeNone];
@@ -529,9 +534,9 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	[self addTarget:self action:@selector(didEndEditing) forControlEvents:UIControlEventEditingDidEnd];
 	[self addTarget:self action:@selector(didChangeText) forControlEvents:UIControlEventEditingChanged];
 	
-	[self.layer setShadowColor:[[UIColor blackColor] CGColor]];
-	[self.layer setShadowOpacity:0.6];
-	[self.layer setShadowRadius:12];
+//	[self.layer setShadowColor:[[UIColor blackColor] CGColor]];
+//	[self.layer setShadowOpacity:0.6];
+//	[self.layer setShadowRadius:12];
 	
 	[self setPromptText:@"To:"];
     [self setText:kTextEmpty];
@@ -550,7 +555,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 #pragma mark Property Overrides
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
-	[self.layer setShadowPath:[[UIBezierPath bezierPathWithRect:self.bounds] CGPath]];
+//	[self.layer setShadowPath:[[UIBezierPath bezierPathWithRect:self.bounds] CGPath]];
 	[self layoutTokensAnimated:NO];
 }
 
@@ -677,9 +682,6 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	
 	if (title.length){
 		TIToken * token = [[TIToken alloc] initWithTitle:title representedObject:object font:self.font];
-//        token.textColor = [UIColor colorWithRed:67/255 green:67/255 blue:67/255 alpha:1];
-//        token.tintColor = [UIColor colorWithRed:254/255 green:254/255 blue:254/255 alpha:0.5];
-        
 		[self addToken:token];
 		return token;
 	}
@@ -843,7 +845,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			}
 		}
 	}];
-    NSLog(@"_tokenCaret.x = %f, _tokenCaret.y = %f", _tokenCaret.x, _tokenCaret.y);
+//    NSLog(@"_tokenCaret.x = %f, _tokenCaret.y = %f", _tokenCaret.x, _tokenCaret.y);
 	
 	return ceilf(_tokenCaret.y + lineHeight);
 }
@@ -887,6 +889,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 		
 		CGFloat offset = ((_numberOfLines == 1 || !flag) ? 0 : _tokenCaret.y - floor(self.font.lineHeight * 4 / 7) + 1);
 		[scrollView setContentOffset:CGPointMake(0, self.frame.origin.y + offset) animated:animated];
+        
 	}
 	
 	_resultsModeEnabled = flag;
@@ -905,7 +908,10 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 
 			[self setLeftViewMode:UITextFieldViewModeAlways];
 		}
-		
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(16, 0, 16, 16)];
+        imageView.image = [UIImage imageNamed:@"tag-1"];
+        [label addSubview:imageView];
+        
 		[label setText:text];
 		[label setFont:[UIFont systemFontOfSize:(self.font.pointSize + 1)]];
 		[label sizeToFit];

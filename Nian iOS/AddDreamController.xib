@@ -7,13 +7,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddDreamController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="bottomLineToTokenView" destination="35R-bZ-QfB" id="s95-yO-PaU"/>
+                <outlet property="bottomLineToToField2" destination="G86-Vs-v97" id="VSN-Pq-613"/>
                 <outlet property="containerView" destination="dod-yq-bOE" id="9W0-yY-w3a"/>
-                <outlet property="containerViewBottom" destination="zSl-O6-lHv" id="7Mi-Cy-kus"/>
+                <outlet property="containerViewHeight" destination="zSl-O6-lHv" id="50u-4I-C9a"/>
                 <outlet property="field1" destination="aat-4T-03D" id="he5-SR-znw"/>
                 <outlet property="field2" destination="EZL-oA-Yx2" id="IRs-SO-YwF"/>
+                <outlet property="field2Height" destination="eXD-S9-9Ck" id="xSa-k0-WEE"/>
                 <outlet property="imageDreamHead" destination="guS-s7-Kow" id="Ika-56-ayB"/>
-                <outlet property="imageTag" destination="EGu-fd-m18" id="B3i-OS-swX"/>
                 <outlet property="scrollView" destination="duq-5f-H8d" id="9h3-rM-aux"/>
                 <outlet property="setPrivate" destination="b7H-ca-LRC" id="oje-HW-QQV"/>
                 <outlet property="tokenView" destination="wsh-5q-dYC" id="tjJ-eB-azz"/>
@@ -63,33 +63,8 @@
                                         <constraint firstAttribute="height" constant="1" id="2I1-5x-9CV"/>
                                     </constraints>
                                 </view>
-                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsh-5q-dYC" customClass="TITokenFieldView">
-                                    <rect key="frame" x="0.0" y="172" width="600" height="250"/>
-                                    <color key="backgroundColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="250" id="juJ-KQ-UGh"/>
-                                    </constraints>
-                                </scrollView>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycj-St-0L0" userLabel="Buttom Line View">
-                                    <rect key="frame" x="0.0" y="212" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="1" id="SHg-y8-pr9"/>
-                                    </constraints>
-                                </view>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tag-1" translatesAutoresizingMaskIntoConstraints="NO" id="EGu-fd-m18">
-                                    <rect key="frame" x="16" y="184" width="16" height="16"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="16" id="P3o-eV-cd2"/>
-                                        <constraint firstAttribute="width" constant="16" id="fvO-7f-ZiJ"/>
-                                    </constraints>
-                                </imageView>
-                                <activityIndicatorView opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kNK-8U-Rh7">
-                                    <rect key="frame" x="26" y="22" width="20" height="20"/>
-                                </activityIndicatorView>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" text="记本简介（可选）" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="EZL-oA-Yx2">
                                     <rect key="frame" x="16" y="76" width="568" height="96"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="eXD-S9-9Ck"/>
                                     </constraints>
@@ -97,16 +72,31 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsh-5q-dYC" customClass="TITokenFieldView">
+                                    <rect key="frame" x="0.0" y="172" width="600" height="250"/>
+                                    <color key="backgroundColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="250" id="juJ-KQ-UGh"/>
+                                    </constraints>
+                                </scrollView>
+                                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycj-St-0L0" userLabel="Buttom Line View">
+                                    <rect key="frame" x="0.0" y="212" width="600" height="1"/>
+                                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="SHg-y8-pr9"/>
+                                    </constraints>
+                                </view>
+                                <activityIndicatorView opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kNK-8U-Rh7">
+                                    <rect key="frame" x="26" y="22" width="20" height="20"/>
+                                </activityIndicatorView>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="Ycj-St-0L0" firstAttribute="top" secondItem="wsh-5q-dYC" secondAttribute="bottom" constant="-210" id="35R-bZ-QfB"/>
-                                <constraint firstItem="EGu-fd-m18" firstAttribute="top" secondItem="EZL-oA-Yx2" secondAttribute="bottom" constant="12" id="5VN-BN-h6L"/>
-                                <constraint firstItem="EGu-fd-m18" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" constant="16" id="7nn-43-q65"/>
                                 <constraint firstAttribute="trailing" secondItem="EZL-oA-Yx2" secondAttribute="trailing" constant="16" id="7x4-OL-Uho"/>
                                 <constraint firstItem="aat-4T-03D" firstAttribute="leading" secondItem="guS-s7-Kow" secondAttribute="trailing" constant="16" id="BaF-2K-5DN"/>
                                 <constraint firstItem="guS-s7-Kow" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" constant="16" id="Bck-Kw-lng"/>
                                 <constraint firstItem="guS-s7-Kow" firstAttribute="centerY" secondItem="kNK-8U-Rh7" secondAttribute="centerY" id="CbG-xk-yUq"/>
                                 <constraint firstItem="bzo-NM-uTw" firstAttribute="top" secondItem="guS-s7-Kow" secondAttribute="bottom" constant="12" id="FJQ-dv-PNu"/>
+                                <constraint firstItem="Ycj-St-0L0" firstAttribute="top" secondItem="EZL-oA-Yx2" secondAttribute="bottom" constant="40" id="G86-Vs-v97"/>
                                 <constraint firstItem="EZL-oA-Yx2" firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" constant="16" id="GmI-gS-dXm"/>
                                 <constraint firstItem="b7H-ca-LRC" firstAttribute="leading" secondItem="aat-4T-03D" secondAttribute="trailing" constant="8" id="Hq6-Y6-zrm"/>
                                 <constraint firstItem="EZL-oA-Yx2" firstAttribute="top" secondItem="bzo-NM-uTw" secondAttribute="bottom" constant="11" id="Hse-q4-m7v"/>
@@ -128,7 +118,7 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="dod-yq-bOE" secondAttribute="bottom" priority="750" constant="1" id="39c-Wu-jhd"/>
                         <constraint firstAttribute="trailing" secondItem="dod-yq-bOE" secondAttribute="trailing" id="NUs-M9-638"/>
-                        <constraint firstAttribute="top" secondItem="dod-yq-bOE" secondAttribute="top" id="S7p-2O-8cV"/>
+                        <constraint firstAttribute="top" secondItem="dod-yq-bOE" secondAttribute="top" priority="750" id="S7p-2O-8cV"/>
                         <constraint firstAttribute="leading" secondItem="dod-yq-bOE" secondAttribute="leading" id="ldk-BU-ApW"/>
                         <constraint firstAttribute="width" secondItem="dod-yq-bOE" secondAttribute="width" id="lk8-2v-NS6"/>
                         <constraint firstAttribute="height" secondItem="dod-yq-bOE" secondAttribute="height" priority="900" id="zSl-O6-lHv"/>
@@ -142,12 +132,11 @@
                 <constraint firstItem="duq-5f-H8d" firstAttribute="top" secondItem="GFo-cZ-YNp" secondAttribute="top" constant="64" id="uSX-kZ-fey"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-1991" y="556"/>
+            <point key="canvasLocation" x="-1997" y="450"/>
         </view>
     </objects>
     <resources>
         <image name="add_plus" width="40" height="40"/>
-        <image name="tag-1" width="16" height="16"/>
         <image name="unlock" width="12" height="16"/>
     </resources>
 </document>
