@@ -9,16 +9,6 @@
 import UIKit
 
 class ExploreProvider: NSObject {
-    
-    func findTableCell(view: UIView?) -> UIView? {
-        for var v = view; v != nil; v = v!.superview {
-            if v! is UITableViewCell {
-                return v
-            }
-        }
-        return nil
-    }
-    
     func onHide() {
     }
     

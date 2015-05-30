@@ -13,6 +13,7 @@ class SAMenu: UIView {
     @IBOutlet var viewMiddle: UILabel!
     @IBOutlet var viewRight: UILabel!
     @IBOutlet var viewLine: UIView!
+    @IBOutlet var viewLineBottom: UIView!
     var arr = ["", ""]
     
     override func awakeFromNib() {
@@ -21,6 +22,8 @@ class SAMenu: UIView {
         viewMiddle.tag = 1
         viewRight.tag = 2
         viewLeft.textColor = SeaColor
+        viewLineBottom.setWidth(globalWidth)
+        viewLineBottom.setX(160 - globalWidth/2)
     }
     
     override func layoutSubviews() {

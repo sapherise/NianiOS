@@ -110,7 +110,6 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             go {
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
-                println(safeuid)
                 let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
                 if errCircle != nil {
                     back {

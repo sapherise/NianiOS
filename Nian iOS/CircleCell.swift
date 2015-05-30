@@ -64,8 +64,7 @@ class CircleCell: MKTableViewCell {
 //        var vc1 = NianViewController
 //        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
         
-        var sb = UIStoryboard(name: "NewCircle", bundle: nil)
-        var vc = sb.instantiateViewControllerWithIdentifier("NewCircleController") as! UIViewController
+        var vc = NewCircleController()
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

@@ -320,15 +320,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.navigationController?.pushViewController(DreamVC, animated: true)
     }
     
-    func findTableCell(view: UIView?) -> UIView? {
-        for var v = view; v != nil; v = v!.superview {
-            if v! is UITableViewCell {
-                return v
-            }
-        }
-        return nil
-    }
-    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section==0{
             if self.circleData != nil {
