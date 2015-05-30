@@ -74,7 +74,6 @@ struct V {
     static func httpGetForJson_AFN(requestURL: String, callback: JsonCallback) {
         var manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
-        manager.requestSerializer = AFHTTPRequestSerializer()
         
         manager.GET(requestURL,
             parameters: nil,
@@ -82,7 +81,7 @@ struct V {
                 callback(obj)
         },
             failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                println("\(error)")
+                println("AFN get: \(error)")
         })
     }
     
