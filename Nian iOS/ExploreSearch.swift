@@ -15,6 +15,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var dataArrayStep = NSMutableArray()
     
     var preSetSearch: String = ""
+    var shouldPerformSearch: Bool = false
     
     //MARK: custom textfield
     class NITextfield: UITextField {
@@ -75,7 +76,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-        if count(preSetSearch) > 0 {
+        if (count(preSetSearch) > 0 && shouldPerformSearch) {
             if index == 0 {
                 self.dreamTableView.headerBeginRefreshing()
             } else {
@@ -86,7 +87,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
         searchText.removeFromSuperview()
+        shouldPerformSearch = false
     }
     
     func load(index: Int, clear: Bool) {

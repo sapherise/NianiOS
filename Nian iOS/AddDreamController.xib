@@ -11,7 +11,7 @@
                 <outlet property="containerView" destination="dod-yq-bOE" id="9W0-yY-w3a"/>
                 <outlet property="containerViewHeight" destination="zSl-O6-lHv" id="50u-4I-C9a"/>
                 <outlet property="field1" destination="aat-4T-03D" id="he5-SR-znw"/>
-                <outlet property="field2" destination="EZL-oA-Yx2" id="IRs-SO-YwF"/>
+                <outlet property="field2" destination="EZL-oA-Yx2" id="yjp-pi-0mh"/>
                 <outlet property="field2Height" destination="eXD-S9-9Ck" id="xSa-k0-WEE"/>
                 <outlet property="imageDreamHead" destination="guS-s7-Kow" id="Ika-56-ayB"/>
                 <outlet property="scrollView" destination="duq-5f-H8d" id="9h3-rM-aux"/>
@@ -63,7 +63,7 @@
                                         <constraint firstAttribute="height" constant="1" id="2I1-5x-9CV"/>
                                     </constraints>
                                 </view>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" text="记本简介（可选）" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="EZL-oA-Yx2">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" text="记本简介（可选）" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="EZL-oA-Yx2" customClass="SZTextView">
                                     <rect key="frame" x="16" y="76" width="568" height="96"/>
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="eXD-S9-9Ck"/>

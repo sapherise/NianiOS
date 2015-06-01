@@ -120,6 +120,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
     func setupViews(){
         self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
         self.viewHolder.layer.borderWidth = 1

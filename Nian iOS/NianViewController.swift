@@ -197,6 +197,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var safeuid = Sa.objectForKey("uid") as! String
         var safename = Sa.objectForKey("user") as! String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
+        
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
                 var data = json!.objectForKey("user") as! NSDictionary

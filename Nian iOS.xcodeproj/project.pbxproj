@@ -180,6 +180,7 @@
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
+		C4B1901D1B1C0EEE00CE3FF8 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B1901C1B1C0EEE00CE3FF8 /* SZTextView.m */; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
@@ -394,6 +395,8 @@
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
+		C4B1901B1B1C0EEE00CE3FF8 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
+		C4B1901C1B1C0EEE00CE3FF8 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C4CDB41B1AF8C79000936E03 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		C4CDB41E1AF8C79900936E03 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
@@ -938,7 +941,8 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				C4077BC01B04A5FB004E0D03 /* KSTokenView */,
+				C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */,
+				C4077BC01B04A5FB004E0D03 /* TITokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
 				129492801AD93211000E7461 /* MaterialKit */,
 				1248FB9D1A91B44A00110EEF /* performSelector */,
@@ -1054,13 +1058,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C4077BC01B04A5FB004E0D03 /* KSTokenView */ = {
+		C4077BC01B04A5FB004E0D03 /* TITokenView */ = {
 			isa = PBXGroup;
 			children = (
 				C4AFF0431B0F2BCD00321479 /* TITokenField.h */,
 				C4AFF0441B0F2BCD00321479 /* TITokenField.m */,
 			);
-			name = KSTokenView;
+			name = TITokenView;
+			sourceTree = "<group>";
+		};
+		C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */ = {
+			isa = PBXGroup;
+			children = (
+				C4B1901B1B1C0EEE00CE3FF8 /* SZTextView.h */,
+				C4B1901C1B1C0EEE00CE3FF8 /* SZTextView.m */,
+			);
+			path = SZTextView;
 			sourceTree = "<group>";
 		};
 		C4CDB41A1AF8C77C00936E03 /* htmlParse */ = {
@@ -1314,6 +1327,7 @@
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
+				C4B1901D1B1C0EEE00CE3FF8 /* SZTextView.m in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
 				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,

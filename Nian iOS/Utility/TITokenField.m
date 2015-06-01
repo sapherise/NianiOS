@@ -908,8 +908,9 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 
 			[self setLeftViewMode:UITextFieldViewModeAlways];
 		}
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(16, 0, 16, 16)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(16, 2, 16, 16)];
         imageView.image = [UIImage imageNamed:@"tag-1"];
+        imageView.contentMode = UIViewContentModeCenter;
         [label addSubview:imageView];
         
 		[label setText:text];
@@ -1249,6 +1250,8 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 
 #pragma mark Drawing
 - (void)drawRect:(CGRect)rect {
+    
+    // vPadding: 上下边填充距离
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
@@ -1274,7 +1277,7 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
                                             context:nil].size;
 	CGFloat vPadding = floor((self.bounds.size.height - titleSize.height) / 2);
 	CGFloat titleWidth = ceilf(self.bounds.size.width - hTextPadding);
-	CGRect textBounds = CGRectMake(floorf(hTextPadding / 2), vPadding - 1, titleWidth + 5, floorf(self.bounds.size.height - (vPadding * 2)));
+	CGRect textBounds = CGRectMake(floorf(hTextPadding / 2), vPadding, titleWidth + 5, floorf(self.bounds.size.height - (vPadding * 2)));
 	
 	CGContextSetFillColorWithColor(context, (drawHighlighted ? _highlightedTextColor : _textColor).CGColor);
     UIColor *_fontColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1];

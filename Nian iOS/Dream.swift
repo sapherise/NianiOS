@@ -207,6 +207,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.tableView?.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.tableView!)
         
+        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissActionSheet:"))
+        
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -216,7 +218,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         self.tableView.headerBeginRefreshing()
         
-        //主人 -- 已经返回 tags --05.17
+        //主人
         Api.getDreamTop(self.Id) { json in
             if json != nil {
                 var dream: AnyObject! = json!.objectForKey("dream")
@@ -230,15 +232,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.contentJson = SADecode(SADecode(dream.objectForKey("content") as! String))
                 self.desJson = SADecode(SADecode(dream.objectForKey("content") as! String))
                 self.hashtag = dream.objectForKey("hashtag") as! String
-                self.likedreamJson = dream.objectForKey("like_dream") as! String
+                self.likedreamJson = dream.objectForKey("isliked") as! String
                 self.likestepJson = dream.objectForKey("like_step") as! String
                 self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
                 self.stepJson = dream.objectForKey("step") as! String
                 self.tagArray = dream.objectForKey("tags") as! Array
                 self.desHeight = self.contentJson.stringHeightWith(11,width:200)
+                
                 var Sa = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
                 var safeshell = Sa.objectForKey("shell") as! String
+                
                 if safeuid == self.owneruid {
                     self.dreamowner = 1
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "ownerMore")
@@ -251,9 +255,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "guestMore")
                     moreButton.image = UIImage(named:"more")
                     if self.privateJson == "0" {
-                        self.navigationItem.rightBarButtonItems = [ moreButton]
+                        self.navigationItem.rightBarButtonItems = [moreButton]
                     }
                 }
+                
                 dispatch_after(1, dispatch_get_main_queue(), {
                     self.tableView.headerEndRefreshing(animated: true)
                     self.loadDreamTopcell()
@@ -283,12 +288,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func ownerMore(){
         self.ownerMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        
         self.ownerMoreSheet!.addButtonWithTitle("编辑记本")
+        
         if self.percentJson == "1" {
             self.ownerMoreSheet!.addButtonWithTitle("还未完成记本")
         }else if self.percentJson == "0" {
             self.ownerMoreSheet!.addButtonWithTitle("完成记本")
         }
+        
         self.ownerMoreSheet!.addButtonWithTitle("分享记本")
         self.ownerMoreSheet!.addButtonWithTitle("删除记本")
         self.ownerMoreSheet!.addButtonWithTitle("取消")
@@ -298,16 +306,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func guestMore(){
         self.guestMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        
         if self.followJson == "1" {
             self.guestMoreSheet!.addButtonWithTitle("取消关注记本")
-        }else if self.followJson == "0" {
+        } else if self.followJson == "0" {
             self.guestMoreSheet!.addButtonWithTitle("关注记本")
         }
-        if self.likeJson == "1" {
+        
+        println("self.likeJson = \(self.likeJson)")
+        if self.likedreamJson == "1" {
             self.guestMoreSheet!.addButtonWithTitle("取消赞")
-        }else if self.likeJson == "0" {
+        } else if self.likedreamJson == "0" {
             self.guestMoreSheet!.addButtonWithTitle("赞记本")
         }
+        
         self.guestMoreSheet!.addButtonWithTitle("分享记本")
         self.guestMoreSheet!.addButtonWithTitle("标记为不合适")
         self.guestMoreSheet!.addButtonWithTitle("取消")
@@ -408,6 +420,34 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         return cell
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            var text = SADecode(SADecode(self.titleJson))
+            if self.privateJson == "1" {
+                text = "\(self.titleJson)（私密）"
+            }else if self.percentJson == "1" {
+                text = "\(self.titleJson)（已完成）"
+            }
+            
+            if self.loadTopCellDone {
+                return self.topCell.frame.size.height
+            }
+            return text.stringHeightBoldWith(19, width: 242) + 256 + 14 + 44
+        }else{
+            var data = self.dataArray[indexPath.row] as! NSDictionary
+            var h = SAStepCell.cellHeightByData(data)
+            return h
+        }
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 1
+        }else{
+            return self.dataArray.count
+        }
+    }
+    
     // 赞
     func onLikeTap(sender: UIButton) {
         var tag = sender.tag
@@ -468,7 +508,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         return nil
     }
     
-    func onCommentClick(sender:UIGestureRecognizer){
+    func onCommentClick(sender: UIGestureRecognizer) {
         var tag = sender.view!.tag
         var DreamCommentVC = DreamCommentViewController()
         DreamCommentVC.dreamID = self.Id.toInt()!
@@ -477,36 +517,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController?.pushViewController(DreamCommentVC, animated: true)
     }
     
-    func likeclick(sender:UITapGestureRecognizer){
+    func likeclick(sender: UITapGestureRecognizer) {
         var LikeVC = LikeViewController()
         LikeVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(LikeVC, animated: true)
     }
     
-    func userclick(sender:UITapGestureRecognizer){
+    func userclick(sender: UITapGestureRecognizer) {
         var UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            var text = SADecode(SADecode(self.titleJson))
-            if self.privateJson == "1" {
-                text = "\(self.titleJson)（私密）"
-            }else if self.percentJson == "1" {
-                text = "\(self.titleJson)（已完成）"
-            }
-            
-            if self.loadTopCellDone {
-                return self.topCell.frame.size.height
-            }
-            return text.stringHeightBoldWith(19, width: 242) + 256 + 14 + 44
-        }else{
-            var data = self.dataArray[indexPath.row] as! NSDictionary
-            var h = SAStepCell.cellHeightByData(data)
-            return h
-        }
     }
     
     func addStepButton(){
@@ -560,6 +580,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
         var safeshell = Sa.objectForKey("shell") as! String
+        
         if actionSheet == self.deleteSheet {
             if buttonIndex == 0 {
                 var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
@@ -574,7 +595,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     }
                 })
             }
-        }else if actionSheet == self.deleteDreamSheet {
+        } else if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除记本
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 globalWillNianReload = 1
@@ -587,7 +608,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     }
                 })
             }
-        }else if actionSheet == self.ownerMoreSheet {
+        } else if actionSheet == self.ownerMoreSheet {
             if buttonIndex == 0 {   //编辑记本
                 self.editMyDream()
             }else if buttonIndex == 1 { //完成记本
@@ -613,7 +634,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.deleteDreamSheet!.cancelButtonIndex = 1
                 self.deleteDreamSheet!.showInView(self.view)
             }
-        }else if actionSheet == self.guestMoreSheet {
+        } else if actionSheet == self.guestMoreSheet {
             if buttonIndex == 0 {   //关注记本
                 if self.followJson == "1" {
                     self.followJson = "0"
@@ -625,11 +646,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     if sa != "" && sa != "err" {
                     }
                 })
-            }else if buttonIndex == 1 {     //赞记本
+            } else if buttonIndex == 1 {     //赞记本
                 onDreamLikeClick()
-            }else if buttonIndex == 2 { //分享记本
+            } else if buttonIndex == 2 { //分享记本
                 shareDream()
-            }else if buttonIndex == 3 { //不合适
+            } else if buttonIndex == 3 { //不合适
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/a.php")
                     if(sa == "1"){
@@ -642,7 +663,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
-    func editMyDream(readyForTag:Int = 0){
+    func editMyDream(readyForTag:Int = 0) {
         var editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
         editdreamVC.delegate = self
         editdreamVC.isEdit = 1
@@ -657,7 +678,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String, editTags:Array<String>){
+    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String, editTags:Array<String>) {
         self.tagArray.removeAll(keepCapacity: false)
         
         self.topCell.scrollView.subviews.map({
@@ -674,16 +695,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.tagArray = editTags
         loadDreamTopcell()
     }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }else{
-            return self.dataArray.count
-        }
-    }
-    
-    func loadDreamTopcell(){
+
+    func loadDreamTopcell() {
         var h: CGFloat = 0
         if self.privateJson == "1" {
             var _text = SADecode(SADecode(self.titleJson))
@@ -804,7 +817,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
-    func onDreamHeadClick(sender:UIGestureRecognizer) {
+    func onDreamHeadClick(sender: UIGestureRecognizer) {
         if let v = sender.view as? UIImageView {
             var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
             var rect = CGRectMake(-yPoint.x, -yPoint.y, 60, 60)
@@ -818,37 +831,40 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var storyboard = UIStoryboard(name: "Explore", bundle: nil)
         var searchVC = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
         searchVC.preSetSearch = self.tagArray[label!.tag - 12000]
+        searchVC.shouldPerformSearch = true
         self.navigationController?.pushViewController(searchVC, animated: true)        
     }
     
-    func likeDream(){
+    func likeDream() {
         var LikeVC = LikeViewController()
         LikeVC.Id = "\(self.Id)"
         LikeVC.urlIdentify = 3
         self.navigationController?.pushViewController(LikeVC, animated: true)
     }
     
-    func onDreamLikeClick(){
-        if self.likeJson == "1" {
-            self.likeJson = "0"
+    func onDreamLikeClick() {
+        if self.likedreamJson == "1" {
+            self.likedreamJson = "0"
             self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
             self.topCell.btnMain.removeTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
             var numLike = self.topCell.numLeftNum.text!.toInt()!
             self.topCell.numLeftNum.text = "\(numLike - 1)"
-        }else if self.likeJson == "0" {
-            self.likeJson = "1"
+        }else if self.likedreamJson == "0" {
+            self.likedreamJson = "1"
             self.topCell.btnMain.setTitle("已赞", forState: UIControlState.Normal)
             self.topCell.btnMain.removeTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
             var numLike = self.topCell.numLeftNum.text!.toInt()!
             self.topCell.numLeftNum.text = "\(numLike + 1)"
         }
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
         var safeshell = Sa.objectForKey("shell") as! String
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&cool=\(self.likeJson)", "http://nian.so/api/dream_cool_query.php")
+            var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&cool=\(self.likedreamJson)", "http://nian.so/api/dream_cool_query.php")
             if sa != "" && sa != "err" {
             }
         })

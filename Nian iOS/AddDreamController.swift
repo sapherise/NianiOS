@@ -18,7 +18,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var uploadWait: UIActivityIndicatorView?
     @IBOutlet weak var field1: UITextField!  //title text field
-    @IBOutlet weak var field2: UITextView!   //brief introduction text field
+    @IBOutlet weak var field2: SZTextView!   //brief introduction text field
     @IBOutlet weak var tokenView: TITokenFieldView!
     @IBOutlet weak var setPrivate: UIImageView!
     @IBOutlet weak var imageDreamHead: UIImageView!
@@ -46,9 +46,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var editImage: String = ""
     var editPrivate: String = ""
     var tagsArray: Array<String> = [String]()
-    var cursorPosition: CGFloat = 0.0
-    var shownKbd:Bool = false
-    var kbdHeight: CGFloat = 0.0
+    
+    var caretPosition: CGFloat = 0.0   // 获得 caret(光标)的位置
+    var shownKeyboard: Bool = false    // 键盘是否弹出
+    var keyboardHeight: CGFloat = 0.0  // 键盘的高度
     
     var isPrivate: Int = 0  // 0: 公开；1：私密
     
@@ -56,11 +57,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
         self.tokenView.resignFirstResponder()
+        
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        
         self.actionSheet!.addButtonWithTitle("相册")
         self.actionSheet!.addButtonWithTitle("拍照")
         self.actionSheet!.addButtonWithTitle("取消")
+        
         self.actionSheet!.cancelButtonIndex = 2
+        
         self.actionSheet!.showInView(self.view)
     }
     
@@ -129,8 +134,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.automaticallyAdjustsScrollViewInsets = false
         self.scrollView.delaysContentTouches = false
-//        self.scrollView.canCancelContentTouches = false
         self.scrollView.exclusiveTouch = true
+//        self.scrollView.canCancelContentTouches = false
         
         setupViews()
     }
@@ -174,18 +179,27 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if self.tokenView.tokenField.isFirstResponder() {
             self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.width, (76 + field2.frame.height + tokenView.frame.height))
             self.scrollView.setContentOffset(CGPointMake(0, field2.frame.size.height + 76), animated: true)
-//            println("self.scrollView.contentOffset AAA = \(self.scrollView.contentOffset)")
         } else {
             self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.width, (76 + field2.frame.height + tokenView.tokenField.frame.height))
-//            println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
         }
 
+        if self.field2.isFirstResponder() {
+            var _rect = self.field2.caretRectForPosition(self.field2.selectedTextRange?.end)
+            
+            if ((_rect.origin.y + 76 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
+                var extraHeight = _rect.origin.y + 76 - self.scrollView.contentOffset.y + keyboardHeight
+                var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+                var extraScrollOffset = extraHeight - heightExcludeNavbar
+                
+                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset + ceil(_rect.height)), animated: true)
+                println("self.scrollView.contentOffset AAAAAAAAAA = \(self.scrollView.contentOffset)")
+            }
+        }
+        
+        
         UIView.animateWithDuration(0.2, delay: 0, options: .BeginFromCurrentState, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
-        
-//        println("self.scrollView.contentSize = \(self.scrollView.contentSize)")
-//        println("self.ContainerView.frame = \(self.containerView.frame)")
    }
     
     func setupViews(){
@@ -202,6 +216,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.view.backgroundColor = UIColor.whiteColor()
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
+        self.field2.placeholder = "记本简介（可选）"
         self.field2.delegate = self
         self.scrollView.delegate = self
         
@@ -258,20 +273,23 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
-        }else{
+        } else {
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
+        
         self.uploadWait!.hidden = true
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
+        
         if self.isEdit == 1 {
             titleLabel.text = "编辑记本"
         }else{
             titleLabel.text = "新记本！"
         }
+        
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
@@ -332,10 +350,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 }
             }
         }
-        
-        if content == "记本简介（可选）" {
-            content = ""
-        }
+
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
@@ -410,10 +425,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
-        if textView.text == "记本简介（可选）" {
-            textView.text = ""
-            textView.textColor = UIColor.blackColor()
-        }
+        textView.textColor = UIColor.blackColor()
     }
     
     // MARK: DreamTagDelegate
@@ -452,6 +464,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
         let originDelta = abs(keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y)
         
+        if showsKeyboard {
+            keyboardHeight = originDelta
+        } else {
+            keyboardHeight = 0.0
+        }
+        shownKeyboard = showsKeyboard  //
+        
         self.bottomLineToToField2.constant = CGRectGetMaxY(self.tokenView.tokenField.frame)
         self.view.setNeedsUpdateConstraints()
         
@@ -467,12 +486,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         if self.tokenView.tokenField.isFirstResponder() {
             var tmpHeight = 76 + field2.frame.size.height + tokenView.frame.size.height
-            self.containerViewHeight.constant += (tokenView.tokenField.frame.height - tokenView.frame.height - originDelta)   //tmpHeight > (UIScreen.mainScreen().bounds.height - 64) ? (UIScreen.mainScreen().bounds.height - 64 - tmpHeight) : 0
+            self.containerViewHeight.constant += (tokenView.tokenField.frame.height - tokenView.frame.height - originDelta)
             self.view.setNeedsUpdateConstraints()
         } else {
             var tmpHeight = 76 + field2.frame.size.height + tokenView.tokenField.frame.size.height
             self.containerViewHeight.constant = tmpHeight > (UIScreen.mainScreen().bounds.height - 64) ? (UIScreen.mainScreen().bounds.height - 64 - tmpHeight) : 0
             self.view.setNeedsUpdateConstraints()
+        }
+       
+        // TODO: 当编辑 “记本简介” 时，要根据选择的内容来实现滚动
+        if (self.field2.isFirstResponder() && showsKeyboard) {
+            let location = self.field2.selectedRange.location
         }
         
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
@@ -480,15 +504,23 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             }, completion: nil)
     }
 
+    // text view delegate 
+    
     func textViewDidChangeSelection(textView: UITextView) {
         if textView.tag == 16555 {
-            let location = field2.selectedRange.location
-            let dict: Dictionary = [NSFontAttributeName : UIFont.systemFontOfSize(14)]
-            var size = (textView.text as NSString).sizeWithAttributes(dict)
-            var length = size.height
-            var lines = ceil(textView.contentSize.height/length)
+            /**/
+            var _rect = textView.caretRectForPosition(textView.selectedTextRange?.end)
             
-            println("text view did change: \(location) lines: \(lines)")
+            if field2.isFirstResponder() {
+                if ((_rect.origin.y + 76 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
+                    var extraHeight = _rect.origin.y + 76 - self.scrollView.contentOffset.y + keyboardHeight
+                    var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+                    var extraScrollOffset = extraHeight - heightExcludeNavbar
+                    
+                    self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset + ceil(_rect.height)), animated: true)
+                    println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
+                }
+            }
         }
     }
     
