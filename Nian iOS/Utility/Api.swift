@@ -115,6 +115,11 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_list.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
+    static func getCircleStep(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/circle/\(id)/steps?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
     static func getLevelCalendar(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/calendar.php?uid=\(s_uid)", callback: callback)
@@ -485,9 +490,9 @@ struct Api {
     }
     
     
-    static func getBBS(page: Int, callback: V.JsonCallback) {
+    static func getBBS(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/bbs.php?age=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/circle/\(id)/bbs?page=\(page)", callback: callback)
     }
     
     
@@ -611,5 +616,6 @@ struct Api {
         loadCookies()
         V.httpPostForString("http://nian.so/api/sign_check.php", content: "name=\(name)&&pw=\(password)&&em=\(email)", callback: callback)
     }
+    
     
 }

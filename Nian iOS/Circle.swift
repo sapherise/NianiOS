@@ -139,8 +139,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         
         self.tableview = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64 - 44))
         self.tableview.backgroundColor = UIColor.clearColor()
-        self.tableview.delegate = self;
-        self.tableview.dataSource = self;
+        self.tableview.delegate = self
+        self.tableview.dataSource = self
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         var nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
         self.tableview.registerNib(nib, forCellReuseIdentifier: "CircleBubbleCell")

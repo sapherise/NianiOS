@@ -12,10 +12,9 @@ import QuartzCore
 
 class GroupCell: UITableViewCell {
     
-    @IBOutlet var contentLabel:UILabel!
-    @IBOutlet var lastdate:UILabel!
-    @IBOutlet var View:UIView!
-    @IBOutlet var reply:UILabel!
+    @IBOutlet var labelContent:UILabel!
+    @IBOutlet var labelTime:UILabel!
+    @IBOutlet var labelComment:UILabel!
     @IBOutlet var line:UIView!
     @IBOutlet var viewLine: UIView!
     
@@ -25,26 +24,25 @@ class GroupCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.View!.backgroundColor = BGColor
+        self.backgroundColor = BGColor
         self.line.setWidth(globalWidth)
-        self.lastdate.setX(globalWidth-160)
+        self.labelTime.setX(globalWidth-160)
         self.viewLine.setWidth(globalWidth - 40)
-        self.contentLabel.setWidth(globalWidth-40)
+        self.labelContent.setWidth(globalWidth-40)
     }
     
-    override func layoutSubviews()
-    {
+    override func layoutSubviews() {
         super.layoutSubviews()
         var id = self.data.stringAttributeForKey("id")
         var title = self.data.stringAttributeForKey("title")
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var reply = self.data.stringAttributeForKey("reply")
-        self.lastdate!.text = lastdate
-        self.reply!.text = "\(reply) 回应"
+        self.labelTime.text = V.relativeTime(lastdate)
+        self.labelComment.text = "\(reply) 回应"
         var height = title.stringHeightWith(16,width:globalWidth-40)
-        self.contentLabel!.setHeight(height)
-        self.contentLabel!.text = title
-        self.line.setY(self.contentLabel!.bottom())
+        self.labelContent!.setHeight(height)
+        self.labelContent!.text = title
+        self.line.setY(self.labelContent!.bottom())
         self.viewLine.setY(self.line.bottom()+16)
     }
     
