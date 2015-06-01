@@ -10,7 +10,7 @@ import UIKit
 
 class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
     
-    let identifier = "group"
+    let identifier = "GroupCell"
     let identifier3 = "exploreall"
     var tableView:UITableView?
     var dataArray = NSMutableArray()
@@ -22,7 +22,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        load()
     }
     
     override func viewWillDisappear(animated: Bool){
@@ -33,7 +33,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if globalWillBBSReload == 1 {
-            self.SAReloadData()
+            self.load()
             globalWillBBSReload = 0
         }
     }
@@ -76,46 +76,27 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.navigationController?.pushViewController(addBBSVC, animated: true)
     }
     
-    
-    func loadData() {
-        var url = urlString()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull() {
-                var arr = data["items"] as! NSArray
-                for data : AnyObject  in arr {
+    func load(clear: Bool = true) {
+        if clear {
+            page = 0
+        }
+        Api.getBBS("0", page: page) { json in
+            if json != nil {
+                self.viewLoadingHide()
+                var data = json!["data"]
+                var arr = data!!["bbs"] as! NSArray
+                if clear {
+                    self.dataArray.removeAllObjects()
+                }
+                for data: AnyObject in arr {
                     self.dataArray.addObject(data)
                 }
-                self.tableView!.reloadData()
-                self.tableView!.footerEndRefreshing()
+                self.tableView?.reloadData()
+                self.tableView?.headerEndRefreshing()
+                self.tableView?.footerEndRefreshing()
                 self.page++
             }
-        })
-    }
-    
-    
-    func SAReloadData(){
-        var url = "http://nian.so/api/bbs.php?page=0"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull(){
-                self.viewLoadingHide()
-                var arr = data["items"] as! NSArray
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
-                }
-                self.tableView!.reloadData()
-                self.tableView!.headerEndRefreshing()
-                self.page = 1
-            }
-        })
-    }
-    
-    
-    
-    
-    func urlString()->String
-    {
-        return "http://nian.so/api/bbs.php?page=\(page)"
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -172,16 +153,15 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func countUp() {      //😍
-        self.SAReloadData()
+        self.load()
     }
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.SAReloadData()
-            })
-        
+            self.load()
+        })
         self.tableView!.addFooterWithCallback({
-            self.loadData()
-            })
+            self.load(clear: false)
+        })
     }
 }

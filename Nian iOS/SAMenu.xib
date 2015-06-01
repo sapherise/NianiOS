@@ -11,6 +11,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" id="yhG-So-6is">
+                    <rect key="frame" x="0.0" y="39" width="320" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VLH-mi-2rn">
                     <rect key="frame" x="31" y="0.0" width="86" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -43,6 +48,7 @@
             <connections>
                 <outlet property="viewLeft" destination="VLH-mi-2rn" id="QHV-DL-kEE"/>
                 <outlet property="viewLine" destination="Bmo-e0-HDr" id="4bZ-ly-Wud"/>
+                <outlet property="viewLineBottom" destination="yhG-So-6is" id="cc8-ao-WHv"/>
                 <outlet property="viewMiddle" destination="Jlq-cG-CwN" id="Lvi-qN-q2h"/>
                 <outlet property="viewRight" destination="Gab-h4-pOh" id="yMB-ji-GBq"/>
             </connections>

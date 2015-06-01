@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExploreController" customModule="Nian_iOS" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="group" rowHeight="253" id="Nxi-zM-L6x" customClass="GroupCell" customModule="Nian_iOS" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="GroupCell" rowHeight="253" id="Nxi-zM-L6x" customClass="GroupCell" customModule="Nian_iOS" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="253"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nxi-zM-L6x" id="kE4-Ol-CVT">
@@ -51,11 +51,10 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="View" destination="kE4-Ol-CVT" id="aMI-rV-zM0"/>
-                <outlet property="contentLabel" destination="QFB-Pf-uQa" id="ilE-UE-ROA"/>
-                <outlet property="lastdate" destination="RXX-Oo-eWG" id="V0b-LV-AJV"/>
+                <outlet property="labelComment" destination="1HI-ci-QJV" id="q5w-Ao-89N"/>
+                <outlet property="labelContent" destination="QFB-Pf-uQa" id="jBw-hb-7Re"/>
+                <outlet property="labelTime" destination="RXX-Oo-eWG" id="hUJ-FM-DRH"/>
                 <outlet property="line" destination="yT0-Jd-yiw" id="Cau-rF-YHh"/>
-                <outlet property="reply" destination="1HI-ci-QJV" id="rVy-ei-NW9"/>
                 <outlet property="viewLine" destination="TpY-ga-hdz" id="KwR-zi-cce"/>
             </connections>
             <point key="canvasLocation" x="212" y="219.5"/>
