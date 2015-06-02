@@ -390,10 +390,10 @@ struct Api {
         V.httpPostForString("http://nian.so/api/addbbscomment_query.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
     }
     
-    
-    static func postAddBBS(title: String, content: String, callback: V.StringCallback) {
+    static func postAddBBS(title: String, content: String, circle: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/add_bbs.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)", callback: callback)
+        var sid = client.getSid()
+        V.httpPostForJson("http://api.nian.so/bbs?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&circle_id=\(circle)&circleshellid=\(sid)", callback: callback)
     }
     
     

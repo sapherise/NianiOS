@@ -199,8 +199,7 @@ class CircleListController: UIViewController,UITableViewDelegate,UITableViewData
             CircleVC.ID = theID
             CircleVC.circleTitle = title
             self.navigationController?.pushViewController(CircleVC, animated: true)
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+            var safeuid = SAUid()
             SD.executeChange("update circle set isread = 1 where circle = \(theID) and isread = 0 and owner = \(safeuid)")
             self.SALoadData()
         }else{

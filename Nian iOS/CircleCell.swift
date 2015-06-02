@@ -22,6 +22,8 @@ class CircleCell: MKTableViewCell {
     @IBOutlet var viewDelete: UIView!
     @IBOutlet var textDelete: UILabel!
     @IBOutlet var imageStep: UIImageView!
+    @IBOutlet var imageBBS: UIImageView!
+    @IBOutlet var imageChat: UIImageView!
     
     var largeImageURL:String = ""
     var data :NSDictionary?
@@ -39,33 +41,30 @@ class CircleCell: MKTableViewCell {
         self.labelContent.hidden = true
         imageStep.layer.borderColor = lineColor.CGColor
         imageStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toStep"))
+        imageBBS.layer.borderColor = lineColor.CGColor
+        imageBBS.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toBBS"))
+        imageChat.layer.borderColor = lineColor.CGColor
+        imageChat.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toChat"))
     }
     
     func toStep() {
-//        var theID = self.data?.stringAttributeForKey("id")
-//        var title = self.data?.stringAttributeForKey("title")
-//        if let id = theID?.toInt() {
-//            var circleVC = CircleController()
-//            circleVC.ID = id
-//            circleVC.circleTitle = title == nil ? "" : title!
-//            var uid = getuid()
-//            SD.executeChange("update circle set isread = 1 where circle = \(id) and isread = 0 and owner = \(uid)")
-//            self.findRootViewController()?.navigationController?.pushViewController(circleVC, animated: true)
-//        }
-//        
-//        var vc = NewCircleController()
-//        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
-//        
-//        
-//        
-//        var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
-//        var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-//        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! UIViewController
-//        var vc1 = NianViewController
-//        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
+        toNewCircle(0)
+    }
+    
+    func toBBS() {
+        toNewCircle(1)
+    }
+    
+    func toChat() {
+        toNewCircle(2)
+    }
+    
+    func toNewCircle(current: Int) {
         if let id = self.data?.stringAttributeForKey("id") {
             var vc = NewCircleController()
             vc.id = id
+            vc.current = current
+            vc.textTitle = self.data!.stringAttributeForKey("title")
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }
     }

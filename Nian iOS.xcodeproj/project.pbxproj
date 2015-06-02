@@ -17,7 +17,6 @@
 		1214547F1A694F3C0091DCEE /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1214547B1A694F3C0091DCEE /* WeiboSDK.bundle */; };
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
 		121F669B1B15B3FD00103B14 /* NewCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F669A1B15B3FD00103B14 /* NewCircle.swift */; };
-		121F669D1B15B4EA00103B14 /* NewCircle.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 121F669C1B15B4EA00103B14 /* NewCircle.storyboard */; };
 		121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121F669E1B15CCC100103B14 /* SAMenu.xib */; };
 		121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F66A01B15CCCA00103B14 /* SAMenu.swift */; };
 		12216F941A61471C003701BF /* MeNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12216F931A61471C003701BF /* MeNext.swift */; };
@@ -110,6 +109,8 @@
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
 		12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */; };
+		12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */; };
+		12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */; };
 		12C354531AD5126F0078693F /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C354521AD5126F0078693F /* Badge.swift */; };
 		12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */; };
 		12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DED1A6F7B3300B0E327 /* WeChatActivityGeneral.swift */; };
@@ -216,7 +217,6 @@
 		1214547D1A694F3C0091DCEE /* WeiboUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboUser.h; sourceTree = "<group>"; };
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		121F669A1B15B3FD00103B14 /* NewCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCircle.swift; sourceTree = "<group>"; };
-		121F669C1B15B4EA00103B14 /* NewCircle.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewCircle.storyboard; sourceTree = "<group>"; };
 		121F669E1B15CCC100103B14 /* SAMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAMenu.xib; sourceTree = "<group>"; };
 		121F66A01B15CCCA00103B14 /* SAMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAMenu.swift; sourceTree = "<group>"; };
 		12216F931A61471C003701BF /* MeNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeNext.swift; sourceTree = "<group>"; };
@@ -314,6 +314,8 @@
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		12BF5FF919BB479900DE0ABE /* Login.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Login.xib; sourceTree = "<group>"; };
 		12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SABottom.swift; sourceTree = "<group>"; };
+		12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SABottom.xib; sourceTree = "<group>"; };
 		12C354521AD5126F0078693F /* Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		12C96DEB1A6F7B3300B0E327 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
@@ -471,9 +473,10 @@
 			isa = PBXGroup;
 			children = (
 				121F669A1B15B3FD00103B14 /* NewCircle.swift */,
-				121F669C1B15B4EA00103B14 /* NewCircle.storyboard */,
 				121F669E1B15CCC100103B14 /* SAMenu.xib */,
 				121F66A01B15CCCA00103B14 /* SAMenu.swift */,
+				12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */,
+				12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */,
 			);
 			name = "新梦境";
 			sourceTree = "<group>";
@@ -1203,6 +1206,7 @@
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
+				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
 				1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
@@ -1216,7 +1220,6 @@
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				128C4E371A5038C3000D2B7C /* CircleType.xib in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
-				121F669D1B15B4EA00103B14 /* NewCircle.storyboard in Resources */,
 				12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
@@ -1298,6 +1301,7 @@
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
 				1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */,
 				12521B7B1AA85FC3006FEC6D /* CircleDreamCell.swift in Sources */,
+				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */,
