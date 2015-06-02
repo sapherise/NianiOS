@@ -9,9 +9,10 @@
 import UIKit
 
 class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextViewDelegate{
-    @IBOutlet var field1:UITextField?
-    @IBOutlet var field2:UITextView?
+    @IBOutlet var field1:UITextField!
+    @IBOutlet var field2:UITextView!
     @IBOutlet var viewHolder: UIView!
+    var circle: String = ""
     
     override func viewDidLoad() {
         setupViews()
@@ -27,8 +28,8 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
         self.viewHolder.setX(globalWidth/2-140)
         
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-        self.field2!.delegate = self
-        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
+        self.field2.delegate = self
+        self.field1.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
@@ -53,28 +54,24 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
     }
     
     func dismissKeyboard(sender:UITapGestureRecognizer){
-        self.field1!.resignFirstResponder()
-        self.field2!.resignFirstResponder()
+        self.field1.resignFirstResponder()
+        self.field2.resignFirstResponder()
     }
     
     func addBBSOK(){
-        if (( self.field1!.text != "" ) && ( self.field2!.text != "" ) && ( self.field2!.text != "话题内容" )) {
+        if (( self.field1.text != "" ) && ( self.field2.text != "" ) && ( self.field2.text != "话题内容" )) {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            var title = self.field1!.text
-            var content = self.field2!.text
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&content=\(content!)&&title=\(title!)", "http://nian.so/api/add_bbs.php")
-                if(sa == "1"){
+            var title = self.field1.text
+            var content = self.field2.text
+            title = SAEncode(SAHtml(title))
+            content = SAEncode(SAHtml(content))
+            Api.postAddBBS(title, content: content, circle: "0") { json in
+                if json != nil {
+                    println(json!)
                     globalWillBBSReload = 1
                     self.navigationController?.popViewControllerAnimated(true)
                 }
-            })
+            }
         }
     }
 }

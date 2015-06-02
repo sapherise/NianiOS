@@ -512,25 +512,25 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                                 }
                                             }
                                         }else if type == "3" {
-                                            Api.getSingleStepSync(cid) { json in
-                                                if json != nil {
-                                                    if let item = json!["items"] as? NSArray {
-                                                        if item.count > 0 {
-                                                            var dataStep = item[0] as! NSDictionary
-                                                            var sid = dataStep.stringAttributeForKey("sid")
-                                                            var uid = dataStep.stringAttributeForKey("uid")
-                                                            var dream = dataStep.stringAttributeForKey("dream")
-                                                            var content = dataStep.stringAttributeForKey("content")
-                                                            var img = dataStep.stringAttributeForKey("img")
-                                                            var img0 = dataStep.stringAttributeForKey("img0")
-                                                            var img1 = dataStep.stringAttributeForKey("img1")
-                                                            SQLStepContent(sid, uid, dream, content, img, img0, img1) {
-                                                                NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
+//                                            Api.getSingleStepSync(cid) { json in
+//                                                if json != nil {
+//                                                    if let item = json!["items"] as? NSArray {
+//                                                        if item.count > 0 {
+//                                                            var dataStep = item[0] as! NSDictionary
+//                                                            var sid = dataStep.stringAttributeForKey("sid")
+//                                                            var uid = dataStep.stringAttributeForKey("uid")
+//                                                            var dream = dataStep.stringAttributeForKey("dream")
+//                                                            var content = dataStep.stringAttributeForKey("content")
+//                                                            var img = dataStep.stringAttributeForKey("img")
+//                                                            var img0 = dataStep.stringAttributeForKey("img0")
+//                                                            var img1 = dataStep.stringAttributeForKey("img1")
+//                                                            SQLStepContent(sid, uid, dream, content, img, img0, img1) {
+//                                                                NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
                                         }else{
                                             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                                         }

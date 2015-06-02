@@ -26,11 +26,12 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     var id: String = "0"
     var isAnimating: Bool = false
     var totalChat: Int = 0
-    var keyboardView: UIView!
+    var keyboardView: SABottom!
     var inputKeyboard: UITextField!
     var actionSheetPhoto: UIActionSheet!
     var keyboardHeight: CGFloat = 0
     var imagePicker: UIImagePickerController?
+    var textTitle: String = ""
     
     override func viewDidLoad() {
         setupViews()
@@ -142,7 +143,6 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         self.tableViewChat.registerNib(UINib(nibName:"CircleBubbleCell", bundle: nil), forCellReuseIdentifier: "CircleBubbleCell")
         self.tableViewChat.registerNib(UINib(nibName:"CircleImageCell", bundle: nil), forCellReuseIdentifier: "CircleImageCell")
         self.tableViewChat.registerNib(UINib(nibName:"CircleType", bundle: nil), forCellReuseIdentifier: "CircleType")
-        self.tableViewChat.registerNib(UINib(nibName:"CircleDreamCell", bundle: nil), forCellReuseIdentifier: "CircleDreamCell")
         
         
         viewMenu = (NSBundle.mainBundle().loadNibNamed("SAMenu", owner: self, options: nil) as NSArray).objectAtIndex(0) as! SAMenu
@@ -161,11 +161,10 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         self.tableViewChat.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         
         // 输入框
-        self.keyboardView = UIView(frame: CGRectMake(globalWidth * 2, globalHeight - 44 - 64 - 40, globalWidth, 44))
-        self.keyboardView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
-        var inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
-        inputLineView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
-        self.keyboardView.addSubview(inputLineView)
+        self.keyboardView = (NSBundle.mainBundle().loadNibNamed("SABottom", owner: self, options: nil) as NSArray).objectAtIndex(0) as! SABottom
+        self.keyboardView.pointX = globalWidth * 2
+        self.keyboardView.pointY = globalHeight - 44 - 104
+        
         self.inputKeyboard = UITextField(frame: CGRectMake(8+28+8, 8, globalWidth-16-36, 28))
         self.inputKeyboard.layer.cornerRadius = 4
         self.inputKeyboard.layer.masksToBounds = true
@@ -190,10 +189,19 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         scrollView.addSubview(self.keyboardView)
         self.inputKeyboard.returnKeyType = UIReturnKeyType.Send
         
+        //  发布新话题
+        var viewAddBBS = (NSBundle.mainBundle().loadNibNamed("SABottom", owner: self, options: nil) as NSArray).objectAtIndex(0) as! SABottom
+        viewAddBBS.pointX = globalWidth
+        viewAddBBS.pointY = globalHeight - 44 - 104
+        viewAddBBS.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
+        viewAddBBS.backgroundColor = SeaColor
+        scrollView.addSubview(viewAddBBS)
+        
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = self.textTitle
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
@@ -224,8 +232,6 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             var type = data.stringAttributeForKey("type")
             if type == "2" {
                 return CircleImageCell.cellHeightByData(data)
-            } else if type == "3" {
-                return CircleDreamCell.cellHeightByData(data)
             } else {
                 return CircleBubbleCell.cellHeightByData(data)
             }
@@ -277,27 +283,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
                 c.View.tag = indexPath.row
                 return c
-            }else if type == "3" {
-                let (resultDes, err) = SD.executeQuery("select * from step where sid = '\(cid)' limit 1")
-                if resultDes.count == 0 {
-                    var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
-                    c.data = data
-                    c.textContent.tag = indexPath.row
-                    c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                    c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-                    c.View.tag = indexPath.row
-                    c.isDream = 1
-                    return c
-                }else{
-                    var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as! CircleDreamCell
-                    c.data = data
-                    c.textContent.tag = indexPath.row
-                    c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                    c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-                    c.View.tag = indexPath.row
-                    return c
-                }
-            }else{
+            } else {
                 var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as! CircleTypeCell
                 c.data = data
                 return c
@@ -374,7 +360,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             dataArrayChat.removeAllObjects()
         }
         var safeuid = SAUid()
-        var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(id)' and owner = '\(safeuid)' order by id desc limit \(pageChat*30),30")
+        var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(id)' and owner = '\(safeuid)' and type != 3 order by id desc limit \(pageChat*30),30")
         if err == nil {
             self.pageChat++
             var title: String?
@@ -468,8 +454,6 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == self.tableViewChat {
-            println("totalChat: \(totalChat)")
-            println("pageChat: \(pageChat)")
             if totalChat == 30 * pageChat {
                 var y = scrollView.contentOffset.y
                 if y < 40 {
@@ -485,30 +469,27 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func switchTab(tab: Int) {
         inputKeyboard.resignFirstResponder()
-        if current != tab {
-            current = tab
-            viewMenu.switchTab(tab)
-            scrollView.setContentOffset(CGPointMake(globalWidth * CGFloat(tab), 0), animated: true)
-            switch tab {
-            case 0:
-                if dataArrayStep.count == 0 {
-                    tableViewStep.headerBeginRefreshing()
-                }
-                break
-            case 1:
-                if dataArrayBBS.count == 0 {
-                    tableViewBBS.headerBeginRefreshing()
-                }
-                break
-            case 2:
-                loadChat()
-//                if dataArrayChat.count == 0 {
-//                    tableViewChat.headerBeginRefreshing()
-//                }
-                break
-            default:
-                break
+        current = tab
+        viewMenu.switchTab(tab)
+        scrollView.setContentOffset(CGPointMake(globalWidth * CGFloat(tab), 0), animated: true)
+        switch tab {
+        case 0:
+            if dataArrayStep.count == 0 {
+                tableViewStep.headerBeginRefreshing()
             }
+            break
+        case 1:
+            if dataArrayBBS.count == 0 {
+                tableViewBBS.headerBeginRefreshing()
+            }
+            break
+        case 2:
+            if dataArrayChat.count == 0 {
+                loadChat()
+            }
+            break
+        default:
+            break
         }
     }
     
@@ -630,7 +611,6 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 }
             }
     }
-    
     
     func onCellPan(sender:UIPanGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Changed {
@@ -794,6 +774,10 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         var contentOffsetTableView = self.tableViewChat.contentSize.height >= heightScroll ? self.tableViewChat.contentSize.height - heightScroll : 0
         self.keyboardView.setY(globalHeight - 44 - 104)
         self.tableViewChat.setHeight(heightScroll)
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
