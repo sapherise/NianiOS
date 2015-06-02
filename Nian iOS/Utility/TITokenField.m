@@ -93,7 +93,7 @@
 	CGFloat tokenFieldBottom = CGRectGetMaxY(_tokenField.frame);
 	
 	_separator = [[UIView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom, self.bounds.size.width, 1)];
-	[_separator setBackgroundColor:[UIColor colorWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0]];
+    [_separator setBackgroundColor:[UIColor colorWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0]];
 	[self addSubview:_separator];
 	
 	// This view is created for convenience, because it resizes and moves with the rest of the subviews.
@@ -118,7 +118,6 @@
 	{
 		_resultsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom + 1, self.bounds.size.width, 10)];
 		[_resultsTable setSeparatorColor:[UIColor colorWithWhite:0.85 alpha:1]];
-		[_resultsTable setBackgroundColor:[UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1]];
 		[_resultsTable setDelegate:self];
 		[_resultsTable setDataSource:self];
 		[_resultsTable setHidden:YES];
@@ -932,7 +931,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
         UILabel * label =  _placeHolderLabel;
 		if (!label || ![label isKindOfClass:[UILabel class]]){
 			label = [[UILabel alloc] initWithFrame:CGRectMake(_tokenCaret.x + 3, _tokenCaret.y + 2, self.rightView.bounds.size.width, self.rightView.bounds.size.height)];
-			[label setTextColor:[UIColor colorWithWhite:0.75 alpha:1]];
+            [label setTextColor:[UIColor colorWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1]]; // colorWithWhite:0.75 alpha:1]];
 			 _placeHolderLabel = label;
             [self addSubview: _placeHolderLabel];
 		}
