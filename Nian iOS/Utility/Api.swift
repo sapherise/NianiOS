@@ -320,9 +320,19 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=10&&lastid=\(lastid)", callback: callback)
     }
     
-    static func getBBSComment(page: Int, flow: Int, id: String, callback: V.JsonCallback) {
+//    static func getBBSComment(page: Int, flow: Int, id: String, callback: V.JsonCallback) {
+//        loadCookies()
+////        V.httpGetForJson("http://nian.so/api/bbs_comment.php?page=\(page)&flow=\(flow)&id=\(id)", callback: callback)
+//        
+////        GET /bbs/{bbs_id}/comments?page=2&sort=desc
+//        
+//        V.httpGetForJson("http://api.nian.so/bbs/\(id)/comments?page=\(page)&sort=\(what)", callback: callback)
+//    }
+    
+    static func getBBSComment(id: String, page: Int, isAsc: Bool, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/bbs_comment.php?page=\(page)&flow=\(flow)&id=\(id)", callback: callback)
+        var sort = isAsc ? "asc" : "desc"
+        V.httpGetForJson("http://api.nian.so/bbs/\(id)/comments?page=\(page)&sort=\(sort)", callback: callback)
     }
     
     static func getBBSTop(id: String, callback: V.JsonCallback) {

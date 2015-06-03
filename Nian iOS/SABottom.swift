@@ -13,13 +13,11 @@ class SABottom: UIView {
     var pointY: CGFloat = 0
     
     override func awakeFromNib() {
-        println("awake")
         viewLine.setWidth(globalWidth)
         self.setWidth(globalWidth)
     }
     
     override func layoutSubviews() {
-        println("layout")
         self.frame.origin = CGPointMake(pointX, pointY)
     }
 }

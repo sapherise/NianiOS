@@ -10,21 +10,16 @@ import UIKit
 
 class BBSCellTop: UITableViewCell{
     
-    @IBOutlet var nickLabel:UILabel?
-    @IBOutlet var dreamhead:UIImageView?
-    @IBOutlet var View:UIView?
-    @IBOutlet var contentLabel:UILabel?
-    @IBOutlet var lastdate:UILabel?
-    @IBOutlet var Line:UIView?
-    @IBOutlet var BBStitle:UILabel?
+    @IBOutlet var nickLabel:UILabel!
+    @IBOutlet var dreamhead:UIImageView!
+    @IBOutlet var View:UIView!
+    @IBOutlet var contentLabel:UILabel!
+    @IBOutlet var lastdate:UILabel!
+    @IBOutlet var Line:UIView!
+    @IBOutlet var BBStitle:UILabel!
     @IBOutlet var viewFlow: UILabel!
-    
     var Id:String = ""
-    var topcontent:String = ""
-    var topuid:String = ""
-    var toplastdate:String = ""
-    var topuser:String = ""
-    var toptitle:String = ""
+    var data: NSDictionary!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,20 +32,23 @@ class BBSCellTop: UITableViewCell{
     
     override func layoutSubviews(){
         super.layoutSubviews()
-        self.BBStitle!.text = "\(self.toptitle)"
-        var titleHeight = self.toptitle.stringHeightWith(16,width:globalWidth-40)
+        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        var user = data.stringAttributeForKey("user")
+        var uid = data.stringAttributeForKey("uid")
+        var lastdate = data.stringAttributeForKey("lastdate")
+        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        var reply = data.stringAttributeForKey("reply")
+        self.BBStitle.text = title
+        var titleHeight = title.stringHeightWith(16,width:globalWidth-40)
         self.BBStitle!.setHeight(titleHeight)
         
-        self.nickLabel!.text = "\(self.topuser)"
-        self.lastdate!.text = "\(self.toplastdate)"
-        self.dreamhead?.setHead(self.topuid)
-        if let tag = self.topuid.toInt() {
-            self.dreamhead!.tag = tag
-        }
-        self.contentLabel?.text = "\(topcontent)"
+        self.nickLabel.text = user
+        self.lastdate.text = V.relativeTime(lastdate)
+        self.dreamhead.setHead(uid)
+        self.contentLabel.text = content
         
-        var height = topcontent.stringHeightWith(16,width:globalWidth-85)
-        self.contentLabel!.setHeight(height)
+        var height = content.stringHeightWith(16,width:globalWidth-85)
+        self.contentLabel.setHeight(height)
         
         self.dreamhead!.setY(self.BBStitle!.bottom()+20)
         self.nickLabel!.setY(self.BBStitle!.bottom()+20)
@@ -58,16 +56,18 @@ class BBSCellTop: UITableViewCell{
         self.contentLabel!.setY(self.dreamhead!.bottom()+20)
         self.viewFlow.setY(self.contentLabel!.bottom()+20)
         self.Line!.setY(self.viewFlow!.bottom()+25)
-        if self.topuid == "" {
-            self.View?.hidden = true
-        }else{
-            self.View?.hidden = false
+        if uid == "" {
+            View.hidden = true
+        } else {
+            View.hidden = false
         }
     }
-    class func cellHeightByData(topcontent:String, toptitle:String)->CGFloat{
-        var height = topcontent.stringHeightWith(16,width:globalWidth-85)
-        var titleHeight = toptitle.stringHeightWith(16,width:globalWidth-40)
+    
+    class func cellHeightByData(data: NSDictionary)->CGFloat{
+        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        var titleHeight = title.stringHeightWith(16,width:globalWidth-40)
+        var height = content.stringHeightWith(16,width:globalWidth-85)
         return height + 178 + titleHeight
     }
-    
 }

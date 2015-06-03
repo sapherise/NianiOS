@@ -37,9 +37,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         setupViews()
         setupRefresh()
         switchTab(current)
-        delay(0.1, { () -> () in
-            self.refresh()
-        })
+        self.refresh()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
     }
     
@@ -193,8 +191,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         var viewAddBBS = (NSBundle.mainBundle().loadNibNamed("SABottom", owner: self, options: nil) as NSArray).objectAtIndex(0) as! SABottom
         viewAddBBS.pointX = globalWidth
         viewAddBBS.pointY = globalHeight - 44 - 104
-        viewAddBBS.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
-        viewAddBBS.backgroundColor = SeaColor
+        viewAddBBS.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAddBBSClick"))
         scrollView.addSubview(viewAddBBS)
         
         //标题颜色
@@ -208,6 +205,12 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
         rightButton.image = UIImage(named:"newList")
         self.navigationItem.rightBarButtonItem = rightButton
+    }
+    
+    func onAddBBSClick() {
+        var vc = AddBBSController(nibName: "AddBBSController", bundle: nil)
+        vc.circle = id
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -762,7 +765,8 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         var info: Dictionary = notification.userInfo!
         var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
         self.keyboardHeight = keyboardSize.height
-        self.keyboardView.setY(globalHeight - self.keyboardHeight - 44 - 104)
+        self.keyboardView.pointY = globalHeight - self.keyboardHeight - 44 - 104
+        self.keyboardView.layoutSubviews()
         var heightScroll = globalHeight - 44 - 104 - self.keyboardHeight
         var contentOffsetTableView = self.tableViewChat.contentSize.height >= heightScroll ? self.tableViewChat.contentSize.height - heightScroll : 0
         self.tableViewChat.setHeight( heightScroll )
@@ -772,7 +776,8 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     func keyboardWillBeHidden(notification: NSNotification){
         var heightScroll = globalHeight - 44 - 104
         var contentOffsetTableView = self.tableViewChat.contentSize.height >= heightScroll ? self.tableViewChat.contentSize.height - heightScroll : 0
-        self.keyboardView.setY(globalHeight - 44 - 104)
+        self.keyboardView.pointY = globalHeight - 44 - 104
+        self.keyboardView.layoutSubviews()
         self.tableViewChat.setHeight(heightScroll)
     }
     

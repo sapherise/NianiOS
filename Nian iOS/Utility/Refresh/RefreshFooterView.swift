@@ -28,7 +28,6 @@ class RefreshFooterView: RefreshBaseView {
         self.statusLabel.backgroundColor =  UIColor.clearColor()
         
         let arrowX:CGFloat = self.frame.size.width * 0.5 - 50
-        self.arrowImage.center = CGPointMake(arrowX, self.frame.size.height * 0.5 - 10.0)
         //指示器
         self.activityView.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5 - 10.0)
     }
@@ -104,13 +103,8 @@ class RefreshFooterView: RefreshBaseView {
         case .Normal:
             self.statusLabel.text = RefreshFooterPullToRefresh as String;
             if (RefreshState.Refreshing == oldState) {
-                self.arrowImage.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
                 UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
                     self.scrollView.contentInset.bottom = self.scrollViewOriginalInset.bottom
-                    })
-            } else {
-                UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
-                    self.arrowImage.transform = CGAffineTransformMakeRotation(CGFloat(M_PI));
                     })
             }
             var deltaH:CGFloat = self.heightForContentBreakView()
@@ -124,9 +118,6 @@ class RefreshFooterView: RefreshBaseView {
             break
         case .Pulling:
             self.statusLabel.text = RefreshFooterReleaseToRefresh as String
-            UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
-               self.arrowImage.transform = CGAffineTransformIdentity
-                })
             break
         case .Refreshing:
             self.statusLabel.text = RefreshFooterRefreshing as String;
