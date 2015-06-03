@@ -131,7 +131,6 @@
     UIImage *cachedImage = [[[self class] sharedImageCache] cachedImageForRequest:urlRequest];
     if (cachedImage) {
         if (success) {
-//            NSLog(@"使用缓存图片");
             success(nil, nil, cachedImage);
         } else {
             self.image = cachedImage;
@@ -143,7 +142,6 @@
             self.image = placeholderImage;
         }
 
-//        NSLog(@"开始网络请求");
         __weak __typeof(self)weakSelf = self;
         self.af_imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
         self.af_imageRequestOperation.responseSerializer = self.imageResponseSerializer;
@@ -241,7 +239,6 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
     if (!image) {
         //check local file storage
         NSURL *cacheDir = [AFImageCache cacheDir];
-//         NSLog(@"cacheDir %@", cacheDir);
         cacheDir = [cacheDir URLByAppendingPathComponent:AFImageCacheKeyFromURLRequest(request)];
         if ([[NSFileManager defaultManager] fileExistsAtPath:cacheDir.path]) {
             image = [UIImage imageWithContentsOfFile:cacheDir.path];
@@ -252,28 +249,24 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
 }
 
 - (void)cacheImage:(UIImage *)image
-        forRequest:(NSURLRequest *)request
-{
+        forRequest:(NSURLRequest *)request {
     if (image && request) {
         [self setObject:image forKey:AFImageCacheKeyFromURLRequest(request)];
         NSURL *cacheDir = [AFImageCache cacheDir];
-//        NSLog(@"cacheDir 存 %@", cacheDir);
         cacheDir = [cacheDir URLByAppendingPathComponent:AFImageCacheKeyFromURLRequest(request)];
 	
         NSData *data = [AFImageCache imageToData:image withExt:cacheDir.pathExtension];
 		      
         if (data) {
             [data writeToURL:cacheDir atomically:YES];
-        }else{
-//            NSLog(@"Trying alertnate image store method: %@", request);
+        } else {
             UIGraphicsBeginImageContext(image.size);
             [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
             UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             
             data = [AFImageCache imageToData:newImage withExt:cacheDir.pathExtension];
-			if(data)
-			{
+			if(data) {
 				[data writeToURL:cacheDir atomically:YES];
 			}
             

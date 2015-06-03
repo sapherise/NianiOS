@@ -89,6 +89,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
         self.loadTopCellDone = false
     }
@@ -107,7 +108,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
     }
-    
+
     func ShareContent(noti:NSNotification){
         var content:AnyObject = noti.object!
         var sid:Int = content[2] as! Int
@@ -207,16 +208,16 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.tableView?.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.tableView!)
         
-        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissActionSheet:"))
-        
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
-        self.tableView.headerBeginRefreshing()
+       
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
+            self.tableView.headerBeginRefreshing()
+        })
         
         //主人
         Api.getDreamTop(self.Id) { json in
