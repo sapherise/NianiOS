@@ -463,19 +463,22 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             var uy = UpYun()
             uy.successBlocker = ({(data2:AnyObject!) in
                 globalWillNianReload = 1
+                
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
                 self.navigationItem.rightBarButtonItems = []
                 self.head.image = img
+                
                 setCacheImage("http://img.nian.so/head/\(safeuid).jpg!dream", img, 150)
             })
             uy.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head") as String)
-        }else{
+        } else {
             self.btnCover.startLoading()
             uy.successBlocker = ({(data:AnyObject!) in
                 self.uploadUrl = data.objectForKey("url") as! String
                 self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
                 var userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
+                
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 Sa.setObject(userImageURL, forKey: "coverUrl")
                 Sa.synchronize()
@@ -483,6 +486,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
                 var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
                 var queue = NSOperationQueue();
+                
                 NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
                     dispatch_async(dispatch_get_main_queue(),{
                         var image:UIImage? = UIImage(data: data)
@@ -497,6 +501,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     })
                 })
             })
+            
             uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("cover", "jpg") as String)
             
         }
