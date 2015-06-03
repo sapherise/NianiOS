@@ -34,7 +34,7 @@ class GroupCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         var id = self.data.stringAttributeForKey("id")
-        var title = self.data.stringAttributeForKey("title")
+        var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var reply = self.data.stringAttributeForKey("reply")
         self.labelTime.text = V.relativeTime(lastdate)
@@ -47,7 +47,7 @@ class GroupCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var title = data.stringAttributeForKey("title")
+        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
         var height = title.stringHeightWith(16,width:globalWidth-40)
         return height + 74
     }

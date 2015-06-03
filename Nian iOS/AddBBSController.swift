@@ -12,7 +12,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
     @IBOutlet var field1:UITextField!
     @IBOutlet var field2:UITextView!
     @IBOutlet var viewHolder: UIView!
-    var circle: String = ""
+    var circle: String = "0"
     
     override func viewDidLoad() {
         setupViews()
@@ -65,7 +65,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
             var content = self.field2.text
             title = SAEncode(SAHtml(title))
             content = SAEncode(SAHtml(content))
-            Api.postAddBBS(title, content: content, circle: "0") { json in
+            Api.postAddBBS(title, content: content, circle: circle) { json in
                 if json != nil {
                     println(json!)
                     globalWillBBSReload = 1

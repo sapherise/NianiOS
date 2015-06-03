@@ -14,6 +14,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     let identifier2 = "bbstop"
     var tableView:UITableView!
     var dataArray = NSMutableArray()
+    var dataArrayTop = NSDictionary()
     var page :Int = 0
     var Id:String = "1"
     var topcontent:String = ""
@@ -29,7 +30,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
     var ReplyCid:String = ""
-    
+    var isAsc: Bool = true
     
     var ReturnReplyRow:Int = 0
     var ReturnReplyContent:String = ""
@@ -38,16 +39,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     var flow:Int = 0    //默认为 0 正序，当为 1 的时候为倒序
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData(flow: self.flow)
+        tableView.headerBeginRefreshing()
     }
     
-    func setupViews()
-    {
+    func setupViews() {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
@@ -82,8 +81,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             self.navigationItem.rightBarButtonItems = [ rightButton,moreButton ]
         }
         
-        
-        
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -94,66 +91,28 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.viewBack()
     }
     
-    
-    func loadData(flow:Int = 0)
-    {
-        var url = "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)"
-        if flow == 1 {
-            url = "http://nian.so/api/bbs_comment.php?page=\(page)&id=\(Id)&flow=1"
+    func load(clear: Bool = true, isAsc: Bool = true) {
+        if clear {
+            page = 1
         }
-        // self.refreshView!.startLoading()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull() {
-                var arr = data["items"] as! NSArray
-                if ( data["total"] as! Int ) < 30 {
-                    self.tableView!.setFooterHidden(true)
+        Api.getBBSComment(Id, page: page, isAsc: isAsc) { json in
+            if json != nil {
+                var data = json!["data"]
+                if clear {
+                    self.dataArrayTop = data!!["bbs"] as! NSDictionary
+                    self.dataArray.removeAllObjects()
                 }
-                for data : AnyObject  in arr
-                {
+                var comments = data!!["comments"] as! NSArray
+                for data in comments {
                     self.dataArray.addObject(data)
+                }
+                if self.dataArray.count < 15 * self.page {
+                    self.tableView.setFooterHidden(true)
                 }
                 self.tableView.reloadData()
+                self.tableView.headerEndRefreshing()
                 self.tableView.footerEndRefreshing()
                 self.page++
-            }
-        })
-    }
-    
-    func SAReloadData(flow:Int = 0){
-        self.tableView!.setFooterHidden(false)
-        Api.getBBSComment(0, flow: flow, id: Id) { json in
-            if json != nil {
-                var arr = json!["items"] as! NSArray
-                var total = json!["total"] as! Int
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
-                }
-                if self.getContent == 1 {
-                    Api.getBBSTop(self.Id) { json in
-                        if json != nil {
-                            var data = json!["bbstop"] as! NSDictionary
-                            self.toptitle = data.stringAttributeForKey("title")
-                            self.topcontent = data.stringAttributeForKey("content")
-                            self.topuid = data.stringAttributeForKey("uid")
-                            self.topuser = data.stringAttributeForKey("user")
-                            self.toplastdate = data.stringAttributeForKey("lastdate")
-                            self.tableView!.reloadData()
-                            self.tableView!.headerEndRefreshing()
-                            self.page = 1
-                            if total < 30 {
-                                self.tableView!.setFooterHidden(true)
-                            }
-                        }
-                    }
-                }else{
-                    self.tableView!.reloadData()
-                    self.tableView!.headerEndRefreshing()
-                    self.page = 1
-                    if ( json!["total"] as! Int ) < 30 {
-                        self.tableView!.setFooterHidden(true)
-                    }
-                }
             }
         }
     }
@@ -163,57 +122,51 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section==0{
+        if section == 0 {
             return 1
-        }else{
-                return self.dataArray.count
+        } else {
+            return self.dataArray.count
         }
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell
-        
         if indexPath.section==0{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as? BBSCellTop
-            c!.topcontent = self.topcontent
-            c!.topuid = self.topuid
-            c!.toplastdate = self.toplastdate
-            c!.topuser = self.topuser
-            c!.Id = "\(self.Id)"
-            c!.toptitle = self.toptitle
-            c!.dreamhead?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c!.viewFlow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFlowClick"))
-            if self.flow == 1 {
-                c!.viewFlow.text = "倒序"
-            }else{
-                c!.viewFlow.text = "正序"
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as! BBSCellTop
+            c.data = dataArrayTop
+            c.viewFlow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFlowClick"))
+            c.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
+            if isAsc {
+                c.viewFlow.text = "倒序"
+            } else {
+                c.viewFlow.text = "正序"
             }
             if self.dataArray.count == 0 {
-                c!.Line!.hidden = true
-            }else{
-                c!.Line!.hidden = false
+                c.Line.hidden = true
             }
-            cell = c!
+            return c
         }else{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? BBSCell
+            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! BBSCell
             var index = indexPath.row
             var data = self.dataArray[index] as! NSDictionary
-            c!.data = data
-            c!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+            c.data = data
             if indexPath.row == self.dataArray.count - 1 {
-                c!.Line!.hidden = true
+                c.Line!.hidden = true
             }else{
-                c!.Line!.hidden = false
+                c.Line!.hidden = false
             }
-            cell = c!
+            return c
         }
-        return cell
+    }
+    
+    func toUser() {
+        var uid = dataArrayTop.stringAttributeForKey("uid")
+        SAUser(uid)
     }
     
     func onFlowClick(){
-        self.flow = ( self.flow == 1 ? 0 : 1 )
-        self.SAReloadData(flow: self.flow)
+        isAsc = !isAsc
+        load(clear: true, isAsc: isAsc)
     }
     
     func userclick(sender:UITapGestureRecognizer){
@@ -224,7 +177,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section==0{
-            return BBSCellTop.cellHeightByData(self.topcontent, toptitle: self.toptitle)
+            return BBSCellTop.cellHeightByData(dataArrayTop)
         }else{
             var index = indexPath.row
             var data = self.dataArray[index] as! NSDictionary
@@ -365,21 +318,12 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.reportSheet!.showInView(self.view)
     }
     
-    func countUp() {      //😍
-        self.SAReloadData()
-    }
-    
-    
-    func Editstep() {      //😍
-        self.SAReloadData()
-    }
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.SAReloadData(flow: self.flow)
+            self.load(clear: true, isAsc: self.isAsc)
         })
-        
         self.tableView!.addFooterWithCallback({
-            self.loadData(flow: self.flow)
+            self.load(clear: false, isAsc: self.isAsc)
         })
     }
 }

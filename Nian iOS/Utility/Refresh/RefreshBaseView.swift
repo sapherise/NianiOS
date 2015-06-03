@@ -45,7 +45,6 @@ class RefreshBaseView: UIView {
     
     // 内部的控件
     var statusLabel:UILabel!
-    var arrowImage:UIImageView!
     var activityView:UIActivityIndicatorView!
     
     //回调
@@ -75,13 +74,11 @@ class RefreshBaseView: UIView {
         }
         switch newValue {
         case .Normal:
-            self.arrowImage.hidden = false
             self.activityView.stopAnimating()
             break
         case .Pulling:
             break
         case .Refreshing:
-            self.arrowImage.hidden = true
             activityView.startAnimating()
             beginRefreshingCallback!()
             break
@@ -107,15 +104,12 @@ class RefreshBaseView: UIView {
         statusLabel.backgroundColor =  UIColor.clearColor()
         statusLabel.textAlignment = NSTextAlignment.Center
         self.addSubview(statusLabel)
-        //箭头图片
-        arrowImage = UIImageView(image: UIImage(named: "bbs.png"))
-        arrowImage.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin |  UIViewAutoresizing.FlexibleRightMargin
         //self.addSubview(arrowImage)
         //状态标签
         activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         activityView.color = SeaColor
-        activityView.bounds = self.arrowImage.bounds
-        activityView.autoresizingMask = self.arrowImage.autoresizingMask
+//        activityView.bounds = self.arrowImage.bounds
+        activityView.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin |  UIViewAutoresizing.FlexibleRightMargin
         self.addSubview(activityView)
         //自己的属性
         self.autoresizingMask = UIViewAutoresizing.FlexibleWidth
@@ -133,9 +127,8 @@ class RefreshBaseView: UIView {
         super.layoutSubviews()
         //箭头
         let arrowX:CGFloat = self.frame.size.width * 0.5 - 50
-        self.arrowImage.center = CGPointMake(arrowX, self.frame.size.height * 0.5 + 10.0)
         //指示器
-        self.activityView.center = self.arrowImage.center
+        self.activityView.center = CGPointMake(arrowX, self.frame.size.height * 0.5 + 10.0)
     }
     
     
@@ -168,15 +161,14 @@ class RefreshBaseView: UIView {
     
     // 开始刷新
     func beginRefreshing(){
-        // self.State = RefreshState.Refreshing;
-        if (self.window != nil) {
-            self.State = RefreshState.Refreshing;
-        } else {
-            //不能调用set方法
-            State = RefreshState.WillRefreshing;
-            super.setNeedsDisplay()
-        }
-        
+         self.State = RefreshState.Refreshing
+//        if (self.window != nil) {
+//            self.State = RefreshState.Refreshing;
+//        } else {
+//            //不能调用set方法
+//            State = RefreshState.WillRefreshing;
+//            super.setNeedsDisplay()
+//        }
     }
     
     //结束刷新
