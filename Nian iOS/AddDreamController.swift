@@ -18,7 +18,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var uploadWait: UIActivityIndicatorView?
     @IBOutlet weak var field1: UITextField!  //title text field
-    @IBOutlet weak var field2: UITextView!
+    @IBOutlet weak var field2: SZTextView!
     @IBOutlet weak var tokenView: TITokenFieldView!
     @IBOutlet weak var setPrivate: UIImageView!
     @IBOutlet weak var imageDreamHead: UIImageView!
@@ -429,12 +429,25 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: 76 + field2.frame.height + tokenView.frame.height)
             self.containerView.setHeight(self.scrollView.contentSize.height - 1)
             
-            UIView.animateWithDuration(animationDuration, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
-                if self.scrollView.contentOffset.y != floor(self.field2.frame.height + 76) {
-                    self.scrollView.setContentOffset(CGPointMake(0, floor(self.field2.frame.height + 76)), animated: false)
-                }
+            UIView.animateWithDuration(0, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
+                self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 76), animated: false)
                 }, completion: nil)
         }
+        
+        if field2.isFirstResponder() {
+            var _rect = field2.caretRectForPosition(field2.selectedTextRange?.end)
+            
+            if ((_rect.origin.y + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
+                var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + 44
+                var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+                var extraScrollOffset = extraHeight - heightExcludeNavbar
+                
+                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
+                println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
+            }
+        }
+        
+        
     }
 
     func handleKeyboardWillHideNotification(notification: NSNotification) {
@@ -453,7 +466,23 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func handleTextviewDidChangeNotification(notification: NSNotification) {
-//       println("noti----------------> \(notification)")
+       println("noti----------------> ()")
+        
+        let textview = notification.object as! SZTextView
+        
+        if textview.tag == 16555 {
+            var _rect = field2.caretRectForPosition(field2.selectedTextRange?.end)
+            
+            if ((_rect.origin.y + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
+                var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + 44
+                var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+                var extraScrollOffset = extraHeight - heightExcludeNavbar
+                
+                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
+                println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
+            }
+        }
+        
     }
 
     // text view delegate 
@@ -461,26 +490,26 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func textViewDidChangeSelection(textView: UITextView) {
         if textView.tag == 16555 {
             /**/
-            
             var tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - textView.contentInset.left * 2) + textView.contentInset.top * 2
             self.field2.frame.size.height = self.field2.frame.height > tmpField2Height ? self.field2.frame.height : tmpField2Height
             self.tokenView.frame.origin.y = CGRectGetMaxY(self.field2.frame)
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: 76 + field2.frame.height + tokenView.frame.height)
+            self.containerView.frame.size = CGSize(width: self.containerView.frame.width, height: self.scrollView.contentSize.height)
 //            self.view.layoutIfNeeded()
             println("self.field2.frame.size = \(self.field2.frame.size)")
             
-            var _rect = textView.caretRectForPosition(textView.selectedTextRange?.end)
-            
-            if field2.isFirstResponder() {
-                if ((_rect.origin.y + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
-                    var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight
-                    var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
-                    var extraScrollOffset = extraHeight - heightExcludeNavbar
-                    
-                    self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
-                    println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
-                }
-            }
+//            var _rect = textView.caretRectForPosition(textView.selectedTextRange?.end)
+//            
+//            if field2.isFirstResponder() {
+//                if ((_rect.origin.y + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
+//                    var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight
+//                    var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+//                    var extraScrollOffset = extraHeight - heightExcludeNavbar
+//                    
+//                    self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
+//                    println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
+//                }
+//            }
         }
     }
     
