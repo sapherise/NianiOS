@@ -645,24 +645,24 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 		[self becomeFirstResponder];
 	}
     
-    CGFloat topMargin = floor(self.font.lineHeight * 4 / 7);
-    CGFloat leftMargin = self.leftViewWidth + 18;
-    CGFloat lineHeight = ceilf(self.font.lineHeight) + topMargin + 5;
-	
-    // 如果最后一行没有 token, 移除最后一行
-    if (_numberOfLines > 1) {
-        if (_tokenCaret.x <= leftMargin) {
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.bounds.size.height - lineHeight);       // seheight = self.bounds.size.height - lineHeight;
-                                 [(TITokenFieldView *)self.superview tokenFieldFrameWillChange:self];
-                             } completion:^(BOOL finished) {
-                                 if (finished) {
-                                     [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
-                                 }
-                             }];
-        }
-    }
+//    CGFloat topMargin = floor(self.font.lineHeight * 4 / 7);
+//    CGFloat leftMargin = self.leftViewWidth + 18;
+//    CGFloat lineHeight = ceilf(self.font.lineHeight) + topMargin + 5;
+//	
+//    // 如果最后一行没有 token, 移除最后一行
+//    if (_numberOfLines > 1) {
+//        if (_tokenCaret.x <= leftMargin) {
+//            [UIView animateWithDuration:0.3
+//                             animations:^{
+//                                 self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.bounds.size.height - lineHeight);       // seheight = self.bounds.size.height - lineHeight;
+//                                 [(TITokenFieldView *)self.superview tokenFieldFrameWillChange:self];
+//                             } completion:^(BOOL finished) {
+//                                 if (finished) {
+//                                     [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
+//                                 }
+//                             }];
+//        }
+//    }
 }
 
 - (void)didChangeText {
