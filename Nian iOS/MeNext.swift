@@ -196,13 +196,11 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             self.navigationController!.pushViewController(UserVC, animated: true)
         }else if type == "4" {  //参与了你的话题
             BBSVC.Id = dream
-            BBSVC.flow = 1
-            BBSVC.getContent = 1
+            BBSVC.isAsc = false
             self.navigationController!.pushViewController(BBSVC, animated: true)
         }else if type == "5" {  //在某个话题提及你
             BBSVC.Id = dream
-            BBSVC.flow = 1
-            BBSVC.getContent = 1
+            BBSVC.isAsc = false
             self.navigationController!.pushViewController(BBSVC, animated: true)
             //BBS要倒叙
         }else if type == "6" {  //为你更新了记本
