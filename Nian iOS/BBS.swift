@@ -21,7 +21,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var topuid:String = ""
     var toplastdate:String = ""
     var topuser:String = ""
-    var getContent: Int = 0
     var toptitle:String = ""
     var sheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
@@ -36,8 +35,6 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var ReturnReplyContent:String = ""
     var ReturnReplyId:String = ""
     var navView:UIView!
-    
-    var flow:Int = 0    //默认为 0 正序，当为 1 的时候为倒序
     
     override func viewDidLoad() {
         super.viewDidLoad()

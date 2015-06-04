@@ -91,20 +91,21 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         self.navigationItem.rightBarButtonItems = buttonArray()
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)", "http://nian.so/api/addbbscomment_query.php")
-            if sa != "" && sa != "err" {
-                dispatch_async(dispatch_get_main_queue(), {
+        Api.postAddBBSComment(self.Id, content: content) { string in
+            if string != nil {
+                println(string)
                 self.delegate?.ReturnReplyRow = self.Row
                 self.delegate?.ReturnReplyContent = self.TextView.text
-                self.delegate?.ReturnReplyId = sa
+                self.delegate?.ReturnReplyId = string!
                 self.delegate?.commentFinish()
                 self.navigationController?.popViewControllerAnimated(true)
-                })
             }
-        })
+        }
+        
+//        static func postAddBBSComment(id: String, content: String, callback: V.StringCallback) {
+//            loadCookies()
+//            V.httpPostForString("http://nian.so/api/addbbscomment_query.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
+//        }
+        
     }
 }
