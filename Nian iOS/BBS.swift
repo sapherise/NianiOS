@@ -292,8 +292,10 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var safeuser = Sa.objectForKey("user") as! String
         var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: self.ReturnReplyRow)
-        var newindexpath = NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)
-        self.tableView!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.Bottom)
+//        var newindexpath = NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)
+//        self.tableView!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.Bottom)
+        println("row: \(self.ReturnReplyRow)")
+        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
     
