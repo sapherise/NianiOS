@@ -22,6 +22,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     let identifier = "dream"
     let identifier2 = "dreamtop"
     let identifier3 = "comment"
+    
     var tableView:UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
@@ -62,17 +63,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var likestepJson: String = ""
     var liketotalJson: Int = 0
     var stepJson: String = ""
-    var desJson:String = ""
     var tagArray: Array<String> = []  // 加 tag
     var loadTopCellDone: Bool = false
     
-    var desHeight:CGFloat = 0
+    var desHeight: CGFloat = 0
+    
+    var cacheTopCellHeight: CGFloat = 0.0   // 预先计算的 top cell 的高度
     
     //editStepdelegate
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     var topCell:DreamCellTop!
-    var hashtag:String = "0"
     var userImageURL:String = "0"
     
     override func viewDidLoad(){
@@ -194,11 +195,13 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
+        
         self.view.backgroundColor = UIColor.whiteColor()
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        
         var nib = UINib(nibName:"DreamCell", bundle: nil)
         var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         var nib3 = UINib(nibName:"CommentCell", bundle: nil)
@@ -215,14 +218,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
             self.tableView.headerBeginRefreshing()
         })
         
         //主人
         Api.getDreamTop(self.Id) { json in
             if json != nil {
-                var dream: AnyObject! = json!.objectForKey("dream")
+                var dream: AnyObject! = (json!.objectForKey("data") as! Dictionary)["dream"]
                 self.owneruid = dream.objectForKey("uid") as! String
                 self.titleJson = SADecode(SADecode(dream.objectForKey("title") as! String))
                 self.percentJson = dream.objectForKey("percent") as! String
@@ -231,11 +234,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.imgJson = dream.objectForKey("img") as! String
                 self.privateJson = dream.objectForKey("private") as! String
                 self.contentJson = SADecode(SADecode(dream.objectForKey("content") as! String))
-                self.desJson = SADecode(SADecode(dream.objectForKey("content") as! String))
-                self.hashtag = dream.objectForKey("hashtag") as! String
                 self.likedreamJson = dream.objectForKey("isliked") as! String
                 self.likestepJson = dream.objectForKey("like_step") as! String
-                self.liketotalJson = self.likedreamJson.toInt()! + self.likestepJson.toInt()!
+                self.liketotalJson =  self.likestepJson.toInt()!
                 self.stepJson = dream.objectForKey("step") as! String
                 self.tagArray = dream.objectForKey("tags") as! Array
                 self.desHeight = self.contentJson.stringHeightWith(11,width:200)
@@ -260,11 +261,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     }
                 }
                 
-                dispatch_after(1, dispatch_get_main_queue(), {
+                dispatch_after(2, dispatch_get_main_queue(), {
                     self.tableView.headerEndRefreshing(animated: true)
                     self.loadDreamTopcell()
                 })
-                
             }
         }
     }
@@ -314,7 +314,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.guestMoreSheet!.addButtonWithTitle("关注记本")
         }
         
-        println("self.likeJson = \(self.likeJson)")
         if self.likedreamJson == "1" {
             self.guestMoreSheet!.addButtonWithTitle("取消赞")
         } else if self.likedreamJson == "0" {
@@ -399,7 +398,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             c.dreamid = dreamid
             c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStepClick"))
             c.numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "likeDream"))
-            c.numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
             
             if (self.topCell != nil && self.topCell.scrollView.hidden == true) {
                 c.moveUp()
@@ -431,8 +429,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             
             if self.loadTopCellDone {
+                self.cacheTopCellHeight = self.topCell.frame.size.height
                 return self.topCell.frame.size.height
+            } else if self.cacheTopCellHeight != 0.0 {
+                return self.cacheTopCellHeight
             }
+            
             return text.stringHeightBoldWith(19, width: 242) + 256 + 14 + 44
         }else{
             var data = self.dataArray[indexPath.row] as! NSDictionary
@@ -673,7 +675,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         editdreamVC.editContent = SADecode(SADecode(self.contentJson))
         editdreamVC.editImage = self.imgJson
         editdreamVC.editPrivate = self.privateJson
-        editdreamVC.tagType = self.hashtag.toInt()!
         editdreamVC.readyForTag = readyForTag
         editdreamVC.tagsArray = self.tagArray
         self.navigationController?.pushViewController(editdreamVC, animated: true)
@@ -685,14 +686,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.topCell.scrollView.subviews.map({
             $0.removeFromSuperview()
         })
-        self.topCell.scrollView.contentSize = CGSizeMake(16, self.topCell.scrollView.frame.height)
+        self.topCell.scrollView.contentSize = CGSizeMake(8, self.topCell.scrollView.frame.height)
         
         self.titleJson = editTitle
         self.privateJson = editPrivate
         self.contentJson = editDes
-        self.desJson = editDes
         self.imgJson = editImage
-        self.hashtag = editTag
         self.tagArray = editTags
         loadDreamTopcell()
     }
@@ -757,28 +756,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.topCell.numLeftNum.text = "\(self.liketotalJson)"
         self.topCell.numMiddleNum.text = "\(self.stepJson)"
         
-        if self.hashtag == "0" {
-            self.topCell.numRightNum.text = "0"
-            if self.dreamowner == 1 {
-                self.topCell.numRightNum.textColor = SeaColor
-            }else{
-                // 如果没有标签又不是自己，那么就把标签隐藏起来
-                self.topCell.numRightNum.textColor = UIColor.blackColor()
-                self.topCell.numRight.hidden = true
-                self.topCell.viewLineRight.hidden = true
-                self.topCell.numLeft.setX(70)
-                self.topCell.numMiddle.setX(161)
-                self.topCell.viewLineLeft.setX(160)
-            }
-        }else{
-            self.topCell.numRightNum.text = "1"
-            self.topCell.numRightNum.textColor = UIColor.blackColor()
+        if self.contentJson == "" {
+            self.contentJson = "暂无简介"
         }
-        if self.desJson == "" {
-            self.desJson = "暂无简介"
-        }
-        self.topCell.labelDes.text = self.desJson
-        var desHeight = self.desJson.stringHeightWith(12,width:200)
+        self.topCell.labelDes.text = self.contentJson
+        var desHeight = self.contentJson.stringHeightWith(12,width:200)
         self.topCell.labelDes.setHeight(desHeight)
         self.topCell.labelDes.setY( 110 - desHeight / 2 )
         self.userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
@@ -798,7 +780,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
                 label.userInteractionEnabled = true
                 label.text = self.tagArray[i] as String
-                self.labelWidthWithItsContent(label, content: self.tagArray[i])
+                self.labelWidthWithItsContent(label, content: SADecode(self.tagArray[i]))
                 label.frame.origin.x = self.topCell.scrollView.contentSize.width + 8
                 label.frame.origin.y = 10
                 label.tag = 12000 + i
@@ -869,18 +851,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if sa != "" && sa != "err" {
             }
         })
-    }
-    
-    func onTagClick(){
-        if self.hashtag == "0" {
-            if self.dreamowner == 1 {
-                self.editMyDream(readyForTag: 1)
-            }
-        }else{
-            var TagVC = TagViewController()
-            TagVC.Id = self.hashtag
-            self.navigationController?.pushViewController(TagVC, animated: true)
-        }
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {

@@ -23,12 +23,9 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     @IBOutlet var numLeft:UIView!
     @IBOutlet var numMiddle:UIView!
-    @IBOutlet var numRight:UIView!
     @IBOutlet var numLeftNum:UILabel!
     @IBOutlet var numMiddleNum:UILabel!
-    @IBOutlet var numRightNum:UILabel!
     
-    @IBOutlet var viewLineRight: UIView!
     @IBOutlet var viewLineLeft: UIView!
     @IBOutlet var viewBG: UIView!
     @IBOutlet var viewHolder: UIView!

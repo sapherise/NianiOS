@@ -422,7 +422,6 @@
 
 - (void)searchDidFinish:(NSArray *)results
 {
-    [_resultsArray removeAllObjects];
     [_resultsArray addObjectsFromArray:results];
     if (_resultsArray.count > 0) {
         if (_shouldSortResults) {
