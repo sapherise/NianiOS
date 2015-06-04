@@ -262,7 +262,10 @@
 #pragma mark TextField Methods
 
 - (void)tokenFieldDidBeginEditing:(TITokenField *)field {
-    if (!_alwaysShowSearchResult) [_resultsArray removeAllObjects];
+    if (!_alwaysShowSearchResult) {
+        [_resultsArray removeAllObjects];
+    }
+    
 	[_resultsTable reloadData];
 }
 
@@ -532,11 +535,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	[self addTarget:self action:@selector(didBeginEditing) forControlEvents:UIControlEventEditingDidBegin];
 	[self addTarget:self action:@selector(didEndEditing) forControlEvents:UIControlEventEditingDidEnd];
 	[self addTarget:self action:@selector(didChangeText) forControlEvents:UIControlEventEditingChanged];
-	
-//	[self.layer setShadowColor:[[UIColor blackColor] CGColor]];
-//	[self.layer setShadowOpacity:0.6];
-//	[self.layer setShadowRadius:12];
-	
+
 	[self setPromptText:@"To:"];
     [self setText:kTextEmpty];
 	
@@ -636,16 +635,34 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			if (_tokens.count > 1 && untokSize.width > availableWidth){
 				untokenized = [NSString stringWithFormat:@"%lu recipients", (unsigned long)titles.count];
 			}
-			
 		}
 		
 		[self setText:untokenized];
 	}
-	
+
 	[self setResultsModeEnabled:NO];
 	if (_tokens.count < 1 && self.forcePickSearchResult) {
 		[self becomeFirstResponder];
 	}
+    
+    CGFloat topMargin = floor(self.font.lineHeight * 4 / 7);
+    CGFloat leftMargin = self.leftViewWidth + 18;
+    CGFloat lineHeight = ceilf(self.font.lineHeight) + topMargin + 5;
+	
+    // 如果最后一行没有 token, 移除最后一行
+    if (_numberOfLines > 1) {
+        if (_tokenCaret.x <= leftMargin) {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.bounds.size.height - lineHeight);       // seheight = self.bounds.size.height - lineHeight;
+                                 [(TITokenFieldView *)self.superview tokenFieldFrameWillChange:self];
+                             } completion:^(BOOL finished) {
+                                 if (finished) {
+                                     [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
+                                 }
+                             }];
+        }
+    }
 }
 
 - (void)didChangeText {
@@ -907,7 +924,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 
 			[self setLeftViewMode:UITextFieldViewModeAlways];
 		}
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(16, 2, 16, 16)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 2, 16, 16)];
         imageView.image = [UIImage imageNamed:@"tag-1"];
         imageView.contentMode = UIViewContentModeCenter;
         [label addSubview:imageView];
