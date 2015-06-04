@@ -482,8 +482,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
                 var extraScrollOffset = extraHeight - heightExcludeNavbar
                 
-                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
-                println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
+                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
+                println("----->self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
             }
         }
         
@@ -495,7 +495,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if textView.tag == 16555 {
             /**/
             var tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - textView.contentInset.left * 2) + textView.contentInset.top * 2
-            self.field2.frame.size.height = self.field2.frame.height > tmpField2Height ? self.field2.frame.height : tmpField2Height
+            var field2DefaultHeight: CGFloat = UIScreen.mainScreen().bounds.height > 480 ? 120 : 96
+            self.field2.frame.size.height = field2DefaultHeight > tmpField2Height ? field2DefaultHeight : tmpField2Height
             self.tokenView.frame.origin.y = CGRectGetMaxY(self.field2.frame)
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: 76 + field2.frame.height + tokenView.frame.height)
             self.containerView.frame.size = CGSize(width: self.containerView.frame.width, height: self.scrollView.contentSize.height)
