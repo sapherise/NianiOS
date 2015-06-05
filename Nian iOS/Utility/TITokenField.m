@@ -265,6 +265,10 @@
     if (!_alwaysShowSearchResult) {
         [_resultsArray removeAllObjects];
     }
+   
+    if ([_tokenField.delegate respondsToSelector:@selector(tokenFieldDidBeginEditing:)]) {
+        [_tokenField.delegate tokenFieldDidBeginEditing:_tokenField];
+    }
     
 	[_resultsTable reloadData];
 }
@@ -284,7 +288,6 @@
 }
 
 - (void)tokenFieldFrameWillChange:(TITokenField *)field {
-	
 	CGFloat tokenFieldBottom = CGRectGetMaxY(_tokenField.frame);
 	[_separator setFrame:((CGRect){{_separator.frame.origin.x, tokenFieldBottom}, _separator.bounds.size})];
 	[_resultsTable setFrame:((CGRect){{_resultsTable.frame.origin.x, (tokenFieldBottom + 1)}, _resultsTable.bounds.size})];
@@ -372,7 +375,9 @@
         if ([_tokenField.delegate respondsToSelector:@selector(tokenField:shouldUseCustomSearchForSearchString:)] && [_tokenField.delegate tokenField:_tokenField shouldUseCustomSearchForSearchString:searchString]) {
             if ([_tokenField.delegate respondsToSelector:@selector(tokenField:performCustomSearchForSearchString:withCompletionHandler:)]) {
                 [_tokenField.delegate tokenField:_tokenField performCustomSearchForSearchString:searchString withCompletionHandler:^(NSArray *results) {
-                    [self searchDidFinish:results];
+                    if (self.tokenField.isFirstResponder) {
+                        [self searchDidFinish:results];
+                    }
                 }];
             }
         } else {
@@ -437,8 +442,8 @@
 
 
 -(void) reloadResultsTable {
-  [_resultsTable setHidden:NO];
-  [_resultsTable reloadData];
+    [_resultsTable setHidden:NO];
+    [_resultsTable reloadData];
 }
 
 - (void)presentpopoverAtTokenFieldCaretAnimated:(BOOL)animated {
@@ -643,25 +648,6 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	if (_tokens.count < 1 && self.forcePickSearchResult) {
 		[self becomeFirstResponder];
 	}
-    
-//    CGFloat topMargin = floor(self.font.lineHeight * 4 / 7);
-//    CGFloat leftMargin = self.leftViewWidth + 18;
-//    CGFloat lineHeight = ceilf(self.font.lineHeight) + topMargin + 5;
-//	
-//    // 如果最后一行没有 token, 移除最后一行
-//    if (_numberOfLines > 1) {
-//        if (_tokenCaret.x <= leftMargin) {
-//            [UIView animateWithDuration:0.3
-//                             animations:^{
-//                                 self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.bounds.size.height - lineHeight);       // seheight = self.bounds.size.height - lineHeight;
-//                                 [(TITokenFieldView *)self.superview tokenFieldFrameWillChange:self];
-//                             } completion:^(BOOL finished) {
-//                                 if (finished) {
-//                                     [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
-//                                 }
-//                             }];
-//        }
-//    }
 }
 
 - (void)didChangeText {
@@ -725,9 +711,6 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	}
 	
 	if (shouldAdd){
-		
-		//[self becomeFirstResponder];
-		
 		[token addTarget:self action:@selector(tokenTouchDown:) forControlEvents:UIControlEventTouchDown];
 		[token addTarget:self action:@selector(tokenTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
 		[self addSubview:token];
@@ -860,8 +843,6 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			}
 		}
 	}];
-//    NSLog(@"_tokenCaret.x = %f, _tokenCaret.y = %f", _tokenCaret.x, _tokenCaret.y);
-	
 	return ceilf(_tokenCaret.y + lineHeight);
 }
 
@@ -941,19 +922,17 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 }
 
 - (void)setPlaceholder:(NSString *)placeholder {
-	
 	if (placeholder){
-        
-        UILabel * label =  _placeHolderLabel;
+        UILabel *label =  _placeHolderLabel;
 		if (!label || ![label isKindOfClass:[UILabel class]]){
 			label = [[UILabel alloc] initWithFrame:CGRectMake(_tokenCaret.x + 3, _tokenCaret.y + 2, self.rightView.bounds.size.width, self.rightView.bounds.size.height)];
             [label setTextColor:[UIColor colorWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1]]; // colorWithWhite:0.75 alpha:1]];
+            [label setFont:[UIFont systemFontOfSize:14]];
 			 _placeHolderLabel = label;
             [self addSubview: _placeHolderLabel];
 		}
 		
 		[label setText:placeholder];
-		[label setFont:[UIFont systemFontOfSize:(self.font.pointSize + 1)]];
 		[label sizeToFit];
 	}
 	else

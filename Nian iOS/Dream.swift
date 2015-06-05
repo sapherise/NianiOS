@@ -226,7 +226,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         Api.getDreamTop(self.Id) { json in
             if json != nil {
                 var dream: AnyObject! = (json!.objectForKey("data") as! Dictionary)["dream"]
-                println("dream----> \(dream)")
                 self.owneruid = dream.objectForKey("uid") as! String
                 self.titleJson = SADecode(SADecode(dream.objectForKey("title") as! String))
                 self.percentJson = dream.objectForKey("percent") as! String
@@ -613,7 +612,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                                 self.backNavigation()
                             })
                         } else {
-                            
+                           self.navigationItem.rightBarButtonItems = []
                         }
                     })
                     

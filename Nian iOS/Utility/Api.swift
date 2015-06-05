@@ -85,7 +85,19 @@ struct Api {
     // 自动提示
     static func getAutoComplete(keyword: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson_AFN("http://nian.so/api/autocompletetags.php?keyword=\(keyword)", callback: callback)
+        
+        var manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        manager.operationQueue.cancelAllOperations()
+        
+        var operation = manager.GET("http://nian.so/api/autocompletetags.php?keyword=\(keyword)",
+                            parameters: nil,
+                            success: { (op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+                                callback(obj)
+                            },
+                            failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                        })
+        
     }
     
     // 搜索标签
