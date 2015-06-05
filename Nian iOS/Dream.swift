@@ -226,6 +226,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         Api.getDreamTop(self.Id) { json in
             if json != nil {
                 var dream: AnyObject! = (json!.objectForKey("data") as! Dictionary)["dream"]
+                println("dream----> \(dream)")
                 self.owneruid = dream.objectForKey("uid") as! String
                 self.titleJson = SADecode(SADecode(dream.objectForKey("title") as! String))
                 self.percentJson = dream.objectForKey("percent") as! String
@@ -239,7 +240,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.liketotalJson =  self.likestepJson.toInt()!
                 self.stepJson = dream.objectForKey("step") as! String
                 self.tagArray = dream.objectForKey("tags") as! Array
-                self.desHeight = self.contentJson.stringHeightWith(11,width:200)
+                self.desHeight = self.contentJson.stringHeightWith(11, width:200)
                 
                 var Sa = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
@@ -603,12 +604,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 globalWillNianReload = 1
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&id=\(self.Id)", "http://nian.so/api/delete_dream.php")
-                    if(sa == "1"){
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.backNavigation()
-                        })
-                    }
+                    Api.getDeleteDream(self.Id, callback: {
+                        json in
+                        var error = json!["error"] as! NSNumber
+                        
+                        if error == 0 {
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.backNavigation()
+                            })
+                        } else {
+                            
+                        }
+                    })
+                    
+                    
                 })
             }
         } else if actionSheet == self.ownerMoreSheet {

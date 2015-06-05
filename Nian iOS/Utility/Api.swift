@@ -405,12 +405,20 @@ struct Api {
         V.httpPostForJson("http://api.nian.so/bbs?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&circle_id=\(circle)&circleshellid=\(sid)", callback: callback)
     }
     
+    static func getDeleteDream(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/dream/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
     
     static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+        
+        if tags == "" {
+            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)", callback: callback)
+        } else {
+            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+        }
     }
-    
     
     static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()

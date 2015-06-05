@@ -500,7 +500,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.tokenView.frame.origin.y = CGRectGetMaxY(self.field2.frame)
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: 76 + field2.frame.height + tokenView.frame.height)
             self.containerView.frame.size = CGSize(width: self.containerView.frame.width, height: self.scrollView.contentSize.height)
-//            self.view.layoutIfNeeded()
             println("self.field2.frame.size = \(self.field2.frame.size)")
         }
     }

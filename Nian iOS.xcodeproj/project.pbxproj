@@ -1102,6 +1102,7 @@
 				12FB4896196AE76E0026DD51 /* Frameworks */,
 				12FB4897196AE76E0026DD51 /* Resources */,
 				A03E82B98D764E7A98CDF854 /* Copy Pods Resources */,
+				C42B04BE1B213F87002B8E69 /* Swift Style Check Script */,
 			);
 			buildRules = (
 			);
@@ -1280,6 +1281,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C42B04BE1B213F87002B8E69 /* Swift Style Check Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Style Check Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#/usr/local/bin/swiftlint";
 		};
 /* End PBXShellScriptBuildPhase section */
 
