@@ -89,6 +89,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func load(clear: Bool = true, isAsc: Bool = true) {
+        tableView.setFooterHidden(false)
         if clear {
             page = 1
         }
@@ -133,14 +134,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             c.data = dataArrayTop
             c.viewFlow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFlowClick"))
             c.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
-            if isAsc {
-                c.viewFlow.text = "倒序"
-            } else {
-                c.viewFlow.text = "正序"
-            }
-            if self.dataArray.count == 0 {
-                c.Line.hidden = true
-            }
+            c.viewFlow.text = isAsc ? "倒序" : "正序"
             return c
         }else{
             var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! BBSCell
@@ -290,15 +284,11 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
         var safeuser = Sa.objectForKey("user") as! String
-        var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        var current = NSDate().timeIntervalSince1970
+        var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "\(current)", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: self.ReturnReplyRow)
-//        var newindexpath = NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)
-//        self.tableView!.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.Bottom)
-        println("row: \(self.ReturnReplyRow)")
         self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Left)
     }
-    
-    
     
     func addStepButton(){
         var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)

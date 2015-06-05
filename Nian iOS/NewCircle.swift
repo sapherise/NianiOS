@@ -192,6 +192,10 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         viewAddBBS.pointX = globalWidth
         viewAddBBS.pointY = globalHeight - 44 - 104
         viewAddBBS.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAddBBSClick"))
+        var imageBBS = UIImageView(frame: CGRectMake(globalWidth/2 - 22, 0, 44, 44))
+        imageBBS.image = UIImage(named: "newtopic")
+        imageBBS.contentMode = UIViewContentMode.Center
+        viewAddBBS.addSubview(imageBBS)
         scrollView.addSubview(viewAddBBS)
         
         //标题颜色
@@ -461,7 +465,6 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 var y = scrollView.contentOffset.y
                 if y < 40 {
                     if isAnimating == false {
-                        println("loading...")
                         isAnimating = true
                         self.loadChat(clear: false)
                     }

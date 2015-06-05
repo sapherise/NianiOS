@@ -93,7 +93,6 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         content = SAEncode(SAHtml(content))
         Api.postAddBBSComment(self.Id, content: content) { string in
             if string != nil {
-                println(string)
                 self.delegate?.ReturnReplyRow = self.Row
                 self.delegate?.ReturnReplyContent = self.TextView.text
                 self.delegate?.ReturnReplyId = string!
