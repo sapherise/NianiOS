@@ -42,7 +42,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="lvC-Ve-npV">
-                                                <rect key="frame" x="24" y="0.0" width="90" height="54"/>
+                                                <rect key="frame" x="70" y="0.0" width="90" height="54"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="按 赞" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gMi-lv-BzT">
@@ -62,7 +62,7 @@
                                                 </subviews>
                                             </view>
                                             <view contentMode="scaleToFill" id="yrW-vn-YEH">
-                                                <rect key="frame" x="115" y="0.0" width="90" height="54"/>
+                                                <rect key="frame" x="160" y="0.0" width="90" height="54"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进 展" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TXg-Bn-Ihx">
@@ -81,33 +81,8 @@
                                                     </label>
                                                 </subviews>
                                             </view>
-                                            <view contentMode="scaleToFill" id="ydk-4u-V7h">
-                                                <rect key="frame" x="206" y="0.0" width="90" height="54"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="标 签" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rpR-zt-c7r">
-                                                        <rect key="frame" x="0.0" y="4" width="90" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="11"/>
-                                                        <color key="textColor" red="0.32549019610000002" green="0.32549019610000002" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZMG-xk-KfM">
-                                                        <rect key="frame" x="0.0" y="25" width="90" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </view>
                                             <view contentMode="scaleToFill" id="RmZ-sJ-SAa">
-                                                <rect key="frame" x="114" y="10" width="1" height="34"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
-                                            </view>
-                                            <view contentMode="scaleToFill" id="21N-tq-K2z">
-                                                <rect key="frame" x="205" y="10" width="1" height="34"/>
+                                                <rect key="frame" x="160" y="10" width="1" height="34"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                                             </view>
@@ -187,14 +162,11 @@
                 <outlet property="numLeftNum" destination="Qd5-eC-62G" id="qfF-WQ-qyo"/>
                 <outlet property="numMiddle" destination="yrW-vn-YEH" id="3hF-gI-PTk"/>
                 <outlet property="numMiddleNum" destination="mZP-OB-Rhd" id="cof-hX-dTh"/>
-                <outlet property="numRight" destination="ydk-4u-V7h" id="2FT-cQ-vgb"/>
-                <outlet property="numRightNum" destination="ZMG-xk-KfM" id="gzM-Ph-SX8"/>
                 <outlet property="scrollView" destination="275-Vs-vU6" id="ZsL-RX-CUC"/>
                 <outlet property="viewBG" destination="iBK-jB-p8A" id="XZi-39-AZu"/>
                 <outlet property="viewHolder" destination="pXh-Cy-11j" id="4Ps-Y4-Auf"/>
                 <outlet property="viewLeft" destination="QEi-nw-N5d" id="kjX-m7-Mtb"/>
                 <outlet property="viewLineLeft" destination="RmZ-sJ-SAa" id="Fbm-fY-43z"/>
-                <outlet property="viewLineRight" destination="21N-tq-K2z" id="Xub-Qa-NnC"/>
                 <outlet property="viewRight" destination="yfL-kj-0mn" id="UiZ-lm-U1T"/>
             </connections>
             <point key="canvasLocation" x="130" y="139"/>

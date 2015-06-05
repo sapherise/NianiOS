@@ -50,9 +50,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var swipeGesuture: UISwipeGestureRecognizer?
     
     func uploadClick() {
-        self.field1!.resignFirstResponder()
-        self.field2.resignFirstResponder()
-        self.tokenView.resignFirstResponder()
+        self.dismissKeyboard()
         
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         
@@ -109,18 +107,20 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
         var uy = UpYun()
-        uy.successBlocker = ({(data:AnyObject!) in
+        uy.successBlocker = ({(data: AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadUrl = data.objectForKey("url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+            self.imageDreamHead.contentMode = .ScaleToFill
             self.imageDreamHead.image = img
             setCacheImage(url, img, 150)
             self.uploadWait!.stopAnimating()
         })
-        uy.failBlocker = ({(error:NSError!) in
+        uy.failBlocker = ({(error: NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
+            self.imageDreamHead.image = UIImage(named: "add_plus")
         })
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
@@ -128,13 +128,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.automaticallyAdjustsScrollViewInsets = false
         setupViews()
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
-
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -160,7 +158,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        var height = 76 + field2.frame.size.height + tokenView.tokenField.frame.size.height
+        var height = 78 + field2.frame.size.height + tokenView.tokenField.frame.size.height
         var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, UIScreen.mainScreen().bounds.size.height - 64))
         self.scrollView.contentSize = tmpSize
         
@@ -168,6 +166,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setupViews(){
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         
@@ -248,11 +248,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             if count(tagsArray) > 0 {
                 for i in 0...(count(tagsArray) - 1) {
-                    if count(tagsArray) == 1 && tagsArray[0] == "" {
-                    } else {
-                        tokenView.tokenField.addTokenWithTitle(tagsArray[i])
-                        tokenView.tokenField.layoutTokensAnimated(false)
-                    }
+                    tokenView.tokenField.addTokenWithTitle(tagsArray[i])
+                    tokenView.tokenField.layoutTokensAnimated(false)
                 }
             }
             
@@ -269,7 +266,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         
         self.uploadWait!.hidden = true
-
     }
     
     func onTagClick(){
@@ -280,9 +276,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setDream(){
-        self.field1!.resignFirstResponder()
-        self.field2.resignFirstResponder()
-        self.tokenView.resignFirstResponder()
+        self.dismissKeyboard()
         self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         
         if self.isPrivate == 0 {
@@ -297,11 +291,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func dismissKeyboard(sender: UISwipeGestureRecognizer){
+        self.dismissKeyboard()
+    }
+    
+    func dismissKeyboard() {
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
         self.tokenView.tokenField.resignFirstResponder()
-        
-//        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
     }
     
     func addDreamOK(){
@@ -313,7 +309,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if count(tags!) > 0 {
             for i in 0...(count(tags!) - 1){
                 var tmpString = tags![i] as! String
-                tmpString.removeAtIndex(advance(tmpString.startIndex, 0))
                 
                 if i == (count(tags!) - 1) {
                     tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))"
@@ -334,16 +329,21 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: tagsString) {
-                    result in
-                    if result == "1" {
+                    json in
+                    
+                    var error = json!["error"] as! NSNumber
+                    
+                    if error == 0 {
                         dispatch_async(dispatch_get_main_queue(), {
                             globalWillNianReload = 1
                             self.navigationController?.popViewControllerAnimated(true)
                         })
+                    } else { // 处理错误
+                        
                     }
                 }
             })
-        }else{
+        } else {
             self.field1!.becomeFirstResponder()
         }
 
@@ -359,7 +359,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if count(tags!) > 0 {
             for i in 0...(count(tags!) - 1){
                 var tmpString = tags[i] as! String
-                tmpString.removeAtIndex(advance(tmpString.startIndex, 0))
                 tagsArray.append(tmpString)
                 
                 if i == (count(tags!) - 1) {
@@ -381,13 +380,18 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tagType: self.tagType, tags:tagsString){
-                    result in
-                    if result == "1" {
+                    json in
+                    
+                    var error = json!["error"] as! NSNumber
+                    
+                    if error == 0 {
                         dispatch_async(dispatch_get_main_queue(), {
                             globalWillNianReload = 1
                             self.navigationController?.popViewControllerAnimated(true)
                             self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)", editTags:tagsArray)
                         })
+                    } else {  // 处理错误
+                        
                     }
                 }
             })
@@ -478,8 +482,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
                 var extraScrollOffset = extraHeight - heightExcludeNavbar
                 
-                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
-                println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
+                self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
+                println("----->self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
             }
         }
         
@@ -491,25 +495,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if textView.tag == 16555 {
             /**/
             var tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - textView.contentInset.left * 2) + textView.contentInset.top * 2
-            self.field2.frame.size.height = self.field2.frame.height > tmpField2Height ? self.field2.frame.height : tmpField2Height
+            var field2DefaultHeight: CGFloat = UIScreen.mainScreen().bounds.height > 480 ? 120 : 96
+            self.field2.frame.size.height = field2DefaultHeight > tmpField2Height ? field2DefaultHeight : tmpField2Height
             self.tokenView.frame.origin.y = CGRectGetMaxY(self.field2.frame)
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: 76 + field2.frame.height + tokenView.frame.height)
             self.containerView.frame.size = CGSize(width: self.containerView.frame.width, height: self.scrollView.contentSize.height)
 //            self.view.layoutIfNeeded()
             println("self.field2.frame.size = \(self.field2.frame.size)")
-            
-//            var _rect = textView.caretRectForPosition(textView.selectedTextRange?.end)
-//            
-//            if field2.isFirstResponder() {
-//                if ((_rect.origin.y + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
-//                    var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight
-//                    var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
-//                    var extraScrollOffset = extraHeight - heightExcludeNavbar
-//                    
-//                    self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: true)
-//                    println("self.scrollView.contentOffset = \(self.scrollView.contentOffset)")
-//                }
-//            }
         }
     }
     
@@ -550,14 +542,12 @@ extension AddDreamController: TITokenFieldDelegate {
     }
     
     func tokenField(tokenField: TITokenField!, didAddToken token: TIToken!) {
-        var _string: String = token.title
-        
-        _string.removeAtIndex(advance(token.title.startIndex, 0))
-        if contains(self.tagsArray, _string) {
+//        _string.removeAtIndex(advance(token.title.startIndex, 0))
+        if contains(self.tagsArray, token.title) {
             return
         }
         
-        Api.getTags(SAEncode(SAHtml(_string)), callback: {
+        Api.getTags(SAEncode(SAHtml(token.title)), callback: {
             json in
             if json != nil {
                 var status = json!["status"] as! NSNumber
@@ -572,9 +562,7 @@ extension AddDreamController: TITokenFieldDelegate {
 
 extension AddDreamController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.field1.resignFirstResponder()
-        self.field2.resignFirstResponder()
-        self.tokenView.resignFirstResponder()
+        self.dismissKeyboard()
     }
 }
 

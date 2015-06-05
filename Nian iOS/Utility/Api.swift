@@ -157,8 +157,7 @@ struct Api {
     
     static func getDreamTop(id:String, callback: V.JsonCallback) {
         loadCookies()
-//        V.httpGetForJson("http://nian.so/api/dream.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
-        V.httpGetForJson("http://nian.so/api/dreamwithtags.php?id=\(id)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/dream/\(id)?&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func getCircleDetail(circle:String, callback: V.JsonCallback) {
@@ -407,17 +406,16 @@ struct Api {
     }
     
     
-    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: String, callback: V.StringCallback) {
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
     }
     
     
-    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, tags: String, callback: V.StringCallback) {
+    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/editdream.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&id=\(id)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
     }
-    
     
     static func postEditStep(sid: String, content: String, uploadUrl: String, uploadWidth: Int, uploadHeight: Int, callback: V.StringCallback) {
         loadCookies()
