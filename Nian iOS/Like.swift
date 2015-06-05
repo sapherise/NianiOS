@@ -24,7 +24,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        tableView?.headerBeginRefreshing()
     }
     
     func setupViews() {
@@ -59,7 +59,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
-        self.viewLoadingShow()
     }
     
     
@@ -86,7 +85,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                self.viewLoadingHide()
                 if ( data["total"] as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
@@ -140,10 +138,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return  71
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        self.viewLoadingHide()
     }
     
     override func viewDidAppear(animated: Bool) {

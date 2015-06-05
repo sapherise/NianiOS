@@ -35,7 +35,7 @@ class BBSCellTop: UITableViewCell{
         var title = SADecode(SADecode(data.stringAttributeForKey("title")))
         var user = data.stringAttributeForKey("user")
         var uid = data.stringAttributeForKey("uid")
-        var lastdate = data.stringAttributeForKey("lastdate")
+        var lastdate = data.stringAttributeForKey("postdate")
         var content = SADecode(SADecode(data.stringAttributeForKey("content")))
         var reply = data.stringAttributeForKey("reply")
         self.BBStitle.text = title

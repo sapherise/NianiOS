@@ -21,7 +21,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        tableView?.headerBeginRefreshing()
     }
     
     func setupViews() {
@@ -53,8 +53,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView!)
-        
-        self.viewLoadingShow()
     }
     
     
@@ -92,7 +90,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
                 self.page++
-                self.viewLoadingHide()
             }
         })
     }
@@ -239,10 +236,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.viewBackFix()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        self.viewLoadingHide()
     }
     
 }

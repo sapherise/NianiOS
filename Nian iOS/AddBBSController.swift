@@ -67,7 +67,6 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
             content = SAEncode(SAHtml(content))
             Api.postAddBBS(title, content: content, circle: circle) { json in
                 if json != nil {
-                    println(json!)
                     globalWillBBSReload = 1
                     self.navigationController?.popViewControllerAnimated(true)
                 }

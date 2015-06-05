@@ -17,12 +17,12 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     var Id:String = "1"
     var lastID:String = "0"
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
         SAReloadData()
+        tableView.headerBeginRefreshing()
     }
     
     func setupViews() {
@@ -52,13 +52,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         var addButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onAddCircleClick")
         addButton.image = UIImage(named:"plus")
         self.navigationItem.rightBarButtonItems = [addButton]
-        
-        self.viewLoadingShow()
     }
-    
-//    func onAddCircleClick() {
-//        var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-//        self.navigationController?.pushViewController(addcircleVC, animated: true)
     
     func onAddCircleClick() {
         showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
@@ -94,7 +88,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView!.setFooterHidden(false)
         Api.getCircleExplore("0"){ json in
             if json != nil {
-                self.viewLoadingHide()
                 var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
@@ -163,7 +156,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     
     override func viewWillDisappear(animated: Bool) {
         globalViewFilmExist = false
-        self.viewLoadingHide()
     }
     
     override func viewDidAppear(animated: Bool) {

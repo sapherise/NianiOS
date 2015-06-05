@@ -166,7 +166,6 @@ struct V {
         })
     }
     
-    
     static func relativeTime(timestamp: String) -> String {
         var current = NSDate().timeIntervalSince1970
         var time = (timestamp as NSString).doubleValue
