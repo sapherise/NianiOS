@@ -89,14 +89,13 @@ struct Api {
         var manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         manager.operationQueue.cancelAllOperations()
-        
-        var operation = manager.GET("http://nian.so/api/autocompletetags.php?keyword=\(keyword)",
-                            parameters: nil,
-                            success: { (op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
-                                callback(obj)
-                            },
-                            failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                        })
+        manager.GET("http://api.nian.so/tags/autocomplete?uid=\(s_uid)&&shell\(s_shell)&&keyword=\(keyword)",
+            parameters: nil,
+            success: { (op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+                callback(obj)
+            },
+            failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+        })
         
     }
     
@@ -110,6 +109,12 @@ struct Api {
     static func getTags(tag: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/tags.php?tag=\(tag)", callback: callback)
+    }
+    
+    static func postTag(tag: String, callback: V.JsonCallback) {
+        loadCookies()
+//        V.httpPostForJson("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: "tag=\(tag)", callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: ["tag": "\(tag)"], callback: callback)
     }
     
     static func postReport(type: String, id: String, callback: V.StringCallback) {

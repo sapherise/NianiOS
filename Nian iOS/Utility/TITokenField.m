@@ -45,6 +45,7 @@
 @synthesize resultsTable = _resultsTable;
 @synthesize contentView = _contentView;
 @synthesize separator = _separator;
+@synthesize spinner = _spinner;
 @synthesize sourceArray = _sourceArray;
 
 #pragma mark Init
@@ -123,6 +124,9 @@
 		[_resultsTable setHidden:YES];
         [_resultsTable setBackgroundColor:[UIColor whiteColor]];
 		[self addSubview:_resultsTable];
+        
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self addSubview:_spinner];
 		
 		_popoverController = nil;
 	}
@@ -139,6 +143,11 @@
     [_resultsTable setFrame:((CGRect){_resultsTable.frame.origin, {width, _resultsTable.bounds.size.height}})];
     [_contentView setFrame:((CGRect){_contentView.frame.origin, {width, (frame.size.height - CGRectGetMaxY(_tokenField.frame))}})];
     [_tokenField setFrame:((CGRect){_tokenField.frame.origin, {width, _tokenField.bounds.size.height}})];
+    
+    _spinner.frame = CGRectMake((_resultsTable.frame.size.width - _spinner.frame.size.width)/2,
+                                (_resultsTable.frame.size.height - _spinner.frame.size.height)/2 + 40,
+                                _spinner.frame.size.width,
+                                _spinner.frame.size.height);
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -187,7 +196,14 @@
     
 	CGFloat relativeFieldHeight = CGRectGetMaxY(_tokenField.frame) - self.contentOffset.y;
 	CGFloat newHeight = self.bounds.size.height - relativeFieldHeight;
-	if (newHeight > -1) [_resultsTable setFrame:((CGRect){_resultsTable.frame.origin, {_resultsTable.bounds.size.width, newHeight}})];
+    
+    if (newHeight > -1) {
+        [_resultsTable setFrame:((CGRect){_resultsTable.frame.origin, {_resultsTable.bounds.size.width, newHeight}})];
+        _spinner.frame = CGRectMake((_resultsTable.frame.size.width - _spinner.frame.size.width)/2,
+                                    (_resultsTable.frame.size.height - _spinner.frame.size.height)/2 + 40,
+                                    _spinner.frame.size.width,
+                                    _spinner.frame.size.height);
+    }
 }
 
 - (void)updateContentSize {
@@ -292,6 +308,7 @@
 	[_separator setFrame:((CGRect){{_separator.frame.origin.x, tokenFieldBottom}, _separator.bounds.size})];
 	[_resultsTable setFrame:((CGRect){{_resultsTable.frame.origin.x, (tokenFieldBottom + 1)}, _resultsTable.bounds.size})];
 	[_contentView setFrame:((CGRect){{_contentView.frame.origin.x, (tokenFieldBottom + 1)}, _contentView.bounds.size})];
+
 }
 
 - (void)tokenFieldFrameDidChange:(TITokenField *)field {
@@ -374,8 +391,16 @@
 
         if ([_tokenField.delegate respondsToSelector:@selector(tokenField:shouldUseCustomSearchForSearchString:)] && [_tokenField.delegate tokenField:_tokenField shouldUseCustomSearchForSearchString:searchString]) {
             if ([_tokenField.delegate respondsToSelector:@selector(tokenField:performCustomSearchForSearchString:withCompletionHandler:)]) {
+                
+                [self bringSubviewToFront:_spinner];
+                [_spinner startAnimating];
+                
                 [_tokenField.delegate tokenField:_tokenField performCustomSearchForSearchString:searchString withCompletionHandler:^(NSArray *results) {
                     if (self.tokenField.isFirstResponder) {
+                        
+                        [self sendSubviewToBack:_spinner];
+                        [_spinner stopAnimating];
+                        
                         [self searchDidFinish:results];
                     }
                 }];
