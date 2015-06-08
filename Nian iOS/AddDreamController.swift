@@ -125,6 +125,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
     
+    //MARK: view load 相关的方法
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -298,6 +300,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tokenView.tokenField.resignFirstResponder()
     }
     
+    //MARK: 添加 new Dream
+    
     func addDreamOK(){
         var title = self.field1?.text
         var content = self.field2.text
@@ -345,6 +349,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
 
     }
+    
+    //MARK: edit dream
     
     func editDreamOK(){
         var title = self.field1?.text
@@ -397,17 +403,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        textView.textColor = UIColor.blackColor()
-    }
-    
-    // MARK: DreamTagDelegate
-    
     func onTagSelected(tag: String, tagType: Int) {
 //        self.labelTag?.text = tag
 //        self.tagType = tagType + 1
     }
     
+    //MARK: keyboard notification && UITextView Delegate method
+   
     func handleKeyboardWillShowNotification(notification: NSNotification) {
         let userInfo = notification.userInfo!
         
@@ -494,6 +496,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
+    func textViewDidBeginEditing(textView: UITextView) {
+        textView.textColor = UIColor.blackColor()
+    }
+    
+    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view .isKindOfClass(UITableView) || touch.view .isKindOfClass(UITableViewCell) {
             return false
@@ -503,6 +510,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
 }
+
+//MARK: token field delegate
 
 extension AddDreamController: TITokenFieldDelegate {
     func tokenFieldDidBeginEditing(field: TITokenField!) {
@@ -532,11 +541,15 @@ extension AddDreamController: TITokenFieldDelegate {
             Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
-                    data = json as! Array
+                    var error = json!["error"] as! NSNumber
                     
-                    if count(data) > 0 {
-                        for i in 0...(count(data) - 1) {
-                            data[i] = SADecode(SADecode(data[i]))
+                    if error == 0 {
+                        data = json!["data"] as! Array
+                        
+                        if count(data) > 0 {
+                            for i in 0...(count(data) - 1) {
+                                data[i] = SADecode(SADecode(data[i]))
+                            }
                         }
                     }
                 }
@@ -551,10 +564,10 @@ extension AddDreamController: TITokenFieldDelegate {
             return
         }
         
-        Api.getTags(SAEncode(SAHtml(token.title)), callback: {
+        Api.postTag(SAEncode(SAHtml(token.title)), callback: {
             json in
             if json != nil {
-                var status = json!["status"] as! NSNumber
+                var status = json!["error"] as! NSNumber
             }
         })
     }
@@ -563,6 +576,8 @@ extension AddDreamController: TITokenFieldDelegate {
     }
     
 }
+
+//MARK: UIScrollView Delegate
 
 extension AddDreamController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

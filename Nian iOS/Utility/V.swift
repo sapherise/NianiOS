@@ -77,12 +77,52 @@ struct V {
         
         manager.GET(requestURL,
             parameters: nil,
-            success: { (op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) in
                 callback(obj)
         },
-            failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: {(op: AFHTTPRequestOperation!, error: NSError!) in
         })
     }
+    
+    static func httpPostForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
+        var manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.POST(requestURL,
+            parameters: content,
+            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+                callback(obj)
+        },
+            failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
+        })
+    }
+    
+    static func httpPutForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
+        var manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.PUT(requestURL,
+            parameters: content,
+            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+                callback(obj)
+            },
+            failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
+        })
+    }
+    
+    static func httpDeleteForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
+        var manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.DELETE(requestURL,
+            parameters: content,
+            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+                callback(obj)
+            },
+            failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
+        })
+    }
+    
     
     static func httpGetForJsonSync(requestURL: String, callback: JsonCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {

@@ -840,7 +840,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.topCell.btnMain.removeTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
             self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
             var numLike = self.topCell.numLeftNum.text!.toInt()!
-            self.topCell.numLeftNum.text = "\(numLike - 1)"
+            self.topCell.numLeftNum.text = (numLike > 0) ? "\(numLike - 1)" : "0"
         }else if self.likedreamJson == "0" {
             self.likedreamJson = "1"
             self.topCell.btnMain.setTitle("已赞", forState: UIControlState.Normal)
