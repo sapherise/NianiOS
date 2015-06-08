@@ -29,7 +29,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var imagePicker: UIImagePickerController?
     var delegate: editDreamDelegate?
     var tagType: Int = 0
-    var readyForTag: Int = 0     //当为1时自动跳转到Tag去
     
     var uploadUrl: String = ""
     
@@ -215,13 +214,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.scrollView.delegate = self
         
-        delay(0.5, { () -> () in
-            if self.readyForTag == 1 {
-                self.onTagClick()
-                return
-            }
-        })
-        
         if UIScreen.mainScreen().bounds.height > 480 {
             self.field2.frame.size.height = 120
         } else {
@@ -320,26 +312,19 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
-            
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tagType: self.tagType, tags: tagsString) {
-                    json in
-                    var error = json!["error"] as! NSNumber
-                    
-                    if error == 0 {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            globalWillNianReload = 1
-                            self.navigationController?.popViewControllerAnimated(true)
-                        })
-                    } else { // 处理错误
-                        
-                    }
+            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tagsString) {
+                json in
+                println("成功了！")
+                println(json)
+                println(tagsString)
+                var error = json!["error"] as! NSNumber
+                if error == 0 {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        globalWillNianReload = 1
+                        self.navigationController?.popViewControllerAnimated(true)
+                    })
                 }
-            })
+            }
         } else {
             self.field1!.becomeFirstResponder()
         }
@@ -374,24 +359,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as! String
             var safeshell = Sa.objectForKey("shell") as! String
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tagType: self.tagType, tags:tagsString){
-                    json in
-                    
-                    var error = json!["error"] as! NSNumber
-                    
-                    if error == 0 {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            globalWillNianReload = 1
-                            self.navigationController?.popViewControllerAnimated(true)
-                            self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)", editTags:tagsArray)
-                        })
-                    } else {  // 处理错误
-                        
-                    }
+            Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString){
+                json in
+                var error = json!["error"] as! NSNumber
+                if error == 0 {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        globalWillNianReload = 1
+                        self.navigationController?.popViewControllerAnimated(true)
+                        self.delegate?.editDream(self.editPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)", editTags:tagsArray)
+                    })
                 }
-            })
+            }
         } else {
             self.field1!.becomeFirstResponder()
         }

@@ -144,7 +144,7 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
     //GET /dream/{dream_id}/steps?page=2&sort=desc
@@ -424,19 +424,18 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/dream/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tagType: Int, tags: String, callback: V.JsonCallback) {
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()
-        
         if tags == "" {
-            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)", callback: callback)
+            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)", callback: callback)
         } else {
-            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(isPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)&\(tags)", callback: callback)
         }
     }
     
-    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tagType: Int, tags: String, callback: V.JsonCallback) {
+    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&hashtag=\(tagType)&&\(tags)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&\(tags)", callback: callback)
     }
     
     static func postEditStep(sid: String, content: String, uploadUrl: String, uploadWidth: Int, uploadHeight: Int, callback: V.StringCallback) {
