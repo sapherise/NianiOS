@@ -81,7 +81,6 @@ struct V {
                 callback(obj)
         },
             failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                println("AFN get: \(error)")
         })
     }
     
