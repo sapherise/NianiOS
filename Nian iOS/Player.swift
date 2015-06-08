@@ -64,86 +64,14 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
-    }
-    
-    func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object!
-        var sid:Int = content[2] as! Int
-        var row:Int = (content[3] as! Int)-10
-        var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
-        
-        var customActivity = SAActivity()
-        customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "flag")!
-        customActivity.saActivityFunction = {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
-                    })
-                }
-            })
-        }
-        //编辑按钮
-        var editActivity = SAActivity()
-        editActivity.saActivityTitle = "编辑"
-        editActivity.saActivityType = "编辑"
-        editActivity.saActivityImage = UIImage(named: "edit")!
-        editActivity.saActivityFunction = {
-            var data = self.dataArrayStep[row] as! NSDictionary
-            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-            addstepVC.isEdit = 1
-            addstepVC.data = data
-            addstepVC.row = row
-            addstepVC.delegate = self
-            self.navigationController!.pushViewController(addstepVC, animated: true)
-        }
-        //删除按钮
-        var deleteActivity = SAActivity()
-        deleteActivity.saActivityTitle = "删除"
-        deleteActivity.saActivityType = "删除"
-        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
-        deleteActivity.saActivityFunction = {
-            self.deleteId = sid
-            self.deleteViewId = row
-            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.deleteSheet!.addButtonWithTitle("确定")
-            self.deleteSheet!.addButtonWithTitle("取消")
-            self.deleteSheet!.cancelButtonIndex = 1
-            self.deleteSheet!.showInView(self.view)
-        }
-
-        var ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
-        
-        if self.dreamowner == 1 {
-            ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
-        }
-        var arr = [content[0], url]
-        var image = getCacheImage("\(content[1])")
-        if image != nil {
-            arr.append(image!)
-        }
-        self.activityViewController = UIActivityViewController(
-            activityItems: arr,
-            applicationActivities: ActivityArray)
-        self.activityViewController?.excludedActivityTypes = [
-            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-        ]
-        self.presentViewController(self.activityViewController!, animated: true, completion: nil)
     }
     
     func setupViews() {
