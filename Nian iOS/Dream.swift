@@ -85,101 +85,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         setupViews()
         setupRefresh()
-        SALoadData()
+        tableView.headerBeginRefreshing()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "ShareContent", object:nil)
         self.loadTopCellDone = false
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ShareContent:", name: "ShareContent", object: nil)
         self.viewBackFix()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(true)
-    }
-
-    func ShareContent(noti:NSNotification){
-        var content:AnyObject = noti.object!
-        var sid:Int = content[2] as! Int
-        var row:Int = (content[3] as! Int)-10
-        var url:NSURL = NSURL(string: "http://nian.so/m/step/\(sid)")!
-        
-        var customActivity = SAActivity()
-        customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "flag")!
-        customActivity.saActivityFunction = {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
-                if(sa == "1"){
-                    dispatch_async(dispatch_get_main_queue(), {
-                        UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
-                    })
-                }
-            })
-        }
-        
-        //编辑按钮
-        var editActivity = SAActivity()
-        editActivity.saActivityTitle = "编辑"
-        editActivity.saActivityImage = UIImage(named: "edit")!
-        editActivity.saActivityType = "编辑"
-        editActivity.saActivityFunction = {
-            self.activityViewController!.dismissViewControllerAnimated(true, completion: nil)
-            var data = self.dataArray[row] as! NSDictionary
-            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-            addstepVC.isEdit = 1
-            addstepVC.data = data
-            addstepVC.row = row
-            addstepVC.delegate = self
-            self.navigationController?.pushViewController(addstepVC, animated: true)
-        }
-        
-        //删除按钮
-        var deleteActivity = SAActivity()
-        deleteActivity.saActivityTitle = "删除"
-        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
-        deleteActivity.saActivityType = "删除"
-        deleteActivity.saActivityFunction = {
-            self.deleteId = sid
-            self.deleteViewId = row
-            self.deleteSheet = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.deleteSheet!.addButtonWithTitle("确定")
-            self.deleteSheet!.addButtonWithTitle("取消")
-            self.deleteSheet!.cancelButtonIndex = 1
-            self.deleteSheet!.showInView(self.view)
-        }
-        
-        var ActivityArray: Array<UIActivity>
-        if self.dreamowner == 1 {
-            ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
-        } else {
-            ActivityArray = [ WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
-        }
-        var image = getCacheImage("\(content[1])")
-        var arr = [content[0], url]
-        if image != nil {
-            arr.append(image!)
-        }
-        self.activityViewController = UIActivityViewController(activityItems: arr, applicationActivities: ActivityArray)
-        self.activityViewController?.excludedActivityTypes = [
-            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-        ]
-        self.presentViewController(self.activityViewController!, animated: true, completion: nil)
     }
     
     func shareDream(){
@@ -217,11 +133,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-       
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
-            self.tableView.headerBeginRefreshing()
-        })
-        
         //主人
         Api.getDreamTop(self.Id) { json in
             if json != nil {
@@ -262,7 +173,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
                 
                 dispatch_after(2, dispatch_get_main_queue(), {
-                    self.tableView.headerEndRefreshing(animated: true)
                     self.loadDreamTopcell()
                 })
             }
@@ -327,56 +237,58 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.guestMoreSheet!.showInView(self.view)
     }
     
-    func SALoadData(clear: Bool = true){
+    func load(clear: Bool = true){
         if clear {
-            self.page = 0
+            self.page = 1
         }
-        self.tableView!.setFooterHidden(clear)
-        Api.getDreamStep(self.Id, page: self.page) { json in
+        Api.getDreamStep(Id, page: page) { json in
             if json != nil {
-                var total = json!["total"] as! Int
-                var thePrivate = json!["private"] as! String
-                var uid = json!["uid"] as! String
-                if total < 15 {
-                    self.tableView!.setFooterHidden(true)
-                }else{
-                    self.tableView?.setFooterHidden(false)
-                }
-                var arr = json!["items"] as! NSArray
-                if clear {
-                    self.dataArray.removeAllObjects()
-                }
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                if thePrivate == "2" {
-                    // 删除
-                    var viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
-                    viewTop.setY(104)
-                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    viewHolder.addSubview(viewTop)
-                    self.view.addSubview(viewHolder)
-                    self.tableView?.hidden = true
-                    self.navigationItem.rightBarButtonItems = []
-                }else if thePrivate == "1" && uid != safeuid {
-                    // 私密
-                    var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
-                    viewTop.setY(104)
-                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    viewHolder.addSubview(viewTop)
-                    self.view.addSubview(viewHolder)
-                    self.tableView?.hidden = true
-                    self.navigationItem.rightBarButtonItems = []
-                }else{
-                    for data: AnyObject in arr {
-                        self.dataArray.addObject(data)
-                    }
-                }
-                self.tableView?.reloadData()
-                self.tableView?.headerEndRefreshing()
-                self.tableView?.footerEndRefreshing()
-                self.page++
+                println(json)
+            } else {
+                println("错了！")
             }
         }
+//        self.tableView!.setFooterHidden(clear)
+//        Api.getDreamStep(self.Id, page: self.page) { json in
+//            if json != nil {
+//                println(json)
+//                var thePrivate = json!["private"] as! String
+//                var uid = json!["uid"] as! String
+//                var arr = json!["items"] as! NSArray
+//                if clear {
+//                    self.dataArray.removeAllObjects()
+//                }
+//                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//                var safeuid = Sa.objectForKey("uid") as! String
+//                if thePrivate == "2" {
+//                    // 删除
+//                    var viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
+//                    viewTop.setY(104)
+//                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+//                    viewHolder.addSubview(viewTop)
+//                    self.view.addSubview(viewHolder)
+//                    self.tableView?.hidden = true
+//                    self.navigationItem.rightBarButtonItems = []
+//                }else if thePrivate == "1" && uid != safeuid {
+//                    // 私密
+//                    var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
+//                    viewTop.setY(104)
+//                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+//                    viewHolder.addSubview(viewTop)
+//                    self.view.addSubview(viewHolder)
+//                    self.tableView?.hidden = true
+//                    self.navigationItem.rightBarButtonItems = []
+//                }else{
+//                    for data: AnyObject in arr {
+//                        self.dataArray.addObject(data)
+//                    }
+//                }
+//                self.tableView?.reloadData()
+//                self.tableView?.headerEndRefreshing()
+//                self.tableView?.footerEndRefreshing()
+//                self.page++
+//            }
+//        }
     }
     
     func onStepClick(){
@@ -540,7 +452,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func countUp(coin: String, isfirst: String){
-        self.SALoadData()
+        self.load()
         var stepNum = self.topCell.numMiddleNum.text!.toInt()!
         self.topCell.numMiddleNum.text = "\(stepNum + 1)"
         if isfirst == "1" {
@@ -571,11 +483,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.SALoadData()
+            self.load()
         })
         
         self.tableView!.addFooterWithCallback({
-            self.SALoadData(clear: false)
+            self.load(clear: false)
         })
     }
     
