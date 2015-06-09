@@ -41,8 +41,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.panGesture.delegate = self
         self.View?.addGestureRecognizer(self.panGesture)
         self.btnMain.backgroundColor = SeaColor
-        self.btnMain.hidden = true
-        self.btnMain.alpha = 0
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.viewLeft.setX(globalWidth/2-160)
         self.viewRight.setX(globalWidth/2-160+globalWidth)
@@ -131,6 +129,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     override func layoutSubviews(){
         super.layoutSubviews()
         if data != nil {
+            println(data)
             var title = SADecode(SADecode(data!.stringAttributeForKey("title")))
             var content = SADecode(SADecode(data!.stringAttributeForKey("content")))
             var img = data!.stringAttributeForKey("image")
@@ -185,12 +184,13 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             //==
             if SAUid() == uid {
                 btnMain.setTitle("更新", forState: UIControlState.allZeros)
+                btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
             } else if isFollow == "0" {
                 btnMain.setTitle("关注", forState: UIControlState.allZeros)
                 btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
             } else {
                 btnMain.setTitle("关注中", forState: UIControlState.allZeros)
-                btnMain.addTarget(self, action: "onUnfo", forControlEvents: UIControlEvents.TouchUpInside)
+                btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
             }
             
             self.contentView.hidden = false
@@ -199,12 +199,32 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         }
     }
     
-    func onFo() {
-        
+    func onAddStep() {
+//        
+//        var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+//        AddstepVC.Id = self.Id
+//        AddstepVC.delegate = self    //😍
+//        self.navigationController?.pushViewController(AddstepVC, animated: true)
+        var vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        var id = data!.stringAttributeForKey("id")
+        vc.Id = id
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onUnfo() {
-        
+    func onFo() {
+        btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+        btnMain.removeTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+        var id = data!.stringAttributeForKey("id")
+        Api.postFollowDream(id, follow: "1") { string in }
+    }
+    
+    func onUnFo() {
+        btnMain.setTitle("关注", forState: UIControlState.allZeros)
+        btnMain.removeTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+        var id = data!.stringAttributeForKey("id")
+        Api.postFollowDream(id, follow: "0") { string in }
     }
     
 //        if self.owneruid == safeuid {

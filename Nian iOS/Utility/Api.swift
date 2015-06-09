@@ -44,7 +44,7 @@ struct Api {
     
     static func getExploreFollow(page: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_fo_optimize.php?page=\(page)&uid=\(s_uid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/explore/follow?page=\(page)&uid=\(s_uid)", callback: callback)
     }
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
@@ -440,7 +440,7 @@ struct Api {
     
     static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tags: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&&shell=\(s_shell)", content: "content=\(content)&&title=\(title)&&img=\(uploadUrl)&&private=\(editPrivate)&&\(tags)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&image=\(uploadUrl)&private=\(editPrivate)&\(tags)", callback: callback)
     }
     
     static func postEditStep(sid: String, content: String, uploadUrl: String, uploadWidth: Int, uploadHeight: Int, callback: V.StringCallback) {

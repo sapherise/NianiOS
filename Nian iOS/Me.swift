@@ -78,7 +78,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SALoadData() {
-        println("下载数据中")
         var isLoaded = 0
         delay(3, {
             if isLoaded == 0 {

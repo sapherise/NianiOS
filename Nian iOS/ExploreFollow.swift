@@ -46,7 +46,8 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
-                var items = json!["items"] as! NSArray
+                var data = json!["data"]
+                var items = data!!["items"] as! NSArray
                 if items.count != 0 {
                     for item in items {
                         self.dataArray.addObject(item)

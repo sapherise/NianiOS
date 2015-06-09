@@ -314,6 +314,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var uid = dataArrayTop.stringAttributeForKey("uid")
         var percent = dataArrayTop.stringAttributeForKey("percent")
         var title = dataArrayTop.stringAttributeForKey("title")
+        var follow = dataArrayTop.stringAttributeForKey("follow")
+        
         var acEdit = SAActivity()
         acEdit.saActivityTitle = "编辑"
         acEdit.saActivityType = "编辑"
@@ -362,23 +364,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.onDreamLikeClick()
         }
         
-        var acFo = SAActivity()
-        acFo.saActivityTitle = "关注"
-        acFo.saActivityType = "关注"
-        acFo.saActivityImage = UIImage(named: "goodbye")
-        acFo.saActivityFunction = {
-//            if self.followJson == "1" {
-//                self.followJson = "0"
-//            }else if self.followJson == "0" {
-//                self.followJson = "1"
-//            }
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//                var sa = SAPost("id=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&fo=\(self.followJson)", "http://nian.so/api/dream_fo_query.php")
-//                if sa != "" && sa != "err" {
-//                }
-//            })
-        }
-        
         var acReport = SAActivity()
         acReport.saActivityTitle = "举报"
         acReport.saActivityType = "举报"
@@ -387,10 +372,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.view.showTipText("举报好了！", delay: 2)
         }
         
-        var arr = SAUid() == uid ? [WeChatSessionActivity(), WeChatMomentsActivity(), acDone, acEdit, acDelete] : [WeChatSessionActivity(), WeChatMomentsActivity(), acLike, acFo, acReport]
+        var arr = SAUid() == uid ? [WeChatSessionActivity(), WeChatMomentsActivity(), acDone, acEdit, acDelete] : [WeChatSessionActivity(), WeChatMomentsActivity(), acLike, acReport]
         var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
         acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
-        
         self.presentViewController(acv, animated: true, completion: nil)
     }
     
@@ -425,7 +409,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
             c.data = self.dataArray[indexPath.row] as! NSDictionary
-            println(self.dataArray[indexPath.row] as! NSDictionary)
             c.index = indexPath.row
             if indexPath.row == self.dataArray.count - 1 {
                 c.viewLine.hidden = true
@@ -499,41 +482,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             Api.postLike(sid, like: "0") { json in
             }
         }
-    }
-    
-    func onImageTap(sender: UITapGestureRecognizer) {
-        var view  = self.findTableCell(sender.view)!
-        var img = dataArray[view.tag - 10].objectForKey("img") as! String
-        var img0 = dataArray[view.tag - 10].objectForKey("img0") as! NSString
-        var img1 = dataArray[view.tag - 10].objectForKey("img1") as! NSString
-        var yPoint = sender.view!.convertPoint(CGPointMake(0, 0), fromView: sender.view!.window!)
-        var w = CGFloat(img0.floatValue)
-        var h = CGFloat(img1.floatValue)
-        if w != 0 {
-            h = h * globalWidth / w
-            var rect = CGRectMake(-yPoint.x, -yPoint.y, globalWidth, h)
-            if let v = sender.view as? UIImageView {
-                v.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
-            }
-        }
-    }
-    
-    func findTableCell(view: UIView?) -> UIView? {
-        for var v = view; v != nil; v = v!.superview {
-            if v! is UITableViewCell {
-                return v
-            }
-        }
-        return nil
-    }
-    
-    func onCommentClick(sender: UIGestureRecognizer) {
-        var tag = sender.view!.tag
-        var DreamCommentVC = DreamCommentViewController()
-        DreamCommentVC.dreamID = self.Id.toInt()!
-        DreamCommentVC.stepID = tag
-        DreamCommentVC.dreamowner = self.dreamowner
-        self.navigationController?.pushViewController(DreamCommentVC, animated: true)
     }
     
     func likeclick(sender: UITapGestureRecognizer) {
@@ -698,17 +646,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var title = dataArrayTop.stringAttributeForKey("title")
         var content = dataArrayTop.stringAttributeForKey("content")
         var img = dataArrayTop.stringAttributeForKey("image")
-        var thePrivate = dataArrayTop.stringAttributeForKey("private")
+        var thePrivate = dataArrayTop.stringAttributeForKey("private").toInt()!
         editdreamVC.editId = id
         editdreamVC.editTitle = SADecode(SADecode(title))
         editdreamVC.editContent = SADecode(SADecode(content))
         editdreamVC.editImage = img
-        editdreamVC.editPrivate = thePrivate
+        editdreamVC.isPrivate = thePrivate
         editdreamVC.tagsArray = self.tagArray
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(editPrivate:String, editTitle:String, editDes:String, editImage:String, editTag:String, editTags:Array<String>) {
+    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTag:String, editTags:Array<String>) {
 //        self.tagArray.removeAll(keepCapacity: false)
 //        
 //        self.topCell.scrollView.subviews.map({
