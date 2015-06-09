@@ -113,7 +113,6 @@ struct Api {
     
     static func postTag(tag: String, callback: V.JsonCallback) {
         loadCookies()
-//        V.httpPostForJson("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: "tag=\(tag)", callback: callback)
         V.httpPostForJson_AFN("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: ["tag": "\(tag)"], callback: callback)
     }
     
@@ -149,7 +148,7 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
     //GET /dream/{dream_id}/steps?page=2&sort=desc
