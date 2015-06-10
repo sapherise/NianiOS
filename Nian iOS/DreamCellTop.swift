@@ -29,8 +29,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var viewLineLeft: UIView!
     @IBOutlet var viewBG: UIView!
     @IBOutlet var viewHolder: UIView!
-    
-    var dreamid:String = ""
+    var data: NSDictionary?
     var desHeight:CGFloat = 0
     var panStartPoint:CGPoint!
     var toggle:Int = 0
@@ -42,8 +41,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.panGesture.delegate = self
         self.View?.addGestureRecognizer(self.panGesture)
         self.btnMain.backgroundColor = SeaColor
-        self.btnMain.hidden = true
-        self.btnMain.alpha = 0
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.viewLeft.setX(globalWidth/2-160)
         self.viewRight.setX(globalWidth/2-160+globalWidth)
@@ -131,5 +128,152 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     override func layoutSubviews(){
         super.layoutSubviews()
+        if data != nil {
+            println(data)
+            var title = SADecode(SADecode(data!.stringAttributeForKey("title")))
+            var content = SADecode(SADecode(data!.stringAttributeForKey("content")))
+            var img = data!.stringAttributeForKey("image")
+            var step = data!.stringAttributeForKey("step")
+            var likeDream = data!.stringAttributeForKey("like")
+            var likeStep = data!.stringAttributeForKey("like_step")
+            var like = likeDream.toInt()! + likeStep.toInt()!
+            var thePrivate = data!.stringAttributeForKey("private")
+            var percent = data!.stringAttributeForKey("percent")
+            var isFollow = data!.stringAttributeForKey("follow")
+            var uid = data!.stringAttributeForKey("uid")
+            dreamhead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+            var h: CGFloat = title.stringHeightBoldWith(19, width: 242)
+            if thePrivate == "1" {
+                title = "\(title)（私密）"
+                var textTitle = NSMutableAttributedString(string: title)
+                var l = textTitle.length
+                textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, l-4))
+                textTitle.addAttribute(NSForegroundColorAttributeName, value: SeaColor, range: NSMakeRange(l-4, 4))
+                nickLabel.attributedText = textTitle
+                h = title.stringHeightBoldWith(19, width: 242)
+            } else if percent == "1" {
+                title = "\(title)（完成）"
+                var textTitle = NSMutableAttributedString(string: title)
+                var l = textTitle.length
+                textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, l-4))
+                textTitle.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(l-4, 4))
+                nickLabel.attributedText = textTitle
+                h = title.stringHeightBoldWith(19, width: 242)
+            } else {
+                nickLabel.text = title
+            }
+            if content == "" {
+                content = "暂无简介"
+            }
+            var bottom = nickLabel.bottom()
+            viewHolder.setY(bottom + 13)
+            var heightContent = content.stringHeightWith(12, width: 200)
+            labelDes.text = content
+            labelDes.setHeight(heightContent)
+            labelDes.setY(110 - heightContent / 2)
+            viewRight.setY(44)
+            viewBG.setY(44)
+            btnMain.setY(bottom + 128)
+            dotLeft.setY(bottom + 181)
+            dotRight.setY(bottom + 181)
+            viewBG.setHeight(h + 256)
+            viewLeft.setHeight(h + 256)
+            viewRight.setHeight(h + 256)
+            numLeftNum.text = "\(like)"
+            numMiddleNum.text = step
+            //==
+            if SAUid() == uid {
+                btnMain.setTitle("更新", forState: UIControlState.allZeros)
+                btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
+            } else if isFollow == "0" {
+                btnMain.setTitle("关注", forState: UIControlState.allZeros)
+                btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+            } else {
+                btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+                btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+            
+            self.contentView.hidden = false
+        } else {
+            self.contentView.hidden = true
+        }
     }
+    
+    func onAddStep() {
+//        
+//        var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+//        AddstepVC.Id = self.Id
+//        AddstepVC.delegate = self    //😍
+//        self.navigationController?.pushViewController(AddstepVC, animated: true)
+        var vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        var id = data!.stringAttributeForKey("id")
+        vc.Id = id
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onFo() {
+        btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+        btnMain.removeTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+        var id = data!.stringAttributeForKey("id")
+        Api.postFollowDream(id, follow: "1") { string in }
+    }
+    
+    func onUnFo() {
+        btnMain.setTitle("关注", forState: UIControlState.allZeros)
+        btnMain.removeTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+        var id = data!.stringAttributeForKey("id")
+        Api.postFollowDream(id, follow: "0") { string in }
+    }
+    
+//        if self.owneruid == safeuid {
+//            self.topCell.btnMain.setTitle("更新", forState: UIControlState.Normal)
+//            self.topCell.btnMain.addTarget(self, action: "addStepButton", forControlEvents: UIControlEvents.TouchUpInside)
+//        } else {
+//            if self.likeJson == "0" {
+//                self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
+//                self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+//            } else {
+//                self.topCell.btnMain.setTitle("分享", forState: UIControlState.Normal)
+//                self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
+//            }
+//        }
+//
+//        self.userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
+//        self.topCell.dreamhead!.setImage(self.userImageURL, placeHolder: IconColor)
+//        self.topCell.dreamhead!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
+//        
+//        if (count(self.tagArray) == 0 || (count(self.tagArray) == 1 && count(tagArray[0]) == 0)) {
+//            self.topCell.scrollView.hidden = true
+//            self.topCell.frame.size = CGSizeMake(self.topCell.frame.size.width, self.topCell.frame.size.height - 44)
+//            self.topCell.frame.origin = CGPointMake(self.topCell.frame.origin.x, self.topCell.frame.origin.y)
+//            self.loadTopCellDone = true
+//            self.tableView.reloadData()
+//        } else {
+//            self.topCell.scrollView.hidden = false
+//            
+//            for var i = 0; i < count(self.tagArray); i++ {
+//                var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+//                label.userInteractionEnabled = true
+//                label.text = self.tagArray[i] as String
+//                self.labelWidthWithItsContent(label, content: SADecode(self.tagArray[i]))
+//                label.frame.origin.x = self.topCell.scrollView.contentSize.width + 8
+//                label.frame.origin.y = 10
+//                label.tag = 12000 + i
+//                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
+//                self.topCell.scrollView.addSubview(label)
+//                self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + 8 + label.frame.width , self.topCell.scrollView.frame.height)
+//            }
+//            
+//            self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + CGFloat(16), self.topCell.scrollView.frame.height)
+//            self.topCell.scrollView.canCancelContentTouches = false
+//            self.topCell.scrollView.delaysContentTouches = false
+//            self.topCell.scrollView.userInteractionEnabled = true
+//            self.topCell.scrollView.exclusiveTouch = true
+//            
+//            self.loadTopCellDone = true
+//            self.tableView.reloadData()
+//        }
+//    }
 }
