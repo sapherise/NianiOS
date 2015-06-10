@@ -114,7 +114,6 @@ struct Api {
     
     static func postTag(tag: String, callback: V.JsonCallback) {
         loadCookies()
-//        V.httpPostForJson("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: "tag=\(tag)", callback: callback)
         V.httpPostForJson_AFN("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: ["tag": "\(tag)"], callback: callback)
     }
     

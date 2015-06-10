@@ -183,6 +183,9 @@
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
+		C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */; };
+		C4B6B6731B271EBD00A5FA26 /* CircleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */; };
+		C4B6B6771B2723EF00A5FA26 /* CircleListCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
@@ -401,6 +404,9 @@
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
+		C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleCollectionList.storyboard; sourceTree = "<group>"; };
+		C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCollectionCell.swift; sourceTree = "<group>"; };
+		C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleListCollectionController.swift; sourceTree = "<group>"; };
 		C4CDB41B1AF8C79000936E03 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		C4CDB41E1AF8C79900936E03 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
@@ -608,6 +614,9 @@
 				12E23BD21B21A4DA00F175FF /* CircleList2.swift */,
 				12CE15A01A3E7D24006AC031 /* CircleCell.xib */,
 				12CE15A21A3E7D56006AC031 /* CircleCell.swift */,
+				C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */,
+				C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */,
+				C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */,
 			);
 			name = "梦境列表";
 			sourceTree = "<group>";
@@ -1192,6 +1201,7 @@
 				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
+				C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
@@ -1314,6 +1324,7 @@
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */,
+				C4B6B6731B271EBD00A5FA26 /* CircleCollectionCell.swift in Sources */,
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
@@ -1322,6 +1333,7 @@
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
+				C4B6B6771B2723EF00A5FA26 /* CircleListCollectionController.swift in Sources */,
 				1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */,
 				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,

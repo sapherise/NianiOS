@@ -49,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
+        NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
