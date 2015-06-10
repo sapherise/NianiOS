@@ -301,13 +301,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     //每个按钮跳转到哪个页面
     func initViewControllers() {
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
-        var NianStoryBoard:UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-        var NianViewController:UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! UIViewController
+        var NianStoryBoard: UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
+        var NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! UIViewController
+        var circleCollectionList: UIStoryboard = UIStoryboard(name: "CircleCollectionList", bundle: nil)
         var vc1 = NianViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         var vc4 = MeViewController()
-        var vc5 = CircleListController()
+        var vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 0
@@ -316,7 +317,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     //底部的按钮按下去
     func tabBarButtonClicked(sender:UIButton){
         var index = sender.tag
-        for var i = 0;i<5;i++ {
+        for var i = 0; i < 5; i++ {
             var button = self.view.viewWithTag(i+100) as? UIButton
             if button != nil {
                 if index != 102 {

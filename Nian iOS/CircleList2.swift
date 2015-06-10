@@ -74,7 +74,6 @@ class CircleListController2: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func load() {
-        println("加载")
         var safeuid = SAUid()
         let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
         if errCircle != nil {
