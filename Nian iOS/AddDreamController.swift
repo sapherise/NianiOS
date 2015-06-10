@@ -371,8 +371,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 if error == 0 {
                     dispatch_async(dispatch_get_main_queue(), {
                         globalWillNianReload = 1
-                        self.navigationController?.popViewControllerAnimated(true)
                         self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)", editTags:tagsArray)
+                        self.navigationController?.popViewControllerAnimated(true)
                     })
                 }
             }

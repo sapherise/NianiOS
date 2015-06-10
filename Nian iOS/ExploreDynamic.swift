@@ -49,7 +49,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             json in
             if json != nil {
                 globalTab[1] = false
-                var items = json!["items"] as! NSArray
+                var data = json!["data"]
+                var items = data!!["items"] as! NSArray
                 if items.count != 0 {
                     if clear {
                         self.dataArray.removeAllObjects()

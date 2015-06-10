@@ -268,8 +268,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             }
             return c
         } else {
-            var data = self.dataArrayChat[dataArrayChat.count - 1 - indexPath.row] as! NSDictionary //  TODO
-            
+            var data = self.dataArrayChat[dataArrayChat.count - 1 - indexPath.row] as! NSDictionary
             var type = data.stringAttributeForKey("type")
             var cid = data.stringAttributeForKey("cid")
             // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户

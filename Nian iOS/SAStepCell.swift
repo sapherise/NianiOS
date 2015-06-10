@@ -98,11 +98,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             var lastdate = self.data.stringAttributeForKey("lastdate")
             var liked = self.data.stringAttributeForKey("liked")
             content = SADecode(self.data.stringAttributeForKey("content"))
-            img = self.data.stringAttributeForKey("img") as NSString as String
-            img0 = (self.data.stringAttributeForKey("img0") as NSString).floatValue
-            img1 = (self.data.stringAttributeForKey("img1") as NSString).floatValue
-            var like = self.data.stringAttributeForKey("like") as String
-            var comment = self.data.stringAttributeForKey("comment")
+            img = self.data.stringAttributeForKey("image") as NSString as String
+            img0 = (self.data.stringAttributeForKey("width") as NSString).floatValue
+            img1 = (self.data.stringAttributeForKey("height") as NSString).floatValue
+            var like = self.data.stringAttributeForKey("likes") as String
+            var comment = self.data.stringAttributeForKey("comments")
             var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
             lastdate = V.relativeTime(lastdate)
             
@@ -207,9 +207,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onLike() {
-        if let like = data.stringAttributeForKey("like").toInt() {
+        if let like = data.stringAttributeForKey("likes").toInt() {
             var num = "\(like + 1)"
-            delegate?.updateStep(index, key: "like", value: num)
+            delegate?.updateStep(index, key: "likes", value: num)
             delegate?.updateStep(index, key: "liked", value: "1")
             delegate?.updateStep()
             var sid = data.stringAttributeForKey("sid")
@@ -219,9 +219,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onUnLike() {
-        if let like = data.stringAttributeForKey("like").toInt() {
+        if let like = data.stringAttributeForKey("likes").toInt() {
             var num = "\(like - 1)"
-            delegate?.updateStep(index, key: "like", value: num)
+            delegate?.updateStep(index, key: "likes", value: num)
             delegate?.updateStep(index, key: "liked", value: "0")
             delegate?.updateStep()
             var sid = data.stringAttributeForKey("sid")
@@ -303,9 +303,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onImageClick() {
-        var img = data.stringAttributeForKey("img")
-        var width = CGFloat((data.stringAttributeForKey("img0") as NSString).floatValue)
-        var height = CGFloat((data.stringAttributeForKey("img1") as NSString).floatValue)
+        var img = data.stringAttributeForKey("image")
+        var width = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
+        var height = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
         var point = self.imageHolder.getPoint()
         if width * height != 0 {
             height = height * (globalWidth - 40) / width
@@ -346,8 +346,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     class func cellHeightByData(data: NSDictionary)->CGFloat {
         var content = SADecode(data.stringAttributeForKey("content"))
-        var img0 = (data.stringAttributeForKey("img0") as NSString).floatValue
-        var img1 = (data.stringAttributeForKey("img1") as NSString).floatValue
+        var img0 = (data.stringAttributeForKey("width") as NSString).floatValue
+        var img1 = (data.stringAttributeForKey("height") as NSString).floatValue
         var height = content.stringHeightWith(16,width:globalWidth-40)
         if (img0 == 0.0) {
             var h = content == "" ? 155 + 23 : height + 155
@@ -364,12 +364,12 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     func Editstep() {
         var content = editStepData?.stringAttributeForKey("content")
-        var img = editStepData?.stringAttributeForKey("img")
-        var img0 = editStepData?.stringAttributeForKey("img0")
-        var img1 = editStepData?.stringAttributeForKey("img1")
-        delegate?.updateStep(index, key: "img", value: img!)
-        delegate?.updateStep(index, key: "img0", value: img0!)
-        delegate?.updateStep(index, key: "img1", value: img1!)
+        var img = editStepData?.stringAttributeForKey("image")
+        var img0 = editStepData?.stringAttributeForKey("width")
+        var img1 = editStepData?.stringAttributeForKey("height")
+        delegate?.updateStep(index, key: "image", value: img!)
+        delegate?.updateStep(index, key: "width", value: img0!)
+        delegate?.updateStep(index, key: "height", value: img1!)
         delegate?.updateStep(index, key: "content", value: content!)
         delegate?.updateStep(index)
     }

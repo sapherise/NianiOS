@@ -30,10 +30,10 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     @IBOutlet var viewBG: UIView!
     @IBOutlet var viewHolder: UIView!
     var data: NSDictionary?
-    var desHeight:CGFloat = 0
     var panStartPoint:CGPoint!
     var toggle:Int = 0
     var panGesture:UIGestureRecognizer!
+    var tagArray: Array<String> = []  // 加 tag
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,7 +51,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.scrollView.setWidth(globalWidth)
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false
-        self.scrollView.contentSize =  CGSizeMake(8, 0)
     }
     
     func moveUp() {
@@ -129,7 +128,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     override func layoutSubviews(){
         super.layoutSubviews()
         if data != nil {
-            println(data)
             var title = SADecode(SADecode(data!.stringAttributeForKey("title")))
             var content = SADecode(SADecode(data!.stringAttributeForKey("content")))
             var img = data!.stringAttributeForKey("image")
@@ -142,6 +140,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             var isFollow = data!.stringAttributeForKey("follow")
             var uid = data!.stringAttributeForKey("uid")
             dreamhead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+            dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
             var h: CGFloat = title.stringHeightBoldWith(19, width: 242)
             if thePrivate == "1" {
                 title = "\(title)（私密）"
@@ -181,34 +180,66 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             viewRight.setHeight(h + 256)
             numLeftNum.text = "\(like)"
             numMiddleNum.text = step
+            numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
             //==
-            if SAUid() == uid {
-                btnMain.setTitle("更新", forState: UIControlState.allZeros)
-                btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
-            } else if isFollow == "0" {
-                btnMain.setTitle("关注", forState: UIControlState.allZeros)
-                btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
-            } else {
-                btnMain.setTitle("关注中", forState: UIControlState.allZeros)
-                btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+            if SAUid() != uid {
+                if isFollow == "0" {
+                    btnMain.setTitle("关注", forState: UIControlState.allZeros)
+                    btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+                } else {
+                    btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+                    btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+                }
+            }
+            self.contentView.hidden = false
+            
+            tagArray = data!.objectForKey("tags") as! Array
+            
+            scrollView.contentSize =  CGSizeMake(8, 0)
+            var views: NSArray = scrollView.subviews
+            for view: AnyObject in views {
+                if view is NILabel {
+                    (view as! UIView).removeFromSuperview()
+                } else {
+                    println(NSStringFromClass(view.classForCoder))
+                }
             }
             
-            self.contentView.hidden = false
+            if tagArray.count == 0 {
+                scrollView.hidden = true
+            } else {
+                scrollView.hidden = false
+                for var i = 0; i < tagArray.count; i++ {
+                    // 避免 Layout 多次调用时添加了多个 Tag
+                    var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+                    label.userInteractionEnabled = true
+                    label.text = tagArray[i] as String
+                    self.labelWidthWithItsContent(label, content: SADecode(tagArray[i]))
+                    label.frame.origin.x = scrollView.contentSize.width + 8
+                    label.frame.origin.y = 10
+                    label.tag = 12000 + i
+                    label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
+                    scrollView.addSubview(label)
+                    scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
+                }
+                
+                scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + CGFloat(16), scrollView.frame.height)
+                scrollView.canCancelContentTouches = false
+                scrollView.delaysContentTouches = false
+                scrollView.userInteractionEnabled = true
+                scrollView.exclusiveTouch = true
+            }
+            
         } else {
             self.contentView.hidden = true
         }
     }
     
-    func onAddStep() {
-//        
-//        var AddstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-//        AddstepVC.Id = self.Id
-//        AddstepVC.delegate = self    //😍
-//        self.navigationController?.pushViewController(AddstepVC, animated: true)
-        var vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-        var id = data!.stringAttributeForKey("id")
-        vc.Id = id
-        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    func onImage() {
+        var img = data!.stringAttributeForKey("image")
+        var point = self.dreamhead.getPoint()
+        var rect = CGRectMake(-point.x, -point.y, 60, 60)
+        dreamhead.showImage("http://img.nian.so/dream/\(img)!large", rect: rect)
     }
     
     func onFo() {
@@ -227,53 +258,36 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         Api.postFollowDream(id, follow: "0") { string in }
     }
     
-//        if self.owneruid == safeuid {
-//            self.topCell.btnMain.setTitle("更新", forState: UIControlState.Normal)
-//            self.topCell.btnMain.addTarget(self, action: "addStepButton", forControlEvents: UIControlEvents.TouchUpInside)
-//        } else {
-//            if self.likeJson == "0" {
-//                self.topCell.btnMain.setTitle("赞", forState: UIControlState.Normal)
-//                self.topCell.btnMain.addTarget(self, action: "onDreamLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
-//            } else {
-//                self.topCell.btnMain.setTitle("分享", forState: UIControlState.Normal)
-//                self.topCell.btnMain.addTarget(self, action: "shareDream", forControlEvents: UIControlEvents.TouchUpInside)
-//            }
-//        }
-//
-//        self.userImageURL = "http://img.nian.so/dream/\(self.imgJson)!dream"
-//        self.topCell.dreamhead!.setImage(self.userImageURL, placeHolder: IconColor)
-//        self.topCell.dreamhead!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamHeadClick:"))
-//        
-//        if (count(self.tagArray) == 0 || (count(self.tagArray) == 1 && count(tagArray[0]) == 0)) {
-//            self.topCell.scrollView.hidden = true
-//            self.topCell.frame.size = CGSizeMake(self.topCell.frame.size.width, self.topCell.frame.size.height - 44)
-//            self.topCell.frame.origin = CGPointMake(self.topCell.frame.origin.x, self.topCell.frame.origin.y)
-//            self.loadTopCellDone = true
-//            self.tableView.reloadData()
-//        } else {
-//            self.topCell.scrollView.hidden = false
-//            
-//            for var i = 0; i < count(self.tagArray); i++ {
-//                var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
-//                label.userInteractionEnabled = true
-//                label.text = self.tagArray[i] as String
-//                self.labelWidthWithItsContent(label, content: SADecode(self.tagArray[i]))
-//                label.frame.origin.x = self.topCell.scrollView.contentSize.width + 8
-//                label.frame.origin.y = 10
-//                label.tag = 12000 + i
-//                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
-//                self.topCell.scrollView.addSubview(label)
-//                self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + 8 + label.frame.width , self.topCell.scrollView.frame.height)
-//            }
-//            
-//            self.topCell.scrollView.contentSize = CGSizeMake(self.topCell.scrollView.contentSize.width + CGFloat(16), self.topCell.scrollView.frame.height)
-//            self.topCell.scrollView.canCancelContentTouches = false
-//            self.topCell.scrollView.delaysContentTouches = false
-//            self.topCell.scrollView.userInteractionEnabled = true
-//            self.topCell.scrollView.exclusiveTouch = true
-//            
-//            self.loadTopCellDone = true
-//            self.tableView.reloadData()
-//        }
-//    }
+    func onLike() {
+        var vc = LikeViewController()
+        vc.Id = data!.stringAttributeForKey("id")
+        vc.urlIdentify = 3
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func toSearch(sender: UIGestureRecognizer) {
+        let label = sender.view
+        var storyboard = UIStoryboard(name: "Explore", bundle: nil)
+        var vc = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
+        vc.preSetSearch = tagArray[label!.tag - 12000]
+        vc.shouldPerformSearch = true
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    // 自定义 label
+    func labelWidthWithItsContent(label: NILabel, content: NSString) {
+        var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
+        var labelSize = CGSizeMake(ceil(content.sizeWithAttributes(dict).width), ceil(content.sizeWithAttributes(dict).height))
+        
+        label.numberOfLines = 1
+        label.textAlignment = .Center
+        label.font = UIFont.systemFontOfSize(12)
+        label.layer.borderWidth = 0.5
+        label.layer.borderColor = UIColor(red: 0xe6/255, green: 0xe6/255, blue: 0xe6/255, alpha: 1).CGColor
+        label.layer.cornerRadius = 4.0
+        label.layer.masksToBounds = true
+        label.textColor = UIColor(red: 0x99/255, green: 0x99/255, blue: 0x99/255, alpha: 1)
+        label.backgroundColor = UIColor.whiteColor()
+        label.frame = CGRectMake(0, 0, labelSize.width + 16, 24)
+    }
 }
