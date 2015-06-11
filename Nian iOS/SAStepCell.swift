@@ -239,15 +239,16 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         
         var customActivity = SAActivity()
         customActivity.saActivityTitle = "举报"
-        customActivity.saActivityImage = UIImage(named: "flag")!
+        customActivity.saActivityType = "举报"
+        customActivity.saActivityImage = UIImage(named: "av_report")
         customActivity.saActivityFunction = {
-            UIView.showAlertView("谢谢", message: "如果这个进展不合适，我们会将其移除。")
+            self.showTipText("举报好了！", delay: 2)
         }
         //编辑按钮
         var editActivity = SAActivity()
         editActivity.saActivityTitle = "编辑"
         editActivity.saActivityType = "编辑"
-        editActivity.saActivityImage = UIImage(named: "edit")!
+        editActivity.saActivityImage = UIImage(named: "av_edit")
         editActivity.saActivityFunction = {
             var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
             addstepVC.isEdit = 1
@@ -260,7 +261,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         var deleteActivity = SAActivity()
         deleteActivity.saActivityTitle = "删除"
         deleteActivity.saActivityType = "删除"
-        deleteActivity.saActivityImage = UIImage(named: "goodbye")!
+        deleteActivity.saActivityImage = UIImage(named: "av_delete")
         deleteActivity.saActivityFunction = {
             self.actionSheetDelete = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             self.actionSheetDelete.addButtonWithTitle("确定")

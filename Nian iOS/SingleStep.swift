@@ -24,8 +24,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
     
-    var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
-    
     var EditId:Int = 0
     var EditContent:String = ""
     var ReplyUser:String = ""
@@ -88,39 +86,21 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     func SAReloadData(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
-        self.tableView?.setFooterHidden(false)
+        self.tableView?.setFooterHidden(true)
         Api.getSingleStep(self.Id) { json in
             if json != nil {
                 self.dataArray.removeAllObjects()
-                var uid = json!["uid"] as! String
-                var thePrivate = json!["private"] as! String
-                var arr = json!["items"] as! NSArray
-                if thePrivate == "2" {
-                    // 删除
+                var data = json!["data"] as! NSDictionary
+                var hidden = data.stringAttributeForKey("hidden")
+                if hidden == "1" {
                     var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
                     viewTop.setY(40)
                     var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     viewHolder.addSubview(viewTop)
                     self.tableView?.tableHeaderView = viewHolder
-                }else{
-                    for data: AnyObject in arr {
-                        var theData = data as! NSDictionary
-                        var hidden = theData.stringAttributeForKey("hidden")
-                        if hidden == "1" {
-                            var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
-                            viewTop.setY(40)
-                            var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                            viewHolder.addSubview(viewTop)
-                            self.tableView?.tableHeaderView = viewHolder
-                        }else{
-                            self.dataArray.addObject(data)
-                        }
-                    }
+                } else {
+                    self.dataArray.addObject(data)
                 }
-                self.dreamowner = safeuid == uid ? 1 : 0
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
             }

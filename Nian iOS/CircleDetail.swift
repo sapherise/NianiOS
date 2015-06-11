@@ -633,7 +633,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.onViewCloseClick()
         globalWillCircleJoinReload = 1
         var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-        adddreamVC.tagType = tag
+//        adddreamVC.tagType = tag
+        //  todo
         self.navigationController?.pushViewController(adddreamVC, animated: true)
     }
     

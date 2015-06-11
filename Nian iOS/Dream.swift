@@ -16,7 +16,7 @@ class NILabel: UILabel {
     }
 }
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate, delegateSAStepCell{
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate, delegateSAStepCell, topDelegate{
     
     var tableView: UITableView!
     var page: Int = 1
@@ -31,6 +31,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     var dataArray = NSMutableArray()
     var dataArrayTop: NSDictionary!
+    var btnMain: UIButton!
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -53,8 +54,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
-        
         self.view.backgroundColor = UIColor.whiteColor()
+        
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
@@ -84,22 +85,43 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
         Api.getDreamStep(Id, page: page) { json in
             if json != nil {
-                var data = json!["data"]
-                if clear {
-                    self.dataArrayTop = data!!["dream"] as! NSDictionary
-                    self.dataArray.removeAllObjects()
-                    var btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
-                    btnMore.image = UIImage(named: "more")
-                    self.navigationItem.rightBarButtonItems = [btnMore]
+                if json!["error"] as! NSNumber != 0 {
+                    var status = json!["status"] as! NSNumber
+                    self.tableView?.hidden = true
+                    self.navigationItem.rightBarButtonItems = []
+                    if status == 404 {
+                        var viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
+                        viewTop.setY(104)
+                        var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                        viewHolder.addSubview(viewTop)
+                        self.view.addSubview(viewHolder)
+                    } else if status == 403 {
+                        var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
+                        viewTop.setY(104)
+                        var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                        viewHolder.addSubview(viewTop)
+                        self.view.addSubview(viewHolder)
+                    } else {
+                        self.view.showTipText("遇到了一个奇怪的错误，代码是 \(status)", delay: 2)
+                    }
+                } else {
+                    var data = json!["data"]
+                    if clear {
+                        self.dataArrayTop = data!!["dream"] as! NSDictionary
+                        self.dataArray.removeAllObjects()
+                        var btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
+                        btnMore.image = UIImage(named: "more")
+                        self.navigationItem.rightBarButtonItems = [btnMore]
+                    }
+                    var steps = data!!["steps"] as! NSArray
+                    for data in steps {
+                        self.dataArray.addObject(data)
+                    }
+                    self.tableView.reloadData()
+                    self.tableView.headerEndRefreshing()
+                    self.tableView.footerEndRefreshing()
+                    self.page++
                 }
-                var steps = data!!["steps"] as! NSArray
-                for data in steps {
-                    self.dataArray.addObject(data)
-                }
-                self.tableView.reloadData()
-                self.tableView.headerEndRefreshing()
-                self.tableView.footerEndRefreshing()
-                self.page++
             }
         }
         //  todo
@@ -228,11 +250,22 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         if indexPath.section == 0 {
             var c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
             c.data = dataArrayTop
+            c.delegate = self
             if dataArrayTop != nil {
                 var uid = dataArrayTop.stringAttributeForKey("uid")
+                var follow = dataArrayTop.stringAttributeForKey("follow")
                 if SAUid() == uid {
                     c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.setTitle("更新", forState: UIControlState.allZeros)
+                } else {
+                    self.btnMain = c.btnMain
+                    if follow == "0" {
+                        c.btnMain.setTitle("关注", forState: UIControlState.allZeros)
+                        c.btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+                    } else {
+                        c.btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+                        c.btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+                    }
                 }
             }
             return c
@@ -250,6 +283,28 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
+    func onFo() {
+        btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+        btnMain.removeTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+        var id = dataArrayTop.stringAttributeForKey("id")
+        var mutableData = NSMutableDictionary(dictionary: dataArrayTop)
+        mutableData.setValue("1", forKey: "follow")
+        dataArrayTop = mutableData
+        Api.postFollowDream(id, follow: "1") { string in }
+    }
+    
+    func onUnFo() {
+        btnMain.setTitle("关注", forState: UIControlState.allZeros)
+        btnMain.removeTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+        var id = dataArrayTop.stringAttributeForKey("id")
+        var mutableData = NSMutableDictionary(dictionary: dataArrayTop)
+        mutableData.setValue("0", forKey: "follow")
+        dataArrayTop = mutableData
+        Api.postFollowDream(id, follow: "0") { string in }
+    }
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if dataArrayTop != nil {
@@ -259,7 +314,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
                     title = "\(title)（完成）"
                 }
-                return title.stringHeightBoldWith(19, width: 242) + 256 + 14 + 44
+                return title.stringHeightBoldWith(18, width: 240) + 252 + 52
             }
             return 0
         }else{
@@ -363,7 +418,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTag:String, editTags:Array<String>) {
+    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags:Array<String>) {
         var mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue(editPrivate, forKey: "private")
         mutableData.setValue(editTitle, forKey: "title")
