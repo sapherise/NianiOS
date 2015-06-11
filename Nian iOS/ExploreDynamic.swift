@@ -32,7 +32,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     weak var bindViewController: ExploreViewController?
-    var page = 0
+    var page = 1
     var dataArray = NSMutableArray()
     
     init(viewController: ExploreViewController) {
@@ -43,13 +43,15 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     
     func load(clear: Bool) {
         if clear {
-            page = 0
+            page = 1
         }
         Api.getExploreDynamic("\(page++)", callback: {
             json in
             if json != nil {
+                println(json)
                 globalTab[1] = false
-                var items = json!["items"] as! NSArray
+                var data = json!["data"]
+                var items = data!!["items"] as! NSArray
                 if items.count != 0 {
                     if clear {
                         self.dataArray.removeAllObjects()
@@ -220,7 +222,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
     override func layoutSubviews() {
         var uidlike = data.stringAttributeForKey("uidlike")
         var userlike = data.stringAttributeForKey("userlike")
-        var img = data.stringAttributeForKey("img")
+        var img = data.stringAttributeForKey("image")
         var title = data.stringAttributeForKey("title")
         self.imageHead.setHead(uidlike)
         self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)

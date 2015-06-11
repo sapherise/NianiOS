@@ -9,7 +9,7 @@
 import UIKit
 
 protocol editDreamDelegate {
-    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTag:String, editTags: Array<String>)
+    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
 }
 
 class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate {
@@ -28,7 +28,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var setDreamActionSheet: UIActionSheet?
     var imagePicker: UIImagePickerController?
     var delegate: editDreamDelegate?
-    var tagType: Int = 0
     
     var uploadUrl: String = ""
     
@@ -243,7 +242,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             if count(tagsArray) > 0 {
                 for i in 0...(count(tagsArray) - 1) {
-                    tokenView.tokenField.addTokenWithTitle(tagsArray[i])
+                    tokenView.tokenField.addTokenWithTitle(SADecode(SADecode(tagsArray[i])))
                     tokenView.tokenField.layoutTokensAnimated(false)
                 }
             }
@@ -348,13 +347,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             for i in 0...(count(tags!) - 1){
                 var tmpString = tags[i] as! String
                 tagsArray.append(tmpString)
-                
-                if i == (count(tags!) - 1) {
-                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))"
+                if i == 0 {
+                    tagsString = "tags[]=\(SAEncode(SAHtml(tmpString)))"
                 } else {
-                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))&&"
+                    tagsString = tagsString + "&&tags[]=\(SAEncode(SAHtml(tmpString)))"
                 }
             }
+        } else {
+            tagsString = "tags[]="
         }
         
         if title != "" {
@@ -369,11 +369,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 json in
                 var error = json!["error"] as! NSNumber
                 if error == 0 {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        globalWillNianReload = 1
-                        self.navigationController?.popViewControllerAnimated(true)
-                        self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTag: "\(self.tagType)", editTags:tagsArray)
-                    })
+                    globalWillNianReload = 1
+                    self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray)
+                    self.navigationController?.popViewControllerAnimated(true)
                 }
             }
         } else {

@@ -44,12 +44,13 @@ struct Api {
     
     static func getExploreFollow(page: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/explore/follow?page=\(page)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/explore/follow?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
+    //GET /explore/like?page=2
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/explore/like?page=\(page)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func getExploreHot(callback: V.JsonCallback) {
@@ -69,7 +70,8 @@ struct Api {
     
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/searchdream.php?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/dream/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
+        ///dream/search?keyword=php&page=2
     }
     
     static func getSearchUsers(keyword: String, page: Int, callback: V.JsonCallback) {
@@ -155,12 +157,8 @@ struct Api {
     
     static func getSingleStep(id: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/step_single2.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
-    }
-    
-    static func getSingleStepSync(id: String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJsonSync("http://nian.so/api/step_single.php?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/step/\(id)?uid=\(s_uid)&sid=\(id)&shell=\(s_shell)", callback: callback)
+        // GET /step/{step_id}
     }
     
     static func getDreamNewest(callback: V.JsonCallback) {
@@ -611,7 +609,8 @@ struct Api {
     
     static func getUserActive(uid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/user_active2.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(uid)/steps?page=\(page)&uid=\(uid)&shell=\(s_shell)", callback: callback)
+        //GET /user/{user_id}/steps
     }
     
     

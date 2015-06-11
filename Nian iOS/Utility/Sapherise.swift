@@ -355,7 +355,7 @@ class fakeView:UIView{
 
 class SAActivity: UIActivity {
     var saActivityTitle:String = ""
-    var saActivityImage:UIImage! = UIImage()
+    var saActivityImage: UIImage?
     var saActivityFunction: (() -> Void)?
     var saActivityType: String = ""
     override func activityType() -> String {
@@ -364,7 +364,7 @@ class SAActivity: UIActivity {
     override func activityTitle() -> String  {
         return saActivityTitle
     }
-    override func activityImage() -> UIImage {
+    override func activityImage() -> UIImage? {
         return saActivityImage
     }
     override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {

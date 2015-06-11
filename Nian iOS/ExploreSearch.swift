@@ -267,13 +267,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     self.dataArrayDream.removeAllObjects()
                     self.dataArrayStep.removeAllObjects()
                 }
-                var itemsDream = json!["dreams"] as? NSArray
+                var data = json!["data"]
+                var itemsDream = data!!["dreams"] as? NSArray
                 if itemsDream != nil {
                     for item in itemsDream! {
                         self.dataArrayDream.addObject(item)
                     }
                 }
-                var itemsStep = json!["steps"] as? NSArray
+                var itemsStep = data!!["steps"] as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
                         self.dataArrayStep.addObject(item)

@@ -16,7 +16,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var dataArray = NSMutableArray()
     var dataArrayStep = NSMutableArray()
     var page: Int = 0
-    var pageStep: Int = 0
+    var pageStep: Int = 1
     var Id:String = "0"
     var deleteSheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
@@ -290,7 +290,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func SALoadDataStep(isClear: Bool = true) {
         if isClear {
             self.tableViewStep.setFooterHidden(false)
-            self.pageStep = 0
+            self.pageStep = 1
             var v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
             var activity = UIActivityIndicatorView()
             activity.color = SeaColor
@@ -303,7 +303,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
                 self.tableViewStep.tableFooterView = UIView()
-                var arr = json!["items"] as! NSArray
+                var data = json!["data"]
+                var arr = data!!["steps"] as! NSArray
                 if isClear {
                     self.dataArrayStep.removeAllObjects()
                 }
@@ -313,11 +314,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.tableViewStep.reloadData()
                 self.tableViewStep.footerEndRefreshing()
                 self.pageStep++
-                if let total = json!["total"] as? Int {
-                    if total < 30 {
-                        self.tableViewStep.setFooterHidden(true)
-                    }
-                }
             }
         }
     }

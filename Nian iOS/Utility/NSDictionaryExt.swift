@@ -9,20 +9,14 @@
 import UIKit
 import Foundation
 extension NSDictionary {
-    func stringAttributeForKey(key:String)->String
-    {
-        var obj : AnyObject? = self[key]
-        if obj == nil {
-            return ""
+    func stringAttributeForKey(key:String)->String {
+        if let obj: AnyObject = self[key] {
+            if obj.isKindOfClass(NSNumber) {
+                var num = obj as! NSNumber
+                return num.stringValue
+            }
+            return "\(obj)"
         }
-        if obj!.isKindOfClass(NSNumber)
-        {
-            var num = obj as! NSNumber
-            return num.stringValue
-        }
-        if obj! as! NSObject == NSNull() {
-            return ""
-        }
-        return obj! as! String
+        return ""
     }
 }

@@ -118,9 +118,9 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             self.Id = self.data!.objectForKey("sid") as! String
             self.TextView.text =  SADecode(self.data!.stringAttributeForKey("content"))
             
-            self.uploadUrl = self.data!.stringAttributeForKey("img")
-            self.uploadWidth = self.data!.stringAttributeForKey("img0")
-            self.uploadHeight = self.data!.stringAttributeForKey("img1")
+            self.uploadUrl = self.data!.stringAttributeForKey("image")
+            self.uploadWidth = self.data!.stringAttributeForKey("width")
+            self.uploadHeight = self.data!.stringAttributeForKey("height")
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
@@ -189,9 +189,9 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                     if self.data != nil {
                         var mutableData = NSMutableDictionary(dictionary: self.data!)
                         mutableData.setValue(self.TextView.text, forKey: "content")
-                        mutableData.setValue(self.uploadUrl, forKey: "img")
-                        mutableData.setValue(self.uploadWidth, forKey: "img0")
-                        mutableData.setValue(self.uploadHeight, forKey: "img1")
+                        mutableData.setValue(self.uploadUrl, forKey: "image")
+                        mutableData.setValue(self.uploadWidth, forKey: "width")
+                        mutableData.setValue(self.uploadHeight, forKey: "height")
                         self.delegate?.editStepRow = self.row
                         self.delegate?.editStepData = mutableData
                         self.delegate?.Editstep()
