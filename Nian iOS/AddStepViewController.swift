@@ -79,7 +79,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             var height: AnyObject? = uploadData.objectForKey("image-height")
             self.uploadHeight = "\(height!)"
             self.uploadUrl = SAReplace(self.uploadUrl, "/step/", "") as String
-            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img, 500)
+            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img, 0)
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
