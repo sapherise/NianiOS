@@ -641,7 +641,8 @@ func getCacheImage(url: String) -> UIImage? {
 func setCacheImage(url: String, img: UIImage, width: CGFloat) {
     var urlImage = NSURL(string: url)!
     var req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-    UIImageView.sharedImageCache().cacheImage(resizedImage(img, width), forRequest: req)
+    var imageNew = width == 0 ? img : resizedImage(img, width)
+    UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
 }
 
 func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: String, tableView: UITableView) {

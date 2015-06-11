@@ -297,7 +297,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             activity.startAnimating()
             activity.hidden = false
             v.addSubview(activity)
-            activity.center = v.center
+            activity.center = CGPointMake(v.center.x, v.center.y + 30)
             self.tableViewStep.tableFooterView = v
         }
         Api.getUserActive(Id, page: self.pageStep) { json in
