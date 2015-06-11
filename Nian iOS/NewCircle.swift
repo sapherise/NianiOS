@@ -565,6 +565,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             var commentReplyRow = self.dataArrayChat.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArrayChat.insertObject(data, atIndex: 0)
+            
             var offset = self.tableViewChat.contentSize.height - self.tableViewChat.bounds.size.height + replyContent.stringHeightWith(15,width:208) + 60
             if offset > 0 {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
