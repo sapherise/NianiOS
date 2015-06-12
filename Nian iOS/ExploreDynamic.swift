@@ -222,7 +222,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
         var uidlike = data.stringAttributeForKey("uidlike")
         var userlike = data.stringAttributeForKey("userlike")
         var img = data.stringAttributeForKey("image")
-        var title = data.stringAttributeForKey("title")
+        var title = data.stringAttributeForKey("title").decode()
         self.imageHead.setHead(uidlike)
         self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         self.labelName.text = userlike

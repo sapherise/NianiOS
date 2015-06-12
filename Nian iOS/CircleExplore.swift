@@ -21,7 +21,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
         tableView.headerBeginRefreshing()
     }
     
@@ -48,18 +47,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         titleLabel.text = "发现梦境"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
-        var addButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onAddCircleClick")
-        addButton.image = UIImage(named:"plus")
-        self.navigationItem.rightBarButtonItems = [addButton]
-    }
-    
-    func onAddCircleClick() {
-        showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
-            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-            self.navigationController?.pushViewController(addcircleVC, animated: true)
-            self.onFilmClose()
-        }
     }
     
     func loadData() {
@@ -152,10 +139,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView!.addFooterWithCallback({
             self.loadData()
         })
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        globalViewFilmExist = false
     }
     
     override func viewDidAppear(animated: Bool) {

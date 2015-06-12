@@ -94,8 +94,9 @@
 	CGFloat tokenFieldBottom = CGRectGetMaxY(_tokenField.frame);
 	
 	_separator = [[UIView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom, self.bounds.size.width, 1)];
-    [_separator setBackgroundColor:[UIColor colorWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0]];
+    [_separator setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
 	[self addSubview:_separator];
+    //  底部的线条颜色
 	
 	// This view is created for convenience, because it resizes and moves with the rest of the subviews.
 	_contentView = [[UIView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom + 1, self.bounds.size.width,
@@ -118,7 +119,8 @@
 	else
 	{
 		_resultsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, tokenFieldBottom + 1, self.bounds.size.width, 10)];
-		[_resultsTable setSeparatorColor:[UIColor colorWithWhite:0.85 alpha:1]];
+		[_resultsTable setSeparatorColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+        //  下拉表格的分割线
 		[_resultsTable setDelegate:self];
 		[_resultsTable setDataSource:self];
 		[_resultsTable setHidden:YES];
@@ -257,10 +259,9 @@
 	
     [cell.imageView setImage:[self searchResultImageForRepresentedObject:representedObject]];
 	[cell.textLabel setText:[self searchResultStringForRepresentedObject:representedObject]];
-    [cell.textLabel setTextColor:[UIColor colorWithRed:0xaf/255.0 green:0xaf/255.0 blue:0xaf/255.0 alpha:1]];
-	[cell.detailTextLabel setText:subtitle];
-    [cell.detailTextLabel setFont:[UIFont systemFontOfSize:14]];
-    [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0x33/255.0 green:0x33/255.0 blue:0x33/255.0 alpha:1]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+    [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
+    //  下拉候选词的颜色
 	
     return cell;
 }
@@ -554,12 +555,12 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	
 	[self setBorderStyle:UITextBorderStyleNone];
 	[self setFont:[UIFont systemFontOfSize:14]];
-    [self setTextColor:[UIColor colorWithRed:0xaf/255.0 green:0xaf/255.0 blue:0xaf/255.0 alpha:1.0]];
+    [self setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
 	[self setBackgroundColor:[UIColor whiteColor]];
 	[self setAutocorrectionType:UITextAutocorrectionTypeNo];
 	[self setAutocapitalizationType:UITextAutocapitalizationTypeNone];
 	[self setContentVerticalAlignment:UIControlContentVerticalAlignmentTop];
-    
+    //  输入词的颜色
 	
 	[self addTarget:self action:@selector(didBeginEditing) forControlEvents:UIControlEventEditingDidBegin];
 	[self addTarget:self action:@selector(didEndEditing) forControlEvents:UIControlEventEditingDidEnd];
@@ -657,7 +658,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 			
 			NSArray * titles = self.tokenTitles;
 			untokenized = [titles componentsJoinedByString:@", "];
-            NSDictionary *dict = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
+            NSDictionary *dict = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
 			CGSize untokSize = [untokenized sizeWithAttributes:dict];
 			CGFloat availableWidth = self.bounds.size.width - self.leftView.bounds.size.width - self.rightView.bounds.size.width;
 			
@@ -924,7 +925,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 		UILabel * label = (UILabel *)self.leftView;
 		if (!label || ![label isKindOfClass:[UILabel class]]){
 			label = [[UILabel alloc] initWithFrame:CGRectZero];
-			[label setTextColor:[UIColor colorWithWhite:0.5 alpha:1]];
+			[label setTextColor:[UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1]];
 			[self setLeftView:label];
 
 			[self setLeftViewMode:UITextFieldViewModeAlways];
@@ -951,7 +952,8 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
         UILabel *label =  _placeHolderLabel;
 		if (!label || ![label isKindOfClass:[UILabel class]]){
 			label = [[UILabel alloc] initWithFrame:CGRectMake(_tokenCaret.x + 3, _tokenCaret.y + 2, self.rightView.bounds.size.width, self.rightView.bounds.size.height)];
-            [label setTextColor:[UIColor colorWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1]]; // colorWithWhite:0.75 alpha:1]];
+            [label setTextColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1]]; // colorWithWhite:0.75 alpha:1]];
+            //  「按回车...」那排字的颜色
             [label setFont:[UIFont systemFontOfSize:14]];
 			 _placeHolderLabel = label;
             [self addSubview: _placeHolderLabel];
@@ -1155,14 +1157,19 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 		_representedObject = object;
         
 		_font = aFont;
-        _tintColor = [[UIColor alloc] initWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0];
-        _textColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1.0];
-		_highlightedTextColor = [UIColor whiteColor];
-		
+        _tintColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:0.2];
+        // 选中的背景颜色
+        _textColor = [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
+        //  不知道是什么颜色
+		_highlightedTextColor = [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
+		//  不知道是什么颜色
+        
 		_accessoryType = TITokenAccessoryTypeNone;
 		_maxWidth = 200;
-        _boardColor = [[UIColor alloc] initWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0];
-        self.boardWidth = 0.5f;
+        _boardColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1];
+        //  选中时的边框颜色
+        
+        self.boardWidth = 1;
 		
 		[self setBackgroundColor:[UIColor clearColor]];
 		[self sizeToFit];
@@ -1239,15 +1246,15 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 #pragma Tint Color Convenience
 
 + (UIColor *)blueTintColor {
-	return [UIColor colorWithRed:0.216 green:0.373 blue:0.965 alpha:1];
+	return [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
 }
 
 + (UIColor *)redTintColor {
-	return [UIColor colorWithRed:1 green:0.15 blue:0.15 alpha:1];
+	return [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
 }
 
 + (UIColor *)greenTintColor {
-	return [UIColor colorWithRed:0.333 green:0.741 blue:0.235 alpha:1];
+	return [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
 }
 
 #pragma mark Layout
@@ -1280,7 +1287,8 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
     UIColor *backgroundColor;
     
     if (drawHighlighted) {
-        backgroundColor = _tintColor;
+        backgroundColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:0.2];
+        //  选中的背景颜色
     } else {
         backgroundColor = [UIColor whiteColor];
     }
@@ -1299,7 +1307,9 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 	CGRect textBounds = CGRectMake(floorf(hTextPadding / 2), vPadding, titleWidth + 5, floorf(self.bounds.size.height - (vPadding * 2)));
 	
 	CGContextSetFillColorWithColor(context, (drawHighlighted ? _highlightedTextColor : _textColor).CGColor);
-    UIColor *_fontColor = [[UIColor alloc] initWithRed:0x99/255.0 green:0x99/255.0 blue:0x99/255.0 alpha:1];
+    UIColor *_fontColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    //  字体颜色
+    
 
     [_title drawInRect:textBounds withAttributes:@{NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor, NSFontAttributeName: _font}];
     

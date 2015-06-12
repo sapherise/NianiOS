@@ -44,10 +44,8 @@ struct Api {
     
     static func getExploreFollow(page: String, callback: V.JsonCallback) {
         loadCookies()
-        println("http://api.nian.so/explore/follow?page=\(page)&uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/explore/follow?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
-    //GET /explore/like?page=2
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
         loadCookies()

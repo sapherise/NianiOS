@@ -302,7 +302,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
         Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
-                println(json)
                 self.tableViewStep.tableFooterView = UIView()
                 var data = json!["data"]
                 var arr = data!!["steps"] as! NSArray

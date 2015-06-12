@@ -31,7 +31,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter:", object: nil)
         navShow()
     }
     
@@ -117,21 +117,23 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
             self.dataArray.addObject(data)
         }
-        self.tableView.reloadData()
-        if self.dataArray.count == 0 {
-            var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-            var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-            viewQuestion.setY(70)
-            var btnGo = UIButton()
-            btnGo.setButtonNice("  嗯！")
-            btnGo.setX(globalWidth/2-50)
-            btnGo.setY(viewQuestion.bottom())
-            btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
-            viewHeader.addSubview(viewQuestion)
-            viewHeader.addSubview(btnGo)
-            self.tableView.tableFooterView = viewHeader
-        }else{
-            self.tableView.tableFooterView = UIView()
+        back {
+            self.tableView.reloadData()
+            if self.dataArray.count == 0 {
+                var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
+                viewQuestion.setY(70)
+                var btnGo = UIButton()
+                btnGo.setButtonNice("  嗯！")
+                btnGo.setX(globalWidth/2-50)
+                btnGo.setY(viewQuestion.bottom())
+                btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                viewHeader.addSubview(viewQuestion)
+                viewHeader.addSubview(btnGo)
+                self.tableView.tableFooterView = viewHeader
+            }else{
+                self.tableView.tableFooterView = UIView()
+            }
         }
     }
     

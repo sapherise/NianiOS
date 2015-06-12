@@ -9,9 +9,10 @@
 import UIKit
 
 class CircleListCollectionController: UIViewController {
-
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addCircleLabel: UILabel!
+    @IBOutlet weak var labelAdd: UILabel!
     
     var dataArray = NSMutableArray()
     
@@ -23,7 +24,8 @@ class CircleListCollectionController: UIViewController {
             self.load()
         }
         
-        self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addCircleButton"))
+        self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearch"))
+        labelAdd.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAdd"))
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -43,13 +45,14 @@ class CircleListCollectionController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "Poll", object: nil)
+        globalViewFilmExist = false
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
-    func addCircleButton() {
+    
+    func onSearch() {
         var vc = CircleExploreController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -104,11 +107,11 @@ class CircleListCollectionController: UIViewController {
         self.collectionView.collectionViewLayout = flowLayout
     }
     
-
+    
 }
 
 extension CircleListCollectionController: UICollectionViewDataSource, UICollectionViewDelegate  {
- 
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataArray.count
     }
@@ -118,7 +121,7 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
         var circleCollectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! CircleCollectionCell
         circleCollectionCell.data = self.dataArray[indexPath.row] as? NSDictionary
         
-
+        
         return circleCollectionCell
     }
     
@@ -132,7 +135,16 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
         }
         
         
+        
         // TODO: 进入广场
+    }
+    
+    func onAdd() {
+        showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
+            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+            self.navigationController?.pushViewController(addcircleVC, animated: true)
+            self.onFilmClose()
+        }
     }
 }
 

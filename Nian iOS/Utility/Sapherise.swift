@@ -164,6 +164,10 @@ extension String  {
         var nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
         return nameTest.evaluateWithObject(self)
     }
+    
+    func decode() -> String {
+        return SADecode(SADecode(self))
+    }
  }
 
 
