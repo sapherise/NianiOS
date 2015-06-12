@@ -169,6 +169,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as? String
             var safeshell = Sa.objectForKey("shell") as? String
+            
             if safeuid != nil {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid!)'")
@@ -287,7 +288,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func gameoverButton(word:String)->UIButton{
+    func gameoverButton(word:String) -> UIButton {
         var button = UIButton(frame: CGRectMake(60, 0, 150, 36))
         button.backgroundColor = UIColor.blackColor()
         button.setTitle(word, forState: UIControlState.Normal)
@@ -512,7 +513,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                                     }
                                                 }
                                             }
-                                        }else if type == "3" {
+                                        } else if type == "3" {
 //                                            Api.getSingleStepSync(cid) { json in
 //                                                if json != nil {
 //                                                    if let item = json!["items"] as? NSArray {

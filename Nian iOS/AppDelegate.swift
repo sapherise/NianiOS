@@ -40,12 +40,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
+//        NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("AppDeactive", object: nil)
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
+        
+        
+        
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
@@ -53,9 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
+//        NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
     }
-    
+
     func applicationWillTerminate(application: UIApplication) {
     }
     

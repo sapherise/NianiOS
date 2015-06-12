@@ -219,12 +219,15 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             self.view.showTipText("你的梦境还没有名字...", delay: 2)
         }else if self.uploadUrl == "" {
             self.view.showTipText("你的梦境还没有封面...", delay: 2)
-        }else if self.tagType == 0 {
-            self.view.showTipText("你的梦境还没绑定记本和标签...", delay: 2)
+//        }else if self.tagType == 0 {
+//            self.view.showTipText("你的梦境还没绑定记本和标签...", delay: 2)
         }else{
             self.navigationItem.rightBarButtonItems = buttonArray()
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
+            
+            self.tagType = 2
+            
             Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: self.tagType, dream: self.dreamType) {
                 json in
                 if json != nil {
