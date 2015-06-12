@@ -1293,14 +1293,27 @@ extension SwiftData.SQLiteDB {
     
     
     //escape string
+    /**
+    在解析 String 的 character 的时候， 用原生 String 解析貌似存在 Bug, 因此在这里用 NSString 来解析
+    
+    :author: Bob@nian.so
+    
+    :param: str <#str description#>
+    
+    :returns: <#return value description#>
+    */
     func escapeStringValue(str: String) -> String {
         var escapedStr = ""
-        for char in str {
-            if char == "'" {
+
+        for(var i = 0; i < (str as NSString).length; i++){
+            var s = (str as NSString).substringWithRange(NSMakeRange(i, 1))
+            
+            if s == "'" {
                 escapedStr += "'"
             }
-            escapedStr.append(char)
+            escapedStr += s
         }
+        
         return escapedStr
     }
     
