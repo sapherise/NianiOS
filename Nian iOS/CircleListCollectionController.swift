@@ -11,6 +11,7 @@ import UIKit
 class CircleListCollectionController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var addCircleLabel: UILabel!
     
     var dataArray = NSMutableArray()
     
@@ -21,6 +22,8 @@ class CircleListCollectionController: UIViewController {
         self.collectionView.addHeaderWithCallback{
             self.load()
         }
+        
+        self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addCircleButton"))
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,6 +33,9 @@ class CircleListCollectionController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        
+        navHide()
+        self.navigationController?.interactivePopGestureRecognizer.enabled = false
         
         load()
     }
@@ -43,10 +49,10 @@ class CircleListCollectionController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-//    func addCircleButton() {
-//        var vc = CircleExploreController()
-//        self.navigationController?.pushViewController(vc, animated: true)
-//    }
+    func addCircleButton() {
+        var vc = CircleExploreController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     func Poll() {
         load()
@@ -62,18 +68,23 @@ class CircleListCollectionController: UIViewController {
         }
         
         self.dataArray.removeAllObjects()
+        
         for row in resultCircle {
             var id = (row["circle"]?.asString())!
             var img = ""
             var title = "梦境"
+            
             let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+            
             if resultDes.count > 0 {
                 for row in resultDes {
                     img = (row["image"]?.asString())!
                     title = (row["title"]?.asString())!
                 }
             }
+            
             var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+            
             self.dataArray.addObject(data)
         }
         
@@ -81,24 +92,6 @@ class CircleListCollectionController: UIViewController {
         self.dataArray.addObject(dataBBS)
         self.collectionView.reloadData()
         self.collectionView.headerEndRefreshing()
-        
-        if self.dataArray.count == 1 {
-            var NibCircleCell = NSBundle.mainBundle().loadNibNamed("CircleCell", owner: self, options: nil) as NSArray
-            var viewTop = NibCircleCell.objectAtIndex(0) as! CircleCell
-            viewTop.labelTitle.text = "发现梦境"
-            viewTop.labelContent.text = "和大家一起组队造梦"
-            viewTop.labelCount.hidden = true
-            viewTop.lastdate?.hidden = true
-            viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBtnGoClick"))
-            viewTop.userInteractionEnabled = true
-            viewTop.imageHead.setImage("http://img.nian.so/dream/1_1420533592.png!dream", placeHolder: IconColor)
-            viewTop.tag = 1
-            viewTop.editing = false
-//            self.collectionView.tableHeaderView = viewTop
-        } else {
-//            self.collectionView.tableHeaderView = nil
-        }
-        
     }
     
     func setupCollectionViewLayout() {
@@ -109,7 +102,6 @@ class CircleListCollectionController: UIViewController {
         flowLayout.itemSize = CGSize(width: width, height: 182)
         flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         self.collectionView.collectionViewLayout = flowLayout
-        
     }
     
 
@@ -124,7 +116,7 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var identifier = "CircleCollectionCell"
         var circleCollectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! CircleCollectionCell
-        circleCollectionCell.data = (self.dataArray[indexPath.row] as! NSDictionary)
+        circleCollectionCell.data = self.dataArray[indexPath.row] as? NSDictionary
         
 
         return circleCollectionCell

@@ -117,9 +117,6 @@
 		12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */; };
 		12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */; };
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
-		12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE15A01A3E7D24006AC031 /* CircleCell.xib */; };
-		12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A21A3E7D56006AC031 /* CircleCell.swift */; };
-		12CE15A51A3E7D68006AC031 /* CircleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A41A3E7D68006AC031 /* CircleList.swift */; };
 		12CE15A71A3EC525006AC031 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A61A3EC525006AC031 /* Circle.swift */; };
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
 		12D1048F19F3387F00E65B54 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1048E19F3387F00E65B54 /* Level.swift */; };
@@ -134,7 +131,6 @@
 		12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8241A146E1500453805 /* LTMorphingLabel.swift */; };
 		12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */; };
 		12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1E5241A0EBBFD0005B129 /* DreamComment.swift */; };
-		12E23BD31B21A4DA00F175FF /* CircleList2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E23BD21B21A4DA00F175FF /* CircleList2.swift */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
 		12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8090C1A2DBFB20022C094 /* SingleStep.swift */; };
@@ -328,9 +324,6 @@
 		12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatMomentsActivity.swift; sourceTree = "<group>"; };
 		12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatSessionActivity.swift; sourceTree = "<group>"; };
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
-		12CE15A01A3E7D24006AC031 /* CircleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleCell.xib; sourceTree = "<group>"; };
-		12CE15A21A3E7D56006AC031 /* CircleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCell.swift; sourceTree = "<group>"; };
-		12CE15A41A3E7D68006AC031 /* CircleList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleList.swift; sourceTree = "<group>"; };
 		12CE15A61A3EC525006AC031 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		12D1048C19F3387600E65B54 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
 		12D1048E19F3387F00E65B54 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
@@ -347,7 +340,6 @@
 		12E1C8241A146E1500453805 /* LTMorphingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTMorphingLabel.swift; sourceTree = "<group>"; };
 		12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LTMorphingLabel+Evaporate.swift"; sourceTree = "<group>"; };
 		12E1E5241A0EBBFD0005B129 /* DreamComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamComment.swift; sourceTree = "<group>"; };
-		12E23BD21B21A4DA00F175FF /* CircleList2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleList2.swift; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		12E8090C1A2DBFB20022C094 /* SingleStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStep.swift; sourceTree = "<group>"; };
@@ -406,7 +398,7 @@
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
 		C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleCollectionList.storyboard; sourceTree = "<group>"; };
 		C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCollectionCell.swift; sourceTree = "<group>"; };
-		C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleListCollectionController.swift; sourceTree = "<group>"; };
+		C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleListCollectionController.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		C4CDB41B1AF8C79000936E03 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		C4CDB41E1AF8C79900936E03 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
@@ -610,10 +602,6 @@
 		1271550A1A3FE7C600E27EC5 /* 梦境列表 */ = {
 			isa = PBXGroup;
 			children = (
-				12CE15A41A3E7D68006AC031 /* CircleList.swift */,
-				12E23BD21B21A4DA00F175FF /* CircleList2.swift */,
-				12CE15A01A3E7D24006AC031 /* CircleCell.xib */,
-				12CE15A21A3E7D56006AC031 /* CircleCell.swift */,
 				C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */,
 				C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */,
 				C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */,
@@ -1234,7 +1222,6 @@
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				128C4E371A5038C3000D2B7C /* CircleType.xib in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
-				12CE15A11A3E7D24006AC031 /* CircleCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
 				127155151A3FE84E00E27EC5 /* CircleDetailTop.xib in Resources */,
@@ -1363,7 +1350,6 @@
 				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
-				12CE15A31A3E7D56006AC031 /* CircleCell.swift in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
 				127155131A3FE84500E27EC5 /* CircleDetailTop.swift in Sources */,
@@ -1378,13 +1364,11 @@
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamic.swift in Sources */,
 				1271550F1A3FE83400E27EC5 /* CircleDetailCell.swift in Sources */,
-				12E23BD31B21A4DA00F175FF /* CircleList2.swift in Sources */,
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
-				12CE15A51A3E7D68006AC031 /* CircleList.swift in Sources */,
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
 				12BF1A6A1A427A3E0044CAF4 /* CircleJoin.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,

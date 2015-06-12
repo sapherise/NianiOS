@@ -92,7 +92,7 @@ struct Api {
         var manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         manager.operationQueue.cancelAllOperations()
-        manager.GET("http://api.nian.so/tags/autocomplete?uid=\(s_uid)&&shell\(s_shell)&&keyword=\(keyword)",
+        manager.GET("http://api.nian.so/tags/autocomplete?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)",
             parameters: nil,
             success: { (op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
                 callback(obj)
@@ -116,12 +116,12 @@ struct Api {
     
     static func postTag(tag: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson_AFN("http://api.nian.so/tags?uid=\(s_uid)&&shell\(s_shell)", content: ["tag": "\(tag)"], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/tags?uid=\(s_uid)&&shell=\(s_shell)", content: ["tag": "\(tag)"], callback: callback)
     }
     
     static func postReport(type: String, id: String, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell\(s_shell)", callback: callback)
+        V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
     static func postLikeStep(sid: String, like: Int, callback: V.StringCallback) {
