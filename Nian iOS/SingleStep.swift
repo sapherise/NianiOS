@@ -10,47 +10,20 @@ import UIKit
 
 class SingleStepViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, delegateSAStepCell{
     
-    let identifier = "dream"
-    let identifier3 = "comment"
     var tableView:UITableView!
     var dataArray = NSMutableArray()
     var Id:String = "1"
-    var deleteSheet:UIActionSheet?
-    var ownerMoreSheet:UIActionSheet?
-    var guestMoreSheet:UIActionSheet?
-    var deleteCommentSheet:UIActionSheet?
-    var deleteDreamSheet:UIActionSheet?
-    var deleteId:Int = 0        //删除按钮的tag，进展编号
-    var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
     var navView:UIView!
-    
-    var EditId:Int = 0
-    var EditContent:String = ""
-    var ReplyUser:String = ""
-    var ReplyContent:String = ""
-    var ReplyRow:Int = 0
-    var ReturnReplyRow:Int = 0
-    var ReplyCid:String = ""
-    var activityViewController:UIActivityViewController?
-    
-    var ReturnReplyContent:String = ""
-    var ReturnReplyId:String = ""
-    
-    var owneruid: String = ""
-    
-    var desHeight:CGFloat = 0
     
     //editStepdelegate
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
-    var topCell:DreamCellTop!
-    var userImageURL:String = "0"
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        SAReloadData()
+        tableView.headerBeginRefreshing()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -66,14 +39,14 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.whiteColor()
         
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
-        self.tableView!.delegate = self;
-        self.tableView!.dataSource = self;
-        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableView?.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
-        self.view.addSubview(self.tableView!)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
+        self.view.addSubview(self.tableView)
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -86,7 +59,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     func SAReloadData(){
-        self.tableView?.setFooterHidden(true)
         Api.getSingleStep(self.Id) { json in
             if json != nil {
                 self.dataArray.removeAllObjects()
@@ -163,25 +135,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
         SAUpdate(delete, self.dataArray, index, self.tableView, 0)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
-        if actionSheet == self.deleteSheet {
-            if buttonIndex == 0 {
-                var newpath = NSIndexPath(forRow: 0, inSection: 0)
-                self.dataArray.removeObjectAtIndex(newpath!.row)
-                self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.tableView!.reloadData()
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
-                    if(sa == "1"){
-                    }
-                })
-            }
-        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

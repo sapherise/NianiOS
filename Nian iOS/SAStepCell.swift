@@ -117,9 +117,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.labelContent.text = SADecode(content)
             self.btnMore.tag = sid.toInt()!
             if comment != "0" {
-                comment = "\(comment) 评论"
+                comment = "\(comment) 回应"
             }else{
-                comment = "评论"
+                comment = "回应"
             }
             if like == "0" {
                 self.labelLike.hidden = true

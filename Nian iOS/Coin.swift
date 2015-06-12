@@ -46,7 +46,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         self.viewBack()
-        self.scrollView.contentSize.height = 1434
+        scrollView.setHeight(globalHeight)
+        self.scrollView.contentSize.height = 1000 > globalHeight ? 1000 : globalHeight + 1
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币"

@@ -25,7 +25,6 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         setupViews()
         setupRefresh()
         self.tableView!.headerBeginRefreshing()
-        SAReloadData()
     }
     
     func setupViews()

@@ -179,7 +179,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.view.addGestureRecognizer(swipeGesuture!)
 
         self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
-//        self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         
         self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
         self.imageDreamHead.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
@@ -200,7 +199,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tokenView.setWidth(globalWidth)
         self.seperatorView.setWidth(globalWidth)
         
-        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.view.backgroundColor = UIColor.whiteColor()
         self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0x99/255.0, green: 0x99/255.0, blue: 0x99/255.0, alpha: 1)])
@@ -260,13 +258,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         
         self.uploadWait!.hidden = true
-    }
-    
-    func onTagClick(){
-        var storyboard = UIStoryboard(name: "DreamTagViewController", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("DreamTagViewController") as! DreamTagViewController
-        viewController.dreamTagDelegate = self
-        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func setDream(){

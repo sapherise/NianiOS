@@ -35,7 +35,7 @@ class SADoubleCell: MKTableViewCell {
         var user = data.stringAttributeForKey("user")
         var uid = data.stringAttributeForKey("uid")
         var bool = data.stringAttributeForKey("follow")
-        var img = data.stringAttributeForKey("img")
+        var img = data.stringAttributeForKey("image")
         var title = SADecode(data.stringAttributeForKey("title"))
         var des = SADecode(data.stringAttributeForKey("content"))
         self.labelName.text = type == 0 ? title : user

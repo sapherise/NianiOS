@@ -42,7 +42,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     
     var isPrivate:Int = 0
     
-    @IBAction func uploadClick(sender: AnyObject) {
+    func onUpload() {
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -179,6 +179,8 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
         self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
         self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
+        imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUpload"))
+        uploadButton?.addTarget(self, action: "onUpload", forControlEvents: UIControlEvents.TouchUpInside)
         self.labelTag!.userInteractionEnabled = true
         self.imageTag.userInteractionEnabled = true
     }
