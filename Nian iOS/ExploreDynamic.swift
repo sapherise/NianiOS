@@ -48,7 +48,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         Api.getExploreDynamic("\(page++)", callback: {
             json in
             if json != nil {
-                println(json)
                 globalTab[1] = false
                 var data = json!["data"]
                 var items = data!!["items"] as! NSArray

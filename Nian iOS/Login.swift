@@ -70,7 +70,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
             
             self.navigationItem.rightBarButtonItems = buttonArray()
             var email = SAEncode(SAHtml(self.inputEmail.text))
-            var password = "n*A\(SAHtml(self.inputPassword.text))"
+            var password = "n*A\(self.inputPassword.text)"
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
