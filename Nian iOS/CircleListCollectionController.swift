@@ -122,7 +122,18 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
         return circleCollectionCell
     }
     
-    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let id = (self.dataArray[indexPath.row] as? NSDictionary)?.stringAttributeForKey("id") {
+            var vc = NewCircleController()
+            vc.id = id
+            vc.current = 0
+            vc.textTitle = (self.dataArray[indexPath.row] as? NSDictionary)!.stringAttributeForKey("title")
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        
+        // TODO: 进入广场
+    }
 }
 
 

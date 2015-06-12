@@ -152,7 +152,8 @@ class CircleCollectionCell: UICollectionViewCell {
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
+   
+    // TODO: 处理数据库消息
     
 }
 
