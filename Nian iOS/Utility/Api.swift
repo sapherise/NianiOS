@@ -44,6 +44,7 @@ struct Api {
     
     static func getExploreFollow(page: String, callback: V.JsonCallback) {
         loadCookies()
+        println("http://api.nian.so/explore/follow?page=\(page)&uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/explore/follow?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     //GET /explore/like?page=2
@@ -609,8 +610,7 @@ struct Api {
     
     static func getUserActive(uid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/user/\(uid)/steps?page=\(page)&uid=\(uid)&shell=\(s_shell)", callback: callback)
-        //GET /user/{user_id}/steps
+        V.httpGetForJson("http://api.nian.so/user/\(uid)/steps?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     

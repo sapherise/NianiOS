@@ -124,48 +124,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
             }
         }
-        //  todo
-//        self.tableView!.setFooterHidden(clear)
-//        Api.getDreamStep(self.Id, page: self.page) { json in
-//            if json != nil {
-//                println(json)
-//                var thePrivate = json!["private"] as! String
-//                var uid = json!["uid"] as! String
-//                var arr = json!["items"] as! NSArray
-//                if clear {
-//                    self.dataArray.removeAllObjects()
-//                }
-//                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//                var safeuid = Sa.objectForKey("uid") as! String
-//                if thePrivate == "2" {
-//                    // 删除
-//                    var viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
-//                    viewTop.setY(104)
-//                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-//                    viewHolder.addSubview(viewTop)
-//                    self.view.addSubview(viewHolder)
-//                    self.tableView?.hidden = true
-//                    self.navigationItem.rightBarButtonItems = []
-//                }else if thePrivate == "1" && uid != safeuid {
-//                    // 私密
-//                    var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
-//                    viewTop.setY(104)
-//                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-//                    viewHolder.addSubview(viewTop)
-//                    self.view.addSubview(viewHolder)
-//                    self.tableView?.hidden = true
-//                    self.navigationItem.rightBarButtonItems = []
-//                }else{
-//                    for data: AnyObject in arr {
-//                        self.dataArray.addObject(data)
-//                    }
-//                }
-//                self.tableView?.reloadData()
-//                self.tableView?.headerEndRefreshing()
-//                self.tableView?.footerEndRefreshing()
-//                self.page++
-//            }
-//        }
     }
     
     func setupNavBtn() {
