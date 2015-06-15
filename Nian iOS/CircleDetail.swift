@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, editCircleDelegate, circleAddDelegate{
+class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, circleAddDelegate, editCircleDelegate{
     
     let identifier = "circledetailcell"
     let identifier2 = "circledetailtop"
@@ -52,6 +52,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        viewBackFix()
         if globalWillCircleJoinReload == 1 {
             globalWillCircleJoinReload = 0
             self.onCircleJoinClick()
@@ -135,10 +136,11 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     textPrivate = "需要验证后加入"
                 }
                 c.labelPrivate.text = textPrivate
-                if let tag = self.circleData?.stringAttributeForKey("tag").toInt() {
-                    self.theTag = tag - 1
-                    c.labelTag.text = V.Tags[self.theTag]
-                }
+//                if let tag = self.circleData?.stringAttributeForKey("tag").toInt() {
+//                    self.theTag = tag - 1
+//                    c.labelTag.text = V.Tags[self.theTag]
+//                }
+                //todo
                 c.switchNotice.addTarget(self, action: "onSwitch:", forControlEvents: UIControlEvents.ValueChanged)
                 c.numLeftNum.text = "\(self.dataArray.count)"
                 c.numMiddleNum.text = self.textPercent
@@ -506,16 +508,28 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func circleEdit(){
+//        if circleData != nil {
+//            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+//            addcircleVC.isEdit = 1
+//            addcircleVC.editId = self.Id.toInt()!
+//            addcircleVC.editTitle = self.editTitle
+//            addcircleVC.editContent = self.editContent
+//            addcircleVC.editImage = self.editImage
+//            addcircleVC.editPrivate = self.thePrivate
+//            addcircleVC.delegate = self
+//            self.navigationController?.pushViewController(addcircleVC, animated: true)
+//        }
+        //todo
         if circleData != nil {
-            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-            addcircleVC.isEdit = 1
-            addcircleVC.editId = self.Id.toInt()!
-            addcircleVC.editTitle = self.editTitle
-            addcircleVC.editContent = self.editContent
-            addcircleVC.editImage = self.editImage
-            addcircleVC.editPrivate = self.thePrivate
-            addcircleVC.delegate = self
-            self.navigationController?.pushViewController(addcircleVC, animated: true)
+            var vc = AddCircleController(nibName: "AddCircle", bundle: nil)
+            vc.isEdit = true
+            vc.idCircle = self.Id
+            vc.titleCircle = circleData!.stringAttributeForKey("title")
+            vc.uploadUrl = circleData!.stringAttributeForKey("img")
+            vc.content = circleData!.stringAttributeForKey("content")
+            vc.isPrivate = circleData!.stringAttributeForKey("private") == "1"
+            vc.delegate = self
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

@@ -144,8 +144,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var acDone = SAActivity()
         acDone.saActivityTitle = percent == "0" ? "完成" : "未完成"
         var percentNew = percent == "0" ? "1" : "0"
+        var imageNew = percent == "0" ? "av_finish" : "av_nofinish"
         acDone.saActivityType = "完成"
-        acDone.saActivityImage = UIImage(named: "av_finish")
+        acDone.saActivityImage = UIImage(named: imageNew)
         acDone.saActivityFunction = {
             var mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(percentNew, forKey: "percent")

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol CircleTagDelegate {
-    func onTagSelected(tag: String, tagType: Int, dreamType: Int)
+    func delegateTag(title: String, id: String)
 }
 protocol DreamPromoDelegate {
     func onPromoClick(id: Int, content: String)
@@ -28,7 +28,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     
     override func viewDidLoad() {
         setupViews()
-        SAReloadData()
+        load()
     }
     
     func setupViews(){
@@ -47,7 +47,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         if dreamPromoDelegate != nil {
             titleLabel.text = "推广记本"
         }else{
-            titleLabel.text = "选择标签"
+            titleLabel.text = "绑定记本"
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -74,49 +74,30 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath) {
         var index = indexPath.row
         var data = self.dataArray[index] as! NSDictionary
+        var id = data.stringAttributeForKey("id")
+        var title = data.stringAttributeForKey("title")
         if dreamPromoDelegate != nil {  // 如果是推广记本
-            var id = data.stringAttributeForKey("id")
-            var title = data.stringAttributeForKey("title")
             if let v = id.toInt() {
                 dreamPromoDelegate?.onPromoClick(v, content: title)
                 self.navigationController?.popViewControllerAnimated(true)
             }
         }else if circleTagDelegate != nil { // 如果是梦境绑定标签
-            var tag = (data.objectForKey("hashtag") as! String).toInt()
-            var dreamType = (data.objectForKey("id") as! String).toInt()
-            var textTag = "未选标签"
-            if tag != nil {
-                if tag >= 1 {
-                    textTag = V.Tags[tag!-1]
-                }
-            }else{
-                tag = 0
-            }
-            circleTagDelegate?.onTagSelected(textTag, tagType: tag!, dreamType: dreamType!)
+            circleTagDelegate?.delegateTag(title, id: id)
             self.navigationController?.popViewControllerAnimated(true)
         }
     }
     
-    func SAReloadData(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
-        var url = "http://nian.so/api/circle_tag.php?uid=\(safeuid)"
-        if dreamPromoDelegate != nil {
-            url = "http://nian.so/api/addstep_dream.php?uid=\(safeuid)&shell=\(safeshell)"
-        }
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull() {
-                var arr = data["items"] as! NSArray
+    func load(){
+        //todo，需要测试推广梦想
+        Api.postCircleTag() { json in
+            if json != nil {
+                var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
+                for data in arr {
                     self.dataArray.addObject(data)
                 }
                 if self.dataArray.count == 0 {
                     var textEmpty = "要先有一个\n公开中的记本"
-                    if self.dreamPromoDelegate == nil {
-                        textEmpty = "你的记本\n都没有标签"
-                    }
                     var viewTop = viewEmpty(globalWidth, content: textEmpty)
                     viewTop.setY(104)
                     var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
@@ -126,6 +107,6 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
                 }
                 self.collectionView.reloadData()
             }
-        })
+        }
     }
 }
