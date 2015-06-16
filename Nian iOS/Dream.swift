@@ -194,12 +194,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
         self.presentViewController(acv, animated: true, completion: nil)
     }
-    //  todo
-//    func onStepClick(){
-//        UIView.animateWithDuration(0.3, animations: {
-//            self.tableView!.contentOffset.y = 287
-//        })
-//    }
+    
+    func onStep(){
+        if dataArrayTop != nil {
+            var title = SADecode(SADecode(dataArrayTop.stringAttributeForKey("title")))
+            if dataArrayTop.stringAttributeForKey("private") == "1" {
+                title = "\(title)（私密）"
+            } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
+                title = "\(title)（完成）"
+            }
+            UIView.animateWithDuration(0.3, animations: {
+                self.tableView.contentOffset.y = title.stringHeightBoldWith(18, width: 240) + 252 + 52
+            })
+        }
+    }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
@@ -213,6 +221,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if dataArrayTop != nil {
                 var uid = dataArrayTop.stringAttributeForKey("uid")
                 var follow = dataArrayTop.stringAttributeForKey("follow")
+                c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStep"))
                 if SAUid() == uid {
                     c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.setTitle("更新", forState: UIControlState.allZeros)

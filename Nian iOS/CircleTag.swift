@@ -88,7 +88,6 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func load(){
-        //todo，需要测试推广梦想
         Api.postCircleTag() { json in
             if json != nil {
                 var arr = json!["items"] as! NSArray

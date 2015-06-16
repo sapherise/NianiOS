@@ -227,8 +227,6 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     }
     
     func delegateTag(title: String, id: String) {
-        println("title: \(title)")
-        println("id: \(id)")
         labelTag.text = title.decode()
         labelTag.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         self.idDream = id
@@ -272,7 +270,6 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         } else if self.uploadUrl == "" {
             self.view.showTipText("你的梦境还没有封面...", delay: 2)
         } else if self.idDream == "" && !isEdit {
-            //todo  记得绑定梦想
             self.view.showTipText("你的梦境还没绑定记本...", delay: 2)
         } else {
             self.navigationItem.rightBarButtonItems = buttonArray()
@@ -280,7 +277,6 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             if !isEdit {
                 Api.postCircleNew(title, content: content, img: self.uploadUrl, privateType: privateType, dream: self.idDream) { json in
                     if json != nil {
-                        println(json)
                         var id = json!["id"] as! String
                         var postdate = json!["postdate"] as! String
                         var success = json!["success"] as! String
@@ -294,11 +290,8 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             } else {
                 Api.postCircleEdit(title, content: content, img: self.uploadUrl, privateType: privateType, ID: self.idCircle) { json in
                     if json != nil {
-                        println(json)
-                        self.delegate?.editCircle(privateType, editTitle: title, editDes: self.field1.text, editImage: self.uploadUrl)
+                        self.delegate?.editCircle(privateType, editTitle: self.field1.text, editDes: self.field2.text, editImage: self.uploadUrl)
                         self.navigationController?.popViewControllerAnimated(true)
-                    } else {
-                        println("null")
                     }
                 }
             }

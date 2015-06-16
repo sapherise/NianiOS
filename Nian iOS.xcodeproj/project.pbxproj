@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1200728D1AE7942A000D74BA /* SAStepCell.swift */; };
 		120072901AE7943D000D74BA /* SAStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1200728F1AE7943D000D74BA /* SAStepCell.xib */; };
-		12028E301A3EDA770072FBE1 /* AddCircle2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E2F1A3EDA770072FBE1 /* AddCircle2.swift */; };
 		12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E331A3EECBD0072FBE1 /* CircleTag.swift */; };
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
 		1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 121454731A694F3C0091DCEE /* libWeiboSDK.a */; };
@@ -201,7 +200,6 @@
 /* Begin PBXFileReference section */
 		1200728D1AE7942A000D74BA /* SAStepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAStepCell.swift; sourceTree = "<group>"; };
 		1200728F1AE7943D000D74BA /* SAStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAStepCell.xib; sourceTree = "<group>"; };
-		12028E2F1A3EDA770072FBE1 /* AddCircle2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCircle2.swift; sourceTree = "<group>"; };
 		12028E331A3EECBD0072FBE1 /* CircleTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleTag.swift; sourceTree = "<group>"; };
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
 		121454731A694F3C0091DCEE /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
@@ -433,7 +431,6 @@
 		12028E2E1A3EDA330072FBE1 /* 创建梦境 */ = {
 			isa = PBXGroup;
 			children = (
-				12028E2F1A3EDA770072FBE1 /* AddCircle2.swift */,
 				12992EBF1B2EBB8E009F4501 /* AddCircle.swift */,
 				12992EC11B2EBB9C009F4501 /* AddCircle.xib */,
 				12028E331A3EECBD0072FBE1 /* CircleTag.swift */,
@@ -1395,7 +1392,6 @@
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
-				12028E301A3EDA770072FBE1 /* AddCircle2.swift in Sources */,
 				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,

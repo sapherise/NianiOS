@@ -252,7 +252,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             self.uploadUrl = self.editImage
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            imageDreamHead.setImage(url, placeHolder: IconColor, bool: false)//todo
+            imageDreamHead.setImage(url, placeHolder: IconColor, bool: false)
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];

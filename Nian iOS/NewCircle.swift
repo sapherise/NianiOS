@@ -62,7 +62,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     
     func Poll(noti: NSNotification) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        go {
             var data = noti.object as! NSDictionary
             var circle = data.stringAttributeForKey("to")
             if circle == self.id {
@@ -74,25 +74,27 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 var type = data.stringAttributeForKey("msgtype")
                 var time = (data.stringAttributeForKey("time") as NSString).doubleValue
                 var cid = data.stringAttributeForKey("cid")
-                //                content = SADecode(SADecode(content))
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 var safeuid = Sa.objectForKey("uid") as! String
                 var safeuser = Sa.objectForKey("user") as! String
                 var commentReplyRow = self.dataArrayChat.count
                 var absoluteTime = V.absoluteTime(time)
-                if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
-                    var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
-                    self.dataArrayChat.insertObject(newinsert, atIndex: 0)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.tableViewChat.reloadData()
-                        var offset = self.tableViewChat.contentSize.height - self.tableViewChat.bounds.size.height
-                        if offset > 0 && offset - self.tableViewChat.contentOffset.y < globalHeight * 0.5 {
-                            self.tableViewChat.setContentOffset(CGPointMake(0, offset), animated: true)
+                //  如果不是本人，或者是本人发的但不属于图文
+                if type != "3" && type != "4" {
+                    if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
+                        var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+                        self.dataArrayChat.insertObject(newinsert, atIndex: 0)
+                        back {
+                            self.tableViewChat.reloadData()
+                            var offset = self.tableViewChat.contentSize.height - self.tableViewChat.bounds.size.height
+                            if offset > 0 && offset - self.tableViewChat.contentOffset.y < globalHeight * 0.5 {
+                                self.tableViewChat.setContentOffset(CGPointMake(0, offset), animated: true)
+                            }
                         }
-                    })
+                    }
                 }
             }
-        })
+        }
     }
     
     func setupViews() {
@@ -366,7 +368,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             dataArrayChat.removeAllObjects()
         }
         var safeuid = SAUid()
-        var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(id)' and owner = '\(safeuid)' and type != 3 order by id desc limit \(pageChat*30),30")
+        var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(id)' and owner = '\(safeuid)' and type != 3 and type != 4 order by id desc limit \(pageChat*30),30")
         if err == nil {
             self.pageChat++
             var title: String?
@@ -711,6 +713,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
 //                pasteBoard.string = self.ReplyContent
 //            }
 //        }else
+        //todo
             if actionSheet == self.actionSheetPhoto {
             if buttonIndex == 0 {
                 self.inputKeyboard.resignFirstResponder()

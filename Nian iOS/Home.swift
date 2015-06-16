@@ -513,27 +513,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                                     }
                                                 }
                                             }
-                                        } else if type == "3" {
-//                                            Api.getSingleStepSync(cid) { json in
-//                                                if json != nil {
-//                                                    if let item = json!["items"] as? NSArray {
-//                                                        if item.count > 0 {
-//                                                            var dataStep = item[0] as! NSDictionary
-//                                                            var sid = dataStep.stringAttributeForKey("sid")
-//                                                            var uid = dataStep.stringAttributeForKey("uid")
-//                                                            var dream = dataStep.stringAttributeForKey("dream")
-//                                                            var content = dataStep.stringAttributeForKey("content")
-//                                                            var img = dataStep.stringAttributeForKey("img")
-//                                                            var img0 = dataStep.stringAttributeForKey("img0")
-//                                                            var img1 = dataStep.stringAttributeForKey("img1")
-//                                                            SQLStepContent(sid, uid, dream, content, img, img0, img1) {
-//                                                                NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-//                                                            }
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-                                        }else{
+                                        } else{
                                             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                                         }
                                     }
@@ -610,25 +590,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                         }
                                     }
                                 }
-                            }else if type == "3" {
-//                                Api.getSingleStepSync(cid) { json in
-//                                    if json != nil {
-//                                        if let item = json!["items"] as? NSArray {
-//                                            if item.count > 0 {
-//                                                var data = item[0] as! NSDictionary
-//                                                var sid = data.stringAttributeForKey("sid")
-//                                                var uid = data.stringAttributeForKey("uid")
-//                                                var dream = data.stringAttributeForKey("dream")
-//                                                var content = data.stringAttributeForKey("content")
-//                                                var img = data.stringAttributeForKey("img")
-//                                                var img0 = data.stringAttributeForKey("img0")
-//                                                var img1 = data.stringAttributeForKey("img1")
-//                                                SQLStepContent(sid, uid, dream, content, img, img0, img1) {
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
                             }
                             SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
                                 var data = NSDictionary(objects: [cid, uid, name, content, id, type, time, circle, "1"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])

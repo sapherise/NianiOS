@@ -9,7 +9,7 @@
 import UIKit
 
 protocol circleAddDelegate {
-    func SAReloadData()
+    func delegateLoad()
     func addDream(tag:Int)
     func changeBtnMainText(content:String)
 }
@@ -177,7 +177,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
                             var image = json!["img"] as! String
                             var postdate = json!["postdate"] as! String
                             SQLCircleListInsert(self.circleID, title, image, postdate)
-                            self.delegate?.SAReloadData()
+                            self.delegate?.delegateLoad()
                         }else if self.thePrivate == "1" {
                             textOK = "发好验证了！"
                             self.delegate?.changeBtnMainText("等待验证中")
