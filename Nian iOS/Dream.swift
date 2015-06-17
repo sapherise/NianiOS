@@ -144,8 +144,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         var acDone = SAActivity()
         acDone.saActivityTitle = percent == "0" ? "完成" : "未完成"
         var percentNew = percent == "0" ? "1" : "0"
+        var imageNew = percent == "0" ? "av_finish" : "av_nofinish"
         acDone.saActivityType = "完成"
-        acDone.saActivityImage = UIImage(named: "av_finish")
+        acDone.saActivityImage = UIImage(named: imageNew)
         acDone.saActivityFunction = {
             var mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(percentNew, forKey: "percent")
@@ -193,12 +194,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
         self.presentViewController(acv, animated: true, completion: nil)
     }
-    //  todo
-//    func onStepClick(){
-//        UIView.animateWithDuration(0.3, animations: {
-//            self.tableView!.contentOffset.y = 287
-//        })
-//    }
+    
+    func onStep(){
+        if dataArrayTop != nil {
+            var title = SADecode(SADecode(dataArrayTop.stringAttributeForKey("title")))
+            if dataArrayTop.stringAttributeForKey("private") == "1" {
+                title = "\(title)（私密）"
+            } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
+                title = "\(title)（完成）"
+            }
+            UIView.animateWithDuration(0.3, animations: {
+                self.tableView.contentOffset.y = title.stringHeightBoldWith(18, width: 240) + 252 + 52
+            })
+        }
+    }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
@@ -212,6 +221,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if dataArrayTop != nil {
                 var uid = dataArrayTop.stringAttributeForKey("uid")
                 var follow = dataArrayTop.stringAttributeForKey("follow")
+                c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStep"))
                 if SAUid() == uid {
                     c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
                     c.btnMain.setTitle("更新", forState: UIControlState.allZeros)

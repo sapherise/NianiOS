@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1200728D1AE7942A000D74BA /* SAStepCell.swift */; };
 		120072901AE7943D000D74BA /* SAStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1200728F1AE7943D000D74BA /* SAStepCell.xib */; };
-		12028E301A3EDA770072FBE1 /* AddCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E2F1A3EDA770072FBE1 /* AddCircle.swift */; };
-		12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12028E311A3EDA9D0072FBE1 /* AddCircle.xib */; };
 		12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E331A3EECBD0072FBE1 /* CircleTag.swift */; };
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
 		1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 121454731A694F3C0091DCEE /* libWeiboSDK.a */; };
@@ -92,6 +90,8 @@
 		12960F6F19BF230900CB973E /* Sign.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F6E19BF230900CB973E /* Sign.xib */; };
 		12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12960F7019BF2E3B00CB973E /* SignNext.swift */; };
 		12960F7319BF2E4500CB973E /* SignNext.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F7219BF2E4500CB973E /* SignNext.xib */; };
+		12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992EBF1B2EBB8E009F4501 /* AddCircle.swift */; };
+		12992EC21B2EBB9C009F4501 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12992EC11B2EBB9C009F4501 /* AddCircle.xib */; };
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
@@ -202,8 +202,6 @@
 /* Begin PBXFileReference section */
 		1200728D1AE7942A000D74BA /* SAStepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAStepCell.swift; sourceTree = "<group>"; };
 		1200728F1AE7943D000D74BA /* SAStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAStepCell.xib; sourceTree = "<group>"; };
-		12028E2F1A3EDA770072FBE1 /* AddCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCircle.swift; sourceTree = "<group>"; };
-		12028E311A3EDA9D0072FBE1 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
 		12028E331A3EECBD0072FBE1 /* CircleTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleTag.swift; sourceTree = "<group>"; };
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
 		121454731A694F3C0091DCEE /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
@@ -299,6 +297,8 @@
 		12960F6E19BF230900CB973E /* Sign.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Sign.xib; sourceTree = "<group>"; };
 		12960F7019BF2E3B00CB973E /* SignNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignNext.swift; sourceTree = "<group>"; };
 		12960F7219BF2E4500CB973E /* SignNext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignNext.xib; sourceTree = "<group>"; };
+		12992EBF1B2EBB8E009F4501 /* AddCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCircle.swift; sourceTree = "<group>"; };
+		12992EC11B2EBB9C009F4501 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
@@ -437,8 +437,8 @@
 		12028E2E1A3EDA330072FBE1 /* 创建梦境 */ = {
 			isa = PBXGroup;
 			children = (
-				12028E2F1A3EDA770072FBE1 /* AddCircle.swift */,
-				12028E311A3EDA9D0072FBE1 /* AddCircle.xib */,
+				12992EBF1B2EBB8E009F4501 /* AddCircle.swift */,
+				12992EC11B2EBB9C009F4501 /* AddCircle.xib */,
 				12028E331A3EECBD0072FBE1 /* CircleTag.swift */,
 				12028E351A3EED220072FBE1 /* CircleTag.storyboard */,
 			);
@@ -475,7 +475,7 @@
 			path = weibo;
 			sourceTree = SOURCE_ROOT;
 		};
-		121F66971B15B3DF00103B14 /* 新梦境 */ = {
+		121F66971B15B3DF00103B14 /* 新梦境列表 */ = {
 			isa = PBXGroup;
 			children = (
 				121F669A1B15B3FD00103B14 /* NewCircle.swift */,
@@ -484,7 +484,7 @@
 				12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */,
 				12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */,
 			);
-			name = "新梦境";
+			name = "新梦境列表";
 			sourceTree = "<group>";
 		};
 		12216F921A6146FC003701BF /* 下一级消息 */ = {
@@ -923,7 +923,7 @@
 				323CD2E71A11EEC400FFE3F4 /* 广场 */,
 				12D1049019F3388500E65B54 /* 等级 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
-				121F66971B15B3DF00103B14 /* 新梦境 */,
+				121F66971B15B3DF00103B14 /* 新梦境列表 */,
 				12CE159B1A3E7AD8006AC031 /* 梦境 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				126ABCC21A25DAD3001BB5DA /* 同类标签 */,
@@ -1232,6 +1232,7 @@
 				127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
+				12992EC21B2EBB9C009F4501 /* AddCircle.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
@@ -1261,7 +1262,6 @@
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
 				129152E71A6A910200BB213C /* FindCellTop.xib in Resources */,
 				3252850D1A10C2B600316021 /* Explore.storyboard in Resources */,
-				12028E321A3EDA9D0072FBE1 /* AddCircle.xib in Resources */,
 				12BF1A681A427A1F0044CAF4 /* CircleJoin.xib in Resources */,
 				1214547F1A694F3C0091DCEE /* WeiboSDK.bundle in Resources */,
 				129152E31A6A90ED00BB213C /* FindCell.xib in Resources */,
@@ -1419,7 +1419,6 @@
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
-				12028E301A3EDA770072FBE1 /* AddCircle.swift in Sources */,
 				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
 				C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */,
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
@@ -1429,6 +1428,7 @@
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
+				12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,

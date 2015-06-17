@@ -952,7 +952,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
         UILabel *label =  _placeHolderLabel;
 		if (!label || ![label isKindOfClass:[UILabel class]]){
 			label = [[UILabel alloc] initWithFrame:CGRectMake(_tokenCaret.x + 3, _tokenCaret.y + 2, self.rightView.bounds.size.width, self.rightView.bounds.size.height)];
-            [label setTextColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1]]; // colorWithWhite:0.75 alpha:1]];
+            [label setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]]; // colorWithWhite:0.75 alpha:1]];
             //  「按回车...」那排字的颜色
             [label setFont:[UIFont systemFontOfSize:14]];
 			 _placeHolderLabel = label;
@@ -1157,12 +1157,6 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 		_representedObject = object;
         
 		_font = aFont;
-        _tintColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:0.2];
-        // 选中的背景颜色
-        _textColor = [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
-        //  不知道是什么颜色
-		_highlightedTextColor = [UIColor colorWithRed:0.4 green:0.84 blue:0.66 alpha:1];
-		//  不知道是什么颜色
         
 		_accessoryType = TITokenAccessoryTypeNone;
 		_maxWidth = 200;
@@ -1280,37 +1274,21 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
     // vPadding: 上下边填充距离
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    self.layer.cornerRadius = 4.0;
-    self.layer.masksToBounds = YES;
-    
-//    CGContextSaveGState(context);
-//    CGMutablePathRef pathRef = CGPathCreateMutable();
-//    CGPathAddRoundedRect(pathRef, NULL, rect, 4.0, 4.0);
-//    CGContextAddPath(context, pathRef);
 
 	BOOL drawHighlighted = (self.selected || self.highlighted);
     
+    UIBezierPath *rectanglePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius: 4];
+    UIColor *backgroundColor;
+    
     if (drawHighlighted) {
-//        CGContextSetFillColor(context, (CGFloat[4]){0.42, 0.77, 0.93, 0.2});
-//        CGContextFillPath(context);
-//        CGContextSetStrokeColor(context, (CGFloat[4]){0.42, 0.77, 0.93, 1});
-//        CGContextStrokePath(context);
-        self.layer.backgroundColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:0.2].CGColor;
-        self.layer.borderWidth = 0.5;
-        self.layer.borderColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:1].CGColor;
-
+        backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        //  选中的背景颜色
     } else {
-//        CGContextSetStrokeColor(context, (CGFloat[4]){0.94, 0.94, 0.94, 1});
-//        CGContextStrokePath(context);
-//        CGContextSetFillColor(context, (CGFloat[4]){1, 1, 1, 1});
-//        CGContextFillPath(context);
-        self.layer.backgroundColor = [UIColor whiteColor].CGColor;
-        self.layer.borderWidth = 1;
-        self.layer.borderColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1].CGColor;
+        backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1];
     }
     
-//    CGContextRestoreGState(context);
+    [backgroundColor setFill];
+    [rectanglePath fill];
 	
     NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
     textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -1323,22 +1301,17 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
 	CGRect textBounds = CGRectMake(floorf(hTextPadding / 2), vPadding, titleWidth + 5, floorf(self.bounds.size.height - (vPadding * 2)));
 	
 	CGContextSetFillColorWithColor(context, (drawHighlighted ? _highlightedTextColor : _textColor).CGColor);
-    UIColor *_fontColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-    //  字体颜色
+    UIColor *_fontColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1];
+    //  完成后的字体颜色
     
 
     [_title drawInRect:textBounds withAttributes:@{NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor, NSFontAttributeName: _font}];
+    
+    [_boardColor setStroke];
+    rectanglePath.lineWidth = self.boardWidth;
+    [rectanglePath stroke];
+
 }
-
-- (UIBezierPath *)drawBezierPath:(CGRect)rect context:(CGContextRef)context {
-    UIBezierPath *path = [UIBezierPath bezierPath];
-
-    
-    
-    
-    return path;
-}
-
 
 #pragma mark Other
 - (NSString *)description {

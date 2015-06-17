@@ -198,13 +198,13 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&subid=\(subid)", callback: callback)
     }
     
-    static func postCircleNew(name: String, content: String, img: String, privateType: Int, tag: Int, dream: Int, callback: V.JsonCallback) {
+    static func postCircleNew(name: String, content: String, img: String, privateType: Int, dream: String, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_new.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&tag=\(tag)&dream=\(dream)&circleshellid=\(sid)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/circle_new2.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&dream=\(dream)&circleshellid=\(sid)", callback: callback)
     }
     
-    static func postCircleEdit(name: String, content: String, img: String, privateType: Int, ID: Int, callback: V.JsonCallback) {
+    static func postCircleEdit(name: String, content: String, img: String, privateType: Int, ID: String, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_edit.php", content: "id=\(ID)&uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&circleshellid=\(sid)", callback: callback)
@@ -451,9 +451,9 @@ struct Api {
     }
     
     
-    static func getCircleTag(callback: V.JsonCallback) {
+    static func postCircleTag(callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/circle_tag.php?uid=\(s_shell)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/circle_tag2.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     
@@ -567,6 +567,11 @@ struct Api {
         V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
     }
     
+    // MARK: 通过 user nick Name 获得 User id
+    static func postUserNickName(name: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson_AFN("http://api.nian.so/user/username?uid=\(s_uid)&&shell=\(s_shell)", content: ["username": name], callback: callback)
+    }
     
     static func postDeviceToken(callback: V.StringCallback) {
         loadCookies()

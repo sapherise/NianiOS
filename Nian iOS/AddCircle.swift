@@ -12,44 +12,47 @@ protocol editCircleDelegate {
     func editCircle(editPrivate:Int, editTitle:String, editDes:String, editImage:String)
 }
 
-class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, CircleTagDelegate, UITextViewDelegate {
+class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, UITextFieldDelegate, CircleTagDelegate {
     
-    @IBOutlet var uploadButton: UIButton?
-    @IBOutlet var uploadWait: UIActivityIndicatorView?
-    @IBOutlet var field1:UITextField?
-    @IBOutlet var field2:UITextView!
-    @IBOutlet var setButton: UIButton!
-    @IBOutlet var labelTag: UILabel?
-    @IBOutlet var viewHolder: UIView!
-    @IBOutlet var imageEyeClosed: UIImageView!
-    @IBOutlet var imageDreamHead: UIImageView!
-    @IBOutlet var imageTag: UIImageView!
-    var actionSheet:UIActionSheet?
-    var setDreamActionSheet:UIActionSheet?
-    var imagePicker:UIImagePickerController?
-    var delegate:editCircleDelegate?
-    var tagType:Int = 0
-    var dreamType:Int = 0
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var uploadWait: UIActivityIndicatorView!
+    @IBOutlet weak var field1: UITextField!  //title text field
+    @IBOutlet weak var field2: SZTextView!
+    @IBOutlet weak var setPrivate: UIImageView!
+    @IBOutlet weak var imageDreamHead: UIImageView!
+    @IBOutlet weak var seperatorView: UIView!
+    @IBOutlet var viewTag: UIView!
+    @IBOutlet var viewLine: UIView!
+    @IBOutlet var labelTag: UILabel!
     
-    var uploadUrl:String = ""
+    var actionSheet: UIActionSheet?
+    var setDreamActionSheet: UIActionSheet?
+    var imagePicker: UIImagePickerController?
+    var delegate: editCircleDelegate?
     
-    var isEdit:Int = 0
-    var editId:Int = 0
-    var editTitle:String = ""
-    var editContent:String = ""
-    var editImage:String = ""
-    var editPrivate:String = ""
+    var isEdit: Bool = false
+    var idDream: String = ""
+    var idCircle: String = ""
+    var titleCircle: String = ""
+    var content: String = ""
+    var uploadUrl: String = ""
+    var isPrivate: Bool = false
     
-    var isPrivate:Int = 0
+    var keyboardHeight: CGFloat = 0.0  // 键盘的高度
     
-    func onUpload() {
-        self.field1!.resignFirstResponder()
-        self.field2.resignFirstResponder()
+    var swipeGesuture: UISwipeGestureRecognizer?
+    
+    func uploadClick() {
+        self.dismissKeyboard()
+        
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        
         self.actionSheet!.addButtonWithTitle("相册")
         self.actionSheet!.addButtonWithTitle("拍照")
         self.actionSheet!.addButtonWithTitle("取消")
+        
         self.actionSheet!.cancelButtonIndex = 2
+        
         self.actionSheet!.showInView(self.view)
     }
     
@@ -61,7 +64,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                 self.imagePicker!.allowsEditing = true
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-            }else if buttonIndex == 1 {
+            } else if buttonIndex == 1 {
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.allowsEditing = true
@@ -70,17 +73,17 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
                 }
             }
-        }else if actionSheet == self.setDreamActionSheet {
+        } else if actionSheet == self.setDreamActionSheet {
             if buttonIndex == 0 {
-                self.isPrivate = 0
-                self.editPrivate = "0"
-                self.imageEyeClosed.hidden = true
-                // 变为公开
-            }else if buttonIndex == 1 {
-                self.isPrivate = 1
-                self.editPrivate = "1"
-                self.imageEyeClosed.hidden = false
-                // 变为私密
+                if !self.isPrivate {
+                    //设置为私密
+                    self.isPrivate = true
+                    self.setPrivate.image = UIImage(named: "lock")
+                } else {
+                    //设置为公开
+                    self.isPrivate = false
+                    self.setPrivate.image = UIImage(named: "unlock")
+                }
             }
         }
     }
@@ -92,195 +95,227 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
     
     func uploadFile(img:UIImage){
         self.uploadWait!.hidden = false
+        self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
-        self.uploadButton!.hidden = true
         var uy = UpYun()
-        uy.successBlocker = ({(data:AnyObject!) in
+        uy.successBlocker = ({(data: AnyObject!) in
             self.uploadWait!.hidden = true
-            self.uploadWait!.stopAnimating()
-            self.uploadButton!.hidden = false
             self.uploadUrl = data.objectForKey("url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            var urlLarge = "http://img.nian.so/dream/\(self.uploadUrl)!large"
-            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
+            self.imageDreamHead.contentMode = .ScaleToFill
+            self.imageDreamHead.image = img
+            setCacheImage(url, img, 0)
+            self.uploadWait!.stopAnimating()
         })
-        uy.failBlocker = ({(error:NSError!) in
+        uy.failBlocker = ({(error: NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
-            self.uploadButton!.hidden = false
+            self.imageDreamHead.image = UIImage(named: "add_plus")
         })
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
     
+    //MARK: view load 相关的方法
+    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setupViews()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func setupViews(){
-        self.viewHolder.layer.borderColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1).CGColor
-        self.viewHolder.layer.borderWidth = 1
-        self.viewHolder.setX(globalWidth/2-140)
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        self.view.addSubview(navView)
-        if self.tagType >= 1 {
-            self.labelTag?.text = V.Tags[self.tagType - 1]
-        }
-        
-        if self.editPrivate == "1" {
-            self.imageEyeClosed.hidden = false
-        }else{
-            self.imageEyeClosed.hidden = true
-        }
-        
-        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
-        self.field2.delegate = self
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
-        
-        if self.isEdit == 1 {
-            self.field1!.text = self.editTitle
-            self.field2.text = self.editContent
-            self.uploadUrl = self.editImage
-            self.labelTag!.hidden = true
-            self.imageTag.hidden = true
-            var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editCircleOK")
-            rightButton.image = UIImage(named:"newOK")
-            self.navigationItem.rightBarButtonItems = [rightButton];
-        }else{
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addCircleOK")
-            rightButton.image = UIImage(named:"newOK")
-            self.navigationItem.rightBarButtonItems = [rightButton];
-        }
-        
-        self.uploadWait!.hidden = true
-        
-        
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
-        if self.isEdit == 1 {
-            titleLabel.text = "编辑梦境"
-        }else{
-            titleLabel.text = "新梦境！"
-        }
+        titleLabel.text = self.isEdit ? "编辑梦境" : "新梦境！"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
+        self.view.addSubview(navView)
         
-        self.setButton.addTarget(self, action: "setDream", forControlEvents: UIControlEvents.TouchUpInside)
-        self.labelTag!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
-        self.imageTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTagClick"))
-        imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUpload"))
-        uploadButton?.addTarget(self, action: "onUpload", forControlEvents: UIControlEvents.TouchUpInside)
-        self.labelTag!.userInteractionEnabled = true
-        self.imageTag.userInteractionEnabled = true
+        self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
+        
+        self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
+        self.imageDreamHead.layer.cornerRadius = 8.0
+        self.imageDreamHead.layer.masksToBounds = true
+        self.field1.setWidth(globalWidth - 124)
+        self.setPrivate.setX(globalWidth - 44)
+        self.field2.setWidth(globalWidth)
+//        UIScreen.mainScreen().bounds.height > 480 ? self.field2.setHeight(120) : self.field2.setHeight(96)
+//        self.field2.textContainerInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        self.field2.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        self.seperatorView.setWidth(globalWidth)
+        self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+        
+        self.view.backgroundColor = UIColor.whiteColor()
+        //        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
+        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
+        
+        self.field2.attributedPlaceholder = NSAttributedString(string: "梦境简介（可选）" ,
+            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
+                NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field2.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
+        self.field2.delegate = self
+        setupField()
+        
+        if isPrivate {
+            setPrivate.image = UIImage(named: "lock")
+        } else {
+            setPrivate.image = UIImage(named: "unlock")
+        }
+        
+        uploadWait.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        uploadWait.center = imageDreamHead.center
+        uploadWait.color = UIColor(red:0.6, green:0.6, blue:0.6, alpha:0.6)
+        
+        if self.isEdit {
+            self.field1!.text = self.titleCircle.decode()
+            self.field2.text = self.content.decode()
+            var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+            imageDreamHead.setImage(url, placeHolder: IconColor, bool: false)
+            
+            labelTag.text = "不能编辑绑定的记本..."
+            labelTag.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
+        } else {
+            viewTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTag"))
+            labelTag.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
+        }
+        
+        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "add")
+        rightButton.image = UIImage(named:"newOK")
+        self.navigationItem.rightBarButtonItems = [rightButton];
+        
+        self.uploadWait!.hidden = true
+        viewTag.setWidth(globalWidth)
+        viewLine.setWidth(globalWidth)
+        scrollView.frame.size = CGSizeMake(globalWidth, globalHeight - 64)
+        scrollView.contentSize.height = globalHeight - 64
     }
     
-    func onTagClick(){
-        var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as! CircleTagViewController
-        viewController.circleTagDelegate = self
-        self.navigationController?.pushViewController(viewController, animated: true)
+    func onTag() {
+        var sb = UIStoryboard(name: "CircleTag", bundle: nil)
+        var vc = sb.instantiateViewControllerWithIdentifier("CircleTagViewController") as! CircleTagViewController
+        vc.circleTagDelegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func delegateTag(title: String, id: String) {
+        labelTag.text = title.decode()
+        labelTag.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
+        self.idDream = id
+    }
+    
+    func setupField() {
+        var h = globalHeight - 64 - 64 - 44 - keyboardHeight
+        field2.setHeight(h)
+        viewTag.setY(field2.bottom())
+        scrollView.contentSize.height = globalHeight - 64 - keyboardHeight
     }
     
     func setDream(){
-        self.field1!.resignFirstResponder()
-        self.field2.resignFirstResponder()
-        
+        self.dismissKeyboard()
         self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.setDreamActionSheet!.addButtonWithTitle("任何人都可加入")
-        self.setDreamActionSheet!.addButtonWithTitle("需要验证后加入")
-        self.setDreamActionSheet!.addButtonWithTitle("取消")
-        self.setDreamActionSheet!.cancelButtonIndex = 2
-        self.setDreamActionSheet!.showInView(self.view)
         
+        if self.isPrivate {
+            self.setDreamActionSheet!.addButtonWithTitle("设置为开放加入")
+        } else {
+            self.setDreamActionSheet!.addButtonWithTitle("设置为验证加入")
+        }
+        
+        self.setDreamActionSheet!.addButtonWithTitle("取消")
+        self.setDreamActionSheet!.cancelButtonIndex = 1
+        self.setDreamActionSheet!.showInView(self.view)
     }
     
-    func dismissKeyboard(sender:UITapGestureRecognizer){
+    func dismissKeyboard() {
         self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
     }
-
-    func addCircleOK(){
-        var title = self.field1?.text
-        var content = self.field2.text
-        if content == "梦境简介（可选）" {
-            content = ""
-        }
+    
+    //MARK: 添加 new Dream
+    
+    func add(){
+        var title = SAEncode(SAHtml(field1.text))
+        var content = SAEncode(SAHtml(field2.text))
         if title == "" {
-            self.field1!.becomeFirstResponder()
+            field1.becomeFirstResponder()
             self.view.showTipText("你的梦境还没有名字...", delay: 2)
-        }else if self.uploadUrl == "" {
+        } else if self.uploadUrl == "" {
             self.view.showTipText("你的梦境还没有封面...", delay: 2)
-//        }else if self.tagType == 0 {
-//            self.view.showTipText("你的梦境还没绑定记本和标签...", delay: 2)
-        }else{
+        } else if self.idDream == "" && !isEdit {
+            self.view.showTipText("你的梦境还没绑定记本...", delay: 2)
+        } else {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            
-            self.tagType = 2
-            
-            Api.postCircleNew(title!, content: content, img: self.uploadUrl, privateType: self.isPrivate, tag: self.tagType, dream: self.dreamType) {
-                json in
-                if json != nil {
-                    var id = json!["id"] as! String
-                    var postdate = json!["postdate"] as! String
-                    var success = json!["success"] as! String
-                    if success == "1" {
-                        globalWillNianReload = 1
-                        var theTitle = self.field1?.text
-                        SQLCircleListInsert(id, "\(theTitle!)", self.uploadUrl, postdate)
-                        self.navigationController?.popToRootViewControllerAnimated(true)
+            var privateType = isPrivate ? 1 : 0
+            if !isEdit {
+                Api.postCircleNew(title, content: content, img: self.uploadUrl, privateType: privateType, dream: self.idDream) { json in
+                    if json != nil {
+                        var id = json!["id"] as! String
+                        var postdate = json!["postdate"] as! String
+                        var success = json!["success"] as! String
+                        if success == "1" {
+                            var title = self.field1.text
+                            SQLCircleListInsert(id, title, self.uploadUrl, postdate)
+                            self.navigationController?.popToRootViewControllerAnimated(true)
+                        }
+                    }
+                }
+            } else {
+                Api.postCircleEdit(title, content: content, img: self.uploadUrl, privateType: privateType, ID: self.idCircle) { json in
+                    if json != nil {
+                        self.delegate?.editCircle(privateType, editTitle: self.field1.text, editDes: self.field2.text, editImage: self.uploadUrl)
+                        self.navigationController?.popViewControllerAnimated(true)
                     }
                 }
             }
         }
     }
     
-    func editCircleOK(){
-        var title = self.field1?.text
-        var content = self.field2.text
-        if content == "梦境简介（可选）" {
-            content = ""
-        }
-        if title == "" {
-            self.field1!.becomeFirstResponder()
-            self.view.showTipText("你的梦境还没有名字...", delay: 2)
-        }else if self.uploadUrl == "" {
-            self.view.showTipText("你的梦境还没有封面...", delay: 2)
-        }else{
-            self.navigationItem.rightBarButtonItems = buttonArray()
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            Api.postCircleEdit(title!, content: content, img: self.uploadUrl, privateType: self.editPrivate.toInt()!, ID: self.editId) { json in
-                if json != nil {
-                    self.delegate?.editCircle(self.editPrivate.toInt()!, editTitle: self.field1!.text, editDes: self.field2.text, editImage: self.uploadUrl)
-                    self.navigationController?.popViewControllerAnimated(true)
-                }
-            }
+    func handleKeyboardWillShowNotification(notification: NSNotification) {
+        if let h = notification.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size.height {
+            keyboardHeight = h
+            setupField()
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        if textView.text == "梦境简介（可选）" {
-            textView.text = ""
-        }
-        textView.textColor = UIColor.blackColor()
+    func handleKeyboardWillHideNotification(notification: NSNotification) {
+        keyboardHeight = 0
+        setupField()
     }
     
-    func onTagSelected(tag: String, tagType: Int, dreamType: Int) {
-        self.labelTag?.text = tag
-        self.tagType = tagType
-        self.dreamType = dreamType
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view .isKindOfClass(UITableView) || touch.view .isKindOfClass(UITableViewCell) {
+            return false
+        }
+        
+        return true
     }
+    
 }

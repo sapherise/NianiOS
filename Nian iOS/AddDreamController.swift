@@ -16,7 +16,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var uploadWait: UIActivityIndicatorView?
+    @IBOutlet weak var uploadWait: UIActivityIndicatorView!
     @IBOutlet weak var field1: UITextField!  //title text field
     @IBOutlet weak var field2: SZTextView!
     @IBOutlet weak var tokenView: TITokenFieldView!
@@ -109,7 +109,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.contentMode = .ScaleToFill
             self.imageDreamHead.image = img
-            setCacheImage(url, img, 150)
+            setCacheImage(url, img, 0)
             self.uploadWait!.stopAnimating()
         })
         uy.failBlocker = ({(error: NSError!) in
@@ -181,9 +181,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
         
         self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
-        self.imageDreamHead.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
-        self.imageDreamHead.layer.borderWidth = 0.5
-        self.imageDreamHead.layer.cornerRadius = 4.0
+        self.imageDreamHead.layer.cornerRadius = 8.0
         self.imageDreamHead.layer.masksToBounds = true
         
         self.scrollView.setWidth(globalWidth)
@@ -198,14 +196,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.tokenView.setY(CGRectGetMaxY(self.field2.frame))
         self.tokenView.setWidth(globalWidth)
         self.seperatorView.setWidth(globalWidth)
+        self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
         
         self.view.backgroundColor = UIColor.whiteColor()
-        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
-        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0x99/255.0, green: 0x99/255.0, blue: 0x99/255.0, alpha: 1)])
+//        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
+        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         
         self.field2.attributedPlaceholder = NSAttributedString(string: "记本简介（可选）" ,
                                                             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
-                                                                NSForegroundColorAttributeName: UIColor(red: 0x99/255.0, green: 0x99/255.0, blue: 0x99/255.0, alpha: 1)])
+                                                                NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field2.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         self.field2.delegate = self
         
         self.scrollView.delegate = self
@@ -221,6 +222,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         } else {
             setPrivate.image = UIImage(named: "lock")
         }
+        
+        uploadWait.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        uploadWait.center = imageDreamHead.center
+        uploadWait.color = UIColor(red:0.6, green:0.6, blue:0.6, alpha:0.6)
     
         //设置 tag view ---- 引用了第三方库
         tokenView.delegate = self
@@ -229,7 +234,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
         tokenView.tokenField.setPromptText("     ")
         tokenView.tokenField.tokenLimit = 20;
-        tokenView.tokenField.placeholder = "按回车输入多个标签"
+        tokenView.tokenField.placeholder = "添加标签"
         tokenView.canCancelContentTouches = false
         tokenView.delaysContentTouches = false
         tokenView.scrollEnabled = false
@@ -247,7 +252,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             self.uploadUrl = self.editImage
             var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            self.imageDreamHead.setImage(url, placeHolder: UIColor(red:0.9, green:0.89, blue:0.89, alpha:1))
+            imageDreamHead.setImage(url, placeHolder: IconColor, bool: false)
             var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
@@ -462,11 +467,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             }
         }
     }
-    
-    func textViewDidBeginEditing(textView: UITextView) {
-        textView.textColor = UIColor.blackColor()
-    }
-    
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view .isKindOfClass(UITableView) || touch.view .isKindOfClass(UITableViewCell) {

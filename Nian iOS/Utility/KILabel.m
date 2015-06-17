@@ -247,7 +247,7 @@ NSString * const KILabelLinkKey = @"link";
     
     if (!attributes)
     {
-        attributes = @{NSForegroundColorAttributeName : self.tintColor};
+        attributes = @{NSForegroundColorAttributeName : [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1]};
     }
     
     return attributes;
@@ -566,7 +566,7 @@ NSString * const KILabelLinkKey = @"link";
 {
     // Don't call super implementation. Might want to uncomment this out when
     // debugging layout and rendering problems.
-    // [super drawTextInRect:rect];
+//     [super drawTextInRect:rect];
     
     // Calculate the offset of the text in the view
     NSRange glyphRange = [_layoutManager glyphRangeForTextContainer:_textContainer];

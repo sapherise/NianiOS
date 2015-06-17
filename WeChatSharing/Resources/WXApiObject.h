@@ -119,7 +119,6 @@ enum WXAPISupport {
  * @see onResp
  */
 @interface SendAuthResp : BaseResp
-/** todo */
 @property (nonatomic, retain) NSString* code;
 /** 第三方程序发送时用来标识其请求的唯一性的标志，由第三方程序调用sendReq时传入，由微信终端回传
  * @note state字符串长度不能超过1K
@@ -249,9 +248,6 @@ enum WXAPISupport {
  * @note 大小不能超过32K
  */
 @property (nonatomic, retain) NSData   *thumbData;
-/** todo
- * @note 长度不能超过64字节
- */
 @property (nonatomic, retain) NSString *mediaTagName;
 /**
  *
@@ -421,7 +417,7 @@ enum WXAPISupport {
 
 @end
 
-/*! @brief todo
+/*! @brief
  *
  * @see WXMediaMessage
  */

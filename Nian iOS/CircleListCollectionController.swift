@@ -18,38 +18,24 @@ class CircleListCollectionController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.setupCollectionViewLayout()
-        self.collectionView.addHeaderWithCallback{
-            self.load()
-        }
-        
-        self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearch"))
-        labelAdd.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAdd"))
+        setupViews()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
         navHide()
         self.navigationController?.interactivePopGestureRecognizer.enabled = false
-        
         load()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Poll", object: nil)
         globalViewFilmExist = false
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     func onSearch() {
@@ -62,42 +48,34 @@ class CircleListCollectionController: UIViewController {
     }
     
     func load() {
-        var safeuid = SAUid()
-        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-        
-        if errCircle != nil {
-            self.collectionView.headerEndRefreshing()
-            return
-        }
-        
-        self.dataArray.removeAllObjects()
-        
-        for row in resultCircle {
-            var id = (row["circle"]?.asString())!
-            var img = ""
-            var title = "梦境"
-            
-            let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-            
-            if resultDes.count > 0 {
-                for row in resultDes {
-                    img = (row["image"]?.asString())!
-                    title = (row["title"]?.asString())!
+        go {
+            var safeuid = SAUid()
+            let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+            self.dataArray.removeAllObjects()
+            for row in resultCircle {
+                var id = (row["circle"]?.asString())!
+                var img = ""
+                var title = "梦境"
+                let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                if resultDes.count > 0 {
+                    for row in resultDes {
+                        img = (row["image"]?.asString())!
+                        title = (row["title"]?.asString())!
+                    }
                 }
+                var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                self.dataArray.addObject(data)
             }
-            
-            var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-            
-            self.dataArray.addObject(data)
+            var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
+            self.dataArray.addObject(dataBBS)
+            back {
+                self.collectionView.reloadData()
+                self.collectionView.layoutSubviews()
+            }
         }
-        
-        var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
-        self.dataArray.addObject(dataBBS)
-        self.collectionView.reloadData()
-        self.collectionView.headerEndRefreshing()
     }
     
-    func setupCollectionViewLayout() {
+    func setupViews() {
         let flowLayout = UICollectionViewFlowLayout()
         var width = (self.view.bounds.width - 48) / 2
         flowLayout.minimumInteritemSpacing = 0.0
@@ -105,6 +83,8 @@ class CircleListCollectionController: UIViewController {
         flowLayout.itemSize = CGSize(width: width, height: 182)
         flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         self.collectionView.collectionViewLayout = flowLayout
+        self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearch"))
+        labelAdd.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAdd"))
     }
     
     
@@ -118,25 +98,58 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var identifier = "CircleCollectionCell"
-        var circleCollectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! CircleCollectionCell
-        circleCollectionCell.data = self.dataArray[indexPath.row] as? NSDictionary
-        
-        
-        return circleCollectionCell
+        var c = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! CircleCollectionCell
+        c.data = self.dataArray[indexPath.row] as? NSDictionary
+        c.btnStep.tag = indexPath.row
+        c.btnBBS.tag = indexPath.row
+        c.btnChat.tag = indexPath.row
+        c.btnStep.addTarget(self, action: "toStep:", forControlEvents: UIControlEvents.TouchUpInside)
+        c.btnBBS.addTarget(self, action: "toBBS:", forControlEvents: UIControlEvents.TouchUpInside)
+        c.btnChat.addTarget(self, action: "toChat:", forControlEvents: UIControlEvents.TouchUpInside)
+        return c
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let id = (self.dataArray[indexPath.row] as? NSDictionary)?.stringAttributeForKey("id") {
-            var vc = NewCircleController()
-            vc.id = id
-            vc.current = 0
-            vc.textTitle = (self.dataArray[indexPath.row] as? NSDictionary)!.stringAttributeForKey("title")
+        var data = dataArray[indexPath.row] as! NSDictionary
+        var id = data.stringAttributeForKey("id")
+        if id == "0" {
+            var vc = ExploreController()
             self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            toCircle(indexPath.row, tab: 2)
         }
-        
-        
-        
-        // TODO: 进入广场
+    }
+    
+    func toStep(sender: UIButton) {
+        var tag = sender.tag
+        toCircle(tag, tab: 0)
+    }
+    
+    func toBBS(sender: UIButton) {
+        var tag = sender.tag
+        toCircle(tag, tab: 1)
+    }
+    
+    func toChat(sender: UIButton) {
+        var tag = sender.tag
+        toCircle(tag, tab: 2)
+    }
+    
+    func toCircle(index: Int, tab: Int) {
+        go {
+            var vc = NewCircleController()
+            var data = self.dataArray[index] as! NSDictionary
+            var id = data.stringAttributeForKey("id")
+            var title = data.stringAttributeForKey("title")
+            vc.id = id
+            vc.current = tab
+            vc.textTitle = title
+            SD.executeChange("update circle set isread = 1 where circle = \(id) and owner = \(SAUid())")
+            back {
+                self.load()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
     
     func onAdd() {

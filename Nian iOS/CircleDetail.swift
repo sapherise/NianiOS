@@ -8,11 +8,11 @@
 
 import UIKit
 
-class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, editCircleDelegate, circleAddDelegate{
+class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, circleAddDelegate, editCircleDelegate{
     
     let identifier = "circledetailcell"
     let identifier2 = "circledetailtop"
-    var tableView:UITableView?
+    var tableView:UITableView!
     var dataArray = NSMutableArray()
     var Id:String = "1"
     var navView:UIView!
@@ -41,8 +41,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        self.setupViews()
-        self.SAReloadData()
+        setupViews()
+        setupRefresh()
+        tableView.headerBeginRefreshing()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -52,6 +53,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        viewBackFix()
         if globalWillCircleJoinReload == 1 {
             globalWillCircleJoinReload = 0
             self.onCircleJoinClick()
@@ -84,11 +86,13 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         titleLabel.text = "梦境资料"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
-        self.viewLoadingShow()
     }
     
-    func SAReloadData(){
+    func delegateLoad() {
+        load()
+    }
+    
+    func load(clear: Bool = true){
         Api.getCircleDetail(self.Id) { json in
             if json != nil {
                 self.viewLoadingHide()
@@ -110,8 +114,15 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 }else{
                     self.view.showTipText("这个梦境没人在...", delay: 2)
                 }
+                self.tableView.headerEndRefreshing()
                 self.tableView!.reloadData()
             }
+        }
+    }
+    
+    func setupRefresh() {
+        tableView.addHeaderWithCallback {
+            self.load()
         }
     }
     
@@ -135,10 +146,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     textPrivate = "需要验证后加入"
                 }
                 c.labelPrivate.text = textPrivate
-                if let tag = self.circleData?.stringAttributeForKey("tag").toInt() {
-                    self.theTag = tag - 1
-                    c.labelTag.text = V.Tags[self.theTag]
-                }
+                c.labelTag.text = "#\(self.Id)"
                 c.switchNotice.addTarget(self, action: "onSwitch:", forControlEvents: UIControlEvents.ValueChanged)
                 c.numLeftNum.text = "\(self.dataArray.count)"
                 c.numMiddleNum.text = self.textPercent
@@ -176,6 +184,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var desHeight = textContent.stringHeightWith(12,width:200)
                 c.labelDes.setHeight(desHeight)
                 c.labelDes.setY( 110 - desHeight / 2 )
+            } else {
+                c.hidden = true
             }
             self.topCell = c
             cell = c
@@ -437,7 +447,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var reason = json!["reason"] as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
-                    self.SAReloadData()
+                    self.load()
                 }else{
                     self.viewLoadingHide()
                     if  reason == "1" {
@@ -462,7 +472,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                 var reason = json!["reason"] as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
-                    self.SAReloadData()
+                    self.load()
                 }else{
                     self.viewLoadingHide()
                     if  reason == "1" {
@@ -507,15 +517,15 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func circleEdit(){
         if circleData != nil {
-            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-            addcircleVC.isEdit = 1
-            addcircleVC.editId = self.Id.toInt()!
-            addcircleVC.editTitle = self.editTitle
-            addcircleVC.editContent = self.editContent
-            addcircleVC.editImage = self.editImage
-            addcircleVC.editPrivate = self.thePrivate
-            addcircleVC.delegate = self
-            self.navigationController?.pushViewController(addcircleVC, animated: true)
+            var vc = AddCircleController(nibName: "AddCircle", bundle: nil)
+            vc.isEdit = true
+            vc.idCircle = self.Id
+            vc.titleCircle = self.editTitle
+            vc.uploadUrl = self.editImage
+            vc.content = self.editContent
+            vc.isPrivate = self.thePrivate == "1"
+            vc.delegate = self
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -633,8 +643,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.onViewCloseClick()
         globalWillCircleJoinReload = 1
         var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-//        adddreamVC.tagType = tag
-        //  todo
         self.navigationController?.pushViewController(adddreamVC, animated: true)
     }
     

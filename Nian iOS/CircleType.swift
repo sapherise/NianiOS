@@ -40,7 +40,7 @@ class CircleTypeCell: UITableViewCell {
         switch type {
         case "3":   textContent = "更新了记本"
             break
-        case "4":   textContent = "获得了成就"
+        case "4":   textContent = ""
             break
         case "5":   textContent = ""
             break

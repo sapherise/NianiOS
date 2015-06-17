@@ -9,63 +9,51 @@
 import UIKit
 
 class CircleCollectionCell: UICollectionViewCell {
-    @IBOutlet weak var textOval: UIImageView!   // 提示是否有新消息，    ---- 左
-    @IBOutlet weak var topicOval: UIImageView!  // 提示是否有新 topic   ---- 中
-    @IBOutlet weak var chatOval: UIImageView!   // 提示是否有新对话，    ---- 右
     @IBOutlet weak var imageHeadView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet var viewLine: UIView!
+    @IBOutlet var btnStep: UIButton!
+    @IBOutlet var btnBBS: UIButton!
+    @IBOutlet var btnChat: UIButton!
+    @IBOutlet var labelBBS: UILabel!
     
     var largeImageURL: String = ""
     var data: NSDictionary?
     
     override func awakeFromNib() {
-        self.layer.cornerRadius = 4.0
-        self.layer.masksToBounds = true
-        
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1).CGColor
-        
-        self.imageHeadView.layer.cornerRadius = 4.0
-        self.imageHeadView.layer.masksToBounds = true
-        self.imageHeadView.layer.borderWidth = 0.5
-        self.imageHeadView.layer.borderColor = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1).CGColor
-    }
-   
-    /**
-        画线和地下的阴影
-    
-    :param: rect
-    */
-    override func drawRect(rect: CGRect) {
-        var color = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1)
-        color.set()
-        
-        var shadowPath = UIBezierPath()
-        shadowPath.lineWidth = 1.0
-        shadowPath.moveToPoint(CGPointMake(0, 178))
-        shadowPath.addQuadCurveToPoint(CGPointMake(4.0, 182.0), controlPoint: CGPointMake(0, 182.0))
-        shadowPath.addLineToPoint(CGPointMake(self.frame.width - 4, 182.0))
-        shadowPath.addQuadCurveToPoint(CGPointMake(self.frame.width, 178.0), controlPoint: CGPointMake(self.frame.width, 182.0))
-        shadowPath.stroke()
-        
-        var seperatorLine = UIBezierPath()
-        seperatorLine.lineWidth = 0.5
-        seperatorLine.moveToPoint(CGPointMake(0, 137))
-        seperatorLine.addLineToPoint(CGPointMake(self.frame.width, 137))
-        seperatorLine.stroke()
+        back {
+            self.layer.cornerRadius = 4.0
+            self.layer.masksToBounds = true
+            
+            self.layer.borderWidth = 0.5
+            self.layer.borderColor = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1).CGColor
+            
+            self.imageHeadView.layer.cornerRadius = 4.0
+            self.imageHeadView.layer.masksToBounds = true
+            self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
+        }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        if data != nil {
+        self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
+        if self.data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")
             
             if id == "0" {
+                btnStep.hidden = true
+                btnBBS.hidden = true
+                btnChat.hidden = true
+                labelBBS.hidden = false
+                println(labelBBS.frame.origin)
                 self.imageHeadView.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
                 self.titleLabel.text = "广场"
             } else {
+                btnStep.hidden = false
+                btnBBS.hidden = false
+                btnChat.hidden = false
+                labelBBS.hidden = true
                 var img = self.data!.stringAttributeForKey("img")
                 if title == "梦境" {
                     Api.getCircleTitle(id) { json in
@@ -84,63 +72,56 @@ class CircleCollectionCell: UICollectionViewCell {
                     self.titleLabel.text = title
                     self.imageHeadView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
                 }
-                
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                
-                let (resultSet2, err2) = SD.executeQuery("select * from circle where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
-                
-                if err2 == nil {
-                    if resultSet2.count > 0 {
-                        for row in resultSet2 {
-                            var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
-                            var user = row["name"]!.asString()
-                            var content = row["content"]!.asString()
-                            var type = (row["type"]!.asString())
-                            var textContent = ""
-                            switch type {
-                            case "1":   textContent = ": \(content)"
-                            case "2":   textContent = "发来一张图片"
-                            case "3":   textContent = "更新了记本"
-                            case "4":   textContent = "获得了成就"
-                            case "5":   textContent = content
-                            case "6":   textContent = content
-                            case "7":   textContent = content
-                            default:    textContent = "触发了一个彩蛋"
-                            }
-                            
-                            break
-                        }
-                    } else {
-
-                    }
-                }
-                
-                let (resultSet, err) = SD.executeQuery("select id from circle where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
-                if err == nil {
-                    var count = resultSet.count
-                    if count == 0 {
-                        
-                    }else{
-                        
-                    }
-                }
+                self.setupBtn()
             }
         }
     }
     
-    // MARK: 处理 Button 的点击事件
-    
-    @IBAction func text(sender: UIButton) {
-       toNewCircle(0)
+    func setupBtn() {
+        if 1==1 {
+            var a = self.getNum(0)
+            var b = self.getNum(1)
+            var c = self.getNum(2)
+            if a > 0 {
+                self.btnStep.setTitle("\(a)", forState: .allZeros)
+                self.btnStep.setImage(nil, forState: UIControlState.allZeros)
+            } else {
+                self.btnStep.setTitle("", forState: .allZeros)
+                self.btnStep.setImage(UIImage(named: "text"), forState: UIControlState.allZeros)
+            }
+            if b > 0 {
+                self.btnBBS.setTitle("\(b)", forState: .allZeros)
+                self.btnBBS.setImage(nil, forState: UIControlState.allZeros)
+            } else {
+                self.btnBBS.setTitle("", forState: .allZeros)
+                self.btnBBS.setImage(UIImage(named: "topic"), forState: UIControlState.allZeros)
+            }
+            if c > 0 {
+                self.btnChat.setTitle("\(c)", forState: .allZeros)
+                self.btnChat.setImage(nil, forState: UIControlState.allZeros)
+            } else {
+                self.btnChat.setTitle("", forState: .allZeros)
+                self.btnChat.setImage(UIImage(named: "chat"), forState: UIControlState.allZeros)
+            }
+        }
     }
     
-    @IBAction func topic(sender: UIButton) {
-        toNewCircle(1)
-    }
-    
-    @IBAction func chat(sender: UIButton) {
-        toNewCircle(2)
+    func getNum(type: Int) -> Int {
+        var safeuid = SAUid()
+        var id = self.data!.stringAttributeForKey("id")
+        var word = ""
+        if type == 0 {
+            word = "and type = 3"
+        } else if type == 1 {
+            word = "and type = 4"
+        } else {
+            word = "and type != 4 and type != 3"
+        }
+        let (resultSet, err) = SD.executeQuery("select id from circle where circle='\(id)' and isread = 0 \(word) and owner = '\(safeuid)'")
+        if err == nil {
+            return min(resultSet.count, 99)
+        }
+        return 0
     }
     
     func toNewCircle(current: Int) {
@@ -152,30 +133,6 @@ class CircleCollectionCell: UICollectionViewCell {
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }
     }
-   
-    // TODO: 处理数据库消息
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
