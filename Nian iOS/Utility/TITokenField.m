@@ -1280,21 +1280,37 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
     // vPadding: 上下边填充距离
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    self.layer.cornerRadius = 4.0;
+    self.layer.masksToBounds = YES;
+    
+//    CGContextSaveGState(context);
+//    CGMutablePathRef pathRef = CGPathCreateMutable();
+//    CGPathAddRoundedRect(pathRef, NULL, rect, 4.0, 4.0);
+//    CGContextAddPath(context, pathRef);
 
 	BOOL drawHighlighted = (self.selected || self.highlighted);
     
-    UIBezierPath *rectanglePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius: 4.0];
-    UIColor *backgroundColor;
-    
     if (drawHighlighted) {
-        backgroundColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:0.2];
-        //  选中的背景颜色
+//        CGContextSetFillColor(context, (CGFloat[4]){0.42, 0.77, 0.93, 0.2});
+//        CGContextFillPath(context);
+//        CGContextSetStrokeColor(context, (CGFloat[4]){0.42, 0.77, 0.93, 1});
+//        CGContextStrokePath(context);
+        self.layer.backgroundColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:0.2].CGColor;
+        self.layer.borderWidth = 0.5;
+        self.layer.borderColor = [UIColor colorWithRed:0.42 green:0.77 blue:0.93 alpha:1].CGColor;
+
     } else {
-        backgroundColor = [UIColor whiteColor];
+//        CGContextSetStrokeColor(context, (CGFloat[4]){0.94, 0.94, 0.94, 1});
+//        CGContextStrokePath(context);
+//        CGContextSetFillColor(context, (CGFloat[4]){1, 1, 1, 1});
+//        CGContextFillPath(context);
+        self.layer.backgroundColor = [UIColor whiteColor].CGColor;
+        self.layer.borderWidth = 1;
+        self.layer.borderColor = [UIColor colorWithRed:0.94 green:0.94 blue:0.94 alpha:1].CGColor;
     }
     
-    [backgroundColor setFill];
-    [rectanglePath fill];
+//    CGContextRestoreGState(context);
 	
     NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
     textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -1312,12 +1328,17 @@ NSLineBreakMode const kLineBreakMode = NSLineBreakByTruncatingTail;
     
 
     [_title drawInRect:textBounds withAttributes:@{NSParagraphStyleAttributeName: textStyle, NSForegroundColorAttributeName: _fontColor, NSFontAttributeName: _font}];
-    
-    [_boardColor setStroke];
-    rectanglePath.lineWidth = self.boardWidth;
-    [rectanglePath stroke];
-
 }
+
+- (UIBezierPath *)drawBezierPath:(CGRect)rect context:(CGContextRef)context {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+
+    
+    
+    
+    return path;
+}
+
 
 #pragma mark Other
 - (NSString *)description {

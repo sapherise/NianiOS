@@ -38,7 +38,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     @IBOutlet var btnLike: UIButton!
     @IBOutlet var btnUnLike: UIButton!
     @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelContent: UILabel!
+    @IBOutlet var labelContent: KILabel!
     @IBOutlet var labelLike: UILabel!
     @IBOutlet var labelComment: UILabel!
     @IBOutlet var labelDream: UILabel!
@@ -113,8 +113,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             if content == "" {
                 height = 0
             }
+            
             self.labelContent.setHeight(height)
             self.labelContent.text = SADecode(content)
+            
             self.btnMore.tag = sid.toInt()!
             if comment != "0" {
                 comment = "\(comment) 回应"
