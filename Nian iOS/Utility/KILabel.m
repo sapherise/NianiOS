@@ -51,6 +51,11 @@ NSString * const KILabelLinkKey = @"link";
 // During a touch, range of text that is displayed as selected
 @property (nonatomic, assign) NSRange selectedRange;
 
+
+@property BOOL hasMentions;
+@property BOOL hasLinks;
+@property BOOL hasHashTags;
+
 @end
 
 #pragma mark - Implementation
@@ -120,6 +125,10 @@ NSString * const KILabelLinkKey = @"link";
     // By default we hilight the selected link during a touch to give feedback that we are
     // responding to touch.
     _selectedLinkBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+    
+    self.hasMentions = NO;
+    self.hasLinks = NO;
+    self.hasHashTags = NO;
     
     // Establish the text store with our current text
     [self updateTextStoreWithText];
@@ -286,7 +295,7 @@ NSString * const KILabelLinkKey = @"link";
         [self updateTextStoreWithAttributedString:[[NSAttributedString alloc] initWithString:@"" attributes:[self attributesFromProperties]]];
     }
     
-    [self setNeedsDisplay];
+//    [self setNeedsDisplay];
 }
 
 - (void)updateTextStoreWithAttributedString:(NSAttributedString *)attributedString
@@ -412,6 +421,8 @@ NSString * const KILabelLinkKey = @"link";
         NSRange matchRange = [match range];
         NSString *matchString = [text substringWithRange:matchRange];
         
+        self.hasMentions = YES;
+        
         if (![self ignoreMatch:matchString])
         {
             [rangesForUserHandles addObject:@{KILabelLinkTypeKey : @(KILinkTypeUserHandle),
@@ -445,6 +456,8 @@ NSString * const KILabelLinkKey = @"link";
         NSRange matchRange = [match range];
         NSString *matchString = [text substringWithRange:matchRange];
         
+        self.hasHashTags = YES;
+        
         if (![self ignoreMatch:matchString])
         {
             [rangesForHashtags addObject:@{KILabelLinkTypeKey : @(KILinkTypeHashtag),
@@ -460,37 +473,38 @@ NSString * const KILabelLinkKey = @"link";
 
 - (NSArray *)getRangesForURLs:(NSAttributedString *)text
 {
-    NSMutableArray *rangesForURLs = [[NSMutableArray alloc] init];;
+    NSString *_text = text.string;
+    NSMutableArray *rangesForURLs = [[NSMutableArray alloc] init];
     
     // Use a data detector to find urls in the text
-    NSError *error = nil;
-    NSDataDetector *detector = [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:&error];
+    static NSRegularExpression *regex = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error = nil;
+        regex = [[NSRegularExpression alloc] initWithPattern:kURLRegex options:0 error:&error];
+    });
     
-    NSString *plainText = text.string;
-    
-    NSArray *matches = [detector matchesInString:plainText
-                                         options:0
-                                           range:NSMakeRange(0, text.length)];
+    // Run the expression and get matches
+    NSArray *matches = [regex matchesInString:_text options:0 range:NSMakeRange(0, text.length)];
     
     // Add a range entry for every url we found
     for (NSTextCheckingResult *match in matches)
     {
         NSRange matchRange = [match range];
         
+        self.hasLinks = YES;
+        
         // If there's a link embedded in the attributes, use that instead of the raw text
         NSString *realURL = [text attribute:NSLinkAttributeName atIndex:matchRange.location effectiveRange:nil];
         if (realURL == nil)
-            realURL = [plainText substringWithRange:matchRange];
+            realURL = [_text substringWithRange:matchRange];
         
         if (![self ignoreMatch:realURL])
         {
-            if ([match resultType] == NSTextCheckingTypeLink)
-            {
-                [rangesForURLs addObject:@{KILabelLinkTypeKey : @(KILinkTypeURL),
-                                           KILabelRangeKey : [NSValue valueWithRange:matchRange],
-                                           KILabelLinkKey : realURL,
-                                        }];
-            }
+            [rangesForURLs addObject:@{KILabelLinkTypeKey : @(KILinkTypeURL),
+                                       KILabelRangeKey : [NSValue valueWithRange:matchRange],
+                                       KILabelLinkKey : realURL,
+                                    }];
         }
     }
     
@@ -568,13 +582,18 @@ NSString * const KILabelLinkKey = @"link";
     // debugging layout and rendering problems.
 //     [super drawTextInRect:rect];
     
-    // Calculate the offset of the text in the view
-    NSRange glyphRange = [_layoutManager glyphRangeForTextContainer:_textContainer];
-    CGPoint glyphsPosition = [self calcGlyphsPositionInView];
+    if (self.hasMentions || self.hasLinks || self.hasHashTags) {
     
-    // Drawing code
-    [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:glyphsPosition];
-    [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:glyphsPosition];
+    //     Calculate the offset of the text in the view
+        NSRange glyphRange = [_layoutManager glyphRangeForTextContainer:_textContainer];
+        CGPoint glyphsPosition = [self calcGlyphsPositionInView];
+        
+        // Drawing code
+        [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:glyphsPosition];
+        [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:glyphsPosition];
+    } else {
+        [super drawTextInRect:rect];
+    }
 }
 
 // Returns the XY offset of the range of glyphs from the view's origin

@@ -81,7 +81,10 @@ class WelcomeViewController: UIViewController {
     }
     
     func onPrivacyClick(){
-        self.navigationController!.pushViewController(WebViewController(), animated: true)
+        var web = WebViewController()
+        web.urlString = "http://nian.so/privacy.php"
+        web.webTitle = "隐私政策"
+        self.navigationController!.pushViewController(web, animated: true)
     }
     
     func login(){

@@ -114,26 +114,36 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 height = 0
             }
             
-            
             // setup label content , detect name && link
             self.labelContent.setHeight(height)
-            self.labelContent.text = SADecode(content)
+            self.labelContent.text = content.decode()
             
             self.labelContent.userHandleLinkTapHandler = ({
                 (label: KILabel, string: String, range: NSRange) in
                 var _string = string
                 _string.removeAtIndex(advance(string.startIndex, 0))
-
+                
+                var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+                var _frame = self.superview?.superview?.frame
+                spinner.frame.origin = CGPointMake(_frame!.width/2, _frame!.height/2)
+                self.superview?.superview?.addSubview(spinner)
+                
+                spinner.startAnimating()
+                
                 Api.postUserNickName(_string) {
                     json in
                     if json != nil {
                         let error = json!["error"] as! NSNumber
+                        spinner.stopAnimating()
                         
                         if error == 0 {
-                            let uid = json!["data"] as! String
-                            var UserVC = PlayerViewController()
-                            UserVC.Id = uid
-                            self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                            if let uid = json!["data"] as? String {
+                                var UserVC = PlayerViewController()
+                                UserVC.Id = uid
+                                self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                            }
+                        } else {
+                            self.showTipText("没有人叫这个名字...", delay: 2)
                         }
                     }
                 }
@@ -145,9 +155,15 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 
                 if !string.hasPrefix("http://") && !string.hasPrefix("https://") {
                     var urlString = "http://\(string)"
-                    UIApplication.sharedApplication().openURL(NSURL(string: urlString)!)
+                    var web = WebViewController()
+                    web.urlString = urlString
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
                 } else {
-                    UIApplication.sharedApplication().openURL(NSURL(string: string)!)
+                    var web = WebViewController()
+                    web.urlString = string
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
                 }
             })
             

@@ -24,6 +24,7 @@
  ***********************************************************************************/
 
 #import <UIKit/UIKit.h>
+//#import "URLRegex.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -94,6 +95,7 @@ typedef void (^KILinkTapHandler)(KILabel *label, NSString *string, NSRange range
 extern NSString * const KILabelLinkTypeKey;
 extern NSString * const KILabelRangeKey;
 extern NSString * const KILabelLinkKey;
+extern NSString * const kURLRegex;
 
 /**
  * A UILabel subclass that highlights links, hashtags and usernames and enables response to user
