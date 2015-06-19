@@ -125,8 +125,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 
                 var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
                 var _frame = self.superview?.superview?.frame
-                spinner.frame.origin = CGPointMake(_frame!.width/2, _frame!.height/2)
+                spinner.frame.origin = CGPointMake(_frame!.width/2 - 10, _frame!.height/2 - 10 + ((self.superview?.superview) as! UITableView).contentOffset.y)
                 self.superview?.superview?.addSubview(spinner)
+                self.superview?.superview?.bringSubviewToFront(spinner)
                 
                 spinner.startAnimating()
                 
@@ -135,6 +136,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                     if json != nil {
                         let error = json!["error"] as! NSNumber
                         spinner.stopAnimating()
+                        spinner.removeFromSuperview()
                         
                         if error == 0 {
                             if let uid = json!["data"] as? String {

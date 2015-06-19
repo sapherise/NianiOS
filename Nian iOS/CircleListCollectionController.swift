@@ -70,7 +70,7 @@ class CircleListCollectionController: UIViewController {
             self.dataArray.addObject(dataBBS)
             back {
                 self.collectionView.reloadData()
-                self.collectionView.layoutSubviews()
+//                self.collectionView.layoutSubviews(
             }
         }
     }
