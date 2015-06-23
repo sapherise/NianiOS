@@ -43,13 +43,22 @@ class CircleCollectionCell: UICollectionViewCell {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")
             
-            if id == "0" {
+            if id == "-1" {
                 btnStep.hidden = true
                 btnBBS.hidden = true
                 btnChat.hidden = true
                 labelBBS.hidden = false
                 self.imageHeadView.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
+                self.titleLabel.text = "梦境"
+                labelBBS.text = "加入一个梦境"
+            } else if id == "-2" {
+                btnStep.hidden = true
+                btnBBS.hidden = true
+                btnChat.hidden = true
+                labelBBS.hidden = false
+                self.imageHeadView.setImage("http://img.nian.so/dream/1_1435041936721.png!dream", placeHolder: IconColor)
                 self.titleLabel.text = "广场"
+                labelBBS.text = "念的留言板"
             } else {
                 btnStep.hidden = false
                 btnBBS.hidden = false
@@ -121,16 +130,6 @@ class CircleCollectionCell: UICollectionViewCell {
             return min(resultSet.count, 99)
         }
         return 0
-    }
-    
-    func toNewCircle(current: Int) {
-        if let id = self.data?.stringAttributeForKey("id") {
-            var vc = NewCircleController()
-            vc.id = id
-            vc.current = current
-            vc.textTitle = self.data!.stringAttributeForKey("title")
-            self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
-        }
     }
 }
 

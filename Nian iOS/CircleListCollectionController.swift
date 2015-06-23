@@ -49,9 +49,9 @@ class CircleListCollectionController: UIViewController {
     }
     
     func load() {
-        if !isLoading {
-            isLoading = true
-            go {
+        back {
+            if !self.isLoading {
+                self.isLoading = true
                 var safeuid = SAUid()
                 let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
                 self.dataArray.removeAllObjects()
@@ -69,13 +69,14 @@ class CircleListCollectionController: UIViewController {
                     var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
                     self.dataArray.addObject(data)
                 }
-                var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
-                self.dataArray.addObject(dataBBS)
-                back {
-                    self.collectionView.reloadData()
-                    self.collectionView.layoutSubviews()
-                    self.isLoading = false
+                if self.dataArray.count == 0 {
+                    var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
+                    self.dataArray.addObject(dataExplore)
                 }
+                var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
+                self.dataArray.addObject(dataBBS)
+                self.collectionView.reloadData()
+                self.isLoading = false
             }
         }
     }
@@ -117,7 +118,9 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var data = dataArray[indexPath.row] as! NSDictionary
         var id = data.stringAttributeForKey("id")
-        if id == "0" {
+        if id == "-1" {
+            onSearch()
+        } else if id == "-2" {
             var vc = ExploreController()
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
@@ -141,7 +144,6 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     }
     
     func toCircle(index: Int, tab: Int) {
-        go {
             var vc = NewCircleController()
             var data = self.dataArray[index] as! NSDictionary
             var id = data.stringAttributeForKey("id")
@@ -150,11 +152,8 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
             vc.current = tab
             vc.textTitle = title
             SD.executeChange("update circle set isread = 1 where circle = \(id) and owner = \(SAUid())")
-            back {
                 self.load()
                 self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
     }
     
     func onAdd() {

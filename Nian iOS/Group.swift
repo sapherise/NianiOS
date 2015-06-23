@@ -79,7 +79,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }
         Api.getBBS("0", page: page) { json in
             if json != nil {
-                println(json)
                 var data = json!["data"]
                 var arr = data!!["bbs"] as! NSArray
                 var top = data!!["top"] as? NSArray
