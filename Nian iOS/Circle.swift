@@ -26,11 +26,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
     var desHeight:CGFloat = 0
     var inputKeyboard:UITextField!
-    var keyboardView:UIView!
+    var keyboardView: SABottom!
     var viewBottom:UIView!
     var keyboardHeight:CGFloat = 0
     var imagePicker:UIImagePickerController?
-    var isCircle: Bool = true
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -53,11 +52,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         keyboardStartObserve()
-        if isCircle {
-            globalCurrentCircle = self.ID
-        }else{
             globalCurrentLetter = self.ID
-        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -147,13 +142,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var nib4 = UINib(nibName:"CircleImageCell", bundle: nil)
         self.tableview.registerNib(nib4, forCellReuseIdentifier: "CircleImageCell")
         
-        if isCircle {
-            var nib2 = UINib(nibName:"CircleType", bundle: nil)
-            var nib3 = UINib(nibName:"CircleDreamCell", bundle: nil)
-            self.tableview.registerNib(nib2, forCellReuseIdentifier: "CircleType")
-            self.tableview.registerNib(nib3, forCellReuseIdentifier: "CircleDreamCell")
-        }
-        
         
         var pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
         pan.delegate = self
@@ -166,8 +154,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         
         
         // 输入框
-        self.keyboardView = UIView(frame: CGRectMake(0, globalHeight - 44, globalWidth, 44))
-        self.keyboardView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+        
+        
+        self.keyboardView = (NSBundle.mainBundle().loadNibNamed("SABottom", owner: self, options: nil) as NSArray).objectAtIndex(0) as! SABottom
+        self.keyboardView.pointX = 0
+        self.keyboardView.pointY = globalHeight - 44
+        
         var inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
         inputLineView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
         self.keyboardView.addSubview(inputLineView)
@@ -201,12 +193,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
-        
-        if isCircle {
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onCircleDetailClick")
-            rightButton.image = UIImage(named:"newList")
-            self.navigationItem.rightBarButtonItem = rightButton
-        }
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
@@ -301,16 +287,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     //将内容发送至服务器
     func addReply(contentAfter:String, type:Int = 1){
         var content = SAEncode(contentAfter)
-        if isCircle {
-            Api.postCircleChat(self.ID, content: content, type: type) { json in
-                if json != nil {
-                    var success = json!["success"] as? String
-                    if success == "1" {
-                        self.tableUpdate(contentAfter)
-                    }
-                }
-            }
-        }else{
             Api.postLetterChat(self.ID, content: content, type: type) { json in
                 if json != nil {
                     var success = json!["success"] as! String
@@ -328,7 +304,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     }
                 }
             }
-        }
     }
     
     func SAloadData(clear: Bool = true){
@@ -339,44 +314,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
-        if self.isCircle {
-            var (resultSet, err) = SD.executeQuery("SELECT * FROM circle where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
-            if err == nil {
-                self.page++
-                var title: String?
-                for row in resultSet {
-                    var id = row["id"]?.asString()
-                    var uid = row["uid"]?.asString()
-                    var user = row["name"]?.asString()
-                    var cid = row["cid"]?.asString()
-                    var cname = row["cname"]?.asString()
-                    var content = row["content"]?.asString()
-                    var type = row["type"]?.asString()
-                    var lastdate = row["lastdate"]?.asString()
-                    var time = V.absoluteTime((lastdate! as NSString).doubleValue)
-                    var title = row["title"]?.asString()
-                    var data = NSDictionary(objects: [id!, uid!, user!, cid!, cname!, content!, type!, time, title!], forKeys: ["id", "uid", "user", "cid", "cname", "content", "type", "lastdate", "title"])
-                    self.dataArray.addObject(data)
-                    self.dataTotal++
-                }
-                var heightBefore = self.tableview.contentSize.height
-                self.tableview.reloadData()
-                var heightAfter = self.tableview.contentSize.height
-                if clear {
-                    var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0 {
-                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
-                    }
-                    if let v = (self.navigationItem.titleView as? UILabel) {
-                        v.text = self.circleTitle
-                    }
-                }else{
-                    var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                    self.tableview.contentOffset = CGPointMake(0, heightChange)
-                    self.animating = 0
-                }
-            }
-        }else{
             var (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
             if err == nil {
                 self.page++
@@ -410,7 +347,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.animating = 0
                 }
             }
-        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -453,27 +389,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.View.tag = index
             cell = c
-        }else if type == "3" {
-            let (resultDes, err) = SD.executeQuery("select * from step where sid = '\(cid)' limit 1")
-            if resultDes.count == 0 {
-                var c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
-                c.data = data
-                c.textContent.tag = index
-                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-                c.View.tag = index
-                c.isDream = 1
-                cell = c
-            }else{
-                var c = tableView.dequeueReusableCellWithIdentifier("CircleDreamCell", forIndexPath: indexPath) as! CircleDreamCell
-                c.data = data
-                c.textContent.tag = index
-                c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-                c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-                c.View.tag = index
-                cell = c
-            }
-        }else{
+        } else {
             var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as! CircleTypeCell
             c.data = data
             cell = c
@@ -572,9 +488,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if let type = data.objectForKey("type") as? String {
             if type == "2" {
                 return CircleImageCell.cellHeightByData(data)
-            }else if type == "3" {
-                return CircleDreamCell.cellHeightByData(data)
-            }else{
+            } else {
                 return CircleBubbleCell.cellHeightByData(data)
             }
         }
@@ -662,7 +576,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var info: Dictionary = notification.userInfo!
         var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
         self.keyboardHeight = keyboardSize.height
-        self.keyboardView.setY( globalHeight - self.keyboardHeight - 44 )
+        self.keyboardView.pointY = globalHeight - self.keyboardHeight - 44
+        self.keyboardView.layoutSubviews()
         var heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
         var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.tableview.setHeight( heightScroll )
@@ -672,7 +587,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func keyboardWillBeHidden(notification: NSNotification){
         var heightScroll = globalHeight - 44 - 64
         var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
-        self.keyboardView.setY( globalHeight - 44 )
+        self.keyboardView.pointY = globalHeight - 44
+        self.keyboardView.layoutSubviews()
         self.tableview.setHeight(heightScroll)
     }
 }

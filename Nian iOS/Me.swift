@@ -259,7 +259,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var index = indexPath.row
             var data = self.dataArray[index] as! NSDictionary
             var letterVC = CircleController()
-            letterVC.isCircle = false
             if let id = data.stringAttributeForKey("id").toInt() {
                 var title = data.stringAttributeForKey("title")
                 letterVC.ID = id

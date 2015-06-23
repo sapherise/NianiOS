@@ -38,8 +38,6 @@
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
 		1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6161975729100F55389 /* RefreshHeaderView.swift */; };
 		1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6171975729100F55389 /* UIScrollView+Refresh.swift */; };
-		12521B7B1AA85FC3006FEC6D /* CircleDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */; };
-		12521B7D1AA85FCD006FEC6D /* CircleDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */; };
 		1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C2FB1A1DF0C0003D4ECF /* Player.swift */; };
 		1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */; };
 		1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */; };
@@ -239,8 +237,6 @@
 		1251D6151975729100F55389 /* RefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshFooterView.swift; sourceTree = "<group>"; };
 		1251D6161975729100F55389 /* RefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHeaderView.swift; sourceTree = "<group>"; };
 		1251D6171975729100F55389 /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
-		12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDreamCell.swift; sourceTree = "<group>"; };
-		12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleDreamCell.xib; sourceTree = "<group>"; };
 		1253C2FB1A1DF0C0003D4ECF /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCellTop.swift; sourceTree = "<group>"; };
 		1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerCellTop.xib; sourceTree = "<group>"; };
@@ -783,8 +779,6 @@
 				1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */,
 				128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */,
 				128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */,
-				12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */,
-				12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */,
 				128C4E381A503C54000D2B7C /* CircleType.swift */,
 				128C4E361A5038C3000D2B7C /* CircleType.xib */,
 				1271550B1A3FE7F200E27EC5 /* 梦境资料 */,
@@ -1197,7 +1191,6 @@
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
-				12521B7D1AA85FCD006FEC6D /* CircleDreamCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
@@ -1316,7 +1309,6 @@
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
 				1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */,
-				12521B7B1AA85FC3006FEC6D /* CircleDreamCell.swift in Sources */,
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,

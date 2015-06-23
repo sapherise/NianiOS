@@ -15,19 +15,18 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     var tableView:UITableView?
     var dataArray = NSMutableArray()
     var dataArray2 = NSMutableArray()
-    var page :Int = 0
+    var page :Int = 1
     var Id:String = "1"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupRefresh()
-        load()
+        tableView?.headerBeginRefreshing()
     }
     
     override func viewWillDisappear(animated: Bool){
         super.viewWillDisappear(animated)
-        self.viewLoadingHide()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -67,8 +66,6 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBS")
         rightButton.image = UIImage(named:"plus")
         self.navigationItem.rightBarButtonItem = rightButton
-        
-        self.viewLoadingShow()
     }
     
     func addBBS() {
@@ -78,11 +75,11 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func load(clear: Bool = true) {
         if clear {
-            page = 0
+            page = 1
         }
         Api.getBBS("0", page: page) { json in
             if json != nil {
-                self.viewLoadingHide()
+                println(json)
                 var data = json!["data"]
                 var arr = data!!["bbs"] as! NSArray
                 if clear {

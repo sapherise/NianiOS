@@ -15,6 +15,7 @@ class CircleListCollectionController: UIViewController {
     @IBOutlet weak var labelAdd: UILabel!
     
     var dataArray = NSMutableArray()
+    var isLoading: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,29 +49,33 @@ class CircleListCollectionController: UIViewController {
     }
     
     func load() {
-        go {
-            var safeuid = SAUid()
-            let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-            self.dataArray.removeAllObjects()
-            for row in resultCircle {
-                var id = (row["circle"]?.asString())!
-                var img = ""
-                var title = "梦境"
-                let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-                if resultDes.count > 0 {
-                    for row in resultDes {
-                        img = (row["image"]?.asString())!
-                        title = (row["title"]?.asString())!
+        if !isLoading {
+            isLoading = true
+            go {
+                var safeuid = SAUid()
+                let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+                self.dataArray.removeAllObjects()
+                for row in resultCircle {
+                    var id = (row["circle"]?.asString())!
+                    var img = ""
+                    var title = "梦境"
+                    let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                    if resultDes.count > 0 {
+                        for row in resultDes {
+                            img = (row["image"]?.asString())!
+                            title = (row["title"]?.asString())!
+                        }
                     }
+                    var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                    self.dataArray.addObject(data)
                 }
-                var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-                self.dataArray.addObject(data)
-            }
-            var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
-            self.dataArray.addObject(dataBBS)
-            back {
-                self.collectionView.reloadData()
-                self.collectionView.layoutSubviews()
+                var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
+                self.dataArray.addObject(dataBBS)
+                back {
+                    self.collectionView.reloadData()
+                    self.collectionView.layoutSubviews()
+                    self.isLoading = false
+                }
             }
         }
     }

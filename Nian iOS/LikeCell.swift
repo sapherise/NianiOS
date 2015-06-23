@@ -88,7 +88,6 @@ class LikeCell: MKTableViewCell {
     func onLetterClick() {
         if let uid = data.stringAttributeForKey("uid").toInt() {
             var vc = CircleController()
-            vc.isCircle = false
             vc.ID = uid
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }

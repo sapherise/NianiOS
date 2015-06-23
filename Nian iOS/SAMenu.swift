@@ -22,8 +22,7 @@ class SAMenu: UIView {
         viewMiddle.tag = 1
         viewRight.tag = 2
         viewLeft.textColor = SeaColor
-        viewLineBottom.setWidth(globalWidth)
-        viewLineBottom.setX(160 - globalWidth/2)
+        viewLineBottom.frame = CGRectMake(160 - globalWidth/2, 39.5, globalWidth, 0.5)
     }
     
     override func layoutSubviews() {
