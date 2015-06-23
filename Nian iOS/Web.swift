@@ -45,10 +45,20 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
+        
+        viewLoadingShow()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews(urlString, title: webTitle)
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        viewLoadingHide()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.viewLoadingHide()
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {

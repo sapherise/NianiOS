@@ -82,10 +82,16 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 println(json)
                 var data = json!["data"]
                 var arr = data!!["bbs"] as! NSArray
+                var top = data!!["top"] as? NSArray
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
-                for data: AnyObject in arr {
+                if top != nil {
+                    for data in top! {
+                        self.dataArray.addObject(data)
+                    }
+                }
+                for data in arr {
                     self.dataArray.addObject(data)
                 }
                 self.tableView?.reloadData()

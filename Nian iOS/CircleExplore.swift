@@ -75,7 +75,6 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.tableView!.setFooterHidden(false)
         Api.getCircleExplore("0"){ json in
             if json != nil {
-                println(json)
                 var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
