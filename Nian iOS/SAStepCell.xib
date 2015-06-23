@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="438"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nxi-zM-L6x" id="kE4-Ol-CVT">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="437.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hfy-Ik-GGq">
@@ -42,7 +42,7 @@
                         <rect key="frame" x="20" y="77" width="280" height="221"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QFB-Pf-uQa">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QFB-Pf-uQa" customClass="KILabel">
                         <rect key="frame" x="20" y="318" width="280" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -159,7 +159,7 @@
                 <outlet property="imageHead" destination="Hfy-Ik-GGq" id="Nfo-3i-1tn"/>
                 <outlet property="imageHolder" destination="Q6N-Zz-AKw" id="3N3-1p-9Oe"/>
                 <outlet property="labelComment" destination="bpT-v0-Xdd" id="ALf-VU-tfa"/>
-                <outlet property="labelContent" destination="QFB-Pf-uQa" id="Vhp-4p-0FY"/>
+                <outlet property="labelContent" destination="QFB-Pf-uQa" id="Krh-7J-Pph"/>
                 <outlet property="labelDream" destination="OO1-kA-hFx" id="H6o-xj-ULj"/>
                 <outlet property="labelLike" destination="VRe-0O-EcS" id="6fD-ja-xR1"/>
                 <outlet property="labelName" destination="RaU-Rm-cQH" id="r7G-Tb-wOh"/>
@@ -167,7 +167,7 @@
                 <outlet property="viewLine" destination="fC1-fX-zWk" id="DyE-3F-P3n"/>
                 <outlet property="viewMenu" destination="GPc-10-oYe" id="MSZ-Az-ylM"/>
             </connections>
-            <point key="canvasLocation" x="212" y="312"/>
+            <point key="canvasLocation" x="269" y="563"/>
         </tableViewCell>
     </objects>
     <resources>

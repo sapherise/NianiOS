@@ -567,6 +567,11 @@ struct Api {
         V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
     }
     
+    // MARK: 通过 user nick Name 获得 User id
+    static func postUserNickName(name: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson_AFN("http://api.nian.so/user/username?uid=\(s_uid)&&shell=\(s_shell)", content: ["username": name], callback: callback)
+    }
     
     static func postDeviceToken(callback: V.StringCallback) {
         loadCookies()

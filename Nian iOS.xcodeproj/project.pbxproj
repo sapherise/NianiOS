@@ -172,10 +172,12 @@
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
+		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
+		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */; };
 		C4B6B6731B271EBD00A5FA26 /* CircleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */; };
@@ -386,10 +388,14 @@
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
+		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
+		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
+		C4A380771B32C4A9005EC0AA /* URLRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRegex.h; sourceTree = "<group>"; };
+		C4A380781B32C4A9005EC0AA /* URLRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRegex.m; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
 		C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleCollectionList.storyboard; sourceTree = "<group>"; };
@@ -938,6 +944,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C450C5121B2FFF2D0024F4DE /* KILabel */,
 				C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */,
 				C4077BC01B04A5FB004E0D03 /* TITokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
@@ -1062,6 +1069,17 @@
 				C4AFF0441B0F2BCD00321479 /* TITokenField.m */,
 			);
 			name = TITokenView;
+			sourceTree = "<group>";
+		};
+		C450C5121B2FFF2D0024F4DE /* KILabel */ = {
+			isa = PBXGroup;
+			children = (
+				C450C5131B2FFF3D0024F4DE /* KILabel.h */,
+				C450C5141B2FFF3D0024F4DE /* KILabel.m */,
+				C4A380771B32C4A9005EC0AA /* URLRegex.h */,
+				C4A380781B32C4A9005EC0AA /* URLRegex.m */,
+			);
+			name = KILabel;
 			sourceTree = "<group>";
 		};
 		C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */ = {
@@ -1349,6 +1367,7 @@
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
+				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */,
@@ -1385,6 +1404,7 @@
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
+				C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */,
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
@@ -1476,7 +1496,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -1515,7 +1534,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
@@ -1566,7 +1584,6 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nian iOS/Nian iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
@@ -1615,7 +1632,6 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nian iOS/Nian iOS-Bridging-Header.h";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};

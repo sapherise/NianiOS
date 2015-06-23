@@ -38,7 +38,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     @IBOutlet var btnLike: UIButton!
     @IBOutlet var btnUnLike: UIButton!
     @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelContent: UILabel!
+    @IBOutlet var labelContent: KILabel!
     @IBOutlet var labelLike: UILabel!
     @IBOutlet var labelComment: UILabel!
     @IBOutlet var labelDream: UILabel!
@@ -113,8 +113,64 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             if content == "" {
                 height = 0
             }
+            
+            // setup label content , detect name && link
             self.labelContent.setHeight(height)
-            self.labelContent.text = SADecode(content)
+            self.labelContent.text = content.decode()
+            
+            self.labelContent.userHandleLinkTapHandler = ({
+                (label: KILabel, string: String, range: NSRange) in
+                var _string = string
+                _string.removeAtIndex(advance(string.startIndex, 0))
+                
+                var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+                var _frame = self.superview?.superview?.frame
+                spinner.frame.origin = CGPointMake(_frame!.width/2 - 10, _frame!.height/2 - 10 + ((self.superview?.superview) as! UITableView).contentOffset.y)
+                self.superview?.superview?.addSubview(spinner)
+                self.superview?.superview?.bringSubviewToFront(spinner)
+                
+                spinner.startAnimating()
+                
+                Api.postUserNickName(_string) {
+                    json in
+                    if json != nil {
+                        let error = json!["error"] as! NSNumber
+                        spinner.stopAnimating()
+                        spinner.removeFromSuperview()
+                        
+                        if error == 0 {
+                            if let uid = json!["data"] as? String {
+                                var UserVC = PlayerViewController()
+                                UserVC.Id = uid
+                                self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                            }
+                        } else {
+                            self.showTipText("没有人叫这个名字...", delay: 2)
+                        }
+                    }
+                }
+                
+            })
+            
+            self.labelContent.urlLinkTapHandler = ({
+                (label: KILabel, string: String, range: NSRange) in
+                
+                if !string.hasPrefix("http://") && !string.hasPrefix("https://") {
+                    var urlString = "http://\(string)"
+                    var web = WebViewController()
+                    web.urlString = urlString
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
+                } else {
+                    var web = WebViewController()
+                    web.urlString = string
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
+                }
+            })
+            
+            
+            
             self.btnMore.tag = sid.toInt()!
             if comment != "0" {
                 comment = "\(comment) 回应"

@@ -46,9 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     
     func applicationDidEnterBackground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
-        
-        
-        
     }
     
     func applicationWillEnterForeground(application: UIApplication) {

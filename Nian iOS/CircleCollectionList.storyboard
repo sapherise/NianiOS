@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zxb-E8-VtG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zxb-E8-VtG">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -66,7 +66,7 @@
                                 </constraints>
                             </view>
                             <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5n3-HI-RGe">
-                                <rect key="frame" x="0.0" y="64" width="600" height="492"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewLayout key="collectionViewLayout" id="HgE-Bq-7dL"/>
                                 <cells>
@@ -195,7 +195,7 @@
                             <constraint firstAttribute="trailing" secondItem="5n3-HI-RGe" secondAttribute="trailing" id="X7B-uf-d3h"/>
                             <constraint firstItem="lLy-nB-UUY" firstAttribute="leading" secondItem="Ur8-2O-6Cw" secondAttribute="leading" id="hAL-xw-Z80"/>
                             <constraint firstItem="5n3-HI-RGe" firstAttribute="top" secondItem="lLy-nB-UUY" secondAttribute="bottom" id="lXg-HK-Yjs"/>
-                            <constraint firstItem="t2d-rg-LnV" firstAttribute="top" secondItem="5n3-HI-RGe" secondAttribute="bottom" constant="44" id="uwJ-5j-Sxn"/>
+                            <constraint firstItem="t2d-rg-LnV" firstAttribute="top" secondItem="5n3-HI-RGe" secondAttribute="bottom" constant="49" id="uwJ-5j-Sxn"/>
                         </constraints>
                     </view>
                     <connections>

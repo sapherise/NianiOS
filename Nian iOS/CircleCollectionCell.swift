@@ -22,7 +22,7 @@ class CircleCollectionCell: UICollectionViewCell {
     var data: NSDictionary?
     
     override func awakeFromNib() {
-        back {
+//        back {
             self.layer.cornerRadius = 4.0
             self.layer.masksToBounds = true
             
@@ -33,7 +33,7 @@ class CircleCollectionCell: UICollectionViewCell {
             
             self.imageHeadView.layer.cornerRadius = 4.0
             self.imageHeadView.layer.masksToBounds = true
-        }
+            self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
     }
     
     override func layoutSubviews() {
