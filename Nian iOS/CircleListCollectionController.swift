@@ -49,6 +49,7 @@ class CircleListCollectionController: UIViewController {
     
     func load() {
         go {
+            synchronized(self.dataArray){
             var safeuid = SAUid()
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
@@ -68,9 +69,9 @@ class CircleListCollectionController: UIViewController {
             }
             var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
             self.dataArray.addObject(dataBBS)
+            }  //synchronized
             back {
                 self.collectionView.reloadData()
-//                self.collectionView.layoutSubviews(
             }
         }
     }
@@ -161,7 +162,11 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     }
 }
 
-
+func synchronized(lock: AnyObject, closure: () -> ()) {
+    objc_sync_enter(lock)
+    closure()
+    objc_sync_exit(lock)
+}
 
 
 

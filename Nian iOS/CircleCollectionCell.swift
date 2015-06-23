@@ -21,17 +21,15 @@ class CircleCollectionCell: UICollectionViewCell {
     var data: NSDictionary?
     
     override func awakeFromNib() {
-//        back {
-            self.layer.cornerRadius = 4.0
-            self.layer.masksToBounds = true
-            
-            self.layer.borderWidth = 0.5
-            self.layer.borderColor = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1).CGColor
-            
-            self.imageHeadView.layer.cornerRadius = 4.0
-            self.imageHeadView.layer.masksToBounds = true
-            self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
-//        }
+        self.layer.cornerRadius = 4.0
+        self.layer.masksToBounds = true
+        
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1).CGColor
+        
+        self.imageHeadView.layer.cornerRadius = 4.0
+        self.imageHeadView.layer.masksToBounds = true
+        self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
     }
     
     override func layoutSubviews() {
