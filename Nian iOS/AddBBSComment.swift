@@ -41,6 +41,7 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         titleLabel.text = "回应话题"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
         self.TextView.setHeight(globalHeight-84)
         self.TextView.text = self.content
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))

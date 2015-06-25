@@ -97,7 +97,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
             if json != nil {
                 var data = json!["data"]
                 if clear {
-                    self.dataArrayTop = data!!["bbs"] as! NSDictionary
+                    if let bbs = data!!["bbs"] as? NSDictionary {
+                        self.dataArrayTop = bbs
+                    }
                     self.dataArray.removeAllObjects()
                 }
                 var comments = data!!["comments"] as! NSArray
@@ -110,6 +112,17 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 self.tableView.reloadData()
                 self.tableView.headerEndRefreshing()
                 self.tableView.footerEndRefreshing()
+                if self.dataArrayTop.count == 0 {
+                    var viewTop = viewEmpty(globalWidth, content: "这个话题\n不见了")
+                    viewTop.setY(40)
+                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    viewHolder.addSubview(viewTop)
+                    self.tableView.tableHeaderView = viewHolder
+                    self.tableView.setFooterHidden(true)
+                    self.navigationItem.rightBarButtonItems = []
+                } else {
+                    self.tableView.tableHeaderView = nil
+                }
                 self.page++
             }
         }
@@ -120,6 +133,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if dataArrayTop.count == 0 {
+            return 0
+        }
         if section == 0 {
             return 1
         } else {

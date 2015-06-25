@@ -608,7 +608,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         var letterVC = CircleController()
         if let id = self.Id.toInt() {
             letterVC.ID = id
-            letterVC.isCircle = false
             self.navigationController?.pushViewController(letterVC, animated: true)
         }
     }

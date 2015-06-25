@@ -17,6 +17,7 @@ class CircleCollectionCell: UICollectionViewCell {
     @IBOutlet var btnChat: UIButton!
     @IBOutlet var labelBBS: UILabel!
     
+    @IBOutlet weak var heightLine: NSLayoutConstraint!
     var largeImageURL: String = ""
     var data: NSDictionary?
     
@@ -27,6 +28,8 @@ class CircleCollectionCell: UICollectionViewCell {
         self.layer.borderWidth = 0.5
         self.layer.borderColor = UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1).CGColor
         
+        self.heightLine.constant = 0.5
+        
         self.imageHeadView.layer.cornerRadius = 4.0
         self.imageHeadView.layer.masksToBounds = true
         self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
@@ -34,19 +37,27 @@ class CircleCollectionCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
+//        self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
         if self.data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")
             
-            if id == "0" {
+            if id == "-1" {
                 btnStep.hidden = true
                 btnBBS.hidden = true
                 btnChat.hidden = true
                 labelBBS.hidden = false
-                println(labelBBS.frame.origin)
                 self.imageHeadView.setImage("http://img.nian.so/dream/1_1420533664.png!dream", placeHolder: IconColor)
+                self.titleLabel.text = "梦境"
+                labelBBS.text = "加入一个梦境"
+            } else if id == "-2" {
+                btnStep.hidden = true
+                btnBBS.hidden = true
+                btnChat.hidden = true
+                labelBBS.hidden = false
+                self.imageHeadView.setImage("http://img.nian.so/dream/1_1435041936721.png!dream", placeHolder: IconColor)
                 self.titleLabel.text = "广场"
+                labelBBS.text = "念的留言板"
             } else {
                 btnStep.hidden = false
                 btnBBS.hidden = false
@@ -76,7 +87,6 @@ class CircleCollectionCell: UICollectionViewCell {
     }
     
     func setupBtn() {
-        if 1==1 {
             var a = self.getNum(0)
             var b = self.getNum(1)
             var c = self.getNum(2)
@@ -101,7 +111,6 @@ class CircleCollectionCell: UICollectionViewCell {
                 self.btnChat.setTitle("", forState: .allZeros)
                 self.btnChat.setImage(UIImage(named: "chat"), forState: UIControlState.allZeros)
             }
-        }
     }
     
     func getNum(type: Int) -> Int {
@@ -120,16 +129,6 @@ class CircleCollectionCell: UICollectionViewCell {
             return min(resultSet.count, 99)
         }
         return 0
-    }
-    
-    func toNewCircle(current: Int) {
-        if let id = self.data?.stringAttributeForKey("id") {
-            var vc = NewCircleController()
-            vc.id = id
-            vc.current = current
-            vc.textTitle = self.data!.stringAttributeForKey("title")
-            self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
-        }
     }
 }
 

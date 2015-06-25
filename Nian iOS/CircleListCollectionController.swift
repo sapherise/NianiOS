@@ -15,6 +15,7 @@ class CircleListCollectionController: UIViewController {
     @IBOutlet weak var labelAdd: UILabel!
     
     var dataArray = NSMutableArray()
+    var isLoading: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +54,7 @@ class CircleListCollectionController: UIViewController {
             var safeuid = SAUid()
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
+                
             for row in resultCircle {
                 var id = (row["circle"]?.asString())!
                 var img = ""
@@ -63,15 +65,23 @@ class CircleListCollectionController: UIViewController {
                         img = (row["image"]?.asString())!
                         title = (row["title"]?.asString())!
                     }
+                    var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                    self.dataArray.addObject(data)
                 }
-                var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-                self.dataArray.addObject(data)
+            }  // for
+                
+            if self.dataArray.count == 0 {
+                var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
+                self.dataArray.addObject(dataExplore)
             }
-            var dataBBS = NSDictionary(objects: ["0", "0", "0"], forKeys: ["id", "img", "title"])
+            var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
             self.dataArray.addObject(dataBBS)
-            }  //synchronized
-            back {
+                
+            }  // synchronized
+            
+            back {  // back to main queue
                 self.collectionView.reloadData()
+                self.isLoading = false
             }
         }
     }
@@ -87,8 +97,6 @@ class CircleListCollectionController: UIViewController {
         self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearch"))
         labelAdd.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAdd"))
     }
-    
-    
 }
 
 extension CircleListCollectionController: UICollectionViewDataSource, UICollectionViewDelegate  {
@@ -113,7 +121,9 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var data = dataArray[indexPath.row] as! NSDictionary
         var id = data.stringAttributeForKey("id")
-        if id == "0" {
+        if id == "-1" {
+            onSearch()
+        } else if id == "-2" {
             var vc = ExploreController()
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
@@ -137,7 +147,6 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     }
     
     func toCircle(index: Int, tab: Int) {
-        go {
             var vc = NewCircleController()
             var data = self.dataArray[index] as! NSDictionary
             var id = data.stringAttributeForKey("id")
@@ -146,11 +155,8 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
             vc.current = tab
             vc.textTitle = title
             SD.executeChange("update circle set isread = 1 where circle = \(id) and owner = \(SAUid())")
-            back {
                 self.load()
                 self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
     }
     
     func onAdd() {

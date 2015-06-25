@@ -38,8 +38,6 @@
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
 		1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6161975729100F55389 /* RefreshHeaderView.swift */; };
 		1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6171975729100F55389 /* UIScrollView+Refresh.swift */; };
-		12521B7B1AA85FC3006FEC6D /* CircleDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */; };
-		12521B7D1AA85FCD006FEC6D /* CircleDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */; };
 		1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C2FB1A1DF0C0003D4ECF /* Player.swift */; };
 		1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */; };
 		1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */; };
@@ -178,6 +176,9 @@
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
+		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
+		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
+		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
@@ -241,8 +242,6 @@
 		1251D6151975729100F55389 /* RefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshFooterView.swift; sourceTree = "<group>"; };
 		1251D6161975729100F55389 /* RefreshHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHeaderView.swift; sourceTree = "<group>"; };
 		1251D6171975729100F55389 /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
-		12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDreamCell.swift; sourceTree = "<group>"; };
-		12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleDreamCell.xib; sourceTree = "<group>"; };
 		1253C2FB1A1DF0C0003D4ECF /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCellTop.swift; sourceTree = "<group>"; };
 		1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerCellTop.xib; sourceTree = "<group>"; };
@@ -397,6 +396,9 @@
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
+		C47672E31B394A8C0011C9AC /* ForgetPwd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPwd.swift; sourceTree = "<group>"; };
+		C47672E41B394A8C0011C9AC /* ForgetPwd.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgetPwd.xib; sourceTree = "<group>"; };
+		C47672E81B394DC10011C9AC /* NIAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIAlert.swift; sourceTree = "<group>"; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
 		C4A380771B32C4A9005EC0AA /* URLRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRegex.h; sourceTree = "<group>"; };
 		C4A380781B32C4A9005EC0AA /* URLRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRegex.m; sourceTree = "<group>"; };
@@ -748,6 +750,8 @@
 			children = (
 				12BF5FF719BB478300DE0ABE /* Login.swift */,
 				12BF5FF919BB479900DE0ABE /* Login.xib */,
+				C47672E31B394A8C0011C9AC /* ForgetPwd.swift */,
+				C47672E41B394A8C0011C9AC /* ForgetPwd.xib */,
 			);
 			name = "登录";
 			sourceTree = "<group>";
@@ -789,8 +793,6 @@
 				1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */,
 				128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */,
 				128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */,
-				12521B7A1AA85FC3006FEC6D /* CircleDreamCell.swift */,
-				12521B7C1AA85FCD006FEC6D /* CircleDreamCell.xib */,
 				128C4E381A503C54000D2B7C /* CircleType.swift */,
 				128C4E361A5038C3000D2B7C /* CircleType.xib */,
 				1271550B1A3FE7F200E27EC5 /* 梦境资料 */,
@@ -950,6 +952,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C47672E71B394D3B0011C9AC /* NIALertView */,
 				C450C5121B2FFF2D0024F4DE /* KILabel */,
 				C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */,
 				C4077BC01B04A5FB004E0D03 /* TITokenView */,
@@ -1088,6 +1091,14 @@
 			name = KILabel;
 			sourceTree = "<group>";
 		};
+		C47672E71B394D3B0011C9AC /* NIALertView */ = {
+			isa = PBXGroup;
+			children = (
+				C47672E81B394DC10011C9AC /* NIAlert.swift */,
+			);
+			name = NIALertView;
+			sourceTree = "<group>";
+		};
 		C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1215,7 +1226,6 @@
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
-				12521B7D1AA85FCD006FEC6D /* CircleDreamCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
@@ -1228,6 +1238,7 @@
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
+				C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */,
 				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
 				1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
@@ -1334,7 +1345,6 @@
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
 				1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */,
-				12521B7B1AA85FC3006FEC6D /* CircleDreamCell.swift in Sources */,
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
@@ -1403,6 +1413,7 @@
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
 				12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */,
+				C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */,
 				12C354531AD5126F0078693F /* Badge.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
@@ -1424,6 +1435,7 @@
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
+				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
@@ -1539,7 +1551,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				METAL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_INCLUDE_PATHS = "";
 				VALIDATE_PRODUCT = YES;
@@ -1618,7 +1630,7 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 				);
 				New_Setting = "";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

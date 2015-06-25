@@ -125,7 +125,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         scrollView.addSubview(tableViewBBS)
         scrollView.addSubview(tableViewChat)
         tableViewStep.frame = CGRectMake(0, 0, globalWidth, globalHeight - 104)
-        tableViewBBS.frame = CGRectMake(globalWidth, 0, globalWidth, globalHeight - 104)
+        tableViewBBS.frame = CGRectMake(globalWidth, 0, globalWidth, globalHeight - 104 - 44)
         tableViewChat.frame = CGRectMake(globalWidth * 2, 0, globalWidth, globalHeight - 104 - 44)
         tableViewStep.backgroundColor = UIColor.whiteColor()
         tableViewBBS.backgroundColor = UIColor.whiteColor()

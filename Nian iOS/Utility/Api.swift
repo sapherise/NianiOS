@@ -37,6 +37,10 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/user.php?uid=\(s_uid)&myuid=\(s_uid)", callback: callback)
     }
     
+    static func postResetPwd(email: String, callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/password/reset/mail", content: ["email": email], callback: callback)
+    }
+    
     static func getCoinDetial(page: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/coindes.php?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
@@ -97,7 +101,6 @@ struct Api {
             },
             failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
         })
-        
     }
     
     // 搜索标签

@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
     @IBOutlet var inputEmail:UITextField!
     @IBOutlet var inputPassword:UITextField!
     @IBOutlet var holder:UIView!
+    @IBOutlet var forgetPwdLabel: UILabel!
     
     func setupViews(){
         self.viewBack()
@@ -37,12 +38,13 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         self.inputPassword.delegate = self
         
         self.holder.setX(globalWidth/2-140)
+        self.forgetPwdLabel.setX(globalWidth/2 - 100)
         
         let attributesDictionary = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)]
         self.inputEmail.attributedPlaceholder = NSAttributedString(string: "邮箱", attributes: attributesDictionary)
         self.inputPassword.attributedPlaceholder = NSAttributedString(string: "密码", attributes: attributesDictionary)
-        
         self.loginButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginAlert"))
+        self.forgetPwdLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toForgetPwd:"))
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
@@ -110,6 +112,10 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                 })
             })
         }
+    }
+    
+    func toForgetPwd(sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(ForgetPwd(nibName: "ForgetPwd", bundle: nil), animated: true)
     }
 
     func dismissKeyboard(sender:UITapGestureRecognizer){
