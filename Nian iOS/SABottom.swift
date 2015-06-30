@@ -17,8 +17,8 @@ class SABottom: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.setWidth(globalWidth)
         self.viewLine.setWidth(globalWidth)
+        self.setWidth(globalWidth)
         self.viewLine.setHeight(0.5)
     }
     
@@ -26,5 +26,6 @@ class SABottom: UIView {
         super.layoutSubviews()
         
         self.frame.origin = CGPointMake(pointX, pointY)
+
     }
 }
