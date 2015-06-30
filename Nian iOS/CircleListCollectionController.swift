@@ -22,11 +22,7 @@ class CircleListCollectionController: UIViewController {
         setupViews()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-    }
-    
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         navHide()
@@ -49,41 +45,47 @@ class CircleListCollectionController: UIViewController {
     }
     
     func load() {
-        go {
-            synchronized(self.dataArray){
-            var safeuid = SAUid()
-            let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-            self.dataArray.removeAllObjects()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            synchronized(self.dataArray) {
+                var safeuid = SAUid()
+                let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+                self.dataArray.removeAllObjects()
                 
-            for row in resultCircle {
-                var id = (row["circle"]?.asString())!
-                var img = ""
-                var title = "梦境"
-                let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-                if resultDes.count > 0 {
-                    for row in resultDes {
-                        img = (row["image"]?.asString())!
-                        title = (row["title"]?.asString())!
+                for row in resultCircle {
+                    var id = (row["circle"]?.asString())!
+                    var img = ""
+                    var title = "梦境"
+                    let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                    if resultDes.count > 0 {
+                        for row in resultDes {
+                            img = (row["image"]?.asString())!
+                            title = (row["title"]?.asString())!
+                        }
+                        var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                        self.dataArray.addObject(data)
                     }
-                    var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-                    self.dataArray.addObject(data)
-                }
-            }  // for
+                }  // for
                 
-            if self.dataArray.count == 0 {
-                var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
-                self.dataArray.addObject(dataExplore)
-            }
-            var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
-            self.dataArray.addObject(dataBBS)
+                if self.dataArray.count == 0 {
+                    var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
+                    self.dataArray.addObject(dataExplore)
+                }
+                var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
+                self.dataArray.addObject(dataBBS)
+                
+                for item in self.dataArray {
+                    println("self.dataArray = \(item as! NSDictionary)")
+                }
                 
             }  // synchronized
             
-            back {  // back to main queue
+            dispatch_async(dispatch_get_main_queue(), {
                 self.collectionView.reloadData()
-                self.isLoading = false
-            }
-        }
+                self.isLoading = false 
+                
+            })
+        
+        })
     }
     
     func setupViews() {
@@ -96,6 +98,14 @@ class CircleListCollectionController: UIViewController {
         self.collectionView.collectionViewLayout = flowLayout
         self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearch"))
         labelAdd.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAdd"))
+    }
+    
+    func onAdd() {
+        showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
+            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
+            self.navigationController?.pushViewController(addcircleVC, animated: true)
+            self.onFilmClose()
+        }
     }
 }
 
@@ -115,6 +125,8 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
         c.btnStep.addTarget(self, action: "toStep:", forControlEvents: UIControlEvents.TouchUpInside)
         c.btnBBS.addTarget(self, action: "toBBS:", forControlEvents: UIControlEvents.TouchUpInside)
         c.btnChat.addTarget(self, action: "toChat:", forControlEvents: UIControlEvents.TouchUpInside)
+//        c._layoutSubviews()
+        c.setNeedsLayout()
         return c
     }
     
@@ -155,24 +167,14 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
             vc.current = tab
             vc.textTitle = title
             SD.executeChange("update circle set isread = 1 where circle = \(id) and owner = \(SAUid())")
-                self.load()
-                self.navigationController?.pushViewController(vc, animated: true)
+        
+            self.load()
+            self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    func onAdd() {
-        showFilm("创建", prompt: "创建一个梦境\n需要花费 20 念币", button: "20 念币", transDirectly: false){ film in
-            var addcircleVC = AddCircleController(nibName: "AddCircle", bundle: nil)
-            self.navigationController?.pushViewController(addcircleVC, animated: true)
-            self.onFilmClose()
-        }
-    }
+
 }
 
-func synchronized(lock: AnyObject, closure: () -> ()) {
-    objc_sync_enter(lock)
-    closure()
-    objc_sync_exit(lock)
-}
+
 
 
 

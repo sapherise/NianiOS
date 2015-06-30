@@ -295,7 +295,6 @@ NSString * const KILabelLinkKey = @"link";
         [self updateTextStoreWithAttributedString:[[NSAttributedString alloc] initWithString:@"" attributes:[self attributesFromProperties]]];
     }
     
-//    [self setNeedsDisplay];
 }
 
 - (void)updateTextStoreWithAttributedString:(NSAttributedString *)attributedString
@@ -409,8 +408,9 @@ NSString * const KILabelLinkKey = @"link";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error = nil;
-        regex = [[NSRegularExpression alloc] initWithPattern:@"(?<!\\w)@([\\w\\_]+)?" options:0 error:&error];
+        regex = [[NSRegularExpression alloc] initWithPattern:@"@Sa|@[\u4e00-\u9fa5a-zA-Z0-9_-]{4,30}" options:0 error:&error];
     });
+    //@[\u4e00-\u9fa5a-zA-Z0-9_-]{4,30}  (?i)@[\u4e00-\u9fa5a-z0-9_-]{2,30}(?=\b)
     
     // Run the expression and get matches
     NSArray *matches = [regex matchesInString:text options:0 range:NSMakeRange(0, text.length)];

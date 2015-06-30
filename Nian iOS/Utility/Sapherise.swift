@@ -747,3 +747,14 @@ extension UIView {
     }
 }
 
+/**
+等价于 objective-c 里面的 synchonized 
+
+:param: lock    <#lock description#>
+:param: closure <#closure description#>
+*/
+public func synchronized(lock: AnyObject, closure: () -> ()) {
+    objc_sync_enter(lock)
+    closure()
+    objc_sync_exit(lock)
+}

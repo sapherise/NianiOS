@@ -498,6 +498,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     if circle == "\(globalCurrentCircle)" || uid == safeuid {
                                         isread = 1
                                     }
+                                    
+                                    let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                                    
+                                    if resultDes.count == 0 {
+                                        //TODO: 插入 circlelist
+                                       SQLCircleListInsert(id, title, "", time)
+                                    }
+                                    
+                                    
                                     SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
                                         if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                             Api.getCircleStatus(circle) { json in
@@ -513,7 +522,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                                     }
                                                 }
                                             }
-                                        } else{
+                                        } else {
                                             NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
                                         }
                                     }
@@ -527,8 +536,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                             }
                                         }
                                     }
-                                }else{
-                                    // 如果是私聊
+                                } else {
+                                    // 如果是私信
                                     shake()
                                     if uid == "\(globalCurrentLetter)" || uid == safeuid {
                                         isread = 1

@@ -44,12 +44,14 @@ class NIAlert: UIView {
         
         self.layer.opacity = 1.0
         self.layer.backgroundColor = UIColor(white: 0.0, alpha: 0.6).CGColor
+        
+        var tapGesture = UITapGestureRecognizer(target: self, action: "_removeSubView")
+        tapGesture.delegate = self
+        self.addGestureRecognizer(tapGesture)
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-//        self.dict = NSMutableDictionary()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -151,6 +153,28 @@ class NIAlert: UIView {
             animations: { () -> Void in
                 self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
             }, completion: nil)
+    }
+    
+    func _removeSubView() {
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            var newTransform = CGAffineTransformScale(self.transform, 1.2, 1.2)
+            self.transform = newTransform
+            self.alpha = 0
+            }) { (Bool) -> Void in
+                self._containerView?.removeFromSuperview()
+                self.removeFromSuperview()
+        }
+        
+    }
+    
+}
+
+extension NIAlert: UIGestureRecognizerDelegate {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view == self {
+            return true
+        }
+        return false
     }
 }
 

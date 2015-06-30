@@ -72,7 +72,12 @@ class ForgetPwd: UIViewController {
                         niAlert.show()
                     } else {
                         var msg = json!["message"] as! String
-                        self.SAerr(msg)
+                        
+                        if msg == "The resources is not exist." {
+                            self.SAerr("邮箱不存在")
+                        } else if msg == "The request is too busy." {
+                            self.SAerr("超出发送限制")
+                        }
                     }
                     
                     self.navigationItem.rightBarButtonItems = [self._rightButton!]
