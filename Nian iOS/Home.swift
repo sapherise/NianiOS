@@ -499,13 +499,21 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                         isread = 1
                                     }
                                     
+                                    //<<<<<<<<<<<
+                                    //先检查是否有这个 circle in circlelist, 没有就新建并请求网络图片
                                     let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
                                     
                                     if resultDes.count == 0 {
-                                        //TODO: 插入 circlelist
-                                       SQLCircleListInsert(id, title, "", time)
+                                        Api.getCircleStatus(circle) { json in
+                                            if json != nil {
+                                                var imageStatus = json!["img"] as! String
+                                                var _title = json!["title"] as! String
+                                                
+                                                SQLCircleListInsert(circle, _title, imageStatus, time)
+                                            }
+                                        }
                                     }
-                                    
+                                    //>>>>>>>>>>>>>>>
                                     
                                     SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
                                         if (type == "6") && ((cid == safeuid) || (cid == uid)) {
@@ -581,6 +589,23 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         if circle == "\(globalCurrentCircle)" || uid == safeuid! {
                             isread = 1
                         }
+                        
+                        //<<<<<<<<<<<
+                        //先检查是否有这个 circle in circlelist, 没有就新建并请求网络图片
+                        let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                        
+                        if resultDes.count == 0 {
+                            Api.getCircleStatus(circle) { json in
+                                if json != nil {
+                                    var imageStatus = json!["img"] as! String
+                                    var _title = json!["title"] as! String
+                                    
+                                    SQLCircleListInsert(circle, _title, imageStatus, time)
+                                }
+                            }
+                        }
+                        //>>>>>>>>>>>>>>>
+                        
                         let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid!)' order by id desc limit  1")
                         if resultSet2.count == 0 {
                             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()

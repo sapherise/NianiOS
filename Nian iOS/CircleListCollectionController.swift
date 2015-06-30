@@ -125,8 +125,7 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
         c.btnStep.addTarget(self, action: "toStep:", forControlEvents: UIControlEvents.TouchUpInside)
         c.btnBBS.addTarget(self, action: "toBBS:", forControlEvents: UIControlEvents.TouchUpInside)
         c.btnChat.addTarget(self, action: "toChat:", forControlEvents: UIControlEvents.TouchUpInside)
-//        c._layoutSubviews()
-        c.setNeedsLayout()
+        c._layoutSubviews()
         return c
     }
     

@@ -41,12 +41,10 @@ class CircleCollectionCell: UICollectionViewCell {
         
         self.imageHeadView.layer.cornerRadius = 4.0
         self.imageHeadView.layer.masksToBounds = true
-//        self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
+        self.viewLine.frame.size = CGSizeMake(globalWidth/2 - 24, 0.5)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func _layoutSubviews() {
         if self.data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")

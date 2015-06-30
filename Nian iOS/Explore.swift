@@ -98,6 +98,12 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             ExploreNewHot(viewController: self),
         ]
         globalNumExploreBar = 0
+        
+        self.scrollView.scrollsToTop = false
+        self.tableView.scrollsToTop = true
+        self.dynamicTableView.scrollsToTop = false
+        self.recomTableView.scrollsToTop = false
+        
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
@@ -140,6 +146,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         var loading = current == tab ? true : false
         current = tab
         currentProvider = self.providers[tab]
+        
+        _setupScrolltoTop(current)
 
         currentProvider.onShow(loading)
     }
@@ -166,6 +174,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         } else if globalTab[2] && page == 2 {
             switchTab(page)
         }
+        
+        _setupScrolltoTop(current)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -181,6 +191,22 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     func onSearchClick() {
         self.performSegueWithIdentifier("toSearch", sender: nil)
+    }
+    
+    private func _setupScrolltoTop(tab: Int) {
+        if tab == 0 {
+            tableView.scrollsToTop = true
+            dynamicTableView.scrollsToTop = false
+            recomTableView.scrollsToTop = false
+        } else if tab == 1 {
+            tableView.scrollsToTop = false
+            dynamicTableView.scrollsToTop = true
+            recomTableView.scrollsToTop = false
+        } else if tab == 2 {
+            tableView.scrollsToTop = false
+            dynamicTableView.scrollsToTop = false
+            recomTableView.scrollsToTop = true
+        }
     }
 }
 
