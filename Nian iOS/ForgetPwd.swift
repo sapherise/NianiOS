@@ -53,7 +53,7 @@ class ForgetPwd: UIViewController {
         self.email.resignFirstResponder()
         
         if !self.email.text.isValidEmail() {
-            self.SAerr("电子邮箱无效...")
+            self.SAerr("不是地球上的邮箱...")
             self.email.becomeFirstResponder()
         } else {
             self.navigationItem.rightBarButtonItems = buttonArray()
@@ -65,7 +65,7 @@ class ForgetPwd: UIViewController {
                     if error == 0 {
                         var niAlert = NIAlert(parentView: self.view)
                         niAlert.delegate = self
-                        niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发送成功", "重置密码邮件已发送\n请在与念关联的邮箱中查收", ["好"]],
+                        niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
                                                            forKeys: ["img", "title", "content", "buttonArray"])
                         
                         
@@ -74,9 +74,9 @@ class ForgetPwd: UIViewController {
                         var msg = json!["message"] as! String
                         
                         if msg == "The resources is not exist." {
-                            self.SAerr("邮箱不存在")
+                            self.SAerr("这个邮箱没注册过...")
                         } else if msg == "The request is too busy." {
-                            self.SAerr("超出发送限制")
+                            self.SAerr("超出发送限制...")
                         }
                     }
                     
