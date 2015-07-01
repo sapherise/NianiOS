@@ -69,7 +69,7 @@ class ForgetPwd: UIViewController {
                                                            forKeys: ["img", "title", "content", "buttonArray"])
                         
                         
-                        niAlert.show()
+                        niAlert.showWithAnimation(showAnimationStyle.spring)
                     } else {
                         var msg = json!["message"] as! String
                         
@@ -106,6 +106,9 @@ extension ForgetPwd: UITextFieldDelegate {
 // MARK: implement alert delegate
 extension ForgetPwd: NIAlertDelegate {
     func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
+        if didselectAtIndex == 0 {
+           self.navigationController?.popViewControllerAnimated(true)
+        }
     }
 }
 

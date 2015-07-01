@@ -12,6 +12,12 @@ import UIKit
     optional func niAlert(niALert: NIAlert, didselectAtIndex: Int)
 }
 
+
+enum showAnimationStyle: Int {
+    case spring   // 弹簧效果
+    case flip     // 翻页效果
+}
+
 class NIAlert: UIView {
     
     var imgView: UIImageView?
@@ -132,27 +138,47 @@ class NIAlert: UIView {
     }
     
     func buttonTouch(sender: NIButton) {
-        var _index = sender.tag - 10000
+        var _index = sender.tag - 21000
         
         self.removeFromSuperview()
         delegate?.niAlert?(self, didselectAtIndex: _index)
     }
-    
-    func show() {
+ 
+    func showWithAnimation(animation: showAnimationStyle) {
         self.layoutSubviews()
-        var _vc = self._parentView!.findRootViewController()!
-        self._containerView!.setX((globalWidth - 272)/2)
-        
-        self._parentView!.addSubview(self)
-        
-        UIView.animateWithDuration(0.4,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.5,
-            options: .CurveEaseInOut,
-            animations: { () -> Void in
-                self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
-            }, completion: nil)
+        var _vc = self._parentView?.findRootViewController()!
+    
+        switch animation {
+        case .spring:
+            self._containerView!.setX((globalWidth - 272)/2)
+            self._parentView!.addSubview(self)
+            UIView.animateWithDuration(0.4,
+                delay: 0,
+                usingSpringWithDamping: 0.7,
+                initialSpringVelocity: 0.5,
+                options: .CurveEaseInOut,
+                animations: { () -> Void in
+                    self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
+                },
+                completion: nil)
+            
+        case .flip:
+            var _layer = self._containerView!.layer
+            var rotationAndPerspectiveTransform: CATransform3D = CATransform3DIdentity
+            rotationAndPerspectiveTransform.m34 = 1.0 / -1000
+            rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, CGFloat(M_PI / 0.3), CGFloat(0.0), CGFloat(1.0), CGFloat(0.0));
+            layer.transform = rotationAndPerspectiveTransform
+            
+            self._containerView!.setX((globalWidth - 272)/2)
+            self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
+            
+            UIView.animateWithDuration(0.4, animations: { () -> Void in
+                _layer.transform = CATransform3DIdentity
+            })
+            
+        default:
+           break
+        }
     }
     
     func _removeSubView() {
@@ -166,7 +192,6 @@ class NIAlert: UIView {
         }
         
     }
-    
 }
 
 extension NIAlert: UIGestureRecognizerDelegate {
@@ -179,7 +204,6 @@ extension NIAlert: UIGestureRecognizerDelegate {
 }
 
 class NIButton: UIButton {
-    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -196,49 +220,4 @@ class NIButton: UIButton {
         self.titleLabel?.font = UIFont.systemFontOfSize(12)
     
     }
-    
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

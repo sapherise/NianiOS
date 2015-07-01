@@ -420,6 +420,14 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         delegate?.updateStep(index, key: "content", value: content!)
         delegate?.updateStep(index)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageHolder.cancelImageRequestOperation()
+        self.imageHolder.image = nil
+    }
+    
 }
 
 extension UIImageView {
