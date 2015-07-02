@@ -73,10 +73,6 @@ class CircleListCollectionController: UIViewController {
                 var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
                 self.dataArray.addObject(dataBBS)
                 
-                for item in self.dataArray {
-                    println("self.dataArray = \(item as! NSDictionary)")
-                }
-                
             }  // synchronized
             
             dispatch_async(dispatch_get_main_queue(), {
