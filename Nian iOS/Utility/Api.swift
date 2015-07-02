@@ -132,7 +132,7 @@ struct Api {
     
     static func postCircle(page: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/circle_list.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+        V.httpPostForJson_AFN("http://nian.so/api/circle_list.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "page": "\(page)"], callback: callback)
     }
     
     static func getCircleStep(id: String, page: Int, callback: V.JsonCallback) {
@@ -199,18 +199,25 @@ struct Api {
     static func postLabTrip(id: String, subid: Int = 0, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&subid=\(subid)", callback: callback)
+//        V.httpPostForJson_AFN("http://nian.so/api/lab_trip.php", content: ["id": "\(id)", "uid": "\(s_uid)", "shell": "\(s_shell)", "subid": "\(subid)"], callback: callback)
     }
     
     static func postCircleNew(name: String, content: String, img: String, privateType: Int, dream: String, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_new2.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&dream=\(dream)&circleshellid=\(sid)", callback: callback)
+//        V.httpPostForJson_AFN("http://nian.so/api/circle_new2.php",
+//            content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "title": "\(name)", "content": "\(content)", "img": "\(img)", "private": "\(privateType)", "dream": "\(dream)", "circleshellid": "\(sid)" ],
+//            callback: callback)
     }
     
     static func postCircleEdit(name: String, content: String, img: String, privateType: Int, ID: String, callback: V.JsonCallback) {
         loadCookies()
         var sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_edit.php", content: "id=\(ID)&uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&circleshellid=\(sid)", callback: callback)
+//        V.httpPostForJson_AFN("http://nian.so/api/circle_edit.php",
+//            content: ["id": "\(ID)", "uid": "\(s_uid)", "shell": "\(s_shell)", "title": "\(name)", "content": "\(content)", "img": "\(img)", "private": "\(privateType)", "circleshellid": "\(sid)"],
+//            callback: callback)
     }
     
     static func postCircleChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {

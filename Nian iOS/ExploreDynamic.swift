@@ -237,4 +237,12 @@ class ExploreDynamicDreamCell: UITableViewCell {
         userVC.Id = uid
         self.findRootViewController()?.navigationController?.pushViewController(userVC, animated: true)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageCover.cancelImageRequestOperation()
+        self.imageCover.image = nil
+    }
+    
 }

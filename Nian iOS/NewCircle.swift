@@ -109,6 +109,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         scrollView.delegate = self
         scrollView.pagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
+        self.scrollView.scrollsToTop = false
         self.view.addSubview(scrollView)
         
         tableViewStep = UITableView()
@@ -484,16 +485,31 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             if dataArrayStep.count == 0 {
                 tableViewStep.headerBeginRefreshing()
             }
+            
+            tableViewStep.scrollsToTop = true
+            tableViewBBS.scrollsToTop = false
+            tableViewChat.scrollsToTop = false
+            
             break
         case 1:
             if dataArrayBBS.count == 0 {
                 tableViewBBS.headerBeginRefreshing()
             }
+            
+            tableViewStep.scrollsToTop = false
+            tableViewBBS.scrollsToTop = true
+            tableViewChat.scrollsToTop = false
+            
             break
         case 2:
             if dataArrayChat.count == 0 {
                 loadChat()
             }
+            
+            tableViewStep.scrollsToTop = false
+            tableViewBBS.scrollsToTop = false
+            tableViewChat.scrollsToTop = true
+            
             break
         default:
             break

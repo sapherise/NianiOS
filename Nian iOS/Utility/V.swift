@@ -58,20 +58,6 @@ struct V {
     typealias JsonCallback = AnyObject? -> Void
     
     static func httpGetForJson(requestURL: String, callback: JsonCallback) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var url = NSURL(string: requestURL)
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
-            var json: AnyObject? = nil
-            if data != nil {
-                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
-            }
-            dispatch_async(dispatch_get_main_queue(), {
-                callback(json)
-            })
-        })
-    }
-    
-    static func httpGetForJson_AFN(requestURL: String, callback: JsonCallback) {
         var manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
@@ -79,7 +65,7 @@ struct V {
             parameters: nil,
             success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) in
                 callback(obj)
-        },
+            },
             failure: {(op: AFHTTPRequestOperation!, error: NSError!) in
         })
     }

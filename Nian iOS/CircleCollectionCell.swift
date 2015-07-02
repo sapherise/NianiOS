@@ -79,13 +79,13 @@ class CircleCollectionCell: UICollectionViewCell {
                             var img = json!["img"] as! String
                             var titleNew = json!["title"] as! String
                             
-                            self.titleLabel.text = titleNew
+                            self.titleLabel.text = SADecode(SADecode(titleNew))
                             self.imageHeadView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
                             SD.executeChange("insert into circlelist(id, circleid, title, image, postdate, owner) values (null, ?, ?, ?, '0', ?)", withArgs: [id, titleNew, img, safeuid])
                         }
                     }
                 } else {
-                    self.titleLabel.text = title
+                    self.titleLabel.text = SADecode(SADecode(title))
                     self.imageHeadView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
                 }
                 self.setupBtn()
