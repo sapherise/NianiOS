@@ -8,14 +8,27 @@
 
 import UIKit
 
+/**
+*  NIAlert Delegate
+*/
 @objc protocol NIAlertDelegate {
+    
+    /**
+    <#Description#>
+    */
     optional func niAlert(niALert: NIAlert, didselectAtIndex: Int)
+    
+    /**
+    
+    */
+    optional func niAlert(niAlert: NIAlert, didTapBackground: Bool)
+    
 }
 
 
 enum showAnimationStyle: Int {
     case spring   // 弹簧效果
-    case flip     // 翻页效果
+    case flip     // 反转效果
 }
 
 class NIAlert: UIView {
@@ -71,6 +84,9 @@ class NIAlert: UIView {
     }
     
     private func _commonSetup() {
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.mainScreen().scale
+        
         self._containerView!.layer.cornerRadius = 8.0
         self._containerView!.layer.masksToBounds = true
         self._containerView!.backgroundColor = UIColor.whiteColor()
@@ -123,12 +139,19 @@ class NIAlert: UIView {
         for var i = 0; i < buttonArray.count; i++ {
             var _title = buttonArray[i] as! String
             var _width = _title.stringWidthWith(12, height: 36)
-            var _posY = Float(contentBottom) + Float((i + 1)) * 8.0
+            var _posY = Float(contentBottom) + Float((i + 1)) * 8.0 + Float(i) * 36
             
             var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - _width)/2 - 24, CGFloat(_posY), _width + 48, 36))
             button.tag = 21000 + i
             button.setTitle(_title, forState: nil)
             button.addTarget(self, action: "buttonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            if i == 0 {
+                button.bgColor = BgColor.blue
+            } else {
+                button.bgColor = BgColor.grey
+            }
+            
             self._containerView!.addSubview(button)
             
             self._containerView!.setHeight(self._containerView!.height() + 8 + 36)  // 根据 button 调整高度
@@ -146,12 +169,13 @@ class NIAlert: UIView {
  
     func showWithAnimation(animation: showAnimationStyle) {
         self.layoutSubviews()
-        var _vc = self._parentView?.findRootViewController()!
-    
+        
+        var _windowView = UIApplication.sharedApplication().windows.first as! UIView
+        
         switch animation {
         case .spring:
             self._containerView!.setX((globalWidth - 272)/2)
-            self._parentView!.addSubview(self)
+            _windowView.addSubview(self)
             UIView.animateWithDuration(0.4,
                 delay: 0,
                 usingSpringWithDamping: 0.7,
@@ -163,17 +187,14 @@ class NIAlert: UIView {
                 completion: nil)
             
         case .flip:
-            var _layer = self._containerView!.layer
-            var rotationAndPerspectiveTransform: CATransform3D = CATransform3DIdentity
-            rotationAndPerspectiveTransform.m34 = 1.0 / -1000
-            rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, CGFloat(M_PI / 0.3), CGFloat(0.0), CGFloat(1.0), CGFloat(0.0));
-            layer.transform = rotationAndPerspectiveTransform
-            
             self._containerView!.setX((globalWidth - 272)/2)
             self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
-            
-            UIView.animateWithDuration(0.4, animations: { () -> Void in
-                _layer.transform = CATransform3DIdentity
+            _windowView.addSubview(self)
+
+            var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+            self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 1000)
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self._containerView!.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
             })
             
         default:
@@ -189,6 +210,8 @@ class NIAlert: UIView {
             }) { (Bool) -> Void in
                 self._containerView?.removeFromSuperview()
                 self.removeFromSuperview()
+                
+                self.delegate?.niAlert?(self, didTapBackground: true)
         }
         
     }
@@ -203,7 +226,35 @@ extension NIAlert: UIGestureRecognizerDelegate {
     }
 }
 
+/**
+NIbutton background color
+
+- blue: <#blue description#>
+- grey: <#grey description#>
+*/
+@objc public enum BgColor: Int {
+    case blue
+    case grey
+}
+
 class NIButton: UIButton {
+    
+    var bgColor: BgColor? {
+        didSet {
+            switch bgColor! {
+            case .blue:
+                self.backgroundColor = UIColor(red: 0x6c/255.0, green: 0xc5/255.0, blue: 0xee/255.0, alpha: 1.0)
+            case .grey:
+                self.backgroundColor = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
+            default:
+                break
+            }
+        }
+    }
+    
+    private var _spinner: UIActivityIndicatorView?
+    private var _titleString: String?
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -214,10 +265,28 @@ class NIButton: UIButton {
         self.titleEdgeInsets = UIEdgeInsetsMake(0, 24, 0, 24)
         self.layer.cornerRadius = 18.0
         self.layer.masksToBounds = true
-        self.backgroundColor = UIColor(red: 0x6c/255.0, green: 0xc5/255.0, blue: 0xee/255.0, alpha: 1.0)
+        
         self.titleLabel?.textColor = UIColor.whiteColor()
+        self._titleString = string
         self.titleLabel?.text = string
         self.titleLabel?.font = UIFont.systemFontOfSize(12)
+        
+        self._spinner = UIActivityIndicatorView()
+        self._spinner?.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        self._spinner?.setX((self.frame.width - 20)/2)
+        self._spinner?.setY((self.frame.height - 20)/2)
+        self._spinner?.hidden = true
+    }
+
+    func startAnimating() {
+        self.titleLabel!.text = ""
+        self._spinner?.hidden = false
+        self._spinner?.startAnimating()
+    }
     
+    func stopAnimating() {
+        self.titleLabel?.text = _titleString
+        self._spinner?.stopAnimating()
+        self._spinner?.hidden = true
     }
 }

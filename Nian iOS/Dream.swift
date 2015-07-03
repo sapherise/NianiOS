@@ -316,18 +316,25 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             tableView.reloadData()
         }
         if isfirst == "1" {
-            self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
-            self.viewCoin.textTitle = "获得 \(coin) 念币"
-            self.viewCoin.textContent = "你获得了念币奖励！"
-            self.viewCoin.heightImage = 130
-            self.viewCoin.textBtnMain = "好"
-            self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
-            self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
-            self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
-            var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
-            imageCoin.image = UIImage(named: "coin")
-            self.viewCoin.viewHolder.addSubview(imageCoin)
-            self.view.addSubview(self.viewCoin)
+//            self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
+//            self.viewCoin.textTitle = "获得 \(coin) 念币"
+//            self.viewCoin.textContent = "你获得了念币奖励！"
+//            self.viewCoin.heightImage = 130
+//            self.viewCoin.textBtnMain = "好"
+//            self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
+//            self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
+//            self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
+//            var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
+//            imageCoin.image = UIImage(named: "coin")
+//            self.viewCoin.viewHolder.addSubview(imageCoin)
+//            self.view.addSubview(self.viewCoin)
+            
+            var niAlert = NIAlert(parentView: self.view)
+            niAlert.delegate = self
+            niAlert.dict = NSMutableDictionary(object: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好", "不"]],
+                forKey: ["img", "title", "content", "buttonArray"])
+            
+            niAlert.showWithAnimation(showAnimationStyle.flip)
         }
     }
     
@@ -438,4 +445,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
 }
+
+extension DreamViewController: NIAlertDelegate {
+    func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
+        
+    }
+}
+
 

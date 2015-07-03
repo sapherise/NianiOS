@@ -187,6 +187,7 @@
 		C4B6B6771B2723EF00A5FA26 /* CircleListCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
+		C4E8D0101B45238B00EBDA2A /* CircleListCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -1461,6 +1462,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4E8D0101B45238B00EBDA2A /* CircleListCollectionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

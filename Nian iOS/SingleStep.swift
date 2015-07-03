@@ -31,8 +31,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.viewBackFix()
     }
     
-    func setupViews()
-    {
+    func setupViews() {
         self.viewBack()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))

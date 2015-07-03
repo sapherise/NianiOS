@@ -26,6 +26,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     @IBOutlet var activity: UIActivityIndicatorView!
     @IBOutlet var activityOK: UIActivityIndicatorView!
     @IBOutlet var imageUploaded: UIImageView!
+    
     var delegate: MaskDelegate?
     var dataArray = NSMutableArray()
     var actionSheet:UIActionSheet!
@@ -36,12 +37,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var uploadHeight:String = ""
     var viewCoin:Popup!
     var animated: Bool = true
+    var isfirst: String = ""
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
         var nib = UINib(nibName:"AddStepCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "AddStepCell")
         self.viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewTopClick"))
@@ -52,11 +55,13 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.activityOK.hidden = true
         self.imageUploaded.hidden = true
         self.btnOK.enabled = false
+        
         Api.getDreamNewest() { json in
             if json != nil {
                 var arr = json!["items"] as! NSArray
                 self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
+                
+                for data : AnyObject in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
@@ -166,41 +171,52 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             if json != nil {
                 self.textView.resignFirstResponder()
                 var coin = json!["coin"] as! String
-                var isfirst = json!["isfirst"] as! String
+                self.isfirst = json!["isfirst"] as! String
                 globalWillNianReload = 1
-                if isfirst == "1" {
+//                if self.isfirst == "1" {
                     globalWillNianReload = 1
+                    
                     self.hidden = true
                     self.delegate?.onViewCloseHidden()
-                    self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
-                    self.viewCoin.viewBackGround.translucentAlpha = 0
-                    self.viewCoin.textTitle = "获得 \(coin) 念币"
-                    self.viewCoin.textContent = "你获得了念币奖励！"
-                    self.viewCoin.heightImage = 130
-                    self.viewCoin.textBtnMain = "好"
-                    self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
-                    self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
-                    self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
-                    var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
-                    imageCoin.image = UIImage(named: "coin")
-                    self.viewCoin.viewHolder.addSubview(imageCoin)
-                    self.findRootViewController()?.view.addSubview(self.viewCoin)
-                    var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
-                    self.viewCoin.viewHolder.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 1000)
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.viewCoin.viewHolder.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
-                    })
-                }else{
-                    self.activityOK.stopAnimating()
-                    self.activityOK.hidden = true
-                    self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
-                    delay(0.5, { () -> () in
-                        self.delegate?.onViewCloseClick()
-                        var DreamVC = DreamViewController()
-                        DreamVC.Id = self.dreamID
-                        self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
-                    })
-                }
+//                    self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
+//                    self.viewCoin.viewBackGround.translucentAlpha = 0
+//                    self.viewCoin.textTitle = "获得 \(coin) 念币"
+//                    self.viewCoin.textContent = "你获得了念币奖励！"
+//                    self.viewCoin.heightImage = 130
+//                    self.viewCoin.textBtnMain = "好"
+//                    self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
+//                    self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
+//                    self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
+//                    var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
+//                    imageCoin.image = UIImage(named: "coin")
+//                    self.viewCoin.viewHolder.addSubview(imageCoin)
+//                    
+//                    self.findRootViewController()?.view.addSubview(self.viewCoin)
+//                    
+//                    var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+//                    self.viewCoin.viewHolder.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 1000)
+//                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+//                        self.viewCoin.viewHolder.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
+//                    })
+                    
+                    var niAlert = NIAlert(parentView: self.superview!)
+                    niAlert.delegate = self
+                    niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好", "不"]],
+                                                       forKeys: ["img", "title", "content", "buttonArray"])
+                    
+                    niAlert.showWithAnimation(showAnimationStyle.flip)
+                    
+//                } else {
+//                    self.activityOK.stopAnimating()
+//                    self.activityOK.hidden = true
+//                    self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
+//                    delay(0.5, { () -> () in
+//                        self.delegate?.onViewCloseClick()
+//                        var DreamVC = DreamViewController()
+//                        DreamVC.Id = self.dreamID
+//                        self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
+//                    })
+//                }
             }
         }
     }
@@ -282,6 +298,17 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         }
     }
 }
+
+/**
+*  AddStep 实现 NIAlertDelegate
+*/
+
+extension AddStep: NIAlertDelegate {
+    func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
+        
+    }
+}
+
 
 class AddStepCell: UITableViewCell {
     @IBOutlet var imageDream: UIImageView!
