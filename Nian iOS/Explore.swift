@@ -79,6 +79,21 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         navShow()
     }
     
+    /**
+    brief:  尝试减少被系统回收内存的概率
+    date:   2015-07-04
+    */
+    override func didReceiveMemoryWarning() {
+        (self.providers[0] as! ExploreFollowProvider).dataArray.removeAllObjects()
+        self.tableView.reloadData()
+        
+        (self.providers[1] as! ExploreDynamicProvider).dataArray.removeAllObjects()
+        self.dynamicTableView.reloadData()
+        
+        (self.providers[2] as! ExploreNewHot).dataArray.removeAllObjects()
+        self.recomTableView.reloadData()
+    }
+    
     func exploreTop(noti: NSNotification){
         if current == -1 {
             switchTab(0)

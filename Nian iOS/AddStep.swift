@@ -199,7 +199,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
 //                        self.viewCoin.viewHolder.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
 //                    })
                     
-                    var niAlert = NIAlert(parentView: self.superview!)
+                    var niAlert = NIAlert()
                     niAlert.delegate = self
                     niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好", "不"]],
                                                        forKeys: ["img", "title", "content", "buttonArray"])
@@ -305,6 +305,31 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
 
 extension AddStep: NIAlertDelegate {
     func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
+        
+        // 处理 add step 之后询问要不要抽宠物的界面
+        if niALert.dict?.objectForKey("title") as! String == "宠物" {
+            
+            // 先把用户点击 “不” 的情况处理了
+            if didselectAtIndex == 1 {
+                self.delegate?.onViewCloseClick()
+            } else if didselectAtIndex == 0 {
+                
+                // 进入确认抽奖的界面
+                var confirmNiAlert = NIAlert()
+                confirmNiAlert.delegate = self
+                confirmNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "add_plus")!, "抽蛋", "要用念币来购买吗?", ["3 念币"]],
+                                                          forKeys: ["img", "title", "content", "buttonArray"])
+                confirmNiAlert.showWithAnimation(showAnimationStyle.flip)
+            }
+        }
+        // 处理确认“抽蛋” 页面
+        else if niALert.dict?.objectForKey("title") as! String == "抽蛋" {
+            if didselectAtIndex == 0 {
+                // TODO: 怎么去获得
+            }
+        }
+        
+        
         
     }
 }

@@ -329,7 +329,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
 //            self.viewCoin.viewHolder.addSubview(imageCoin)
 //            self.view.addSubview(self.viewCoin)
             
-            var niAlert = NIAlert(parentView: self.view)
+            var niAlert = NIAlert()
             niAlert.delegate = self
             niAlert.dict = NSMutableDictionary(object: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好", "不"]],
                 forKey: ["img", "title", "content", "buttonArray"])

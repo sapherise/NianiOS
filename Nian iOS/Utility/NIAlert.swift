@@ -37,7 +37,6 @@ class NIAlert: UIView {
     var titleLabel: UILabel?
     var contentLabel: UILabel?
     
-    private var _parentView: UIView?
     private var _containerView: UIView?
     
     weak var delegate: NIAlertDelegate?
@@ -53,9 +52,8 @@ class NIAlert: UIView {
     */
     var dict: NSMutableDictionary?
     
-    convenience init(parentView: UIView) {
-        self.init(frame: parentView.frame)
-        self._parentView = parentView
+    convenience init() {
+        self.init(frame: UIScreen.mainScreen().bounds)
         self._containerView = UIView()
         self._containerView?.frame = CGRect.zeroRect
         
@@ -232,7 +230,7 @@ NIbutton background color
 - blue: <#blue description#>
 - grey: <#grey description#>
 */
-@objc public enum BgColor: Int {
+@objc enum BgColor: Int {
     case blue
     case grey
 }

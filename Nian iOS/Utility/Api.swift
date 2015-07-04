@@ -398,12 +398,12 @@ struct Api {
     static func postCircleDisturb(circle: String, isDisturb: Bool, callback: V.JsonCallback) {
         loadCookies()
         var disturb: Int = isDisturb ? 1 : 0
-        V.httpPostForJson("http://nian.so/api/circle_disturb.php", content: "circle=\(circle)&uid=\(s_uid)&shell=\(s_shell)&disturb=\(disturb)", callback: callback)
+        V.httpDeleteForJson_AFN("http://nian.so/api/circle_disturb.php", content: ["circle": "\(circle)", "uid": "\(s_uid)", "shell": "\(s_shell)", "disturb": "\(disturb)" ], callback: callback)
     }
     
     static func postGameover(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/gameover1.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpDeleteForJson_AFN("http://nian.so/api/gameover1.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)"], callback: callback)
     }
     
     static func postGameoverCoin(id: String, callback: V.JsonCallback) {

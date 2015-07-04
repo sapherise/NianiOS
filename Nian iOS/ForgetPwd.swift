@@ -63,7 +63,7 @@ class ForgetPwd: UIViewController {
                     var error = json!["error"] as! NSNumber
                     
                     if error == 0 {
-                        var niAlert = NIAlert(parentView: self.view)
+                        var niAlert = NIAlert()
                         niAlert.delegate = self
                         niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
                                                            forKeys: ["img", "title", "content", "buttonArray"])
