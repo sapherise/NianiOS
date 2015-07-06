@@ -16,4 +16,6 @@
 #import "TITokenField.h"
 #import "SZTextView.h"
 #import "KILabel.h"
+#import "NSString+NSHash.h"
+#import "NSData+NSHash.h"
 #import "objc/runtime.h"

@@ -171,52 +171,44 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             if json != nil {
                 self.textView.resignFirstResponder()
                 var coin = json!["coin"] as! String
+                var totalCoin = json!["totalCoin"] as! String
                 self.isfirst = json!["isfirst"] as! String
                 globalWillNianReload = 1
-//                if self.isfirst == "1" {
+                if self.isfirst == "1" {
                     globalWillNianReload = 1
                     
                     self.hidden = true
                     self.delegate?.onViewCloseHidden()
-//                    self.viewCoin = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
-//                    self.viewCoin.viewBackGround.translucentAlpha = 0
-//                    self.viewCoin.textTitle = "获得 \(coin) 念币"
-//                    self.viewCoin.textContent = "你获得了念币奖励！"
-//                    self.viewCoin.heightImage = 130
-//                    self.viewCoin.textBtnMain = "好"
-//                    self.viewCoin.btnMain.addTarget(self, action: "onCoinClick", forControlEvents: UIControlEvents.TouchUpInside)
-//                    self.viewCoin.viewBackGround.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCoinClick"))
-//                    self.viewCoin.viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: nil))
-//                    var imageCoin = UIImageView(frame: CGRectMake(135 - 28, 55, 56, 70))
-//                    imageCoin.image = UIImage(named: "coin")
-//                    self.viewCoin.viewHolder.addSubview(imageCoin)
-//                    
-//                    self.findRootViewController()?.view.addSubview(self.viewCoin)
-//                    
-//                    var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
-//                    self.viewCoin.viewHolder.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 1000)
-//                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-//                        self.viewCoin.viewHolder.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
-//                    })
-                    
-                    var niAlert = NIAlert()
-                    niAlert.delegate = self
-                    niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好", "不"]],
-                                                       forKeys: ["img", "title", "content", "buttonArray"])
-                    
-                    niAlert.showWithAnimation(showAnimationStyle.flip)
-                    
-//                } else {
-//                    self.activityOK.stopAnimating()
-//                    self.activityOK.hidden = true
-//                    self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
-//                    delay(0.5, { () -> () in
-//                        self.delegate?.onViewCloseClick()
-//                        var DreamVC = DreamViewController()
-//                        DreamVC.Id = self.dreamID
-//                        self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
-//                    })
-//                }
+
+                      // 根据念币数量来判断
+                    if totalCoin.toInt() < 3 {
+                        var niAlert = NIAlert()
+                        niAlert.delegate = self
+                        niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                                                           forKeys: ["img", "title", "content", "buttonArray"])
+                        
+                        niAlert.showWithAnimation(showAnimationStyle.flip)
+                    } else {
+                        // 如果念币多于 3， 那么就出现抽宠物
+                        var niAlert = NIAlert()
+                        niAlert.delegate = self
+                        niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
+                            forKeys: ["img", "title", "content", "buttonArray"])
+                        
+                        niAlert.showWithAnimation(showAnimationStyle.flip)
+                    }
+                
+                } else {
+                    self.activityOK.stopAnimating()
+                    self.activityOK.hidden = true
+                    self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
+                    delay(0.5, { () -> () in
+                        self.delegate?.onViewCloseClick()
+                        var DreamVC = DreamViewController()
+                        DreamVC.Id = self.dreamID
+                        self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
+                    })
+                }
             }
         }
     }
@@ -302,12 +294,19 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
 /**
 *  AddStep 实现 NIAlertDelegate
 */
-
 extension AddStep: NIAlertDelegate {
     func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
-        
+        // 处理那些念币不足的丫们
+        if niALert.dict?.objectForKey("content") as! String == "你获得了念币奖励" {
+            if didselectAtIndex == 0 {
+                niALert.dismissWithAnimation()
+            }
+        }
         // 处理 add step 之后询问要不要抽宠物的界面
-        if niALert.dict?.objectForKey("title") as! String == "宠物" {
+        else if niALert.dict?.objectForKey("title") as! String == "宠物" {
+           
+            // 改进，消失从外面控制
+            niALert.dismissWithAnimation()
             
             // 先把用户点击 “不” 的情况处理了
             if didselectAtIndex == 1 {
@@ -325,11 +324,46 @@ extension AddStep: NIAlertDelegate {
         // 处理确认“抽蛋” 页面
         else if niALert.dict?.objectForKey("title") as! String == "抽蛋" {
             if didselectAtIndex == 0 {
-                // TODO: 怎么去获得
+                (niALert.niButtonArray[0] as! NIButton).startAnimating()
+                
+                // 调用 API
+                Api.postPetLottery() {
+                    json in
+                    if json != nil {
+                        //处理 json 数据
+                       let err = json!["error"] as! String
+                        
+                        if err == "0" {
+                            niALert.dismissWithAnimation()
+                            
+                            let petName = (json!["data"] as! NSDictionary).objectForKey("pet") as! String
+                            
+                            var lotteryNiAlert = NIAlert()
+                            lotteryNiAlert.delegate = self
+                            lotteryNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "av_finish")!, petName, "你获得了一个\(petName)", ["分享", "好"]],
+                                                                      forKeys: ["img", "title", "content", "buttonArray"])
+                            lotteryNiAlert.showWithAnimation(showAnimationStyle.spring)
+                        } else {
+                            (niALert.niButtonArray[0] as! NIButton).stopAnimating()
+                        }
+                        
+                        
+                    }
+                }   // 调用 API -- end
+            } // didselectAtIndex -- end
+        } // else if -- end
+        // 处理抽奖结果页面
+        else if ((niALert.dict?.objectForKey("buttonArray") as! NSArray).firstObject as! NIButton).titleLabel!.text == "分享" {
+            if didselectAtIndex == 0 {
+                // 处理分享界面
+                
+                
+                
+            } else if didselectAtIndex == 1 {
+                niALert.dismissWithAnimation()
+                self.delegate?.onViewCloseClick()
             }
         }
-        
-        
         
     }
 }

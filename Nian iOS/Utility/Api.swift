@@ -403,7 +403,7 @@ struct Api {
     
     static func postGameover(callback: V.JsonCallback) {
         loadCookies()
-        V.httpDeleteForJson_AFN("http://nian.so/api/gameover1.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)"], callback: callback)
+        V.httpPostForJson_AFN("http://nian.so/api/gameover1.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)"], callback: callback)
     }
     
     static func postGameoverCoin(id: String, callback: V.JsonCallback) {
@@ -661,6 +661,70 @@ struct Api {
         loadCookies()
         V.httpPostForString("http://nian.so/api/sign_check.php", content: "name=\(name)&&pw=\(password)&&em=\(email)", callback: callback)
     }
+}
+
+
+// MARK: - 和宠物相关的 API
+extension  Api {
+    
+    /**
+    抽取宠物
+    
+    :param: callback <#callback description#>
+    */
+    static func postPetLottery(callback: V.JsonCallback) {
+        let _sha256String = ((s_uid + s_shell) as NSString).SHA256()
+        
+        V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)", content: ["luckcode": _sha256String], callback: callback)
+    }
+    
+    
+    
+    
+    
     
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

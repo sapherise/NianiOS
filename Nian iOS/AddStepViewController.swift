@@ -8,9 +8,10 @@
 
 import UIKit
 
-protocol AddstepDelegate {   //😍
+@objc protocol AddstepDelegate {   //😍
     func Editstep()
-    func countUp(coin: String, isfirst: String)
+    optional func countUp(coin: String, isfirst: String)
+    optional func countUp(coin: String, total: String, isfirst: String)
     var editStepRow:Int { get set }
     var editStepData:NSDictionary? { get set }
 }
@@ -166,9 +167,10 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                 globalWillNianReload = 1
                 var coin = json!["coin"] as! String
                 var isfirst = json!["isfirst"] as! String
+                var totalCoin = json!["totalCoin"] as! String
                 dispatch_async(dispatch_get_main_queue(), {
                     self.navigationController?.popViewControllerAnimated(true)
-                    self.delegate?.countUp(coin, isfirst: isfirst)
+                    self.delegate?.countUp!(coin, total: totalCoin, isfirst: isfirst)
                 })
             }
         }

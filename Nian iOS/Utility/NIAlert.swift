@@ -17,12 +17,6 @@ import UIKit
     <#Description#>
     */
     optional func niAlert(niALert: NIAlert, didselectAtIndex: Int)
-    
-    /**
-    
-    */
-    optional func niAlert(niAlert: NIAlert, didTapBackground: Bool)
-    
 }
 
 
@@ -36,6 +30,9 @@ class NIAlert: UIView {
     var imgView: UIImageView?
     var titleLabel: UILabel?
     var contentLabel: UILabel?
+    
+    //将 niButtons 放入一个 Array
+    var niButtonArray: NSMutableArray = NSMutableArray()
     
     private var _containerView: UIView?
     
@@ -62,7 +59,7 @@ class NIAlert: UIView {
         self.layer.opacity = 1.0
         self.layer.backgroundColor = UIColor(white: 0.0, alpha: 0.6).CGColor
         
-        var tapGesture = UITapGestureRecognizer(target: self, action: "_removeSubView")
+        let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation")
         tapGesture.delegate = self
         self.addGestureRecognizer(tapGesture)
     }
@@ -151,6 +148,7 @@ class NIAlert: UIView {
             }
             
             self._containerView!.addSubview(button)
+            self.niButtonArray.addObject(button)
             
             self._containerView!.setHeight(self._containerView!.height() + 8 + 36)  // 根据 button 调整高度
         }
@@ -161,7 +159,6 @@ class NIAlert: UIView {
     func buttonTouch(sender: NIButton) {
         var _index = sender.tag - 21000
         
-        self.removeFromSuperview()
         delegate?.niAlert?(self, didselectAtIndex: _index)
     }
  
@@ -200,7 +197,11 @@ class NIAlert: UIView {
         }
     }
     
-    func _removeSubView() {
+    func dismissWithAnimation() {
+        self._removeSubView()
+    }
+    
+    private func _removeSubView() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             var newTransform = CGAffineTransformScale(self.transform, 1.2, 1.2)
             self.transform = newTransform
@@ -208,11 +209,9 @@ class NIAlert: UIView {
             }) { (Bool) -> Void in
                 self._containerView?.removeFromSuperview()
                 self.removeFromSuperview()
-                
-                self.delegate?.niAlert?(self, didTapBackground: true)
         }
-        
     }
+    
 }
 
 extension NIAlert: UIGestureRecognizerDelegate {
@@ -224,11 +223,13 @@ extension NIAlert: UIGestureRecognizerDelegate {
     }
 }
 
+//=========================================================
+
 /**
 NIbutton background color
 
-- blue: <#blue description#>
-- grey: <#grey description#>
+- blue:
+- grey: 
 */
 @objc enum BgColor: Int {
     case blue
@@ -269,11 +270,10 @@ class NIButton: UIButton {
         self.titleLabel?.text = string
         self.titleLabel?.font = UIFont.systemFontOfSize(12)
         
-        self._spinner = UIActivityIndicatorView()
+        self._spinner = UIActivityIndicatorView(frame: CGRectMake((self.frame.width - 20)/2, (self.frame.height - 20)/2, 20, 20))
         self._spinner?.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-        self._spinner?.setX((self.frame.width - 20)/2)
-        self._spinner?.setY((self.frame.height - 20)/2)
         self._spinner?.hidden = true
+        self.addSubview(self._spinner!)
     }
 
     func startAnimating() {

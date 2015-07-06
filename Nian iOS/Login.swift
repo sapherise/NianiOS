@@ -79,10 +79,10 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                 dispatch_async(dispatch_get_main_queue(), {
                     if sa == "err"{
                         self.navigationItem.rightBarButtonItems = []
-                    }else if sa == "NO" {
+                    } else if sa == "NO" {
                         self.shakeAnimation(self.holder)
                         self.navigationItem.rightBarButtonItems = []
-                    }else{
+                    } else {
                         self.navigationItem.rightBarButtonItems = buttonArray()
                         var shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
