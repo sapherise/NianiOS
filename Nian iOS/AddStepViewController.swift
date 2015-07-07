@@ -35,6 +35,10 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     var row:Int = 0
     var keyboardHeight:CGFloat = 0
     
+    var niAlert: NIAlert?
+    var confirmNiAlert: NIAlert?
+    var lotteryNiAlert: NIAlert?
+    
     @IBAction func uploadClick(sender: AnyObject) {
         self.TextView!.resignFirstResponder()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)

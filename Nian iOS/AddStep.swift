@@ -39,6 +39,10 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var animated: Bool = true
     var isfirst: String = ""
     
+    var niAlert: NIAlert?
+    var confirmNiAlert: NIAlert?
+    var lotteryNiAlert: NIAlert?
+    
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
         self.tableView.delegate = self
@@ -331,9 +335,9 @@ extension AddStep: NIAlertDelegate {
                     json in
                     if json != nil {
                         //处理 json 数据
-                       let err = json!["error"] as! String
+                       let err = json!["error"] as! NSNumber
                         
-                        if err == "0" {
+                        if err == 0 {
                             niALert.dismissWithAnimation()
                             
                             let petName = (json!["data"] as! NSDictionary).objectForKey("pet") as! String
