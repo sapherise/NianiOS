@@ -262,9 +262,10 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/circle_join.php", content: "uid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&dream=\(dream)&word=\(word)&circleshellid=\(sid)", callback: callback)
     }
     
-    static func getCircleExplore(lastid:String, callback: V.JsonCallback) {
+    static func getCircleExplore(page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/circle_explore.php?lastid=\(lastid)", callback: callback)
+//        V.httpGetForJson("http://nian.so/api/circle_explore.php?lastid=\(lastid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/circle/explore?page=\(page)", callback: callback)
     }
     
     static func getCircleChatList(page: Int, id: Int, callback: V.JsonCallback) {
