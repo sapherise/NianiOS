@@ -23,6 +23,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     @IBOutlet var uploadDone: UIImageView!
     @IBOutlet var TextView:UITextView!
     @IBOutlet var viewHolder: UIView!
+    
     var Id:String = ""
     var delegate: AddstepDelegate?      //😍
     var actionSheet:UIActionSheet?
@@ -34,10 +35,6 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     var isEdit:Int = 0
     var row:Int = 0
     var keyboardHeight:CGFloat = 0
-    
-    var niAlert: NIAlert?
-    var confirmNiAlert: NIAlert?
-    var lotteryNiAlert: NIAlert?
     
     @IBAction func uploadClick(sender: AnyObject) {
         self.TextView!.resignFirstResponder()
