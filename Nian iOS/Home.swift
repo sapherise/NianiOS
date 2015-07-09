@@ -59,7 +59,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
                         self.GameOverView.heightImage = 130
                         self.GameOverView.textBtnMain = "继续日更模式"
-                        self.GameOverView.textBtnSub = " 不开心！"
+                        self.GameOverView.textBtnSub = " 关闭日更模式"
                         self.GameOverView.btnMain.tag = 1
                         self.GameOverView.btnSub.tag = 2
                         self.GameOverView.btnMain.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
