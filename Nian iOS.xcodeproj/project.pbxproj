@@ -24,6 +24,7 @@
 		1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */; };
 		122AFE031A80864800464641 /* SqliteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122AFE021A80864800464641 /* SqliteData.swift */; };
 		122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 122AFE041A80869D00464641 /* libsqlite3.dylib */; };
+		122F39211B4E794700DE8628 /* Card.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122F39201B4E794700DE8628 /* Card.xib */; };
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
 		1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1232ADC61A53AA5F00C4182A /* CircleBubbleCell.swift */; };
@@ -230,6 +231,7 @@
 		1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAUserCell.swift; sourceTree = "<group>"; };
 		122AFE021A80864800464641 /* SqliteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqliteData.swift; sourceTree = "<group>"; };
 		122AFE041A80869D00464641 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		122F39201B4E794700DE8628 /* Card.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Card.xib; sourceTree = "<group>"; };
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
 		1232ADC61A53AA5F00C4182A /* CircleBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleBubbleCell.swift; sourceTree = "<group>"; };
@@ -858,6 +860,7 @@
 			isa = PBXGroup;
 			children = (
 				12E8090C1A2DBFB20022C094 /* SingleStep.swift */,
+				122F39201B4E794700DE8628 /* Card.xib */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
 			);
 			name = "进展";
@@ -1274,6 +1277,7 @@
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
 				127155151A3FE84E00E27EC5 /* CircleDetailTop.xib in Resources */,
+				122F39211B4E794700DE8628 /* Card.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
