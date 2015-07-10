@@ -431,9 +431,3 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
 }
 
-extension UIImageView {
-    func getPoint() -> CGPoint {
-        var y = self.convertPoint(CGPointZero, fromView: self.window)
-        return y
-    }
-}

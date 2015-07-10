@@ -181,7 +181,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
         
         self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
-        self.imageDreamHead.layer.cornerRadius = 8.0
+        self.imageDreamHead.layer.cornerRadius = 4.0
         self.imageDreamHead.layer.masksToBounds = true
         
         self.scrollView.setWidth(globalWidth)

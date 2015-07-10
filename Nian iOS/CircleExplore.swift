@@ -13,9 +13,8 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     let identifier = "circleexplore"
     var tableView:UITableView!
     var dataArray = NSMutableArray()
-    var page :Int = 0
+    var page: Int = 1
     var Id:String = "1"
-    var lastID:String = "0"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,48 +48,24 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         self.navigationItem.titleView = titleLabel
     }
     
-    func loadData() {
-        Api.getCircleExplore("\(self.lastID)"){ json in
-            if json != nil {
-                var arr = json!["items"] as! NSArray
-                for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
-                }
-                var count = self.dataArray.count
-                if count >= 1 {
-                    var data = self.dataArray[count - 1] as! NSDictionary
-                    self.lastID = data.stringAttributeForKey("dreamdate")
-                }
-                self.tableView!.reloadData()
-                self.tableView!.footerEndRefreshing()
-                self.page++
-                if self.dataArray.count < self.page * 30 {
-                    self.tableView!.setFooterHidden(true)
-                }
-            }
+    func load(clear: Bool = true){
+        if clear {
+            self.tableView!.setFooterHidden(false)
+            self.page = 1
         }
-    }
-    
-    func SAReloadData(){
-        self.tableView!.setFooterHidden(false)
-        Api.getCircleExplore("0"){ json in
+        Api.getCircleExplore(page){ json in
             if json != nil {
-                var arr = json!["items"] as! NSArray
-                self.dataArray.removeAllObjects()
+                var arr = json!["data"] as! NSArray
+                if clear {
+                    self.dataArray.removeAllObjects()
+                }
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
-                self.page = 1
-                var count = self.dataArray.count
-                if count >= 1 {
-                    var data = self.dataArray[count - 1] as! NSDictionary
-                    self.lastID = data.stringAttributeForKey("dreamdate")
-                }
-                if self.dataArray.count < 30 {
-                    self.tableView!.setFooterHidden(true)
-                }
+                self.tableView.footerEndRefreshing()
+                self.page++
             }
         }
     }
@@ -134,10 +109,10 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.SAReloadData()
+            self.load()
         })
         self.tableView!.addFooterWithCallback({
-            self.loadData()
+            self.load(clear: false)
         })
     }
     

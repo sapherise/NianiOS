@@ -40,11 +40,11 @@ class CircleExploreCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         var id = self.data.stringAttributeForKey("id")
-        var title = self.data.stringAttributeForKey("title")
-        var img = self.data.stringAttributeForKey("img")
+        var title = self.data.stringAttributeForKey("title").decode()
+        var img = self.data.stringAttributeForKey("image")
         var tag = self.data.stringAttributeForKey("tag")
         var people = self.data.stringAttributeForKey("people")
-        var content = self.data.stringAttributeForKey("content")
+        var content = self.data.stringAttributeForKey("content").decode()
         var chat = self.data.stringAttributeForKey("chat")
         var step = self.data.stringAttributeForKey("step")
         var bbs = self.data.stringAttributeForKey("bbs")
@@ -80,8 +80,8 @@ class CircleExploreCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var content = data.stringAttributeForKey("content")
-        var title = data.stringAttributeForKey("title")
+        var content = data.stringAttributeForKey("content").decode()
+        var title = data.stringAttributeForKey("title").decode()
         var heightTitle = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
             return 205 + heightTitle - 8
