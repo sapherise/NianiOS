@@ -443,6 +443,26 @@ extension UIImage{
         return img
     }
     
+    class func imageFromURL(aURL: NSURL, success: ((image: UIImage) -> Void), error: () -> Void) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            var response: NSURLResponse?
+            var error: NSErrorPointer?
+            
+            var mutableRequest: NSMutableURLRequest = NSMutableURLRequest(URL: aURL,
+                                                                          cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad,
+                                                                          timeoutInterval: 30.0)
+            var rcvData: NSData? = NSURLConnection.sendSynchronousRequest(mutableRequest, returningResponse: nil, error: nil)
+//            var img: UIImage = UIImage(data: rcvData!)!
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                if let img = UIImage(data: rcvData!) {
+                    success(image: img)
+                }
+            })
+            
+        })
+    }
+    
 }
 
 extension UIImageView{

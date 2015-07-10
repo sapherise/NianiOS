@@ -17,6 +17,7 @@ import UIKit
     <#Description#>
     */
     optional func niAlert(niALert: NIAlert, didselectAtIndex: Int)
+    optional func niAlert(niAlert: NIAlert, tapBackground: Bool)
 }
 
 
@@ -59,7 +60,7 @@ class NIAlert: UIView {
         self.layer.opacity = 1.0
         self.layer.backgroundColor = UIColor(white: 0.0, alpha: 0.6).CGColor
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation")
+        let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation:")
         tapGesture.delegate = self
         self.addGestureRecognizer(tapGesture)
     }
@@ -72,11 +73,11 @@ class NIAlert: UIView {
         super.init(coder: aDecoder)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-       _commonSetup()
-    }
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        
+//       _commonSetup()
+//    }
     
     private func _commonSetup() {
         self.layer.shouldRasterize = true
@@ -94,7 +95,8 @@ class NIAlert: UIView {
         
         if let img = (self.dict?.objectForKey("img") as? UIImage) {
             var imgSize = img.size
-            imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - imgSize.width)/2, 40, imgSize.width, imgSize.height))
+            imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, 80))
+            imgView?.contentMode = UIViewContentMode.ScaleAspectFill
             imgView!.image = img
             self._containerView!.addSubview(imgView!)
             
@@ -136,9 +138,8 @@ class NIAlert: UIView {
             var _width = _title.stringWidthWith(12, height: 36)
             var _posY = Float(contentBottom) + Float((i + 1)) * 8.0 + Float(i) * 36
             
-            var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - _width)/2 - 24, CGFloat(_posY), 240, 36))
+            var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - 120)/2, CGFloat(_posY), 120, 36))
             button.tag = 21000 + i
-            button.setTitle(_title, forState: nil)
             button.addTarget(self, action: "buttonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             
             if i == 0 {
@@ -163,7 +164,8 @@ class NIAlert: UIView {
     }
  
     func showWithAnimation(animation: showAnimationStyle) {
-        self.layoutSubviews()
+//        self.layoutSubviews()
+        self._commonSetup()
         
         var _windowView = UIApplication.sharedApplication().windows.first as! UIView
         
@@ -201,6 +203,11 @@ class NIAlert: UIView {
         self._removeSubView()
     }
     
+    func dismissWithAnimation(sender: UITapGestureRecognizer) {
+        self._removeSubView()
+        delegate?.niAlert?(self, tapBackground: true)
+    }
+    
     private func _removeSubView() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             var newTransform = CGAffineTransformScale(self.transform, 1.2, 1.2)
@@ -211,7 +218,6 @@ class NIAlert: UIView {
                 self.removeFromSuperview()
         }
     }
-    
 }
 
 extension NIAlert: UIGestureRecognizerDelegate {
@@ -264,27 +270,31 @@ class NIButton: UIButton {
         self.titleEdgeInsets = UIEdgeInsetsMake(0, 24, 0, 24)
         self.layer.cornerRadius = 18.0
         self.layer.masksToBounds = true
-        
-        self.titleLabel?.textColor = UIColor.whiteColor()
+
         self._titleString = string
-        self.titleLabel?.text = string
         self.titleLabel?.font = UIFont.systemFontOfSize(12)
+        self.setTitle(self._titleString, forState: UIControlState.Normal)
+        self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         
-        self._spinner = UIActivityIndicatorView(frame: CGRectMake((self.frame.width - 20)/2, (self.frame.height - 20)/2, 20, 20))
-        self._spinner?.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-        self._spinner?.hidden = true
+        self._spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        self._spinner!.frame.origin = CGPointMake((self.frame.width - 20)/2, (self.frame.height - 20)/2)
+        self._spinner!.hidden = true
         self.addSubview(self._spinner!)
     }
 
     func startAnimating() {
-        self.titleLabel!.text = ""
-        self._spinner?.hidden = false
-        self._spinner?.startAnimating()
+//        self.titleLabel!.text = ""
+        self.setTitle("", forState: UIControlState.Normal)
+        self.bringSubviewToFront(self._spinner!)
+        self._spinner!.hidden = false
+        self._spinner!.startAnimating()
     }
     
     func stopAnimating() {
-        self.titleLabel?.text = _titleString
-        self._spinner?.stopAnimating()
-        self._spinner?.hidden = true
+//        self.titleLabel?.text = _titleString
+        self.setTitle(self._titleString, forState: UIControlState.Normal)
+        self.sendSubviewToBack(self._spinner!)
+        self._spinner!.stopAnimating()
+        self._spinner!.hidden = true
     }
 }

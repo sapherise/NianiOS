@@ -343,8 +343,12 @@ extension AddStep: NIAlertDelegate {
                             niALert.dismissWithAnimation()
                             
                             let petInfo = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
-                            let petName = (petInfo.objectForKey("pet") as! NSDictionary).objectForKey("name") as! String
+                            let petName = petInfo.objectForKey("name") as! String
                             
+//                            let imgString = "" + (petInfo.objectForKey("image") as! String)
+//                            var _data = NSData(contentsOfURL: NSURL(string: imgString)!)
+//                            var img = UIImage(data: _data!)!
+
                             self.lotteryNiAlert = NIAlert()
                             self.lotteryNiAlert!.delegate = self
                             self.lotteryNiAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "av_finish")!, petName, "你获得了一个\(petName)", ["分享", "好"]],
@@ -371,7 +375,10 @@ extension AddStep: NIAlertDelegate {
                 self.delegate?.onViewCloseClick()
             }
         }
-        
+    }
+    
+    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        self.delegate?.onViewCloseClick()
     }
 }
 

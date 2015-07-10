@@ -28,7 +28,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     @IBOutlet var viewBottomHolder: UIView!
     @IBOutlet var tableview:UITableView!
     @IBOutlet var petName: UILabel!  // 显示 pet name, 不属于 tableView
-    @IBOutlet var petIndex: LTMorphingLabel!  // 显示类似于 25/50
+    @IBOutlet var petIndex: UILabel!  // 显示类似于 25/50
     @IBOutlet var upgrade: UILabel!  //
     
     var preContentOffsetX: CGFloat?
@@ -148,8 +148,10 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
                 
                 if err == 0 {
                     self.petInfoArray.addObjectsFromArray(json!["data"] as! NSArray as [AnyObject])
-                    self.tableview.reloadData()
-                    self.page++
+                    if self.petInfoArray.count > 0 {
+                        self.tableview.reloadData()
+                        self.page++
+                    }
                 }
             }
         }
@@ -285,7 +287,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
 extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return self.petInfoArray.count
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -298,11 +300,16 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         
         if cellString == "PetCell" {
             cell = tableview.dequeueReusableCellWithIdentifier("PetCell", forIndexPath: indexPath) as! petCell
+            (cell as! petCell).info = self.petInfoArray[indexPath.row] as? NSDictionary
+            
         } else if cellString == "PetZoomInCell" {
             cell = tableview.dequeueReusableCellWithIdentifier("PetZoomInCell", forIndexPath: indexPath) as! petZoomInCell
+            var dict = self.petInfoArray[indexPath.row] as? NSDictionary
+            (cell as! petZoomInCell).info = dict
+            self.petName.text = dict!.stringAttributeForKey("name")
+            self.petIndex.text = "\(indexPath.row + 1)/\(self.petInfoArray.count)"
         }
         
-//        cell.info = self.petInfoArray[indexPath.row] as! NSDictionary
         cell!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
         
         return cell!
@@ -374,14 +381,9 @@ extension LevelViewController: UIScrollViewDelegate {
 
 // MARK: pet cell
 class petCell: UITableViewCell {
-//    let NORMAL_WIDTH: CGFloat  = 30.0
-//    let NORMAL_HEIGHT: CGFloat = 100.0
-//    let ZOOMIN_WIDTH: CGFloat  = 60.0
-//    let ZOOMIN_HEIGHT: CGFloat = 60.0
-    
     @IBOutlet var imgView: UIImageView!
     
-    var info: NSDictionary!
+    var info: NSDictionary?
     var id: String?
     var level: String?
     var name: String?
@@ -403,19 +405,22 @@ class petCell: UITableViewCell {
         super.layoutSubviews()
         
         // 刷新界面
-//        let imgF = self.info.stringAttributeForKey("image")
-//        
-//        id = self.info.stringAttributeForKey("id")
-//        level = self.info.stringAttributeForKey("level")
-//        name = self.info.stringAttributeForKey("name")
-//        property = self.info.stringAttributeForKey("property")
-//        getAtDate = self.info.stringAttributeForKey("get_at")
-//        updateAtDate = self.info.stringAttributeForKey("updated_at")
+        let imgF = self.info?.stringAttributeForKey("image")
+        
+        id = self.info?.stringAttributeForKey("id")
+        level = self.info?.stringAttributeForKey("level")
+        name = self.info?.stringAttributeForKey("name")
+        property = self.info?.stringAttributeForKey("property")
+        getAtDate = self.info?.stringAttributeForKey("get_at")
+        updateAtDate = self.info?.stringAttributeForKey("updated_at")
         
         // TODO: update pet image
         self.imgView?.image = UIImage(named: "reset_password")
-//        self.imgView?.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
-
+//        UIImage.imageFromURL(<#aURL: NSURL#>, success: { (image) -> Void in
+//            self.imgView?.image = image
+//        }, error: { () -> Void in
+//            
+//        })
     }
     
     override func prepareForReuse() {
@@ -426,14 +431,9 @@ class petCell: UITableViewCell {
 
 // MARK: pet cell
 class petZoomInCell: UITableViewCell {
-    //    let NORMAL_WIDTH: CGFloat  = 30.0
-    //    let NORMAL_HEIGHT: CGFloat = 100.0
-    //    let ZOOMIN_WIDTH: CGFloat  = 60.0
-    //    let ZOOMIN_HEIGHT: CGFloat = 60.0
-    
     @IBOutlet var imgView: UIImageView!
     
-    var info: NSDictionary!
+    var info: NSDictionary?
     var id: String?
     var level: String?
     var name: String?
@@ -455,18 +455,22 @@ class petZoomInCell: UITableViewCell {
         super.layoutSubviews()
         
         // 刷新界面
-        //        let imgF = self.info.stringAttributeForKey("image")
-        //
-        //        id = self.info.stringAttributeForKey("id")
-        //        level = self.info.stringAttributeForKey("level")
-        //        name = self.info.stringAttributeForKey("name")
-        //        property = self.info.stringAttributeForKey("property")
-        //        getAtDate = self.info.stringAttributeForKey("get_at")
-        //        updateAtDate = self.info.stringAttributeForKey("updated_at")
+        let imgF = self.info?.stringAttributeForKey("image")
+
+        id = self.info?.stringAttributeForKey("id")
+        level = self.info?.stringAttributeForKey("level")
+        name = self.info?.stringAttributeForKey("name")
+        property = self.info?.stringAttributeForKey("property")
+        getAtDate = self.info?.stringAttributeForKey("get_at")
+        updateAtDate = self.info?.stringAttributeForKey("updated_at")
         
         // TODO: update pet image
         self.imgView?.image = UIImage(named: "reset_password")
-        //        self.imgView?.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+//        UIImage.imageFromURL(<#aURL: NSURL#>, success: { (image) -> Void in
+//            self.imgView?.image = image
+//        }, error: { () -> Void in
+//
+//        })
         
     }
     

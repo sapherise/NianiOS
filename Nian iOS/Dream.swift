@@ -480,7 +480,7 @@ extension DreamViewController: NIAlertDelegate {
         // 处理确认“抽蛋” 页面
         else if niALert == self.confirmNiAlert {
             if didselectAtIndex == 0 {
-                (niALert.niButtonArray[0] as! NIButton).startAnimating()
+                (self.confirmNiAlert!.niButtonArray[0] as! NIButton).startAnimating()
                 
                 // 调用 API
                 Api.postPetLottery() {
@@ -500,7 +500,7 @@ extension DreamViewController: NIAlertDelegate {
                                 forKeys: ["img", "title", "content", "buttonArray"])
                             self.lotteryNiAlert!.showWithAnimation(showAnimationStyle.spring)
                         } else {
-                            (niALert.niButtonArray[0] as! NIButton).stopAnimating()
+                            (self.confirmNiAlert!.niButtonArray[0] as! NIButton).stopAnimating()
                         }
                         
                         

@@ -147,23 +147,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             cell = c
             break
         case "1":
-//            var stepCell = tableView.dequeueReusableCellWithIdentifier("ExploreDynamicStepCell", forIndexPath: indexPath) as? ExploreDynamicStepCell
-//            stepCell!.bindData(data, tableview: tableView)
-//            stepCell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
-//            stepCell!.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserTap:"))
-//            stepCell!.labelDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamTap:"))
-//            stepCell!.labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeTap:"))
-//            stepCell!.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentTap:"))
-//            stepCell!.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-//            stepCell!.btnMore.addTarget(self, action: "onMoreClick:", forControlEvents: UIControlEvents.TouchUpInside)
-//            if indexPath.row == self.dataSource.count - 1 {
-//                stepCell!.viewLine.hidden = true
-//            }else{
-//                stepCell!.viewLine.hidden = false
-//            }
-//            cell = stepCell
-            
-            
             var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
             c.isDynamic = true
@@ -175,7 +158,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                 c.viewLine.hidden = false
             }
             cell = c
-            
             
             break
         default:
