@@ -23,6 +23,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     @IBOutlet var uploadDone: UIImageView!
     @IBOutlet var TextView:UITextView!
     @IBOutlet var viewHolder: UIView!
+    
     var Id:String = ""
     var delegate: AddstepDelegate?      //😍
     var actionSheet:UIActionSheet?

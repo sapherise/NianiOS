@@ -746,24 +746,26 @@ func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
     return b
 }
 
-func colorWithHex(hexString: String) -> UIColor? {
-    let regexp = NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
-        options: .CaseInsensitive,
-        error: nil)
-    let num = regexp?.numberOfMatchesInString(hexString,
-        options: .ReportProgress,
-        range: NSMakeRange(0, count(hexString)))
-    if num != 1 {
-        return nil
+extension UIColor {
+    class func colorWithHex(hexString: String) -> UIColor? {
+        let regexp = NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
+            options: .CaseInsensitive,
+            error: nil)
+        let num = regexp?.numberOfMatchesInString(hexString,
+            options: .ReportProgress,
+            range: NSMakeRange(0, count(hexString)))
+        if num != 1 {
+            return nil
+        }
+        var rgbValue : UInt32 = 0
+        let scanner = NSScanner(string: hexString)
+        scanner.scanLocation = 1
+        scanner.scanHexInt(&rgbValue)
+        let red   = CGFloat( (rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat( (rgbValue & 0xFF00) >> 8) / 255.0
+        let blue  = CGFloat( (rgbValue & 0xFF) ) / 255.0
+        return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
-    var rgbValue : UInt32 = 0
-    let scanner = NSScanner(string: hexString)
-    scanner.scanLocation = 1
-    scanner.scanHexInt(&rgbValue)
-    let red   = CGFloat( (rgbValue & 0xFF0000) >> 16) / 255.0
-    let green = CGFloat( (rgbValue & 0xFF00) >> 8) / 255.0
-    let blue  = CGFloat( (rgbValue & 0xFF) ) / 255.0
-    return UIColor(red: red, green: green, blue: blue, alpha: 1)
 }
 
 

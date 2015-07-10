@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 import QuartzCore
 
+private let NORMAL_WIDTH: CGFloat  = 60.0
+private let NORMAL_HEIGHT: CGFloat = 100.0
+
 class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorphingLabelDelegate{
     @IBOutlet var scrollView:UIScrollView!
-    @IBOutlet var viewCircle: UIView!
     @IBOutlet var viewCalendar: UIView!
-    @IBOutlet var viewCircleBackground:UIView!
     @IBOutlet var viewTop: UIView!
-    @IBOutlet var labelLevel: LTMorphingLabel!
     @IBOutlet var menuLeft: UILabel!
     @IBOutlet var menuMiddle: UILabel!
     @IBOutlet var menuRight: UILabel!
@@ -26,15 +26,30 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     @IBOutlet var labelCalendar: UILabel!
     @IBOutlet var viewBottom: UIView!
     @IBOutlet var viewBottomHolder: UIView!
-//    @IBOutlet var tableview:UITableView!
+    @IBOutlet var tableview:UITableView!
+    @IBOutlet var petName: UILabel!  // 显示 pet name, 不属于 tableView
+    @IBOutlet var petIndex: LTMorphingLabel!  // 显示类似于 25/50
+    @IBOutlet var upgrade: UILabel!  //
+    
+    var preContentOffsetX: CGFloat?
+    
+    var cellString: String?
+
     var navView:UIView!
     var top:CAShapeLayer!
     var marks: [Bool] = [Bool](count: 32, repeatedValue: false)
     var textLeft:Int = 0
     var textRight:Int = 0
     
+    var page: Int = 1 //--- 显示获得的宠物
+    var petInfoArray = NSMutableArray()
+    
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        self.tableview.registerNib(UINib(nibName: "PetCell", bundle: nil), forCellReuseIdentifier: "PetCell")
+        self.tableview.registerNib(UINib(nibName: "PetZoomInCell", bundle: nil), forCellReuseIdentifier: "PetZoomInCell")
+        
         self.setupViews()
     }
     
@@ -49,12 +64,12 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
                 var textI = ( j < 10 ) ? "0\(j)" : "\(j)"
                 y = y + 0.1
                 delay( y , {
-                    self.labelLevel.text = textI
+//                    self.labelLevel.text = textI
                 })
             }else{
                 delay( y + 0.1 , {
                     var textI = ( totalNumber < 10 ) ? "0\(totalNumber)" : "\(totalNumber)"
-                    self.labelLevel.text = textI
+//                    self.labelLevel.text = textI
                 })
                 break
             }
@@ -72,25 +87,27 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         titleLabel.text = "等级"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
+        
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.viewTop.setWidth(globalWidth)
         self.scrollView.contentSize = CGSizeMake(globalWidth, 720)
         self.viewTopHolder.setX(globalWidth/2-160)
-        self.viewCircle.setX(globalWidth/2-84)
         self.viewCalendar.setX(globalWidth/2-160)
         self.labelCalendar.setX(globalWidth/2-145)
         self.viewBottom.setWidth(globalWidth)
         self.viewBottomHolder.setX(globalWidth/2-160)
+        self.petName.setX((globalWidth - 100)/2)
+        self.upgrade.setX((globalWidth - 60)/2)
         
-        self.viewCircleBackground.layer.cornerRadius = 84
-        self.viewCircleBackground.layer.masksToBounds = true
-        self.viewCircleBackground.layer.borderColor = UIColor.whiteColor().CGColor
-        self.viewCircleBackground.layer.borderWidth = 8
-        
-        self.labelLevel.textColor = SeaColor
-        self.labelLevel.morphingEffect = .Evaporate
-        self.labelLevel.delegate = self
+        self.tableview.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI/2))
+        self.tableview.frame = CGRectMake(0, 34, globalWidth, 160)
+        self.tableview.delegate = self
+        self.tableview.dataSource = self
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 40))
+        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 40))
+        self.preContentOffsetX = 0.0    // 设置 tableView 的 content offset X
+
         self.labelMonthLeft.textColor = SeaColor
         self.labelMonthRight.textColor = SeaColor
         
@@ -124,6 +141,21 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
                 self.labelMonthRight.text = "\(self.textRight)"
             }
         }
+        
+        Api.getUserPet(page) { json in
+            if json != nil {
+                let err = json!["error"] as! NSNumber
+                
+                if err == 0 {
+                    self.petInfoArray.addObjectsFromArray(json!["data"] as! NSArray as [AnyObject])
+                    self.tableview.reloadData()
+                    self.page++
+                }
+            }
+        }
+        
+        
+        
     }
     
     func SACircle(float:CGFloat){
@@ -155,13 +187,13 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
             "strokeEnd": NSNull(),
             "transform": NSNull()
         ]
-        self.viewCircle.layer.addSublayer(top)
-        delay(0.5, { () -> () in
-            let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-            strokeEnd.toValue = 0.8 * float
-            strokeEnd.duration = 1
-            self.top.SAAnimation(strokeEnd)
-        })
+//        self.viewCircle.layer.addSublayer(top)
+//        delay(0.5, { () -> () in
+//            let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+//            strokeEnd.toValue = 0.8 * float
+//            strokeEnd.duration = 1
+//            self.top.SAAnimation(strokeEnd)
+//        })
     }
     
     func layoutAMonth(marks: [Bool]) {
@@ -248,3 +280,201 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         }
     }
 }
+
+// MARK: - Level View Controller 实现 uitableview delegate 和 uitableview data source
+extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 80
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: UITableViewCell?
+        cellString = self.pickupCellType(tableView, indexPath: indexPath)
+        
+        if cellString == "PetCell" {
+            cell = tableview.dequeueReusableCellWithIdentifier("PetCell", forIndexPath: indexPath) as! petCell
+        } else if cellString == "PetZoomInCell" {
+            cell = tableview.dequeueReusableCellWithIdentifier("PetZoomInCell", forIndexPath: indexPath) as! petZoomInCell
+        }
+        
+//        cell.info = self.petInfoArray[indexPath.row] as! NSDictionary
+        cell!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+        
+        return cell!
+    }
+
+    /**
+    根据 content offset, 选择加载不同的 cell
+    
+    :param: tableView       <#tableView description#>
+    
+    :returns: String: "PetCell" "PetZoomInCell"
+    */
+    private func pickupCellType(tableView: UITableView, indexPath: NSIndexPath) -> String {
+        let tHHeight = tableView.tableHeaderView!.frame.height
+        let tFHeight = tableView.tableFooterView!.frame.height
+        
+        var _cellString: String?
+        var tableViewCenter: CGFloat = globalWidth / 2.0
+        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row * 80) - tableView.contentOffset.y
+        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1) * 80) - tableView.contentOffset.y
+
+        if cellHeaderXInScreen < tableViewCenter &&  tableViewCenter < cellFooterXInScreen {
+            _cellString = "PetZoomInCell"
+        } else {
+            _cellString = "PetCell"
+        }
+        
+        return _cellString!
+    }
+}
+
+// MARK: - Level View Controller 实现 uiscrollview delegate
+extension LevelViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView.isKindOfClass(UITableView) {
+            (scrollView as! UITableView).reloadData()
+        }
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView.isKindOfClass(UITableView) {
+            if !decelerate {
+//                self.snapToNearestItem(scrollView)
+            }
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if scrollView.isKindOfClass(UITableView) {
+//            self.snapToNearestItem(scrollView)
+        }
+    }
+    
+    private func snapToNearestItem(scrollView: UIScrollView) {
+        var targetOffset = self.nearestTargetOffsetForOffset(scrollView.contentOffset)
+        
+        scrollView.setContentOffset(targetOffset, animated: true)
+    }
+    
+    private func nearestTargetOffsetForOffset(offset: CGPoint) -> CGPoint {
+        var PageSize = CGFloat(NORMAL_WIDTH)
+        var page: NSInteger = NSInteger(roundf(Float(offset.x / PageSize)))
+        var targetX = PageSize * CGFloat(page)
+        
+        return CGPointMake(targetX, offset.y)
+    }
+    
+}
+
+// MARK: pet cell
+class petCell: UITableViewCell {
+//    let NORMAL_WIDTH: CGFloat  = 30.0
+//    let NORMAL_HEIGHT: CGFloat = 100.0
+//    let ZOOMIN_WIDTH: CGFloat  = 60.0
+//    let ZOOMIN_HEIGHT: CGFloat = 60.0
+    
+    @IBOutlet var imgView: UIImageView!
+    
+    var info: NSDictionary!
+    var id: String?
+    var level: String?
+    var name: String?
+    var property: String?
+    var imgPath: String?
+    var getAtDate: String?
+    var updateAtDate: String?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        // todo: 设置 cell
+        self.selectionStyle = .None
+
+    }
+    
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 刷新界面
+//        let imgF = self.info.stringAttributeForKey("image")
+//        
+//        id = self.info.stringAttributeForKey("id")
+//        level = self.info.stringAttributeForKey("level")
+//        name = self.info.stringAttributeForKey("name")
+//        property = self.info.stringAttributeForKey("property")
+//        getAtDate = self.info.stringAttributeForKey("get_at")
+//        updateAtDate = self.info.stringAttributeForKey("updated_at")
+        
+        // TODO: update pet image
+        self.imgView?.image = UIImage(named: "reset_password")
+//        self.imgView?.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+
+    }
+    
+    override func prepareForReuse() {
+        self.imgView?.cancelImageRequestOperation()
+        self.imgView!.image = nil
+    }
+}
+
+// MARK: pet cell
+class petZoomInCell: UITableViewCell {
+    //    let NORMAL_WIDTH: CGFloat  = 30.0
+    //    let NORMAL_HEIGHT: CGFloat = 100.0
+    //    let ZOOMIN_WIDTH: CGFloat  = 60.0
+    //    let ZOOMIN_HEIGHT: CGFloat = 60.0
+    
+    @IBOutlet var imgView: UIImageView!
+    
+    var info: NSDictionary!
+    var id: String?
+    var level: String?
+    var name: String?
+    var property: String?
+    var imgPath: String?
+    var getAtDate: String?
+    var updateAtDate: String?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        // todo: 设置 cell
+        self.selectionStyle = .None
+        
+    }
+    
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 刷新界面
+        //        let imgF = self.info.stringAttributeForKey("image")
+        //
+        //        id = self.info.stringAttributeForKey("id")
+        //        level = self.info.stringAttributeForKey("level")
+        //        name = self.info.stringAttributeForKey("name")
+        //        property = self.info.stringAttributeForKey("property")
+        //        getAtDate = self.info.stringAttributeForKey("get_at")
+        //        updateAtDate = self.info.stringAttributeForKey("updated_at")
+        
+        // TODO: update pet image
+        self.imgView?.image = UIImage(named: "reset_password")
+        //        self.imgView?.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+        
+    }
+    
+    override func prepareForReuse() {
+        self.imgView?.cancelImageRequestOperation()
+        self.imgView!.image = nil
+    }
+}
+
+
+

@@ -678,10 +678,18 @@ extension  Api {
         
         V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)", content: ["luckcode": _sha256String], callback: callback)
     }
+   
+    /**
+    获得用户的宠物
     
+    :param: page     <#page description#>
+    :param: callback <#callback description#>
+    */
+    static func getUserPet(page: Int, callback: V.JsonCallback) {
+        loadCookies()
     
-    
-    
+        V.httpGetForJson("http://api.nian.so/user/\(s_uid)/pets?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+    }
     
     
     
