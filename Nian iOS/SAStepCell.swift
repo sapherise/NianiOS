@@ -44,6 +44,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     @IBOutlet var labelDream: UILabel!
     @IBOutlet var labelTime: UILabel!
     @IBOutlet var viewLine: UIView!
+    
     var actionSheetDelete: UIActionSheet!
     var largeImageURL:String = ""
     var data :NSDictionary!

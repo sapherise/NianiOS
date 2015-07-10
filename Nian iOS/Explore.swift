@@ -84,13 +84,13 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     date:   2015-07-04
     */
     override func didReceiveMemoryWarning() {
-        (self.providers[0] as! ExploreFollowProvider).dataArray.removeAllObjects()
+        (self.providers?[0] as? ExploreFollowProvider)!.dataArray.removeAllObjects()
         self.tableView.reloadData()
         
-        (self.providers[1] as! ExploreDynamicProvider).dataArray.removeAllObjects()
+        (self.providers?[1] as? ExploreDynamicProvider)!.dataArray.removeAllObjects()
         self.dynamicTableView.reloadData()
         
-        (self.providers[2] as! ExploreNewHot).dataArray.removeAllObjects()
+        (self.providers?[2] as? ExploreNewHot)!.dataArray.removeAllObjects()
         self.recomTableView.reloadData()
     }
     

@@ -189,7 +189,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     if totalCoin.toInt() < 3 {
                         self.niCoinLessAlert = NIAlert()
                         self.niCoinLessAlert!.delegate = self
-                        self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                        self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
                                                            forKeys: ["img", "title", "content", "buttonArray"])
                         
                         self.niCoinLessAlert!.showWithAnimation(showAnimationStyle.flip)
@@ -197,7 +197,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         // 如果念币多于 3， 那么就出现抽宠物
                         self.niAlert = NIAlert()
                         self.niAlert!.delegate = self
-                        self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
+                        self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
                         
                         self.niAlert!.showWithAnimation(showAnimationStyle.flip)
@@ -342,7 +342,8 @@ extension AddStep: NIAlertDelegate {
                         if err == 0 {
                             niALert.dismissWithAnimation()
                             
-                            let petName = (json!["data"] as! NSDictionary).objectForKey("pet") as! String
+                            let petInfo = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
+                            let petName = (petInfo.objectForKey("pet") as! NSDictionary).objectForKey("name") as! String
                             
                             self.lotteryNiAlert = NIAlert()
                             self.lotteryNiAlert!.delegate = self

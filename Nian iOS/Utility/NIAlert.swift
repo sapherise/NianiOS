@@ -136,7 +136,7 @@ class NIAlert: UIView {
             var _width = _title.stringWidthWith(12, height: 36)
             var _posY = Float(contentBottom) + Float((i + 1)) * 8.0 + Float(i) * 36
             
-            var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - _width)/2 - 24, CGFloat(_posY), _width + 48, 36))
+            var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - _width)/2 - 24, CGFloat(_posY), 240, 36))
             button.tag = 21000 + i
             button.setTitle(_title, forState: nil)
             button.addTarget(self, action: "buttonTouch:", forControlEvents: UIControlEvents.TouchUpInside)

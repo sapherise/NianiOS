@@ -329,14 +329,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if total.toInt() > 3 {
                 self.niAlert = NIAlert()
                 self.niAlert!.delegate = self
-                self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
+                self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
                                                    forKeys: ["img", "title", "content", "buttonArray"])
                 
                 self.niAlert!.showWithAnimation(showAnimationStyle.flip)
             } else {
                 self.niCoinLessAlert = NIAlert()
                 self.niCoinLessAlert!.delegate = self
-                self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
                                                    forKeys: ["img", "title", "content", "buttonArray"])
             
                 self.niCoinLessAlert!.showWithAnimation(showAnimationStyle.flip)
@@ -459,9 +459,8 @@ extension DreamViewController: NIAlertDelegate {
                 niALert.dismissWithAnimation()
             }
         }
-            // 处理 add step 之后询问要不要抽宠物的界面
+        // 处理 add step 之后询问要不要抽宠物的界面
         else if niALert == self.niAlert {
-            
             // 改进，消失从外面控制
             niALert.dismissWithAnimation()
             
@@ -478,7 +477,7 @@ extension DreamViewController: NIAlertDelegate {
                 self.confirmNiAlert!.showWithAnimation(showAnimationStyle.flip)
             }
         }
-            // 处理确认“抽蛋” 页面
+        // 处理确认“抽蛋” 页面
         else if niALert == self.confirmNiAlert {
             if didselectAtIndex == 0 {
                 (niALert.niButtonArray[0] as! NIButton).startAnimating()
