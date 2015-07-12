@@ -40,6 +40,11 @@ class CircleListCollectionController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    func _addObserver() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
+        println("快使用双节棍")
+    }
+    
     func Poll() {
         load()
     }
@@ -78,9 +83,7 @@ class CircleListCollectionController: UIViewController {
             dispatch_async(dispatch_get_main_queue(), {
                 self.collectionView.reloadData()
                 self.isLoading = false 
-                
             })
-        
         })
     }
     
@@ -168,7 +171,6 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     }
 
 }
-
 
 
 

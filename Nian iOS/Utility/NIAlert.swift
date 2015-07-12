@@ -73,12 +73,6 @@ class NIAlert: UIView {
         super.init(coder: aDecoder)
     }
     
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        
-//       _commonSetup()
-//    }
-    
     private func _commonSetup() {
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.mainScreen().scale
@@ -139,7 +133,7 @@ class NIAlert: UIView {
             var _posY = Float(contentBottom) + Float((i + 1)) * 8.0 + Float(i) * 36
             
             var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - 120)/2, CGFloat(_posY), 120, 36))
-            button.tag = 21000 + i
+            button.tag = 41000 + i
             button.addTarget(self, action: "buttonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             
             if i == 0 {
@@ -158,7 +152,7 @@ class NIAlert: UIView {
     }
     
     func buttonTouch(sender: NIButton) {
-        var _index = sender.tag - 21000
+        var _index = sender.tag - 41000
         
         delegate?.niAlert?(self, didselectAtIndex: _index)
     }
