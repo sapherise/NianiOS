@@ -169,10 +169,21 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                 var coin = json!["coin"] as! String
                 var isfirst = json!["isfirst"] as! String
                 var totalCoin = json!["totalCoin"] as! String
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.navigationController?.popViewControllerAnimated(true)
-                    self.delegate?.countUp!(coin, total: totalCoin, isfirst: isfirst)
-                })
+                self.navigationController?.popViewControllerAnimated(true)
+                
+                //  创建卡片
+                let modeCard = SACookie("modeCard")
+                if modeCard == "0" {
+                } else {
+                    var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                    card.content = self.TextView.text
+                    card.widthImage = self.uploadWidth
+                    card.heightImage = self.uploadHeight
+                    card.url = self.uploadUrl
+                    card.onCardSave()
+                }
+                //
+                self.delegate?.countUp!(coin, total: totalCoin, isfirst: isfirst)
             }
         }
     }

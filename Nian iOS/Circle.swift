@@ -237,7 +237,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func postWord(replyContent: String, type: Int = 1) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        back {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
@@ -250,15 +250,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.tableview.contentOffset.y = offset
                 })
             }
-            CATransaction.begin()
-            CATransaction.setCompletionBlock({ () -> Void in
-                self.addReply(replyContent, type: 1)
-            })
-            self.tableview.beginUpdates()
-            self.tableview.insertRowsAtIndexPaths([NSIndexPath(forRow: self.dataArray.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Right)
-            self.tableview.endUpdates()
-            CATransaction.commit()
-        })
+            self.addReply(replyContent, type: 1)
+            self.tableview.reloadData()
+        }
     }
     
     func tableUpdate(contentAfter: String) {
@@ -273,11 +267,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 mutableItem.setObject(lastdate, forKey: "lastdate")
                 mutableItem.setObject(contentAfter, forKey: "content")
                 self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
-                var row = self.dataArray.count - 1 - i
-                if row > 0 {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
-                    })
+                back {
+                    self.tableview.reloadData()
                 }
                 break
             }

@@ -163,10 +163,10 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func onSubmitClick(){
-        var content = self.textView.text
-        if content == "进展正文" {
-            content = ""
+        if self.textView.text == "进展正文" {
+            self.textView.text = ""
         }
+        var content = self.textView.text
         self.btnOK.setTitle("", forState: UIControlState.Normal)
         self.btnOK.enabled = false
         self.activityOK.hidden = false
@@ -179,6 +179,19 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                 var totalCoin = json!["totalCoin"] as! String
                 self.isfirst = json!["isfirst"] as! String
                 globalWillNianReload = 1
+                
+                //  创建卡片
+                let modeCard = SACookie("modeCard")
+                if modeCard == "0" {
+                } else {
+                    var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                    card.content = self.textView.text
+                    card.widthImage = self.uploadWidth
+                    card.heightImage = self.uploadHeight
+                    card.url = self.uploadUrl
+                    card.onCardSave()
+                }
+                
                 if self.isfirst == "1" {
                     globalWillNianReload = 1
                     
@@ -291,6 +304,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                 }
             }
             var rect = CGRectMake(-yPoint.x, -yPoint.y, w, h)
+            self.textView.resignFirstResponder()
             v.showImage("http://img.nian.so/step/\(self.uploadUrl)!large", rect: rect)
         }
     }

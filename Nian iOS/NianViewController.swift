@@ -130,6 +130,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
+        
+        //  todo
+//        var viewPoint = SAXib("Card") as! Card
+//        viewPoint.widthImage = "451"
+//        viewPoint.heightImage = "231"
+//        viewPoint.url = "70534_1436741566.png"
+//        viewPoint.content = "即便在看书之前，我就不觉得外向高内向一等，但是内向外向似乎是各有所长。"
+//        self.view.addSubview(viewPoint)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

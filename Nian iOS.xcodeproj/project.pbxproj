@@ -31,6 +31,7 @@
 		1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */; };
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
+		1243C6F71B4F60A0007F741C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C6F61B4F60A0007F741C /* Card.swift */; };
 		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
 		12497C371A7102C4001DBD0F /* mainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12497C361A7102C4001DBD0F /* mainClient.swift */; };
 		124EFD6A1A664912009D837B /* ImClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124EFD691A664912009D837B /* ImClient.swift */; };
@@ -243,6 +244,7 @@
 		1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleBubbleCell.xib; sourceTree = "<group>"; };
 		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
+		1243C6F61B4F60A0007F741C /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		1248FB9E1A91B46100110EEF /* NSObject+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swift.h"; sourceTree = "<group>"; };
 		1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swift.m"; sourceTree = "<group>"; };
 		12497C361A7102C4001DBD0F /* mainClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainClient.swift; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 			children = (
 				12E8090C1A2DBFB20022C094 /* SingleStep.swift */,
 				122F39201B4E794700DE8628 /* Card.xib */,
+				1243C6F61B4F60A0007F741C /* Card.swift */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
 			);
 			name = "进展";
@@ -1458,6 +1461,7 @@
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
 				12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */,
+				1243C6F71B4F60A0007F741C /* Card.swift in Sources */,
 				C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */,
 				12C354531AD5126F0078693F /* Badge.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,

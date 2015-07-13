@@ -28,6 +28,7 @@
                 <outlet property="line14" destination="IPm-UO-3cc" id="9Hg-7Q-Bz7"/>
                 <outlet property="line15" destination="RTn-Xn-QFx" id="Txm-4o-6fk"/>
                 <outlet property="line16" destination="apQ-Q9-FAF" id="jR5-AU-V3k"/>
+                <outlet property="line17" destination="YqM-9p-JDc" id="kgk-9O-3ip"/>
                 <outlet property="line2" destination="3Fu-Pa-9o8" id="7v2-aS-ixA"/>
                 <outlet property="line3" destination="3qF-6G-WLq" id="K95-eb-oDS"/>
                 <outlet property="line4" destination="HLZ-De-3FC" id="jip-3f-Fex"/>
@@ -37,11 +38,13 @@
                 <outlet property="line8" destination="x3f-dy-1zr" id="dW3-St-nfO"/>
                 <outlet property="line9" destination="bq6-aR-Lpo" id="8b9-n2-zld"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
+                <outlet property="switchCard" destination="exj-Tp-YaU" id="INo-YA-Cq8"/>
                 <outlet property="switchMode" destination="FdA-bJ-b0B" id="c0F-2I-Af4"/>
                 <outlet property="version" destination="cZc-2c-cvJ" id="1PE-s0-JBy"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
                 <outlet property="viewAlert" destination="0md-cl-w65" id="XQ3-X9-nDV"/>
                 <outlet property="viewCache" destination="7Hx-iU-SaN" id="NMd-Fm-cfX"/>
+                <outlet property="viewCard" destination="FCh-PN-HeS" id="kUV-mi-TqV"/>
                 <outlet property="viewEmail" destination="LLu-QK-cZf" id="6Rg-xS-b9T"/>
                 <outlet property="viewFind" destination="oFn-lt-Dw4" id="2jj-2R-ZRo"/>
                 <outlet property="viewHelp" destination="WL9-pf-Igy" id="tcJ-OW-oIj"/>
@@ -296,7 +299,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" id="0md-cl-w65" userLabel="每日更新提醒">
-                            <rect key="frame" x="0.0" y="718" width="320" height="48"/>
+                            <rect key="frame" x="0.0" y="766" width="320" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" id="bq6-aR-Lpo">
@@ -319,8 +322,32 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
+                        <view contentMode="scaleToFill" id="FCh-PN-HeS" userLabel="保存进展卡片">
+                            <rect key="frame" x="0.0" y="718" width="320" height="48"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" id="YqM-9p-JDc">
+                                    <rect key="frame" x="0.0" y="47" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </view>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存进展卡片" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BeZ-Sh-Nyb">
+                                    <rect key="frame" x="20" y="13" width="102" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="exj-Tp-YaU">
+                                    <rect key="frame" x="258" y="8" width="51" height="31"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="onTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </switch>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
                         <view contentMode="scaleToFill" id="oFn-lt-Dw4" userLabel="只能通过昵称找到我">
-                            <rect key="frame" x="0.0" y="766" width="320" height="48"/>
+                            <rect key="frame" x="0.0" y="814" width="320" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" id="TST-KO-2ji">
@@ -344,14 +371,14 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="关于" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ot8-rI-kd2">
-                            <rect key="frame" x="20" y="844" width="70" height="32"/>
+                            <rect key="frame" x="20" y="892" width="70" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" id="WL9-pf-Igy" userLabel="念是什么">
-                            <rect key="frame" x="0.0" y="884" width="320" height="48"/>
+                            <rect key="frame" x="0.0" y="932" width="320" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" id="0BT-kv-Pnq">
@@ -378,7 +405,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" id="MDU-8p-pb5" userLabel="我想给念五星">
-                            <rect key="frame" x="0.0" y="932" width="320" height="48"/>
+                            <rect key="frame" x="0.0" y="980" width="320" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" id="o61-sa-PKl">
@@ -400,14 +427,14 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账户" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OM3-IN-m5k">
-                            <rect key="frame" x="20" y="1010" width="70" height="32"/>
+                            <rect key="frame" x="20" y="1058" width="70" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <color key="textColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" id="Hp1-66-DX9" userLabel="登出">
-                            <rect key="frame" x="0.0" y="1050" width="320" height="48"/>
+                            <rect key="frame" x="0.0" y="1098" width="320" height="48"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" id="RTn-Xn-QFx">
@@ -430,7 +457,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cZc-2c-cvJ">
-                            <rect key="frame" x="125" y="1150" width="72" height="21"/>
+                            <rect key="frame" x="124" y="1188" width="72" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

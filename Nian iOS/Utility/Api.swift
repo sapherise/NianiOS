@@ -503,9 +503,9 @@ struct Api {
         V.httpPostForString("http://nian.so/api/dream_cool_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&cool=\(like)", callback: callback)
     }
     
-    static func postDreamStepComment(dream: String, step: String, content: String, callback: V.StringCallback) {
+    static func postDreamStepComment(dream: String, step: String, content: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/comment_query.php", content: "id=\(dream)&&step=\(step)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: "dream_id=\(dream)&content=\(content)", callback: callback)
     }
     
     

@@ -318,19 +318,11 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         return viewFooter
     }
     
-    func getImageFromView(view: UIView)->UIImage {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 8);
-        view.layer.renderInContext(UIGraphicsGetCurrentContext())
-        var image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
-    }
-    
     func sharePromo() {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
         var url:NSURL = NSURL(string: "http://nian.so/m/user/\(safeuid)")!
-        var image = self.getImageFromView(self.imagePromo)
+        var image = getImageFromView(self.imagePromo)
         let activityView = UIActivityViewController(
             activityItems: [image, "来念上找我玩", url],
             applicationActivities: [WeChatSessionActivity(), WeChatMomentsActivity()])

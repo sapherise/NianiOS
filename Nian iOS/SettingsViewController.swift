@@ -24,6 +24,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var CareSwitch:UISwitch!
     @IBOutlet var PrivateSwitch: UISwitch!
     @IBOutlet var switchMode: UISwitch!
+    @IBOutlet var switchCard: UISwitch!
     @IBOutlet var version:UILabel!
     @IBOutlet var btnCover: UIButton!
     @IBOutlet var viewStar: UIView!
@@ -37,6 +38,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var viewImage: UIView!
     @IBOutlet var viewAlert: UIView!
     @IBOutlet var viewMode: UIView!
+    @IBOutlet var viewCard: UIView!
     @IBOutlet var line1: UIView!
     @IBOutlet var line2: UIView!
     @IBOutlet var line3: UIView!
@@ -53,6 +55,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     @IBOutlet var line14: UIView!
     @IBOutlet var line15: UIView!
     @IBOutlet var line16: UIView!
+    @IBOutlet var line17: UIView!
     @IBOutlet var arrowHelp: UIImageView!
     @IBOutlet var arrowStar: UIImageView!
     @IBOutlet var infoMode: UIImageView!
@@ -100,6 +103,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.viewStar.setWidth(globalWidth)
         self.viewLogout.setWidth(globalWidth)
         self.viewMode.setWidth(globalWidth)
+        self.viewCard.setWidth(globalWidth)
         self.line1.setGlobalWidth()
         self.line2.setGlobalWidth()
         self.line3.setGlobalWidth()
@@ -116,6 +120,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.line14.setGlobalWidth()
         self.line15.setGlobalWidth()
         self.line16.setGlobalWidth()
+        self.line17.setGlobalWidth()
         self.inputName.setGlobalX()
         self.inputEmail.setGlobalX()
         self.inputPhone.setGlobalX()
@@ -125,11 +130,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.CareSwitch.setGlobalX(x: 13)
         self.PrivateSwitch.setGlobalX(x: 13)
         self.switchMode.setGlobalX(x: 13)
+        self.switchCard.setGlobalX(x: 13)
         self.arrowHelp.setGlobalX(x: 13)
         self.arrowStar.setGlobalX(x: 13)
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 1250)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 1300)
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -169,6 +175,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             self.PrivateSwitch.switchSetup(true, cacheName: "privateMode")
         }else{
             self.PrivateSwitch.switchSetup(false, cacheName: "privateMode")
+        }
+        
+        
+        // 卡片模式
+        self.switchCard.addTarget(self, action: "onCard:", forControlEvents: UIControlEvents.ValueChanged)
+        self.switchCard.layer.cornerRadius = 16
+        var modeCard = SACookie("modeCard")
+        if modeCard == "0" {
+            self.switchCard.switchSetup(false, cacheName: "modeCard")
+        }else{
+            self.switchCard.switchSetup(true, cacheName: "modeCard")
         }
         
         self.switchMode.addTarget(self, action: "switchModeAction:", forControlEvents: UIControlEvents.ValueChanged)
@@ -544,6 +561,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             sender.switchSetup(false, cacheName: "privateMode")
             Api.postUserPrivate("0") { json in
             }
+        }
+    }
+    
+    func onCard(sender: UISwitch) {
+        if sender.on {
+            sender.switchSetup(true, cacheName: "modeCard")
+        } else {
+            sender.switchSetup(false, cacheName: "modeCard")
         }
     }
     

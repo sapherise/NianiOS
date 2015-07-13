@@ -272,6 +272,17 @@ extension UIViewController: UIGestureRecognizerDelegate {
         self.navigationController?.pushViewController(DreamVC, animated: true)
     }
     
+    func SAXib(named: String) -> AnyObject {
+        return (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0)
+    }
+}
+
+func getImageFromView(view: UIView)->UIImage {
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 8);
+    view.layer.renderInContext(UIGraphicsGetCurrentContext())
+    var image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
 }
 
 func SAstrlen(stremp:NSString)->Int{
@@ -736,6 +747,7 @@ func SAUid() -> String {
 }
 
 func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
+    // ceil 向上取整
     var a = pow(10, Double(dot))
     var b: CGFloat
     if isCeil {
@@ -802,6 +814,10 @@ extension UIView {
         maskLayer.path = maskPath.CGPath
         self.layer.mask = maskLayer
     }
+}
+
+func SACookie(key: String) -> String? {
+    return NSUserDefaults.standardUserDefaults().objectForKey(key) as? String
 }
 
 /**
