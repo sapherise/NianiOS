@@ -158,7 +158,6 @@ class NIAlert: UIView {
     }
  
     func showWithAnimation(animation: showAnimationStyle) {
-//        self.layoutSubviews()
         self._commonSetup()
         
         var _windowView = UIApplication.sharedApplication().windows.first as! UIView
@@ -234,6 +233,7 @@ NIbutton background color
 @objc enum BgColor: Int {
     case blue
     case grey
+    case white   // for private use only 
 }
 
 class NIButton: UIButton {
@@ -245,6 +245,8 @@ class NIButton: UIButton {
                 self.backgroundColor = UIColor(red: 0x6c/255.0, green: 0xc5/255.0, blue: 0xee/255.0, alpha: 1.0)
             case .grey:
                 self.backgroundColor = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
+            case .white:
+                self.backgroundColor = UIColor.whiteColor()
             default:
                 break
             }
@@ -279,7 +281,7 @@ class NIButton: UIButton {
     func startAnimating() {
 //        self.titleLabel!.text = ""
         self.setTitle("", forState: UIControlState.Normal)
-        self.bringSubviewToFront(self._spinner!)
+        self.bgColor = BgColor.white
         self._spinner!.hidden = false
         self._spinner!.startAnimating()
     }
@@ -287,7 +289,6 @@ class NIButton: UIButton {
     func stopAnimating() {
 //        self.titleLabel?.text = _titleString
         self.setTitle(self._titleString, forState: UIControlState.Normal)
-        self.sendSubviewToBack(self._spinner!)
         self._spinner!.stopAnimating()
         self._spinner!.hidden = true
     }

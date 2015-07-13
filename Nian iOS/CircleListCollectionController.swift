@@ -16,11 +16,11 @@ class CircleListCollectionController: UIViewController {
     
     var dataArray = NSMutableArray()
     var isLoading: Bool = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
+        _addObserver()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -41,8 +41,8 @@ class CircleListCollectionController: UIViewController {
     }
     
     func _addObserver() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Poll", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
-        println("快使用双节棍")
     }
     
     func Poll() {

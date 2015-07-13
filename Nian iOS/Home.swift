@@ -8,6 +8,9 @@
 
 import UIKit
 
+var circleCollectionList: UIStoryboard = UIStoryboard(name: "CircleCollectionList", bundle: nil)
+let vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
+
 class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, MaskDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
@@ -309,7 +312,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         var vc4 = MeViewController()
-        var vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
+//        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 0

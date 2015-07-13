@@ -187,6 +187,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
 }
 
+// MARK: - explore dynamic dream cell
 class ExploreDynamicDreamCell: UITableViewCell {
     
     @IBOutlet var imageHead: UIImageView!
