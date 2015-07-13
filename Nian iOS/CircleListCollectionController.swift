@@ -16,11 +16,11 @@ class CircleListCollectionController: UIViewController {
     
     var dataArray = NSMutableArray()
     var isLoading: Bool = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
+        _addObserver()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -38,6 +38,11 @@ class CircleListCollectionController: UIViewController {
     func onSearch() {
         var vc = CircleExploreController()
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func _addObserver() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Poll", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll", name: "Poll", object: nil)
     }
     
     func Poll() {
@@ -78,9 +83,7 @@ class CircleListCollectionController: UIViewController {
             dispatch_async(dispatch_get_main_queue(), {
                 self.collectionView.reloadData()
                 self.isLoading = false 
-                
             })
-        
         })
     }
     
@@ -168,7 +171,6 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     }
 
 }
-
 
 
 

@@ -148,3 +148,31 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
 }
+
+// MARK: - 实现 scroll view delegate, aim --> 优化用户体验
+//extension ExploreFollowProvider: UIScrollViewDelegate {
+//    
+//    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        if scrollView .isKindOfClass(UITableView) {
+//            for cell in (scrollView as! UITableView).visibleCells() {
+//                (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
+//                (cell as! SAStepCell).imageHolder.image = nil
+//            }
+//        }
+//    }
+//    
+//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if scrollView.isKindOfClass(UITableView) {
+//            if !decelerate {
+//                
+//            }
+//        }
+//    }
+//    
+//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+//        if scrollView.isKindOfClass(UITableView) {
+//            (scrollView as! UITableView).reloadData()
+//        }
+//    }
+//}
+

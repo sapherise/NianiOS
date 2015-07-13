@@ -30,6 +30,8 @@ class LetterCell: MKTableViewCell {
         self.setWidth(globalWidth)
         self.lastdate?.setX(globalWidth-92)
         self.viewLine.setWidth(globalWidth-85)
+        self.imageHead.layer.cornerRadius = 20.0
+        self.imageHead.layer.masksToBounds = true   
     }
     
     func onUserClick(sender: UIGestureRecognizer) {

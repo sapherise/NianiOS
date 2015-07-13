@@ -13,7 +13,7 @@
                 <outlet property="menuLeft" destination="km2-6I-b4I" id="0qi-KJ-qyG"/>
                 <outlet property="menuMiddle" destination="VAb-5G-tAz" id="hiT-k5-7bg"/>
                 <outlet property="menuRight" destination="edw-yP-hmf" id="YIb-jk-bxh"/>
-                <outlet property="petIndex" destination="Tcv-nN-eYh" id="TEs-tC-HS3"/>
+                <outlet property="petIndex" destination="Tcv-nN-eYh" id="Lc9-Wa-xY5"/>
                 <outlet property="petName" destination="Ziy-bo-yrj" id="zpD-60-FmU"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
                 <outlet property="tableview" destination="uTn-R4-WZe" id="eGA-Dc-fwU"/>
@@ -258,7 +258,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-196" y="360"/>
+            <point key="canvasLocation" x="-133" y="360"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

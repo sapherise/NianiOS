@@ -2,17 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "pm_mwzz.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "金币@2x.png"
+      "filename" : "pm_mwzz@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "金币@3x.png"
+      "filename" : "pm_mwzz@3x.png"
     }
   ],
   "info" : {
