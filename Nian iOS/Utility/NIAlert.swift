@@ -281,7 +281,6 @@ class NIButton: UIButton {
     func startAnimating() {
 //        self.titleLabel!.text = ""
         self.setTitle("", forState: UIControlState.Normal)
-        self.bgColor = BgColor.white
         self._spinner!.hidden = false
         self._spinner!.startAnimating()
     }

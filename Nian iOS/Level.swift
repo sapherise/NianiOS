@@ -147,7 +147,10 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
                 let err = json!["error"] as! NSNumber
                 
                 if err == 0 {
-                    self.petInfoArray.addObjectsFromArray(json!["data"] as! NSArray as [AnyObject])
+                    for item in ((json!["data"] as! NSDictionary).objectForKey("pets") as! NSArray) {
+                        self.petInfoArray.addObject(item)
+                    }
+                    
                     if self.petInfoArray.count > 0 {
                         self.tableview.reloadData()
                         self.page++
@@ -155,9 +158,6 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
                 }
             }
         }
-        
-        
-        
     }
     
     func SACircle(float:CGFloat){
@@ -291,7 +291,7 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 80
+        return 120
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -301,11 +301,13 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         if cellString == "PetCell" {
             cell = tableview.dequeueReusableCellWithIdentifier("PetCell", forIndexPath: indexPath) as! petCell
             (cell as! petCell).info = self.petInfoArray[indexPath.row] as? NSDictionary
-            
+            (cell as! petCell)._layoutSubviews()
         } else if cellString == "PetZoomInCell" {
             cell = tableview.dequeueReusableCellWithIdentifier("PetZoomInCell", forIndexPath: indexPath) as! petZoomInCell
             var dict = self.petInfoArray[indexPath.row] as? NSDictionary
             (cell as! petZoomInCell).info = dict
+            (cell as! petZoomInCell)._layoutSubviews()
+            
             self.petName.text = dict!.stringAttributeForKey("name")
             self.petIndex.text = "\(indexPath.row + 1)/\(self.petInfoArray.count)"
         }
@@ -397,15 +399,14 @@ class petCell: UITableViewCell {
         
         // todo: 设置 cell
         self.selectionStyle = .None
-
+        self.imageView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func _layoutSubviews() {
         // 刷新界面
         let imgF = self.info?.stringAttributeForKey("image")
+        println("imgF cell: \(imgF)")
         
         id = self.info?.stringAttributeForKey("id")
         level = self.info?.stringAttributeForKey("level")
@@ -413,14 +414,9 @@ class petCell: UITableViewCell {
         property = self.info?.stringAttributeForKey("property")
         getAtDate = self.info?.stringAttributeForKey("get_at")
         updateAtDate = self.info?.stringAttributeForKey("updated_at")
-        
-        // TODO: update pet image
-        self.imgView?.image = UIImage(named: "reset_password")
-//        UIImage.imageFromURL(<#aURL: NSURL#>, success: { (image) -> Void in
-//            self.imgView?.image = image
-//        }, error: { () -> Void in
-//            
-//        })
+       
+        let imgURLString = "http://img.nian.so/pets/" + imgF!
+        self.imageView?.setImage(imgURLString, placeHolder: IconColor)
     }
     
     override func prepareForReuse() {
@@ -447,15 +443,13 @@ class petZoomInCell: UITableViewCell {
         
         // todo: 设置 cell
         self.selectionStyle = .None
-        
+        self.imageView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func _layoutSubviews() {
         // 刷新界面
         let imgF = self.info?.stringAttributeForKey("image")
+        println("imgF Zoom In cell: \(imgF)")
 
         id = self.info?.stringAttributeForKey("id")
         level = self.info?.stringAttributeForKey("level")
@@ -463,15 +457,9 @@ class petZoomInCell: UITableViewCell {
         property = self.info?.stringAttributeForKey("property")
         getAtDate = self.info?.stringAttributeForKey("get_at")
         updateAtDate = self.info?.stringAttributeForKey("updated_at")
-        
-        // TODO: update pet image
-        self.imgView?.image = UIImage(named: "reset_password")
-//        UIImage.imageFromURL(<#aURL: NSURL#>, success: { (image) -> Void in
-//            self.imgView?.image = image
-//        }, error: { () -> Void in
-//
-//        })
-        
+
+        let imgURLString = "http://img.nian.so/pets/" + imgF!
+        self.imageView?.setImage(imgURLString, placeHolder: IconColor)
     }
     
     override func prepareForReuse() {
