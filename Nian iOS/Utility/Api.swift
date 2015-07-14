@@ -53,6 +53,7 @@ struct Api {
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
         loadCookies()
+        println("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
@@ -152,6 +153,7 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
+        println("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     

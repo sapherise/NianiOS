@@ -24,6 +24,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var viewMenu: UIView!
     @IBOutlet var imageBadge: SABadgeView!
     @IBOutlet var viewHolderHead: UIView!
+    @IBOutlet var imageSettings: UIImageView!
     var currentCell:Int = 0
     var lastPoint:CGPoint!
     var dataArray = NSMutableArray()
@@ -128,16 +129,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
+        imageSettings.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
         
-        //  todo
-//        var viewPoint = SAXib("Card") as! Card
-//        viewPoint.widthImage = "451"
-//        viewPoint.heightImage = "231"
-//        viewPoint.url = "70534_1436741566.png"
-//        viewPoint.content = "即便在看书之前，我就不觉得外向高内向一等，但是内向外向似乎是各有所长。"
-//        self.view.addSubview(viewPoint)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -164,6 +159,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 scrollHidden(self.UserStep, scrollY: 161)
                 scrollHidden(self.coinButton, scrollY: 214)
                 scrollHidden(self.levelButton, scrollY: 214)
+                scrollHidden(self.imageSettings, scrollY: 50)
                 if height >= 320 - 64 {
                     self.navView.hidden = false
                 }else{

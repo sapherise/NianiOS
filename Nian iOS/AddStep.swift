@@ -10,7 +10,6 @@ import UIKit
 
 protocol MaskDelegate {
     func onViewCloseClick()
-    func onViewCloseHidden()
 }
 
 class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -43,6 +42,10 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var niCoinLessAlert: NIAlert?
     var confirmNiAlert: NIAlert?
     var lotteryNiAlert: NIAlert?
+    
+    var img1: UIButton!
+    var img2: UIButton!
+    var img3: UIButton!
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
@@ -192,14 +195,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     card.onCardSave()
                 }
                 
-                if self.isfirst == "1" {
+                if true {
                     globalWillNianReload = 1
                     
                     self.hidden = true
-                    self.delegate?.onViewCloseHidden()
+                    self.delegate?.onViewCloseClick()
 
                       // 根据念币数量来判断
-                    if totalCoin.toInt() < 3 {
+                    if false {
                         self.niCoinLessAlert = NIAlert()
                         self.niCoinLessAlert!.delegate = self
                         self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
@@ -210,7 +213,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         // 如果念币多于 3， 那么就出现抽宠物
                         self.niAlert = NIAlert()
                         self.niAlert!.delegate = self
-                        self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
+                        self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
                         
                         self.niAlert!.showWithAnimation(showAnimationStyle.flip)
@@ -336,47 +339,22 @@ extension AddStep: NIAlertDelegate {
                 // 进入确认抽奖的界面
                 self.confirmNiAlert = NIAlert()
                 self.confirmNiAlert!.delegate = self
-                self.confirmNiAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "add_plus")!, "抽蛋", "要用念币来购买吗?", ["3 念币"]],
+                self.confirmNiAlert!.dict = NSMutableDictionary(objects: ["", "抽蛋", "在上方随便选一个蛋！", []],
                                                           forKeys: ["img", "title", "content", "buttonArray"])
+                
+                img1 = setupEgg(40, named: "pet_egg1")
+                img1.tag = 0
+                img2 = setupEgg(104, named: "pet_egg2")
+                img2.tag = 1
+                img3 = setupEgg(168, named: "pet_egg3")
+                img3.tag = 2
+                self.confirmNiAlert?._containerView?.addSubview(img1)
+                self.confirmNiAlert?._containerView?.addSubview(img2)
+                self.confirmNiAlert?._containerView?.addSubview(img3)
+                
                 self.confirmNiAlert!.showWithAnimation(showAnimationStyle.flip)
             }
         }
-        // 处理确认“抽蛋” 页面
-        else if niALert == self.confirmNiAlert {
-            if didselectAtIndex == 0 {
-                (niALert.niButtonArray[0] as! NIButton).startAnimating()
-                
-                // 调用 API
-                Api.postPetLottery() {
-                    json in
-                    if json != nil {
-                        //处理 json 数据
-                       let err = json!["error"] as! NSNumber
-                        
-                        if err == 0 {
-                            niALert.dismissWithAnimation()
-                            
-                            let petInfo = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
-                            let petName = petInfo.objectForKey("name") as! String
-                            
-//                            let imgString = "" + (petInfo.objectForKey("image") as! String)
-//                            var _data = NSData(contentsOfURL: NSURL(string: imgString)!)
-//                            var img = UIImage(data: _data!)!
-
-                            self.lotteryNiAlert = NIAlert()
-                            self.lotteryNiAlert!.delegate = self
-                            self.lotteryNiAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "av_finish")!, petName, "你获得了一个\(petName)", ["分享", "好"]],
-                                                                      forKeys: ["img", "title", "content", "buttonArray"])
-                            self.lotteryNiAlert!.showWithAnimation(showAnimationStyle.spring)
-                        } else {
-                            (niALert.niButtonArray[0] as! NIButton).stopAnimating()
-                        }
-                        
-                        
-                    }
-                }   // 调用 API -- end
-            } // didselectAtIndex -- end
-        } // else if -- end
         // 处理抽奖结果页面
         else if niALert == self.lotteryNiAlert {
             if didselectAtIndex == 0 {
@@ -387,6 +365,68 @@ extension AddStep: NIAlertDelegate {
             } else if didselectAtIndex == 1 {
                 niALert.dismissWithAnimation()
                 self.delegate?.onViewCloseClick()
+            }
+        }
+    }
+    
+    func setupEgg(x: CGFloat, named: String) -> UIButton {
+        var button = UIButton(frame: CGRectMake(x, 40, 64, 80))
+        button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDown)
+        button.addTarget(self, action: "onEggTouchUp:", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: "onEggTouchCancel:", forControlEvents: UIControlEvents.TouchDragOutside)
+        button.setBackgroundImage(UIImage(named: named), forState: UIControlState.allZeros)
+        button.setBackgroundImage(UIImage(named: named), forState: UIControlState.Highlighted)
+        button.layer.cornerRadius = 8
+        return button
+    }
+    
+    func onEggTouchDown(sender: UIButton) {
+        sender.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+    }
+    
+    func onEggTouchCancel(sender: UIButton) {
+        sender.backgroundColor = UIColor.clearColor()
+    }
+    
+    func onEggTouchUp(sender: UIButton) {
+        sender.backgroundColor = UIColor.clearColor()
+        self.confirmNiAlert?.titleLabel?.hidden = true
+        self.confirmNiAlert?.contentLabel?.hidden = true
+        var v = img1
+        if sender.tag == 1 {
+            v = img2
+            img1.hidden = true
+            img3.hidden = true
+        } else if sender.tag == 2 {
+            v = img3
+            img1.hidden = true
+            img2.hidden = true
+        } else {
+            img2.hidden = true
+            img3.hidden = true
+        }
+        UIView.animateWithDuration(0.6, animations: { () -> Void in
+            v.setX(104)
+        })
+        var ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
+        ac.color = SeaColor
+        ac.hidden = false
+        ac.startAnimating()
+        self.confirmNiAlert?._containerView!.addSubview(ac)
+        Api.postPetLottery() { json in
+            if json != nil {
+                let err = json!["error"] as! NSNumber
+                if err == 0 {
+                    self.confirmNiAlert?.removeFromSuperview()
+                    let petInfo = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
+                    let petName = petInfo.stringAttributeForKey("name")
+                    let petImage = petInfo.stringAttributeForKey("image")
+                    self.lotteryNiAlert = NIAlert()
+                    self.lotteryNiAlert!.delegate = self
+                    self.lotteryNiAlert!.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)", petName, "你获得了一个\(petName)", ["分享", "好"]],
+                        forKeys: ["img", "title", "content", "buttonArray"])
+                    self.lotteryNiAlert!.showWithAnimation(showAnimationStyle.spring)
+                }
             }
         }
     }

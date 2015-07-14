@@ -489,7 +489,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     
     func onFireConfirm(){
         self.actionSheetFireConfirm = UIActionSheet(title: "真的要移除吗？", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        self.actionSheetFireConfirm!.addButtonWithTitle("嗯！")
+        self.actionSheetFireConfirm!.addButtonWithTitle(" 嗯！")
         self.actionSheetFireConfirm!.addButtonWithTitle("取消")
         self.actionSheetFireConfirm!.cancelButtonIndex = 1
         self.actionSheetFireConfirm!.showInView(self.view)
@@ -507,7 +507,6 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
                     var newpath = NSIndexPath(forRow: self.selectRow, inSection: 1)
                     self.dataArray.removeObjectAtIndex(newpath!.row)
                     self.tableView!.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                    self.tableView!.reloadData()
                 }else{
                     self.view.showTipText("由于千奇百怪的原因，移除失败了...", delay: 2)
                 }

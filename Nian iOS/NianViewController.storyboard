@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="fFW-N9-SCA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="fFW-N9-SCA">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -102,6 +102,10 @@
                                                 <nil key="highlightedColor"/>
                                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                                             </label>
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_settings" id="3og-kY-6BO">
+                                                <rect key="frame" x="0.0" y="20" width="44" height="44"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -160,6 +164,7 @@
                         <outlet property="collectionView" destination="2uf-97-Eok" id="f0s-kw-y61"/>
                         <outlet property="imageBG" destination="VmL-PM-bCx" id="Ko5-vH-yc5"/>
                         <outlet property="imageBadge" destination="ItJ-q3-xdj" id="br4-uK-DKr"/>
+                        <outlet property="imageSettings" destination="3og-kY-6BO" id="KtN-Jf-mbv"/>
                         <outlet property="labelTableLeft" destination="7IQ-P9-dWj" id="3DW-4D-ev0"/>
                         <outlet property="labelTableRight" destination="tT9-wC-3xp" id="xau-rU-IZq"/>
                         <outlet property="levelButton" destination="4Kz-ar-rtC" id="GfP-G5-9Z4"/>
@@ -175,6 +180,9 @@
             <point key="canvasLocation" x="-329" y="574"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="home_settings" width="44" height="44"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -754,7 +754,6 @@ func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UI
     if delete {
         dataArray.removeObjectAtIndex(index)
         tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
-        tableView.reloadData()
     }
 }
 
