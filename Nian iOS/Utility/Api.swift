@@ -692,22 +692,19 @@ extension  Api {
     
         V.httpGetForJson("http://api.nian.so/user/\(s_uid)/pets?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
-    
-    
-    
 }
 
+// MARK: - 新的注册 API
+extension Api {
+
+    static func postSignUp(name: String, password: String, email: String, daily: Int, callback: V.JsonCallback) {
+//        loadCookies()
+        V.httpPostForJson_AFN("api.nian.so/user/signup", content: ["username": "\(name)", "email": "\(email)", "password": "\(password)", "daily": daily], callback: callback)
+    }
 
 
 
-
-
-
-
-
-
-
-
+}
 
 
 

@@ -13,7 +13,7 @@ import QuartzCore
 private let NORMAL_WIDTH: CGFloat  = 120.0
 private let NORMAL_HEIGHT: CGFloat = 100.0
 
-class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorphingLabelDelegate{
+class LevelViewController: UIViewController, LTMorphingLabelDelegate{
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var viewCalendar: UIView!
     @IBOutlet var viewTop: UIView!
@@ -283,6 +283,11 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     }
 }
 
+extension LevelViewController: UIGestureRecognizerDelegate {
+    
+}
+
+
 // MARK: - Level View Controller 实现 uitableview delegate 和 uitableview data source
 extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -391,7 +396,6 @@ extension LevelViewController: UIScrollViewDelegate {
         
         return CGPointMake(offset.x, targetX)
     }
-    
 }
 
 // MARK: pet cell

@@ -19,6 +19,8 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
     var isAnimate:Int = 0
     var name:String = ""
     
+    lazy var signInfo = SignInfo()
+    
     func setupViews(){
         self.viewBack()
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
@@ -76,54 +78,50 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
         }else if SAstrlen(self.inputPassword.text)<4 {
             SAerr("密码太短了...")
         }else{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var email = self.inputEmail.text
-                var password = self.inputPassword.text
-                //md5("<?=ALL_PS?>"+$("#signpw").val())
-                email = SAEncode(SAHtml(email))
-                password = ("n*A\(password)").md5
-                var sa = SAPost("name=\(self.name)&&pw=\(password)&&em=\(email)", "http://nian.so/api/sign_check.php")
-                dispatch_async(dispatch_get_main_queue(), {
-                    SAPush("Mua!", NSDate().dateByAddingTimeInterval(Double(60*60*24)))
-                    if sa != "" && sa != "err" {
-                        if sa == "NO" {
-                            self.SAerr("昵称和邮箱都要填...")
-                        }else if sa == "NO1" {
-                            self.SAerr("已经有其他人叫这个名字啦")
-                        }else if sa == "NO2" {
-                            self.SAerr("这个邮箱已经注册过啦")
-                        }else{
-                            self.holder!.hidden = true
-                            self.navigationItem.rightBarButtonItems = buttonArray()
-                            var shell = (("\(password)\(sa)n*A").lowercaseString).md5
-                            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                                var username = SAPost("uid=\(sa)", "http://nian.so/api/username.php")
-                                Sa.setObject(sa, forKey: "uid")
-                                Sa.setObject(shell, forKey: "shell")
-                                Sa.setObject(username, forKey:"user")
-                                Sa.synchronize()
-                                Api.requestLoad()
-                                dispatch_async(dispatch_get_main_queue(), {
-                                    var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                                    var navigationViewController = UINavigationController(rootViewController: mainViewController)
-                                    navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                                    navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                                    navigationViewController.navigationBar.translucent = true
-                                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                                    navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                    navigationViewController.navigationBar.clipsToBounds = true
-                                    self.presentViewController(navigationViewController, animated: true, completion: {
-                                        self.navigationItem.rightBarButtonItems = []
-                                    })
-                                })
-                                Api.postDeviceToken() { string in
-                                }
-                            })
+            var email = SAEncode(SAHtml(self.inputEmail.text))
+            var password = ("n*A\(self.inputPassword.text)").md5
+            Api.postSignUp(self.signInfo.name!, password: password, email: email, daily: self.signInfo.mode!.rawValue) {
+                json in
+                SAPush("Mua!", NSDate().dateByAddingTimeInterval(Double(60*60*24)))
+                
+                if json != nil {
+                    let error = json!["error"] as! NSNumber
+                    if error == 0 {
+                        let data = json!["data"] as! NSDictionary
+                        let sa = data.objectForKey("uid") as! String
+                        
+                        self.holder!.hidden = true
+                        self.navigationItem.rightBarButtonItems = buttonArray()
+                        var shell = (("\(password)\(sa)n*A").lowercaseString).md5
+                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        Sa.setObject(sa, forKey: "uid")
+                        Sa.setObject(shell, forKey: "shell")
+                        Sa.setObject(self.signInfo.name!, forKey: "user")
+                        Sa.synchronize()
+                        
+                        Api.requestLoad()
+                        
+                        var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                        var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                        navigationViewController.navigationBar.translucent = true
+                        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                        navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                        navigationViewController.navigationBar.clipsToBounds = true
+                        self.presentViewController(navigationViewController, animated: true, completion: {
+                            self.navigationItem.rightBarButtonItems = []
+                        })
+                        
+                        Api.postDeviceToken() { string in
                         }
+                        
+                    } else if error == 2 {
+                        self.SAerr("邮箱或用户名已注册")
+                        
                     }
-                })
-            })
+                }
+            }
         }
     }
     

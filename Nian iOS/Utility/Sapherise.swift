@@ -800,7 +800,7 @@ extension UIColor {
 }
 
 
-let SeaColor:UIColor = UIColor(red: 0x6c/255, green: 0xc5/255, blue: 0xee/255, alpha: 1)
+let SeaColor:UIColor = UIColor(red: 0x6c/255.0, green: 0xc5/255.0, blue: 0xee/255.0, alpha: 1)
 let IconColor:UIColor = UIColor(red:0.97, green:0.97,blue:0.97,alpha: 1)    //字体灰
 let BGColor:UIColor = UIColor.whiteColor()
 let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)

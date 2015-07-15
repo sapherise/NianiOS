@@ -174,6 +174,8 @@
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C429AA091B4E79EF00F92E0A /* PetZoomInCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C429AA081B4E79EF00F92E0A /* PetZoomInCell.xib */; };
+		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
+		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
@@ -402,6 +404,8 @@
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C429AA081B4E79EF00F92E0A /* PetZoomInCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PetZoomInCell.xib; sourceTree = "<group>"; };
+		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
+		C42B7D491B564137008D3B36 /* ModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeViewController.xib; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
@@ -698,6 +702,7 @@
 				1291D59719BE0C55009F45F6 /* Welcome.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
 				12960F6B19BF22EC00CB973E /* 注册 */,
+				C42B7D471B56411C008D3B36 /* 模式 */,
 			);
 			name = "欢迎";
 			sourceTree = "<group>";
@@ -1106,6 +1111,15 @@
 			name = TITokenView;
 			sourceTree = "<group>";
 		};
+		C42B7D471B56411C008D3B36 /* 模式 */ = {
+			isa = PBXGroup;
+			children = (
+				C42B7D481B564137008D3B36 /* ModeViewController.swift */,
+				C42B7D491B564137008D3B36 /* ModeViewController.xib */,
+			);
+			name = "模式";
+			sourceTree = "<group>";
+		};
 		C450C5121B2FFF2D0024F4DE /* KILabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1304,6 +1318,7 @@
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
 				129152E71A6A910200BB213C /* FindCellTop.xib in Resources */,
 				C429AA091B4E79EF00F92E0A /* PetZoomInCell.xib in Resources */,
+				C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */,
 				3252850D1A10C2B600316021 /* Explore.storyboard in Resources */,
 				12BF1A681A427A1F0044CAF4 /* CircleJoin.xib in Resources */,
 				1214547F1A694F3C0091DCEE /* WeiboSDK.bundle in Resources */,
@@ -1427,6 +1442,7 @@
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
+				C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */,
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
