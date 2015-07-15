@@ -49,6 +49,7 @@ extension UIImageView {
                     if animated {
                         self.setAnimated()
                     }
+                    self.contentMode = UIViewContentMode.ScaleAspectFill
                 }, failure: { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
                     println("set Image error: \(error.localizedDescription)")
             })
