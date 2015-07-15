@@ -1000,8 +1000,8 @@
 				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
 				122AFE021A80864800464641 /* SqliteData.swift */,
-				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 				C476D4FD1B4B864F008B4569 /* PetList.swift */,
+				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";

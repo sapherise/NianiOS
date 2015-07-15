@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import QuartzCore
 
-private let NORMAL_WIDTH: CGFloat  = 60.0
+private let NORMAL_WIDTH: CGFloat  = 120.0
 private let NORMAL_HEIGHT: CGFloat = 100.0
 
 class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorphingLabelDelegate{
@@ -32,9 +32,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     @IBOutlet var upgrade: UILabel!  //
     
     var preContentOffsetX: CGFloat?
-    
     var cellString: String?
-
     var navView:UIView!
     var top:CAShapeLayer!
     var marks: [Bool] = [Bool](count: 32, repeatedValue: false)
@@ -104,8 +102,8 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         self.tableview.frame = CGRectMake(0, 34, globalWidth, 160)
         self.tableview.delegate = self
         self.tableview.dataSource = self
-        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 40))
-        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 40))
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 60))
+        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 60))
         self.preContentOffsetX = 0.0    // 设置 tableView 的 content offset X
 
         self.labelMonthLeft.textColor = SeaColor
@@ -330,8 +328,8 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         
         var _cellString: String?
         var tableViewCenter: CGFloat = globalWidth / 2.0
-        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row * 80) - tableView.contentOffset.y
-        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1) * 80) - tableView.contentOffset.y
+        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row * 120) - tableView.contentOffset.y
+        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1) * 120) - tableView.contentOffset.y
 
         if cellHeaderXInScreen < tableViewCenter &&  tableViewCenter < cellFooterXInScreen {
             _cellString = "PetZoomInCell"
@@ -347,21 +345,24 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
 extension LevelViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView.isKindOfClass(UITableView) {
-            (scrollView as! UITableView).reloadData()
+            if abs((scrollView as! UITableView).contentOffset.y - preContentOffsetX!) >= 60.0 {
+                (scrollView as! UITableView).reloadData()
+                preContentOffsetX = scrollView.contentOffset.y
+            }
         }
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.isKindOfClass(UITableView) {
             if !decelerate {
-//                self.snapToNearestItem(scrollView)
+                self.snapToNearestItem(scrollView)
             }
         }
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView.isKindOfClass(UITableView) {
-//            self.snapToNearestItem(scrollView)
+            self.snapToNearestItem(scrollView)
         }
     }
     
@@ -373,10 +374,10 @@ extension LevelViewController: UIScrollViewDelegate {
     
     private func nearestTargetOffsetForOffset(offset: CGPoint) -> CGPoint {
         var PageSize = CGFloat(NORMAL_WIDTH)
-        var page: NSInteger = NSInteger(roundf(Float(offset.x / PageSize)))
+        var page: NSInteger = NSInteger(roundf(Float(offset.y / PageSize)))
         var targetX = PageSize * CGFloat(page)
         
-        return CGPointMake(targetX, offset.y)
+        return CGPointMake(offset.x, targetX)
     }
     
 }
@@ -399,7 +400,6 @@ class petCell: UITableViewCell {
         
         // todo: 设置 cell
         self.selectionStyle = .None
-        self.imageView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
     
@@ -414,9 +414,16 @@ class petCell: UITableViewCell {
         property = self.info?.stringAttributeForKey("property")
         getAtDate = self.info?.stringAttributeForKey("get_at")
         updateAtDate = self.info?.stringAttributeForKey("updated_at")
+        
+        var imgURLString = "http://img.nian.so/pets/"
        
-        let imgURLString = "http://img.nian.so/pets/" + imgF!
-        self.imageView?.setImage(imgURLString, placeHolder: IconColor)
+        if globalWidth > 375 {
+            imgURLString += imgF!
+        } else {
+            imgURLString += imgF! + "!d"
+        }
+        self.imgView?.setImage(imgURLString, placeHolder: IconColor)
+        self.imgView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
     override func prepareForReuse() {
@@ -443,7 +450,6 @@ class petZoomInCell: UITableViewCell {
         
         // todo: 设置 cell
         self.selectionStyle = .None
-        self.imageView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
     func _layoutSubviews() {
@@ -458,8 +464,15 @@ class petZoomInCell: UITableViewCell {
         getAtDate = self.info?.stringAttributeForKey("get_at")
         updateAtDate = self.info?.stringAttributeForKey("updated_at")
 
-        let imgURLString = "http://img.nian.so/pets/" + imgF!
-        self.imageView?.setImage(imgURLString, placeHolder: IconColor)
+        var imgURLString = "http://img.nian.so/pets/"
+        
+        if globalWidth > 375 {
+            imgURLString += imgF!
+        } else {
+            imgURLString += imgF! + "!d"
+        }
+        self.imgView?.setImage(imgURLString, placeHolder: IconColor)
+        self.imgView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
     override func prepareForReuse() {

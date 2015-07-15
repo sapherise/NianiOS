@@ -18,6 +18,7 @@
                     </imageView>
                 </subviews>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="imgView" destination="HLW-WA-dTP" id="8V4-0a-Rec"/>
             </connections>
