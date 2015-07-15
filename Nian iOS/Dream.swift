@@ -325,13 +325,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             tableView.reloadData()
         }
         
-        if isfirst == "1" {
-            if total.toInt() > 3 {
+        if true {
+            if true {
                 self.niAlert = NIAlert()
                 self.niAlert!.delegate = self
-                self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "宠物", "要以 3 念币抽一次\n宠物吗", ["好", "不"]],
+                self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                                                    forKeys: ["img", "title", "content", "buttonArray"])
-                
                 self.niAlert!.showWithAnimation(showAnimationStyle.flip)
             } else {
                 self.niCoinLessAlert = NIAlert()
@@ -486,6 +485,7 @@ extension DreamViewController: NIAlertDelegate {
                 Api.postPetLottery() {
                     json in
                     if json != nil {
+                        println(json)
                         //处理 json 数据
                         let err = json!["error"] as! String
                         

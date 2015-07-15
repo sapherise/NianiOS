@@ -35,7 +35,7 @@ class NIAlert: UIView {
     //将 niButtons 放入一个 Array
     var niButtonArray: NSMutableArray = NSMutableArray()
     
-    private var _containerView: UIView?
+    var _containerView: UIView?
     
     weak var delegate: NIAlertDelegate?
     
@@ -89,9 +89,25 @@ class NIAlert: UIView {
         
         if let img = (self.dict?.objectForKey("img") as? UIImage) {
             var imgSize = img.size
-            imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, 80))
-            imgView?.contentMode = UIViewContentMode.ScaleAspectFill
+            imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, img.size.height))
+            imgView?.contentMode = UIViewContentMode.Center
             imgView!.image = img
+            self._containerView!.addSubview(imgView!)
+            
+            titleLabel = UILabel(frame: CGRectMake(48, imgView!.frame.height + 64, 176, 20))
+            titleLabel!.font = UIFont.boldSystemFontOfSize(18) // (name: "HelveticaBold", size: 18)
+            titleLabel!.textColor = UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1.0)
+            titleLabel!.textAlignment = NSTextAlignment.Center
+            titleLabel!.text = title
+            self._containerView!.addSubview(titleLabel!)
+            
+            self._containerView!.setHeight(imgView!.frame.height + 64 + 20)
+        } else if let img = (self.dict?.objectForKey("img") as? String) {
+            imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, 80))
+            imgView?.contentMode = UIViewContentMode.ScaleAspectFit
+            if img != "" {
+                imgView!.setImage(img, placeHolder: UIColor.whiteColor(), ignore: true)
+            }
             self._containerView!.addSubview(imgView!)
             
             titleLabel = UILabel(frame: CGRectMake(48, imgView!.frame.height + 64, 176, 20))
@@ -272,8 +288,9 @@ class NIButton: UIButton {
         self.setTitle(self._titleString, forState: UIControlState.Normal)
         self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         
-        self._spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        self._spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.White)
         self._spinner!.frame.origin = CGPointMake((self.frame.width - 20)/2, (self.frame.height - 20)/2)
+        self._spinner!.transform = CGAffineTransformMakeScale(0.7, 0.7)
         self._spinner!.hidden = true
         self.addSubview(self._spinner!)
     }
@@ -281,6 +298,7 @@ class NIButton: UIButton {
     func startAnimating() {
 //        self.titleLabel!.text = ""
         self.setTitle("", forState: UIControlState.Normal)
+//        self.bgColor = BgColor.white
         self._spinner!.hidden = false
         self._spinner!.startAnimating()
     }

@@ -307,7 +307,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         var NianStoryBoard: UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
         var NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! UIViewController
-        var circleCollectionList: UIStoryboard = UIStoryboard(name: "CircleCollectionList", bundle: nil)
         var vc1 = NianViewController
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
@@ -420,10 +419,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             }) { (Bool) -> Void in
                 self.addView.removeFromSuperview()
         }
-    }
-    
-    func onViewCloseHidden() {
-        self.viewClose.hidden = true
     }
     
     func onCloseConfirm(){

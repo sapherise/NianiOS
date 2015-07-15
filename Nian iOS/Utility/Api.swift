@@ -53,6 +53,7 @@ struct Api {
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
         loadCookies()
+        println("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
@@ -152,6 +153,7 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
+        println("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
@@ -503,9 +505,9 @@ struct Api {
         V.httpPostForString("http://nian.so/api/dream_cool_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&cool=\(like)", callback: callback)
     }
     
-    static func postDreamStepComment(dream: String, step: String, content: String, callback: V.StringCallback) {
+    static func postDreamStepComment(dream: String, step: String, content: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/comment_query.php", content: "id=\(dream)&&step=\(step)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: "dream_id=\(dream)&content=\(content)", callback: callback)
     }
     
     

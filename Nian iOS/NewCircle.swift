@@ -575,7 +575,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     }
     
     func postWord(replyContent: String, type: Int = 1) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        back {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
@@ -589,15 +589,9 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                     self.tableViewChat.contentOffset.y = offset
                 })
             }
-            CATransaction.begin()
-            CATransaction.setCompletionBlock({ () -> Void in
-                self.addReply(replyContent, type: 1)
-            })
-            self.tableViewChat.beginUpdates()
-            self.tableViewChat.insertRowsAtIndexPaths([NSIndexPath(forRow: self.dataArrayChat.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Right)
-            self.tableViewChat.endUpdates()
-            CATransaction.commit()
-        })
+            self.addReply(replyContent, type: 1)
+            self.tableViewChat.reloadData()
+        }
     }
     
     func tableUpdate(contentAfter: String) {
@@ -612,11 +606,8 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 mutableItem.setObject(lastdate, forKey: "lastdate")
                 mutableItem.setObject(contentAfter, forKey: "content")
                 self.dataArrayChat.replaceObjectAtIndex(i, withObject: mutableItem)
-                var row = self.dataArrayChat.count - 1 - i
-                if row > 0 {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.tableViewChat.reloadRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
-                    })
+                back {
+                    self.tableViewChat.reloadData()
                 }
                 break
             }

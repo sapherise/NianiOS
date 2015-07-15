@@ -140,7 +140,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
                 self.dataArrayStep.removeObjectAtIndex(newpath!.row)
                 self.tableViewStep.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.tableViewStep.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", "http://nian.so/api/delete_step.php")
                     if(sa == "1"){

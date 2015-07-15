@@ -192,6 +192,24 @@ struct V {
         })
     }
     
+    static func enTime(timestamp: String) -> String {
+        var time = (timestamp as NSString).doubleValue
+        var formatter = NSDateFormatter()
+        formatter.dateFormat = "MMM dd"
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+        formatter.locale = NSLocale(localeIdentifier: "en_US")
+        return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
+    }
+    
+    static func enTime() -> String {
+        var formatter = NSDateFormatter()
+        formatter.dateFormat = "MMM dd"
+        formatter.timeZone = NSTimeZone.systemTimeZone()
+        formatter.locale = NSLocale(localeIdentifier: "en_US")
+        return "\(formatter.stringFromDate(NSDate()))"
+    }
+    
+    
     static func relativeTime(timestamp: String) -> String {
         var current = NSDate().timeIntervalSince1970
         var time = (timestamp as NSString).doubleValue

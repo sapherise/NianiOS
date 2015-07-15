@@ -136,37 +136,44 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var contentComment = self.inputKeyboard.text
         if contentComment != "" {
             commentFinish(contentComment)
-            self.inputKeyboard.text = ""
-            self.addReply(contentComment)
         }
         return true
     }
     
     func commentFinish(replyContent:String){
         self.isKeyboardResign = 1
+        self.inputKeyboard.text = ""
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
         var safeuser = Sa.objectForKey("user") as! String
         var commentReplyRow = self.dataArray.count
         var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
-        var newindexpath = NSIndexPath(forRow: commentReplyRow, inSection: 0)
-        self.tableview.insertRowsAtIndexPaths([ newindexpath ], withRowAnimation: UITableViewRowAnimation.None)
         self.tableview.reloadData()
         //当提交评论后滚动到最新评论的底部
         var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
         if offset > 0 {
             self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
         }
-    }
-    
-    //将内容发送至服务器
-    func addReply(contentComment:String){
-        var content = SAEncode(SAHtml(contentComment))
-        Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { result in
-            delay(0.2, { () -> () in
-                self.SAReloadData()
-            })
+        
+        //  提交到服务器
+        var content = SAEncode(SAHtml(replyContent))
+        Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
+            if json != nil {
+                if let status = json!["status"] as? NSNumber {
+                    if status == 200 {
+                        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+                        self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
+                        self.tableview.reloadData()
+                    } else {
+                        self.view.showTipText("对方设置了不被回应...", delay: 2)
+                        self.inputKeyboard.text = replyContent
+                    }
+                } else {
+                    self.view.showTipText("服务器坏了...", delay: 2)
+                    self.inputKeyboard.text = replyContent
+                }
+            }
         }
     }
     
@@ -365,7 +372,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
                 self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
-                self.tableview.reloadData()
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0
