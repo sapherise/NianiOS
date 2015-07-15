@@ -44,14 +44,14 @@ extension UIImageView {
         } else {
             self.setImageWithURLRequest(req,
                 placeholderImage: nil,
-                success: {[unowned self](request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
+                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
                     self.image = image
                     if animated {
                         self.setAnimated()
                     }
-                }, failure: { (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
-                    println("set Image error: \(error.localizedDescription)")
-            })
+                    self.contentMode = .ScaleAspectFill
+                },
+                failure: nil)
         }
     }
 
