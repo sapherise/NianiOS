@@ -81,8 +81,10 @@ class CircleListCollectionController: UIViewController {
             }  // synchronized
             
             dispatch_async(dispatch_get_main_queue(), {
-                self.collectionView.reloadData()
-                self.isLoading = false 
+                if let tmpCollectionView = self.collectionView {
+                    self.collectionView.reloadData()
+                    self.isLoading = false
+                }
             })
         })
     }
