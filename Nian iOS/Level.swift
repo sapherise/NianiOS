@@ -30,6 +30,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
     @IBOutlet var petName: UILabel!  // 显示 pet name, 不属于 tableView
     @IBOutlet var petIndex: UILabel!  // 显示类似于 25/50
     @IBOutlet var upgrade: UILabel!  //
+    @IBOutlet var PetNormalView: UIImageView!
     
     var preContentOffsetX: CGFloat?
     var cellString: String?
@@ -105,6 +106,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate, LTMorp
         self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 60))
         self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 60))
         self.preContentOffsetX = 0.0    // 设置 tableView 的 content offset X
+        self.PetNormalView.setX((globalWidth - 120)/2)
 
         self.labelMonthLeft.textColor = SeaColor
         self.labelMonthRight.textColor = SeaColor
@@ -296,16 +298,26 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         var cell: UITableViewCell?
         cellString = self.pickupCellType(tableView, indexPath: indexPath)
         
-        if cellString == "PetCell" {
+//        if cellString == "PetCell" {
             cell = tableview.dequeueReusableCellWithIdentifier("PetCell", forIndexPath: indexPath) as! petCell
-            (cell as! petCell).info = self.petInfoArray[indexPath.row] as? NSDictionary
-            (cell as! petCell)._layoutSubviews()
-        } else if cellString == "PetZoomInCell" {
-            cell = tableview.dequeueReusableCellWithIdentifier("PetZoomInCell", forIndexPath: indexPath) as! petZoomInCell
             var dict = self.petInfoArray[indexPath.row] as? NSDictionary
-            (cell as! petZoomInCell).info = dict
-            (cell as! petZoomInCell)._layoutSubviews()
-            
+            (cell as! petCell).info = dict
+            (cell as! petCell)._layoutSubviews()
+//        } else if cellString == "PetZoomInCell" {
+//            cell = tableview.dequeueReusableCellWithIdentifier("PetZoomInCell", forIndexPath: indexPath) as! petZoomInCell
+//            var dict = self.petInfoArray[indexPath.row] as? NSDictionary
+//            (cell as! petZoomInCell).info = dict
+//            (cell as! petZoomInCell)._layoutSubviews()
+//            
+//            self.petName.text = dict!.stringAttributeForKey("name")
+//            self.petIndex.text = "\(indexPath.row + 1)/\(self.petInfoArray.count)"
+//        }
+        
+        if cellString == "PetZoomInCell" {
+            self.PetNormalView.image = (cell as! petCell).imgView.image
+//            self.PetNormalView.layer.backgroundColor = UIColor.clearColor().CGColor
+            self.PetNormalView.backgroundColor = UIColor.clearColor()   
+//            (cell as! petCell).imgView.image = nil
             self.petName.text = dict!.stringAttributeForKey("name")
             self.petIndex.text = "\(indexPath.row + 1)/\(self.petInfoArray.count)"
         }
