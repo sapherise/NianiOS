@@ -319,14 +319,14 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func sharePromo() {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var url:NSURL = NSURL(string: "http://nian.so/m/user/\(safeuid)")!
-        var image = getImageFromView(self.imagePromo)
-        let activityView = UIActivityViewController(
-            activityItems: [image, "来念上找我玩", url],
-            applicationActivities: [WeChatSessionActivity(), WeChatMomentsActivity()])
-        self.presentViewController(activityView, animated: true, completion: nil)
+        var url:NSURL = NSURL(string: "http://nian.so/m/user/\(SAUid())")!
+        imagePromo.layer.cornerRadius = 0
+        var image = getImageFromView(imagePromo)
+        var avc = SAActivityViewController.shareSheetInView([image, "来念上找我玩", url], applicationActivities: [])
+        avc = SAActivityViewController.shareSheetInView([image, "来念上找我玩", url], applicationActivities: [], isStep: true)
+        self.presentViewController(avc, animated: true, completion: { () -> Void in
+            self.imagePromo.layer.cornerRadius = 8
+        })
     }
     
 }

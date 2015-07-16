@@ -194,10 +194,13 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.view.showTipText("举报好了！", delay: 2)
         }
         
-        var arr = SAUid() == uid ? [WeChatSessionActivity(), WeChatMomentsActivity(), acDone, acEdit, acDelete] : [WeChatSessionActivity(), WeChatMomentsActivity(), acLike, acReport]
-        var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
-        acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
-        self.presentViewController(acv, animated: true, completion: nil)
+        var arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]
+//        var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+//        acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
+//        self.presentViewController(acv, animated: true, completion: nil)
+        
+        var avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+        self.presentViewController(avc, animated: true, completion: nil)
     }
     
     func onStep(){
@@ -485,7 +488,6 @@ extension DreamViewController: NIAlertDelegate {
                 Api.postPetLottery() {
                     json in
                     if json != nil {
-                        println(json)
                         //处理 json 数据
                         let err = json!["error"] as! String
                         

@@ -53,7 +53,6 @@ struct Api {
     
     static func getExploreDynamic(page: String, callback: V.JsonCallback) {
         loadCookies()
-        println("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/explore/like?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
@@ -153,7 +152,6 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        println("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
@@ -677,7 +675,6 @@ extension  Api {
     */
     static func postPetLottery(callback: V.JsonCallback) {
         let _sha256String = ((s_uid + s_shell) as NSString).SHA256()
-        
         V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)", content: ["luckcode": _sha256String], callback: callback)
     }
    

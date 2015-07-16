@@ -60,6 +60,7 @@
 		126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC31A25DAED001BB5DA /* Tag.swift */; };
 		126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC51A25DAFC001BB5DA /* TagCell.swift */; };
 		126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126ABCC71A25DB07001BB5DA /* TagCell.xib */; };
+		126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FB4721B574EDB0056221C /* SAActivityViewController.swift */; };
 		1271550D1A3FE82000E27EC5 /* CircleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1271550C1A3FE82000E27EC5 /* CircleDetail.swift */; };
 		1271550F1A3FE83400E27EC5 /* CircleDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1271550E1A3FE83400E27EC5 /* CircleDetailCell.swift */; };
 		127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127155101A3FE83D00E27EC5 /* CircleDetailCell.xib */; };
@@ -273,6 +274,7 @@
 		126ABCC31A25DAED001BB5DA /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		126ABCC51A25DAFC001BB5DA /* TagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		126ABCC71A25DB07001BB5DA /* TagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
+		126FB4721B574EDB0056221C /* SAActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAActivityViewController.swift; sourceTree = "<group>"; };
 		12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Nian iOS-Bridging-Header.h"; path = "../Nian iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		1271550C1A3FE82000E27EC5 /* CircleDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDetail.swift; sourceTree = "<group>"; };
 		1271550E1A3FE83400E27EC5 /* CircleDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleDetailCell.swift; sourceTree = "<group>"; };
@@ -627,6 +629,20 @@
 			name = "同类标签";
 			sourceTree = "<group>";
 		};
+		126FB4711B574EB80056221C /* 复用 */ = {
+			isa = PBXGroup;
+			children = (
+				126FB4721B574EDB0056221C /* SAActivityViewController.swift */,
+				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
+				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
+				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
+				1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */,
+				125D93C91AFCC198006FFDED /* SADoubleCell.xib */,
+				125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */,
+			);
+			name = "复用";
+			sourceTree = "<group>";
+		};
 		1271550A1A3FE7C600E27EC5 /* 梦境列表 */ = {
 			isa = PBXGroup;
 			children = (
@@ -960,6 +976,7 @@
 				12A6564519719BAC004F530B /* 设置 */,
 				129152DD1A6A5BA800BB213C /* 好友 */,
 				12CDE5CE19AC9FB4002E793F /* 图片 */,
+				126FB4711B574EB80056221C /* 复用 */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
 			path = "Nian iOS";
@@ -1048,12 +1065,6 @@
 				3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */,
 				3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
-				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
-				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
-				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
-				1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */,
-				125D93C91AFCC198006FFDED /* SADoubleCell.xib */,
-				125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1397,6 +1408,7 @@
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
+				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
