@@ -80,7 +80,7 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
         }else{
             var email = SAEncode(SAHtml(self.inputEmail.text))
             var password = ("n*A\(self.inputPassword.text)").md5
-            Api.postSignUp(self.signInfo.name!, password: password, email: email, daily: self.signInfo.mode!.rawValue) {
+            Api.postSignUp(self.signInfo.name!, password: password, email: self.inputEmail.text, daily: self.signInfo.mode!.rawValue) {
                 json in
                 SAPush("Mua!", NSDate().dateByAddingTimeInterval(Double(60*60*24)))
                 
@@ -93,7 +93,7 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
                         self.holder!.hidden = true
                         self.navigationItem.rightBarButtonItems = buttonArray()
                         var shell = (("\(password)\(sa)n*A").lowercaseString).md5
-                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        var Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
                         Sa.setObject(sa, forKey: "uid")
                         Sa.setObject(shell, forKey: "shell")
                         Sa.setObject(self.signInfo.name!, forKey: "user")

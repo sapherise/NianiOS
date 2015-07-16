@@ -29,9 +29,16 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
     @IBOutlet var tableview:UITableView!
     @IBOutlet var petName: UILabel!  // 显示 pet name, 不属于 tableView
     @IBOutlet var petIndex: UILabel!  // 显示类似于 25/50
-    @IBOutlet var upgrade: UILabel!  //
     @IBOutlet var PetNormalView: UIImageView!
+    @IBOutlet weak var petLevel: UILabel!
     
+    @IBOutlet weak var good: UIView!
+    @IBOutlet weak var step: UIView!
+    @IBOutlet weak var listener: UIView!
+    @IBOutlet weak var leftLine: UIView!
+    @IBOutlet weak var rightLine: UIView!
+    
+    var upgrade: NIButton?  //
     var preContentOffsetX: CGFloat?
     var cellString: String?
     var navView:UIView!
@@ -83,30 +90,42 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = "等级"
+        titleLabel.text = "宠物"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.viewTop.setWidth(globalWidth)
-        self.scrollView.contentSize = CGSizeMake(globalWidth, 720)
-        self.viewTopHolder.setX(globalWidth/2-160)
+        self.scrollView.contentSize = CGSizeMake(globalWidth, 845)
+        self.viewTopHolder.frame = CGRectMake(0, 360, globalWidth, 60)
         self.viewCalendar.setX(globalWidth/2-160)
         self.labelCalendar.setX(globalWidth/2-145)
         self.viewBottom.setWidth(globalWidth)
         self.viewBottomHolder.setX(globalWidth/2-160)
         self.petName.setX((globalWidth - 100)/2)
-        self.upgrade.setX((globalWidth - 60)/2)
+        
+        self.upgrade = NIButton(string: "升级", frame:  CGRectMake((globalWidth - 120)/2, 295, 120, 36))
+        self.upgrade!.bgColor = BgColor.blue
+        self.upgrade?.addTarget(self, action: "toUpgrade", forControlEvents: UIControlEvents.TouchUpInside)
+        self.viewTop.addSubview(self.upgrade!)
         
         self.tableview.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI/2))
-        self.tableview.frame = CGRectMake(0, 34, globalWidth, 160)
+        self.tableview.frame = CGRectMake(0, 120, globalWidth, 120)
         self.tableview.delegate = self
         self.tableview.dataSource = self
-        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 60))
-        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 160, globalWidth/2 - 60))
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 120, globalWidth/2 - 60))
+        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 120, globalWidth/2 - 60))
         self.preContentOffsetX = 0.0    // 设置 tableView 的 content offset X
         self.PetNormalView.setX((globalWidth - 120)/2)
+        self.petLevel.setX((globalWidth - 42)/2)
+        
+        //-----------
+        self.step.setX((globalWidth - 90)/2)
+        self.leftLine.setX(self.step.x() - 1)
+        self.good.setX(self.leftLine.x() - 90)
+        self.rightLine.setX(self.step.x() + 90)
+        self.listener.setX(self.rightLine.x() + 1)
 
         self.labelMonthLeft.textColor = SeaColor
         self.labelMonthRight.textColor = SeaColor
@@ -324,6 +343,7 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
             self.PetNormalView.backgroundColor = UIColor.clearColor()   
 //            (cell as! petCell).imgView.image = nil
             self.petName.text = dict!.stringAttributeForKey("name")
+            self.petLevel.text = "Lv " + dict!.stringAttributeForKey("level")
             self.petIndex.text = "\(indexPath.row + 1)/\(self.petInfoArray.count)"
         }
         
@@ -417,7 +437,6 @@ class petCell: UITableViewCell {
         // todo: 设置 cell
         self.selectionStyle = .None
     }
-    
     
     func _layoutSubviews() {
         // 刷新界面

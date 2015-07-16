@@ -212,6 +212,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var step = data.stringAttributeForKey("step")
                 var level = data.stringAttributeForKey("level")
                 var coverURL = data.stringAttributeForKey("cover")
+                var petCount = data.stringAttributeForKey("pet_count")
                 var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                 var vip = data.stringAttributeForKey("vip")
                 Sa.setObject(AllCoverURL, forKey: "coverUrl")
@@ -219,7 +220,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var deadLine = data.stringAttributeForKey("deadline")
                 var (l, e) = levelCount( (level.toInt()!)*7 )
                 self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
-                self.levelButton.setTitle("等级 \(l)", forState: UIControlState.Normal)
+                self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                 self.UserName.text = "\(name)"
                 self.UserHead.setHead(safeuid)
                 self.imageBadge.setType(vip)

@@ -9,8 +9,8 @@
 import UIKit
 
 @objc enum PlayMode: Int {
-    case simple
     case tough
+    case simple
 }
 
 class ModeViewController: UIViewController {

@@ -699,10 +699,8 @@ extension Api {
 
     static func postSignUp(name: String, password: String, email: String, daily: Int, callback: V.JsonCallback) {
 //        loadCookies()
-        V.httpPostForJson_AFN("api.nian.so/user/signup", content: ["username": "\(name)", "email": "\(email)", "password": "\(password)", "daily": daily], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/user/signup", content: ["username": "\(name)", "email": "\(email)", "password": "\(password)", "daily": daily], callback: callback)
     }
-
-
 
 }
 
