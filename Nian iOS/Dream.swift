@@ -455,13 +455,13 @@ extension DreamViewController: NIAlertDelegate {
         // 处理那些念币不足的丫们
         if niALert == self.niCoinLessAlert {
             if didselectAtIndex == 0 {
-                niALert.dismissWithAnimation()
+                niALert.dismissWithAnimation(.normal)
             }
         }
         // 处理 add step 之后询问要不要抽宠物的界面
         else if niALert == self.niAlert {
             // 改进，消失从外面控制
-            niALert.dismissWithAnimation()
+            niALert.dismissWithAnimation(.normal)
             
             // 先把用户点击 “不” 的情况处理了
             if didselectAtIndex == 1 {
@@ -490,7 +490,7 @@ extension DreamViewController: NIAlertDelegate {
                         let err = json!["error"] as! String
                         
                         if err == "0" {
-                            niALert.dismissWithAnimation()
+                            niALert.dismissWithAnimation(.normal)
                             
                             let petName = (json!["data"] as! NSDictionary).objectForKey("pet") as! String
                             
@@ -516,7 +516,7 @@ extension DreamViewController: NIAlertDelegate {
                 
                 
             } else if didselectAtIndex == 1 {
-                niALert.dismissWithAnimation()
+                niALert.dismissWithAnimation(.normal)
 
             }
         }

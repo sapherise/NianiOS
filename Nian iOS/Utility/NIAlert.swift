@@ -26,6 +26,11 @@ enum showAnimationStyle: Int {
     case flip     // 反转效果
 }
 
+enum dismissAnimationStyle: Int {
+    case normal   // 弹簧效果
+    case flip     // 反转效果
+}
+
 class NIAlert: UIView {
     
     var imgView: UIImageView?
@@ -36,6 +41,7 @@ class NIAlert: UIView {
     var niButtonArray: NSMutableArray = NSMutableArray()
     
     var _containerView: UIView?
+    var isLayerHidden: Bool = false
     
     weak var delegate: NIAlertDelegate?
     
@@ -56,9 +62,6 @@ class NIAlert: UIView {
         self._containerView?.frame = CGRect.zeroRect
         
         self.addSubview(_containerView!)
-        
-        self.layer.opacity = 1.0
-        self.layer.backgroundColor = UIColor(white: 0.0, alpha: 0.6).CGColor
         
         let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation:")
         tapGesture.delegate = self
@@ -178,6 +181,12 @@ class NIAlert: UIView {
         
         var _windowView = UIApplication.sharedApplication().windows.first as! UIView
         
+        if isLayerHidden {
+            self.backgroundColor = UIColor.clearColor()
+        } else {
+            self.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        }
+        
         switch animation {
         case .spring:
             self._containerView!.setX((globalWidth - 272)/2)
@@ -208,13 +217,38 @@ class NIAlert: UIView {
         }
     }
     
-    func dismissWithAnimation() {
-        self._removeSubView()
-    }
-    
     func dismissWithAnimation(sender: UITapGestureRecognizer) {
         self._removeSubView()
         delegate?.niAlert?(self, tapBackground: true)
+    }
+    
+    func dismissWithAnimation(animation: dismissAnimationStyle) {
+        switch animation {
+        case .normal:
+            self._removeSubView()
+        case .flip:
+            var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
+            }, completion: { (Bool) -> Void in
+                self.removeFromSuperview()
+            })
+        default:
+            break
+        }
+    }
+    
+    func dismissWithAnimationSwtich(view: UIView) {
+        var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
+            }, completion: { (Bool) -> Void in
+                self._containerView!.removeFromSuperview()
+                if let v = view as? NIAlert {
+                    v.isLayerHidden = true
+                    v.showWithAnimation(showAnimationStyle.flip)
+                }
+        })
     }
     
     private func _removeSubView() {
