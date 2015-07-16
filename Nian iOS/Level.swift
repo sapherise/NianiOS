@@ -13,7 +13,7 @@ import QuartzCore
 private let NORMAL_WIDTH: CGFloat  = 120.0
 private let NORMAL_HEIGHT: CGFloat = 100.0
 
-class LevelViewController: UIViewController, LTMorphingLabelDelegate{
+class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDelegate{
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var viewCalendar: UIView!
     @IBOutlet var viewTop: UIView!
@@ -93,6 +93,10 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
         titleLabel.text = "宠物"
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
+        
+        var rightButton = UIBarButtonItem(title: "抽蛋", style: .Plain, target: self, action: "onEgg")
+        //  todo: 抽蛋的文本显示样式应该与梦境处一致
+        self.navigationItem.rightBarButtonItems = [rightButton]
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
@@ -177,6 +181,20 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
                 }
             }
         }
+    }
+    
+    func onEgg() {
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        // todo: 进行网络请求，获得念币大于等于 3 时，弹出下方操作
+        var v = SAEgg()
+        v.delegateShare = self
+        v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+            forKeys: ["img", "title", "content", "buttonArray"])
+        v.showWithAnimation(.flip)
+    }
+    
+    func onShare(avc: UIActivityViewController) {
+        self.presentViewController(avc, animated: true, completion: nil)
     }
     
     func SACircle(float:CGFloat){

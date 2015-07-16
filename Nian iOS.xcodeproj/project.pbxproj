@@ -125,6 +125,7 @@
 		12D846051A233B09005DCC08 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D846041A233B09005DCC08 /* BlurView.swift */; };
 		12D846071A233F46005DCC08 /* AddStep.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D846061A233F46005DCC08 /* AddStep.xib */; };
 		12D846091A2340DC005DCC08 /* AddStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D846081A2340DC005DCC08 /* AddStep.swift */; };
+		12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9494D1B58091C0071B53A /* SAEgg.swift */; };
 		12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DA48B51A1C34F7002651EF /* NianCell.xib */; };
 		12DE696519D130940006B5B5 /* Care.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE696419D130940006B5B5 /* Care.swift */; };
 		12E1C8211A146DF300453805 /* LTEasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8201A146DF300453805 /* LTEasing.swift */; };
@@ -348,6 +349,7 @@
 		12D846041A233B09005DCC08 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		12D846061A233F46005DCC08 /* AddStep.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStep.xib; sourceTree = "<group>"; };
 		12D846081A2340DC005DCC08 /* AddStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStep.swift; sourceTree = "<group>"; };
+		12D9494D1B58091C0071B53A /* SAEgg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAEgg.swift; sourceTree = "<group>"; };
 		12DA48B51A1C34F7002651EF /* NianCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NianCell.xib; sourceTree = "<group>"; };
 		12DE696419D130940006B5B5 /* Care.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Care.swift; sourceTree = "<group>"; };
 		12DE699419D198C40006B5B5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -851,6 +853,7 @@
 				1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */,
 				12D846061A233F46005DCC08 /* AddStep.xib */,
 				12D846081A2340DC005DCC08 /* AddStep.swift */,
+				12D9494D1B58091C0071B53A /* SAEgg.swift */,
 				129375181A236E8B001F7442 /* AddStepCell.xib */,
 			);
 			name = "更新进展";
@@ -1413,6 +1416,7 @@
 				1258C3091A49A9BC008FA4EF /* CircleExplore.swift in Sources */,
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
+				12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				C4B6B6771B2723EF00A5FA26 /* CircleListCollectionController.swift in Sources */,
 				1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */,
