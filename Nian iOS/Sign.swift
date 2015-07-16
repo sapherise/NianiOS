@@ -8,12 +8,13 @@
 
 import UIKit
 
-
 class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
     @IBOutlet var inputName:UITextField!
     @IBOutlet var holder:UIView!
     @IBOutlet var errLabel:UILabel!
     var isAnimate:Int = 0
+    
+    lazy var signInfo = SignInfo()
     
     func setupViews(){
         self.viewBack()
@@ -70,10 +71,10 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
                         })
                     }else if sa == "1" {
                         dispatch_async(dispatch_get_main_queue(), {
-                        var signNextVC = SignNextController(nibName: "SignNext", bundle: nil)
-                        signNextVC.name = name
-                        self.navigationItem.rightBarButtonItems = []
-                        self.navigationController!.pushViewController(signNextVC, animated: true)
+                            self.signInfo.name = name
+                            var modeVC = ModeViewController(nibName: "ModeViewController", bundle: nil)
+                            modeVC.signInfo = self.signInfo
+                            self.navigationController?.pushViewController(modeVC, animated: true)
                         })
                     }
                 }
@@ -127,5 +128,13 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
 }
+
+
+class SignInfo: NSObject {
+    var name: String?
+    var mode: PlayMode?
+}
+
+
+
