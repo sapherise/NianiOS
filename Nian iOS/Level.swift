@@ -38,7 +38,8 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
     @IBOutlet weak var leftLine: UIView!
     @IBOutlet weak var rightLine: UIView!
     
-    var upgrade: NIButton?  //
+    var upgrade: NIButton?  //---- 界面上唯一用代码生成的控件
+    
     var preContentOffsetX: CGFloat?
     var cellString: String?
     var navView:UIView!
@@ -457,7 +458,7 @@ class petCell: UITableViewCell {
         } else {
             imgURLString += imgF! + "!d"
         }
-        self.imgView?.setImage(imgURLString, placeHolder: IconColor)
+        self.imgView?.setImage(imgURLString, placeHolder: IconColor, bool: false)
         self.imgView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
@@ -506,7 +507,7 @@ class petZoomInCell: UITableViewCell {
         } else {
             imgURLString += imgF! + "!d"
         }
-        self.imgView?.setImage(imgURLString, placeHolder: IconColor)
+        self.imgView?.setImage(imgURLString, placeHolder: IconColor, bool: false)
         self.imgView?.contentMode = UIViewContentMode.ScaleToFill
     }
     
