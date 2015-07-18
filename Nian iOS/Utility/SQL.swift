@@ -8,7 +8,7 @@
 
 import Foundation
 
-// 创建梦境表
+// MARK: - 创建梦境表
 func SQLCreateCircleList() {
     SD.executeChange("CREATE TABLE if not exists `circlelist` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `circleid` INT NOT NULL , `title` VARCHAR(255) NULL , `image` VARCHAR(255) NULL, `postdate` MEDIUMINT NOT NULL, `owner` VARCHAR(255) NULL)")
     let (indexes, err) = SD.existingIndexesForTable("circlelist")
@@ -17,7 +17,7 @@ func SQLCreateCircleList() {
     }
 }
 
-// 创建梦境内容表
+// MARK: - 创建梦境内容表
 func SQLCreateCircleContent() {
     SD.executeChange("CREATE TABLE if not exists `circle` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `cid` INT NOT NULL , `cname` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `title` VARCHAR(255) NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL, `owner` VARCHAR(255) NULL)")
     let (indexes, err) = SD.existingIndexesForTable("circle")
@@ -26,7 +26,7 @@ func SQLCreateCircleContent() {
     }
 }
 
-// 创建私信内容表
+// MARK: - 创建私信内容表
 func SQLCreateLetterContent() {
     SD.executeChange("CREATE TABLE if not exists `letter` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `msgid` INT NOT NULL , `uid` INT NOT NULL , `name` VARCHAR(255) NULL , `circle` INT NOT NULL , `content` TEXT NULL , `type` INT NOT NULL , `lastdate` MEDIUMINT NOT NULL, `isread` INT NOT NULL, `owner` VARCHAR(255) NULL)")
     let (indexes, err) = SD.existingIndexesForTable("letter")
@@ -35,7 +35,7 @@ func SQLCreateLetterContent() {
     }
 }
 
-// 创建进展表
+// MARK: - 创建进展表
 func SQLCreateStepContent() {
     SD.executeChange("CREATE TABLE if not exists `step` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `sid` INT NOT NULL , `uid` INT NOT NULL , `dream` INT NOT NULL , `content` VARCHAR(255) NULL , `img` VARCHAR(255) NULL , `img0` VARCHAR(255) NULL , `img1` VARCHAR(255) NULL)")
     let (indexes, err) = SD.existingIndexesForTable("step")
@@ -43,16 +43,25 @@ func SQLCreateStepContent() {
         SD.createIndex(name: "sid", onColumns: ["sid"], inTable: "step", isUnique: false)
     }
 }
+// MARK: - 创建宠物表
+func SQLCreatPetContent() {
+    SD.executeChange("CREATE TABLE if not exists `pet` ( `id` VARCHAR(255) PRIMARY KEY NOT NULL, `owner` VARCHAR(255) NOT NULL, `level` VARCHAR(255) NOT NULL , `name` VARCHAR(255) NOT NULL , `property` VARCHAR(255) NOT NULL , `img` VARCHAR(255) NOT NULL , `getat` VARCHAR(255) NULL , `updateat` VARCHAR(255) NULL)")
+    let (indexes, err) = SD.existingIndexesForTable("pet")
+    if indexes.count == 0 {
+        SD.createIndex(name: "petid", onColumns: ["id"], inTable: "pet", isUnique: false)
+    }
+}
 
-// 创建所有表
+// MARK: - 创建所有表
 func SQLInit() {
     SQLCreateCircleList()
     SQLCreateCircleContent()
     SQLCreateLetterContent()
     SQLCreateStepContent()
+    SQLCreatPetContent()
 }
 
-// 插入一条梦境
+// MARK: - 插入一条梦境
 func SQLCircleListInsert(id: String, title: String, image: String, postdate: String) {
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String
@@ -66,7 +75,7 @@ func SQLCircleListInsert(id: String, title: String, image: String, postdate: Str
     }
 }
 
-// 插入梦境聊天内容
+// MARK: - 插入梦境聊天内容
 func SQLCircleContent(id: String, uid: String, name: String, cid: String, cname: String, circle: String, content: String, title: String, type: String, time: String, isread: Int, callback: Void -> Void) {
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String
@@ -80,7 +89,7 @@ func SQLCircleContent(id: String, uid: String, name: String, cid: String, cname:
 }
 
 
-// 插入进展
+// MARK: - 插入进展
 func SQLStepContent(sid: String, uid: String, dream: String, content: String, img: String, img0: String, img1: String, callback: Void -> Void) {
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String
@@ -93,7 +102,26 @@ func SQLStepContent(sid: String, uid: String, dream: String, content: String, im
     }
 }
 
-// 删除梦境
+// MARK: - 更新宠物
+func SQLPetContent(id: String, level: String, name: String, property: String, image: String, getat: String, updateat: String, callback: Void -> Void) {
+    var Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var safeuid = Sa.objectForKey("uid") as! String
+    let (result, err) = SD.executeQuery("select id from pet where id = '\(id)' and owner = '\(safeuid)' limit 1")
+    if result.count == 0 {
+        if let err = SD.executeChange("INSERT INTO pet (id, owner, level, name, property, img, getat, updateat) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, safeuid, level, name, property, image, getat, updateat]) {
+        } else {
+            callback()
+        }
+    } else if result.count == 1 {
+        if let err = SD.executeChange("UPDATE pet SET level = '\(level)', name = '\(name)', property = '\(property)', img = '\(image)', getat = '\(getat)', updateat = '\(updateat)' where id = '\(id)' and owner = '\(safeuid)'") {
+        } else {
+            callback()
+        }
+    }
+}
+
+
+// MARK: - 删除梦境
 func SQLCircleListDelete(id: String) {
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String
@@ -101,7 +129,7 @@ func SQLCircleListDelete(id: String) {
     SD.executeChange("delete from circle where circle=? and owner = ?", withArgs: [id, safeuid])
 }
 
-// 插入私信内容
+// MARK: - 插入私信内容
 func SQLLetterContent(id: String, uid: String, name: String, circle: String, content: String, type: String, time: String, isread: Int, callback: Void -> Void) {
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String
@@ -114,7 +142,7 @@ func SQLLetterContent(id: String, uid: String, name: String, circle: String, con
     }
 }
 
-// 删除私信内容
+// MARK: - 删除私信内容
 func SQLLetterDelete(uid: String) {
     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String

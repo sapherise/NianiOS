@@ -10,9 +10,10 @@ import UIKit
 
 protocol MaskDelegate {
     func onViewCloseClick()
+    func onShare(avc: UIActivityViewController)
 }
 
-class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ShareDelegate, NIAlertDelegate{
     @IBOutlet var imageDream: UIImageView!
     @IBOutlet var imageArrow: UIImageView!
     @IBOutlet var labelDream: UILabel!
@@ -42,10 +43,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var niCoinLessAlert: NIAlert?
     var confirmNiAlert: NIAlert?
     var lotteryNiAlert: NIAlert?
-    
-    var img1: UIButton!
-    var img2: UIButton!
-    var img3: UIButton!
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
@@ -165,6 +162,10 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.actionSheet!.showInView(self)
     }
     
+    func onShare(avc: UIActivityViewController) {
+        delegate?.onShare(avc)
+    }
+    
     func onSubmitClick(){
         if self.textView.text == "进展正文" {
             self.textView.text = ""
@@ -201,25 +202,22 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     self.hidden = true
                     self.delegate?.onViewCloseClick()
 
-                      // 根据念币数量来判断
+                      // 如果念币小于 3
                     if false {
                         self.niCoinLessAlert = NIAlert()
-                        self.niCoinLessAlert!.delegate = self
-                        self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-                                                           forKeys: ["img", "title", "content", "buttonArray"])
-                        
-                        self.niCoinLessAlert!.showWithAnimation(showAnimationStyle.flip)
+                        self.niCoinLessAlert?.delegate = self
+                        self.niCoinLessAlert?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                                                        forKeys: ["img", "title", "content", "buttonArray"])
+                        self.niCoinLessAlert?.showWithAnimation(.flip)
                     } else {
                         // 如果念币多于 3， 那么就出现抽宠物
-                        self.niAlert = NIAlert()
-                        self.niAlert!.delegate = self
-                        self.niAlert?.isLayerHidden = false
-                        self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+                        var v = SAEgg()
+                        v.delegateShare = self
+                        v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
-                        
-                        self.niAlert!.showWithAnimation(showAnimationStyle.flip)
+                        v.showWithAnimation(.flip)
                     }
-                
+                    
                 } else {
                     self.activityOK.stopAnimating()
                     self.activityOK.hidden = true
@@ -232,6 +230,12 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     })
                 }
             }
+        }
+    }
+    
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        if niAlert == self.niCoinLessAlert {
+            niAlert.dismissWithAnimation(.normal)
         }
     }
     
@@ -311,133 +315,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             self.textView.resignFirstResponder()
             v.showImage("http://img.nian.so/step/\(self.uploadUrl)!large", rect: rect)
         }
-    }
-}
-
-/**
-*  AddStep 实现 NIAlertDelegate
-*/
-extension AddStep: NIAlertDelegate {
-    func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
-        // 处理那些念币不足的丫们
-        if niALert == self.niCoinLessAlert {
-            if didselectAtIndex == 0 {
-                niALert.dismissWithAnimation(.normal)
-                self.delegate?.onViewCloseClick()
-            }
-        }
-        // 处理 add step 之后询问要不要抽宠物的界面
-        else if niALert == self.niAlert {
-           
-            // 改进，消失从外面控制
-            //todo
-            // 先把用户点击 “不” 的情况处理了
-            if didselectAtIndex == 1 {
-                niALert.dismissWithAnimation(.normal)
-                self.delegate?.onViewCloseClick()
-            } else if didselectAtIndex == 0 {
-                // 进入确认抽奖的界面
-                self.confirmNiAlert = NIAlert()
-                self.confirmNiAlert!.delegate = self
-                self.confirmNiAlert!.dict = NSMutableDictionary(objects: ["", "抽蛋", "在上方随便选一个蛋！", []],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                
-                self.img1 = self.setupEgg(40, named: "pet_egg1")
-                self.img1.tag = 0
-                self.img2 = self.setupEgg(104, named: "pet_egg2")
-                self.img2.tag = 1
-                self.img3 = self.setupEgg(168, named: "pet_egg3")
-                self.img3.tag = 2
-                self.confirmNiAlert?._containerView?.addSubview(self.img1)
-                self.confirmNiAlert?._containerView?.addSubview(self.img2)
-                self.confirmNiAlert?._containerView?.addSubview(self.img3)
-                niALert.dismissWithAnimationSwtich(self.confirmNiAlert!)
-            }
-        }
-        // 处理抽奖结果页面
-        else if niALert == self.lotteryNiAlert {
-            if didselectAtIndex == 0 {
-                // 处理分享界面   todo
-                
-            } else if didselectAtIndex == 1 {
-                self.niAlert?.dismissWithAnimation(.normal)
-                self.confirmNiAlert?.dismissWithAnimation(.normal)
-                self.lotteryNiAlert?.dismissWithAnimation(.normal)
-                self.delegate?.onViewCloseClick()
-            }
-        }
-    }
-    
-    func setupEgg(x: CGFloat, named: String) -> UIButton {
-        var button = UIButton(frame: CGRectMake(x, 40, 64, 80))
-        button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDown)
-        button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDragInside)
-        button.addTarget(self, action: "onEggTouchUp:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.addTarget(self, action: "onEggTouchCancel:", forControlEvents: UIControlEvents.TouchDragOutside)
-        button.setBackgroundImage(UIImage(named: named), forState: UIControlState.allZeros)
-        button.setBackgroundImage(UIImage(named: named), forState: UIControlState.Highlighted)
-        button.layer.cornerRadius = 8
-        return button
-    }
-    
-    func onEggTouchDown(sender: UIButton) {
-        sender.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-    }
-    
-    func onEggTouchCancel(sender: UIButton) {
-        sender.backgroundColor = UIColor.clearColor()
-    }
-    
-    func onEggTouchUp(sender: UIButton) {
-        sender.backgroundColor = UIColor.clearColor()
-        self.confirmNiAlert?.titleLabel?.hidden = true
-        self.confirmNiAlert?.contentLabel?.hidden = true
-        var v = img1
-        if sender.tag == 1 {
-            v = img2
-            img1.hidden = true
-            img3.hidden = true
-        } else if sender.tag == 2 {
-            v = img3
-            img1.hidden = true
-            img2.hidden = true
-        } else {
-            img2.hidden = true
-            img3.hidden = true
-        }
-        UIView.animateWithDuration(0.6, animations: { () -> Void in
-            v.setX(104)
-        })
-        var ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
-        ac.color = SeaColor
-        ac.hidden = false
-        ac.startAnimating()
-        self.confirmNiAlert?._containerView!.addSubview(ac)
-        Api.postPetLottery() { json in
-            if json != nil {
-                let err = json!["error"] as! NSNumber
-                if err == 0 {
-                    let petInfo = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
-                    let petName = petInfo.stringAttributeForKey("name")
-                    let petImage = petInfo.stringAttributeForKey("image")
-                    self.lotteryNiAlert = NIAlert()
-                    self.lotteryNiAlert!.delegate = self
-                    self.lotteryNiAlert!.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)", petName, "你获得了一个\(petName)", ["分享", "好"]],
-                        forKeys: ["img", "title", "content", "buttonArray"])
-                    self.confirmNiAlert?.dismissWithAnimationSwtich(self.lotteryNiAlert!)
-                }
-            }
-        }
-    }
-    
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
-        if niAlert == self.confirmNiAlert {
-            self.niAlert?.dismissWithAnimation(dismissAnimationStyle.normal)
-        } else if niAlert == self.lotteryNiAlert {
-            self.niAlert?.dismissWithAnimation(dismissAnimationStyle.normal)
-            self.confirmNiAlert?.dismissWithAnimation(dismissAnimationStyle.normal)
-        }
-//        self.delegate?.onViewCloseClick()
     }
 }
 

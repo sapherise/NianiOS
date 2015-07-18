@@ -16,7 +16,7 @@ class NILabel: UILabel {
     }
 }
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate, delegateSAStepCell, topDelegate{
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate, delegateSAStepCell, topDelegate, ShareDelegate{
     
     var tableView: UITableView!
     var page: Int = 1
@@ -33,10 +33,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var dataArrayTop: NSDictionary!
     var btnMain: UIButton!
     
-    var niAlert: NIAlert?
-    var niCoinLessAlert: NIAlert?
-    var confirmNiAlert: NIAlert?
-    var lotteryNiAlert: NIAlert?
+    var alertCoin: NIAlert?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -194,10 +191,13 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.view.showTipText("举报好了！", delay: 2)
         }
         
-        var arr = SAUid() == uid ? [WeChatSessionActivity(), WeChatMomentsActivity(), acDone, acEdit, acDelete] : [WeChatSessionActivity(), WeChatMomentsActivity(), acLike, acReport]
-        var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
-        acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
-        self.presentViewController(acv, animated: true, completion: nil)
+        var arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]
+//        var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+//        acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
+//        self.presentViewController(acv, animated: true, completion: nil)
+        
+        var avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+        self.presentViewController(avc, animated: true, completion: nil)
     }
     
     func onStep(){
@@ -327,18 +327,18 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         if true {
             if true {
-                self.niAlert = NIAlert()
-                self.niAlert!.delegate = self
-                self.niAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-                                                   forKeys: ["img", "title", "content", "buttonArray"])
-                self.niAlert!.showWithAnimation(showAnimationStyle.flip)
+                self.alertCoin = NIAlert()
+                self.alertCoin?.delegate = self
+                self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                self.alertCoin?.showWithAnimation(.flip)
             } else {
-                self.niCoinLessAlert = NIAlert()
-                self.niCoinLessAlert!.delegate = self
-                self.niCoinLessAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-                                                   forKeys: ["img", "title", "content", "buttonArray"])
-            
-                self.niCoinLessAlert!.showWithAnimation(showAnimationStyle.flip)
+                // 如果念币多于 3， 那么就出现抽宠物
+                var v = SAEgg()
+                v.delegateShare = self
+                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                v.showWithAnimation(.flip)
             }
         }
     }
@@ -427,6 +427,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         return false
     }
     
+    func onShare(avc: UIActivityViewController) {
+        self.presentViewController(avc, animated: true, completion: nil)
+    }
+    
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
         SAUpdate(self.dataArray, index, key, value, self.tableView)
@@ -451,76 +455,10 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
 
 // MARK: - 实现 NIAlertDelegate
 extension DreamViewController: NIAlertDelegate {
-    func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
-        // 处理那些念币不足的丫们
-        if niALert == self.niCoinLessAlert {
-            if didselectAtIndex == 0 {
-                niALert.dismissWithAnimation(.normal)
-            }
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        if niAlert == self.alertCoin {
+                niAlert.dismissWithAnimation(.normal)
         }
-        // 处理 add step 之后询问要不要抽宠物的界面
-        else if niALert == self.niAlert {
-            // 改进，消失从外面控制
-            niALert.dismissWithAnimation(.normal)
-            
-            // 先把用户点击 “不” 的情况处理了
-            if didselectAtIndex == 1 {
-                
-            } else if didselectAtIndex == 0 {
-                
-                // 进入确认抽奖的界面
-                self.confirmNiAlert = NIAlert()
-                self.confirmNiAlert!.delegate = self
-                self.confirmNiAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "add_plus")!, "抽蛋", "要用念币来购买吗?", ["3 念币"]],
-                                                          forKeys: ["img", "title", "content", "buttonArray"])
-                self.confirmNiAlert!.showWithAnimation(showAnimationStyle.flip)
-            }
-        }
-        // 处理确认“抽蛋” 页面
-        else if niALert == self.confirmNiAlert {
-            if didselectAtIndex == 0 {
-                (self.confirmNiAlert!.niButtonArray[0] as! NIButton).startAnimating()
-                
-                // 调用 API
-                Api.postPetLottery() {
-                    json in
-                    if json != nil {
-                        println(json)
-                        //处理 json 数据
-                        let err = json!["error"] as! String
-                        
-                        if err == "0" {
-                            niALert.dismissWithAnimation(.normal)
-                            
-                            let petName = (json!["data"] as! NSDictionary).objectForKey("pet") as! String
-                            
-                            self.lotteryNiAlert = NIAlert()
-                            self.lotteryNiAlert!.delegate = self
-                            self.lotteryNiAlert!.dict = NSMutableDictionary(objects: [UIImage(named: "av_finish")!, petName, "你获得了一个\(petName)", ["分享", "好"]],
-                                forKeys: ["img", "title", "content", "buttonArray"])
-                            self.lotteryNiAlert!.showWithAnimation(showAnimationStyle.spring)
-                        } else {
-                            (self.confirmNiAlert!.niButtonArray[0] as! NIButton).stopAnimating()
-                        }
-                        
-                        
-                    }
-                }   // 调用 API -- end
-            } // didselectAtIndex -- end
-        } // else if -- end
-            // 处理抽奖结果页面
-        else if niALert == self.lotteryNiAlert {
-            if didselectAtIndex == 0 {
-                // 处理分享界面
-                
-                
-                
-            } else if didselectAtIndex == 1 {
-                niALert.dismissWithAnimation(.normal)
-
-            }
-        }
-        
     }
 }
 

@@ -421,6 +421,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
+    func onShare(avc: UIActivityViewController) {
+        self.presentViewController(avc, animated: true, completion: nil)
+    }
+    
     func onCloseConfirm(){
         if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
             self.addStepView.textView.resignFirstResponder()

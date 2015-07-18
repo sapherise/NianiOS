@@ -839,8 +839,20 @@ func SACookie(key: String) -> String? {
     return NSUserDefaults.standardUserDefaults().objectForKey(key) as? String
 }
 
+class Cookies {
+    class func set(value: AnyObject?, forKey: String) {
+        var Cookie = NSUserDefaults.standardUserDefaults()
+        Cookie.setObject(value, forKey: forKey)
+        Cookie.synchronize()
+    }
+    class func get(key: String) -> AnyObject? {
+        var Cookie = NSUserDefaults.standardUserDefaults()
+        return Cookie.objectForKey(key)
+    }
+}
+
 /**
-等价于 objective-c 里面的 synchonized 
+等价于 objective-c 里面的 synchonized
 
 :param: lock    <#lock description#>
 :param: closure <#closure description#>

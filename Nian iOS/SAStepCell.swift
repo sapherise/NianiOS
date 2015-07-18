@@ -279,7 +279,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     func onMoreClick(){
         var sid = data.stringAttributeForKey("sid")
-        var content = SADecode(data.stringAttributeForKey("content"))
+        var content = data.stringAttributeForKey("content").decode()
         var uid = data.stringAttributeForKey("uid")
         var url = NSURL(string: "http://nian.so/m/step/\(sid)")!
         var row = index
@@ -317,26 +317,19 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.actionSheetDelete.showInView(self.findRootViewController()?.view)
         }
         
-        var ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), customActivity ]
+        var ActivityArray = [customActivity]
         if uid == SAUid() {
-            ActivityArray = [WeChatSessionActivity(), WeChatMomentsActivity(), deleteActivity, editActivity]
+            ActivityArray = [deleteActivity, editActivity]
         }
         var arr = [content, url]
-        if img0 * img1 != 0 {
-            var image = getCacheImage(ImageURL)
-            if image != nil {
-                arr.append(image!)
-            }
-        }
-        self.activityViewController = UIActivityViewController(
-            activityItems: arr,
-            applicationActivities: ActivityArray)
-        self.activityViewController?.excludedActivityTypes = [
-            UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint
-        ]
-        if let v = self.findRootViewController()?.navigationController {
-            v.presentViewController(self.activityViewController, animated: true, completion: nil)
-        }
+        var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+        card.content = content
+        card.widthImage = data.stringAttributeForKey("width")
+        card.heightImage = data.stringAttributeForKey("height")
+        card.url = "http://img.nian.so/step/" + data.stringAttributeForKey("image") + "!large"
+        arr.append(card.getCard())
+        self.activityViewController = SAActivityViewController.shareSheetInView(arr, applicationActivities: ActivityArray, isStep: true)
+        self.findRootViewController()?.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {

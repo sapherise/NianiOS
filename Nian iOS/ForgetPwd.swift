@@ -104,7 +104,7 @@ extension ForgetPwd: UITextFieldDelegate {
 
 // MARK: implement alert delegate
 extension ForgetPwd: NIAlertDelegate {
-    func niAlert(niALert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
         if didselectAtIndex == 0 {
            self.navigationController?.popViewControllerAnimated(true)
         }

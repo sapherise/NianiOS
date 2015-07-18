@@ -352,12 +352,4 @@ extension UIView {
         })
     }
     
-    func popupActivity(items: [AnyObject], activities: [AnyObject]?, exclude: [AnyObject]?) {
-        if let viewController = findRootViewController() {
-            var activityViewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
-            activityViewController.excludedActivityTypes = exclude
-            viewController.presentViewController(activityViewController, animated: true, completion: nil)
-        }
-    }
-    
 }

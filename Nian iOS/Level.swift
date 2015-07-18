@@ -13,7 +13,7 @@ import QuartzCore
 private let NORMAL_WIDTH: CGFloat  = 120.0
 private let NORMAL_HEIGHT: CGFloat = 100.0
 
-class LevelViewController: UIViewController, LTMorphingLabelDelegate{
+class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDelegate{
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var viewCalendar: UIView!
     @IBOutlet var viewTop: UIView!
@@ -38,6 +38,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
     @IBOutlet weak var rightLine: UIView!
     
     var upgrade: NIButton?  //---- 界面上唯一用代码生成的控件
+    var upgradeView: NIAlert?
     
     var preContentOffsetX: CGFloat?
     var cellString: String?
@@ -84,6 +85,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
     func setupViews(){
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
+        navView.userInteractionEnabled = true
         self.view.addSubview(navView)
         self.viewBack()
         
@@ -93,15 +95,14 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
         
-//        var rightButton = UIBarButtonItem(title: "抽蛋", style: .Plain, target: self, action: "toDrawLottery")
-//        self.navigationItem.rightBarButtonItem = rightButton
         var rightLabel = UILabel(frame: CGRectMake(navView.frame.width - 60, 20, 60, 44))
         rightLabel.textColor = UIColor.whiteColor()
         rightLabel.text = "抽蛋"
         rightLabel.font = UIFont.systemFontOfSize(14)
-        rightLabel.textAlignment = NSTextAlignment.Center
-        rightLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toDrawLottery"))
-        navView.addSubview(rightLabel)
+        rightLabel.textAlignment = NSTextAlignment.Right
+        rightLabel.userInteractionEnabled = true
+        rightLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEgg"))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightLabel)
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
@@ -116,7 +117,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
         
         self.upgrade = NIButton(string: "升级", frame:  CGRectMake((globalWidth - 100)/2, 295, 100, 36))
         self.upgrade!.bgColor = BgColor.blue
-        self.upgrade?.addTarget(self, action: "toUpgrade", forControlEvents: UIControlEvents.TouchUpInside)
+        self.upgrade?.addTarget(self, action: "toUpgrade:", forControlEvents: UIControlEvents.TouchUpInside)
         self.viewTop.addSubview(self.upgrade!)
         
         self.tableview.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI/2))
@@ -127,6 +128,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
         self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 60))
         self.preContentOffsetX = 0.0    // 设置 tableView 的 content offset X
         self.PetNormalView.setX((globalWidth - 120)/2)
+        self.PetNormalView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo:"))
         self.petLevel.setX((globalWidth - 42)/2)
         
         //-----------
@@ -187,11 +189,36 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
             }
         }
     }
+
+    func onEgg() {
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        // todo: 进行网络请求，获得念币大于等于 3 时，弹出下方操作
+        var v = SAEgg()
+        v.delegateShare = self
+        v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+            forKeys: ["img", "title", "content", "buttonArray"])
+        v.showWithAnimation(.flip)
+    }
     
-    func toDrawLottery() {
+    func onShare(avc: UIActivityViewController) {
+        self.presentViewController(avc, animated: true, completion: nil)
+    }
+    
+    func toUpgrade(sender: UIButton) {
+        upgradeView = NIAlert()
+        upgradeView!.delegate = self
+        upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "花费 3 念币", "要以 3 念币让\(self.petName.text)\n升级吗？", ["嗯！", "不要"]],
+                                               forKeys: ["img", "title", "content", "buttonArray"])
+        upgradeView!.showWithAnimation(.flip)
+    }
+    
+    func showPetInfo(sender: UITapGestureRecognizer) {
         
     }
     
+}
+
+extension LevelViewController {
     func SACircle(float:CGFloat){
         self.top = CAShapeLayer()
         var path = CGPathCreateMutable()
@@ -221,13 +248,13 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
             "strokeEnd": NSNull(),
             "transform": NSNull()
         ]
-//        self.viewCircle.layer.addSublayer(top)
-//        delay(0.5, { () -> () in
-//            let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-//            strokeEnd.toValue = 0.8 * float
-//            strokeEnd.duration = 1
-//            self.top.SAAnimation(strokeEnd)
-//        })
+        //        self.viewCircle.layer.addSublayer(top)
+        //        delay(0.5, { () -> () in
+        //            let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+        //            strokeEnd.toValue = 0.8 * float
+        //            strokeEnd.duration = 1
+        //            self.top.SAAnimation(strokeEnd)
+        //        })
     }
     
     func layoutAMonth(marks: [Bool]) {
@@ -317,6 +344,25 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate{
 
 extension LevelViewController: UIGestureRecognizerDelegate {
     
+}
+
+extension LevelViewController: NIAlertDelegate {
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        if niAlert == self.upgradeView {
+            if didselectAtIndex == 1 {
+                niAlert.dismissWithAnimation(.normal)
+            } else if didselectAtIndex == 0 {
+                Api.getPetUpgrade(self.petName.text!, level: self.petLevel.text!) {
+                    json in
+                    
+                }
+                
+            }
+            
+        } else {
+            
+        }
+    }
 }
 
 
@@ -418,7 +464,7 @@ extension LevelViewController: UIScrollViewDelegate {
     }
 }
 
-// MARK: pet cell
+// MARK: - pet cell
 class petCell: UITableViewCell {
     @IBOutlet var imgView: UIImageView!
     
@@ -441,8 +487,6 @@ class petCell: UITableViewCell {
     func _layoutSubviews() {
         // 刷新界面
         let imgF = self.info?.stringAttributeForKey("image")
-        println("imgF cell: \(imgF)")
-        
         id = self.info?.stringAttributeForKey("id")
         level = self.info?.stringAttributeForKey("level")
         name = self.info?.stringAttributeForKey("name")
@@ -459,6 +503,11 @@ class petCell: UITableViewCell {
         }
         self.imgView?.setImage(imgURLString, placeHolder: IconColor, bool: false)
         self.imgView?.contentMode = UIViewContentMode.ScaleToFill
+        
+        SQLPetContent(id!, level!, name!, property!, imgF!, getAtDate!, updateAtDate!) {
+            // 灰度图片 
+            
+        }
     }
     
     override func prepareForReuse() {

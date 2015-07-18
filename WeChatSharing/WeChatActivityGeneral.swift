@@ -13,6 +13,7 @@ class WeChatActivityGeneral: UIActivity {
     var url:NSURL?
     var image:UIImage?
     var isSessionScene = true
+    var isStep: Bool = false
     
     override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
         var req:SendMessageToWXReq!
@@ -72,20 +73,26 @@ class WeChatActivityGeneral: UIActivity {
             urlNew = url!
         }
         
-        // 缩略图
-        var width = 240.0 as CGFloat
-        var height = width*(imageNew.size.height)/(imageNew.size.width)
-        UIGraphicsBeginImageContext(CGSizeMake(width, height))
-        imageNew.drawInRect(CGRectMake(0, 0, width, height))
-        req.message.setThumbImage(UIGraphicsGetImageFromCurrentImageContext())
-        UIGraphicsEndImageContext()
-        
-        var webObject = WXWebpageObject()
-        webObject.webpageUrl = urlNew.absoluteString?.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-        req.message.mediaObject = webObject
-        req.message.title = textNew as String
-        req.message.description = "「念」\n全宇宙最残酷的 App，\n每天更新才不会被停号。😱"
-        WXApi.sendReq(req)
+        if isStep {
+            var imageObject = WXImageObject()
+            imageObject.imageData = UIImageJPEGRepresentation(imageNew, 1)
+            req.message.mediaObject = imageObject
+            WXApi.sendReq(req)
+        } else {
+            // 缩略图
+            var width = 240.0 as CGFloat
+            var height = width*(imageNew.size.height)/(imageNew.size.width)
+            UIGraphicsBeginImageContext(CGSizeMake(width, height))
+            imageNew.drawInRect(CGRectMake(0, 0, width, height))
+            req.message.setThumbImage(UIGraphicsGetImageFromCurrentImageContext())
+            UIGraphicsEndImageContext()
+            var webObject = WXWebpageObject()
+            webObject.webpageUrl = urlNew.absoluteString?.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            req.message.mediaObject = webObject
+            req.message.title = textNew as String
+            req.message.description = "「念」\n全宇宙最残酷的 App，\n每天更新才不会被停号。😱"
+            WXApi.sendReq(req)
+        }
         self.activityDidFinish(true)
     }
 }

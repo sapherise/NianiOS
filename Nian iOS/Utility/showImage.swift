@@ -128,13 +128,8 @@ extension UIImageView {
             if sender.state == UIGestureRecognizerState.Began {
                 var image = getCacheImage(imageView.imageURL)
                 if image != nil {
-                    popupActivity([ "喜欢念上的这张照片。http://nian.so", image!], activities: [WeChatSessionActivity(), WeChatMomentsActivity()], exclude: [
-                        UIActivityTypeAssignToContact,
-                        UIActivityTypePrint,
-                        UIActivityTypeCopyToPasteboard,
-                        UIActivityTypeMail,
-                        UIActivityTypeMessage
-                        ])
+                    var avc = SAActivityViewController.shareSheetInView(["喜欢念上的这张照片", image!], applicationActivities: [])
+                    self.findRootViewController()?.presentViewController(avc, animated: true, completion: nil)
                 }
             }
         }

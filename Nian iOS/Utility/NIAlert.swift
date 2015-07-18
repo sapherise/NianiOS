@@ -16,7 +16,7 @@ import UIKit
     /**
     <#Description#>
     */
-    optional func niAlert(niALert: NIAlert, didselectAtIndex: Int)
+    optional func niAlert(niAlert: NIAlert, didselectAtIndex: Int)
     optional func niAlert(niAlert: NIAlert, tapBackground: Bool)
 }
 
@@ -152,7 +152,7 @@ class NIAlert: UIView {
             var _posY = Float(contentBottom) + Float((i + 1)) * 8.0 + Float(i) * 36
             
             var button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - 120)/2, CGFloat(_posY), 120, 36))
-            button.tag = 41000 + i
+            button.index = i
             button.addTarget(self, action: "buttonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
             
             if i == 0 {
@@ -171,7 +171,7 @@ class NIAlert: UIView {
     }
     
     func buttonTouch(sender: NIButton) {
-        var _index = sender.tag - 41000
+        var _index = sender.index!
         
         delegate?.niAlert?(self, didselectAtIndex: _index)
     }
@@ -302,6 +302,8 @@ class NIButton: UIButton {
             }
         }
     }
+    
+    var index: Int?
     
     private var _spinner: UIActivityIndicatorView?
     private var _titleString: String?
