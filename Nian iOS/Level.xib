@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LevelViewController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="PetNormalView" destination="yEM-h0-YWj" id="cDt-Q9-y4n"/>
+                <outlet property="PetNormalView" destination="yEM-h0-YWj" id="zqs-ZI-rW0"/>
                 <outlet property="good" destination="LGu-3G-fcd" id="eFS-cr-noW"/>
                 <outlet property="labelCalendar" destination="tV7-EY-nV0" id="H9w-JY-ypT"/>
                 <outlet property="labelMonthLeft" destination="EuD-2w-b2w" id="6V9-oe-Bgi"/>
@@ -234,7 +234,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </tableView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yEM-h0-YWj">
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yEM-h0-YWj">
                                     <rect key="frame" x="100" y="120" width="120" height="120"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>

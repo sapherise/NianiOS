@@ -54,6 +54,35 @@ extension UIImageView {
                 failure: nil)
         }
     }
+    
+    func setImageWithBlock(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, callback: (image: UIImage) -> Void) {
+        var url = NSURL(string: urlString)
+        if bool == true {
+            self.image = UIImage(named: "drop")!
+        } else {
+            self.image = UIImage()
+        }
+        
+        self.backgroundColor = placeHolder
+        self.contentMode = .Center
+        
+        var networkStatus = checkNetworkStatus()
+        var Sa: NSUserDefaults = .standardUserDefaults()
+        var saveMode: String? = Sa.objectForKey("saveMode") as? String
+        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        
+        if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
+            self.loadCacheImage(req, placeholderImage: self.image!)
+        } else {
+            self.setImageWithURLRequest(req,
+                placeholderImage: nil,
+                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                    self.contentMode = .ScaleAspectFill
+                    callback(image: image)
+                },
+                failure: nil)
+        }
+    }
 
     func setCover(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
         var url = NSURL(string: urlString)

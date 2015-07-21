@@ -1,0 +1,209 @@
+{
+  "buildConfigurationName": "Release",
+  "diagnostics": [
+    {
+      "confidence": 8,
+      "confidenceDescription": "High",
+      "context": null,
+      "extent": {
+        "end": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        },
+        "start": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        }
+      },
+      "file": "/Users/Bob/nian/NianiOS/Nian iOS/Images.xcassets/System/ok.imageset",
+      "fileSnippet": null,
+      "html": {
+        "info": "Asset catalog ‘Images’, set ‘ok’: The ‘x3 scale, Universal’ version of this image is missing.",
+        "ruleDescription": "Warns when either the high-resolution (@2x or @3x) or the low-resolution variant of an image resource is missing.",
+        "ruleName": "Missing image resolution variant",
+        "ruleShortName": "MissingImageResolutionVariant",
+        "ruleWarning": null
+      },
+      "identifier": null,
+      "impact": "Functionality",
+      "info": "Asset catalog ‘Images’, set ‘ok’: The ‘x3 scale, Universal’ version of this image is missing.",
+      "ruleDescription": "Warns when either the high-resolution (@2x or @3x) or the low-resolution variant of an image resource is missing.",
+      "ruleName": "Missing image resolution variant",
+      "ruleShortName": "MissingImageResolutionVariant",
+      "ruleWarning": null,
+      "severity": 3,
+      "severityDescription": "Concern"
+    },
+    {
+      "confidence": 8,
+      "confidenceDescription": "High",
+      "context": null,
+      "extent": {
+        "end": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        },
+        "start": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        }
+      },
+      "file": "/Users/Bob/nian/NianiOS/Nian iOS/Images.xcassets/Tag/tagenglish.imageset",
+      "fileSnippet": null,
+      "html": {
+        "info": "Asset catalog ‘Images’, set ‘tagenglish’: The ‘x3 scale, Universal’ version of this image is missing.",
+        "ruleDescription": "Warns when either the high-resolution (@2x or @3x) or the low-resolution variant of an image resource is missing.",
+        "ruleName": "Missing image resolution variant",
+        "ruleShortName": "MissingImageResolutionVariant",
+        "ruleWarning": null
+      },
+      "identifier": null,
+      "impact": "Functionality",
+      "info": "Asset catalog ‘Images’, set ‘tagenglish’: The ‘x3 scale, Universal’ version of this image is missing.",
+      "ruleDescription": "Warns when either the high-resolution (@2x or @3x) or the low-resolution variant of an image resource is missing.",
+      "ruleName": "Missing image resolution variant",
+      "ruleShortName": "MissingImageResolutionVariant",
+      "ruleWarning": null,
+      "severity": 3,
+      "severityDescription": "Concern"
+    },
+    {
+      "confidence": 8,
+      "confidenceDescription": "High",
+      "context": "getPolicyWithSaveKey:",
+      "extent": {
+        "end": {
+          "byteColumn": 70,
+          "byteOffset": 4196,
+          "line": 125,
+          "utf16Column": 69,
+          "utf16Offset": 4134
+        },
+        "start": {
+          "byteColumn": 13,
+          "byteOffset": 4139,
+          "line": 125,
+          "utf16Column": 12,
+          "utf16Offset": 4077
+        }
+      },
+      "file": "/Users/Bob/nian/NianiOS/Nian iOS/Utility/../../upyun/UpYun.m",
+      "fileSnippet": "[dic setObject:[self.params objectForKey:key] forKey:key]",
+      "html": {
+        "info": "<p><code class=\"fauxpas-objcmethod\">-[NSMutableDictionary setObject:forKey:]</code> is called. Consider using an Objective-C subscript expression instead.</p>",
+        "ruleDescription": "<p>Warns if Objective-C literals, boxed expressions and subscript notation are not used whenever possible.</p> <p>Note that Xcode can automatically fix your code to do this (see the <em>Edit → Refactor → Convert To Modern Objective-C Syntax…</em> menu item).</p>",
+        "ruleName": "Old, verbose Objective-C syntax",
+        "ruleShortName": "OldVerboseObjCSyntax",
+        "ruleWarning": null
+      },
+      "identifier": null,
+      "impact": "Style",
+      "info": "-[NSMutableDictionary setObject:forKey:] is called. Consider using an Objective-C subscript expression instead.",
+      "ruleDescription": "Warns if Objective-C literals, boxed expressions and subscript notation are not used whenever possible. Note that Xcode can automatically fix your code to do this (see the Edit → Refactor → Convert To Modern Objective-C Syntax… menu item).",
+      "ruleName": "Old, verbose Objective-C syntax",
+      "ruleShortName": "OldVerboseObjCSyntax",
+      "ruleWarning": null,
+      "severity": 3,
+      "severityDescription": "Concern"
+    },
+    {
+      "confidence": 8,
+      "confidenceDescription": "High",
+      "context": null,
+      "extent": {
+        "end": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        },
+        "start": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        }
+      },
+      "file": "/Users/Bob/nian/NianiOS/Nian iOS/Images.xcassets/Tag/tagstartup.imageset",
+      "fileSnippet": null,
+      "html": {
+        "info": "Asset catalog ‘Images’, set ‘tagstartup’: The ‘x3 scale, Universal’ version of this image is missing.",
+        "ruleDescription": "Warns when either the high-resolution (@2x or @3x) or the low-resolution variant of an image resource is missing.",
+        "ruleName": "Missing image resolution variant",
+        "ruleShortName": "MissingImageResolutionVariant",
+        "ruleWarning": null
+      },
+      "identifier": null,
+      "impact": "Functionality",
+      "info": "Asset catalog ‘Images’, set ‘tagstartup’: The ‘x3 scale, Universal’ version of this image is missing.",
+      "ruleDescription": "Warns when either the high-resolution (@2x or @3x) or the low-resolution variant of an image resource is missing.",
+      "ruleName": "Missing image resolution variant",
+      "ruleShortName": "MissingImageResolutionVariant",
+      "ruleWarning": null,
+      "severity": 3,
+      "severityDescription": "Concern"
+    },
+    {
+      "confidence": 8,
+      "confidenceDescription": "High",
+      "context": null,
+      "extent": {
+        "end": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        },
+        "start": {
+          "byteColumn": 0,
+          "byteOffset": 0,
+          "line": 0,
+          "utf16Column": 0,
+          "utf16Offset": 0
+        }
+      },
+      "file": "/Users/Bob/nian/NianiOS/Nian iOS/Images.xcassets/System/newBack.imageset/back@3x.png",
+      "fileSnippet": null,
+      "html": {
+        "info": "Asset catalog ‘Images’, set ‘newBack’: <div class=\"fauxpas-filename\">back@3x.png</div> (x3 scale) resolution (28 x 51) should be 27 x 51.",
+        "ruleDescription": "The retina (‘@2x’ or ‘@3x’) version of an image resource must be exactly double or triple the size of the corresponding low-resolution image (assuming the point size of the presentation context remains the same regardless of screen resolution). Otherwise the effective resolution of the image will not match the effective resolution of its presentation context, which will lead to a blurry image, empty space at the edges, or overflow.",
+        "ruleName": "Unexpected retina image resolution",
+        "ruleShortName": "RetinaImagesResolution",
+        "ruleWarning": null
+      },
+      "identifier": null,
+      "impact": "Functionality",
+      "info": "Asset catalog ‘Images’, set ‘newBack’: back@3x.png (x3 scale) resolution (28 x 51) should be 27 x 51.",
+      "ruleDescription": "The retina (‘@2x’ or ‘@3x’) version of an image resource must be exactly double or triple the size of the corresponding low-resolution image (assuming the point size of the presentation context remains the same regardless of screen resolution). Otherwise the effective resolution of the image will not match the effective resolution of its presentation context, which will lead to a blurry image, empty space at the edges, or overflow.",
+      "ruleName": "Unexpected retina image resolution",
+      "ruleShortName": "RetinaImagesResolution",
+      "ruleWarning": null,
+      "severity": 3,
+      "severityDescription": "Concern"
+    }
+  ],
+  "fauxPasVersion": "1.5",
+  "projectIconBase64PNG": "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",
+  "projectName": "Nian iOS",
+  "projectPath": "/Users/Bob/nian/NianiOS/Nian iOS.xcodeproj",
+  "targetBundleVersion": "15",
+  "targetName": "Nian iOS",
+  "timeStamp": 1437293068,
+  "versionControlRevision": "1728e2261e056cdb420924d8023c37792876c8c7",
+  "versionControlSystemName": "Git"
+}

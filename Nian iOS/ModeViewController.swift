@@ -29,6 +29,7 @@ class ModeViewController: UIViewController {
     @IBOutlet weak var simpleIllustate: UILabel!
     @IBOutlet weak var toughView: UIView!
     @IBOutlet weak var simpleView: UIView!
+    @IBOutlet weak var containerView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,11 @@ class ModeViewController: UIViewController {
         titleLabel.text = "模式"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
+        
+        self.containerView.layer.borderColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1).CGColor
+        self.containerView.layer.borderWidth = 1.0
+        self.containerView.layer.cornerRadius = 4.0
+        self.containerView.layer.masksToBounds = true
        
         self.playMode = PlayMode.tough
     }

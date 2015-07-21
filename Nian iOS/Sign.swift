@@ -74,6 +74,7 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
                             self.signInfo.name = name
                             var modeVC = ModeViewController(nibName: "ModeViewController", bundle: nil)
                             modeVC.signInfo = self.signInfo
+                            self.navigationItem.rightBarButtonItems = []
                             self.navigationController?.pushViewController(modeVC, animated: true)
                         })
                     }

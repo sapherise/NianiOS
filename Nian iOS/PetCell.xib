@@ -14,9 +14,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rg5-KZ-9Rw">
-                        <rect key="frame" x="36" y="76" width="48" height="48"/>
+                        <rect key="frame" x="36" y="61" width="48" height="48"/>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imgView" destination="Rg5-KZ-9Rw" id="Qeh-4U-fUa"/>
