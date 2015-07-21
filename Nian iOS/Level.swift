@@ -31,6 +31,8 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     @IBOutlet var PetNormalView: UIImageView!
     @IBOutlet weak var petLevel: UILabel!
     
+    var petId: String? // 没有显示
+    
     @IBOutlet weak var good: UIView!
     @IBOutlet weak var step: UIView!
     @IBOutlet weak var listener: UIView!
@@ -38,7 +40,14 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     @IBOutlet weak var rightLine: UIView!
     
     var upgrade: NIButton?  //---- 界面上唯一用代码生成的控件
-    var upgradeView: NIAlert?
+    var rightLabel: UILabel?
+    
+    //--- 好几个 NIAlert
+    var upgradeView: NIAlert?      //
+    var coinInsufficientView: NIAlert?
+    var lotteryRusltView: NIAlert?
+    var petDetailView: NIAlert?
+    var upgradeResultView: NIAlert?
     
     var preContentOffsetX: CGFloat?
     var cellString: String?
@@ -95,14 +104,14 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         titleLabel.sizeToFit()
         self.navigationItem.titleView = titleLabel
         
-        var rightLabel = UILabel(frame: CGRectMake(navView.frame.width - 60, 20, 60, 44))
-        rightLabel.textColor = UIColor.whiteColor()
-        rightLabel.text = "抽蛋"
-        rightLabel.font = UIFont.systemFontOfSize(14)
-        rightLabel.textAlignment = NSTextAlignment.Right
-        rightLabel.userInteractionEnabled = true
-        rightLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEgg"))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightLabel)
+        rightLabel = UILabel(frame: CGRectMake(navView.frame.width - 60, 20, 60, 44))
+        rightLabel!.textColor = UIColor.whiteColor()
+        rightLabel!.text = "抽蛋"
+        rightLabel!.font = UIFont.systemFontOfSize(14)
+        rightLabel!.textAlignment = NSTextAlignment.Right
+        rightLabel!.userInteractionEnabled = true
+        rightLabel!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEgg"))
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
@@ -172,48 +181,95 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
             }
         }
         
-        Api.getUserPet(page) { json in
-            if json != nil {
-                let err = json!["error"] as! NSNumber
+        var networkStatus = checkNetworkStatus()
+        
+        if networkStatus == 0 {
+            var safeuid = SAUid()
+            let (results, err) = SD.executeQuery("select * from `pet` where owner = '\(safeuid)'")
+            self.petInfoArray.removeAllObjects()
+            
+            for row in results {
+                var id = (row["id"]?.asString())!
+                var level = (row["level"]?.asString())!
+                var name = (row["name"]?.asString())!
+                var property = (row["property"]?.asString())!
+                var img = (row["img"]?.asString())!
+                var getat = (row["getat"]?.asString())!
+                var updateat = (row["updateat"]?.asString())!
                 
-                if err == 0 {
-                    for item in ((json!["data"] as! NSDictionary).objectForKey("pets") as! NSArray) {
-                        self.petInfoArray.addObject(item)
+                var data = NSDictionary(objects: [id, level, name, property, img, getat, updateat],
+                                        forKeys: ["id", "level", "name", "property", "image", "getat", "updateat"])
+                self.petInfoArray.addObject(data)
+            }
+            
+            if self.petInfoArray.count > 0 {
+                self.tableview.reloadData()
+            }
+            
+        } else {
+            Api.getAllPets() { json in
+                if json != nil {
+                    let err = json!["error"] as! NSNumber
+                    
+                    if err == 0 {
+                        for item in ((json!["data"] as! NSDictionary).objectForKey("pets") as! NSArray) {
+                            self.petInfoArray.addObject(item)
+                        }
+                        
+                        if self.petInfoArray.count > 0 {
+                            self.tableview.reloadData()
+                        }
                     }
                     
-                    if self.petInfoArray.count > 0 {
-                        self.tableview.reloadData()
-                        self.page++
-                    }
                 }
             }
         }
+        
+        // 因为有两个地方用到 “念币不足”，所以放在了 viewDidload 里面
+        coinInsufficientView = NIAlert()
+        coinInsufficientView?.delegate = self
+        coinInsufficientView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "念币不足", "抽蛋需要花费 3 念币\n但是你当前只有 \(coinTotal!) 念币......", ["知道了", "获得念币"]] ,
+            forKeys: ["img", "title", "content", "buttonArray"])
     }
 
     func onEgg() {
-        self.navigationItem.rightBarButtonItems = buttonArray()
-        // todo: 进行网络请求，获得念币大于等于 3 时，弹出下方操作
-        var v = SAEgg()
-        v.delegateShare = self
-        v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-            forKeys: ["img", "title", "content", "buttonArray"])
-        v.showWithAnimation(.flip)
+        if coinTotal!.toInt() > 3 {
+            var v = SAEgg()
+            v.delegateShare = self
+            v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+                forKeys: ["img", "title", "content", "buttonArray"])
+            v.showWithAnimation(.flip)
+        } else {
+            coinInsufficientView?.showWithAnimation(.flip)
+        }
     }
+    
+    // MARK: - SAEgg delegate
     
     func onShare(avc: UIActivityViewController) {
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
+    func saEgg(saEgg: SAEgg, tapBackground: Bool) {
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
+    }
+    
+    // MARK: - 用户交互事件
+    
     func toUpgrade(sender: UIButton) {
         upgradeView = NIAlert()
         upgradeView!.delegate = self
-        upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "花费 3 念币", "要以 3 念币让\(self.petName.text)\n升级吗？", ["嗯！", "不要"]],
-                                               forKeys: ["img", "title", "content", "buttonArray"])
+        upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "花费 3 念币", "要以 3 念币让\(self.petName.text!)\n升级吗？", ["嗯！", "不要"]],
+                                                forKeys: ["img", "title", "content", "buttonArray"])
         upgradeView!.showWithAnimation(.flip)
     }
     
     func showPetInfo(sender: UITapGestureRecognizer) {
-        
+        petDetailView = NIAlert()
+        petDetailView?.delegate = self
+        petDetailView?.dict = NSMutableDictionary(objects: [self.PetNormalView.image!, self.petName.text!, "显示啥", ["分享"]],
+                                                  forKeys: ["img", "title", "content", "buttonArray"])
+        petDetailView?.showWithAnimation(.flip)
     }
     
 }
@@ -351,24 +407,85 @@ extension LevelViewController: NIAlertDelegate {
         if niAlert == self.upgradeView {
             if didselectAtIndex == 1 {
                 niAlert.dismissWithAnimation(.normal)
+                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
             } else if didselectAtIndex == 0 {
-                Api.getPetUpgrade(self.petName.text!, level: self.petLevel.text!) {
-                    json in
-                    
-                }
+                let _btn = niAlert.niButtonArray.firstObject as! NIButton
+                _btn.startAnimating()
                 
+                Api.getPetUpgrade(self.petId!) {
+                    json in
+                    _btn.stopAnimating()
+                    
+                    if json != nil {
+                        let err = json!["error"] as! NSNumber
+                        if err == 0 {
+                            // 升级成功，先把念币扣了
+                            coinTotal = String(coinTotal!.toInt()! - 3)
+                            
+                            let data = json!["data"] as! NSDictionary
+                            niAlert.dismissWithAnimation(.normal)
+                            self.SQLInsertUpgradeInfo(data)
+                        } else if err == 2 {
+                            niAlert.dismissWithAnimation(.normal)
+                            self.coinInsufficientView?.showWithAnimation(.flip)
+                        }
+                    }
+                }
             }
             
-        } else {
-            
+        } else if niAlert == self.coinInsufficientView {
+            if didselectAtIndex == 0 {
+                niAlert.dismissWithAnimation(.normal)
+            }
+        } else if niAlert == self.petDetailView {
+            if didselectAtIndex == 0 {
+                shareVC()
+            }
         }
+    }
+    
+    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        if niAlert == self.petDetailView {
+            niAlert.dismissWithAnimation(.normal)
+        } else {
+            niAlert.dismissWithAnimation(.normal)
+            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
+        }
+    }
+    
+// MARK: - help function 
+    func SQLInsertUpgradeInfo(info: NSDictionary) {
+        let id = info.stringAttributeForKey("id")
+        let level = info.stringAttributeForKey("level")
+        let name = info.stringAttributeForKey("name")
+        let property = info.stringAttributeForKey("property")
+        let img = info.stringAttributeForKey("image")
+        let getAtDate = info.stringAttributeForKey("get_at")
+        let updateAtDate = info.stringAttributeForKey("update_at")
+        
+        SQLPetContent(id, level, name, property, img, getAtDate, updateAtDate) {
+            //TODO: - 升级动画
+        }
+    }
+    
+    func shareVC() {
+        var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+        let petName = self.petName.text!
+        let petImage = self.PetNormalView.image!
+        var content = "我在念里拿到了可爱的「\(petName)」"
+        card.content = content
+        card.widthImage = "360"
+        card.heightImage = "360"
+        card.url = "http://img.nian.so/pets/\(petImage)"
+        var img = card.getCard()
+        var avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
+        self.presentViewController(avc, animated: true, completion: nil)
     }
 }
 
 
 // MARK: - Level View Controller 实现 uitableview delegate 和 uitableview data source
 extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.petInfoArray.count
     }
@@ -388,9 +505,11 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         
         if cellString == "PetZoomInCell" {
             self.PetNormalView.image = (cell as! petCell).imgView.image
+            (cell as! petCell).imgView.image = nil
             self.PetNormalView.backgroundColor = UIColor.clearColor()
             self.petName.text = dict!.stringAttributeForKey("name")
             self.petLevel.text = "Lv " + dict!.stringAttributeForKey("level")
+            self.petId = dict!.stringAttributeForKey("id")
         }
         
         cell!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
@@ -464,54 +583,4 @@ extension LevelViewController: UIScrollViewDelegate {
     }
 }
 
-// MARK: - pet cell
-class petCell: UITableViewCell {
-    @IBOutlet var imgView: UIImageView!
-    
-    var info: NSDictionary?
-    var id: String?
-    var level: String?
-    var name: String?
-    var property: String?
-    var imgPath: String?
-    var getAtDate: String?
-    var updateAtDate: String?
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        // todo: 设置 cell
-        self.selectionStyle = .None
-    }
-    
-    func _layoutSubviews() {
-        // 刷新界面
-        let imgF = self.info?.stringAttributeForKey("image")
-        id = self.info?.stringAttributeForKey("id")
-        level = self.info?.stringAttributeForKey("level")
-        name = self.info?.stringAttributeForKey("name")
-        property = self.info?.stringAttributeForKey("property")
-        getAtDate = self.info?.stringAttributeForKey("get_at")
-        updateAtDate = self.info?.stringAttributeForKey("updated_at")
-        
-        var imgURLString = "http://img.nian.so/pets/"
-       
-        if globalWidth > 375 {
-            imgURLString += imgF!
-        } else {
-            imgURLString += imgF! + "!d"
-        }
-        self.imgView?.setImage(imgURLString, placeHolder: IconColor, bool: false)
-        self.imgView?.contentMode = UIViewContentMode.ScaleToFill
-        
-        SQLPetContent(id!, level!, name!, property!, imgF!, getAtDate!, updateAtDate!) {
-            // 灰度图片 
-            
-        }
-    }
-    
-    override func prepareForReuse() {
-        self.imgView?.cancelImageRequestOperation()
-        self.imgView!.image = nil
-    }
-}
+

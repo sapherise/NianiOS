@@ -686,13 +686,16 @@ extension  Api {
     */
     static func getUserPet(page: Int, callback: V.JsonCallback) {
         loadCookies()
-    
         V.httpGetForJson("http://api.nian.so/user/\(s_uid)/pets?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
-    static func getPetUpgrade(pet: String, level: String, callback: V.JsonCallback) {
-        
-        V.httpGetForJson("http://api.nian.so/", callback: callback)
+    static func getPetUpgrade(pet: String, callback: V.JsonCallback) {
+        V.httpGetForJson("http://api.nian.so/pet/\(pet)/upgrade?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getAllPets(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/pets?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
 }

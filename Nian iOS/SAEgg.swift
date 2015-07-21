@@ -8,8 +8,10 @@
 
 import Foundation
 
-protocol ShareDelegate {
+@objc protocol ShareDelegate {
     func onShare(avc: UIActivityViewController)
+    
+    optional func saEgg(saEgg: SAEgg, tapBackground: Bool)
 }
 
 class SAEgg: NIAlert, NIAlertDelegate {
@@ -38,6 +40,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
             self.lotteryNiAlert.dismissWithAnimation(.normal)
             self.confirmNiAlert.dismissWithAnimation(.normal)
         }
+     
+        // 点击了 saEgg 的 background ，然后交给 delegate 处理
+        self.delegateShare?.saEgg!(self, tapBackground: true)
     }
     
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
@@ -116,6 +121,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
                     self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)", petName, "你获得了一个\(petName)", ["分享", "好"]],
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
+                    
+                    coinTotal = String(coinTotal!.toInt()! - 3)
+                    
                 }
             }
         }

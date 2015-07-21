@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ModeViewController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
+                <outlet property="containerView" destination="vCt-yo-UUF" id="tcT-kH-usX"/>
                 <outlet property="simpleIllustate" destination="NKG-X2-KJn" id="3Lc-Fy-nUv"/>
                 <outlet property="simpleImageView" destination="2fi-fr-8IJ" id="0kp-fU-1QM"/>
                 <outlet property="simpleLabel" destination="ubY-zU-NW2" id="Z5b-DE-Wbu"/>
@@ -121,18 +122,18 @@
                             </connections>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uD9-VR-WiR" userLabel="Seperator View">
-                            <rect key="frame" x="150" y="1" width="1" height="250"/>
-                            <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <rect key="frame" x="150" y="40" width="1" height="180"/>
+                            <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="250" id="uTD-jI-Z9T"/>
+                                <constraint firstAttribute="height" constant="180" id="uTD-jI-Z9T"/>
                                 <constraint firstAttribute="width" constant="1" id="xh0-a0-5cL"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.41960784309999999" green="0.81176470590000005" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="300" id="5pt-MY-jAj"/>
-                        <constraint firstItem="uD9-VR-WiR" firstAttribute="top" secondItem="vCt-yo-UUF" secondAttribute="top" constant="1" id="Oub-cb-Wea"/>
+                        <constraint firstItem="uD9-VR-WiR" firstAttribute="top" secondItem="vCt-yo-UUF" secondAttribute="top" constant="40" id="Oub-cb-Wea"/>
                         <constraint firstItem="orh-Nq-Ig8" firstAttribute="leading" secondItem="vCt-yo-UUF" secondAttribute="leading" constant="8" id="Sfb-TO-2YB"/>
                         <constraint firstItem="b4k-yB-4ef" firstAttribute="top" secondItem="vCt-yo-UUF" secondAttribute="top" constant="1" id="UnL-eN-3NV"/>
                         <constraint firstItem="orh-Nq-Ig8" firstAttribute="top" secondItem="vCt-yo-UUF" secondAttribute="top" constant="1" id="Z02-Cu-Zep"/>
@@ -142,9 +143,9 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="选择一个模式玩念 你随时可以在设置里修改模式" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="W4k-cw-Niw">
-                    <rect key="frame" x="150" y="64" width="300" height="56"/>
+                    <rect key="frame" x="150" y="64" width="300" height="72"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="56" id="CIZ-5g-Qm7"/>
+                        <constraint firstAttribute="height" constant="72" id="CIZ-5g-Qm7"/>
                         <constraint firstAttribute="width" constant="300" id="vh7-f2-56O"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
@@ -152,10 +153,10 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="W4k-cw-Niw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="9Dx-0N-qmb"/>
-                <constraint firstItem="vCt-yo-UUF" firstAttribute="top" secondItem="W4k-cw-Niw" secondAttribute="bottom" constant="16" id="9Tk-Vo-uso"/>
+                <constraint firstItem="vCt-yo-UUF" firstAttribute="top" secondItem="W4k-cw-Niw" secondAttribute="bottom" id="9Tk-Vo-uso"/>
                 <constraint firstAttribute="centerX" secondItem="vCt-yo-UUF" secondAttribute="centerX" id="P2d-W6-gh3"/>
                 <constraint firstAttribute="centerX" secondItem="W4k-cw-Niw" secondAttribute="centerX" id="sm4-Hd-ayQ"/>
             </constraints>

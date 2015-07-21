@@ -45,7 +45,8 @@ func SQLCreateStepContent() {
 }
 // MARK: - 创建宠物表
 func SQLCreatPetContent() {
-    SD.executeChange("CREATE TABLE if not exists `pet` ( `id` VARCHAR(255) PRIMARY KEY NOT NULL, `owner` VARCHAR(255) NOT NULL, `level` VARCHAR(255) NOT NULL , `name` VARCHAR(255) NOT NULL , `property` VARCHAR(255) NOT NULL , `img` VARCHAR(255) NOT NULL , `getat` VARCHAR(255) NULL , `updateat` VARCHAR(255) NULL)")
+     SD.executeChange("CREATE TABLE if not exists `pet` ( `id` VARCHAR(255) PRIMARY KEY NOT NULL, `owner` VARCHAR(255) NOT NULL, `level` VARCHAR(255) NOT NULL , `name` VARCHAR(255) NOT NULL , `property` VARCHAR(255) NOT NULL , `img` VARCHAR(255) NOT NULL , `getat` VARCHAR(255) NULL , `updateat` VARCHAR(255) NULL)")
+//    SD.createTable("pet", withColumnNamesAndTypes: ["id": SwiftData.DataType.StringVal, "owner": SwiftData.DataType.StringVal, "level": SwiftData.DataType.StringVal, "name": SwiftData.DataType.StringVal, "property": SwiftData.DataType.StringVal, "img": SwiftData.DataType.StringVal, "getat": SwiftData.DataType.StringVal, "updateat": SwiftData.DataType.StringVal])
     let (indexes, err) = SD.existingIndexesForTable("pet")
     if indexes.count == 0 {
         SD.createIndex(name: "petid", onColumns: ["id"], inTable: "pet", isUnique: false)
@@ -106,7 +107,9 @@ func SQLStepContent(sid: String, uid: String, dream: String, content: String, im
 func SQLPetContent(id: String, level: String, name: String, property: String, image: String, getat: String, updateat: String, callback: Void -> Void) {
     var Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var safeuid = Sa.objectForKey("uid") as! String
-    let (result, err) = SD.executeQuery("select id from pet where id = '\(id)' and owner = '\(safeuid)' limit 1")
+    
+    let (result, err) = SD.executeQuery("select id from pet where owner = '\(safeuid)' and id = '\(id)' limit 1")
+    
     if result.count == 0 {
         if let err = SD.executeChange("INSERT INTO pet (id, owner, level, name, property, img, getat, updateat) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, safeuid, level, name, property, image, getat, updateat]) {
         } else {
@@ -114,6 +117,7 @@ func SQLPetContent(id: String, level: String, name: String, property: String, im
         }
     } else if result.count == 1 {
         if let err = SD.executeChange("UPDATE pet SET level = '\(level)', name = '\(name)', property = '\(property)', img = '\(image)', getat = '\(getat)', updateat = '\(updateat)' where id = '\(id)' and owner = '\(safeuid)'") {
+            println("err = \(err)")
         } else {
             callback()
         }

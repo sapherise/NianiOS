@@ -67,6 +67,7 @@ struct V {
                 callback(obj)
             },
             failure: {(op: AFHTTPRequestOperation!, error: NSError!) in
+                println("error: \(error)")
         })
     }
     
