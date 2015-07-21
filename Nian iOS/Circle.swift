@@ -280,9 +280,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         var content = SAEncode(contentAfter)
             Api.postLetterChat(self.ID, content: content, type: type) { json in
                 if json != nil {
-                    var success = json!["success"] as! String
-                    var msgid = json!["msgid"] as! String
-                    var lastdate = json!["lastdate"] as! String
+                    var success = json!.objectForKey("success") as! String
+                    var msgid = json!.objectForKey("msgid") as! String
+                    var lastdate = json!.objectForKey("lastdate") as! String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()

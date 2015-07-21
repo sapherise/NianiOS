@@ -240,7 +240,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if clear {
                     self.dataArrayUser.removeAllObjects()
                 }
-                var items = json!["users"] as? NSArray
+                var items = json!.objectForKey("users") as? NSArray
                 if items != nil {
                     for item in items! {
                         self.dataArrayUser.addObject(item)
@@ -267,14 +267,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     self.dataArrayDream.removeAllObjects()
                     self.dataArrayStep.removeAllObjects()
                 }
-                var data = json!["data"]
-                var itemsDream = data!!["dreams"] as? NSArray
+                var data: AnyObject? = json!.objectForKey("data")
+                var itemsDream = data!.objectForKey("dreams") as? NSArray
                 if itemsDream != nil {
                     for item in itemsDream! {
                         self.dataArrayDream.addObject(item)
                     }
                 }
-                var itemsStep = data!!["steps"] as? NSArray
+                var itemsStep = data!.objectForKey("steps") as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
                         self.dataArrayStep.addObject(item)

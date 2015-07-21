@@ -85,9 +85,9 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
                 SAPush("Mua!", NSDate().dateByAddingTimeInterval(Double(60*60*24)))
                 
                 if json != nil {
-                    let error = json!["error"] as! NSNumber
+                    let error = json!.objectForKey("error") as! NSNumber
                     if error == 0 {
-                        let data = json!["data"] as! NSDictionary
+                        let data = json!.objectForKey("data") as! NSDictionary
                         let sa = data.objectForKey("uid") as! String
                         
                         self.holder!.hidden = true

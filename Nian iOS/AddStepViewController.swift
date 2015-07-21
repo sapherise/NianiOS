@@ -166,9 +166,9 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         Api.postAddStep(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 globalWillNianReload = 1
-                var coin = json!["coin"] as! String
-                var isfirst = json!["isfirst"] as! String
-                var totalCoin = json!["totalCoin"] as! String
+                var coin = json!.objectForKey("coin") as! String
+                var isfirst = json!.objectForKey("isfirst") as! String
+                var totalCoin = json!.objectForKey("totalCoin") as! String
                 self.navigationController?.popViewControllerAnimated(true)
                 
                 //  创建卡片

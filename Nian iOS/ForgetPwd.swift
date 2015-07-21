@@ -60,7 +60,7 @@ class ForgetPwd: UIViewController {
             Api.postResetPwd(self.email.text) {
                 json in
                 if json != nil {
-                    var error = json!["error"] as! NSNumber
+                    var error = json!.objectForKey("error") as! NSNumber
                     
                     if error == 0 {
                         var niAlert = NIAlert()
@@ -70,7 +70,7 @@ class ForgetPwd: UIViewController {
                         
                         niAlert.showWithAnimation(showAnimationStyle.spring)
                     } else {
-                        var msg = json!["message"] as! String
+                        var msg = json!.objectForKey("message") as! String
                         
                         if msg == "The resources is not exist." {
                             self.SAerr("这个邮箱没注册过...")

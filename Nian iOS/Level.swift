@@ -143,7 +143,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!["user"] as! NSDictionary
+                var data = json!.objectForKey("user") as! NSDictionary
                 var foed = data.stringAttributeForKey("foed")
                 var like = data.stringAttributeForKey("like")
                 var step = data.stringAttributeForKey("step")
@@ -174,10 +174,10 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         
         Api.getUserPet(page) { json in
             if json != nil {
-                let err = json!["error"] as! NSNumber
+                let err = json!.objectForKey("error") as! NSNumber
                 
                 if err == 0 {
-                    for item in ((json!["data"] as! NSDictionary).objectForKey("pets") as! NSArray) {
+                    for item in ((json!.objectForKey("data") as! NSDictionary).objectForKey("pets") as! NSArray) {
                         self.petInfoArray.addObject(item)
                     }
                     

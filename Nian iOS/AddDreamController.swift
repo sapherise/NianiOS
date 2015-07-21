@@ -316,7 +316,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             content = SAEncode(SAHtml(content!))
             Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tagsString) {
                 json in
-                var error = json!["error"] as! NSNumber
+                var error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
                     dispatch_async(dispatch_get_main_queue(), {
                         globalWillNianReload = 1
@@ -363,7 +363,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             var safeshell = Sa.objectForKey("shell") as! String
             Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString){
                 json in
-                var error = json!["error"] as! NSNumber
+                var error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
                     globalWillNianReload = 1
                     self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray)
@@ -508,10 +508,10 @@ extension AddDreamController: TITokenFieldDelegate {
             Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
-                    var error = json!["error"] as! NSNumber
+                    var error = json!.objectForKey("error") as! NSNumber
                     
                     if error == 0 {
-                        data = json!["data"] as! Array
+                        data = json!.objectForKey("data") as! Array
                         
                         if count(data) > 0 {
                             for i in 0...(count(data) - 1) {
@@ -534,7 +534,7 @@ extension AddDreamController: TITokenFieldDelegate {
         Api.postTag(SAEncode(SAHtml(token.title)), callback: {
             json in
             if json != nil {
-                var status = json!["error"] as! NSNumber
+                var status = json!.objectForKey("error") as! NSNumber
             }
         })
     }

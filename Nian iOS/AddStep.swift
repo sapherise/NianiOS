@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 protocol MaskDelegate {
     func onViewCloseClick()
@@ -39,10 +40,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var animated: Bool = true
     var isfirst: String = ""
     
-    var niAlert: NIAlert?
     var niCoinLessAlert: NIAlert?
-    var confirmNiAlert: NIAlert?
-    var lotteryNiAlert: NIAlert?
     
     override func awakeFromNib() {
         self.viewHolder.layer.cornerRadius = 4
@@ -63,7 +61,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         
         Api.getDreamNewest() { json in
             if json != nil {
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 
                 for data : AnyObject in arr{
@@ -179,9 +177,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         Api.postAddStep(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 self.textView.resignFirstResponder()
-                var coin = json!["coin"] as! String
-                var totalCoin = json!["totalCoin"] as! String
-                self.isfirst = json!["isfirst"] as! String
+                var coin = json!.objectForKey("coin") as! String
+                var totalCoin = json!.objectForKey("totalCoin") as! String
+                self.isfirst = json!.objectForKey("isfirst") as! String
                 globalWillNianReload = 1
                 
                 //  创建卡片
@@ -215,6 +213,15 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         v.delegateShare = self
                         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
+                        
+                        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+                            var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+                            skView.allowsTransparency = true
+                            v._containerView!.addSubview(skView)
+                            scene.scaleMode = SKSceneScaleMode.AspectFit
+                            skView.presentScene(scene)
+                            scene.setupViews()
+                        }
                         v.showWithAnimation(.flip)
                     }
                     
@@ -236,6 +243,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self.niCoinLessAlert {
             niAlert.dismissWithAnimation(.normal)
+        } else {
+            
         }
     }
     

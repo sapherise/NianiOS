@@ -61,7 +61,7 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
         }
         Api.getDreamTag(self.hashTag) { json in
             if json != nil {
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -165,17 +165,17 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
             self.activityOK.startAnimating()
             Api.postCircleJoinDirectly(self.circleID, dream: self.dreamID, word: content) { json in
                 if json != nil {
-                    var success = json!["success"] as! String
-                    var reason = json!["reason"] as! String
+                    var success = json!.objectForKey("success") as! String
+                    var reason = json!.objectForKey("reason") as! String
                     if success == "1" {
                         self.activityOK.stopAnimating()
                         self.activityOK.hidden = true
                         var textOK = ""
                         if self.thePrivate == "0" {
                             textOK = "加入好了！"
-                            var title = json!["title"] as! String
-                            var image = json!["img"] as! String
-                            var postdate = json!["postdate"] as! String
+                            var title = json!.objectForKey("title") as! String
+                            var image = json!.objectForKey("img") as! String
+                            var postdate = json!.objectForKey("postdate") as! String
                             SQLCircleListInsert(self.circleID, title, image, postdate)
                             self.delegate?.delegateLoad()
                         }else if self.thePrivate == "1" {

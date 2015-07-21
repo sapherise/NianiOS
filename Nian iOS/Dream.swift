@@ -87,8 +87,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
         Api.getDreamStep(Id, page: page) { json in
             if json != nil {
-                if json!["error"] as! NSNumber != 0 {
-                    var status = json!["status"] as! NSNumber
+                if json!.objectForKey("error") as! NSNumber != 0 {
+                    var status = json!.objectForKey("status") as! NSNumber
                     self.tableView?.hidden = true
                     self.navigationItem.rightBarButtonItems = []
                     if status == 404 {
@@ -107,15 +107,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                         self.view.showTipText("遇到了一个奇怪的错误，代码是 \(status)", delay: 2)
                     }
                 } else {
-                    var data = json!["data"]
+                    var data: AnyObject? = json!.objectForKey("data")
                     if clear {
-                        self.dataArrayTop = data!!["dream"] as! NSDictionary
+                        self.dataArrayTop = data!.objectForKey("dream") as! NSDictionary
                         self.dataArray.removeAllObjects()
                         var btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
                         btnMore.image = UIImage(named: "more")
                         self.navigationItem.rightBarButtonItems = [btnMore]
                     }
-                    var steps = data!!["steps"] as! NSArray
+                    var steps = data!.objectForKey("steps") as! NSArray
                     for data in steps {
                         self.dataArray.addObject(data)
                     }

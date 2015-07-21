@@ -75,6 +75,8 @@
 		128C4E391A503C54000D2B7C /* CircleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C4E381A503C54000D2B7C /* CircleType.swift */; };
 		128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */; };
 		128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */; };
+		129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129089361B5E1EA100EB73E5 /* GameScene.swift */; };
+		1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129089381B5E268C00EB73E5 /* GameScene.sks */; };
 		129152DF1A6A5BBE00BB213C /* Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152DE1A6A5BBE00BB213C /* Find.swift */; };
 		129152E11A6A90E500BB213C /* FindCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E01A6A90E500BB213C /* FindCell.swift */; };
 		129152E31A6A90ED00BB213C /* FindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E21A6A90ED00BB213C /* FindCell.xib */; };
@@ -93,6 +95,8 @@
 		12960F7319BF2E4500CB973E /* SignNext.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F7219BF2E4500CB973E /* SignNext.xib */; };
 		12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992EBF1B2EBB8E009F4501 /* AddCircle.swift */; };
 		12992EC21B2EBB9C009F4501 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12992EC11B2EBB9C009F4501 /* AddCircle.xib */; };
+		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
+		129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DD1B5E2F5100BDFE03 /* star.png */; };
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
@@ -295,6 +299,8 @@
 		128C4E381A503C54000D2B7C /* CircleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleType.swift; sourceTree = "<group>"; };
 		128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageCell.swift; sourceTree = "<group>"; };
 		128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleImageCell.xib; sourceTree = "<group>"; };
+		129089361B5E1EA100EB73E5 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = Utility/GameScene.swift; sourceTree = "<group>"; };
+		129089381B5E268C00EB73E5 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = Utility/GameScene.sks; sourceTree = "<group>"; };
 		129152DE1A6A5BBE00BB213C /* Find.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Find.swift; sourceTree = "<group>"; };
 		129152E01A6A90E500BB213C /* FindCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCell.swift; sourceTree = "<group>"; };
 		129152E21A6A90ED00BB213C /* FindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCell.xib; sourceTree = "<group>"; };
@@ -313,6 +319,8 @@
 		12960F7219BF2E4500CB973E /* SignNext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignNext.xib; sourceTree = "<group>"; };
 		12992EBF1B2EBB8E009F4501 /* AddCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCircle.swift; sourceTree = "<group>"; };
 		12992EC11B2EBB9C009F4501 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
+		129FE4DB1B5E2DA400BDFE03 /* star.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = star.sks; path = Utility/star.sks; sourceTree = "<group>"; };
+		129FE4DD1B5E2F5100BDFE03 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star.png; path = Utility/star.png; sourceTree = "<group>"; };
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
@@ -537,6 +545,17 @@
 				126593F119CD5CE500884947 /* AddDreamController.xib */,
 			);
 			name = "更新梦想";
+			sourceTree = "<group>";
+		};
+		122F7F591B5E6B7B00B4EA32 /* 游戏 */ = {
+			isa = PBXGroup;
+			children = (
+				129089361B5E1EA100EB73E5 /* GameScene.swift */,
+				129089381B5E268C00EB73E5 /* GameScene.sks */,
+				129FE4DB1B5E2DA400BDFE03 /* star.sks */,
+				129FE4DD1B5E2F5100BDFE03 /* star.png */,
+			);
+			name = "游戏";
 			sourceTree = "<group>";
 		};
 		1231A07B19B4649000BD425F /* 用户梦想 */ = {
@@ -982,6 +1001,7 @@
 				129152DD1A6A5BA800BB213C /* 好友 */,
 				12CDE5CE19AC9FB4002E793F /* 图片 */,
 				126FB4711B574EB80056221C /* 复用 */,
+				122F7F591B5E6B7B00B4EA32 /* 游戏 */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
 			path = "Nian iOS";
@@ -1280,6 +1300,7 @@
 				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
+				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
 				C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */,
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
@@ -1288,9 +1309,11 @@
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
+				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
+				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
@@ -1511,6 +1534,7 @@
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */,
+				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,

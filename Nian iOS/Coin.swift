@@ -76,7 +76,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!["user"] as! NSDictionary
+                var data = json!.objectForKey("user") as! NSDictionary
                 if let coin = data.stringAttributeForKey("coin").toInt() {
                     self.levelLabelCount(coin)
                 }
@@ -201,7 +201,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     case .Purchased:
                         prompt = "念币买好啦"
                         film.showOK()
-                        self.levelLabelCount((data!["coin"] as! String).toInt()!)
+                        self.levelLabelCount((data!.objectForKey("coin") as! String).toInt()!)
                         globalWillNianReload = 1
                         break
                     case .VerifyFailed:
@@ -268,13 +268,13 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         film.superview!.removeFromSuperview()
                     } else {
                         if json != nil {
-                            if json!["success"] as! String == "1" {
+                            if json!.objectForKey("success") as! String == "1" {
                                 film.showOK()
-                                self.levelLabelCount((json!["coin"] as! String).toInt()!)
+                                self.levelLabelCount((json!.objectForKey("coin") as! String).toInt()!)
                                 globalWillNianReload = 1
-                            }else if json!["success"] as! String == "2" {
+                            }else if json!.objectForKey("success") as! String == "2" {
                                 film.showError("念币不足")
-                            }else if json!["success"] as! String == "3" {
+                            }else if json!.objectForKey("success") as! String == "3" {
                                 film.showError("毕业过啦")
                             }
                         }else{
@@ -335,12 +335,12 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         showFilm("推广", prompt: "确定在接下去 24 小时内\n推广「\(content)」吗", button: "20 念币", transDirectly: true){ film in
             Api.postLabTrip("102", subid: id) { json in
                 if json != nil {
-                    if json!["success"] as! String == "1" {
+                    if json!.objectForKey("success") as! String == "1" {
                         film.showOK()
-                        self.levelLabelCount((json!["coin"] as! String).toInt()!)
+                        self.levelLabelCount((json!.objectForKey("coin") as! String).toInt()!)
                         globalWillNianReload = 1
                     }else{
-                        if json!["reason"] as! String == "1" {
+                        if json!.objectForKey("reason") as! String == "1" {
                             film.showError("念币不足")
                         }else{
                             film.showError("服务器坏了")

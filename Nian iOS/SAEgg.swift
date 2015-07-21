@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 protocol ShareDelegate {
     func onShare(avc: UIActivityViewController)
@@ -17,6 +18,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
     var lotteryNiAlert = NIAlert()
     var petData: NSDictionary!
     var delegateShare: ShareDelegate?
+    var skView: SKView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,9 +109,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
         self.confirmNiAlert._containerView!.addSubview(ac)
         Api.postPetLottery() { json in
             if json != nil {
-                let err = json!["error"] as! NSNumber
+                let err = json!.objectForKey("error") as! NSNumber
                 if err == 0 {
-                    self.petData = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
+                    self.petData = (json!.objectForKey("data") as! NSDictionary).objectForKey("pet") as! NSDictionary
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
                     self.lotteryNiAlert.delegate = self
@@ -117,6 +119,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
                 }
+                //  todo: 没有足够念币时
             }
         }
     }

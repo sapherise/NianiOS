@@ -63,7 +63,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         var safeuid = Sa.objectForKey("uid") as! String
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
-                var data  = json!["user"] as! NSDictionary
+                var data  = json!.objectForKey("user") as! NSDictionary
                 var name = data.stringAttributeForKey("name")
                 var coverURL = data.stringAttributeForKey("cover")
                 var urlCover = "http://img.nian.so/cover/\(coverURL)!cover"
@@ -226,7 +226,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         Api.postPhone(list) { json in
             self.viewLoadingHide()
             if json != nil {
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 self.dataArrayPhone.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArrayPhone.addObject(data)
@@ -277,7 +277,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             Api.getWeibo(uid, Token: token) { json in
                 self.viewLoadingHide()
                 if json != nil {
-                    var arr = json!["items"] as! NSArray
+                    var arr = json!.objectForKey("items") as! NSArray
                     self.dataArray.removeAllObjects()
                     for data : AnyObject  in arr{
                         self.dataArray.addObject(data)

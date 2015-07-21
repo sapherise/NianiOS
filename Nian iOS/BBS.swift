@@ -95,14 +95,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }
         Api.getBBSComment(Id, page: page, isAsc: isAsc) { json in
             if json != nil {
-                var data = json!["data"]
+                var data: AnyObject? = json!.objectForKey("data")
                 if clear {
-                    if let bbs = data!!["bbs"] as? NSDictionary {
+                    if let bbs = data!.objectForKey("bbs") as? NSDictionary {
                         self.dataArrayTop = bbs
                     }
                     self.dataArray.removeAllObjects()
                 }
-                var comments = data!!["comments"] as! NSArray
+                var comments = data!.objectForKey("comments") as! NSArray
                 for data in comments {
                     self.dataArray.addObject(data)
                 }

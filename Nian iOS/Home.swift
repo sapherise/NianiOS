@@ -43,8 +43,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func gameoverCheck() {
         Api.postGameover() { json in
             if json != nil {
-                var isgameover = json!["isgameover"] as? String
-                var willLogout = json!["willlogout"] as? String
+                var isgameover = json!.objectForKey("isgameover") as? String
+                var willLogout = json!.objectForKey("willlogout") as? String
                 // 账户验证不通过
                 if willLogout == "1" {
                     delay(1, { () -> () in
@@ -53,7 +53,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 }else{
                     // 如果被封号
                     if isgameover != "0" {
-                        var data = json!["dream"] as! NSDictionary
+                        var data = json!.objectForKey("dream") as! NSDictionary
                         self.gameoverId = data.stringAttributeForKey("id")
                         var gameoverDays = data.stringAttributeForKey("days")
                         
@@ -475,7 +475,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if obj != nil {
                 var msg: AnyObject? = obj!["msg"]
                 if msg != nil {
-                    var json = msg!["msg"] as? NSArray
+                    var json = msg!.objectForKey("msg") as? NSArray
                     if json != nil {
                         var count = json!.count - 1
                         if count >= 0 {
@@ -508,8 +508,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     if resultDes.count == 0 {
                                         Api.getCircleStatus(circle) { json in
                                             if json != nil {
-                                                var imageStatus = json!["img"] as! String
-                                                var _title = json!["title"] as! String
+                                                var imageStatus = json!.objectForKey("img") as! String
+                                                var _title = json!.objectForKey("title") as! String
                                                 
                                                 SQLCircleListInsert(circle, _title, imageStatus, time)
                                             }
@@ -521,10 +521,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                         if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                             Api.getCircleStatus(circle) { json in
                                                 if json != nil {
-                                                    var numStatus = json!["count"] as! String
-                                                    var titleStatus = json!["title"] as! String
-                                                    var imageStatus = json!["img"] as! String
-                                                    var postdateStatus = json!["postdate"] as! String
+                                                    var numStatus = json!.objectForKey("count") as! String
+                                                    var titleStatus = json!.objectForKey("title") as! String
+                                                    var imageStatus = json!.objectForKey("img") as! String
+                                                    var postdateStatus = json!.objectForKey("postdate") as! String
                                                     if numStatus == "1" {
                                                         // 添加
                                                         SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
@@ -573,8 +573,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 if json != nil {
                     // 成功
                     var a: Int = 0
-                    var arr = json!["items"] as! NSArray
-                    var lastid = json!["lastid"] as! String
+                    var arr = json!.objectForKey("items") as! NSArray
+                    var lastid = json!.objectForKey("lastid") as! String
                     for i : AnyObject  in arr {
                         var data = i as! NSDictionary
                         var id = data.stringAttributeForKey("id")
@@ -599,8 +599,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         if resultDes.count == 0 {
                             Api.getCircleStatus(circle) { json in
                                 if json != nil {
-                                    var imageStatus = json!["img"] as! String
-                                    var _title = json!["title"] as! String
+                                    var imageStatus = json!.objectForKey("img") as! String
+                                    var _title = json!.objectForKey("title") as! String
                                     
                                     SQLCircleListInsert(circle, _title, imageStatus, time)
                                 }
@@ -616,10 +616,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                 Api.getCircleStatus(circle) { json in
                                     if json != nil {
-                                        var numStatus = json!["count"] as! String
-                                        var titleStatus = json!["title"] as! String
-                                        var imageStatus = json!["img"] as! String
-                                        var postdateStatus = json!["postdate"] as! String
+                                        var numStatus = json!.objectForKey("count") as! String
+                                        var titleStatus = json!.objectForKey("title") as! String
+                                        var imageStatus = json!.objectForKey("img") as! String
+                                        var postdateStatus = json!.objectForKey("postdate") as! String
                                         if numStatus == "1" {
                                             // 添加
                                             SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
@@ -656,8 +656,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if json != nil {
                 // 成功
                 var a: Int = 0
-                var arr = json!["items"] as! NSArray
-                var lastid = json!["lastid"] as! String
+                var arr = json!.objectForKey("items") as! NSArray
+                var lastid = json!.objectForKey("lastid") as! String
                 for i : AnyObject  in arr {
                     var data = i as! NSDictionary
                     var id = data.stringAttributeForKey("id")

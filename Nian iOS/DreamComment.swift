@@ -160,7 +160,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var content = SAEncode(SAHtml(replyContent))
         Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
             if json != nil {
-                if let status = json!["status"] as? NSNumber {
+                if let status = json!.objectForKey("status") as? NSNumber {
                     if status == 200 {
                         var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
                         self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
@@ -182,8 +182,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull() {
-                var arr = data["items"] as! NSArray
-                var total = data["total"] as! NSString!
+                var arr = data.objectForKey("items") as! NSArray
+                var total = data.objectForKey("total") as! NSString!
                 self.dataTotal = "\(total)".toInt()!
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
@@ -202,8 +202,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                var arr = data["items"] as! NSArray
-                var total = data["total"] as! NSString!
+                var arr = data.objectForKey("items") as! NSArray
+                var total = data.objectForKey("total") as! NSString!
                 self.dataTotal = "\(total)".toInt()!
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {

@@ -277,9 +277,9 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
             if !isEdit {
                 Api.postCircleNew(title, content: content, img: self.uploadUrl, privateType: privateType, dream: self.idDream) { json in
                     if json != nil {
-                        var id = json!["id"] as! String
-                        var postdate = json!["postdate"] as! String
-                        var success = json!["success"] as! String
+                        var id = json!.objectForKey("id") as! String
+                        var postdate = json!.objectForKey("postdate") as! String
+                        var success = json!.objectForKey("success") as! String
                         if success == "1" {
                             var title = self.field1.text
                             SQLCircleListInsert(id, title, self.uploadUrl, postdate)

@@ -127,10 +127,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 Api.postUserNickName(_string) {
                     json in
                     if json != nil {
-                        let error = json!["error"] as! NSNumber
+                        let error = json!.objectForKey("error") as! NSNumber
                         self.findRootViewController()?.viewLoadingHide()
                         if error == 0 {
-                            if let uid = json!["data"] as? String {
+                            if let uid = json!.objectForKey("data") as? String {
                                 var UserVC = PlayerViewController()
                                 UserVC.Id = uid
                                 self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
