@@ -214,7 +214,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
                         v.showWithAnimation(.flip)
-                        v.evolution()
                     }
                     
                 } else {
