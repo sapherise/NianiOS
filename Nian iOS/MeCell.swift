@@ -114,11 +114,11 @@ class MeCell: UITableViewCell {
         var id = self.data.stringAttributeForKey("id") as String
         Api.getCircleJoinConfirmOK(id) { json in
             if json != nil {
-                var success = json!["success"] as! String
-                var reason = json!["reason"] as! String
-                var circle = json!["circle"] as! String
-                var cid = json!["cid"] as! String
-                var status = json!["status"] as! String
+                var success = json!.objectForKey("success") as! String
+                var reason = json!.objectForKey("reason") as! String
+                var circle = json!.objectForKey("circle") as! String
+                var cid = json!.objectForKey("cid") as! String
+                var status = json!.objectForKey("status") as! String
                 if success == "1" {
                     view.text = "已接受"
                     view.backgroundColor = IconColor

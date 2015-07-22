@@ -35,7 +35,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
                 if json == nil {
                     self._callback(.VerifyFailed, nil)
                 } else {
-                    self._callback((json!["success"] as! String).toInt()! == 1 ? .Purchased : .VerifyFailed, json)
+                    self._callback((json!.objectForKey("success") as! String).toInt()! == 1 ? .Purchased : .VerifyFailed, json)
                 }
             }
         }

@@ -61,7 +61,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         Api.getSingleStep(self.Id) { json in
             if json != nil {
                 self.dataArray.removeAllObjects()
-                var data = json!["data"] as! NSDictionary
+                var data = json!.objectForKey("data") as! NSDictionary
                 var hidden = data.stringAttributeForKey("hidden")
                 if hidden == "1" {
                     var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")

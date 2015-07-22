@@ -62,14 +62,14 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                var arr = data["items"] as! NSArray
+                var arr = data.objectForKey("items") as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
                 self.page++
-                if ( data["total"] as! Int ) < 30 {
+                if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
             }
@@ -81,10 +81,10 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                if ( data["total"] as! Int ) < 30 {
+                if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data["items"] as! NSArray
+                var arr = data.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)

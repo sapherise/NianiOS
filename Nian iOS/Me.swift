@@ -89,9 +89,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.tableView.headerEndRefreshing()
             if json != nil {
                 isLoaded = 1
-                self.numLeft = json!["notice_reply"] as! String
-                self.numMiddel = json!["notice_like"] as! String
-                self.numRight = json!["notice_news"] as! String
+                self.numLeft = json!.objectForKey("notice_reply") as! String
+                self.numMiddel = json!.objectForKey("notice_like") as! String
+                self.numRight = json!.objectForKey("notice_news") as! String
                 self.tableView.reloadData()
             }
         }

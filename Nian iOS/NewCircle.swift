@@ -324,8 +324,8 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         }
         Api.getCircleStep(id, page: pageStep) { json in
             if json != nil {
-                var datajson = json!["data"]
-                var steps = datajson!!["steps"] as! NSArray
+                var datajson: AnyObject? = json!.objectForKey("data")
+                var steps = datajson!.objectForKey("steps") as! NSArray
                 if clear {
                     self.dataArrayStep.removeAllObjects()
                 }
@@ -346,8 +346,8 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         }
         Api.getBBS(id, page: pageBBS) { json in
             if json != nil {
-                var data = json!["data"]
-                var arr = data!!["bbs"] as! NSArray
+                var data: AnyObject? = json!.objectForKey("data")
+                var arr = data!.objectForKey("bbs") as! NSArray
                 if clear {
                     self.dataArrayBBS.removeAllObjects()
                 }
@@ -619,7 +619,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         var content = SAEncode(contentAfter)
             Api.postCircleChat(id.toInt()!, content: content, type: type) { json in
                 if json != nil {
-                    var success = json!["success"] as? String
+                    var success = json!.objectForKey("success") as? String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
                     }

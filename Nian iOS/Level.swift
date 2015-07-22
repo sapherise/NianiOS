@@ -185,7 +185,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!["user"] as! NSDictionary
+                var data = json!.objectForKey("user") as! NSDictionary
                 var foed = data.stringAttributeForKey("foed")
                 var like = data.stringAttributeForKey("like")
                 var step = data.stringAttributeForKey("step")
@@ -242,10 +242,10 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         } else {
             Api.getAllPets() { json in
                 if json != nil {
-                    let err = json!["error"] as! NSNumber
+                    let err = json!.objectForKey("error") as! NSNumber
                     
                     if err == 0 {
-                        for item in ((json!["data"] as! NSDictionary).objectForKey("pets") as! NSArray) {
+                        for item in ((json!.objectForKey("data") as! NSDictionary).objectForKey("pets") as! NSArray) {
                             self.petInfoArray.addObject(item)
                         }
                         
@@ -492,14 +492,15 @@ extension LevelViewController: NIAlertDelegate {
                     _btn.stopAnimating()
                     
                     if json != nil {
-                        let err = json!["error"] as! NSNumber
+                        let err = json!.objectForKey("error") as! NSNumber
                         if err == 0 {
                             // 升级成功，先把念币扣了
                             coinTotal = String(coinTotal!.toInt()! - 3)
+
                             niAlert.dismissWithAnimation(.normal)
                             globalWillNianReload = 1
                             
-                            let data = json!["data"] as! NSMutableDictionary
+                            let data = json!.objectForKey("data") as! NSMutableDictionary
                             self.SQLInsertUpgradeInfo(data)
                         } else if err == 2 {
                             niAlert.dismissWithAnimation(.normal)

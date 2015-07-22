@@ -96,9 +96,9 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         Api.getCircleDetail(self.Id) { json in
             if json != nil {
                 self.viewLoadingHide()
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 var i = 0
-                var cicleArray = json!["circle"] as! NSArray
+                var cicleArray = json!.objectForKey("circle") as! NSArray
                 self.circleData = cicleArray[0] as? NSDictionary
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
@@ -443,8 +443,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.viewLoadingShow()
         Api.postCirclePromo(self.Id, promouid: self.selectUid, promoname: self.selectName){ json in
             if json != nil {
-                var success = json!["success"] as! String
-                var reason = json!["reason"] as! String
+                var success = json!.objectForKey("success") as! String
+                var reason = json!.objectForKey("reason") as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
                     self.load()
@@ -468,8 +468,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.viewLoadingShow()
         Api.postCircleDemo(self.Id, promouid: self.selectUid, promoname: self.selectName) { json in
             if json != nil {
-                var success = json!["success"] as! String
-                var reason = json!["reason"] as! String
+                var success = json!.objectForKey("success") as! String
+                var reason = json!.objectForKey("reason") as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
                     self.load()
@@ -500,8 +500,8 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         Api.postCircleFire(self.Id, fireuid: self.selectUid){ json in
             if json != nil {
                 self.viewLoadingHide()
-                var success = json!["success"] as! String
-                var reason = json!["reason"] as! String
+                var success = json!.objectForKey("success") as! String
+                var reason = json!.objectForKey("reason") as! String
                 if success == "1" {
                     globalWillCircleChatReload = 1
                     var newpath = NSIndexPath(forRow: self.selectRow, inSection: 1)

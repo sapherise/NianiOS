@@ -90,7 +90,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     func load(){
         Api.postCircleTag() { json in
             if json != nil {
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data in arr {
                     self.dataArray.addObject(data)

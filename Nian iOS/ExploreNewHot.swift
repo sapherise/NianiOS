@@ -28,7 +28,7 @@ class ExploreNewHot: ExploreProvider, UITableViewDelegate, UITableViewDataSource
             json in
             if json != nil {
                 globalTab[2] = false
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 if clear {
                     self.dataArray.removeAllObjects()
                 }

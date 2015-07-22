@@ -174,7 +174,7 @@ class ImClient {
     }
     
     private func peekStatus(obj: AnyObject) -> Int {
-        return obj["status"] as! Int
+        return obj.objectForKey("status") as! Int
     }
     
     private func setState(state: State) {
@@ -260,7 +260,7 @@ class ImClient {
             if status == statusSuccess {
                 m_uid = uid
                 m_shell = shell
-                m_sid = json!["sid"] as! String
+                m_sid = json!.objectForKey("sid") as! String
                 setState(.authed)
                 return 0
             }

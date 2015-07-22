@@ -267,7 +267,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         Api.getUserDream(Id, page: page) { json in
             if json != nil {
                 self.tableViewDream.tableFooterView = UIView()
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 if isClear {
                     self.dataArray.removeAllObjects()
                 }
@@ -277,7 +277,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.tableViewDream.reloadData()
                 self.tableViewStep.footerEndRefreshing()
                 self.page++
-                if let total = json!["total"] as? Int {
+                if let total = json!.objectForKey("total") as? Int {
                     if total < 30 {
                         self.tableViewDream.setFooterHidden(true)
                     }
@@ -302,8 +302,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
                 self.tableViewStep.tableFooterView = UIView()
-                var data = json!["data"]
-                var arr = data!!["steps"] as! NSArray
+                var data: AnyObject? = json!.objectForKey("data")
+                var arr = data!.objectForKey("steps") as! NSArray
                 if isClear {
                     self.dataArrayStep.removeAllObjects()
                 }
@@ -430,7 +430,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupPlayerTop(theUid:Int){
         Api.getUserTop(theUid){ json in
             if json != nil {
-                var data = json!["user"] as! NSDictionary
+                var data = json!.objectForKey("user") as! NSDictionary
                 var name = data.stringAttributeForKey("name")
                 var fo = data.stringAttributeForKey("fo")
                 var foed = data.stringAttributeForKey("foed")

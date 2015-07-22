@@ -79,9 +79,9 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }
         Api.getBBS("0", page: page) { json in
             if json != nil {
-                var data = json!["data"]
-                var arr = data!!["bbs"] as! NSArray
-                var top = data!!["top"] as? NSArray
+                var data: AnyObject? = json!.objectForKey("data")
+                var arr = data!.objectForKey("bbs") as! NSArray
+                var top = data!.objectForKey("top") as? NSArray
                 if clear {
                     self.dataArray.removeAllObjects()
                 }

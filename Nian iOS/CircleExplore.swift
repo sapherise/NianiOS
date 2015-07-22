@@ -55,7 +55,7 @@ class CircleExploreController: UIViewController,UITableViewDelegate,UITableViewD
         }
         Api.getCircleExplore(page){ json in
             if json != nil {
-                var arr = json!["data"] as! NSArray
+                var arr = json!.objectForKey("data") as! NSArray
                 if clear {
                     self.dataArray.removeAllObjects()
                 }

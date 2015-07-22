@@ -218,7 +218,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!["user"] as! NSDictionary
+                var data = json!.objectForKey("user") as! NSDictionary
                 var email = data.stringAttributeForKey("email")
                 var name = data.stringAttributeForKey("name")
                 var phone = data.stringAttributeForKey("phone")

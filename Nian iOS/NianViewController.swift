@@ -373,7 +373,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         Api.getNian() { json in
             if json != nil {
                 self.viewErr.hidden = true
-                var arr = json!["items"] as! NSArray
+                var arr = json!.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)

@@ -76,8 +76,8 @@ class CircleCollectionCell: UICollectionViewCell {
                         if json != nil {
                             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                             var safeuid = Sa.objectForKey("uid") as! String
-                            var img = json!["img"] as! String
-                            var titleNew = json!["title"] as! String
+                            var img = json!.objectForKey("img") as! String
+                            var titleNew = json!.objectForKey("title") as! String
                             
                             self.titleLabel.text = SADecode(SADecode(titleNew))
                             self.imageHeadView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 @objc protocol ShareDelegate {
     func onShare(avc: UIActivityViewController)
@@ -20,6 +21,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
     var lotteryNiAlert = NIAlert()
     var petData: NSDictionary!
     var delegateShare: ShareDelegate?
+    var skView: SKView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,7 +46,6 @@ class SAEgg: NIAlert, NIAlertDelegate {
             self.lotteryNiAlert.dismissWithAnimation(.normal)
             self.confirmNiAlert.dismissWithAnimation(.normal)
         }
-
     }
     
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
@@ -114,21 +115,22 @@ class SAEgg: NIAlert, NIAlertDelegate {
         self.confirmNiAlert._containerView!.addSubview(ac)
         Api.postPetLottery() { json in
             if json != nil {
-                let err = json!["error"] as! NSNumber
+                let err = json!.objectForKey("error") as! NSNumber
                 if err == 0 {
-                    self.petData = (json!["data"] as! NSDictionary).objectForKey("pet") as! NSDictionary
+                    self.petData = (json!.objectForKey("data") as! NSDictionary).objectForKey("pet") as! NSDictionary
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
                     self.lotteryNiAlert.delegate = self
                     self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)", petName, "你获得了一个\(petName)", ["分享", "好"]],
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
-                    
+//                    self.confirmNiAlert.dismissWithAnimationSwtichEvolution(self.lotteryNiAlert)
                     coinTotal = String(coinTotal!.toInt()! - 3)
                     
                     self.delegateShare?.saEgg!(self, lotteryResult: self.lotteryNiAlert.dict!)
                     
                 }
+                //  todo: 没有足够念币时
             }
         }
     }
