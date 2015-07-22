@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import QuartzCore
 
-private let NORMAL_WIDTH: CGFloat  = 120.0
+private let NORMAL_WIDTH: CGFloat  = 48.0
 private let NORMAL_HEIGHT: CGFloat = 100.0
 
 class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDelegate{
@@ -27,11 +27,27 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     @IBOutlet var viewBottom: UIView!
     @IBOutlet var viewBottomHolder: UIView!
     @IBOutlet var tableview:UITableView!
+    
+    var tapOnTableView: UITapGestureRecognizer?  // 绑定在 table 上
+    
     @IBOutlet var petName: UILabel!  // 显示 pet name, 不属于 tableView
     @IBOutlet var PetNormalView: UIImageView!
     @IBOutlet weak var petLevel: UILabel!
     
     var petId: String? // 没有显示
+    
+    var ownPet: Bool? {
+        didSet {
+            if ownPet! {
+                self.upgrade?.bgColor = BgColor.blue
+                self.upgrade?.enabled = true
+            } else {
+                self.upgrade!.bgColor = BgColor.grey
+                self.upgrade?.enabled = false
+            }
+            
+        }
+    }
     
     @IBOutlet weak var good: UIView!
     @IBOutlet weak var step: UIView!
@@ -41,6 +57,19 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     
     var upgrade: NIButton?  //---- 界面上唯一用代码生成的控件
     var rightLabel: UILabel?
+    
+    //---
+    /* 通过 KVO 来获得数据变化刷新 UI */
+    
+    var lotteryFromRightLabel: NSDictionary? {
+        didSet {
+            self.petInfoArray.addObject(lotteryFromRightLabel!)
+            
+            if self.petInfoArray.count > 0 {
+                self.tableview.reloadData()
+            }
+        }
+    }
     
     //--- 好几个 NIAlert
     var upgradeView: NIAlert?      //
@@ -81,7 +110,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
                 delay( y , {
 //                    self.labelLevel.text = textI
                 })
-            }else{
+            } else {
                 delay( y + 0.1 , {
                     var textI = ( totalNumber < 10 ) ? "0\(totalNumber)" : "\(totalNumber)"
 //                    self.labelLevel.text = textI
@@ -133,11 +162,15 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         self.tableview.frame = CGRectMake(0, 95, globalWidth, 200)
         self.tableview.delegate = self
         self.tableview.dataSource = self
-        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 60))
-        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 60))
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 24))
+        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 24))
+        
+        tapOnTableView = UITapGestureRecognizer(target: self, action: "showPetInfo")
+        tapOnTableView!.delegate = self
+        self.tableview.addGestureRecognizer(tapOnTableView!)
+        
         self.preContentOffsetX = 0.0    // 设置 tableView 的 content offset X
         self.PetNormalView.setX((globalWidth - 120)/2)
-        self.PetNormalView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo:"))
         self.petLevel.setX((globalWidth - 42)/2)
         
         //-----------
@@ -220,7 +253,6 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
                             self.tableview.reloadData()
                         }
                     }
-                    
                 }
             }
         }
@@ -237,7 +269,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
             var v = SAEgg()
             v.delegateShare = self
             v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-                forKeys: ["img", "title", "content", "buttonArray"])
+                                        forKeys: ["img", "title", "content", "buttonArray"])
             v.showWithAnimation(.flip)
         } else {
             coinInsufficientView?.showWithAnimation(.flip)
@@ -251,20 +283,44 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     }
     
     func saEgg(saEgg: SAEgg, tapBackground: Bool) {
-        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
+        if tapBackground == true {
+            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
+        }
+    }
+    
+    func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
+        let _id = lotteryResult.objectForKey("id") as! String
+        var contained: Bool = false
+        
+        for item in self.petInfoArray {
+            let id = (item as! NSDictionary).objectForKey("id") as! String
+            
+            if id == _id {
+                contained = true
+            }
+        }
+        
+        if !contained {
+            globalWillNianReload = 1
+            self.lotteryFromRightLabel = lotteryResult
+        }
     }
     
     // MARK: - 用户交互事件
     
     func toUpgrade(sender: UIButton) {
-        upgradeView = NIAlert()
-        upgradeView!.delegate = self
-        upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "花费 3 念币", "要以 3 念币让\(self.petName.text!)\n升级吗？", ["嗯！", "不要"]],
-                                                forKeys: ["img", "title", "content", "buttonArray"])
-        upgradeView!.showWithAnimation(.flip)
+        if coinTotal?.toInt()! > 3 {
+            upgradeView = NIAlert()
+            upgradeView!.delegate = self
+            upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "花费 3 念币", "要以 3 念币让\(self.petName.text!)\n升级吗？", ["嗯！", "不要"]],
+                                                    forKeys: ["img", "title", "content", "buttonArray"])
+            upgradeView!.showWithAnimation(.flip)
+        } else {
+            self.coinInsufficientView?.showWithAnimation(.flip)
+        }
     }
     
-    func showPetInfo(sender: UITapGestureRecognizer) {
+    func showPetInfo() {
         petDetailView = NIAlert()
         petDetailView?.delegate = self
         petDetailView?.dict = NSMutableDictionary(objects: [self.PetNormalView.image!, self.petName.text!, "显示啥", ["分享"]],
@@ -399,7 +455,26 @@ extension LevelViewController {
 }
 
 extension LevelViewController: UIGestureRecognizerDelegate {
-    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let tHHeight = tableview.tableHeaderView!.frame.height
+        let tFHeight = tableview.tableFooterView!.frame.height
+        
+        var tableViewCenter: CGFloat = globalWidth / 2.0
+
+        if gestureRecognizer == tapOnTableView {
+            var point = gestureRecognizer.locationInView(tableview)
+            var HeaderXInScreen: CGFloat = point.y - tableview.contentOffset.y
+            var FooterXInScreen: CGFloat = point.y - tableview.contentOffset.y
+            
+            if abs(HeaderXInScreen - tableViewCenter) < 60 && abs(FooterXInScreen - tableViewCenter) < 60 {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return true
+    }
 }
 
 extension LevelViewController: NIAlertDelegate {
@@ -421,9 +496,10 @@ extension LevelViewController: NIAlertDelegate {
                         if err == 0 {
                             // 升级成功，先把念币扣了
                             coinTotal = String(coinTotal!.toInt()! - 3)
-                            
-                            let data = json!["data"] as! NSDictionary
                             niAlert.dismissWithAnimation(.normal)
+                            globalWillNianReload = 1
+                            
+                            let data = json!["data"] as! NSMutableDictionary
                             self.SQLInsertUpgradeInfo(data)
                         } else if err == 2 {
                             niAlert.dismissWithAnimation(.normal)
@@ -454,7 +530,7 @@ extension LevelViewController: NIAlertDelegate {
     }
     
 // MARK: - help function 
-    func SQLInsertUpgradeInfo(info: NSDictionary) {
+    func SQLInsertUpgradeInfo(info: NSMutableDictionary) {
         let id = info.stringAttributeForKey("id")
         let level = info.stringAttributeForKey("level")
         let name = info.stringAttributeForKey("name")
@@ -463,9 +539,20 @@ extension LevelViewController: NIAlertDelegate {
         let getAtDate = info.stringAttributeForKey("get_at")
         let updateAtDate = info.stringAttributeForKey("update_at")
         
+        var _tmpDict = NSMutableDictionary(dictionary: info)
+        
         SQLPetContent(id, level, name, property, img, getAtDate, updateAtDate) {
             //TODO: - 升级动画
-        }
+            
+            self.petInfoArray.enumerateObjectsUsingBlock({(obj, idx, stop) -> Void in
+                var _id = (obj as! NSDictionary).objectForKey("id") as! String
+                if _id == id {
+                    _tmpDict.setObject("1", forKey: "owned")
+                    self.petInfoArray.replaceObjectAtIndex(idx, withObject: _tmpDict)
+                    self.tableview.reloadData()
+                }
+            })
+        }  // end of ' SQLPetContent '
     }
     
     func shareVC() {
@@ -481,6 +568,7 @@ extension LevelViewController: NIAlertDelegate {
         var avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
         self.presentViewController(avc, animated: true, completion: nil)
     }
+    
 }
 
 
@@ -491,7 +579,7 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 120
+        return 48
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -510,6 +598,14 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
             self.petName.text = dict!.stringAttributeForKey("name")
             self.petLevel.text = "Lv " + dict!.stringAttributeForKey("level")
             self.petId = dict!.stringAttributeForKey("id")
+            
+            var ownShip = (cell as! petCell).info?.objectForKey("owned") as! String
+            
+            if ownShip == "0" {
+                self.ownPet = false
+            } else {
+                self.ownPet = true
+            }
         }
         
         cell!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
@@ -518,7 +614,7 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     /**
-    根据 content offset, 选择加载不同的 cell
+    根据 content offset, 计算中间的 UIImageView 显示哪一个
     
     :param: tableView       <#tableView description#>
     
@@ -530,8 +626,8 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         
         var _cellString: String?
         var tableViewCenter: CGFloat = globalWidth / 2.0
-        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row * 120) - tableView.contentOffset.y
-        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1) * 120) - tableView.contentOffset.y
+        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row * 48) - tableView.contentOffset.y
+        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1) * 48) - tableView.contentOffset.y
 
         if cellHeaderXInScreen < tableViewCenter &&  tableViewCenter < cellFooterXInScreen {
             _cellString = "PetZoomInCell"
@@ -547,7 +643,7 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
 extension LevelViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView.isKindOfClass(UITableView) {
-            if abs((scrollView as! UITableView).contentOffset.y - preContentOffsetX!) >= 60.0 {
+            if abs((scrollView as! UITableView).contentOffset.y - preContentOffsetX!) >= 24.0 {
                 (scrollView as! UITableView).reloadData()
                 preContentOffsetX = scrollView.contentOffset.y
             }

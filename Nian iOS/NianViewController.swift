@@ -54,7 +54,13 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         if networkStatus == 0 {
             var userDefaults = NSUserDefaults.standardUserDefaults()
-            coinTotal = userDefaults.stringForKey("coinTotal")
+           
+            if let _coinTotal = userDefaults.stringForKey("coinTotal") {
+                coinTotal = _coinTotal
+            } else {
+                coinTotal = "0"
+            }
+            
         }
         
         setupViews()

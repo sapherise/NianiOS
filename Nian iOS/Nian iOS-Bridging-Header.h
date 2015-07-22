@@ -19,4 +19,5 @@
 #import "NSString+NSHash.h"
 #import "NSData+NSHash.h"
 #import "UIImage+Grayscale.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
 #import "objc/runtime.h"

@@ -12,6 +12,7 @@ import Foundation
     func onShare(avc: UIActivityViewController)
     
     optional func saEgg(saEgg: SAEgg, tapBackground: Bool)
+    optional func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary)
 }
 
 class SAEgg: NIAlert, NIAlertDelegate {
@@ -30,6 +31,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
     }
     
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        // 点击了 saEgg 的 background ，然后交给 delegate 处理
+        delegateShare?.saEgg?(self, tapBackground: true)
+        
         if niAlert == self {
             self.dismissWithAnimation(.normal)
         } else if niAlert == self.confirmNiAlert {
@@ -40,9 +44,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
             self.lotteryNiAlert.dismissWithAnimation(.normal)
             self.confirmNiAlert.dismissWithAnimation(.normal)
         }
-     
-        // 点击了 saEgg 的 background ，然后交给 delegate 处理
-        self.delegateShare?.saEgg!(self, tapBackground: true)
+
     }
     
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
@@ -123,6 +125,8 @@ class SAEgg: NIAlert, NIAlertDelegate {
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
                     
                     coinTotal = String(coinTotal!.toInt()! - 3)
+                    
+                    self.delegateShare?.saEgg!(self, lotteryResult: self.lotteryNiAlert.dict!)
                     
                 }
             }
