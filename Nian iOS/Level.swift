@@ -496,8 +496,14 @@ extension LevelViewController: NIAlertDelegate {
                         if err == 0 {
                             // 升级成功，先把念币扣了
                             coinTotal = String(coinTotal!.toInt()! - 3)
+                            
+                            self.upgradeResultView = NIAlert()
+                            self.upgradeResultView!.delegate = self
+                            self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "妙蛙草", "进化成了妙蛙草", ["分享", "好"]] ,
+                                                                               forKeys: ["img", "title", "content", "buttonArray"])
+                            
 
-                            niAlert.dismissWithAnimation(.normal)
+                            niAlert.dismissWithAnimationSwtichEvolution(self.upgradeResultView!)
                             globalWillNianReload = 1
                             
                             let data = json!.objectForKey("data") as! NSMutableDictionary
@@ -522,12 +528,12 @@ extension LevelViewController: NIAlertDelegate {
     }
     
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
-        if niAlert == self.petDetailView {
-            niAlert.dismissWithAnimation(.normal)
-        } else {
-            niAlert.dismissWithAnimation(.normal)
-            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
+        niAlert.dismissWithAnimation(.normal)
+        
+        if niAlert == self.upgradeResultView {
+            self.upgradeView?.dismissWithAnimation(.normal)
         }
+        
     }
     
 // MARK: - help function 

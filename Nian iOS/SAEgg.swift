@@ -127,7 +127,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
 //                    self.confirmNiAlert.dismissWithAnimationSwtichEvolution(self.lotteryNiAlert)
                     coinTotal = String(coinTotal!.toInt()! - 3)
                     
-                    self.delegateShare?.saEgg!(self, lotteryResult: self.lotteryNiAlert.dict!)
+                    self.delegateShare?.saEgg?(self, lotteryResult: self.lotteryNiAlert.dict!)
                     
                 }
                 //  todo: 没有足够念币时
