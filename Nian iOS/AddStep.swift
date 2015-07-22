@@ -213,16 +213,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         v.delegateShare = self
                         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
-                        
-                        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-                            var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
-                            skView.allowsTransparency = true
-                            v._containerView!.addSubview(skView)
-                            scene.scaleMode = SKSceneScaleMode.AspectFit
-                            skView.presentScene(scene)
-                            scene.setupViews()
-                        }
                         v.showWithAnimation(.flip)
+                        v.evolution()
                     }
                     
                 } else {
@@ -347,4 +339,70 @@ class AddStepCell: UITableViewCell {
     }
     
     
+}
+
+extension NIAlert {
+    func evolution() {
+        UIView.animateWithDuration(0.7, animations: {
+            self.imgView!.setScale(0.8)
+            }, completion: { (Bool) -> Void in
+                UIView.animateWithDuration(0.15, animations: {
+                    self.imgView!.setScale(0.75)
+                    }, completion: { (Bool) -> Void in
+                        UIView.animateWithDuration(0.15, animations: {
+                            self.imgView!.setScale(0.8)
+                            }, completion: { (Bool) -> Void in
+                                UIView.animateWithDuration(0.15, animations: {
+                                    self.imgView!.setScale(0.75)
+                                    }, completion: { (Bool) -> Void in
+                                        UIView.animateWithDuration(0.15, animations: {
+                                            self.imgView!.setScale(0.8)
+                                            }, completion: { (Bool) -> Void in
+                                                UIView.animateWithDuration(0.15, animations: {
+                                                    self.imgView!.setScale(0.75)
+                                                    }, completion: { (Bool) -> Void in
+                                                        UIView.animateWithDuration(0.2, animations: {
+                                                            self.imgView!.setScale(1.15)
+                                                            }, completion: { (Bool) -> Void in
+                                                                self.imgView?.image = nil
+                                                                if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+                                                                    var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+                                                                    skView.allowsTransparency = true
+                                                                    self._containerView!.addSubview(skView)
+                                                                    scene.scaleMode = SKSceneScaleMode.AspectFit
+                                                                    skView.presentScene(scene)
+                                                                    scene.setupViews()
+                                                                    self._containerView?.sendSubviewToBack(skView)
+                                                                }
+                                                                delay(0.1, {
+                                                                    self.imgView!.setScale(1.35)
+                                                                    self.imgView?.alpha = 0
+                                                                    self.imgView?.image = UIImage(named: "pet_ghost")
+                                                                    UIView.animateWithDuration(0.1, animations: {
+                                                                        self.imgView?.alpha = 1
+                                                                        self.imgView!.setScale(1.55)
+                                                                        }, completion: { (Bool) -> Void in
+                                                                            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                                                                                self.imgView!.setScale(1.2)
+                                                                            })
+                                                                            UIView.animateWithDuration(1, delay: 1, options: UIViewAnimationOptions.allZeros, animations: {
+                                                                                self.imgView!.setScale(1)
+                                                                                }, completion: { (Bool) -> Void in
+                                                                            })
+                                                                    })
+                                                                })
+                                                        })
+                                                })
+                                        })
+                                })
+                        })
+                })
+        })
+    }
+}
+
+extension UIView {
+    func setScale(x: CGFloat) {
+        self.transform = CGAffineTransformMakeScale(x, x)
+    }
 }

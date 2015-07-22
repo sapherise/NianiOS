@@ -251,6 +251,20 @@ class NIAlert: UIView {
         })
     }
     
+    func dismissWithAnimationSwtichEvolution(view: UIView) {
+        var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
+            }, completion: { (Bool) -> Void in
+                self._containerView!.removeFromSuperview()
+                if let v = view as? NIAlert {
+                    v.isLayerHidden = true
+                    v.showWithAnimation(showAnimationStyle.flip)
+                    v.evolution()
+                }
+        })
+    }
+    
     private func _removeSubView() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             var newTransform = CGAffineTransformScale(self.transform, 1.2, 1.2)

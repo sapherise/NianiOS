@@ -44,7 +44,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
         }
      
         // 点击了 saEgg 的 background ，然后交给 delegate 处理
-        self.delegateShare?.saEgg!(self, tapBackground: true)
+//        self.delegateShare?.saEgg!(self, tapBackground: true)
     }
     
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
@@ -123,7 +123,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                     self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)", petName, "你获得了一个\(petName)", ["分享", "好"]],
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
-                    
+//                    self.confirmNiAlert.dismissWithAnimationSwtichEvolution(self.lotteryNiAlert)
                     coinTotal = String(coinTotal!.toInt()! - 3)
                     
                 }
