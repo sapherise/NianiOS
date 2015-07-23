@@ -317,7 +317,7 @@ class NIButton: UIButton {
         }
     }
     
-    var index: Int?
+    var index: Int?  // 目的是确定自己在 NIAlert 的位置，从而确定 Delegate 怎么响应点击事件
     
     private var _spinner: UIActivityIndicatorView?
     private var _titleString: String?

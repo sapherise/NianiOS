@@ -34,7 +34,9 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     @IBOutlet var PetNormalView: UIImageView!
     @IBOutlet weak var petLevel: UILabel!
     
-    var petId: String? // 没有显示
+    var _petId: String?     // 没有显示
+    var _petImg: String?    // 没有显示
+    var _petLevel: String?  // 没有显示
     
     var ownPet: Bool? {
         didSet {
@@ -73,10 +75,11 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     
     //--- 好几个 NIAlert
     var upgradeView: NIAlert?      //
-    var coinInsufficientView: NIAlert?
-    var lotteryRusltView: NIAlert?
-    var petDetailView: NIAlert?
-    var upgradeResultView: NIAlert?
+    var coinInsufficientView: NIAlert?    // 念币不足
+    var lotteryRusltView: NIAlert?        // 抽蛋页面
+    var petDetailView: NIAlert?           // 点击中间的 ImageView 显示的 petDetail View
+    var upgradeResultView: NIAlert?       // 升级结果 
+    var ultimateView: NIAlert?            // 升级完成，一段动画之后的最终页面
     
     var preContentOffsetX: CGFloat?
     var cellString: String?
@@ -260,8 +263,8 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         // 因为有两个地方用到 “念币不足”，所以放在了 viewDidload 里面
         coinInsufficientView = NIAlert()
         coinInsufficientView?.delegate = self
-        coinInsufficientView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "念币不足", "抽蛋需要花费 3 念币\n但是你当前只有 \(coinTotal!) 念币......", ["知道了", "获得念币"]] ,
-            forKeys: ["img", "title", "content", "buttonArray"])
+        coinInsufficientView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!.convertToGrayscale(), "念币不足", "抽蛋需要花费 3 念币\n但是你当前只有 \(coinTotal!) 念币......", ["知道了", "获得念币"]] ,
+                                                        forKeys: ["img", "title", "content", "buttonArray"])
     }
 
     func onEgg() {
@@ -290,7 +293,11 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     
     func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
         let _id = lotteryResult.objectForKey("id") as! String
+        let img = lotteryResult.stringAttributeForKey("image")
+        
         var contained: Bool = false
+        
+        // 遍历 petInfoArray, 看是否包含新抽得的宠物
         
         for item in self.petInfoArray {
             let id = (item as! NSDictionary).objectForKey("id") as! String
@@ -302,7 +309,16 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         
         if !contained {
             globalWillNianReload = 1
-            self.lotteryFromRightLabel = lotteryResult
+            
+            let level = lotteryResult.stringAttributeForKey("level")
+            let name = lotteryResult.stringAttributeForKey("name")
+            let property = lotteryResult.stringAttributeForKey("property")
+            let getAtDate = lotteryResult.stringAttributeForKey("get_at")
+            let updateAtDate = lotteryResult.stringAttributeForKey("update_at")
+            
+            SQLPetContent(_id, level, name, property, img, getAtDate, updateAtDate) {
+                self.lotteryFromRightLabel = lotteryResult
+            }
         }
     }
     
@@ -323,7 +339,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     func showPetInfo() {
         petDetailView = NIAlert()
         petDetailView?.delegate = self
-        petDetailView?.dict = NSMutableDictionary(objects: [self.PetNormalView.image!, self.petName.text!, "显示啥", ["分享"]],
+        petDetailView?.dict = NSMutableDictionary(objects: [self.PetNormalView.image!, self.petName.text!, "显示啥", ["分享"]], 
                                                   forKeys: ["img", "title", "content", "buttonArray"])
         petDetailView?.showWithAnimation(.flip)
     }
@@ -455,6 +471,10 @@ extension LevelViewController {
 }
 
 extension LevelViewController: UIGestureRecognizerDelegate {
+    /**
+    主要是为了使 tableView 中间的 petNormal View 显示图片
+    tableView 能响应滑动事件，也能在 petNormal View 范围内响应点击事件
+    */
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         let tHHeight = tableview.tableHeaderView!.frame.height
         let tFHeight = tableview.tableFooterView!.frame.height
@@ -482,12 +502,11 @@ extension LevelViewController: NIAlertDelegate {
         if niAlert == self.upgradeView {
             if didselectAtIndex == 1 {
                 niAlert.dismissWithAnimation(.normal)
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel!)]
             } else if didselectAtIndex == 0 {
                 let _btn = niAlert.niButtonArray.firstObject as! NIButton
                 _btn.startAnimating()
                 
-                Api.getPetUpgrade(self.petId!) {
+                Api.getPetUpgrade(self._petId!) {
                     json in
                     _btn.stopAnimating()
                     
@@ -497,13 +516,7 @@ extension LevelViewController: NIAlertDelegate {
                             // 升级成功，先把念币扣了
                             coinTotal = String(coinTotal!.toInt()! - 3)
                             
-                            self.upgradeResultView = NIAlert()
-                            self.upgradeResultView!.delegate = self
-                            self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "妙蛙草", "进化成了妙蛙草", ["分享", "好"]] ,
-                                                                               forKeys: ["img", "title", "content", "buttonArray"])
-                            
-
-                            niAlert.dismissWithAnimationSwtichEvolution(self.upgradeResultView!)
+                            niAlert.dismissWithAnimation(.normal)
                             globalWillNianReload = 1
                             
                             let data = json!.objectForKey("data") as! NSMutableDictionary
@@ -519,10 +532,25 @@ extension LevelViewController: NIAlertDelegate {
         } else if niAlert == self.coinInsufficientView {
             if didselectAtIndex == 0 {
                 niAlert.dismissWithAnimation(.normal)
+            } else if didselectAtIndex == 1 {
+                //TODO: - 获得念币未完成
+                fatalError("获得念币 has not been implemented")
+                
             }
         } else if niAlert == self.petDetailView {
             if didselectAtIndex == 0 {
                 shareVC()
+            }
+        } else if niAlert == self.upgradeResultView {
+            if didselectAtIndex == 0 {
+                niAlert.dismissWithAnimationSwtichEvolution(self.ultimateView!)
+            }
+        } else if niAlert == self.ultimateView {
+            if didselectAtIndex == 0 {
+                shareVC()
+            } else if didselectAtIndex == 1 {
+                niAlert.dismissWithAnimation(.normal)
+                self.upgradeResultView?.dismissWithAnimation(.normal)
             }
         }
     }
@@ -530,8 +558,10 @@ extension LevelViewController: NIAlertDelegate {
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
         niAlert.dismissWithAnimation(.normal)
         
-        if niAlert == self.upgradeResultView {
-            self.upgradeView?.dismissWithAnimation(.normal)
+        // 因为 upgradeResultView 和 upgradeView 共用一个背景模糊
+        if niAlert == self.ultimateView {
+            self.upgradeResultView?.dismissWithAnimation(.normal)
+            self.tableview.reloadData()
         }
         
     }
@@ -548,16 +578,39 @@ extension LevelViewController: NIAlertDelegate {
         
         var _tmpDict = NSMutableDictionary(dictionary: info)
         
+        // 更新相关的信息
+        self._petId = id
+        self._petImg = img
+        
+        self.upgradeResultView = NIAlert()
+        self.upgradeResultView!.delegate = self
+        self.upgradeResultView!.dict = NSMutableDictionary(objects: [self.PetNormalView.image!, self.petName.text!, "\(self.petName.text!)升级到 Lv \(level) 啦", ["好"]] ,
+                                                           forKeys: ["img", "title", "content", "buttonArray"])
+        self.upgradeResultView!.showWithAnimation(.flip)
+        
+        var imgURLString = "http://img.nian.so/pets/"
+        
+        if globalWidth > 375 {
+            imgURLString += img
+        } else {
+            imgURLString += img + "!d"
+        }
+        
+        self.PetNormalView.setImage(imgURLString, placeHolder: UIColor.clearColor())
+        
+        self.ultimateView = NIAlert()
+        self.ultimateView!.delegate = self
+        self.ultimateView!.dict = NSMutableDictionary(objects: [imgURLString, name, "进化成了\(name)", ["分享", "好"]],
+                                                      forKeys: ["img", "title", "content", "buttonArray"])
+        
         SQLPetContent(id, level, name, property, img, getAtDate, updateAtDate) {
-            //TODO: - 升级动画
-            
             self.petInfoArray.enumerateObjectsUsingBlock({(obj, idx, stop) -> Void in
                 var _id = (obj as! NSDictionary).objectForKey("id") as! String
                 if _id == id {
                     _tmpDict.setObject("1", forKey: "owned")
                     self.petInfoArray.replaceObjectAtIndex(idx, withObject: _tmpDict)
-                    self.tableview.reloadData()
                 }
+                self.tableview.reloadData()
             })
         }  // end of ' SQLPetContent '
     }
@@ -570,14 +623,12 @@ extension LevelViewController: NIAlertDelegate {
         card.content = content
         card.widthImage = "360"
         card.heightImage = "360"
-        card.url = "http://img.nian.so/pets/\(petImage)"
+        card.url = "http://img.nian.so/pets/\(self._petImg!)"
         var img = card.getCard()
         var avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
         self.presentViewController(avc, animated: true, completion: nil)
     }
-    
 }
-
 
 // MARK: - Level View Controller 实现 uitableview delegate 和 uitableview data source
 extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
@@ -604,7 +655,8 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
             self.PetNormalView.backgroundColor = UIColor.clearColor()
             self.petName.text = dict!.stringAttributeForKey("name")
             self.petLevel.text = "Lv " + dict!.stringAttributeForKey("level")
-            self.petId = dict!.stringAttributeForKey("id")
+            self._petId = dict!.stringAttributeForKey("id")
+            self._petImg = dict!.stringAttributeForKey("image")
             
             var ownShip = (cell as! petCell).info?.objectForKey("owned") as! String
             

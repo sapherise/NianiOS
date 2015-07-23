@@ -125,9 +125,11 @@ class SAEgg: NIAlert, NIAlertDelegate {
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
 //                    self.confirmNiAlert.dismissWithAnimationSwtichEvolution(self.lotteryNiAlert)
+                    
+                    // 抽蛋成功扣念币 
                     coinTotal = String(coinTotal!.toInt()! - 3)
                     
-                    self.delegateShare?.saEgg?(self, lotteryResult: self.lotteryNiAlert.dict!)
+                    self.delegateShare?.saEgg?(self, lotteryResult: self.petData)
                     
                 }
                 //  todo: 没有足够念币时

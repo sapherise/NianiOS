@@ -358,7 +358,7 @@
 		12D846041A233B09005DCC08 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		12D846061A233F46005DCC08 /* AddStep.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStep.xib; sourceTree = "<group>"; };
 		12D846081A2340DC005DCC08 /* AddStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStep.swift; sourceTree = "<group>"; };
-		12D9494D1B58091C0071B53A /* SAEgg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAEgg.swift; sourceTree = "<group>"; };
+		12D9494D1B58091C0071B53A /* SAEgg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SAEgg.swift; path = ../SAEgg.swift; sourceTree = "<group>"; };
 		12DA48B51A1C34F7002651EF /* NianCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NianCell.xib; sourceTree = "<group>"; };
 		12DE696419D130940006B5B5 /* Care.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Care.swift; sourceTree = "<group>"; };
 		12DE699419D198C40006B5B5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -877,7 +877,6 @@
 				1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */,
 				12D846061A233F46005DCC08 /* AddStep.xib */,
 				12D846081A2340DC005DCC08 /* AddStep.swift */,
-				12D9494D1B58091C0071B53A /* SAEgg.swift */,
 				129375181A236E8B001F7442 /* AddStepCell.xib */,
 			);
 			name = "更新进展";
@@ -1026,6 +1025,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C41D45D61B60EA86000450D5 /* SAEgg */,
 				C4C885501B5F7E7900D9B8CA /* FDFullscreenPopGesture */,
 				C48AD9D61B5CFD4C00E25627 /* UIImageExt */,
 				C48FBCD91B4A5A7D007E0BF9 /* Crypto */,
@@ -1150,6 +1150,14 @@
 				C4AFF0441B0F2BCD00321479 /* TITokenField.m */,
 			);
 			name = TITokenView;
+			sourceTree = "<group>";
+		};
+		C41D45D61B60EA86000450D5 /* SAEgg */ = {
+			isa = PBXGroup;
+			children = (
+				12D9494D1B58091C0071B53A /* SAEgg.swift */,
+			);
+			name = SAEgg;
 			sourceTree = "<group>";
 		};
 		C42B7D471B56411C008D3B36 /* 模式 */ = {
