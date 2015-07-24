@@ -22,7 +22,7 @@
                 <outlet property="rightLine" destination="hmf-Eb-p8q" id="MOH-vz-9op"/>
                 <outlet property="scrollView" destination="N3v-mf-nWx" id="yqI-cZ-YVe"/>
                 <outlet property="step" destination="5eZ-1O-hCS" id="6vf-wk-CLb"/>
-                <outlet property="tableview" destination="uTn-R4-WZe" id="eGA-Dc-fwU"/>
+                <outlet property="tableview" destination="jXd-g9-kcg" id="Udo-j1-lFT"/>
                 <outlet property="view" destination="Ipu-sz-w8p" id="rEX-Jr-JeH"/>
                 <outlet property="viewBottom" destination="ifR-5i-Tlc" id="tsP-cE-IEJ"/>
                 <outlet property="viewBottomHolder" destination="kbv-Kc-H0k" id="A8o-i7-CAt"/>
@@ -229,7 +229,7 @@
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="uTn-R4-WZe">
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jXd-g9-kcg">
                                     <rect key="frame" x="0.0" y="95" width="320" height="200"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

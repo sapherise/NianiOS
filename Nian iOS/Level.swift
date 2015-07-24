@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import QuartzCore
 
-private let NORMAL_WIDTH: CGFloat  = 48.0
+private let NORMAL_WIDTH: CGFloat  = 72.0
 private let NORMAL_HEIGHT: CGFloat = 100.0
 
 class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDelegate{
@@ -37,6 +37,7 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
     var _petId: String?     // 没有显示
     var _petImg: String?    // 没有显示
     var _petLevel: String?  // 没有显示
+//    var (preLevel: String?, afterLevel: String?)
     
     var ownPet: Bool? {
         didSet {
@@ -165,8 +166,8 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
         self.tableview.frame = CGRectMake(0, 95, globalWidth, 200)
         self.tableview.delegate = self
         self.tableview.dataSource = self
-        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 24))
-        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 200, globalWidth/2 - 24))
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
+        self.tableview.tableFooterView = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
         
         tapOnTableView = UITapGestureRecognizer(target: self, action: "showPetInfo")
         tapOnTableView!.delegate = self
@@ -217,44 +218,39 @@ class LevelViewController: UIViewController, LTMorphingLabelDelegate, ShareDeleg
             }
         }
         
-        var networkStatus = checkNetworkStatus()
+//        var safeuid = SAUid()
+//        let (results, err) = SD.executeQuery("select * from `pet` where owner = '\(safeuid)'")
+//        self.petInfoArray.removeAllObjects()
+//        
+//        for row in results {
+//            var id = (row["id"]?.asString())!
+//            var level = (row["level"]?.asString())!
+//            var name = (row["name"]?.asString())!
+//            var property = (row["property"]?.asString())!
+//            var img = (row["img"]?.asString())!
+//            var getat = (row["getat"]?.asString())!
+//            var updateat = (row["updateat"]?.asString())!
+//            
+//            var data = NSDictionary(objects: [id, level, name, property, img, getat, updateat],
+//                                    forKeys: ["id", "level", "name", "property", "image", "getat", "updateat"])
+//            self.petInfoArray.addObject(data)
+//        }
+//        
+//        if self.petInfoArray.count > 0 {
+//            self.tableview.reloadData()
+//        }
         
-        if networkStatus == 0 {
-            var safeuid = SAUid()
-            let (results, err) = SD.executeQuery("select * from `pet` where owner = '\(safeuid)'")
-            self.petInfoArray.removeAllObjects()
-            
-            for row in results {
-                var id = (row["id"]?.asString())!
-                var level = (row["level"]?.asString())!
-                var name = (row["name"]?.asString())!
-                var property = (row["property"]?.asString())!
-                var img = (row["img"]?.asString())!
-                var getat = (row["getat"]?.asString())!
-                var updateat = (row["updateat"]?.asString())!
+        Api.getAllPets() { json in
+            if json != nil {
+                let err = json!.objectForKey("error") as! NSNumber
                 
-                var data = NSDictionary(objects: [id, level, name, property, img, getat, updateat],
-                                        forKeys: ["id", "level", "name", "property", "image", "getat", "updateat"])
-                self.petInfoArray.addObject(data)
-            }
-            
-            if self.petInfoArray.count > 0 {
-                self.tableview.reloadData()
-            }
-            
-        } else {
-            Api.getAllPets() { json in
-                if json != nil {
-                    let err = json!.objectForKey("error") as! NSNumber
+                if err == 0 {
+                    for item in ((json!.objectForKey("data") as! NSDictionary).objectForKey("pets") as! NSArray) {
+                        self.petInfoArray.addObject(item)
+                    }
                     
-                    if err == 0 {
-                        for item in ((json!.objectForKey("data") as! NSDictionary).objectForKey("pets") as! NSArray) {
-                            self.petInfoArray.addObject(item)
-                        }
-                        
-                        if self.petInfoArray.count > 0 {
-                            self.tableview.reloadData()
-                        }
+                    if self.petInfoArray.count > 0 {
+                        self.tableview.reloadData()
                     }
                 }
             }
@@ -495,6 +491,9 @@ extension LevelViewController: UIGestureRecognizerDelegate {
         
         return true
     }
+    
+    
+    
 }
 
 extension LevelViewController: NIAlertDelegate {
@@ -561,6 +560,10 @@ extension LevelViewController: NIAlertDelegate {
         // 因为 upgradeResultView 和 upgradeView 共用一个背景模糊
         if niAlert == self.ultimateView {
             self.upgradeResultView?.dismissWithAnimation(.normal)
+            self.tableview.reloadData()
+        }
+        
+        if niAlert == self.lotteryRusltView {
             self.tableview.reloadData()
         }
         
@@ -637,7 +640,7 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 48
+        return NORMAL_WIDTH
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -685,8 +688,8 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
         
         var _cellString: String?
         var tableViewCenter: CGFloat = globalWidth / 2.0
-        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row * 48) - tableView.contentOffset.y
-        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1) * 48) - tableView.contentOffset.y
+        var cellHeaderXInScreen: CGFloat = tHHeight + CGFloat(indexPath.row) * NORMAL_WIDTH - tableView.contentOffset.y
+        var cellFooterXInScreen: CGFloat = tFHeight + CGFloat((indexPath.row + 1)) * NORMAL_WIDTH - tableView.contentOffset.y
 
         if cellHeaderXInScreen < tableViewCenter &&  tableViewCenter < cellFooterXInScreen {
             _cellString = "PetZoomInCell"
@@ -700,10 +703,41 @@ extension LevelViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Level View Controller 实现 uiscrollview delegate
 extension LevelViewController: UIScrollViewDelegate {
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView.isKindOfClass(UITableView) {
-            if abs((scrollView as! UITableView).contentOffset.y - preContentOffsetX!) >= 24.0 {
-                (scrollView as! UITableView).reloadData()
+            if abs((scrollView as! UITableView).contentOffset.y - preContentOffsetX!) >= NORMAL_WIDTH/2 {
+                var _tmp = (scrollView.contentOffset.y + globalWidth/2 - (scrollView as! UITableView).tableHeaderView!.frame.height)/NORMAL_WIDTH
+                var _cellIndex = NSInteger(floorf(Float(_tmp)))
+                
+                if _cellIndex < self.petInfoArray.count && _cellIndex >= 0 {
+                    let imgPath = (self.petInfoArray[_cellIndex] as! NSDictionary).stringAttributeForKey("image")
+                    
+                    var imgURLString = "http://img.nian.so/pets/"
+                    
+                    if globalWidth > 375 {
+                        imgURLString += imgPath
+                    } else {
+                        imgURLString += imgPath + "!d"
+                    }
+                    
+                    self.PetNormalView.setImage(imgURLString, placeHolder: UIColor.clearColor())
+                    self.PetNormalView.backgroundColor = UIColor.clearColor()
+                    self.petName.text = (self.petInfoArray[_cellIndex] as! NSDictionary).stringAttributeForKey("name")
+                    self.petLevel.text = "Lv " + (self.petInfoArray[_cellIndex] as! NSDictionary).stringAttributeForKey("level")
+                    self._petId = (self.petInfoArray[_cellIndex] as! NSDictionary).stringAttributeForKey("id")
+                    self._petImg = (self.petInfoArray[_cellIndex] as! NSDictionary).stringAttributeForKey("image")
+                    
+                    var ownShip = (self.petInfoArray[_cellIndex] as! NSDictionary).objectForKey("owned") as! String
+                    
+                    if ownShip == "0" {
+                        self.ownPet = false
+                        self.PetNormalView.image = self.PetNormalView.image?.convertToGrayscale()
+                    } else {
+                        self.ownPet = true
+                    }
+                }
+                
                 preContentOffsetX = scrollView.contentOffset.y
             }
         }
