@@ -35,7 +35,7 @@ class Card: UIView {
         if self.content == "" {
             self.content = V.enTime()
         }
-        self.image.setImage(self.url, placeHolder: IconColor)
+        self.image.setImage(self.url, placeHolder: UIColor.clearColor())
         var heightNew: CGFloat = 0
         var w = CGFloat((self.widthImage as NSString).floatValue)
         var h = SACeil(CGFloat((self.heightImage as NSString).floatValue), 0, isCeil: false)

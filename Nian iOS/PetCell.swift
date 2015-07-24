@@ -13,15 +13,6 @@ class petCell: UITableViewCell {
     @IBOutlet var imgView: UIImageView!
     
     var info: NSDictionary?
-    var id: String?
-    var level: String?
-    var name: String?
-    var property: String?
-    var imgPath: String?
-    var getAtDate: String?
-    var updateAtDate: String?
-    
-    var isFirstLoad: Bool = true
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,36 +24,20 @@ class petCell: UITableViewCell {
     func _layoutSubviews() {
         // 刷新界面
         let imgF = self.info?.stringAttributeForKey("image")
-        id = self.info?.stringAttributeForKey("id")
-        level = self.info?.stringAttributeForKey("level")
-        name = self.info?.stringAttributeForKey("name")
-        property = self.info?.stringAttributeForKey("property")
-        getAtDate = self.info?.stringAttributeForKey("owned")
-        updateAtDate = self.info?.stringAttributeForKey("updated_at")
+        var id = self.info?.stringAttributeForKey("id")
+        var level = self.info?.stringAttributeForKey("level")
+        var name = self.info?.stringAttributeForKey("name")
+        var owned = self.info?.stringAttributeForKey("owned")
         
-        var imgURLString = "http://img.nian.so/pets/"
+        var imgURLString = "http://img.nian.so/pets/\(imgF!)!d"
         
-        if globalWidth > 375 {
-            imgURLString += imgF!
-        } else {
-            imgURLString += imgF! + "!d"
-        }
-        
-        self.imgView?.setImageWithBlock(imgURLString, placeHolder: IconColor, bool: false, ignore: false) {
+        self.imgView?.setImageWithBlock(imgURLString, placeHolder: UIColor.clearColor(), bool: false, ignore: false) {
             image in
-            if self.getAtDate == "0" {
+            if owned == "0" {
                 self.imgView?.image = image.convertToGrayscale()
             } else {
                 self.imgView?.image = image
             }
-        }
-        self.imgView?.backgroundColor = UIColor.clearColor()
-        
-        if isFirstLoad {
-            SQLPetContent(id!, level!, name!, property!, imgF!, getAtDate!, updateAtDate!) {
-            }
-            
-            isFirstLoad = false 
         }
     }
     

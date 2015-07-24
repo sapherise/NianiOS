@@ -15,7 +15,6 @@ typedef enum {
 } PIXELS;
 
 - (UIImage *)convertToGrayscale {
-    CGFloat scale = [[UIScreen mainScreen] scale];
     
     CGSize size = [self size];
     int width = size.width; //  *scale;
@@ -59,7 +58,9 @@ typedef enum {
     free(pixels);
     
     // make a new UIImage to return
-    UIImage *resultUIImage = [UIImage imageWithCGImage:image scale:scale orientation:UIImageOrientationUp];
+//    UIImage *resultUIImage = [UIImage imageWithCGImage:image scale:scale orientation:UIImageOrientationUp];
+    
+    UIImage *resultUIImage = [UIImage imageWithCGImage:image];
     
     // we're done with image now too
     CGImageRelease(image);

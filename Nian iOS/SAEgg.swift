@@ -19,6 +19,7 @@ import SpriteKit
 class SAEgg: NIAlert, NIAlertDelegate {
     var confirmNiAlert = NIAlert()
     var lotteryNiAlert = NIAlert()
+    var coinLessNiAlert = NIAlert()
     var petData: NSDictionary!
     var delegateShare: ShareDelegate?
     var skView: SKView!
@@ -44,6 +45,10 @@ class SAEgg: NIAlert, NIAlertDelegate {
         } else if niAlert == self.lotteryNiAlert {
             self.dismissWithAnimation(.normal)
             self.lotteryNiAlert.dismissWithAnimation(.normal)
+            self.confirmNiAlert.dismissWithAnimation(.normal)
+        } else if niAlert == self.coinLessNiAlert {
+            self.dismissWithAnimation(.normal)
+            self.coinLessNiAlert.dismissWithAnimation(.normal)
             self.confirmNiAlert.dismissWithAnimation(.normal)
         }
     }
@@ -74,7 +79,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 card.content = content
                 card.widthImage = "360"
                 card.heightImage = "360"
-                card.url = "http://img.nian.so/pets/\(petImage)"
+                card.url = "http://img.nian.so/pets/\(petImage)!d"
                 var img = card.getCard()
                 var avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
                 delegateShare?.onShare(avc)
@@ -83,6 +88,10 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 self.confirmNiAlert.dismissWithAnimation(.normal)
                 self.lotteryNiAlert.dismissWithAnimation(.normal)
             }
+        } else if niAlert == coinLessNiAlert {
+            self.dismissWithAnimation(.normal)
+            self.confirmNiAlert.dismissWithAnimation(.normal)
+            self.coinLessNiAlert.dismissWithAnimation(.normal)
         }
     }
     
@@ -121,18 +130,25 @@ class SAEgg: NIAlert, NIAlertDelegate {
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
                     self.lotteryNiAlert.delegate = self
-                    self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)", petName, "你获得了一个\(petName)", ["分享", "好"]],
+                    self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)!d", petName, "你获得了一个\(petName)", ["分享", "好"]],
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
-//                    self.confirmNiAlert.dismissWithAnimationSwtichEvolution(self.lotteryNiAlert)
                     
                     // 抽蛋成功扣念币 
-                    coinTotal = String(coinTotal!.toInt()! - 3)
-                    
+                    globalWillNianReload = 1
                     self.delegateShare?.saEgg?(self, lotteryResult: self.petData)
                     
+                } else if err == 2 {
+                    self.coinLessNiAlert.delegate = self
+                    self.coinLessNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "念币不足", "没有足够的念币...", ["哦"]],
+                        forKeys: ["img", "title", "content", "buttonArray"])
+                    self.confirmNiAlert.dismissWithAnimationSwtich(self.coinLessNiAlert)
+                } else {
+                    self.coinLessNiAlert.delegate = self
+                    self.coinLessNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "奇怪的错误", "遇到了一个奇怪的错误", ["哦"]],
+                        forKeys: ["img", "title", "content", "buttonArray"])
+                    self.confirmNiAlert.dismissWithAnimationSwtich(self.coinLessNiAlert)
                 }
-                //  todo: 没有足够念币时
             }
         }
     }

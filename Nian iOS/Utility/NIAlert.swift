@@ -91,19 +91,11 @@ class NIAlert: UIView {
         var buttonArray = self.dict?.objectForKey("buttonArray") as! NSArray
         
         if let img = (self.dict?.objectForKey("img") as? UIImage) {
-            var imgSize = img.size
             imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, img.size.height))
             imgView?.contentMode = UIViewContentMode.Center
             imgView!.image = img
             self._containerView!.addSubview(imgView!)
-            
-            titleLabel = UILabel(frame: CGRectMake(48, imgView!.frame.height + 64, 176, 20))
-            titleLabel!.font = UIFont.boldSystemFontOfSize(18) // (name: "HelveticaBold", size: 18)
-            titleLabel!.textColor = UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1.0)
-            titleLabel!.textAlignment = NSTextAlignment.Center
-            titleLabel!.text = title
-            self._containerView!.addSubview(titleLabel!)
-            
+            setTitle(title)
             self._containerView!.setHeight(imgView!.frame.height + 64 + 20)
         } else if let img = (self.dict?.objectForKey("img") as? String) {
             imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, 80))
@@ -112,14 +104,14 @@ class NIAlert: UIView {
                 imgView!.setImage(img, placeHolder: UIColor.whiteColor(), ignore: true)
             }
             self._containerView!.addSubview(imgView!)
-            
-            titleLabel = UILabel(frame: CGRectMake(48, imgView!.frame.height + 64, 176, 20))
-            titleLabel!.font = UIFont.boldSystemFontOfSize(18) // (name: "HelveticaBold", size: 18)
-            titleLabel!.textColor = UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1.0)
-            titleLabel!.textAlignment = NSTextAlignment.Center
-            titleLabel!.text = title
-            self._containerView!.addSubview(titleLabel!)
-            
+            setTitle(title)
+            self._containerView!.setHeight(imgView!.frame.height + 64 + 20)
+        } else if let img = (self.dict?.objectForKey("img") as? UIImageView) {
+            imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - img.width())/2, 40, img.width(), img.height()))
+            imgView?.contentMode = UIViewContentMode.ScaleAspectFit
+            imgView?.image = img.image
+            self._containerView!.addSubview(imgView!)
+            setTitle(title)
             self._containerView!.setHeight(imgView!.frame.height + 64 + 20)
         } else {
             titleLabel = UILabel(frame: CGRectMake(48, 40, 176, 20))
@@ -168,6 +160,15 @@ class NIAlert: UIView {
         }
         
         self._containerView!.setHeight(self._containerView!.height() + 40)    //  再次调整高度
+    }
+    
+    func setTitle(title: String) {
+        titleLabel = UILabel(frame: CGRectMake(48, imgView!.frame.height + 64, 176, 20))
+        titleLabel!.font = UIFont.boldSystemFontOfSize(18) // (name: "HelveticaBold", size: 18)
+        titleLabel!.textColor = UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1.0)
+        titleLabel!.textAlignment = NSTextAlignment.Center
+        titleLabel!.text = title
+        self._containerView!.addSubview(titleLabel!)
     }
     
     func buttonTouch(sender: NIButton) {

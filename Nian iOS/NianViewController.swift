@@ -9,14 +9,6 @@
 import Foundation
 import UIKit
 
-var coinTotal: String? {
-    didSet {
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(coinTotal, forKey: "coinTotal")
-        userDefaults.synchronize()
-    }
-}
-
 class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegate{
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
@@ -49,20 +41,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        var networkStatus = checkNetworkStatus()
-        
-        if networkStatus == 0 {
-            var userDefaults = NSUserDefaults.standardUserDefaults()
-           
-            if let _coinTotal = userDefaults.stringForKey("coinTotal") {
-                coinTotal = _coinTotal
-            } else {
-                coinTotal = "0"
-            }
-            
-        }
-        
         setupViews()
         SAReloadData()
     }
@@ -230,7 +208,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var name = data.stringAttributeForKey("name")
                 var email = data.stringAttributeForKey("email")
                 var coin = data.stringAttributeForKey("coin")
-                coinTotal = coin
                 var dream = data.stringAttributeForKey("dream")
                 var step = data.stringAttributeForKey("step")
                 var level = data.stringAttributeForKey("level")
