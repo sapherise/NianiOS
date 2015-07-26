@@ -218,7 +218,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 Sa.setObject(AllCoverURL, forKey: "coverUrl")
                 Sa.synchronize()
                 var deadLine = data.stringAttributeForKey("deadline")
-                var (l, e) = levelCount( (level.toInt()!)*7 )
                 self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                 self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                 self.UserName.text = "\(name)"
@@ -260,8 +259,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func levelClick(){
-        var levelVC = LevelViewController(nibName: "Level", bundle: nil)
-        self.navigationController!.pushViewController(levelVC, animated: true)
+        var vc = PetViewController()
+        self.navigationController!.pushViewController(vc, animated: true)
     }
     
     func coinClick(){

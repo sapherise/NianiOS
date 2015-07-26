@@ -662,6 +662,12 @@ struct Api {
         loadCookies()
         V.httpPostForString("http://nian.so/api/sign_check.php", content: "name=\(name)&&pw=\(password)&&em=\(email)", callback: callback)
     }
+    
+    static func getConsume(type: String, coins: Int, callback: V.JsonCallback) {
+        loadCookies()
+        println("http://api.nian.so/consume?uid=\(s_uid)&shell=\(s_shell)&type=\(type)&coins=\(coins)")
+        V.httpGetForJson("http://api.nian.so/consume?uid=\(s_uid)&shell=\(s_shell)&type=\(type)&coins=\(coins)", callback: callback)
+    }
 }
 
 

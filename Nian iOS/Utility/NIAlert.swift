@@ -252,7 +252,7 @@ class NIAlert: UIView {
         })
     }
     
-    func dismissWithAnimationSwtichEvolution(view: UIView) {
+    func dismissWithAnimationSwtichEvolution(view: UIView, url: String) {
         var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
@@ -261,7 +261,7 @@ class NIAlert: UIView {
                 if let v = view as? NIAlert {
                     v.isLayerHidden = true
                     v.showWithAnimation(showAnimationStyle.flip)
-                    v.evolution()
+                    v.evolution(url)
                 }
         })
     }

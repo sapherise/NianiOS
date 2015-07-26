@@ -341,7 +341,7 @@ class AddStepCell: UITableViewCell {
 }
 
 extension NIAlert {
-    func evolution() {
+    func evolution(url: String) {
 //        var _tmpImg = self.imgView?.image!
         
         UIView.animateWithDuration(0.7, animations: {
@@ -365,7 +365,7 @@ extension NIAlert {
                                                         UIView.animateWithDuration(0.2, animations: {
                                                             self.imgView!.setScale(1.15)
                                                             }, completion: { (Bool) -> Void in
-//                                                                self.imgView?.image = nil
+                                                                self.imgView?.image = nil
                                                                 if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
                                                                     var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
                                                                     skView.allowsTransparency = true
@@ -378,7 +378,7 @@ extension NIAlert {
                                                                 delay(0.1, {
                                                                     self.imgView!.setScale(1.35)
                                                                     self.imgView?.alpha = 0
-//                                                                    self.imgView?.image = UIImage(named: "pet_ghost")
+                                                                    self.imgView?.setImage("http://img.nian.so/pets/\(url)!d", placeHolder: UIColor.clearColor(), bool: true, ignore: true)
                                                                     UIView.animateWithDuration(0.1, animations: {
                                                                         self.imgView?.alpha = 1
                                                                         self.imgView!.setScale(1.55)

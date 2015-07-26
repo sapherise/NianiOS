@@ -103,7 +103,6 @@
 		12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B8C91A613D5200DD8912 /* MeCellTop.swift */; };
 		12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */; };
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
-		12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D6B31A1369B100FB436E /* LevelCircle.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
@@ -124,7 +123,6 @@
 		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
 		12CE15A71A3EC525006AC031 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A61A3EC525006AC031 /* Circle.swift */; };
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
-		12D1048F19F3387F00E65B54 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1048E19F3387F00E65B54 /* Level.swift */; };
 		12D846011A2318A6005DCC08 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D845FF1A2318A6005DCC08 /* Reachability.m */; };
 		12D846051A233B09005DCC08 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D846041A233B09005DCC08 /* BlurView.swift */; };
 		12D846071A233F46005DCC08 /* AddStep.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D846061A233F46005DCC08 /* AddStep.xib */; };
@@ -147,6 +145,14 @@
 		12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */; };
 		12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */; };
 		12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */; };
+		12F65C091B64F46C0051A914 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C081B64F46C0051A914 /* Pet.swift */; };
+		12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0A1B64F5AE0051A914 /* SAViewController.swift */; };
+		12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0C1B64F98D0051A914 /* PetTableView.swift */; };
+		12F65C111B65084A0051A914 /* PetTableViewSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C101B65084A0051A914 /* PetTableViewSetup.swift */; };
+		12F65C131B65098F0051A914 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C121B65098F0051A914 /* Level.swift */; };
+		12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C161B654EB00051A914 /* PetTableViewGesture.swift */; };
+		12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C181B6559DB0051A914 /* PetNiAlert.swift */; };
+		12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C2D1B65703F0051A914 /* CoinCircle.swift */; };
 		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
 		12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F9253E1A8467F8005ECD9F /* SQL.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
@@ -329,7 +335,6 @@
 		12A8B8C91A613D5200DD8912 /* MeCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCellTop.swift; sourceTree = "<group>"; };
 		12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCellTop.xib; sourceTree = "<group>"; };
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
-		12B4D6B31A1369B100FB436E /* LevelCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelCircle.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		12BE103A19C5EBEA00370348 /* AddBBSComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSComment.swift; sourceTree = "<group>"; };
@@ -352,7 +357,6 @@
 		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
 		12CE15A61A3EC525006AC031 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		12D1048C19F3387600E65B54 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
-		12D1048E19F3387F00E65B54 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		12D845FF1A2318A6005DCC08 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		12D846001A2318A6005DCC08 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		12D846041A233B09005DCC08 /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
@@ -377,6 +381,14 @@
 		12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCell.swift; sourceTree = "<group>"; };
 		12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCellTop.swift; sourceTree = "<group>"; };
 		12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCellTop.xib; sourceTree = "<group>"; };
+		12F65C081B64F46C0051A914 /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		12F65C0A1B64F5AE0051A914 /* SAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAViewController.swift; sourceTree = "<group>"; };
+		12F65C0C1B64F98D0051A914 /* PetTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableView.swift; sourceTree = "<group>"; };
+		12F65C101B65084A0051A914 /* PetTableViewSetup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableViewSetup.swift; sourceTree = "<group>"; };
+		12F65C121B65098F0051A914 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		12F65C161B654EB00051A914 /* PetTableViewGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableViewGesture.swift; sourceTree = "<group>"; };
+		12F65C181B6559DB0051A914 /* PetNiAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetNiAlert.swift; sourceTree = "<group>"; };
+		12F65C2D1B65703F0051A914 /* CoinCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCircle.swift; sourceTree = "<group>"; };
 		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		12F9253E1A8467F8005ECD9F /* SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQL.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -662,6 +674,7 @@
 		126FB4711B574EB80056221C /* 复用 */ = {
 			isa = PBXGroup;
 			children = (
+				12F65C0A1B64F5AE0051A914 /* SAViewController.swift */,
 				126FB4721B574EDB0056221C /* SAActivityViewController.swift */,
 				1200728D1AE7942A000D74BA /* SAStepCell.swift */,
 				1200728F1AE7943D000D74BA /* SAStepCell.xib */,
@@ -882,18 +895,6 @@
 			name = "更新进展";
 			sourceTree = "<group>";
 		};
-		12D1049019F3388500E65B54 /* 等级 */ = {
-			isa = PBXGroup;
-			children = (
-				12D1048E19F3387F00E65B54 /* Level.swift */,
-				12B4D6B31A1369B100FB436E /* LevelCircle.swift */,
-				12D1048C19F3387600E65B54 /* Level.xib */,
-				C4F6D77A1B5E22880033671D /* PetCell.swift */,
-				C492D6191B4D10E800EEA71F /* PetCell.xib */,
-			);
-			name = "等级";
-			sourceTree = "<group>";
-		};
 		12E1C81F1A146DCA00453805 /* LabelAnimation */ = {
 			isa = PBXGroup;
 			children = (
@@ -948,11 +949,28 @@
 			name = "话题";
 			sourceTree = "<group>";
 		};
+		12F65C071B64F44F0051A914 /* 宠物 */ = {
+			isa = PBXGroup;
+			children = (
+				12F65C081B64F46C0051A914 /* Pet.swift */,
+				12F65C0C1B64F98D0051A914 /* PetTableView.swift */,
+				12F65C101B65084A0051A914 /* PetTableViewSetup.swift */,
+				12F65C161B654EB00051A914 /* PetTableViewGesture.swift */,
+				12F65C181B6559DB0051A914 /* PetNiAlert.swift */,
+				12D1048C19F3387600E65B54 /* Level.xib */,
+				12F65C121B65098F0051A914 /* Level.swift */,
+				C4F6D77A1B5E22880033671D /* PetCell.swift */,
+				C492D6191B4D10E800EEA71F /* PetCell.xib */,
+			);
+			name = "宠物";
+			sourceTree = "<group>";
+		};
 		12F7A4E01A07405A00F16F99 /* 念币 */ = {
 			isa = PBXGroup;
 			children = (
 				326BB93B1A0B6E21007E12B4 /* 详情 */,
 				12F7A4E11A07406F00F16F99 /* Coin.swift */,
+				12F65C2D1B65703F0051A914 /* CoinCircle.swift */,
 				12BAEB2B1A19F9B90041C7C0 /* Film.xib */,
 				12BAEB2D1A19FA6D0041C7C0 /* Film.swift */,
 				3257F7701A077B69005475BB /* Coin.storyboard */,
@@ -994,7 +1012,7 @@
 				123CB05119785B610062BB8A /* 首页 */,
 				3252850B1A10C2A200316021 /* 发现 */,
 				323CD2E71A11EEC400FFE3F4 /* 广场 */,
-				12D1049019F3388500E65B54 /* 等级 */,
+				12F65C071B64F44F0051A914 /* 宠物 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
 				121F66971B15B3DF00103B14 /* 新梦境列表 */,
 				12CE159B1A3E7AD8006AC031 /* 梦境 */,
@@ -1458,7 +1476,9 @@
 			files = (
 				128C4E391A503C54000D2B7C /* CircleType.swift in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
+				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
+				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
 				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
@@ -1474,6 +1494,7 @@
 				12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				C4B6B6771B2723EF00A5FA26 /* CircleListCollectionController.swift in Sources */,
+				12F65C111B65084A0051A914 /* PetTableViewSetup.swift in Sources */,
 				1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */,
 				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
@@ -1502,7 +1523,6 @@
 				C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
-				12D1048F19F3387F00E65B54 /* Level.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
@@ -1517,6 +1537,7 @@
 				C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */,
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
+				12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */,
 				126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */,
@@ -1543,7 +1564,6 @@
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
-				12B4D6B41A1369B100FB436E /* LevelCircle.swift in Sources */,
 				1243C6F71B4F60A0007F741C /* Card.swift in Sources */,
 				C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */,
 				12C354531AD5126F0078693F /* Badge.swift in Sources */,
@@ -1565,6 +1585,7 @@
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
+				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
 				12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
@@ -1572,14 +1593,17 @@
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */,
+				12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */,
 				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
+				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
 				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,
+				12F65C131B65098F0051A914 /* Level.swift in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,

@@ -273,7 +273,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
     }
     
     func SAXib(named: String) -> AnyObject {
-        return (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0)
+        return (NSBundle.mainBundle().loadNibNamed(named, owner: self, options: nil) as NSArray).objectAtIndex(0)
     }
 }
 

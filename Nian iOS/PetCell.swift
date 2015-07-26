@@ -9,7 +9,7 @@
 import UIKit
 
 // MARK: - pet cell
-class petCell: UITableViewCell {
+class PetCell: UITableViewCell {
     @IBOutlet var imgView: UIImageView!
     
     var info: NSDictionary?
