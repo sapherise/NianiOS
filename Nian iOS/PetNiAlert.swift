@@ -37,20 +37,28 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
                                     var d = self.dataArray[i] as! NSDictionary
                                     var _id = d.stringAttributeForKey("id")
                                     if _id == id {
-                                        var mutableData = NSMutableDictionary(dictionary: d)
-                                        mutableData.setValue(image, forKey: "image")
-                                        mutableData.setValue(level, forKey: "level")
-                                        self.dataArray[i] = mutableData
-                                        self.setPetTitle()
                                         if level == "5" || level == "10" {
                                             self.evolutionView = NIAlert()
                                             self.evolutionView!.delegate = self
                                             self.evolutionView!.dict = NSMutableDictionary(objects: [self.imageView, name, "\(name)进化了！", [" 嗯！"]],
                                                 forKeys: ["img", "title", "content", "buttonArray"])
                                             self.upgradeView?.dismissWithAnimationSwtichEvolution(self.evolutionView!, url: image)
+                                            var mutableData = NSMutableDictionary(dictionary: d)
+                                            mutableData.setValue(image, forKey: "image")
+                                            mutableData.setValue(level, forKey: "level")
+                                            self.dataArray[i] = mutableData
+                                            self.tableViewPet.reloadData()
+                                            delay(1, {
+                                                self.setPetTitle()
+                                            })
                                             break
                                         } else {
+                                            var mutableData = NSMutableDictionary(dictionary: d)
+                                            mutableData.setValue(image, forKey: "image")
+                                            mutableData.setValue(level, forKey: "level")
+                                            self.dataArray[i] = mutableData
                                             self.tableViewPet.reloadData()
+                                            self.setPetTitle()
                                             self.upgradeView?.dismissWithAnimation(.normal)
                                             break
                                         }
@@ -104,9 +112,15 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
                 var coins = energy/100
                 Api.getConsume("energy", coins: coins) { json in
                     if json != nil {
-                        println(json)
-                        globalWillNianReload = 1
-                        // todo: API 完善后，首先修改变量 energy（应该是服务器返回的 energy），然后修改 UI 上的数值
+                        let err = json!.objectForKey("error") as! NSNumber
+                        self.giftView?.dismissWithAnimation(.normal)
+                        if err == 0 {
+                            globalWillNianReload = 1
+                            self.energy = self.energy - coins * 100
+                            self.setPetTitle()
+                        } else {
+                            self.view.showTipText("遇到了一个奇怪的错误...", delay: 2)
+                        }
                     }
                 }
             } else {
@@ -175,7 +189,6 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
     }
     
     func onGift() {
-        println("haha")
         giftView = NIAlert()
         giftView?.delegate = self
         if energy >= 100 {

@@ -199,7 +199,6 @@ struct Api {
     static func postLabTrip(id: String, subid: Int = 0, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&subid=\(subid)", callback: callback)
-//        V.httpPostForJson_AFN("http://nian.so/api/lab_trip.php", content: ["id": "\(id)", "uid": "\(s_uid)", "shell": "\(s_shell)", "subid": "\(subid)"], callback: callback)
     }
     
     static func postCircleNew(name: String, content: String, img: String, privateType: Int, dream: String, callback: V.JsonCallback) {
@@ -665,8 +664,7 @@ struct Api {
     
     static func getConsume(type: String, coins: Int, callback: V.JsonCallback) {
         loadCookies()
-        println("http://api.nian.so/consume?uid=\(s_uid)&shell=\(s_shell)&type=\(type)&coins=\(coins)")
-        V.httpGetForJson("http://api.nian.so/consume?uid=\(s_uid)&shell=\(s_shell)&type=\(type)&coins=\(coins)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/consume?uid=\(s_uid)&shell=\(s_shell)", content: "type=\(type)&coins=\(coins)", callback: callback)
     }
 }
 

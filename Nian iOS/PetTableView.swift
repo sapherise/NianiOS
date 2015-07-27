@@ -11,10 +11,29 @@ import UIKit
 
 extension PetViewController: UITableViewDelegate, UITableViewDataSource {
     func load() {
+        var jsonCache: AnyObject? = Cookies.get("pets")
+        if jsonCache != nil {
+            if let err = jsonCache!.objectForKey("error") as? NSNumber {
+                if err == 0 {
+                    self.dataArray.removeAllObjects()
+                    var data = jsonCache!.objectForKey("data") as! NSDictionary
+                    var arr = data.objectForKey("pets") as! NSArray
+                    self.energy = data.stringAttributeForKey("energy").toInt()!
+                    for item in arr {
+                        self.dataArray.addObject(item)
+                    }
+                    self.tableViewPet.reloadData()
+                    self.setPetTitle()
+                }
+            }
+        }
+        
         Api.getAllPets() { json in
             if json != nil {
+                Cookies.set(json, forKey: "pets")
                 if let err = json!.objectForKey("error") as? NSNumber {
                     if err == 0 {
+                        self.dataArray.removeAllObjects()
                         var data = json!.objectForKey("data") as! NSDictionary
                         var arr = data.objectForKey("pets") as! NSArray
                         self.energy = data.stringAttributeForKey("energy").toInt()!
@@ -58,11 +77,18 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
             c.info = data
             c._layoutSubviews()
             if indexPath.row == current {
-                imageView.image = c.imgView.image
                 c.imgView.image = nil
             }
             c.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
             return c
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView == self.tableViewPet {
+            if abs(indexPath.row - current) <= 1 {
+                showPetInfo()
+            }
         }
     }
 }

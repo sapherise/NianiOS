@@ -28,12 +28,21 @@ extension PetViewController: NIAlertDelegate {
         }
         
         tableViewPet.showsVerticalScrollIndicator = false
-        tableViewPet.tableHeaderView = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
-        tableViewPet.tableFooterView = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
         tableViewPet.registerNib(UINib(nibName: "PetCell", bundle: nil), forCellReuseIdentifier: "PetCell")
+        
+        var viewHeader = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
+        viewHeader.userInteractionEnabled = true
+        viewHeader.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo"))
+        var viewFooter = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
+        viewFooter.userInteractionEnabled = true
+        viewFooter.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo"))
+        tableViewPet.tableHeaderView = viewHeader
+        tableViewPet.tableFooterView = viewFooter
+        
         
         imageView = UIImageView(frame: CGRectMake(globalWidth/2 - 60, 96, 120, 120))
         tableView.addSubview(imageView)
+        imageView.contentMode = UIViewContentMode.Center
         
         self.btnUpgrade = NIButton(string: "升级", frame:  CGRectMake((globalWidth - 100)/2, 252, 100, 36))
         self.btnUpgrade.bgColor = BgColor.blue
@@ -79,6 +88,7 @@ extension PetViewController: NIAlertDelegate {
             var name = data.stringAttributeForKey("name")
             var level = data.stringAttributeForKey("level")
             var owned = data.stringAttributeForKey("owned")
+            var image = data.stringAttributeForKey("image")
             labelName.text = name
             if owned == "1" && level != "15" {
                 labelLevel.text = "Lv \(level)"
@@ -87,46 +97,41 @@ extension PetViewController: NIAlertDelegate {
                 labelLevel.text = level == "15" ? "Lv 15" : "--"
                 self.btnUpgrade.bgColor = BgColor.grey
             }
-            
-//            var numOwned = 0
-//            var numTotal = 0
-//            for i in 0...(dataArray.count - 1) {
-//                numTotal++
-//                var data = dataArray[i] as! NSDictionary
-//                var owned = data.stringAttributeForKey("owned")
-//                if owned == "1" {
-//                    numOwned++
-//                }
-//            }
-            
             labelLeft.text = "礼物：\(energy)"
             labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGift"))
+            if owned == "1" {
+                imageView.setImage("http://img.nian.so/pets/\(image)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
+            } else {
+                imageView.setImageGray("http://img.nian.so/pets/\(image)!d")
+            }
         }
     }
     
     func toUpgrade() {
-        var data = dataArray[current] as! NSDictionary
-        var id = data.stringAttributeForKey("id").toInt()!
-        var level = data.stringAttributeForKey("level")
-        var name = data.stringAttributeForKey("name")
-        var owned = data.stringAttributeForKey("owned")
-        if owned == "1" && level != "15" {
-            var coin = 0
-            if let _level = level.toInt() {
-                if _level < 5 {
-                    coin = 5
-                } else if _level < 10 {
-                    coin = 10
-                } else {
-                    coin = 15
+        if dataArray.count > 0 {
+            var data = dataArray[current] as! NSDictionary
+            var id = data.stringAttributeForKey("id").toInt()!
+            var level = data.stringAttributeForKey("level")
+            var name = data.stringAttributeForKey("name")
+            var owned = data.stringAttributeForKey("owned")
+            if owned == "1" && level != "15" {
+                var coin = 0
+                if let _level = level.toInt() {
+                    if _level < 5 {
+                        coin = 5
+                    } else if _level < 10 {
+                        coin = 10
+                    } else {
+                        coin = 15
+                    }
                 }
+                upgradeView = NIAlert()
+                upgradeView!.delegate = self
+                upgradeView!.tag = id
+                upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "升级", "要花费 \(coin) 念币使\n\(name)升级吗？", ["嗯！", "不要"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                upgradeView!.showWithAnimation(.flip)
             }
-            upgradeView = NIAlert()
-            upgradeView!.delegate = self
-            upgradeView!.tag = id
-            upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "升级", "要花费 \(coin) 念币使\n\(name)升级吗？", ["嗯！", "不要"]],
-                forKeys: ["img", "title", "content", "buttonArray"])
-            upgradeView!.showWithAnimation(.flip)
         }
     }
 }

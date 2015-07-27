@@ -10,11 +10,6 @@ import Foundation
 import UIKit
 
 extension PetViewController: UIGestureRecognizerDelegate, NIAlertDelegate {
-    func setupGesture() {
-        tapOnTableView = UITapGestureRecognizer(target: self, action: "showPetInfo")
-        tapOnTableView!.delegate = self
-        tableViewPet.addGestureRecognizer(tapOnTableView!)
-    }
     
     func showPetInfo() {
         petDetailView = NIAlert()
@@ -45,30 +40,6 @@ extension PetViewController: UIGestureRecognizerDelegate, NIAlertDelegate {
         petDetailView?.showWithAnimation(.flip)
     }
     
-    /**
-    主要是为了使 tableView 中间的 petNormal View 显示图片
-    tableView 能响应滑动事件，也能在 petNormal View 范围内响应点击事件
-    */
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let tHHeight = tableViewPet.tableHeaderView!.frame.height
-        let tFHeight = tableViewPet.tableFooterView!.frame.height
-        
-        var tableViewCenter: CGFloat = globalWidth / 2.0
-        
-        if gestureRecognizer == tapOnTableView {
-            var point = gestureRecognizer.locationInView(tableViewPet)
-            var HeaderXInScreen: CGFloat = point.y - tableViewPet.contentOffset.y
-            var FooterXInScreen: CGFloat = point.y - tableViewPet.contentOffset.y
-            
-            if abs(HeaderXInScreen - tableViewCenter) < 60 && abs(FooterXInScreen - tableViewCenter) < 60 {
-                return true
-            } else {
-                return false
-            }
-        }
-        return true
-    }
-    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
             return false
@@ -88,5 +59,21 @@ extension PetViewController: UIGestureRecognizerDelegate, NIAlertDelegate {
             return false
         }
         return true
+    }
+}
+
+extension UIImageView {
+    func setImageGray(urlString: String) {
+        var url = NSURL(string: urlString)
+        self.image = nil
+        self.backgroundColor = UIColor.clearColor()
+        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        self.setImageWithURLRequest(req,
+            placeholderImage: nil,
+            success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                self.image = image.convertToGrayscale()
+                self.contentMode = .ScaleAspectFill
+            },
+            failure: nil)
     }
 }

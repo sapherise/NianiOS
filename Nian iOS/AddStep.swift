@@ -378,7 +378,7 @@ extension NIAlert {
                                                                 delay(0.1, {
                                                                     self.imgView!.setScale(1.35)
                                                                     self.imgView?.alpha = 0
-                                                                    self.imgView?.setImage("http://img.nian.so/pets/\(url)!d", placeHolder: UIColor.clearColor(), bool: true, ignore: true)
+                                                                    self.imgView?.setImage("http://img.nian.so/pets/\(url)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
                                                                     UIView.animateWithDuration(0.1, animations: {
                                                                         self.imgView?.alpha = 1
                                                                         self.imgView!.setScale(1.55)

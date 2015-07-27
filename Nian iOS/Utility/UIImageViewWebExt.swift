@@ -156,7 +156,9 @@ extension UIImageView {
         if cachedImage != nil {
             self.image = cachedImage
             self.contentMode = .ScaleAspectFill
+            println("有缓存！")
         } else {
+            println("没有缓存")
             self.image = placeholderImage
             self.contentMode = .Center
         }
