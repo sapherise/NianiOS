@@ -28,16 +28,10 @@ class PetCell: UITableViewCell {
         var level = self.info?.stringAttributeForKey("level")
         var name = self.info?.stringAttributeForKey("name")
         var owned = self.info?.stringAttributeForKey("owned")
-        
-        var imgURLString = "http://img.nian.so/pets/\(imgF!)!d"
-        
-        self.imgView?.setImageWithBlock(imgURLString, placeHolder: UIColor.clearColor(), bool: false, ignore: false) {
-            image in
-            if owned == "0" {
-                self.imgView?.image = image.convertToGrayscale()
-            } else {
-                self.imgView?.image = image
-            }
+        if owned == "0" {
+            self.imgView.setImageGray("http://img.nian.so/pets/\(imgF!)!d")
+        } else {
+            self.imgView.setImage("http://img.nian.so/pets/\(imgF!)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
         }
     }
     

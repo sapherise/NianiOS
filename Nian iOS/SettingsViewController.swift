@@ -628,27 +628,25 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func clearingCache(){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+        go {
             var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
             var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
             var files = NSFileManager.defaultManager().subpathsAtPath(cachePath as String)
-            var p:NSString = ""
+            var p = ""
             for p in files! as NSArray {
                 var path = cachePath.stringByAppendingPathComponent("\(p)")
                 if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                    var safeuid = Sa.objectForKey("uid") as! String
-                    if p as! NSString != "\(safeuid).jpg!dream" {
+                    if "\(p)" != "\(SAUid()).jpg!dream" {
                         NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
                     }
                 }
             }
-            dispatch_sync(dispatch_get_main_queue(), {
+            back {
                 self.cacheActivity.hidden = true
                 self.cacheActivity.stopAnimating()
                 self.view.showTipText("缓存清理好了！", delay: 1)
-            })
-        })
+            }
+        }
     }
     
     func niceTry(sender:UILongPressGestureRecognizer){

@@ -15,10 +15,11 @@ typedef enum {
 } PIXELS;
 
 - (UIImage *)convertToGrayscale {
+    CGFloat scale = [[UIScreen mainScreen] scale];
     
     CGSize size = [self size];
-    int width = size.width; //  *scale;
-    int height = size.height; // *scale;
+    int width = size.width *scale;
+    int height = size.height *scale;
     
     // the pixels will be painted to this array
     uint32_t *pixels = (uint32_t *) malloc(width * height * sizeof(uint32_t));
@@ -29,7 +30,7 @@ typedef enum {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     
     // create a context with RGBA pixels
-    CGContextRef context = CGBitmapContextCreate(pixels, width, height, 8, width * sizeof(uint32_t), colorSpace, 
+    CGContextRef context = CGBitmapContextCreate(pixels, width, height, 8, width * sizeof(uint32_t), colorSpace,
                                                  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedLast);
     
     // paint the bitmap to our context which will fill in the pixels array
@@ -58,9 +59,7 @@ typedef enum {
     free(pixels);
     
     // make a new UIImage to return
-//    UIImage *resultUIImage = [UIImage imageWithCGImage:image scale:scale orientation:UIImageOrientationUp];
-    
-    UIImage *resultUIImage = [UIImage imageWithCGImage:image];
+    UIImage *resultUIImage = [UIImage imageWithCGImage:image scale:scale orientation:UIImageOrientationUp];
     
     // we're done with image now too
     CGImageRelease(image);
