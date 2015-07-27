@@ -194,14 +194,14 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     card.onCardSave()
                 }
                 
-                if true {
+                if self.isfirst == "1" {
                     globalWillNianReload = 1
                     
                     self.hidden = true
                     self.delegate?.onViewCloseClick()
 
                       // 如果念币小于 3
-                    if false {
+                    if totalCoin.toInt() < 3 {
                         self.niCoinLessAlert = NIAlert()
                         self.niCoinLessAlert?.delegate = self
                         self.niCoinLessAlert?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
