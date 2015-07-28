@@ -360,4 +360,6 @@ class NIButton: UIButton {
         self._spinner!.stopAnimating()
         self._spinner!.hidden = true
     }
+    
+    
 }

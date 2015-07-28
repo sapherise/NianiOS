@@ -35,7 +35,6 @@ class PetViewController: SAViewController, ShareDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupGesture()
         load()
     }
     

@@ -316,6 +316,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func countUp(coin: String, total: String, isfirst: String) {
         self.load()
+        println("coin: \(coin)")
+        println("total: \(total)")
+        println("isfirst: \(isfirst)")
         
         /* dataArrayTop 实际上是一个 Dict */
         if let step = dataArrayTop.stringAttributeForKey("step").toInt() {
@@ -325,8 +328,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             tableView.reloadData()
         }
         
-        if true {
-            if true {
+        if isfirst == "1" {
+            if total.toInt() < 3 {
                 self.alertCoin = NIAlert()
                 self.alertCoin?.delegate = self
                 self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
