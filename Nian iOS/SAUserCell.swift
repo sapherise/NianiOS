@@ -26,6 +26,7 @@ class SAUserCell: MKTableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnMain.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
+        self.viewLine.setHeight(0.5)
     }
     
     override func layoutSubviews() {

@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
+import SpriteKit
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegate{
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NIAlertDelegate {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -34,6 +35,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var navView: UIImageView!
     var viewErr: UIView!
     var viewHeader: UIView!
+    var birthday: String = ""
     
     // uploadWay，当上传封面时为 0，上传头像时为 1
     var uploadWay:Int = 0
@@ -66,9 +68,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.coinButton.frame.origin.x = globalWidth/2-104
         self.levelButton.frame.origin.x = globalWidth/2-104+108
         
-        //        var pan = UIPanGestureRecognizer(target: self, action: "pan:")
-        //        pan.delegate = self
-        //        self.scrollView.addGestureRecognizer(pan)
+        self.UserHead.layer.cornerRadius = 30
+        self.UserHead.layer.masksToBounds = true
         
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
@@ -130,9 +131,31 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
         imageSettings.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
+        imageSettings.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "EggShell:"))
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
-        
+    }
+    
+    func EggShell(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            var eggShell = NIAlert()
+            eggShell.delegate = self
+            eggShell.dict = NSMutableDictionary(objects: [UserHead, " 彩蛋！", "你在念上的第一秒\n\(self.birthday)", ["太开心"]], forKeys: ["img", "title", "content", "buttonArray"])
+            eggShell.showWithAnimation(.flip)
+            if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+                var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+                skView.allowsTransparency = true
+                eggShell._containerView!.addSubview(skView)
+                scene.scaleMode = SKSceneScaleMode.AspectFit
+                skView.presentScene(scene)
+                scene.setupViews()
+                eggShell._containerView?.sendSubviewToBack(skView)
+            }
+        }
+    }
+    
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        niAlert.dismissWithAnimation(.normal)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -212,6 +235,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 var step = data.stringAttributeForKey("step")
                 var level = data.stringAttributeForKey("level")
                 var coverURL = data.stringAttributeForKey("cover")
+                self.birthday = data.stringAttributeForKey("lastdate")
                 var petCount = data.stringAttributeForKey("pet_count")
                 var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                 var vip = data.stringAttributeForKey("vip")

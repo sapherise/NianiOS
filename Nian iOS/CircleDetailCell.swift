@@ -24,6 +24,7 @@ class CircleDetailCell: MKTableViewCell {
         self.setWidth(globalWidth)
         self.viewLine.setWidth(globalWidth-78)
         self.imageDream.setX(globalWidth-55)
+        self.viewLine.setHeight(0.5)
     }
     
     override func layoutSubviews() {

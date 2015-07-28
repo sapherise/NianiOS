@@ -778,7 +778,7 @@ func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
 }
 
 extension UIColor {
-    class func colorWithHex(hexString: String) -> UIColor? {
+    class func colorWithHex(hexString: String) -> UIColor! {
         let regexp = NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
             options: .CaseInsensitive,
             error: nil)
@@ -786,7 +786,7 @@ extension UIColor {
             options: .ReportProgress,
             range: NSMakeRange(0, count(hexString)))
         if num != 1 {
-            return nil
+            return SeaColor
         }
         var rgbValue : UInt32 = 0
         let scanner = NSScanner(string: hexString)

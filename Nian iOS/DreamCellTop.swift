@@ -60,6 +60,10 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.viewLineTop.setWidth(globalWidth - 40)
         self.viewLineTag.setWidth(globalWidth)
         self.viewLineTagTop.setWidth(globalWidth)
+        self.viewLineTag.setHeight(0.5)
+        self.viewLineTagTop.setHeight(0.5)
+        viewLineLeft.setWidth(0.5)
+        viewLineTop.setHeight(0.5)
         self.scrollView.setWidth(globalWidth)
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false

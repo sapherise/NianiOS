@@ -24,6 +24,8 @@ class CircleExploreCell: UITableViewCell {
     @IBOutlet var labelLeft: UILabel!
     @IBOutlet var labelMiddle: UILabel!
     @IBOutlet var labelRight: UILabel!
+    @IBOutlet var line1: UIView!
+    @IBOutlet var line2: UIView!
     
     var largeImageURL:String = ""
     var data :NSDictionary!
@@ -33,8 +35,11 @@ class CircleExploreCell: UITableViewCell {
         self.selectionStyle = .None
         self.setWidth(globalWidth)
         self.viewLine.setWidth(globalWidth - 32)
+        self.viewLine.setHeight(0.5)
         self.viewHolder.setX(globalWidth/2-160)
         self.labelTag.setX(globalWidth-66)
+        line1.setWidth(0.5)
+        line2.setWidth(0.5)
     }
     
     override func layoutSubviews() {
@@ -84,10 +89,10 @@ class CircleExploreCell: UITableViewCell {
         var title = data.stringAttributeForKey("title").decode()
         var heightTitle = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
-            return 205 + heightTitle - 8
+            return 204.5 + heightTitle - 8
         }
         var height = content.stringHeightWith(12, width: 248)
-        return height + 205 + heightTitle
+        return height + 204.5 + heightTitle
     }
     
 }

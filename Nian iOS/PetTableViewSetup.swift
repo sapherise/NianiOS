@@ -42,7 +42,7 @@ extension PetViewController: NIAlertDelegate {
         
         imageView = UIImageView(frame: CGRectMake(globalWidth/2 - 60, 96, 120, 120))
         tableView.addSubview(imageView)
-        imageView.contentMode = UIViewContentMode.Center
+        imageView.contentMode = UIViewContentMode.ScaleAspectFit
         
         self.btnUpgrade = NIButton(string: "升级", frame:  CGRectMake((globalWidth - 100)/2, 252, 100, 36))
         self.btnUpgrade.bgColor = BgColor.blue
@@ -51,20 +51,20 @@ extension PetViewController: NIAlertDelegate {
         
         labelName = UILabel(frame: CGRectMake(globalWidth/2 - 160, 32, 320, 24))
         labelName.textAlignment = NSTextAlignment.Center
-        labelName.textColor = UIColor.colorWithHex("333333")
+        labelName.textColor = UIColor.colorWithHex("#333333")
         labelName.font = UIFont.boldSystemFontOfSize(18)
         tableView.addSubview(labelName)
         
         labelLevel = UILabel(frame: CGRectMake(globalWidth/2 - 160, 56, 320, 24))
         labelLevel.textAlignment = NSTextAlignment.Center
-        labelLevel.textColor = UIColor.colorWithHex("B3B3B3")
+        labelLevel.textColor = UIColor.colorWithHex("#B3B3B3")
         labelLevel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         tableView.addSubview(labelLevel)
         
         
         labelLeft = UILabel(frame: CGRectMake(20, 258, 100, 36))
         labelLeft.textAlignment = NSTextAlignment.Left
-        labelLeft.textColor = UIColor.colorWithHex("B3B3B3")
+        labelLeft.textColor = UIColor.colorWithHex("#B3B3B3")
         labelLeft.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         labelLeft.userInteractionEnabled = true
         tableView.addSubview(labelLeft)
@@ -90,11 +90,19 @@ extension PetViewController: NIAlertDelegate {
             var owned = data.stringAttributeForKey("owned")
             var image = data.stringAttributeForKey("image")
             labelName.text = name
-            if owned == "1" && level != "15" {
+            if owned == "1" {   // 拥有这个宠物
                 labelLevel.text = "Lv \(level)"
-                self.btnUpgrade.bgColor = BgColor.blue
-            } else {
-                labelLevel.text = level == "15" ? "Lv 15" : "--"
+                if level == "15" {
+                    labelLevel.textColor = GoldColor
+                    labelName.textColor = GoldColor
+                    self.btnUpgrade.bgColor = BgColor.grey
+                } else {
+                    labelLevel.textColor = UIColor.colorWithHex("#B3B3B3")
+                    labelName.textColor = UIColor.colorWithHex("#333333")
+                    self.btnUpgrade.bgColor = BgColor.blue
+                }
+            } else {    // 没有拥有这个宠物
+                labelLevel.text = "--"
                 self.btnUpgrade.bgColor = BgColor.grey
             }
             labelLeft.text = "礼物：\(energy)"

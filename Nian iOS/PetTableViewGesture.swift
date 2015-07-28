@@ -25,7 +25,7 @@ extension PetViewController: UIGestureRecognizerDelegate, NIAlertDelegate {
             } else if _level == 15 {
                 content = "\n这只宠物满级了！"
             } else if _level >= 10 {
-                content = ""
+                content = "\n满级是 15 级！"
             }
         }
         var titleButton = "哦"

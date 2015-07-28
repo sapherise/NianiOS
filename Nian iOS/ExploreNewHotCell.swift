@@ -34,6 +34,7 @@ class ExploreNewHotCell: UITableViewCell {
         self.setWidth(globalWidth)
         self.labelTag.setX(globalWidth-66)
         self.viewLine.setWidth(globalWidth - 32)
+        self.viewLine.setHeight(0.5)
         self.viewHolder.setX(globalWidth/2-160)
     }
 
@@ -99,12 +100,12 @@ class ExploreNewHotCell: UITableViewCell {
         var tag = data.stringAttributeForKey("type")
         var titleHeight = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
-            return 205 + titleHeight - 8
+            return 204.5 + titleHeight - 8
         }
         
         var heightFit = content.stringHeightWith(12, width: 248)
         var heightMax = "\n\n".stringHeightWith(12, width: 248)
         var heightContent = heightFit > heightMax ? heightMax : heightFit
-        return heightContent + 205 + titleHeight
+        return heightContent + 204.5 + titleHeight
     }
 }

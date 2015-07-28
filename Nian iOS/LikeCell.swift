@@ -33,6 +33,7 @@ class LikeCell: MKTableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnFollow.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
+        self.viewLine.setHeight(0.5)
     }
     
     override func layoutSubviews() {

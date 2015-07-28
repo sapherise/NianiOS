@@ -64,6 +64,10 @@ class CircleDetailTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.line1.setWidth(globalWidth-30)
         self.line2.setWidth(globalWidth-30)
         self.line3.setWidth(globalWidth-30)
+        self.line1.setHeight(0.5)
+        self.line2.setHeight(0.5)
+        self.line3.setHeight(0.5)
+        viewLineLeft.setWidth(0.5)
         self.labelTag.setX(globalWidth-210)
         self.labelPrivate.setX(globalWidth-210)
         self.switchNotice.layer.cornerRadius = 16

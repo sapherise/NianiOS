@@ -345,6 +345,9 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 c.btnMain.tag = indexPath.row
                 c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toDream:"))
                 c.btnMain.addTarget(self, action: "onFollowDream:", forControlEvents: UIControlEvents.TouchUpInside)
+                if indexPath.row == dataArrayDream.count - 1 {
+                    c.viewLine.hidden = true
+                }
                 return c
             } else {
                 var c = dreamTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell

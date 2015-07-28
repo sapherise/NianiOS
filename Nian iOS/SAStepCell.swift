@@ -73,6 +73,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnLike.setX(globalWidth - 52)
         self.btnUnLike.setX(globalWidth - 52)
         self.viewLine.setWidth(globalWidth - 40)
+        self.viewLine.setHeight(0.5)
         self.labelContent.setWidth(globalWidth-40)
         self.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageClick"))
         self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
@@ -90,7 +91,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         var sid = self.data.stringAttributeForKey("sid")
         if sid.toInt() != nil {
             self.sid = sid.toInt()!
