@@ -136,7 +136,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     // 连接数据库
+    var isLoadFinish = 0
     func onCircleEnter() {
+        isLoadFinish = 0
         self.loadCircle()
         self.loadLetter()
     }
@@ -450,12 +452,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func enter() {
-        go {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            client.setOnState(self.on_state)
-            var r = client.enter(safeuid, shell: safeshell)
+        if isLoadFinish == 2 {
+            go {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeshell = Sa.objectForKey("shell") as! String
+                client.setOnState(self.on_state)
+                var r = client.enter(safeuid, shell: safeshell)
+            }
         }
     }
     
@@ -570,6 +574,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             Api.postCircleInit() { json in
                 if json != nil {
                     // 成功
+                    self.isLoadFinish++
                     var a: Int = 0
                     var arr = json!.objectForKey("items") as! NSArray
                     var lastid = json!.objectForKey("lastid") as! String
@@ -644,6 +649,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             }
                         }
                     }
+                    self.enter()
                 }
             }
         }
@@ -653,6 +659,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         Api.postLetterInit() { json in
             if json != nil {
                 // 成功
+                self.isLoadFinish++
                 var a: Int = 0
                 var arr = json!.objectForKey("items") as! NSArray
                 var lastid = json!.objectForKey("lastid") as! String
