@@ -58,14 +58,14 @@ extension PetViewController: NIAlertDelegate {
         labelLevel = UILabel(frame: CGRectMake(globalWidth/2 - 160, 56, 320, 24))
         labelLevel.textAlignment = NSTextAlignment.Center
         labelLevel.textColor = UIColor.colorWithHex("B3B3B3")
-        labelLevel.font = UIFont.systemFontOfSize(12, weight: -1)
+        labelLevel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         tableView.addSubview(labelLevel)
         
         
         labelLeft = UILabel(frame: CGRectMake(20, 258, 100, 36))
         labelLeft.textAlignment = NSTextAlignment.Left
         labelLeft.textColor = UIColor.colorWithHex("B3B3B3")
-        labelLeft.font = UIFont.systemFontOfSize(12, weight: -1)
+        labelLeft.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         labelLeft.userInteractionEnabled = true
         tableView.addSubview(labelLeft)
     }

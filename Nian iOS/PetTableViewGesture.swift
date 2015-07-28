@@ -63,17 +63,34 @@ extension PetViewController: UIGestureRecognizerDelegate, NIAlertDelegate {
 }
 
 extension UIImageView {
+    
+    /**
+    已知此方法就是为了加载灰度图片，所以
+    思路：先生成一个假的 API, 加载缓存的灰度图片，不然就去请求网络图片
+    
+    :param: urlString <#urlString description#>
+    */
     func setImageGray(urlString: String) {
-        var url = NSURL(string: urlString)
-        self.image = nil
-        self.backgroundColor = UIColor.clearColor()
-        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        self.setImageWithURLRequest(req,
-            placeholderImage: nil,
-            success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                self.image = image.convertToGrayscale()
-                self.contentMode = .ScaleAspectFill
-            },
-            failure: nil)
+        // 生成灰度图片
+        var _urlString = urlString + "Gray"
+        var _req = NSURLRequest(URL: NSURL(string: _urlString)!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        
+        if let cachedImage = UIImageView.self.sharedImageCache().cachedImageForRequest(_req) {
+            self.image = cachedImage
+        } else {
+            var url = NSURL(string: urlString)
+            self.image = nil
+            self.backgroundColor = UIColor.clearColor()
+            var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+            self.setImageWithURLRequest(req,
+                placeholderImage: nil,
+                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                    self.image = image.convertToGrayscale()
+                    self.contentMode = .ScaleAspectFill
+                    
+                    // 缓存灰度图片，对应的是生成的假的 _req
+                    UIImageView.self.sharedImageCache().cacheImage(self.image, forRequest: _req)
+                },
+                failure: nil)}
     }
 }
