@@ -189,7 +189,13 @@ class ImClient {
         }
     }
     
-    private var prev_nil = true
+    /*
+    prev_nil
+    0:  初始
+    1:  成功
+    2:  心跳
+    */
+    private var prev_nil = 0
     
     private func polling() {
         while m_polling {
@@ -197,19 +203,23 @@ class ImClient {
                 enter(m_uid, shell: m_shell)
             } else if m_state == .authed {
                 var r: AnyObject? = nil
-                if prev_nil {
-                    // 测试拉取
+                if prev_nil == 0 {
                     r  = httpGet(m_landServer + "poll", "")
                     if r != nil {
-                        // 测试成功
+//                        m_onState?(.live)
+                        r = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
+                    }
+                } else if prev_nil == 2 {
+                    r  = httpGet(m_landServer + "poll", "")
+                    if r != nil {
                         m_onState?(.live)
                         r = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
                     }
-                } else {
+                }else {
                     r = httpGet(m_landServer + "poll", httpParams(["uid": m_uid, "sid": m_sid]))
                 }
                 if r != nil {
-                    prev_nil = false
+                    prev_nil = 1
                     m_repollDelay = 0.5
                     var status = peekStatus(r!)
                     switch status {
@@ -223,7 +233,7 @@ class ImClient {
                         break
                     }
                 } else {
-                    prev_nil = true
+                    prev_nil = 2
                     if m_repollDelay >= 60 {
                         setState(.unconnect)
                     }
