@@ -218,7 +218,7 @@
                 <outlet property="viewTop" destination="XI3-p5-SPO" id="HOg-9n-zUu"/>
                 <outlet property="viewTopHolder" destination="VRv-Ty-ulg" id="zen-8c-u7Y"/>
             </connections>
-            <point key="canvasLocation" x="114" y="11"/>
+            <point key="canvasLocation" x="253" y="246"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
