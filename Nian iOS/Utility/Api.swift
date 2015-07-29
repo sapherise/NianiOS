@@ -652,7 +652,6 @@ struct Api {
     
     
     static func postCheckName(name: String, callback: V.StringCallback) {
-        loadCookies()
         V.httpPostForString("http://nian.so/api/sign_checkname.php", content: "name=\(name)", callback: callback)
     }
     

@@ -31,6 +31,7 @@ class MeCell: UITableViewCell {
         self.lastdate!.setX(globalWidth-107)
         self.contentLabel?.setWidth(globalWidth-40)
         self.viewLine.setWidth(globalWidth - 40)
+        self.viewLine.setHeight(0.5)
         self.labelConfirm.setX(globalWidth/2-50)
     }
     

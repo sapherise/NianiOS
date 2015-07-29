@@ -9,8 +9,8 @@
 import UIKit
 
 @objc enum PlayMode: Int {
-    case tough
-    case simple
+    case hard
+    case easy
 }
 
 class ModeViewController: UIViewController {
@@ -18,6 +18,7 @@ class ModeViewController: UIViewController {
     let C5Color = UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1.0)
     let C7Color = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
     
+    @IBOutlet weak var widthLine: NSLayoutConstraint!
     var playMode: PlayMode?
     lazy var signInfo = SignInfo()
     
@@ -30,10 +31,10 @@ class ModeViewController: UIViewController {
     @IBOutlet weak var toughView: UIView!
     @IBOutlet weak var simpleView: UIView!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet var viewLine: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         self.viewBack()
         var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
@@ -42,46 +43,54 @@ class ModeViewController: UIViewController {
         
         var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = "模式"
+        titleLabel.text = "游戏模式"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        self.containerView.layer.borderColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1).CGColor
-        self.containerView.layer.borderWidth = 1.0
-        self.containerView.layer.cornerRadius = 4.0
-        self.containerView.layer.masksToBounds = true
-       
-        self.playMode = PlayMode.tough
-    }
-    
-    override func viewWillAppear(animated: Bool) {
         var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignNext:")
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton]
+        
+        self.containerView.layer.borderColor = UIColor.colorWithHex("#E6E6E6").CGColor
+        self.containerView.layer.borderWidth = 0.5
+        self.containerView.layer.cornerRadius = 4.0
+        self.containerView.layer.masksToBounds = true
+        widthLine.constant = 0.5
+        
+        setPlayMode(PlayMode.easy)
     }
     
     @IBAction func touchOnLeftView(sender: UITapGestureRecognizer) {
-//        self.toughImageView.image = UIImage(named: "xxx")
-        self.simpleLabel.textColor = C7Color
-        self.simpleIllustate.textColor = C7Color
-        
-//        self.simpleImageView.image = UIImage(named: "zzz")
-        self.toughLabel.textColor = C5Color
-        self.toughIllustrate.textColor = C5Color
-        
-        self.playMode = PlayMode.tough
+        setPlayMode(PlayMode.hard)
     }
     
     @IBAction func touchOnRightView(sender: UITapGestureRecognizer) {
-//        self.toughImageView.image = UIImage(named: "xxx")
-        self.simpleLabel.textColor = C5Color
-        self.simpleIllustate.textColor = C5Color
-        
-//        self.simpleImageView.image = UIImage(named: "zzz")
-        self.toughLabel.textColor = C7Color
-        self.toughIllustrate.textColor = C7Color
-        
-        self.playMode = PlayMode.simple
+        setPlayMode(PlayMode.easy)
+    }
+    
+    func setPlayMode(mode: PlayMode) {
+        if mode == PlayMode.easy {
+            //        self.toughImageView.image = UIImage(named: "xxx")
+            self.simpleLabel.textColor = C5Color
+            self.simpleIllustate.textColor = C5Color
+            
+            //        self.simpleImageView.image = UIImage(named: "zzz")
+            self.toughLabel.textColor = C7Color
+            self.toughIllustrate.textColor = C7Color
+            
+            self.playMode = PlayMode.easy
+        } else {
+            //        self.toughImageView.image = UIImage(named: "xxx")
+            self.simpleLabel.textColor = C7Color
+            self.simpleIllustate.textColor = C7Color
+            
+            //        self.simpleImageView.image = UIImage(named: "zzz")
+            self.toughLabel.textColor = C5Color
+            self.toughIllustrate.textColor = C5Color
+            
+            self.playMode = PlayMode.hard
+            
+        }
     }
     
     func toSignNext(sender: AnyObject) {
@@ -91,12 +100,4 @@ class ModeViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = []
         self.navigationController!.pushViewController(signNextVC, animated: true)
     }
-}
-
-
-extension ModeViewController: UIGestureRecognizerDelegate {
-    
-    
-    
-    
 }

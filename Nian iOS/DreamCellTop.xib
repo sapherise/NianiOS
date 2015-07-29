@@ -149,7 +149,7 @@
                     <view contentMode="scaleToFill" id="9yH-Gi-9aT">
                         <rect key="frame" x="20" y="329" width="280" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" id="aaX-Ff-PGh">
                         <rect key="frame" x="0.0" y="52" width="320" height="1"/>

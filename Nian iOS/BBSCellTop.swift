@@ -28,6 +28,7 @@ class BBSCellTop: UITableViewCell{
         self.setWidth(globalWidth)
         self.contentLabel?.setWidth(globalWidth-85)
         self.Line?.setWidth(globalWidth - 40)
+        self.Line?.setHeight(0.5)
     }
     
     override func layoutSubviews(){

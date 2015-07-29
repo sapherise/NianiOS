@@ -36,8 +36,16 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
+        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignMode")
+        rightButton.image = UIImage(named:"newOK")
+        self.navigationItem.rightBarButtonItems = [rightButton]
+        
         self.errLabel.alpha = 0
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
+    }
+    
+    func toSignMode() {
+        checkName()
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -50,7 +58,8 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     }
     
     func checkName(){
-        self.navigationItem.rightBarButtonItems = buttonArray()
+        
+        
         if self.inputName.text == "" {
             self.SAerr("名字不能是空的...")
         }else if SAstrlen(self.inputName.text)<4 {
@@ -60,31 +69,29 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         }else if !self.inputName.text.isValidName() {
             self.SAerr("名字里有奇怪的字符...")
         }else{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var name = self.inputName.text
-                name = SAEncode(SAHtml(name))
-                var sa = SAPost("name=\(name)", "http://nian.so/api/sign_checkname.php")
-                if sa != "" && sa != "err" {
-                    if sa == "NO" {
-                        dispatch_async(dispatch_get_main_queue(), {
+            var name = self.inputName.text
+            name = SAEncode(SAHtml(name))
+            self.navigationItem.rightBarButtonItems = buttonArray()
+            Api.postCheckName(name) { string in
+                if string != nil {
+                    var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignMode")
+                    rightButton.image = UIImage(named:"newOK")
+                    if string == "NO" {
                         self.SAerr("有人取这个名字了...")
-                        })
-                    }else if sa == "1" {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.signInfo.name = name
-                            var modeVC = ModeViewController(nibName: "ModeViewController", bundle: nil)
-                            modeVC.signInfo = self.signInfo
-                            self.navigationItem.rightBarButtonItems = []
-                            self.navigationController?.pushViewController(modeVC, animated: true)
-                        })
+                        self.navigationItem.rightBarButtonItems = [rightButton]
+                    } else {
+                        self.signInfo.name = name
+                        var modeVC = ModeViewController(nibName: "ModeViewController", bundle: nil)
+                        modeVC.signInfo = self.signInfo
+                        self.navigationItem.rightBarButtonItems = [rightButton]
+                        self.navigationController?.pushViewController(modeVC, animated: true)
                     }
                 }
-            })
+            }
         }
     }
     
     func SAerr(message:String){
-        self.navigationItem.rightBarButtonItems = []
         shakeAnimation(self.holder)
         if self.isAnimate == 0 {
             self.isAnimate = 1

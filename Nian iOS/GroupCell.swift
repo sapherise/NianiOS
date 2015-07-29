@@ -28,6 +28,7 @@ class GroupCell: UITableViewCell {
         self.line.setWidth(globalWidth)
         self.labelTime.setX(globalWidth-160)
         self.viewLine.setWidth(globalWidth - 40)
+        self.viewLine.setHeight(0.5)
         self.labelContent.setWidth(globalWidth-40)
     }
     

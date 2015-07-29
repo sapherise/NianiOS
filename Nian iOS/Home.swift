@@ -37,7 +37,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.initViewControllers()
         gameoverCheck()
         launchTimer()
-        self.enter()
+        onCircleEnter()
     }
     
     func gameoverCheck() {
@@ -115,10 +115,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             onCircleEnter()
         }
     }
-
-//    不可以添加这个函数，会导致 NianViewController 失效
-//    override func viewWillAppear(animated: Bool) {
-//    }
+    
+    //    不可以添加这个函数，会导致 NianViewController 失效
+    //    override func viewWillAppear(animated: Bool) {
+    //    }
     
     override func viewWillDisappear(animated: Bool) {
         navShow()
@@ -136,8 +136,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     // 连接数据库
+    var isLoadFinish = 0
     func onCircleEnter() {
-        self.enter()
+        isLoadFinish = 0
         self.loadCircle()
         self.loadLetter()
     }
@@ -266,8 +267,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.navigationItem.rightBarButtonItems = buttonArray()
         if self.gameoverMode == 1 {
             Api.postGameoverCoin(self.gameoverId) { json in
-                    self.navigationItem.rightBarButtonItems = []
-                    self.GameOverView!.hidden = true
+                self.navigationItem.rightBarButtonItems = []
+                self.GameOverView!.hidden = true
             }
         }else{
             Api.postUserFrequency(1) { json in
@@ -311,7 +312,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         var vc4 = MeViewController()
-//        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
+        //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 0
@@ -451,21 +452,22 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func enter() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
-            client.setOnState(self.on_state)
-            var r = client.enter(safeuid, shell: safeshell)
-        })
+        if isLoadFinish == 2 {
+            go {
+                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                var safeuid = Sa.objectForKey("uid") as! String
+                var safeshell = Sa.objectForKey("shell") as! String
+                client.setOnState(self.on_state)
+                var r = client.enter(safeuid, shell: safeshell)
+            }
+        }
     }
     
     func on_state(st: ImClient.State) {
         if st == .authed {
             client.pollBegin(self.on_poll)
         } else if st == .live {
-            self.loadCircle()
-            self.loadLetter()
+            onCircleEnter()
         }
     }
     
@@ -473,7 +475,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         go {
             var safeuid = SAUid()
             if obj != nil {
-                var msg: AnyObject? = obj!["msg"]
+                var msg: AnyObject? = obj!.objectForKey("msg")
                 if msg != nil {
                     var json = msg!.objectForKey("msg") as? NSArray
                     if json != nil {
@@ -572,6 +574,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             Api.postCircleInit() { json in
                 if json != nil {
                     // 成功
+                    self.isLoadFinish++
                     var a: Int = 0
                     var arr = json!.objectForKey("items") as! NSArray
                     var lastid = json!.objectForKey("lastid") as! String
@@ -646,6 +649,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             }
                         }
                     }
+                    self.enter()
                 }
             }
         }
@@ -655,6 +659,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         Api.postLetterInit() { json in
             if json != nil {
                 // 成功
+                self.isLoadFinish++
                 var a: Int = 0
                 var arr = json!.objectForKey("items") as! NSArray
                 var lastid = json!.objectForKey("lastid") as! String
@@ -687,6 +692,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 self.noticeDot()
                 Api.postUserLetterLastid(lastid) { json in
                 }
+                self.enter()
             }
         }
     }

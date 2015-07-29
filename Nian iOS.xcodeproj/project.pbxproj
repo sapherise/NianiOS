@@ -184,7 +184,7 @@
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
-		C402AC371B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C402AC361B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.m */; };
+		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
@@ -427,8 +427,8 @@
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
-		C402AC351B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
-		C402AC361B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
+		C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
+		C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
@@ -1047,7 +1047,7 @@
 			isa = PBXGroup;
 			children = (
 				C41D45D61B60EA86000450D5 /* SAEgg */,
-				C402AC341B663BCE00DC0AE0 /* FDTemplateLayoutCell */,
+				C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */,
 				C4C885501B5F7E7900D9B8CA /* FDFullscreenPopGesture */,
 				C48AD9D61B5CFD4C00E25627 /* UIImageExt */,
 				C48FBCD91B4A5A7D007E0BF9 /* Crypto */,
@@ -1165,13 +1165,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C402AC341B663BCE00DC0AE0 /* FDTemplateLayoutCell */ = {
+		C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */ = {
 			isa = PBXGroup;
 			children = (
-				C402AC351B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.h */,
-				C402AC361B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.m */,
+				C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */,
+				C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */,
 			);
-			name = FDTemplateLayoutCell;
+			name = "UITableView+FDTemplateLayoutCell";
 			sourceTree = "<group>";
 		};
 		C4077BC01B04A5FB004E0D03 /* TITokenView */ = {
@@ -1610,7 +1610,7 @@
 				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
-				C402AC371B663BDD00DC0AE0 /* UITableView+FDTemplateLayoutCell.m in Sources */,
+				C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,

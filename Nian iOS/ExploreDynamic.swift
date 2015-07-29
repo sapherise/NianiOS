@@ -127,7 +127,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                 (cell as! SAStepCell).data  = data
                 
             })
-            
         default:
             break
         }

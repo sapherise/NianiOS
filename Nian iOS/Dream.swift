@@ -317,9 +317,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func countUp(coin: String, total: String, isfirst: String) {
         self.load()
-        println("coin: \(coin)")
-        println("total: \(total)")
-        println("isfirst: \(isfirst)")
         
         /* dataArrayTop 实际上是一个 Dict */
         if let step = dataArrayTop.stringAttributeForKey("step").toInt() {
