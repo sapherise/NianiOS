@@ -62,12 +62,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     var editStepData:NSDictionary?
     var activityViewController: UIActivityViewController!
     var isDynamic: Bool = false
-    
-//    var content: String?
-//    var contentHeight: CGFloat?
+    var contentHeight: CGFloat?
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         self.selectionStyle = .None
         self.viewMenu.setWidth(globalWidth)
         self.setWidth(globalWidth)
@@ -91,8 +90,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnUnLike.backgroundColor = SeaColor
     }
     
-    func _layoutSubviews() {
-        
+    func _layoutSubviews(shouldLoadImage: Bool = true) {
         var sid = self.data.stringAttributeForKey("sid")
         if sid.toInt() != nil {
             self.sid = sid.toInt()!
@@ -101,10 +99,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             var lastdate = self.data.stringAttributeForKey("lastdate")
             var liked = self.data.stringAttributeForKey("liked")
             content = SADecode(self.data.stringAttributeForKey("content"))
-            img = self.data.stringAttributeForKey("image") as NSString as String
+            img = self.data.stringAttributeForKey("image")
             img0 = (self.data.stringAttributeForKey("width") as NSString).floatValue
             img1 = (self.data.stringAttributeForKey("height") as NSString).floatValue
-            var like = self.data.stringAttributeForKey("likes") as String
+            var like = self.data.stringAttributeForKey("likes")
             var comment = self.data.stringAttributeForKey("comments")
             var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
             lastdate = V.relativeTime(lastdate)
@@ -114,15 +112,15 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.labelLike.tag = sid.toInt()!
             
             //MARK: - 这里的计算和 “class func cellHeightByData(data: NSDictionary)->CGFloat” 计算明显重复
-            var height = content.stringHeightWith(16,width:globalWidth-40)
+            contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
             
             if content == "" {
-                height = 0
+                contentHeight = 0
             }
             
             // setup label content , detect name && link
-            self.labelContent.setHeight(height)
-            self.labelContent.text = content.decode()
+            self.labelContent.setHeight(contentHeight!)
+            self.labelContent.text = content
             
             self.labelContent.userHandleLinkTapHandler = ({
                 (label: KILabel, string: String, range: NSRange) in
@@ -165,17 +163,17 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 }
             })
             
-            
-            
             self.btnMore.tag = sid.toInt()!
+            
             if comment != "0" {
                 comment = "\(comment) 回应"
-            }else{
+            } else {
                 comment = "回应"
             }
+            
             if like == "0" {
                 self.labelLike.hidden = true
-            }else{
+            } else {
                 self.labelLike.hidden = false
                 like = "\(like) 赞"
                 self.labelLike.text = like
@@ -183,18 +181,20 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 likeWidth = SACeil(likeWidth, 0)
                 self.labelLike.setWidth(likeWidth)
             }
+            
             self.labelComment.text = comment
             var commentWidth = comment.stringWidthWith(13, height: 32) + 16
             commentWidth = SACeil(commentWidth, 0)
             self.labelComment.setWidth(commentWidth)
             self.labelLike.setX(commentWidth+28)
+            
             if img0 == 0.0 {
                 if content == "" {  // 没有图片，没有文字
                     self.imageHolder.hidden = false
                     self.imageHolder.image = UIImage(named: "check")
                     self.imageHolder.frame.size = CGSizeMake(50, 23)
                     self.imageHolder.setX(20)
-                }else{  // 没有图片，有文字
+                } else {  // 没有图片，有文字
                     self.imageHolder.hidden = true
                     imgHeight = 0
                     self.labelContent.setY(self.imageHead.bottom() + 20)
@@ -203,17 +203,22 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 imgHeight = img1 * Float(globalWidth - 40) / img0
                 ImageURL = "http://img.nian.so/step/\(img)!large"
                 largeImageURL = "http://img.nian.so/step/\(img)!large"
-                self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
+                
+                if shouldLoadImage {
+                    self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
+                }
                 self.imageHolder.setHeight(CGFloat(imgHeight))
                 self.imageHolder.setWidth(globalWidth - 40)
                 self.imageHolder.hidden = false
                 self.labelContent.setY(self.imageHolder.bottom()+20)
             }
+            
             if content == "" {
                 self.viewMenu.setY(self.imageHolder.bottom()+20)
-            }else{
+            } else {
                 self.viewMenu.setY(self.labelContent.bottom()+20)
             }
+            
             self.viewLine.setY(self.viewMenu.bottom()+25)
             
             //主人
@@ -222,12 +227,12 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.btnLike.hidden = true
                 self.btnUnLike.hidden = true
                 self.btnMore.setX(globalWidth - 52)
-            }else{
+            } else {
                 self.btnMore.setX(globalWidth - 52 - 32 - 8)
                 if liked == "0" {
                     self.btnLike.hidden = false
                     self.btnUnLike.hidden = true
-                }else{
+                } else {
                     self.btnLike.hidden = true
                     self.btnUnLike.hidden = false
                 }
@@ -397,10 +402,16 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         var height = content.stringHeightWith(16,width:globalWidth-40)
         if (img0 == 0.0) {
             var h = content == "" ? 155 + 23 : height + 155
+            
+            NSLog("cell Height By Data %fl", h)
+            
             return h
         } else {
             var heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
             var h = content == "" ? 155 + heightImage : height + 175 + heightImage
+            
+            NSLog("cell Height By -- Data %fl", h)
+            
             return h
         }
     }
@@ -426,6 +437,25 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.imageHolder.cancelImageRequestOperation()
         self.imageHolder.image = nil
     }
+    
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        content = SADecode(self.data.stringAttributeForKey("content"))
+        contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
+        
+        var img0 = (data.stringAttributeForKey("width") as NSString).floatValue
+        var img1 = (data.stringAttributeForKey("height") as NSString).floatValue
+        var h: CGFloat = 0.0
+        
+        if (img0 == 0.0) {
+            h = content == "" ? 155 + 23 : contentHeight! + 155
+        } else {
+            var heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+            h = content == "" ? 155 + heightImage : contentHeight! + 175 + heightImage
+        }
+        
+        return CGSizeMake(size.width, h)
+    }
+    
     
 }
 

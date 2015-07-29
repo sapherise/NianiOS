@@ -10,7 +10,7 @@ import UIKit
 
 //import UIKit
 
-class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, delegateSAStepCell{
+class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, delegateSAStepCell{
     
     class Data {
         var id: String!
@@ -39,6 +39,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         self.bindViewController = viewController
         viewController.dynamicTableView.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
         viewController.dynamicTableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
+//        viewController.dynamicTableView.fd_debugLogEnabled = true
     }
     
     func load(clear: Bool) {
@@ -121,13 +122,11 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         case "0":
             return 77
         case "1":
-            var h = SAStepCell.cellHeightByData(data)
-            return h
-            
-//            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-//                (cell as! SAStepCell).fd_enforceFrameLayout = false;
-//                
-//            })
+            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+                (cell as! SAStepCell).fd_enforceFrameLayout = true
+                (cell as! SAStepCell).data  = data
+                
+            })
             
         default:
             break
@@ -173,6 +172,22 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        var data = dataArray[indexPath.row] as! NSDictionary
+        var type = data.stringAttributeForKey("type")
+        
+        switch type {
+        case "0":
+            break
+        case "1":
+            (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
+            (cell as! SAStepCell).imageHolder.image = nil
+        default:
+            break
+        }
+        
+    }
+    
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
         SAUpdate(self.dataArray, index, key, value, bindViewController!.dynamicTableView!)
@@ -192,6 +207,26 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     func updateStep(index: Int, delete: Bool) {
         SAUpdate(delete, self.dataArray, index, bindViewController!.dynamicTableView!, 0)
     }
+}
+
+// MARK: - 实现 UIScrollviewDelegate
+extension ExploreDynamicProvider : UIScrollViewDelegate  {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+    }
+    
 }
 
 // MARK: - explore dynamic dream cell

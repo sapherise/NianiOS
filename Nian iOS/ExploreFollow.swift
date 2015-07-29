@@ -102,8 +102,12 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = self.dataArray[indexPath.row] as! NSDictionary
-        var h = SAStepCell.cellHeightByData(data)
-        return h
+//        var h = SAStepCell.cellHeightByData(data)
+//        return h
+        return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { (cell) -> Void in
+            (cell as! SAStepCell).fd_enforceFrameLayout = true
+            (cell as! SAStepCell).data = data
+        })
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
