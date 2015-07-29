@@ -362,6 +362,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 } else {
                     c.viewLine.hidden = false
                 }
+                c._layoutSubviews()
                 return c
             }
         }

@@ -93,6 +93,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         } else {
             c.viewLine.hidden = false
         }
+        c._layoutSubviews()
         return c
     }
     

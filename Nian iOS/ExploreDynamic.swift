@@ -121,13 +121,13 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         case "0":
             return 77
         case "1":
-//            var h = SAStepCell.cellHeightByData(data)
-//            return h
+            var h = SAStepCell.cellHeightByData(data)
+            return h
             
-            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { (cell) -> Void in
-                (cell as! SAStepCell).fd_enforceFrameLayout = false;
-                
-            })
+//            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+//                (cell as! SAStepCell).fd_enforceFrameLayout = false;
+//                
+//            })
             
         default:
             break
@@ -163,6 +163,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             } else {
                 c.viewLine.hidden = false
             }
+            c._layoutSubviews()
             cell = c
             
             break

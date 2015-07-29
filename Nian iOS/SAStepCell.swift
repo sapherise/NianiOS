@@ -63,6 +63,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     var activityViewController: UIActivityViewController!
     var isDynamic: Bool = false
     
+//    var content: String?
+//    var contentHeight: CGFloat?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
@@ -88,8 +91,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnUnLike.backgroundColor = SeaColor
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func _layoutSubviews() {
         
         var sid = self.data.stringAttributeForKey("sid")
         if sid.toInt() != nil {
@@ -110,7 +112,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.labelTime.text = lastdate
             self.imageHead.setHead(uid)
             self.labelLike.tag = sid.toInt()!
+            
+            //MARK: - 这里的计算和 “class func cellHeightByData(data: NSDictionary)->CGFloat” 计算明显重复
             var height = content.stringHeightWith(16,width:globalWidth-40)
+            
             if content == "" {
                 height = 0
             }
@@ -194,10 +199,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                     imgHeight = 0
                     self.labelContent.setY(self.imageHead.bottom() + 20)
                 }
-            }else{
+            } else {
                 imgHeight = img1 * Float(globalWidth - 40) / img0
-                ImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
-                largeImageURL = "http://img.nian.so/step/\(img)!large" as NSString as String
+                ImageURL = "http://img.nian.so/step/\(img)!large"
+                largeImageURL = "http://img.nian.so/step/\(img)!large"
                 self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
                 self.imageHolder.setHeight(CGFloat(imgHeight))
                 self.imageHolder.setWidth(globalWidth - 40)

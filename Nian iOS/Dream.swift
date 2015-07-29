@@ -252,6 +252,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             } else {
                 c.viewLine.hidden = false
             }
+            c._layoutSubviews()
             return c
         }
     }

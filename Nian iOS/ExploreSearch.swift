@@ -356,6 +356,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 } else {
                     c.viewLine.hidden = false
                 }
+                c._layoutSubviews()
                 return c
             }
         } else {

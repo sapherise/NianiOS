@@ -78,6 +78,7 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
             c._layoutSubviews()
             if indexPath.row == current {
                 c.imgView.image = nil
+//                c.imgView.hidden = true 
             }
             c.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
             return c

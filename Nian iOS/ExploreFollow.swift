@@ -116,6 +116,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         } else {
             c.viewLine.hidden = false
         }
+        c._layoutSubviews()
         return c
     }
     

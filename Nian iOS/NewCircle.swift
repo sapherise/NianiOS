@@ -259,6 +259,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             } else {
                 c.viewLine.hidden = false
             }
+            c._layoutSubviews()
             return c
         } else if tableView == tableViewBBS {
             var c = tableView.dequeueReusableCellWithIdentifier("GroupCell", forIndexPath: indexPath) as! GroupCell
