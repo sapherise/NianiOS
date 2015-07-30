@@ -430,13 +430,18 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if index == 0{
+        if index == 0 {
             if indexPath.section == 0 {
                 return 81
             } else {
                 var data = self.dataArrayStep[indexPath.row] as! NSDictionary
-                var h = SAStepCell.cellHeightByData(data)
-                return h
+                
+                return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+                    (cell as! SAStepCell).celldataSource = self
+                    (cell as! SAStepCell).fd_enforceFrameLayout = true
+                    (cell as! SAStepCell).data  = data
+                    (cell as! SAStepCell).indexPath = indexPath
+                })
             }
         } else {
             return 71
@@ -476,4 +481,23 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         SAUpdate(delete, self.dataArrayStep, index, self.dreamTableView, 1)
     }
 }
+
+extension ExploreSearch: SAStepCellDatasource {
+    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
+        if index == 0 {
+            var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayDream[indexPath.row] as! NSDictionary)
+            _tmpDict.setObject(content as NSString, forKey: "content")
+            
+            #if CGFLOAT_IS_DOUBLE
+                _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
+                #else
+                _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
+            #endif
+            
+            self.dataArrayDream.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+        }
+    }
+}
+
+
 

@@ -10,7 +10,7 @@ import UIKit
 
 //import UIKit
 
-class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, delegateSAStepCell{
+class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, delegateSAStepCell {
     
     class Data {
         var id: String!
@@ -35,11 +35,12 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     var page = 1
     var dataArray = NSMutableArray()
     
+    var targetRect: NSValue?
+    
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
         viewController.dynamicTableView.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
         viewController.dynamicTableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
-//        viewController.dynamicTableView.fd_debugLogEnabled = true
     }
     
     func load(clear: Bool) {
@@ -123,9 +124,10 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             return 77
         case "1":
             return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+                (cell as! SAStepCell).celldataSource = self
                 (cell as! SAStepCell).fd_enforceFrameLayout = true
                 (cell as! SAStepCell).data  = data
-                
+                (cell as! SAStepCell).indexPath = indexPath
             })
         default:
             break
@@ -161,7 +163,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             } else {
                 c.viewLine.hidden = false
             }
-            c._layoutSubviews()
+            var _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
+            c._layoutSubviews(_shouldLoadImage)
             cell = c
             
             break
@@ -187,6 +190,18 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         
     }
     
+    /**
+    :returns: Bool值，代表是否要加载图片
+    */
+    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.dynamicTableView.rectForRowAtIndexPath(indexPath)) {
+            return false
+        }
+        
+        return true
+    }
+    
+    
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
         SAUpdate(self.dataArray, index, key, value, bindViewController!.dynamicTableView!)
@@ -211,10 +226,10 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
 // MARK: - 实现 UIScrollviewDelegate
 extension ExploreDynamicProvider : UIScrollViewDelegate  {
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.targetRect = nil
         
     }
     
@@ -223,9 +238,31 @@ extension ExploreDynamicProvider : UIScrollViewDelegate  {
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
+        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        self.targetRect = NSValue(CGRect: targetRect)
     }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.targetRect = nil
+    }
+}
+
+// MARK: -
+extension ExploreDynamicProvider: SAStepCellDatasource {
+    
+    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
+        
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        _tmpDict.setObject(content as NSString, forKey: "content")
+        
+        #if CGFLOAT_IS_DOUBLE
+        _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
+        #else
+        _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
+        #endif
+        
+        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+    }
 }
 
 // MARK: - explore dynamic dream cell

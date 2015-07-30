@@ -31,6 +31,8 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     var locked = false
     var dataArray = NSMutableArray()
     
+    var targetRect: NSValue?
+    
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
         viewController.tableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
@@ -102,11 +104,12 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = self.dataArray[indexPath.row] as! NSDictionary
-//        var h = SAStepCell.cellHeightByData(data)
-//        return h
+        
         return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { (cell) -> Void in
+            (cell as! SAStepCell).celldataSource = self
             (cell as! SAStepCell).fd_enforceFrameLayout = true
             (cell as! SAStepCell).data = data
+            (cell as! SAStepCell).indexPath = indexPath
         })
     }
     
@@ -120,7 +123,10 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         } else {
             c.viewLine.hidden = false
         }
-        c._layoutSubviews()
+        
+        var _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
+        c._layoutSubviews(_shouldLoadImage)
+        
         return c
     }
     
@@ -131,6 +137,18 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         viewController.Id = id
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    /**
+    :returns: Bool值，代表是否要加载图片
+    */
+    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.dynamicTableView.rectForRowAtIndexPath(indexPath)) {
+            return false
+        }
+        
+        return true
+    }
+    
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
@@ -154,30 +172,43 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
 }
 
+extension ExploreFollowProvider: SAStepCellDatasource {
+    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
+        
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        _tmpDict.setObject(content, forKey: "content")
+        
+        #if CGFLOAT_IS_DOUBLE
+            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
+            #else
+            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
+        #endif
+        
+        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+    }
+}
+
+
 // MARK: - 实现 scroll view delegate, aim --> 优化用户体验
-//extension ExploreFollowProvider: UIScrollViewDelegate {
-//    
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        if scrollView .isKindOfClass(UITableView) {
-//            for cell in (scrollView as! UITableView).visibleCells() {
-//                (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
-//                (cell as! SAStepCell).imageHolder.image = nil
-//            }
-//        }
-//    }
-//    
-//    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if scrollView.isKindOfClass(UITableView) {
-//            if !decelerate {
-//                
-//            }
-//        }
-//    }
-//    
-//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//        if scrollView.isKindOfClass(UITableView) {
-//            (scrollView as! UITableView).reloadData()
-//        }
-//    }
-//}
+extension ExploreFollowProvider: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.targetRect = nil
+        
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        self.targetRect = NSValue(CGRect: targetRect)
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.targetRect = nil
+    }}
 

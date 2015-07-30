@@ -293,8 +293,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             return 0
         }else{
             var data = self.dataArray[indexPath.row] as! NSDictionary
-            var h = SAStepCell.cellHeightByData(data)
-            return h
+            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+                (cell as! SAStepCell).celldataSource = self
+                (cell as! SAStepCell).fd_enforceFrameLayout = true
+                (cell as! SAStepCell).data  = data
+                (cell as! SAStepCell).indexPath = indexPath
+            })
         }
     }
     
@@ -463,4 +467,19 @@ extension DreamViewController: NIAlertDelegate {
     }
 }
 
+extension DreamViewController: SAStepCellDatasource {
+    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
+        
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        _tmpDict.setObject(content as NSString, forKey: "content")
+        
+        #if CGFLOAT_IS_DOUBLE
+            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
+            #else
+            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
+        #endif
+        
+        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+    }
+}
 

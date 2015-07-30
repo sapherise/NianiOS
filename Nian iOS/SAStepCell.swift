@@ -29,6 +29,18 @@ protocol delegateSAStepCell {
     func updateStep(index: Int, delete: Bool)
 }
 
+/**
+*  @author Bob Wei, 15-07-30 11:07:34
+*
+*  主要是实现 content label 的高度只计算一次， content 内容只 Decode 一次
+*  
+*  @brief: 
+*/
+protocol SAStepCellDatasource {
+    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat)
+}
+
+
 class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     @IBOutlet var imageHead: UIImageView!
@@ -54,15 +66,21 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     var img0:Float = 0.0
     var img1:Float = 0.0
     var ImageURL:String = ""
-    var indexPathRow:Int = 0
+    
+    var indexSection: Int = 0
+    var indexPathRow: Int = 0
+    var indexPath: NSIndexPath?
+    
     var sid:Int = 0
-    var delegate: delegateSAStepCell?
     var index: Int = 0
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     var activityViewController: UIActivityViewController!
     var isDynamic: Bool = false
     var contentHeight: CGFloat?
+    
+    var celldataSource: SAStepCellDatasource?
+    var delegate: delegateSAStepCell?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -76,7 +94,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnUnLike.setX(globalWidth - 52)
         self.viewLine.setWidth(globalWidth - 40)
         self.viewLine.setHeight(0.5)
-        self.labelContent.setWidth(globalWidth-40)
+        self.labelContent.setWidth(globalWidth - 40)
         self.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageClick"))
         self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
         self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
@@ -91,7 +109,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnUnLike.backgroundColor = SeaColor
     }
     
-    func _layoutSubviews(shouldLoadImage: Bool = true) {
+    func _layoutSubviews(_ shouldLoadImage: Bool = true) {
 
         var sid = self.data.stringAttributeForKey("sid")
         if sid.toInt() != nil {
@@ -100,7 +118,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             var user = self.data.stringAttributeForKey("user")
             var lastdate = self.data.stringAttributeForKey("lastdate")
             var liked = self.data.stringAttributeForKey("liked")
-            content = SADecode(self.data.stringAttributeForKey("content"))
+            content = self.data.stringAttributeForKey("content")
             img = self.data.stringAttributeForKey("image")
             img0 = (self.data.stringAttributeForKey("width") as NSString).floatValue
             img1 = (self.data.stringAttributeForKey("height") as NSString).floatValue
@@ -114,7 +132,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.labelLike.tag = sid.toInt()!
             
             //MARK: - 这里的计算和 “class func cellHeightByData(data: NSDictionary)->CGFloat” 计算明显重复
-            contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
+            #if CGFLOAT_IS_DOUBLE
+            contentHeight = CGFloat((self.data.objectForKey("contentHeight") as! NSNumber).doubleValue)    // content.stringHeightWith(16, width: globalWidth - 40)
+            #else
+            contentHeight = CGFloat((self.data.objectForKey("contentHeight") as! NSNumber).floatValue)
+            #endif
             
             if content == "" {
                 contentHeight = 0
@@ -404,16 +426,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         var height = content.stringHeightWith(16,width:globalWidth-40)
         if (img0 == 0.0) {
             var h = content == "" ? 155 + 23 : height + 155
-            
-            NSLog("cell Height By Data %fl", h)
-            
             return h
         } else {
             var heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
             var h = content == "" ? 155 + heightImage : height + 175 + heightImage
-            
-            NSLog("cell Height By -- Data %fl", h)
-            
             return h
         }
     }
@@ -454,6 +470,10 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             var heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
             h = content == "" ? 155 + heightImage : contentHeight! + 175 + heightImage
         }
+        
+        //TODO: - 将 content 和 contentHeight 通过 SAStepCellDatasource delegate 出去
+        
+        self.celldataSource!.saStepCell(indexPath!, content: content, contentHeight: contentHeight!)
         
         return CGSizeMake(size.width, h)
     }
