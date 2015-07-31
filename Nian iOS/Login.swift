@@ -91,6 +91,12 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         Sa.setObject(shell, forKey: "shell")
                         Sa.setObject(username, forKey:"user")
                         Sa.synchronize()
+                        
+//                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                        var shellKey = KeychainItemWrapper(identifier: "shellKey", accessGroup: nil)
+                        
+                        
+                        
                         Api.requestLoad()
                         globalWillReEnter = 1
                         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)

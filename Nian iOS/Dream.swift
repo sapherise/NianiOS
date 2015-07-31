@@ -35,6 +35,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     var alertCoin: NIAlert?
     
+    var targetRect: NSValue?
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
@@ -256,6 +258,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             return c
         }
     }
+    
+    
     
     func onFo() {
         btnMain.setTitle("关注中", forState: UIControlState.allZeros)

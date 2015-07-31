@@ -57,6 +57,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     @IBOutlet var labelTime: UILabel!
     @IBOutlet var viewLine: UIView!
     
+    // https://developer.apple.com/library/ios/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/GraphicsDrawingOverview/GraphicsDrawingOverview.html
+    // 根据官方文档，貌似需要一定的位移才能画出高度为 0.5 的线。
+    let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
+    let SINGLE_LINE_ADJUST_OFFSET = (1 / UIScreen.mainScreen().scale) / 2
+    
     var actionSheetDelete: UIActionSheet!
     var largeImageURL:String = ""
     var data :NSDictionary!
@@ -92,8 +97,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnMore.setX(globalWidth - 52)
         self.btnLike.setX(globalWidth - 52)
         self.btnUnLike.setX(globalWidth - 52)
+        self.viewLine.setY(411 - SINGLE_LINE_ADJUST_OFFSET)
         self.viewLine.setWidth(globalWidth - 40)
-        self.viewLine.setHeight(0.5)
+        self.viewLine.setHeight(SINGLE_LINE_HEIGHT)
         self.labelContent.setWidth(globalWidth - 40)
         self.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageClick"))
         self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
@@ -128,7 +134,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             lastdate = V.relativeTime(lastdate)
             
             self.labelTime.text = lastdate
-            self.imageHead.setHead(uid)
+            
+            if shouldLoadImage {
+                self.imageHead.setHead(uid)
+            }
+            
             self.labelLike.tag = sid.toInt()!
             
             //MARK: - 这里的计算和 “class func cellHeightByData(data: NSDictionary)->CGFloat” 计算明显重复
@@ -231,6 +241,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 if shouldLoadImage {
                     self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
                 }
+                
                 self.imageHolder.setHeight(CGFloat(imgHeight))
                 self.imageHolder.setWidth(globalWidth - 40)
                 self.imageHolder.hidden = false
@@ -243,7 +254,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.viewMenu.setY(self.labelContent.bottom()+20)
             }
             
-            self.viewLine.setY(self.viewMenu.bottom()+25)
+            self.viewLine.setY(self.viewMenu.bottom() + 25 - SINGLE_LINE_ADJUST_OFFSET)
             
             //主人
             var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String

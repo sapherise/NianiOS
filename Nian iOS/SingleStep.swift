@@ -111,7 +111,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     func Editstep() {
         self.SAReloadData()
     }
-    
+   
     func countUp(coin: String, isfirst: String){
         self.SAReloadData()
     }

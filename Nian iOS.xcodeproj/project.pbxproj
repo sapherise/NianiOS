@@ -202,6 +202,8 @@
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
 		C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C492D6191B4D10E800EEA71F /* PetCell.xib */; };
 		C49E53FD1B5247B90048CF89 /* ImModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E53FC1B5247B90048CF89 /* ImModel.swift */; };
+		C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A350BE1B6B6BEE00E8AF10 /* Security.framework */; };
+		C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */; };
@@ -450,6 +452,9 @@
 		C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+NSHash.m"; sourceTree = "<group>"; };
 		C492D6191B4D10E800EEA71F /* PetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PetCell.xib; sourceTree = "<group>"; };
 		C49E53FC1B5247B90048CF89 /* ImModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImModel.swift; sourceTree = "<group>"; };
+		C4A350BE1B6B6BEE00E8AF10 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C4A350C11B6B6C5200E8AF10 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		C4A380771B32C4A9005EC0AA /* URLRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRegex.h; sourceTree = "<group>"; };
 		C4A380781B32C4A9005EC0AA /* URLRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRegex.m; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
@@ -473,6 +478,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */,
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 				1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */,
@@ -1046,6 +1052,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C4A350C01B6B6C3F00E8AF10 /* Keychian */,
 				C41D45D61B60EA86000450D5 /* SAEgg */,
 				C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */,
 				C4C885501B5F7E7900D9B8CA /* FDFullscreenPopGesture */,
@@ -1157,6 +1164,7 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4A350BE1B6B6BEE00E8AF10 /* Security.framework */,
 				122AFE041A80869D00464641 /* libsqlite3.dylib */,
 				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
@@ -1237,6 +1245,15 @@
 				C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */,
 			);
 			name = Crypto;
+			sourceTree = "<group>";
+		};
+		C4A350C01B6B6C3F00E8AF10 /* Keychian */ = {
+			isa = PBXGroup;
+			children = (
+				C4A350C11B6B6C5200E8AF10 /* KeychainItemWrapper.h */,
+				C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */,
+			);
+			name = Keychian;
 			sourceTree = "<group>";
 		};
 		C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */ = {
@@ -1491,6 +1508,7 @@
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
+				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,

@@ -105,7 +105,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = self.dataArray[indexPath.row] as! NSDictionary
         
-        return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { (cell) -> Void in
+        return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
             (cell as! SAStepCell).celldataSource = self
             (cell as! SAStepCell).fd_enforceFrameLayout = true
             (cell as! SAStepCell).data = data
@@ -138,11 +138,27 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        var data = dataArray[indexPath.row] as! NSDictionary
+        var type = data.stringAttributeForKey("type")
+        
+        switch type {
+        case "0":
+            break
+        case "1":
+            (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
+            (cell as! SAStepCell).imageHolder.image = nil
+        default:
+            break
+        }
+        
+    }
+    
     /**
     :returns: Bool值，代表是否要加载图片
     */
     func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
-        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.dynamicTableView.rectForRowAtIndexPath(indexPath)) {
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.tableView.rectForRowAtIndexPath(indexPath)) {
             return false
         }
         
@@ -175,7 +191,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
 extension ExploreFollowProvider: SAStepCellDatasource {
     func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
         
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)
         _tmpDict.setObject(content, forKey: "content")
         
         #if CGFLOAT_IS_DOUBLE
