@@ -116,6 +116,9 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
         c.delegate = self
+//        if indexPath.row > self.dataArray.count {
+//            return c
+//        }
         c.data = self.dataArray[indexPath.row] as! NSDictionary
         c.index = indexPath.row
         if indexPath.row == self.dataArray.count - 1 {

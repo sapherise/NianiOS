@@ -99,6 +99,11 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
                         Sa.setObject(self.signInfo.name!, forKey: "user")
                         Sa.synchronize()
                         
+//                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                        var shellKey = KeychainItemWrapper(identifier: "shellKey", accessGroup: nil)
+//                        uidKey.setObject(sa, forKey: "uid")
+//                        shellKey.setObject(shell, forKey: "shell")
+                        
                         Api.requestLoad()
                         
                         var mainViewController = HomeViewController(nibName:nil,  bundle: nil)

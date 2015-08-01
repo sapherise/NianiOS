@@ -141,12 +141,15 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             
             self.labelLike.tag = sid.toInt()!
             
-            //MARK: - 这里的计算和 “class func cellHeightByData(data: NSDictionary)->CGFloat” 计算明显重复
-            #if CGFLOAT_IS_DOUBLE
-            contentHeight = CGFloat((self.data.objectForKey("contentHeight") as! NSNumber).doubleValue)    // content.stringHeightWith(16, width: globalWidth - 40)
-            #else
-            contentHeight = CGFloat((self.data.objectForKey("contentHeight") as! NSNumber).floatValue)
-            #endif
+            if let value = self.data.objectForKey("contentHeight") as? NSNumber {
+                #if CGFLOAT_IS_DOUBLE
+                contentHeight = CGFloat(value.doubleValue)    // content.stringHeightWith(16, width: globalWidth - 40)
+                #else
+                contentHeight = CGFloat(value.floatValue)
+                #endif
+            } else {
+                contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
+            }
             
             if content == "" {
                 contentHeight = 0

@@ -94,8 +94,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         
 //                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
 //                        var shellKey = KeychainItemWrapper(identifier: "shellKey", accessGroup: nil)
-                        
-                        
+//                        uidKey.setObject(sa, forKey: "uid")
+//                        shellKey.setObject(shell, forKey: "shell")
                         
                         Api.requestLoad()
                         globalWillReEnter = 1

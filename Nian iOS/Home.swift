@@ -678,6 +678,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     }
                     var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                     var safeuid = Sa.objectForKey("uid") as! String
+                    
+//                    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                    var safeuid = uidKey.objectForKey("uid")
+                    
                     let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
