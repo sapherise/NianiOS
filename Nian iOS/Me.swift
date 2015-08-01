@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     let identifier = "LetterCell"
     var tableView:UITableView!
@@ -31,7 +31,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter:", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter", object: nil)
         navShow()
     }
     
@@ -44,8 +44,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
-        SALoadLetter()
         self.navigationController!.interactivePopGestureRecognizer.enabled = false
+        SALoadLetter()
     }
     
     func Letter(noti: NSNotification) {
@@ -97,42 +97,47 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
+    var isLoadingLetter = false
     func SALoadLetter(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safename = Sa.objectForKey("user") as! String
-        let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-        self.dataArray.removeAllObjects()
-        for row in resultCircle {
-            var id = (row["circle"]?.asString())!
-            var title = "玩家 #\(id)"
-            let (resultDes, err) = SD.executeQuery("select * from letter where circle = '\(id)' and owner = '\(safeuid)' order by id desc limit 1")
-            if resultDes.count > 0 {
-                for row in resultDes {
-                    title = (row["name"]?.asString())!
+        if !isLoadingLetter {
+            isLoadingLetter = true
+            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var safeuid = Sa.objectForKey("uid") as! String
+            var safename = Sa.objectForKey("user") as! String
+            let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+            self.dataArray.removeAllObjects()
+            for row in resultCircle {
+                var id = (row["circle"]?.asString())!
+                var title = "玩家 #\(id)"
+                let (resultDes, err) = SD.executeQuery("select * from letter where circle = '\(id)' and owner = '\(safeuid)' order by id desc limit 1")
+                if resultDes.count > 0 {
+                    for row in resultDes {
+                        title = (row["name"]?.asString())!
+                    }
+                }else if safeuid == id {
+                    title = safename
                 }
-            }else if safeuid == id {
-                title = safename
+                var data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
+                self.dataArray.addObject(data)
             }
-            var data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
-            self.dataArray.addObject(data)
-        }
-        back {
-            self.tableView.reloadData()
-            if self.dataArray.count == 0 {
-                var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-                viewQuestion.setY(70)
-                var btnGo = UIButton()
-                btnGo.setButtonNice("  嗯！")
-                btnGo.setX(globalWidth/2-50)
-                btnGo.setY(viewQuestion.bottom())
-                btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
-                viewHeader.addSubview(viewQuestion)
-                viewHeader.addSubview(btnGo)
-                self.tableView.tableFooterView = viewHeader
-            }else{
-                self.tableView.tableFooterView = UIView()
+            back {
+                self.tableView.reloadData()
+                if self.dataArray.count == 0 {
+                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
+                    viewQuestion.setY(70)
+                    var btnGo = UIButton()
+                    btnGo.setButtonNice("  嗯！")
+                    btnGo.setX(globalWidth/2-50)
+                    btnGo.setY(viewQuestion.bottom())
+                    btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                    viewHeader.addSubview(viewQuestion)
+                    viewHeader.addSubview(btnGo)
+                    self.tableView.tableFooterView = viewHeader
+                }else{
+                    self.tableView.tableFooterView = UIView()
+                }
+                self.isLoadingLetter = false
             }
         }
     }

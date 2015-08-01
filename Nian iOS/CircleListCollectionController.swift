@@ -50,43 +50,45 @@ class CircleListCollectionController: UIViewController {
     }
     
     func load() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            synchronized(self.dataArray) {
-                var safeuid = SAUid()
-                let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-                self.dataArray.removeAllObjects()
-                
-                for row in resultCircle {
-                    var id = (row["circle"]?.asString())!
-                    var img = ""
-                    var title = "梦境"
-                    let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-                    if resultDes.count > 0 {
-                        for row in resultDes {
-                            img = (row["image"]?.asString())!
-                            title = (row["title"]?.asString())!
+        if !isLoading {
+            isLoading = true
+            go {
+                synchronized(self.dataArray) {
+                    var safeuid = SAUid()
+                    let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+                    self.dataArray.removeAllObjects()
+                    
+                    for row in resultCircle {
+                        var id = (row["circle"]?.asString())!
+                        var img = ""
+                        var title = "梦境"
+                        let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                        if resultDes.count > 0 {
+                            for row in resultDes {
+                                img = (row["image"]?.asString())!
+                                title = (row["title"]?.asString())!
+                            }
+                            var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                            self.dataArray.addObject(data)
                         }
-                        var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-                        self.dataArray.addObject(data)
+                    }  // for
+                    
+                    if self.dataArray.count == 0 {
+                        var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
+                        self.dataArray.addObject(dataExplore)
                     }
-                }  // for
-                
-                if self.dataArray.count == 0 {
-                    var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
-                    self.dataArray.addObject(dataExplore)
+                    var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
+                    self.dataArray.addObject(dataBBS)
+                    
+                }  // synchronized
+                back {
+                    if let tmpCollectionView = self.collectionView {
+                        self.collectionView.reloadData()
+                        self.isLoading = false
+                    }
                 }
-                var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
-                self.dataArray.addObject(dataBBS)
-                
-            }  // synchronized
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if let tmpCollectionView = self.collectionView {
-                    self.collectionView.reloadData()
-                    self.isLoading = false
-                }
-            })
-        })
+            }
+        }
     }
     
     func setupViews() {
