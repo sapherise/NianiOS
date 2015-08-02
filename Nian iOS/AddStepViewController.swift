@@ -179,7 +179,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                     card.content = self.TextView.text
                     card.widthImage = self.uploadWidth
                     card.heightImage = self.uploadHeight
-                    card.url = self.uploadUrl
+                    card.url = "http://img.nian.so/step/\(self.uploadUrl)!large"
                     card.onCardSave()
                 }
                 //
