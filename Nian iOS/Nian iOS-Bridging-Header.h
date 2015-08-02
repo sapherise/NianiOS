@@ -20,4 +20,6 @@
 #import "NSData+NSHash.h"
 #import "UIImage+Grayscale.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
+#import "UITableView+FDTemplateLayoutCell.h"
+#import "KeychainItemWrapper.h"
 #import "objc/runtime.h"

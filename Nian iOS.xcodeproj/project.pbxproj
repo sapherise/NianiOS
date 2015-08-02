@@ -184,6 +184,7 @@
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
+		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
@@ -201,6 +202,8 @@
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
 		C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C492D6191B4D10E800EEA71F /* PetCell.xib */; };
 		C49E53FD1B5247B90048CF89 /* ImModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E53FC1B5247B90048CF89 /* ImModel.swift */; };
+		C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A350BE1B6B6BEE00E8AF10 /* Security.framework */; };
+		C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */; };
@@ -426,6 +429,8 @@
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
+		C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
+		C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
@@ -447,6 +452,9 @@
 		C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+NSHash.m"; sourceTree = "<group>"; };
 		C492D6191B4D10E800EEA71F /* PetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PetCell.xib; sourceTree = "<group>"; };
 		C49E53FC1B5247B90048CF89 /* ImModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImModel.swift; sourceTree = "<group>"; };
+		C4A350BE1B6B6BEE00E8AF10 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C4A350C11B6B6C5200E8AF10 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		C4A380771B32C4A9005EC0AA /* URLRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRegex.h; sourceTree = "<group>"; };
 		C4A380781B32C4A9005EC0AA /* URLRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRegex.m; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
@@ -470,6 +478,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */,
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 				1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */,
@@ -1043,7 +1052,9 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C4A350C01B6B6C3F00E8AF10 /* Keychian */,
 				C41D45D61B60EA86000450D5 /* SAEgg */,
+				C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */,
 				C4C885501B5F7E7900D9B8CA /* FDFullscreenPopGesture */,
 				C48AD9D61B5CFD4C00E25627 /* UIImageExt */,
 				C48FBCD91B4A5A7D007E0BF9 /* Crypto */,
@@ -1153,12 +1164,22 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4A350BE1B6B6BEE00E8AF10 /* Security.framework */,
 				122AFE041A80869D00464641 /* libsqlite3.dylib */,
 				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */ = {
+			isa = PBXGroup;
+			children = (
+				C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */,
+				C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */,
+			);
+			name = "UITableView+FDTemplateLayoutCell";
 			sourceTree = "<group>";
 		};
 		C4077BC01B04A5FB004E0D03 /* TITokenView */ = {
@@ -1224,6 +1245,15 @@
 				C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */,
 			);
 			name = Crypto;
+			sourceTree = "<group>";
+		};
+		C4A350C01B6B6C3F00E8AF10 /* Keychian */ = {
+			isa = PBXGroup;
+			children = (
+				C4A350C11B6B6C5200E8AF10 /* KeychainItemWrapper.h */,
+				C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */,
+			);
+			name = Keychian;
 			sourceTree = "<group>";
 		};
 		C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */ = {
@@ -1478,6 +1508,7 @@
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
+				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
@@ -1597,6 +1628,7 @@
 				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
+				C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
 				C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */,
@@ -1725,7 +1757,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "";
@@ -1775,7 +1807,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
