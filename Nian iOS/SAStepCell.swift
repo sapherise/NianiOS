@@ -210,6 +210,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.viewMenu.setY(self.labelContent.bottom()+20)
             }
             self.viewLine.setY(self.viewMenu.bottom()+25)
+            viewLine.setHeightHalf()
             
             //主人
             var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String

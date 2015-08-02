@@ -833,6 +833,13 @@ extension UIView {
         maskLayer.path = maskPath.CGPath
         self.layer.mask = maskLayer
     }
+    
+    func setHeightHalf() {
+        let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
+        let SINGLE_LINE_ADJUST_OFFSET = (1 / UIScreen.mainScreen().scale) / 2
+        self.setHeight(SINGLE_LINE_HEIGHT)
+        self.setY(self.frame.origin.y - SINGLE_LINE_ADJUST_OFFSET)
+    }
 }
 
 func SACookie(key: String) -> String? {

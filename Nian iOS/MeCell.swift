@@ -107,6 +107,7 @@ class MeCell: UITableViewCell {
             self.lastdate!.hidden = false
             self.viewLine.setY(self.contentLabel!.bottom()+25)
         }
+        viewLine.setHeightHalf()
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {

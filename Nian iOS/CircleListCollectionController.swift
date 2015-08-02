@@ -16,13 +16,13 @@ class CircleListCollectionController: UIViewController {
     
     var dataArray = NSMutableArray()
     var isLoading: Bool = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         _addObserver()
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         navHide()
@@ -50,43 +50,45 @@ class CircleListCollectionController: UIViewController {
     }
     
     func load() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            synchronized(self.dataArray) {
-                var safeuid = SAUid()
-                let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
-                self.dataArray.removeAllObjects()
-                
-                for row in resultCircle {
-                    var id = (row["circle"]?.asString())!
-                    var img = ""
-                    var title = "梦境"
-                    let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-                    if resultDes.count > 0 {
-                        for row in resultDes {
-                            img = (row["image"]?.asString())!
-                            title = (row["title"]?.asString())!
+        if !isLoading {
+            isLoading = true
+            go {
+                synchronized(self.dataArray) {
+                    var safeuid = SAUid()
+                    let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `circle` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+                    self.dataArray.removeAllObjects()
+                    
+                    for row in resultCircle {
+                        var id = (row["circle"]?.asString())!
+                        var img = ""
+                        var title = "梦境"
+                        let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
+                        if resultDes.count > 0 {
+                            for row in resultDes {
+                                img = (row["image"]?.asString())!
+                                title = (row["title"]?.asString())!
+                            }
+                            var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+                            self.dataArray.addObject(data)
                         }
-                        var data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
-                        self.dataArray.addObject(data)
+                    }  // for
+                    
+                    if self.dataArray.count == 0 {
+                        var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
+                        self.dataArray.addObject(dataExplore)
                     }
-                }  // for
-                
-                if self.dataArray.count == 0 {
-                    var dataExplore = NSDictionary(objects: ["-1", "0", "0"], forKeys: ["id", "img", "title"])
-                    self.dataArray.addObject(dataExplore)
+                    var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
+                    self.dataArray.addObject(dataBBS)
+                    
+                }  // synchronized
+                back {
+                    if let tmpCollectionView = self.collectionView {
+                        self.collectionView.reloadData()
+                        self.isLoading = false
+                    }
                 }
-                var dataBBS = NSDictionary(objects: ["-2", "0", "0"], forKeys: ["id", "img", "title"])
-                self.dataArray.addObject(dataBBS)
-                
-            }  // synchronized
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                if let tmpCollectionView = self.collectionView {
-                    self.collectionView.reloadData()
-                    self.isLoading = false
-                }
-            })
-        })
+            }
+        }
     }
     
     func setupViews() {
@@ -159,38 +161,18 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
     }
     
     func toCircle(index: Int, tab: Int) {
-            var vc = NewCircleController()
-            var data = self.dataArray[index] as! NSDictionary
-            var id = data.stringAttributeForKey("id")
-            var title = data.stringAttributeForKey("title")
-            vc.id = id
-            vc.current = tab
-            vc.textTitle = title
-            SD.executeChange("update circle set isread = 1 where circle = \(id) and owner = \(SAUid())")
+        var vc = NewCircleController()
+        var data = self.dataArray[index] as! NSDictionary
+        var id = data.stringAttributeForKey("id")
+        var title = data.stringAttributeForKey("title")
+        vc.id = id
+        vc.current = tab
+        vc.textTitle = title
+        SD.executeChange("update circle set isread = 1 where circle = \(id) and owner = \(SAUid())")
         
-            self.load()
-            self.navigationController?.pushViewController(vc, animated: true)
+        self.load()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
-
+    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

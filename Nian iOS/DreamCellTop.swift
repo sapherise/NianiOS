@@ -194,6 +194,10 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             viewLineTop.setY(bottomDot + 15)
             viewRight.setHeight(h + 252)
             
+            viewLineTag.setHeightHalf()
+            viewLineTagTop.setHeightHalf()
+            viewLineTop.setHeightHalf()
+            
             numLeftNum.text = "\(like)"
             numMiddleNum.text = step
             numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))

@@ -92,6 +92,7 @@ class ExploreNewHotCell: UITableViewCell {
             self.imageHead.backgroundColor = IconColor
         }
         self.viewLine.setY(self.viewLeft.bottom() + 32)
+        viewLine.setHeightHalf()
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
