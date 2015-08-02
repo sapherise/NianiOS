@@ -233,7 +233,13 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if tableView == tableViewStep {
             var data = dataArrayStep[indexPath.row] as! NSDictionary
-            return SAStepCell.cellHeightByData(data)
+            
+            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+                (cell as! SAStepCell).celldataSource = self
+                (cell as! SAStepCell).fd_enforceFrameLayout = true
+                (cell as! SAStepCell).data  = data
+                (cell as! SAStepCell).indexPath = indexPath
+            })
         } else if tableView == tableViewBBS {
             var data = dataArrayBBS[indexPath.row] as! NSDictionary
             return  GroupCell.cellHeightByData(data)
@@ -259,6 +265,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
             } else {
                 c.viewLine.hidden = false
             }
+            c._layoutSubviews()
             return c
         } else if tableView == tableViewBBS {
             var c = tableView.dequeueReusableCellWithIdentifier("GroupCell", forIndexPath: indexPath) as! GroupCell
@@ -805,3 +812,36 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
         return false
     }
 }
+
+
+extension NewCircleController: SAStepCellDatasource {
+    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
+        
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayStep[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        _tmpDict.setObject(content as NSString, forKey: "content")
+        
+        #if CGFLOAT_IS_DOUBLE
+            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
+            #else
+            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
+        #endif
+        
+        self.dataArrayStep.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
