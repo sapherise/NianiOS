@@ -27,6 +27,9 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     @IBOutlet var btnFollow: UILabel!
     @IBOutlet var btnDynamic: UILabel!
     @IBOutlet var btnHot: UILabel!
+    @IBOutlet weak var btnNew: UILabel!
+    
+    @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var imageSearch: UIImageView!
     @IBOutlet var imageFriend: UIImageView!
@@ -51,6 +54,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             btnFollow,
             btnDynamic,
             btnHot,
+            btnNew,
         ]
         setupViews()
         
@@ -111,6 +115,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
             ExploreNewHot(viewController: self),
+            ExploreHotProvider(viewController: self),
         ]
         globalNumExploreBar = 0
         
@@ -122,14 +127,18 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
+        
+        self.titleLabel.setX((globalWidth - self.titleLabel.frame.width)/2)
+        
         self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
+        
         self.imageSearch.setX(globalWidth - 43)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
         view.backgroundColor = UIColor.whiteColor()
         
         scrollView.setWidth(globalWidth)
-        scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
+        scrollView.contentSize = CGSizeMake(globalWidth * 4, scrollView.frame.size.height)
         tableView.frame.origin.x = 0
         dynamicTableView.frame.origin.x = globalWidth
         recomTableView.frame.origin.x = globalWidth * 2

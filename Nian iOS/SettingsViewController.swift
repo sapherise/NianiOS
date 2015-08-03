@@ -499,6 +499,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 Sa.setObject(userImageURL, forKey: "coverUrl")
                 Sa.synchronize()
+                
                 var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
                 var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
                 var req = NSURLRequest(URL: NSURL(string: userImageURL)!)

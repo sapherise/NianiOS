@@ -199,7 +199,7 @@ extension ExploreFollowProvider: SAStepCellDatasource {
         
         #if CGFLOAT_IS_DOUBLE
             _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-            #else
+        #else
             _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
         #endif
         
