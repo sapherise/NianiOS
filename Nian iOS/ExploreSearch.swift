@@ -206,10 +206,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.floatView.setX(globalWidth/2 - 70)
         })
         
-            if searchText.text != "" && (dataArrayDream.count + dataArrayStep.count == 0) {
-                self.dreamTableView.headerBeginRefreshing()
-            } else if tmp == 0 {
-                self.dreamTableView.headerBeginRefreshing()
+        if searchText.text != "" && (dataArrayDream.count + dataArrayStep.count == 0) {
+            self.dreamTableView.headerBeginRefreshing()
+        } else if tmp == 0 {
+            self.dreamTableView.headerBeginRefreshing()
         }
     }
     
@@ -220,9 +220,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.tableView.hidden = false
         self.dreamTableView.hidden = true
         self.dreamTableView.headerEndRefreshing()
+        
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 + 20)
         })
+        
         if searchText.text != "" && dataArrayUser.count == 0 {
             self.tableView.headerBeginRefreshing()
         } else if tmp == 1 {

@@ -21,6 +21,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     weak var bindViewController: ExploreViewController?
     var page = 0
     var dataSource = [Data]()
+    var dataArray = NSMutableArray()
     var lastID = "0"
     
     
@@ -34,7 +35,7 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
             json in
             var success = false
             if json != nil {
-                var items = json!["items"] as! NSArray
+                var items = json!.objectForKey("items") as! NSArray
                 if items.count != 0 {
                     if clear {
                         self.dataSource.removeAll(keepCapacity: true)
@@ -42,11 +43,13 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
                     success = true
                     for item in items {
                         var data = Data()
-                        data.id = item["id"] as! String
-                        data.title = item["title"] as! String
-                        data.img = item["img"] as! String
-                        data.promo = (item["promo"] as! String).toInt()!
-                        data.sid = item["sid"] as! String
+
+                        data.id = (item as! NSDictionary)["id"] as! String
+                        data.title = (item as! NSDictionary)["title"] as! String
+                        data.img = (item as! NSDictionary)["img"] as! String
+                        data.promo = ((item as! NSDictionary)["promo"] as! String).toInt()!
+                        data.sid = (item as! NSDictionary)["sid"] as! String
+                        
                         self.dataSource.append(data)
                     }
                     
