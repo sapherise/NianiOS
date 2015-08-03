@@ -45,6 +45,7 @@ class GroupCell: UITableViewCell {
         self.labelContent!.text = title
         self.line.setY(self.labelContent!.bottom())
         self.viewLine.setY(self.line.bottom()+16)
+        viewLine.setHeightHalf()
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {

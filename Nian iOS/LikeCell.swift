@@ -45,6 +45,8 @@ class LikeCell: MKTableViewCell {
         self.avatarView.setHead(uid)
         self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         
+        viewLine.setHeightHalf()
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as! String
         var safeshell = Sa.objectForKey("shell") as! String

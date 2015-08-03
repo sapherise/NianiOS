@@ -82,6 +82,7 @@ class CircleExploreCell: UITableViewCell {
             self.imageHead.contentMode = UIViewContentMode.Center
             self.imageHead.backgroundColor = IconColor
         }
+        viewLine.setHeightHalf()
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {

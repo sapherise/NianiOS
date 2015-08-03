@@ -43,6 +43,7 @@ class BBSCell: UITableViewCell {
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.Line!.setY(self.contentLabel!.bottom()+25)
+        Line?.setHeightHalf()
     }
     
     func toUser() {

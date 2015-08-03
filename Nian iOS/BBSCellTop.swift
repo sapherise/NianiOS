@@ -62,6 +62,7 @@ class BBSCellTop: UITableViewCell{
         } else {
             View.hidden = false
         }
+        Line.setHeightHalf()
     }
     
     class func cellHeightByData(data: NSDictionary)->CGFloat{

@@ -58,6 +58,7 @@ class CircleDetailCell: MKTableViewCell {
         self.imageDream.setImage("http://img.nian.so/dream/\(cover)!dream", placeHolder: IconColor)
         self.imageUser.tag = uid.toInt()!
         self.imageDream.tag = dream.toInt()!
+        viewLine.setHeightHalf()
     }
     
     

@@ -190,7 +190,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     card.content = self.textView.text
                     card.widthImage = self.uploadWidth
                     card.heightImage = self.uploadHeight
-                    card.url = self.uploadUrl
+                    card.url = "http://img.nian.so/step/\(self.uploadUrl)!large"
                     card.onCardSave()
                 }
                 
@@ -293,6 +293,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             self.uploadHeight = "\(height!)"
             self.uploadUrl = SAReplace(self.uploadUrl, "/step/", "") as String
             setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img, 0)
+            println("缓存的 url 为：http://img.nian.so/step/\(self.uploadUrl)!large")
         })
         uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png") as String)
     }

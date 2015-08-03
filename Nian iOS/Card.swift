@@ -61,6 +61,9 @@ class Card: UIView {
         self.viewLine.setY(self.labelContent.bottom() + self.num)
         self.viewNian.setY(self.viewLine.bottom() + self.num)
         
+        viewLine.setHeightHalf()
+        viewLineTop.setHeightHalf()
+        
         var heightView = self.image.height() + self.num * 6 + heightContent + heightLine
         if w == 0 {
             heightView = self.num * 5 + heightContent + heightLine

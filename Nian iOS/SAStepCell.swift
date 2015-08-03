@@ -59,8 +59,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     // https://developer.apple.com/library/ios/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/GraphicsDrawingOverview/GraphicsDrawingOverview.html
     // 根据官方文档，貌似需要一定的位移才能画出高度为 0.5 的线。
-    let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
-    let SINGLE_LINE_ADJUST_OFFSET = (1 / UIScreen.mainScreen().scale) / 2
     
     var actionSheetDelete: UIActionSheet!
     var largeImageURL:String = ""
@@ -97,9 +95,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnMore.setX(globalWidth - 52)
         self.btnLike.setX(globalWidth - 52)
         self.btnUnLike.setX(globalWidth - 52)
-        self.viewLine.setY(411 - SINGLE_LINE_ADJUST_OFFSET)
         self.viewLine.setWidth(globalWidth - 40)
-        self.viewLine.setHeight(SINGLE_LINE_HEIGHT)
         self.labelContent.setWidth(globalWidth - 40)
         self.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageClick"))
         self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
@@ -256,8 +252,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             } else {
                 self.viewMenu.setY(self.labelContent.bottom()+20)
             }
-            
-            self.viewLine.setY(self.viewMenu.bottom() + 25 - SINGLE_LINE_ADJUST_OFFSET)
+            self.viewLine.setY(self.viewMenu.bottom()+25)
+            viewLine.setHeightHalf()
             
             //主人
             var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String

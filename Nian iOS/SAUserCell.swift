@@ -35,6 +35,7 @@ class SAUserCell: MKTableViewCell {
         var bool = data.stringAttributeForKey("follow")
         self.labelName.text = user
         self.imageHead.setHead(uid)
+        viewLine.setHeightHalf()
         if let tag = uid.toInt() {
             self.imageHead.tag = tag
         }
