@@ -74,8 +74,9 @@ class CircleCollectionCell: UICollectionViewCell {
                 if title == "梦境" {
                     Api.getCircleTitle(id) { json in
                         if json != nil {
-                            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                            var safeuid = Sa.objectForKey("uid") as! String
+                            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                            var safeshell = uidKey.objectForKey(kSecValueData) as! String
                             var img = json!.objectForKey("img") as! String
                             var titleNew = json!.objectForKey("title") as! String
                             

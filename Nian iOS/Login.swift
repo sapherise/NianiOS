@@ -87,15 +87,14 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         var shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
                         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                         var username = SAPost("uid=\(sa)", "http://nian.so/api/username.php")
-                        Sa.setObject(sa, forKey: "uid")
-                        Sa.setObject(shell, forKey: "shell")
+//                        Sa.setObject(sa, forKey: "uid")
+//                        Sa.setObject(shell, forKey: "shell")
                         Sa.setObject(username, forKey:"user")
                         Sa.synchronize()
                         
-//                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                        var shellKey = KeychainItemWrapper(identifier: "shellKey", accessGroup: nil)
-//                        uidKey.setObject(sa, forKey: "uid")
-//                        shellKey.setObject(shell, forKey: "shell")
+                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                        uidKey.setObject(sa, forKey: kSecAttrAccount)
+                        uidKey.setObject(shell, forKey: kSecValueData)
                         
                         Api.requestLoad()
                         globalWillReEnter = 1

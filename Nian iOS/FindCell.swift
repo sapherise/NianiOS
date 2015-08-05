@@ -62,12 +62,15 @@ class FindCell: UITableViewCell {
             sender.backgroundColor = SeaColor
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+                
                 if sa != "" && sa != "err" {
                 }
+                
             })
         }else if tag == 200 {   //正在关注
             var mutableItem = NSMutableDictionary(dictionary: data)
@@ -80,10 +83,12 @@ class FindCell: UITableViewCell {
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+                
                 if sa != "" && sa != "err" {
                 }
             })

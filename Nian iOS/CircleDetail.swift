@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, circleAddDelegate, editCircleDelegate{
+class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, circleAddDelegate, editCircleDelegate {
     
     let identifier = "circledetailcell"
     let identifier2 = "circledetailtop"
@@ -221,8 +221,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func onCircleInviteClick(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var LikeVC = LikeViewController()
         LikeVC.Id = safeuid
         LikeVC.urlIdentify = 4
@@ -347,9 +349,10 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if actionSheet == self.actionSheet {
             if self.theLevel == "9" {
                 if buttonIndex == 0 {
@@ -544,7 +547,7 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         self.actionSheetQuit!.showInView(self.view)
     }
     
-    func editCircle(editPrivate: Int, editTitle: String, editDes: String, editImage: String) {
+    func editCircle(editCircleId: String, editPrivate: Int, editTitle: String, editDes: String, editImage: String) {
         self.editTitle = editTitle
         self.editContent = editDes
         self.editImage = editImage
@@ -577,18 +580,23 @@ class CircleDetailController: UIViewController,UITableViewDelegate,UITableViewDa
         var section = indexPath.section
         if section==1 {
             self.actionSheetPromote = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var data = self.dataArray[indexPath.row] as! NSDictionary
             var level = data.objectForKey("level") as! String
             var uid = data.objectForKey("uid") as! String
             var dream = data.objectForKey("dream") as! String
             var name = data.stringAttributeForKey("name")
+            
             self.selectUid = uid.toInt()!
             self.selectName = name
             self.selectDream = dream.toInt()!
             self.selectLevel = level.toInt()!
             self.selectRow = indexPath.row
+            
             if self.circleData != nil {
                 self.theLevel = self.circleData!.objectForKey("level") as! String
                 if self.theLevel == "" {

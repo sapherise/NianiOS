@@ -370,9 +370,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除记本

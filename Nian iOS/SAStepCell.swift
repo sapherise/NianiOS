@@ -256,7 +256,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             viewLine.setHeightHalf()
             
             //主人
-            var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String
+//            var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var cookieuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            
             if cookieuid == uid {
                 self.btnLike.hidden = true
                 self.btnUnLike.hidden = true
@@ -406,8 +410,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         var dreamCommentVC = DreamCommentViewController()
         dreamCommentVC.dreamID = id.toInt()!
         dreamCommentVC.stepID = sid.toInt()!
-        var UserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = UserDefaults.objectForKey("uid") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         dreamCommentVC.dreamowner = uid == safeuid ? 1 : 0
         self.findRootViewController()?.navigationController?.pushViewController(dreamCommentVC, animated: true)
     }

@@ -155,9 +155,11 @@ class CircleJoin: UIView, UITableViewDataSource, UITableViewDelegate, UITextView
     func onSubmitClick(){
         var content = self.textView.text
         content = SAEncode(SAHtml(content))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if self.dreamID != "0" {
             self.btnOK.setTitle("", forState: UIControlState.Normal)
             self.btnOK.enabled = false

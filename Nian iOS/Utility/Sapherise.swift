@@ -193,8 +193,11 @@ func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
 
 func getSaveKey(title:NSString, png:NSString) -> NSString{
     var date = NSDate().timeIntervalSince1970
-    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    var safeuid = Sa.objectForKey("uid") as! String
+    
+    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+    var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
+    
     var string = NSString(string: "/\(title)/\(safeuid)_\(Int(date)).\(png)")
     return string
 }
@@ -348,6 +351,10 @@ extension UIViewController {
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safeuid = Sa.objectForKey("uid") as? String
         var safeshell = Sa.objectForKey("shell") as? String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        uidKey.resetKeychainItem()
+        
         Api.postDeviceTokenClear() { string in
         }
         Sa.removeObjectForKey("uid")
@@ -355,6 +362,13 @@ extension UIViewController {
         Sa.removeObjectForKey("followData")
         Sa.removeObjectForKey("user")
         Sa.synchronize()
+        
+//        var _welcomeVC = WelcomeViewController()
+//        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+//            self.presentViewController(_welcomeVC, animated: false, completion: nil)
+//            
+//        })
+        
         self.dismissViewControllerAnimated(true, completion: nil)
         client.leave()
     }

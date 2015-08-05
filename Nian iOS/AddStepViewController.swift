@@ -192,9 +192,14 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         self.navigationItem.rightBarButtonItems = buttonArray()
         var content = self.TextView.text
         content = SAEncode(SAHtml(content))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeshell = Sa.objectForKey("shell") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var sa=SAPost("sid=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/editstep_query.php")
             if(sa == "1"){

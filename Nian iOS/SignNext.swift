@@ -94,15 +94,14 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
                         self.navigationItem.rightBarButtonItems = buttonArray()
                         var shell = (("\(password)\(sa)n*A").lowercaseString).md5
                         var Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        Sa.setObject(sa, forKey: "uid")
-                        Sa.setObject(shell, forKey: "shell")
+//                        Sa.setObject(sa, forKey: "uid")
+//                        Sa.setObject(shell, forKey: "shell")
                         Sa.setObject(self.signInfo.name!, forKey: "user")
                         Sa.synchronize()
                         
-//                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                        var shellKey = KeychainItemWrapper(identifier: "shellKey", accessGroup: nil)
-//                        uidKey.setObject(sa, forKey: "uid")
-//                        shellKey.setObject(shell, forKey: "shell")
+                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                        uidKey.setObject(sa, forKey: kSecAttrAccount)
+                        uidKey.setObject(shell, forKey: kSecValueData)
                         
                         Api.requestLoad()
                         

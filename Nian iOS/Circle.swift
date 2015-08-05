@@ -74,9 +74,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var time = (data.stringAttributeForKey("time") as NSString).doubleValue
                 var cid = data.stringAttributeForKey("cid")
 //                content = SADecode(SADecode(content))
+                
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
+//                var safeuid = Sa.objectForKey("uid") as! String
                 var safeuser = Sa.objectForKey("user") as! String
+                
                 var commentReplyRow = self.dataArray.count
                 var absoluteTime = V.absoluteTime(time)
                 if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
@@ -106,9 +112,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             var type = data.stringAttributeForKey("msgtype")
             var time = (data.stringAttributeForKey("time") as NSString).doubleValue
             content = SADecode(SADecode(content))
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
+            
             var commentReplyRow = self.dataArray.count
             var absoluteTime = V.absoluteTime(time)
             var newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
@@ -222,8 +234,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func commentFinish(replyContent:String, type: Int = 1){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArray.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
@@ -238,8 +254,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func postWord(replyContent: String, type: Int = 1) {
         back {
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArray.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
@@ -285,8 +305,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     var lastdate = json!.objectForKey("lastdate") as! String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
-                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        var safeuid = Sa.objectForKey("uid") as! String
+                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                        
                         Api.postName(self.ID) { result in
                             if result != nil {
                                 SQLLetterContent(msgid, safeuid, result!, "\(self.ID)", contentAfter, "\(type)", lastdate, 1) {}
@@ -303,8 +324,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.dataTotal = 0
             self.dataArray.removeAllObjects()
         }
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
             var (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
             if err == nil {
                 self.page++
@@ -458,8 +482,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.ReplyCid = cid
         self.ReplyUserName = user
         self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if type == "3" {
             var StepVC = SingleStepViewController()
             StepVC.Id = cid
@@ -496,9 +523,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
                 self.commentVC()
@@ -543,9 +571,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 height = 88
             }
         }
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeuid = Sa.objectForKey("uid") as! String
         var safeuser = Sa.objectForKey("user") as! String
+        
         self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         var uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in

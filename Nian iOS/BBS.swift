@@ -70,8 +70,13 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "bbsMore")
         moreButton.image = UIImage(named:"more")
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//        var safeuid = Sa.objectForKey("uid") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if safeuid == self.topuid {
             self.navigationItem.rightBarButtonItems = [ rightButton ]
         }else{
@@ -194,8 +199,13 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         if indexPath.section != 0{
             self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//            var safeuid = Sa.objectForKey("uid") as! String
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var index = indexPath.row
             var data = self.dataArray[index] as! NSDictionary
             var user = data.stringAttributeForKey("user")
@@ -236,9 +246,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeshell = Sa.objectForKey("shell") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if actionSheet == self.sheet {
             if buttonIndex == 0 {
                 var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
@@ -296,9 +311,13 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func commentFinish(){
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
         var safeuser = Sa.objectForKey("user") as! String
+        
         var current = NSDate().timeIntervalSince1970
         var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "\(current)", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: self.ReturnReplyRow)

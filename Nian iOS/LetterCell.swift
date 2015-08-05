@@ -42,8 +42,11 @@ class LetterCell: MKTableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if data != nil {
             var id = self.data!.stringAttributeForKey("id")
             var title = self.data!.stringAttributeForKey("title")

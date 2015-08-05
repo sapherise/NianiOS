@@ -17,12 +17,37 @@ struct Api {
     private static func loadCookies() {
         if (!s_load) {
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            s_uid = Sa.objectForKey("uid") as! String
-            s_shell = Sa.objectForKey("shell") as! String
+            
+            /*
+            TODO: 将废弃原来写在 NSUserDefault 里的 uid 和 shell, 
+                  uid 和 shell 放到 Keychain 里面
+            */
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            
+            if let _s_uid = Sa.objectForKey("uid") as? String {
+                s_uid = _s_uid
+                
+                uidKey.setObject(s_uid, forKey: kSecAttrAccount)
+                
+//                Sa.removeObjectForKey("uid")
+            }
+            
+            if let _s_shell = Sa.objectForKey("shell") as? String {
+                s_shell = _s_shell
+                
+                uidKey.setObject(s_shell, forKey: kSecValueData)
+                
+//                Sa.removeObjectForKey("shell")
+            }
+            
+            s_uid = uidKey.objectForKey(kSecAttrAccount) as! String
+            s_shell = uidKey.objectForKey(kSecValueData) as! String
+            
             s_load = true
         }
     }
-    
+
     static func requestLoad() {
         s_load = false
     }

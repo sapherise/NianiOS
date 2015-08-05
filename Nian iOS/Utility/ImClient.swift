@@ -295,16 +295,26 @@ class ImClient {
     }
     
     func sendGroupMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeuid = Sa.objectForKey("uid") as! String
         var safename = Sa.objectForKey("user") as! String
+        
         var json: AnyObject? = httpPost(m_landServer  + "gmsg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)", "msgid": "1"]))
+        
         return json
     }
     
     func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeuid = Sa.objectForKey("uid") as! String
         var safename = Sa.objectForKey("user") as! String
         var json: AnyObject? = httpPost(m_landServer  + "msg", httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "msgid": "1"]))
         return json

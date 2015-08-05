@@ -111,15 +111,21 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var nib = UINib(nibName: "NianCell", bundle: nil)
         self.collectionView.registerNib(nib, forCellWithReuseIdentifier: "NianCell")
         
+        /* 这里本来是从 NSUserDefaults 里面读出来的 */
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
         var safename = Sa.objectForKey("user") as! String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
+        
         self.UserName.text = "\(safename)"
         self.UserHead.setHead(safeuid)
+        
         if (cacheCoverUrl != nil) && (cacheCoverUrl! != "http://img.nian.so/cover/!cover") {
             self.imageBG.setCover(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
-        }else{
+        } else {
             self.imageBG.image = UIImage(named: "bg")
             self.imageBG.contentMode = UIViewContentMode.ScaleAspectFill
         }
@@ -221,9 +227,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func setupUserTop(){
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
         var safename = Sa.objectForKey("user") as! String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
@@ -249,7 +258,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 self.imageBadge.setType(vip)
                 if deadLine == "0" {
                     self.UserStep.text = "\(dream) 记本，\(step) 进展"
-                }else{
+                } else {
                     self.UserStep.text = "倒计时 \(deadLine)"
                 }
                 if coverURL == "" {
@@ -275,8 +284,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func stepClick(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         var userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)

@@ -58,25 +58,44 @@ class WelcomeViewController: UIViewController {
         self.view.addSubview(des)
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var cookieuid: String? = Sa.objectForKey("uid") as? String
-        if cookieuid == nil {       //如果没登录
-            self.view.hidden = false
-        }else{      //如果登录了
-            dispatch_async(dispatch_get_main_queue(), {
-                var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                var navigationViewController = UINavigationController(rootViewController: mainViewController)
-                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                navigationViewController.navigationBar.clipsToBounds = true
-                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                delay(0.3, {
-                    self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
-                        self.view.hidden = false
+        var cookieuid: String?
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        cookieuid = uidKey.objectForKey(kSecAttrAccount) as? String
+        
+        if let _cookieuid = cookieuid {
+            if count(cookieuid!) > 0 && cookieuid != "" {
+            } else {
+                cookieuid = Sa.objectForKey("uid") as? String
+            }
+        }
+        
+        if let _cookieuid = cookieuid {
+            if cookieuid != "" {      //如果登录了
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                uidKey.setObject(cookieuid, forKey: kSecAttrAccount)
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                    var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                    navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                    navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                    navigationViewController.navigationBar.clipsToBounds = true
+                    navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                    
+                    delay(0.3, {
+                        self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
+                            self.view.hidden = false
+                        })
                     })
                 })
-            })
+            } else { // 没有登录
+                self.view.hidden = false
+            }
+        } else {
+            self.view.hidden = false 
         }
     }
     

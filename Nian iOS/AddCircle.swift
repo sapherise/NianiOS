@@ -8,8 +8,11 @@
 
 import UIKit
 
-protocol editCircleDelegate {
-    func editCircle(editPrivate:Int, editTitle:String, editDes:String, editImage:String)
+@objc protocol editCircleDelegate {
+    func editCircle(editCircleId: String, editPrivate:Int, editTitle:String, editDes:String, editImage:String)
+    
+    /*这里的 delegate 添加是必须的 */
+    optional func addNewCircle()
 }
 
 class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, UITextFieldDelegate, CircleTagDelegate {
@@ -116,7 +119,7 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
         uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
     }
     
-    //MARK: view load 相关的方法
+    //MARK: - view load 相关的方法
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -283,14 +286,15 @@ class AddCircleController: UIViewController, UIActionSheetDelegate, UIImagePicke
                         if success == "1" {
                             var title = self.field1.text
                             SQLCircleListInsert(id, title, self.uploadUrl, postdate)
+                            self.delegate?.addNewCircle?()
                             self.navigationController?.popToRootViewControllerAnimated(true)
                         }
                     }
                 }
             } else {
-                Api.postCircleEdit(title, content: content, img: self.uploadUrl, privateType: privateType, ID: self.idCircle) { json in
+                Api.postCircleEdit(title, content: content, img: self.uploadUrl, privateType: privateType, ID: self.idCircle) { [unowned self] json in
                     if json != nil {
-                        self.delegate?.editCircle(privateType, editTitle: self.field1.text, editDes: self.field2.text, editImage: self.uploadUrl)
+                        self.delegate?.editCircle(self.idCircle, editPrivate: privateType, editTitle: self.field1.text, editDes: self.field2.text, editImage: self.uploadUrl)
                         self.navigationController?.popViewControllerAnimated(true)
                     }
                 }

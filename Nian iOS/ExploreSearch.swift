@@ -487,7 +487,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
 extension ExploreSearch: SAStepCellDatasource {
     func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
         if index == 0 {
-            var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayDream[indexPath.row] as! NSDictionary)
+            var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayStep[indexPath.row] as! NSDictionary)
             _tmpDict.setObject(content as NSString, forKey: "content")
             
             #if CGFLOAT_IS_DOUBLE
@@ -496,7 +496,7 @@ extension ExploreSearch: SAStepCellDatasource {
                 _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
             #endif
             
-            self.dataArrayDream.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+            self.dataArrayStep.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
         }
     }
 }

@@ -143,9 +143,15 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func commentFinish(replyContent:String){
         self.isKeyboardResign = 1
         self.inputKeyboard.text = ""
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeuid = Sa.objectForKey("uid") as! String
         var safeuser = Sa.objectForKey("user") as! String
+        
         var commentReplyRow = self.dataArray.count
         var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
@@ -266,8 +272,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.replySheet!.cancelButtonIndex = 3
             self.replySheet!.showInView(self.view)
         }else{  //不是主人
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             if uid == safeuid {
                 self.replySheet!.addButtonWithTitle("回应@\(user)")
                 self.replySheet!.addButtonWithTitle("复制")
@@ -337,9 +345,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
                 self.commentVC()

@@ -79,8 +79,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid:String = Sa.objectForKey("uid") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if self.Id != safeuid {
             var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "userMore")
             moreButton.image = UIImage(named:"more")
@@ -134,9 +136,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == self.deleteSheet {
             if buttonIndex == 0 {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 var newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
                 self.dataArrayStep.removeObjectAtIndex(newpath!.row)
                 self.tableViewStep.deleteRowsAtIndexPaths([newpath!], withRowAnimation: UITableViewRowAnimation.Fade)
@@ -148,9 +151,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             }
         }else if actionSheet == self.userMoreSheet {
             if buttonIndex == 0 {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 if self.isBan == 0 {    // 拖进小黑屋
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                         var sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/ban.php")
@@ -497,8 +501,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.topCell.btnLetter.addTarget(self, action: "SALetter:", forControlEvents: UIControlEvents.TouchUpInside)
                 self.topCell.btnLetter.setTitle("写信", forState: UIControlState.Normal)
                 
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 if self.Id == safeuid {
                     self.topCell.btnLetter.hidden = true
                     self.topCell.btnMain.setTitle("设置", forState: UIControlState.allZeros)
@@ -642,7 +648,7 @@ extension PlayerViewController: SAStepCellDatasource {
     
     func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
         
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayStep[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
         _tmpDict.setObject(content as NSString, forKey: "content")
         
         #if CGFLOAT_IS_DOUBLE
@@ -651,7 +657,7 @@ extension PlayerViewController: SAStepCellDatasource {
             _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
         #endif
         
-        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+        self.dataArrayStep.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
     }
 }
 

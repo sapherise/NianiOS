@@ -99,6 +99,7 @@ class CircleListCollectionController: UIViewController {
         flowLayout.itemSize = CGSize(width: width, height: 182)
         flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         self.collectionView.collectionViewLayout = flowLayout
+        
         self.addCircleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearch"))
         labelAdd.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onAdd"))
     }
@@ -173,6 +174,17 @@ extension CircleListCollectionController: UICollectionViewDataSource, UICollecti
         self.load()
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
+
+extension CircleListCollectionController: editCircleDelegate {
+    func editCircle(editCircleId: String, editPrivate: Int, editTitle: String, editDes: String, editImage: String) {
+        var _tmpDict = NSDictionary(objects: [editCircleId, editImage, editTitle], forKeys: ["id", "img", "title"])
+        self.dataArray.insertObject(_tmpDict, atIndex: 0)
+    }
+    
+    func addNewCircle() {
+        self.load()
+    }
+}
+
 

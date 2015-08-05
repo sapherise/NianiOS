@@ -102,8 +102,10 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     func urlString()->String{
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if self.urlIdentify == 0 {
             return "http://nian.so/api/like2.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 1 {

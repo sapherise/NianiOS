@@ -74,8 +74,13 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 var type = data.stringAttributeForKey("msgtype")
                 var time = (data.stringAttributeForKey("time") as NSString).doubleValue
                 var cid = data.stringAttributeForKey("cid")
+                
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
+//                var safeuid = Sa.objectForKey("uid") as! String
                 var safeuser = Sa.objectForKey("user") as! String
                 var commentReplyRow = self.dataArrayChat.count
                 var absoluteTime = V.absoluteTime(time)
@@ -567,8 +572,13 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func commentFinish(replyContent:String, type: Int = 1){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArrayChat.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
@@ -583,8 +593,12 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     func postWord(replyContent: String, type: Int = 1) {
         back {
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeuid = Sa.objectForKey("uid") as! String
             var safeuser = Sa.objectForKey("user") as! String
             var commentReplyRow = self.dataArrayChat.count
             var data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
@@ -716,9 +730,10 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
 //        if actionSheet == self.replySheet {
 //            if buttonIndex == 0 {
 //                self.commentVC()
@@ -728,6 +743,7 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
 //            }
 //        }else
         //todo
+        
             if actionSheet == self.actionSheetPhoto {
             if buttonIndex == 0 {
                 self.inputKeyboard.resignFirstResponder()
@@ -765,8 +781,13 @@ class NewCircleController: UIViewController, UIScrollViewDelegate, UIGestureReco
                 height = 88
             }
         }
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeuid = Sa.objectForKey("uid") as! String
         var safeuser = Sa.objectForKey("user") as! String
         self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         var uy = UpYun()

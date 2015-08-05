@@ -51,9 +51,11 @@ class CircleBubbleCell: UITableViewCell {
         var height = content.stringHeightWith(15,width:208)
         self.avatarView!.tag = uid.toInt()!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if uid == safeuid {
             layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: true)
         }else{

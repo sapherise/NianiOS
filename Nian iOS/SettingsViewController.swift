@@ -138,10 +138,16 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.scrollView.contentSize = CGSizeMake(globalWidth, 1300)
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
+        
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+//        var safeuid = Sa.objectForKey("uid") as! String
+//        var safeshell = Sa.objectForKey("shell") as! String
         var safename = Sa.objectForKey("user") as! String
+        
         self.view.backgroundColor = BGColor
         self.head!.setHead(safeuid)
         self.head!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHeadClick"))
@@ -289,9 +295,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         if textField == self.inputName {
             if (textField.text != "") && (textField.text != self.accountName){
                 self.navigationItem.rightBarButtonItems = buttonArray()
@@ -471,9 +478,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func uploadFile(img:UIImage){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
-        var safeshell = Sa.objectForKey("shell") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var uy = UpYun()
         if self.uploadWay == 1 {
             self.navigationItem.rightBarButtonItems = buttonArray()
@@ -481,8 +489,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             uy.successBlocker = ({(data2:AnyObject!) in
                 globalWillNianReload = 1
                 
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 self.navigationItem.rightBarButtonItems = []
                 self.head.image = img
                 
@@ -526,8 +536,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func getSaveKeyPrivate(title:NSString) -> NSString{
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         var string = NSString(string: "/\(title)/\(safeuid).jpg")
         return string
     }

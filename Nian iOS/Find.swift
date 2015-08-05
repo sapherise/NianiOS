@@ -59,8 +59,10 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.view.addSubview(self.viewPromo)
         
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as! String
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
                 var data  = json!.objectForKey("user") as! NSDictionary

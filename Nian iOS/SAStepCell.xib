@@ -167,7 +167,7 @@
                 <outlet property="viewLine" destination="fC1-fX-zWk" id="DyE-3F-P3n"/>
                 <outlet property="viewMenu" destination="GPc-10-oYe" id="MSZ-Az-ylM"/>
             </connections>
-            <point key="canvasLocation" x="269" y="563"/>
+            <point key="canvasLocation" x="377" y="566"/>
         </tableViewCell>
     </objects>
     <resources>

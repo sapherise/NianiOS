@@ -101,8 +101,13 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func SALoadLetter(){
         if !isLoadingLetter {
             isLoadingLetter = true
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeuid = Sa.objectForKey("uid") as! String
             var safename = Sa.objectForKey("user") as! String
             let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
@@ -269,8 +274,11 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 letterVC.ID = id
                 letterVC.circleTitle = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
+                
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                
                 SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
                 SALoadLetter()
             }

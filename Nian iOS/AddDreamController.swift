@@ -358,9 +358,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
             
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as! String
-            var safeshell = Sa.objectForKey("shell") as! String
+//            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//            var safeuid = Sa.objectForKey("uid") as! String
+//            var safeshell = Sa.objectForKey("shell") as! String
+            
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
             Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString){
                 json in
                 var error = json!.objectForKey("error") as! NSNumber

@@ -454,9 +454,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func enter() {
         if isLoadFinish == 2 {
             go {
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                var safeuid = Sa.objectForKey("uid") as! String
-                var safeshell = Sa.objectForKey("shell") as! String
+                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                var safeshell = uidKey.objectForKey(kSecValueData) as! String
                 client.setOnState(self.on_state)
                 var r = client.enter(safeuid, shell: safeshell)
             }
@@ -613,9 +613,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         
                         let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid!)' order by id desc limit  1")
                         if resultSet2.count == 0 {
-                            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                            var safeuid = Sa.objectForKey("uid") as! String
-                            var safeuser = Sa.objectForKey("user") as! String
+                            
+                            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                            
                             if (type == "6") && ((cid == safeuid) || (cid == uid)) {
                                 Api.getCircleStatus(circle) { json in
                                     if json != nil {
@@ -676,17 +678,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     if circle == "\(globalCurrentCircle)" {
                         isread = 1
                     }
-                    var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                    var safeuid = Sa.objectForKey("uid") as! String
                     
-//                    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                    var safeuid = uidKey.objectForKey("uid")
+                    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                    var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                    var safeshell = uidKey.objectForKey(kSecValueData) as! String
                     
                     let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
-                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        var safeuid = Sa.objectForKey("uid") as! String
-                        var safeuser = Sa.objectForKey("user") as! String
+                        
+                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                        
                         SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
                             var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                             NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
