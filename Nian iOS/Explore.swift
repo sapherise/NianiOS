@@ -126,7 +126,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             ExploreNewHot(viewController: self),
             ExploreNewProvider(viewController: self),
         ]
-        NSUserDefaults.standardUserDefaults()
         globalNumExploreBar = 0
         
         self.scrollView.scrollsToTop = false

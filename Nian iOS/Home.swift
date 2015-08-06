@@ -170,15 +170,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func noticeDot() {
         if self.dot != nil {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var safeuid = Sa.objectForKey("uid") as? String
-            var safeshell = Sa.objectForKey("shell") as? String
+            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            var safeshell = uidKey.objectForKey(kSecValueData) as! String
             
-            if safeuid != nil {
+            if safeuid != "" {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid!)'")
+                    let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
                     var a = resultSet.count
-                    var b = SAPost("uid=\(safeuid!)&&shell=\(safeshell!)", "http://nian.so/api/dot.php")
+                    var b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/dot.php")
                     if let number = b.toInt() {
                         globalNoticeNumber = a + number
                         dispatch_async(dispatch_get_main_queue(), {
@@ -568,9 +568,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func loadCircle() {
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as? String
-        if safeuid != nil {
+        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        
+        if safeuid != "" {
             Api.postCircleInit() { json in
                 if json != nil {
                     // 成功
@@ -591,7 +593,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         var time = data.stringAttributeForKey("lastdate")
                         var title = data.stringAttributeForKey("title")
                         var isread = 0
-                        if circle == "\(globalCurrentCircle)" || uid == safeuid! {
+                        if circle == "\(globalCurrentCircle)" || uid == safeuid {
                             isread = 1
                         }
                         
@@ -611,7 +613,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         }
                         //>>>>>>>>>>>>>>>
                         
-                        let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid!)' order by id desc limit  1")
+                        let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                         if resultSet2.count == 0 {
                             
                             var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)

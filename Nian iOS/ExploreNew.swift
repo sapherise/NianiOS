@@ -161,8 +161,10 @@ class ExploreNewCell: UICollectionViewCell {
     @IBOutlet var imageCover: UIImageView!
     
     
-//     override func prepareForReuse() {
-//        super.prepareForReuse()
-//        self.imageCover.image = nil
-//    }
+     override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.imageCover.cancelImageRequestOperation()
+        self.imageCover.image = nil
+    }
 }

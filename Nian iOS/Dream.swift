@@ -35,6 +35,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     var alertCoin: NIAlert?
     
+    // 用在计算 table view 滚动时应不应该加载图片
     var targetRect: NSValue?
     
     override func viewDidLoad(){
@@ -244,7 +245,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
             }
             return c
-        }else{
+        } else {
             var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
             c.data = self.dataArray[indexPath.row] as! NSDictionary
@@ -254,12 +255,25 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             } else {
                 c.viewLine.hidden = false
             }
-            c._layoutSubviews()
+            var _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
+            c._layoutSubviews(_shouldLoadImage)
+            
             return c
         }
     }
     
+    /**
+    :returns: Bool值，代表是否要加载图片
+    */
+    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.tableView.rectForRowAtIndexPath(indexPath)) {
+            return false
+        }
+        
+        return true
+    }
     
+    // MARK: - 分割线 ---------------------------------------------------------
     
     func onFo() {
         btnMain.setTitle("关注中", forState: UIControlState.allZeros)
@@ -486,4 +500,50 @@ extension DreamViewController: SAStepCellDatasource {
         self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
     }
 }
+
+// MARK: - 实现 UIScrollView Delegate
+extension DreamViewController {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.targetRect = nil
+        
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        self.targetRect = NSValue(CGRect: targetRect)
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.targetRect = nil
+        
+        self.loadImagesForVisibleCells()
+    }
+    
+    func loadImagesForVisibleCells() {
+        var cellArray = self.tableView.visibleCells()
+        
+        for cell in cellArray {
+            if cell is SAStepCell {
+                var indexPath = self.tableView.indexPathForCell(cell as! SAStepCell)
+                var _tmpShouldLoadImg = false
+                
+                if let _indexPath = indexPath {
+                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
+                }
+                
+                if _tmpShouldLoadImg {
+                    self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
+                }
+            }
+        }
+    }
+}
+
 

@@ -772,7 +772,10 @@ func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UI
 }
 
 func SAUid() -> String {
-    var uid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
+//    var uid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
+    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+    var uid = uidKey.objectForKey(kSecAttrAccount) as? String
+    
     if uid != nil {
         return uid!
     }

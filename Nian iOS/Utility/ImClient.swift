@@ -297,7 +297,7 @@ class ImClient {
     func sendGroupMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
         var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //        var safeuid = Sa.objectForKey("uid") as! String
@@ -311,7 +311,7 @@ class ImClient {
     func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
         var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //        var safeuid = Sa.objectForKey("uid") as! String

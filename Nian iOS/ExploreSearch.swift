@@ -36,13 +36,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var userButton: UIButton!
     @IBOutlet weak var floatView: UIView!
     
-    private var kvoContext: UInt8 = 1
-    
     var searchText = NITextfield()
     var index: Int = 0
     var dreamPage: Int = 1
     var userPage: Int = 1
     var dreamStepArray = NSMutableArray()
+    
+    // 用在计算 table view 滚动时应不应该加载图片
+    var targetRect: NSValue?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -386,6 +387,17 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
+    /**
+    :returns: Bool值，代表是否要加载图片
+    */
+    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.dreamTableView.rectForRowAtIndexPath(indexPath)) {
+            return false
+        }
+        
+        return true
+    }
+    
     func toUser(sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             SAUser("\(tag)")
@@ -501,5 +513,47 @@ extension ExploreSearch: SAStepCellDatasource {
     }
 }
 
-
+// MARK: - 实现 UIScrollView Delegate
+extension ExploreSearch {
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.targetRect = nil
+        
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        self.targetRect = NSValue(CGRect: targetRect)
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.targetRect = nil
+        
+        if index == 0 {
+            self.loadImagesForVisibleCells()
+        }
+    }
+    
+    func loadImagesForVisibleCells() {
+        var cellArray = self.tableView.visibleCells()
+        
+        for cell in cellArray {
+            if cell is SAStepCell {
+                var indexPath = self.dreamTableView.indexPathForCell(cell as! SAStepCell)
+                var _tmpShouldLoadImg = false
+                
+                if let _indexPath = indexPath {
+                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
+                }
+                
+                if _tmpShouldLoadImg {
+                    self.dreamTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
+                }
+            }
+        }
+    }
+}
 

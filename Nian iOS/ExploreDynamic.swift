@@ -8,8 +8,6 @@
 
 import UIKit
 
-//import UIKit
-
 class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewDataSource, delegateSAStepCell {
     
     class Data {
@@ -35,6 +33,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     var page = 1
     var dataArray = NSMutableArray()
     
+    // 设置一个滚动时的 target rect, 目的是为了判断要不要加载图片
     var targetRect: NSValue?
     
     init(viewController: ExploreViewController) {
@@ -61,7 +60,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                         self.dataArray.addObject(item)
                     }
                     self.bindViewController?.dynamicTableView.tableHeaderView = nil
-                }else if clear {
+                } else if clear {
                     var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     var viewQuestion = viewEmpty(globalWidth, content: "这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
                     viewQuestion.setY(50)
@@ -116,6 +115,10 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 200
+//    }
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var data = dataArray[indexPath.row] as! NSDictionary
         var type = data.stringAttributeForKey("type")
@@ -139,6 +142,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         var cell: UITableViewCell? = nil
         var data = dataArray[indexPath.row] as! NSDictionary
         var type = data.stringAttributeForKey("type")
+        
         switch type {
         case "0":
             var c = tableView.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as? ExploreDynamicDreamCell
@@ -244,7 +248,29 @@ extension ExploreDynamicProvider : UIScrollViewDelegate  {
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.targetRect = nil
+        
+        self.loadImagesForVisibleCells()
     }
+    
+    func loadImagesForVisibleCells() {
+        var cellArray = self.bindViewController?.tableView.visibleCells()
+        
+        for cell in cellArray! {
+            if cell is SAStepCell {
+                var indexPath = self.bindViewController?.dynamicTableView.indexPathForCell(cell as! SAStepCell)
+                var _tmpShouldLoadImg = false
+                
+                if let _indexPath = indexPath {
+                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
+                }
+                
+                if _tmpShouldLoadImg {
+                    self.bindViewController?.dynamicTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
+                }
+            }
+        }
+    }
+    
 }
 
 // MARK: -
@@ -252,7 +278,7 @@ extension ExploreDynamicProvider: SAStepCellDatasource {
     
     func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
         
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
+        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)
         _tmpDict.setObject(content as NSString, forKey: "content")
         
         #if CGFLOAT_IS_DOUBLE

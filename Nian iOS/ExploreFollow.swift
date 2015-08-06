@@ -113,9 +113,10 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         })
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50
-    }
+    /* 这是一个不可用的恶魔函数 */
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 200
+//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
@@ -233,5 +234,43 @@ extension ExploreFollowProvider: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.targetRect = nil
-    }}
+        
+        self.loadImagesForVisibleCells()
+    }
+    
+    
+    func loadImagesForVisibleCells() {
+        var cellArray = self.bindViewController?.tableView.visibleCells()
+        
+        for cell in cellArray! {
+            if cell is SAStepCell {
+                var indexPath = self.bindViewController?.tableView.indexPathForCell(cell as! SAStepCell)
+                var _tmpShouldLoadImg = false
+                
+                if let _indexPath = indexPath {
+                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: _indexPath)
+                }
+                
+                if _tmpShouldLoadImg {
+                    self.bindViewController?.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

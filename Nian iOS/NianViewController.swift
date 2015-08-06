@@ -114,7 +114,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         /* 这里本来是从 NSUserDefaults 里面读出来的 */
         var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safename = Sa.objectForKey("user") as! String
@@ -232,7 +232,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {

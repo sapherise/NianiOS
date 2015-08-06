@@ -75,7 +75,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
             var password = "n*A\(self.inputPassword.text)"
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
+                var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
+                
                 dispatch_async(dispatch_get_main_queue(), {
                     if sa == "err"{
                         self.navigationItem.rightBarButtonItems = []
@@ -106,6 +107,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                         navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                         navigationViewController.navigationBar.clipsToBounds = true
+                        
                         self.presentViewController(navigationViewController, animated: true, completion: {
                             self.navigationItem.rightBarButtonItems = []
                             self.inputEmail.text = ""
