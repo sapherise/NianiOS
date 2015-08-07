@@ -36,6 +36,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
         viewController.tableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
+        viewController.tableView.estimatedRowHeight = 200
     }
     
     func load(clear: Bool) {
@@ -115,6 +116,8 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     /* 这是一个不可用的恶魔函数 */
 //    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        println(" !@#$%^&*()___(*^%$#@!#$%^&*() indexPath \(indexPath.row)   ")
+//        
 //        return 200
 //    }
     

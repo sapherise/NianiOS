@@ -60,11 +60,17 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         self.viewLineTop.setWidth(globalWidth - 40)
         self.viewLineTag.setWidth(globalWidth)
         self.viewLineTagTop.setWidth(globalWidth)
-        self.viewLineTag.setHeight(0.5)
-        self.viewLineTagTop.setHeight(0.5)
+//        self.viewLineTag.setHeight(0.5)
+//        self.viewLineTagTop.setHeight(0.5)
         viewLineLeft.setWidth(0.5)
-        viewLineTop.setHeight(0.5)
+//        viewLineTop.setHeight(0.5)
+        
+        viewLineTag.setHeightHalf()
+        viewLineTagTop.setHeightHalf()
+        viewLineTop.setHeightHalf()
+    
         self.scrollView.setWidth(globalWidth)
+        self.scrollView.setY(0)
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false
         scrollView.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
@@ -193,10 +199,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             var bottomDot = dotLeft.bottom()
             viewLineTop.setY(bottomDot + 15)
             viewRight.setHeight(h + 252)
-            
-            viewLineTag.setHeightHalf()
-            viewLineTagTop.setHeightHalf()
-            viewLineTop.setHeightHalf()
             
             numLeftNum.text = "\(like)"
             numMiddleNum.text = step

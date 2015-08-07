@@ -173,8 +173,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.btnOK.enabled = false
         self.activityOK.hidden = false
         self.activityOK.startAnimating()
-        content = SAEncode(SAHtml(content))
-        Api.postAddStep(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
+//        content = SAEncode(SAHtml(content))
+        Api.postAddStep_AFN(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 self.textView.resignFirstResponder()
                 var coin = json!.objectForKey("coin") as! String

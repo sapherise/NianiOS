@@ -30,7 +30,7 @@ struct Api {
                 
                 uidKey.setObject(s_uid, forKey: kSecAttrAccount)
                 
-//                Sa.removeObjectForKey("uid")
+                Sa.removeObjectForKey("uid")
             }
             
             if let _s_shell = Sa.objectForKey("shell") as? String {
@@ -38,7 +38,7 @@ struct Api {
                 
                 uidKey.setObject(s_shell, forKey: kSecValueData)
                 
-//                Sa.removeObjectForKey("shell")
+                Sa.removeObjectForKey("shell")
             }
             
             s_uid = uidKey.objectForKey(kSecAttrAccount) as! String
@@ -440,6 +440,22 @@ struct Api {
         loadCookies()
         var sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/addstep_query2.php", content: "uid=\(s_uid)&shell=\(s_shell)&dream=\(dream)&content=\(content)&img=\(img)&img0=\(img0)&img1=\(img1)&circleshellid=\(sid)", callback: callback)
+        
+//        ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"]
+    }
+    
+    // MARK: post add step API
+    /**
+    取代上面的 postAddStep API
+    and 上面的 API 有问题
+    
+    */
+    static func postAddStep_AFN(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
+        loadCookies()
+        var sid = client.getSid()
+        V.httpPostForJson_AFN("http://nian.so/api/addstep_query2.php",
+            content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"],
+            callback: callback)
     }
     
     // ===
@@ -460,12 +476,23 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/dream/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: String, callback: V.JsonCallback) {
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
         loadCookies()
         if tags == "" {
-            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)", callback: callback)
+//            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)", callback: callback)
+            
+            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
+                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)" ],
+                callback: callback)
+            
+            
         } else {
-            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)&\(tags)", callback: callback)
+//            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)&\(tags)", callback: callback)
+            
+            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
+                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags],
+                callback: callback)
+            
         }
     }
     
@@ -477,6 +504,13 @@ struct Api {
     static func postEditStep(sid: String, content: String, uploadUrl: String, uploadWidth: Int, uploadHeight: Int, callback: V.StringCallback) {
         loadCookies()
         V.httpPostForString("http://nian.so/api/editstep_query.php", content: "sid=\(sid)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)&&img=\(uploadUrl)&&img0=\(uploadWidth)&&img1=\(uploadHeight)", callback: callback)
+    }
+    
+    static func postEditStep_AFN(sid: String, content: String, uploadUrl: String, uploadWidth: String, uploadHeight: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson_AFN("http://api.nian.so/step/\(sid)/edit?uid=\(s_uid)&shell=\(s_shell)",
+            content: ["content": "\(content)", "img": "\(uploadUrl)", "img0": "\(uploadWidth)", "img1": "\(uploadHeight)"],
+            callback: callback)
     }
     
     

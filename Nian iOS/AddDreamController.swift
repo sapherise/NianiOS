@@ -211,11 +211,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.scrollView.delegate = self
         
-        if UIScreen.mainScreen().bounds.height > 480 {
-            self.field2.frame.size.height = 120
-        } else {
-            self.field2.frame.size.height = 96
-        }
+//        if UIScreen.mainScreen().bounds.height > 480 {
+//            self.field2.frame.size.height = 120
+//        } else {
+//            self.field2.frame.size.height = 96
+//        }
         
         if isPrivate == 0 {
             setPrivate.image = UIImage(named: "unlock")
@@ -298,23 +298,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var tags = self.tokenView.tokenTitles
         var tagsString = ""
 
-        if count(tags!) > 0 {
-            for i in 0...(count(tags!) - 1){
-                var tmpString = tags![i] as! String
-                
-                if i == (count(tags!) - 1) {
-                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))"
-                } else {
-                    tagsString = tagsString + "tags[]=\(SAEncode(SAHtml(tmpString)))&&"
-                }
-            }
-        }
-
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tagsString) {
+//            title = SAEncode(SAHtml(title!))
+//            content = SAEncode(SAHtml(content!))
+            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags) {
                 json in
                 var error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {

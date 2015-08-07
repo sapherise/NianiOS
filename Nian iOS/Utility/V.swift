@@ -159,6 +159,7 @@ struct V {
     }
     
     static func httpPostForJson(requestURL: String, content: String, callback: JsonCallback) {
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var request = NSMutableURLRequest()
             request.URL = NSURL(string: requestURL)
@@ -169,8 +170,11 @@ struct V {
             var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
             var json: AnyObject? = nil
             if data != nil {
-                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                var _error: NSError?
+                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &_error)
+
             }
+            
             dispatch_async(dispatch_get_main_queue(), {
                 callback(json)
             })
@@ -190,6 +194,7 @@ struct V {
             if data != nil {
                 json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
             }
+            // 为什么没有回到主线程 ?
             callback(json)
         })
     }
@@ -217,7 +222,9 @@ struct V {
         var time = (timestamp as NSString).doubleValue
         var d = current - time
         var formatter = NSDateFormatter()
-        var component = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond, fromDate: NSDate())
+        var component = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth
+            | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond,
+            fromDate: NSDate())
         component.timeZone = NSTimeZone.systemTimeZone()
         component.hour = 0
         component.minute = 0

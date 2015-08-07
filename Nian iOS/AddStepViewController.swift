@@ -162,14 +162,13 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     func addStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
         var content = self.TextView.text
-        content = SAEncode(SAHtml(content))
-        Api.postAddStep(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
+//        content = SAEncode(SAHtml(content))
+        Api.postAddStep_AFN(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 globalWillNianReload = 1
                 var coin = json!.objectForKey("coin") as! String
                 var isfirst = json!.objectForKey("isfirst") as! String
                 var totalCoin = json!.objectForKey("totalCoin") as! String
-                self.navigationController?.popViewControllerAnimated(true)
                 
                 //  创建卡片
                 let modeCard = SACookie("modeCard")
@@ -184,6 +183,9 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                 }
                 //
                 self.delegate?.countUp!(coin, total: totalCoin, isfirst: isfirst)
+                
+                //
+                self.navigationController?.popViewControllerAnimated(true)
             }
         }
     }
@@ -191,7 +193,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     func editStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
         var content = self.TextView.text
-        content = SAEncode(SAHtml(content))
+//        content = SAEncode(SAHtml(content))
 //        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //        var safeuid = Sa.objectForKey("uid") as! String
 //        var safeshell = Sa.objectForKey("shell") as! String
@@ -200,25 +202,32 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
         var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var sa=SAPost("sid=\(self.Id)&&uid=\(safeuid)&&shell=\(safeshell)&&content=\(content)&&img=\(self.uploadUrl)&&img0=\(self.uploadWidth)&&img1=\(self.uploadHeight)", "http://nian.so/api/editstep_query.php")
-            if(sa == "1"){
-                globalWillNianReload = 1
-                dispatch_async(dispatch_get_main_queue(), {
-                    if self.data != nil {
-                        var mutableData = NSMutableDictionary(dictionary: self.data!)
-                        mutableData.setValue(self.TextView.text, forKey: "content")
-                        mutableData.setValue(self.uploadUrl, forKey: "image")
-                        mutableData.setValue(self.uploadWidth, forKey: "width")
-                        mutableData.setValue(self.uploadHeight, forKey: "height")
-                        self.delegate?.editStepRow = self.row
-                        self.delegate?.editStepData = mutableData
-                        self.delegate?.Editstep()
-                        self.navigationController?.popViewControllerAnimated(true)
-                    }
-                })
+        Api.postEditStep_AFN(self.Id, content: content, uploadUrl: self.uploadUrl, uploadWidth: self.uploadWidth, uploadHeight: self.uploadHeight) { json in 
+            
+            if json != nil {
+                var _error = json!.objectForKey("error") as! NSNumber
+                
+                if _error == 0 {
+                    globalWillNianReload = 1
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if self.data != nil {
+                            var mutableData = NSMutableDictionary(dictionary: self.data!)
+                            mutableData.setValue(self.TextView.text, forKey: "content")
+                            mutableData.setValue(self.uploadUrl, forKey: "image")
+                            mutableData.setValue(self.uploadWidth, forKey: "width")
+                            mutableData.setValue(self.uploadHeight, forKey: "height")
+                            self.delegate?.editStepRow = self.row
+                            self.delegate?.editStepData = mutableData
+                            self.delegate?.Editstep()
+                            self.navigationController?.popViewControllerAnimated(true)
+                        }
+                    })
+                }
+                
             }
-        })
+            
+        }
+        
     }
     
     func keyboardWasShown(notification: NSNotification) {
