@@ -211,6 +211,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             switchTab(page)
         } else if globalTab[2] && page == 2 {
             switchTab(page)
+        } else if globalTab[3] && page == 3 {
+            switchTab(page)
         }
         
         _setupScrolltoTop(current)
@@ -220,7 +222,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         var x = scrollView.contentOffset.x
         var page: Int = Int(x / globalWidth)
         
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.viewLine.setX(15 + CGFloat(page * 80))
         })
     }

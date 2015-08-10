@@ -35,7 +35,7 @@ var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
-var globalTab = [true, true, true]
+var globalTab = [true, true, true, true]
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height

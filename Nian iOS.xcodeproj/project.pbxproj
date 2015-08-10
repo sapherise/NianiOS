@@ -432,6 +432,7 @@
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
 		C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
+		C40F4F4A1B788630001A8216 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
@@ -1167,6 +1168,7 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C40F4F4A1B788630001A8216 /* WebKit.framework */,
 				C4A350BE1B6B6BEE00E8AF10 /* Security.framework */,
 				122AFE041A80869D00464641 /* libsqlite3.dylib */,
 				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
