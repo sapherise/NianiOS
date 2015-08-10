@@ -1,6 +1,5 @@
 // UIButton+AFNetworking.h
-//
-// Copyright (c) 2013-2014 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2011–2015 Alamofire Software Foundation (http://alamofire.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +31,7 @@
 
 /**
  This category adds methods to the UIKit framework's `UIButton` class. The methods in this category provide support for loading remote images and background images asynchronously from a URL.
- 
+
  @warning Compound values for control `state` (such as `UIControlStateHighlighted | UIControlStateDisabled`) are unsupported.
  */
 @interface UIButton (AFNetworking)
@@ -70,9 +69,9 @@
 
 /**
  Asynchronously downloads an image from the specified URL, and sets it as the image for the specified state once the request is finished. Any previous image request for the receiver will be cancelled.
- 
+
   If the image is cached locally, the image is set immediately, otherwise the specified placeholder image will be set immediately, and then the remote image will be set once the request is finished.
- 
+
  @param state The control state.
  @param url The URL used for the image request.
  */
@@ -81,9 +80,9 @@
 
 /**
  Asynchronously downloads an image from the specified URL, and sets it as the image for the specified state once the request is finished. Any previous image request for the receiver will be cancelled.
- 
+
  If the image is cached locally, the image is set immediately, otherwise the specified placeholder image will be set immediately, and then the remote image will be set once the request is finished.
- 
+
  @param state The control state.
  @param url The URL used for the image request.
  @param placeholderImage The image to be set initially, until the image request finishes. If `nil`, the button will not change its image until the image request finishes.
@@ -96,7 +95,7 @@
  Asynchronously downloads an image from the specified URL request, and sets it as the image for the specified state once the request is finished. Any previous image request for the receiver will be cancelled.
 
  If the image is cached locally, the image is set immediately, otherwise the specified placeholder image will be set immediately, and then the remote image will be set once the request is finished.
- 
+
  If a success block is specified, it is the responsibility of the block to set the image of the button before returning. If no success block is specified, the default behavior of setting the image with `setImage:forState:` is applied.
 
  @param state The control state.
@@ -164,14 +163,14 @@
 
 /**
  Cancels any executing image operation for the specified control state of the receiver, if one exists.
- 
+
  @param state The control state.
  */
 - (void)cancelImageRequestOperationForState:(UIControlState)state;
 
 /**
  Cancels any executing background image operation for the specified control state of the receiver, if one exists.
- 
+
  @param state The control state.
  */
 - (void)cancelBackgroundImageRequestOperationForState:(UIControlState)state;

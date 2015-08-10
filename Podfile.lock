@@ -1,39 +1,42 @@
 PODS:
-  - AFNetworking (2.5.0):
-    - AFNetworking/NSURLConnection (= 2.5.0)
-    - AFNetworking/NSURLSession (= 2.5.0)
-    - AFNetworking/Reachability (= 2.5.0)
-    - AFNetworking/Security (= 2.5.0)
-    - AFNetworking/Serialization (= 2.5.0)
-    - AFNetworking/UIKit (= 2.5.0)
-  - AFNetworking/NSURLConnection (2.5.0):
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.0):
+  - AFNetworking/NSURLSession (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.0)
-  - AFNetworking/Security (2.5.0)
-  - AFNetworking/Serialization (2.5.0)
-  - AFNetworking/UIKit (2.5.0):
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Base64 (1.0.1)
+  - MJExtension (2.5.5)
   - NSData+MD5Digest (1.0.0)
   - UMengAnalytics-NO-IDFA (3.4.5)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.0)
+  - AFNetworking (~> 2.5.4)
   - Base64
+  - MJExtension
   - NSData+MD5Digest
   - UMengAnalytics-NO-IDFA
 
 SPEC CHECKSUMS:
-  AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
-  Base64: c6d74f31f150543b246a07e180ba813c88e59311
-  NSData+MD5Digest: 3662c71c33c32cac0302dce76df6df7a6d81acca
-  UMengAnalytics-NO-IDFA: 600bad4f635e69c097d924e8378e077a9768290d
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  Base64: 4924bf3ca6fa559a5161ef717291bd450eb7bd1a
+  MJExtension: fa526531d00a7c88771bf72e626bb49fb9292b9c
+  NSData+MD5Digest: 0743d53874455e2bdf49f70e7f815b0b963a355f
+  UMengAnalytics-NO-IDFA: 1575e6c9be20320d547b71bb8a7eae0402f46aef
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.3

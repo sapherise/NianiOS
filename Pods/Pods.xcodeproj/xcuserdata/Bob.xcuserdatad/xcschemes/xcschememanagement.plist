@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Nian iOS-MJExtension.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Nian iOS-NSData+MD5Digest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,27 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>621DF05CF768F652BB18A988</key>
+		<key>291587A4959EC5F931A08D67</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AB04835A2F1B1AB78CE3009E</key>
+		<key>A314178ABA76EA2EA00D951F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B393A36E9F1221089A73A5C0</key>
+		<key>B4E4763F4654C5E08E9ADB4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DC3C77F8C13E5CC28E88EE9B</key>
+		<key>DE6BA406562DB231280D4BF1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FFC68B9CC08269025E21367C</key>
+		<key>F41CCFC037701505582CD57E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F6CFA3A431074A4EE662ED75</key>
 		<dict>
 			<key>primary</key>
 			<true/>

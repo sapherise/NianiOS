@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0630"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B393A36E9F1221089A73A5C0"
+               BlueprintIdentifier = "DE6BA406562DB231280D4BF1"
                BuildableName = "libPods-Nian iOS-NSData+MD5Digest.a"
                BlueprintName = "Pods-Nian iOS-NSData+MD5Digest"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -39,15 +39,6 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B393A36E9F1221089A73A5C0"
-            BuildableName = "libPods-Nian iOS-NSData+MD5Digest.a"
-            BlueprintName = "Pods-Nian iOS-NSData+MD5Digest"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

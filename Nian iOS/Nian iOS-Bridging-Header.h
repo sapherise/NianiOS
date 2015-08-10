@@ -23,3 +23,10 @@
 #import "UITableView+FDTemplateLayoutCell.h"
 #import "KeychainItemWrapper.h"
 #import "objc/runtime.h"
+
+/**
+ *  @author Bob Wei, 15-08-08 14:08:23
+ *
+ *  应用第三方库实现 “字典 <--> Model” 的解析
+ */
+#import "MJExtension.h"

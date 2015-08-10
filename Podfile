@@ -2,9 +2,10 @@
 # platform :ios, "8.0"
 
 target "Nian iOS" do
-pod "AFNetworking", "~> 2.0" 
+pod "AFNetworking", "~> 2.5.4" 
 pod 'NSData+MD5Digest'
 pod 'Base64'
 pod 'UMengAnalytics-NO-IDFA'
+pod 'MJExtension'
 end
 

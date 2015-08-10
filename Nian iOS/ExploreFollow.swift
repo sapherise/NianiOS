@@ -36,7 +36,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
         viewController.tableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
-        viewController.tableView.estimatedRowHeight = 200
+//        viewController.tableView.estimatedRowHeight = 200
     }
     
     func load(clear: Bool) {

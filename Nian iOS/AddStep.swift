@@ -369,7 +369,11 @@ extension NIAlert {
                                                                 self.imgView?.image = nil
                                                                 if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
                                                                     var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
-                                                                    skView.allowsTransparency = true
+                                                                    
+                                                                    if globaliOS >= 8.0 {
+                                                                        skView.allowsTransparency = true
+                                                                    }
+                                                                    
                                                                     self._containerView!.addSubview(skView)
                                                                     scene.scaleMode = SKSceneScaleMode.AspectFit
                                                                     skView.presentScene(scene)
