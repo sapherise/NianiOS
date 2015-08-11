@@ -38,6 +38,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     var memorySafe = [Payment]()
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setupViews()
     }
     
@@ -104,7 +106,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 delay( y , {
                     self.labelCoin.text = textI
                 })
-            }else{
+            } else {
                 delay( y + 0.1 , {
                     var textI = "0"
                     if totalNumber <= 0 {

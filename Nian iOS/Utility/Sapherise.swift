@@ -679,7 +679,7 @@ extension UIViewController {
                     viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
                 })
             })
-        }else{
+        } else {
             var views:NSArray = globalViewFilm!.subviews
             for view:AnyObject in views {
                 if NSStringFromClass(view.classForCoder) == "Nian_iOS.FilmCell" {

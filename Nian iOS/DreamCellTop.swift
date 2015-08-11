@@ -227,6 +227,9 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
                     self.labelWidthWithItsContent(label, content: user)
                     label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
                 }
+                
+                NSLog("%@ +++++=====", label.text!)
+                
                 label.frame.origin.x = scrollView.contentSize.width + 8
                 label.frame.origin.y = 11
                 scrollView.addSubview(label)
@@ -251,6 +254,10 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
                 scrollView.delaysContentTouches = false
                 scrollView.userInteractionEnabled = true
                 scrollView.exclusiveTouch = true
+                
+                
+                println(scrollView.subviews)
+                
             }
             
         } else {
