@@ -251,10 +251,24 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         for _ in self.container {
             if _tmpI == tab {
                 (self.container[_tmpI] as UIScrollView).scrollsToTop = true
-                (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#FFFFFF")
+                
+                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
+                    duration: 0.2,
+                    options: .TransitionCrossDissolve,
+                    animations: { () -> Void in
+                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#FFFFFF")
+                }, completion: nil)
+                
             } else {
                 (self.container[_tmpI] as UIScrollView).scrollsToTop = false
-                (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#666666")
+                
+                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
+                    duration: 0.2,
+                    options: .TransitionCrossDissolve,
+                    animations: { () -> Void in
+                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#666666")
+                    }, completion: nil)
+                
             }
             
             _tmpI++
