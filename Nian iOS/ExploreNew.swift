@@ -44,6 +44,8 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
             json in
             var success = false
             if json != nil {
+                globalTab[3] = false
+                
                 var items = json!.objectForKey("items") as! NSArray
                 if items.count != 0 {
                     if clear {

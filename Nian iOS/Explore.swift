@@ -228,14 +228,13 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         _setupScrolltoTop(current)
     }
     
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        var x = scrollView.contentOffset.x
-//        var page: Int = Int(x / globalWidth)
-//        
-//        UIView.animateWithDuration(0.2, animations: { () -> Void in
-//
-//        })
-//    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var x = scrollView.contentOffset.x
+        self.btnFollow.setTabAlpha(x, index: 0)
+        self.btnDynamic.setTabAlpha(x, index: 1)
+        self.btnHot.setTabAlpha(x, index: 2)
+        self.btnNew.setTabAlpha(x, index: 3)
+    }
     
     func onFriendClick() {
         self.navigationController?.pushViewController(FindViewController(), animated: true)
@@ -252,22 +251,22 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             if _tmpI == tab {
                 (self.container[_tmpI] as UIScrollView).scrollsToTop = true
                 
-                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
-                    duration: 0.2,
-                    options: .TransitionCrossDissolve,
-                    animations: { () -> Void in
-                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#FFFFFF")
-                }, completion: nil)
+//                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
+//                    duration: 0.2,
+//                    options: .TransitionCrossDissolve,
+//                    animations: { () -> Void in
+//                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#FFFFFF")
+//                }, completion: nil)
                 
             } else {
                 (self.container[_tmpI] as UIScrollView).scrollsToTop = false
                 
-                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
-                    duration: 0.2,
-                    options: .TransitionCrossDissolve,
-                    animations: { () -> Void in
-                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#666666")
-                    }, completion: nil)
+//                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
+//                    duration: 0.2,
+//                    options: .TransitionCrossDissolve,
+//                    animations: { () -> Void in
+//                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#666666")
+//                    }, completion: nil)
                 
             }
             

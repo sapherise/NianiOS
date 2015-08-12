@@ -36,5 +36,6 @@
  *  @author Bob Wei, 15-08-11 12:08:08
  *
  *  实现对某个 class or instance 的追踪
+ *  没有办法在 __amd64__ 的 CPU 上运行
  */
 //#import "Xtrace.h"

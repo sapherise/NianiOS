@@ -167,9 +167,9 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     func onBuyCoinClick(sender: UIButton) {
         var tag = sender.tag
         var coinData = coinItems[tag]
-        showFilm("购买念币", prompt: "立刻获得 \(coinData.title)", button: coinData.cost, transDirectly: true) { film in
+        showFilm("购买念币", prompt: "立刻获得 \(coinData.title)", button: coinData.cost, transDirectly: true) { [unowned self] film in
             var payment = Payment() {
-                state, data in
+                [unowned self] state, data in
                 if film.hidden {
                     film.removeFromSuperview()
                     switch state {
