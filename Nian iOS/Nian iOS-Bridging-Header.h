@@ -29,7 +29,7 @@
  *
  *  应用第三方库实现 “字典 <--> Model” 的解析
  */
-#import "MJExtension.h"
+#import "JSONModel.h"
 
 
 /**
@@ -39,3 +39,11 @@
  *  没有办法在 __amd64__ 的 CPU 上运行
  */
 //#import "Xtrace.h"
+
+
+/**
+ *  @author Bob Wei, 15-08-13 15:08:14
+ *
+ *  引入 DDLog
+ */
+#import "CocoaLumberjack.h"

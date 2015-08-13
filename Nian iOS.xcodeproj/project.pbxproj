@@ -193,6 +193,7 @@
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
+		C4763B411B7CA825000D9CE8 /* DDLog Color.markdown in Sources */ = {isa = PBXBuildFile; fileRef = C4763B401B7CA825000D9CE8 /* DDLog Color.markdown */; };
 		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
@@ -210,6 +211,7 @@
 		C4B6B6711B26F8F000A5FA26 /* CircleCollectionList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */; };
 		C4B6B6731B271EBD00A5FA26 /* CircleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */; };
 		C4B6B6771B2723EF00A5FA26 /* CircleListCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */; };
+		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
 		C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
@@ -443,6 +445,7 @@
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
+		C4763B401B7CA825000D9CE8 /* DDLog Color.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "DDLog Color.markdown"; sourceTree = "<group>"; };
 		C47672E31B394A8C0011C9AC /* ForgetPwd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPwd.swift; sourceTree = "<group>"; };
 		C47672E41B394A8C0011C9AC /* ForgetPwd.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgetPwd.xib; sourceTree = "<group>"; };
 		C47672E81B394DC10011C9AC /* NIAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIAlert.swift; sourceTree = "<group>"; };
@@ -465,6 +468,7 @@
 		C4B6B6701B26F8F000A5FA26 /* CircleCollectionList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleCollectionList.storyboard; sourceTree = "<group>"; };
 		C4B6B6721B271EBD00A5FA26 /* CircleCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleCollectionCell.swift; sourceTree = "<group>"; };
 		C4B6B6761B2723EF00A5FA26 /* CircleListCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleListCollectionController.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
 		C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
 		C4CDB41B1AF8C79000936E03 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
@@ -995,6 +999,7 @@
 			isa = PBXGroup;
 			children = (
 				1275E4B319A8D02600E2FC4C /* Images.xcassets */,
+				C4763B401B7CA825000D9CE8 /* DDLog Color.markdown */,
 				12FB489B196AE76E0026DD51 /* Nian iOS */,
 				12FB48BD196AE8010026DD51 /* Utility */,
 				B63CD37464934379B52680E0 /* Frameworks */,
@@ -1089,6 +1094,7 @@
 				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
+				C4C510EF1B7C952600865AD4 /* DDLogExt.swift */,
 				122AFE021A80864800464641 /* SqliteData.swift */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 			);
@@ -1552,6 +1558,7 @@
 				C4A8A7B81B6F6329006DEEE8 /* ExploreNew.swift in Sources */,
 				C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
+				C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				1271550D1A3FE82000E27EC5 /* CircleDetail.swift in Sources */,
@@ -1572,6 +1579,7 @@
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
+				C4763B411B7CA825000D9CE8 /* DDLog Color.markdown in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
 				C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */,
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,

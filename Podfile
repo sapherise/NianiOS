@@ -6,6 +6,8 @@ pod "AFNetworking", "~> 2.5.4"
 pod 'NSData+MD5Digest'
 pod 'Base64'
 pod 'UMengAnalytics-NO-IDFA'
-pod 'MJExtension'
+pod 'JSONModel', "~> 1.0.2"
+
+pod "CocoaLumberjack", "~> 2.0.1"
 end
 

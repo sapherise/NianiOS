@@ -42,6 +42,10 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     @IBOutlet weak var navTopView: UIView!
     
+    @IBOutlet weak var leftLine: UIView!
+    @IBOutlet weak var middleLine: UIView!
+    @IBOutlet weak var rightView: UIView!
+    
     var appear = false
     var current = -1
     var currentProvider: ExploreProvider!
@@ -162,6 +166,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         
         var _btnWidth = globalWidth / 4
+        
+        self.leftLine.setX(_btnWidth)
+        self.middleLine.setX(_btnWidth * 2)
+        self.rightView.setX(_btnWidth * 3)
+        
         var _tmpI = 0
         for _ in self.buttons {
             (self.buttons[_tmpI] as UILabel).frame = CGRectMake(_btnWidth * CGFloat(_tmpI), 0, _btnWidth, 40)

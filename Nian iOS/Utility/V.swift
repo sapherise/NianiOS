@@ -67,7 +67,7 @@ struct V {
                 callback(obj)
             },
             failure: {(op: AFHTTPRequestOperation!, error: NSError!) in
-                println("error: \(error)")
+                logError("AFN get error: \(error.localizedDescription)")
         })
     }
     
@@ -81,7 +81,7 @@ struct V {
                 callback(obj)
         },
             failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                println("===== post error: \(error.localizedDescription)")
+                logError("AFN post error: \(error.localizedDescription)")
         })
     }
     

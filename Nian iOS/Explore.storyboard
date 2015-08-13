@@ -149,8 +149,11 @@
                         <outlet property="dynamicTableView" destination="3gy-pV-BXd" id="kWM-Hw-L37"/>
                         <outlet property="imageFriend" destination="jqu-kN-EO5" id="SuY-Ac-4Pu"/>
                         <outlet property="imageSearch" destination="61j-UB-Mnd" id="e4B-vV-80R"/>
+                        <outlet property="leftLine" destination="ASL-z1-x5t" id="FBp-9h-o7R"/>
+                        <outlet property="middleLine" destination="LMF-cA-eIk" id="hgh-8C-o72"/>
                         <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
                         <outlet property="recomTableView" destination="EI2-L7-TyB" id="Cg4-Xo-mu2"/>
+                        <outlet property="rightView" destination="Zlc-A0-BUY" id="pAH-yj-qtO"/>
                         <outlet property="scrollView" destination="CmH-Mi-Llu" id="rmT-bo-kzx"/>
                         <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
                         <outlet property="titleLabel" destination="Pho-ry-XXs" id="HB8-fr-W62"/>
