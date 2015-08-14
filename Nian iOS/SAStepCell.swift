@@ -495,6 +495,5 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         return CGSizeMake(size.width, h)
     }
     
-    
 }
 

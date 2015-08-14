@@ -236,9 +236,11 @@ extension ExploreFollowProvider: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.targetRect = nil
-        
-        self.loadImagesForVisibleCells()
+        if scrollView is UITableView {
+            self.targetRect = nil
+            
+            self.loadImagesForVisibleCells()
+        }
     }
     
     

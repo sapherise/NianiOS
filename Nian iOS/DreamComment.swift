@@ -383,7 +383,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
                 
                 self.tableview.beginUpdates()
-                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
+                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: .None)
                 self.tableview.endUpdates()
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {

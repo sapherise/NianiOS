@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         DDLog.addLogger(DDTTYLogger.sharedInstance())
         DDLog.logLevel = .Verbose
         DDTTYLogger.sharedInstance().colorsEnabled = true
+        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
         
         return true
     }

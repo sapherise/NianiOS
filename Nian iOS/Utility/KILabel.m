@@ -592,7 +592,7 @@ NSString * const KILabelLinkKey = @"link";
         [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:glyphsPosition];
         [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:glyphsPosition];
     } else {
-        [super drawTextInRect:rect];
+        [super drawTextInRect:UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(0, 0, 0, 0))];
     }
 }
 
