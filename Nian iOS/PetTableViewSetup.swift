@@ -111,6 +111,8 @@ extension PetViewController: NIAlertDelegate {
                 }
             } else {    // 没有拥有这个宠物
                 labelLevel.text = "--"
+                labelLevel.textColor = UIColor.colorWithHex("#B3B3B3")
+                labelName.textColor = UIColor.colorWithHex("#333333")
                 self.btnUpgrade.bgColor = BgColor.grey
             }
             labelLeft.text = "礼物：\(energy)"

@@ -253,11 +253,12 @@ extension ExploreDynamicProvider : UIScrollViewDelegate  {
     }
     
     func loadImagesForVisibleCells() {
-        var cellArray = self.bindViewController?.tableView.visibleCells()
+        var cellArray = self.bindViewController?.dynamicTableView.visibleCells()
         
         for cell in cellArray! {
             if cell is SAStepCell {
                 var indexPath = self.bindViewController?.dynamicTableView.indexPathForCell(cell as! SAStepCell)
+                
                 var _tmpShouldLoadImg = false
                 
                 if let _indexPath = indexPath {

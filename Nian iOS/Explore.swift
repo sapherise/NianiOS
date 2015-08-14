@@ -32,7 +32,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var imageSearch: UIImageView!
-    @IBOutlet var imageFriend: UIImageView!
+    @IBOutlet weak var imageFriend: UIImageView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
@@ -40,9 +40,11 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     @IBOutlet weak var recomTableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    @IBOutlet var navTopView: UIView!
-    @IBOutlet var navHolder: UIView!
-    @IBOutlet weak var viewLine: UIView!
+    @IBOutlet weak var navTopView: UIView!
+    
+    @IBOutlet weak var leftLine: UIView!
+    @IBOutlet weak var middleLine: UIView!
+    @IBOutlet weak var rightView: UIView!
     
     var appear = false
     var current = -1
@@ -53,6 +55,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     var container: [UIScrollView]!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         self.buttons = [
             btnFollow,
             btnDynamic,
@@ -78,16 +82,20 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.navigationController?.navigationBarHidden = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "exploreTop:", name: "exploreTop", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         navHide()
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
         navShow()
     }
@@ -140,8 +148,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         
         self.titleLabel.setX((globalWidth - self.titleLabel.frame.width)/2)
         
-        self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
-        
         self.imageSearch.setX(globalWidth - 43)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
@@ -158,6 +164,19 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
+        
+        var _btnWidth = globalWidth / 4
+        
+        self.leftLine.setX(_btnWidth)
+        self.middleLine.setX(_btnWidth * 2)
+        self.rightView.setX(_btnWidth * 3)
+        
+        var _tmpI = 0
+        for _ in self.buttons {
+            (self.buttons[_tmpI] as UILabel).frame = CGRectMake(_btnWidth * CGFloat(_tmpI), 0, _btnWidth, 40)
+            
+            _tmpI++
+        }
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
@@ -211,6 +230,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             switchTab(page)
         } else if globalTab[2] && page == 2 {
             switchTab(page)
+        } else if globalTab[3] && page == 3 {
+            switchTab(page)
         }
         
         _setupScrolltoTop(current)
@@ -218,11 +239,10 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var x = scrollView.contentOffset.x
-        var page: Int = Int(x / globalWidth)
-        
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.viewLine.setX(15 + CGFloat(page * 80))
-        })
+        self.btnFollow.setTabAlpha(x, index: 0)
+        self.btnDynamic.setTabAlpha(x, index: 1)
+        self.btnHot.setTabAlpha(x, index: 2)
+        self.btnNew.setTabAlpha(x, index: 3)
     }
     
     func onFriendClick() {
@@ -235,14 +255,30 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     private func _setupScrolltoTop(tab: Int) {
         var _tmpI = 0
+        
         for _ in self.container {
             if _tmpI == tab {
                 (self.container[_tmpI] as UIScrollView).scrollsToTop = true
-                (self.buttons[_tmpI] as UILabel).textColor = SeaColor
+                
+//                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
+//                    duration: 0.2,
+//                    options: .TransitionCrossDissolve,
+//                    animations: { () -> Void in
+//                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#FFFFFF")
+//                }, completion: nil)
+                
             } else {
                 (self.container[_tmpI] as UIScrollView).scrollsToTop = false
-                (self.buttons[_tmpI] as UILabel).textColor = UIColor.blackColor()
+                
+//                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
+//                    duration: 0.2,
+//                    options: .TransitionCrossDissolve,
+//                    animations: { () -> Void in
+//                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#666666")
+//                    }, completion: nil)
+                
             }
+            
             _tmpI++
         }
         

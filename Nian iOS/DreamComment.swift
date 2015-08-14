@@ -301,13 +301,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         c.data = data
         c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        c.imageContent.tag = index
+        c.imageContent.tag = dataArray.count - 1 - index
         c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
         c.View.tag = index
         cell = c
         return cell
     }
     
+
     func onCellClick(sender:UIPanGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Changed {
             var distanceX = sender.translationInView(self.view).x
@@ -380,7 +381,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 self.isKeyboardResign = 1
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
+                
+                self.tableview.beginUpdates()
                 self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
+                self.tableview.endUpdates()
+                
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0
