@@ -43,6 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         DDTTYLogger.sharedInstance().colorsEnabled = true
         DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
         
+        application.cancelAllLocalNotifications()
+        
         return true
     }
     
