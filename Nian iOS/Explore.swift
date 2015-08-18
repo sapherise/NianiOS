@@ -24,27 +24,20 @@ class ExploreProvider: NSObject {
 
 class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UIScrollViewDelegate {
     
-    @IBOutlet weak var btnFollow: UILabel!
-    @IBOutlet weak var btnDynamic: UILabel!
-    @IBOutlet weak var btnHot: UILabel!
-    @IBOutlet weak var btnNew: UILabel!
-    
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet var btnFollow: UILabel!
+    @IBOutlet var btnDynamic: UILabel!
+    @IBOutlet var btnHot: UILabel!
     
     @IBOutlet weak var imageSearch: UIImageView!
-    @IBOutlet weak var imageFriend: UIImageView!
+    @IBOutlet var imageFriend: UIImageView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dynamicTableView: UITableView!
     @IBOutlet weak var recomTableView: UITableView!
-    @IBOutlet weak var collectionView: UICollectionView!
     
-    @IBOutlet weak var navTopView: UIView!
-    
-    @IBOutlet weak var leftLine: UIView!
-    @IBOutlet weak var middleLine: UIView!
-    @IBOutlet weak var rightView: UIView!
+    @IBOutlet var navTopView: UIView!
+    @IBOutlet var navHolder: UIView!
     
     var appear = false
     var current = -1
@@ -52,20 +45,13 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     
     var buttons: [UILabel]!
     var providers: [ExploreProvider]!
-    var container: [UIScrollView]!
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
         self.buttons = [
             btnFollow,
             btnDynamic,
             btnHot,
-            btnNew,
         ]
-        
-        self.container = [tableView, dynamicTableView, recomTableView, collectionView]
-        
         setupViews()
         
         // brief: tableView = followTableView
@@ -75,27 +61,20 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         dynamicTableView.delegate = providers[1] as? UITableViewDelegate
         recomTableView.dataSource = providers[2] as? UITableViewDataSource
         recomTableView.delegate = providers[2] as? UITableViewDelegate
-        
-        collectionView.dataSource = providers[3] as? UICollectionViewDataSource
-        collectionView.delegate = providers[3] as? UICollectionViewDelegate
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.navigationController?.navigationBarHidden = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "exploreTop:", name: "exploreTop", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         navHide()
     }
     
     override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
         navShow()
     }
@@ -132,7 +111,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
             ExploreNewHot(viewController: self),
-            ExploreNewProvider(viewController: self),
         ]
         globalNumExploreBar = 0
         
@@ -140,43 +118,25 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         self.tableView.scrollsToTop = true
         self.dynamicTableView.scrollsToTop = false
         self.recomTableView.scrollsToTop = false
-        self.collectionView.scrollsToTop = false
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.navTopView.backgroundColor = BarColor
         self.navTopView.setWidth(globalWidth)
-        
-        self.titleLabel.setX((globalWidth - self.titleLabel.frame.width)/2)
-        
+        self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
         self.imageSearch.setX(globalWidth - 43)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
         view.backgroundColor = UIColor.whiteColor()
         
         scrollView.setWidth(globalWidth)
-        scrollView.contentSize = CGSizeMake(globalWidth * 4, scrollView.frame.size.height)
+        scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
         tableView.frame.origin.x = 0
         dynamicTableView.frame.origin.x = globalWidth
         recomTableView.frame.origin.x = globalWidth * 2
-        collectionView.frame.origin.x = globalWidth * 3
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-        btnNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-        
-        var _btnWidth = globalWidth / 4
-        
-        self.leftLine.setX(_btnWidth)
-        self.middleLine.setX(_btnWidth * 2)
-        self.rightView.setX(_btnWidth * 3)
-        
-        var _tmpI = 0
-        for _ in self.buttons {
-            (self.buttons[_tmpI] as UILabel).frame = CGRectMake(_btnWidth * CGFloat(_tmpI), 0, _btnWidth, 40)
-            
-            _tmpI++
-        }
         
         tableView.addHeaderWithCallback(onPullDown)
         tableView.addFooterWithCallback(onPullUp)
@@ -184,8 +144,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         dynamicTableView.addFooterWithCallback(onPullUp)
         recomTableView.addHeaderWithCallback(onPullDown)
         recomTableView.addFooterWithCallback(onPullUp)
-        collectionView.addHeaderWithCallback(onPullDown)
-        collectionView.addFooterWithCallback(onPullUp)
     }
     
     func onPullDown() {
@@ -230,8 +188,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             switchTab(page)
         } else if globalTab[2] && page == 2 {
             switchTab(page)
-        } else if globalTab[3] && page == 3 {
-            switchTab(page)
         }
         
         _setupScrolltoTop(current)
@@ -242,7 +198,6 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         self.btnFollow.setTabAlpha(x, index: 0)
         self.btnDynamic.setTabAlpha(x, index: 1)
         self.btnHot.setTabAlpha(x, index: 2)
-        self.btnNew.setTabAlpha(x, index: 3)
     }
     
     func onFriendClick() {
@@ -254,34 +209,19 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     }
     
     private func _setupScrolltoTop(tab: Int) {
-        var _tmpI = 0
-        
-        for _ in self.container {
-            if _tmpI == tab {
-                (self.container[_tmpI] as UIScrollView).scrollsToTop = true
-                
-//                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
-//                    duration: 0.2,
-//                    options: .TransitionCrossDissolve,
-//                    animations: { () -> Void in
-//                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#FFFFFF")
-//                }, completion: nil)
-                
-            } else {
-                (self.container[_tmpI] as UIScrollView).scrollsToTop = false
-                
-//                UIView.transitionWithView((self.buttons[_tmpI] as UILabel),
-//                    duration: 0.2,
-//                    options: .TransitionCrossDissolve,
-//                    animations: { () -> Void in
-//                        (self.buttons[_tmpI] as UILabel).textColor = UIColor.colorWithHex("#666666")
-//                    }, completion: nil)
-                
-            }
-            
-            _tmpI++
+        if tab == 0 {
+            tableView.scrollsToTop = true
+            dynamicTableView.scrollsToTop = false
+            recomTableView.scrollsToTop = false
+        } else if tab == 1 {
+            tableView.scrollsToTop = false
+            dynamicTableView.scrollsToTop = true
+            recomTableView.scrollsToTop = false
+        } else if tab == 2 {
+            tableView.scrollsToTop = false
+            dynamicTableView.scrollsToTop = false
+            recomTableView.scrollsToTop = true
         }
-        
     }
 }
 

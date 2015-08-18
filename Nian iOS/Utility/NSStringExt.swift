@@ -18,9 +18,13 @@ extension String {
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .ByWordWrapping;
         var  attributes = [NSFontAttributeName:font,
-            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+            NSParagraphStyleAttributeName:paragraphStyle]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        
+        if globaliOS >= 8.4 {
+            return rect.size.height + 0.1
+        }
         return rect.size.height
     }
     
@@ -33,6 +37,10 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        
+        if globaliOS >= 8.4 {
+            return rect.size.height + 0.1
+        }
         return rect.size.height
     }
     
@@ -45,6 +53,10 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        
+        if globaliOS >= 8.4 {
+            return rect.size.width + 0.1
+        }
         return rect.size.width
     }
     
@@ -57,6 +69,10 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        
+        if globaliOS >= 8.4 {
+            return rect.size.width + 0.1
+        }
         return rect.size.width
     }
 }
