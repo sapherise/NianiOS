@@ -110,7 +110,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         self.providers = [
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
-            ExploreNewHot(viewController: self),
+            ExploreRecommend(viewController: self),
         ]
         globalNumExploreBar = 0
         

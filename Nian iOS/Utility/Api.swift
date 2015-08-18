@@ -96,6 +96,12 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_recommend.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
+    static func getDiscoverTop(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/discover/top?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
+    
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/dream/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)

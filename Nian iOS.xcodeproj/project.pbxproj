@@ -186,6 +186,9 @@
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
+		C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263251B82E49900C0F011 /* EditorRecomCell.swift */; };
+		C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */; };
+		C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263301B82F1E500C0F011 /* CollectionViewCell.swift */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
@@ -435,6 +438,9 @@
 		C40F4F4A1B788630001A8216 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
+		C42263251B82E49900C0F011 /* EditorRecomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorRecomCell.swift; sourceTree = "<group>"; };
+		C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestNoteCell.swift; sourceTree = "<group>"; };
+		C42263301B82F1E500C0F011 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
 		C42B7D491B564137008D3B36 /* ModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeViewController.xib; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
@@ -1129,6 +1135,9 @@
 				C4A8A7B61B6F6329006DEEE8 /* ExploreNew.swift */,
 				C4A8A7B71B6F6329006DEEE8 /* ExploreNewCell.xib */,
 				C4C0F38D1B818D3F00ED22BE /* ExploreRecommend.swift */,
+				C42263251B82E49900C0F011 /* EditorRecomCell.swift */,
+				C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */,
+				C42263301B82F1E500C0F011 /* CollectionViewCell.swift */,
 				C472F7591AE745D400ECC011 /* ExploreNewHot.swift */,
 				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
 				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
@@ -1594,6 +1603,7 @@
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
+				C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */,
 				12BF1A6A1A427A3E0044CAF4 /* CircleJoin.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
@@ -1631,6 +1641,7 @@
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
 				12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */,
+				C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
@@ -1657,6 +1668,7 @@
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,
 				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
 				12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */,
+				C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
 				121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */,
 			);
