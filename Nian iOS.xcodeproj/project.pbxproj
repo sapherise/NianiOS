@@ -193,7 +193,6 @@
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
-		C4763B411B7CA825000D9CE8 /* DDLog Color.markdown in Sources */ = {isa = PBXBuildFile; fileRef = C4763B401B7CA825000D9CE8 /* DDLog Color.markdown */; };
 		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
@@ -1579,7 +1578,6 @@
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
-				C4763B411B7CA825000D9CE8 /* DDLog Color.markdown in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
 				C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */,
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,

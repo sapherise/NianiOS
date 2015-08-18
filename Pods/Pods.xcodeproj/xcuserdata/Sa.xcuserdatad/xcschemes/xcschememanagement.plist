@@ -14,6 +14,16 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>Pods-Nian iOS-CocoaLumberjack.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>Pods-Nian iOS-JSONModel.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 		<key>Pods-Nian iOS-MJExtension.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -37,12 +47,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0F697F5EA9880A53198F21FF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>21C15C28F0AE97C1AAADBD42</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>291587A4959EC5F931A08D67</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>2BAB5DD93D6D3DEEC344E28A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3AAA321F4D47131C2E2E5ED6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>587875BFC707E06E174948AD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5AFEF8D1A863BB95F6602FBF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>621DF05CF768F652BB18A988</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>730DB901251B58394F69148A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
