@@ -20,6 +20,8 @@ class EditorRecomCell: UITableViewCell {
         // Initialization code
 
         self.sepLine.setHeightHalf()
+        
+        self.collectionView.registerNib(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
@@ -28,9 +30,6 @@ class EditorRecomCell: UITableViewCell {
     }
 
     func _layoutSubview() {
-        
-        
-        
         if data?.count > 0 {
             self.collectionView.reloadData()
         }
@@ -55,18 +54,26 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionCell", forIndexPath: indexPath) as! CollectionViewCell
+        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
         var _tmpData = self.data?.objectAtIndex(indexPath.row) as! NSDictionary
         
         if let _img = _tmpData.objectForKey("image") as? String {
             collectionCell.imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
         }
         
-        collectionCell.label?.text = _tmpData.objectForKey("title") as? String
+        collectionCell.label?.text = SADecode(_tmpData.objectForKey("title") as! String)
         
         return collectionCell
     }
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        var DreamVC = DreamViewController()
+        DreamVC.Id = (self.data?.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
+        
+        if DreamVC.Id != "0" && DreamVC.Id != "" {
+            self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
+        }
+    }
     
 }
 

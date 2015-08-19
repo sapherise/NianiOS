@@ -38,8 +38,8 @@ class ExploreNewHotCell: UITableViewCell {
         self.viewHolder.setX(globalWidth/2-160)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func _layoutSubviews() {
+//        super.layoutSubviews()
         var id = self.data.stringAttributeForKey("id")
         var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
         var img = self.data.stringAttributeForKey("img")

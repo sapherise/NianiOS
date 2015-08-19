@@ -191,6 +191,8 @@
 		C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263301B82F1E500C0F011 /* CollectionViewCell.swift */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
+		C4446D6E1B8426CA0037DC59 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */; };
+		C4446D701B847D460037DC59 /* ExploreRecomMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
@@ -443,6 +445,8 @@
 		C42263301B82F1E500C0F011 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
 		C42B7D491B564137008D3B36 /* ModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeViewController.xib; sourceTree = "<group>"; };
+		C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
+		C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecomMore.swift; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
@@ -1138,6 +1142,7 @@
 				C42263251B82E49900C0F011 /* EditorRecomCell.swift */,
 				C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */,
 				C42263301B82F1E500C0F011 /* CollectionViewCell.swift */,
+				C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */,
 				C472F7591AE745D400ECC011 /* ExploreNewHot.swift */,
 				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
 				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
@@ -1148,6 +1153,7 @@
 				3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */,
 				3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
+				C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1432,6 +1438,7 @@
 				C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */,
 				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
 				1258C30B1A49A9DB008FA4EF /* CircleExploreCell.xib in Resources */,
+				C4446D6E1B8426CA0037DC59 /* CollectionViewCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				120072901AE7943D000D74BA /* SAStepCell.xib in Resources */,
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
@@ -1600,6 +1607,7 @@
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
+				C4446D701B847D460037DC59 /* ExploreRecomMore.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,

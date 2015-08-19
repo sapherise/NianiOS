@@ -10,39 +10,53 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
     
-    var imageView: UIImageView?
-    var label: UILabel?
-    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var label: CellLabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        setupView()        
+        self.setupView()
     }
     
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        setupView()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        setupView()
     }
     
     
     func setupView() {
-        self.imageView?.frame = CGRectMake(0, 0, 64, 64)
-        self.label?.frame = CGRectMake(0, 72, 64, 32)
+        self.imageView?.layer.cornerRadius = 6.0
+        self.imageView?.layer.borderWidth = 0.5
+        self.imageView?.layer.borderColor = UIColor.colorWithHex("#E6E6E6").CGColor
+        self.imageView?.layer.masksToBounds = true
     }
     
     
     override func prepareForReuse() {
-        self.imageView?.cancelImageRequestOperation()
-        self.imageView?.image = nil
+        self.imageView.cancelImageRequestOperation()
+        self.imageView.image = nil
+    }
+    
+}
+
+class CellLabel: UILabel {
+   
+    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+        var rect = super.textRectForBounds(bounds, limitedToNumberOfLines: numberOfLines)
+        rect.origin.y = bounds.origin.y
+        
+        return rect
+    }
+    
+    override func drawTextInRect(rect: CGRect) {
+        var _rect = self.textRectForBounds(rect, limitedToNumberOfLines: self.numberOfLines)
+        
+        super.drawTextInRect(_rect)
     }
     
 }

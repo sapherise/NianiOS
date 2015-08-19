@@ -32,40 +32,42 @@ class ExploreRecommend: ExploreProvider {
             page = 1
         }
         
-        Api.getDiscoverTop() {
-            json in
-            
-            if json != nil {
-                var err = json!.objectForKey("error") as? NSNumber
-                if err == 0 {
-                    var data = json!.objectForKey("data") as? NSDictionary
-                    if data != nil {
-                        if let _editorArray = data!.objectForKey("recommend") as? NSMutableArray {
-                            self.editorRecommArray = _editorArray
+        if page == 1 {
+            Api.getDiscoverTop() {
+                json in
+                
+                if json != nil {
+                    var err = json!.objectForKey("error") as? NSNumber
+                    if err == 0 {
+                        var data = json!.objectForKey("data") as? NSDictionary
+                        if data != nil {
                             
-                            if self.editorRecommArray.count > 0 {
-                                self.bindViewController?.recomTableView.beginUpdates()
-                                self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
-                                self.bindViewController?.recomTableView.endUpdates()
-                            }
-                        }
-                        
-                        if let _latestArray = data!.objectForKey("newest") as? NSMutableArray {
-                            self.latestArray = _latestArray
-                            
-                            if self.latestArray.count > 0 {
-                                self.bindViewController?.recomTableView.beginUpdates()
-                                self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
-                                self.bindViewController?.recomTableView.endUpdates()
+                            if let _editorArray = data!.objectForKey("recommend") as? NSMutableArray {
+                                self.editorRecommArray = _editorArray
                                 
+                                if self.editorRecommArray.count > 0 {
+                                    self.bindViewController?.recomTableView.beginUpdates()
+                                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+                                    self.bindViewController?.recomTableView.endUpdates()
+                                }
+                            }
+                            
+                            if let _latestArray = data!.objectForKey("newest") as? NSMutableArray {
+                                self.latestArray = _latestArray
+                                
+                                if self.latestArray.count > 0 {
+                                    self.bindViewController?.recomTableView.beginUpdates()
+                                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+                                    self.bindViewController?.recomTableView.endUpdates()
+                                    
+                                }
                             }
                         }
-                    }
 
-                }  // if err != nil
-            }  // if json != nil
-        }
-        
+                    }  // if err != nil
+                }  // if json != nil
+            }
+        } // if page == 1
         
         Api.getExploreNewHot("\(lastID)", page: "\(page++)", callback: {
             json in
@@ -82,11 +84,13 @@ class ExploreRecommend: ExploreProvider {
                     self.bindViewController?.recomTableView.headerEndRefreshing()
                     self.bindViewController?.recomTableView.footerEndRefreshing()
                     
-                    self.bindViewController?.recomTableView.beginUpdates()
-                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .None)
-                    self.bindViewController?.recomTableView.endUpdates()
-                    
-//                    self.bindViewController?.recomTableView.reloadData()
+                    if self.page == 1 {
+                        self.bindViewController?.recomTableView.beginUpdates()
+                        self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .None)
+                        self.bindViewController?.recomTableView.endUpdates()
+                    } else {
+                        self.bindViewController?.recomTableView.reloadData()
+                    }
                 }
                 var count = self.listDataArray.count
                 if count >= 1 {
@@ -140,25 +144,44 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 || section == 1 {
+        if section == 2 {
+            return self.listDataArray.count
+        }else if section == 0 || section == 1 {
             return 1
         }
         
-        return self.listDataArray.count
+        return 0
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 || indexPath.section == 1 {
+        if indexPath.section == 2 {
+            var index = indexPath.row
+            var data = self.listDataArray[index] as! NSDictionary
+            
+            return  ExploreNewHotCell.cellHeightByData(data)
+        } else if indexPath.section == 0 || indexPath.section == 1 {
             return 185
         }
         
-        return 200
+        return 0
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 2 {
+            var cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
+            cell!.data = self.listDataArray[indexPath.row] as! NSDictionary
             
+            logWarn("\(cell!.data)")
+            
+            if indexPath.row == self.listDataArray.count - 1 {
+                cell!.viewLine.hidden = true
+            } else {
+                cell!.viewLine.hidden = false
+            }
+            cell!._layoutSubviews()
+            
+            return cell!
             
         } else if indexPath.section == 0 {
             var recomCell = tableView.dequeueReusableCellWithIdentifier("EditorRecomCell", forIndexPath: indexPath) as! EditorRecomCell
@@ -172,10 +195,28 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             latestCell._layoutSubview()
             
             return latestCell
-        }
+        } else {
         
         var cell = UITableViewCell()
-        
         return cell
+        }
     }
+    
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.section == 0 || indexPath.section == 1 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 2 {
+            var DreamVC = DreamViewController()
+            DreamVC.Id = (self.listDataArray[indexPath.row] as! NSDictionary)["id"] as! String
+            
+            self.bindViewController?.navigationController?.pushViewController(DreamVC, animated: true)
+        }
+    }
+    
 }

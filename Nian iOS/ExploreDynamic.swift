@@ -303,6 +303,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
     @IBOutlet var imageCover: UIImageView!
     @IBOutlet var viewLine: UIView!
     var data: NSDictionary!
+    
     override func awakeFromNib() {
         imageCover.setX(globalWidth - 52)
         self.viewLine.setWidth(globalWidth - 40)
