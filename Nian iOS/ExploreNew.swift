@@ -28,15 +28,6 @@ class ExploreNewProvider: ExploreProvider, UICollectionViewDelegate, UICollectio
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
         viewController.collectionView.registerNib(UINib(nibName: "ExploreNewCell", bundle: nil), forCellWithReuseIdentifier: "ExploreNewCell")
-        
-//        let flowLayout = UICollectionViewFlowLayout()
-//        var width = (viewController.view.bounds.width - 48) / 2
-//        flowLayout.minimumInteritemSpacing = 0.0
-//        flowLayout.minimumLineSpacing = 16.0
-//        flowLayout.itemSize = CGSize(width: width, height: 182)
-//        flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-//        viewController.collectionView.collectionViewLayout = flowLayout
-        
     }
     
     func load(clear: Bool, callback: Bool -> Void) {

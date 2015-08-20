@@ -195,6 +195,8 @@
 		C4446D701B847D460037DC59 /* ExploreRecomMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
+		C45158451B85C5F500A40593 /* NICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45158441B85C5F500A40593 /* NICollectionView.swift */; };
+		C45158471B85F4EA00A40593 /* ExMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C45158461B85F4EA00A40593 /* ExMoreCell.xib */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
@@ -450,6 +452,8 @@
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
+		C45158441B85C5F500A40593 /* NICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NICollectionView.swift; sourceTree = "<group>"; };
+		C45158461B85F4EA00A40593 /* ExMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExMoreCell.xib; sourceTree = "<group>"; };
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
@@ -1141,6 +1145,7 @@
 				C4C0F38D1B818D3F00ED22BE /* ExploreRecommend.swift */,
 				C42263251B82E49900C0F011 /* EditorRecomCell.swift */,
 				C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */,
+				C45158441B85C5F500A40593 /* NICollectionView.swift */,
 				C42263301B82F1E500C0F011 /* CollectionViewCell.swift */,
 				C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */,
 				C472F7591AE745D400ECC011 /* ExploreNewHot.swift */,
@@ -1154,6 +1159,7 @@
 				3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
 				C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */,
+				C45158461B85F4EA00A40593 /* ExMoreCell.xib */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1428,6 +1434,7 @@
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
+				C45158471B85F4EA00A40593 /* ExMoreCell.xib in Resources */,
 				127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
@@ -1591,6 +1598,7 @@
 				127155131A3FE84500E27EC5 /* CircleDetailTop.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
+				C45158451B85C5F500A40593 /* NICollectionView.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,

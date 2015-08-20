@@ -10,7 +10,7 @@ import UIKit
 
 class LatestNoteCell: UITableViewCell {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView: NICollectionView!
     @IBOutlet weak var sepLine: UIView!
     
     var data: NSMutableArray?

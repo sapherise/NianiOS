@@ -22,6 +22,7 @@ class ExploreProvider: NSObject {
     }
 }
 
+// MARK: - explore view controller
 class ExploreViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var btnFollow: UILabel!
@@ -224,38 +225,23 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-
-    
 }
 
-extension ExploreController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        logInfo("shouldRecognizeSimultaneouslyWithGestureRecognizer")
-        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
-            return false
-        }
-        return true
-    }
+// MARK: - prepareForSegue
+extension ExploreViewController {
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        logVerbose("shouldBeRequiredToFailByGestureRecognizer")
-        
-        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
-            return true
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toEditorMore" {
+            var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
+            exploreRecomMore.titleOn = "编辑推荐"
+            
+            
+        } else if segue.identifier == "toLatestMore" {
+            var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
+            exploreRecomMore.titleOn = "最新"
         }
-        return false
-    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        logWarn("shouldReceiveTouch")
-        
-        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
-            return false
-        }
-        return true
     }
 }
-
 
 
 extension UILabel {

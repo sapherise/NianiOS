@@ -13,7 +13,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="CmH-Mi-Llu">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="CmH-Mi-Llu">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -61,9 +61,10 @@
                                                             </state>
                                                             <connections>
                                                                 <action selector="onEditorMore:" destination="Bca-zk-Vur" eventType="touchUpInside" id="ApX-aV-aXs"/>
+                                                                <segue destination="6IR-P2-cBx" kind="push" identifier="toEditorMore" id="Ln6-fQ-g84"/>
                                                             </connections>
                                                         </button>
-                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="ond-4I-yjy">
+                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="ond-4I-yjy" customClass="NICollectionView" customModule="Nian_iOS" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="56" width="320" height="104"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -83,7 +84,7 @@
                                                     </subviews>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="collectionView" destination="ond-4I-yjy" id="mVt-Mt-amr"/>
+                                                    <outlet property="collectionView" destination="ond-4I-yjy" id="MiM-3n-7rV"/>
                                                     <outlet property="sepLine" destination="VMT-1f-Wkq" id="OPp-x4-Fnf"/>
                                                 </connections>
                                             </tableViewCell>
@@ -111,9 +112,10 @@
                                                             </state>
                                                             <connections>
                                                                 <action selector="onLatestMore:" destination="7S5-S2-Teq" eventType="touchUpInside" id="24N-ua-3iO"/>
+                                                                <segue destination="6IR-P2-cBx" kind="push" identifier="toLatestMore" id="Cu3-rJ-K44"/>
                                                             </connections>
                                                         </button>
-                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="9R4-UC-q8i">
+                                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="9R4-UC-q8i" customClass="NICollectionView" customModule="Nian_iOS" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="56" width="320" height="104"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -133,7 +135,7 @@
                                                     </subviews>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="collectionView" destination="9R4-UC-q8i" id="gu6-kM-a2p"/>
+                                                    <outlet property="collectionView" destination="9R4-UC-q8i" id="dH8-sy-qwT"/>
                                                     <outlet property="sepLine" destination="u7u-4b-8Vg" id="obt-Y7-IZc"/>
                                                 </connections>
                                             </tableViewCell>
@@ -299,26 +301,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" id="NEs-Gh-XbD">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4kN-j8-WuH">
+                                        <rect key="frame" x="110" y="20" width="100" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.10980392160000001" green="0.1215686275" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="VXq-Me-yc3">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="32c-yE-r8O">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
+                                <collectionViewLayout key="collectionViewLayout" id="C3P-ad-Jyt"/>
                                 <cells/>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="6oi-uO-pV6"/>
+                    <connections>
+                        <outlet property="collectionView" destination="VXq-Me-yc3" id="cKC-jj-AwX"/>
+                        <outlet property="titleLabel" destination="4kN-j8-WuH" id="gcs-NL-aDJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yDv-LK-5YT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-675" y="768"/>
+            <point key="canvasLocation" x="-1196" y="894"/>
         </scene>
     </scenes>
     <resources>
@@ -330,4 +346,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="Cu3-rJ-K44"/>
+    </inferredMetricsTieBreakers>
 </document>
