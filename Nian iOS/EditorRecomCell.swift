@@ -40,6 +40,7 @@ class EditorRecomCell: UITableViewCell {
         
     }
 
+
 }
 
 extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -76,4 +77,43 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
 }
+
+extension EditorRecomCell: UIGestureRecognizerDelegate {
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        logInfo("shouldRecognizeSimultaneouslyWithGestureRecognizer \(gestureRecognizer)")
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return false
+        }
+        return true
+    }
+    
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        logVerbose("shouldBeRequiredToFailByGestureRecognizer, \(gestureRecognizer)")
+        
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return true
+        }
+        return false
+    }
+    
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        logWarn("shouldReceiveTouch, \(gestureRecognizer), \n  touch: \(touch)")
+        
+        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
+            return false
+        }
+        return true
+    }
+    
+    override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        logInfo("gesture Recognizer: \(gestureRecognizer)")
+        
+        return true 
+    }
+    
+}
+
+
+
+
 

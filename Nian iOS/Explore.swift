@@ -22,22 +22,22 @@ class ExploreProvider: NSObject {
     }
 }
 
-class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+class ExploreViewController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet var btnFollow: UILabel!
-    @IBOutlet var btnDynamic: UILabel!
-    @IBOutlet var btnHot: UILabel!
+    @IBOutlet weak var btnFollow: UILabel!
+    @IBOutlet weak var btnDynamic: UILabel!
+    @IBOutlet weak var btnHot: UILabel!
     
     @IBOutlet weak var imageSearch: UIImageView!
-    @IBOutlet var imageFriend: UIImageView!
+    @IBOutlet weak var imageFriend: UIImageView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dynamicTableView: UITableView!
     @IBOutlet weak var recomTableView: UITableView!
     
-    @IBOutlet var navTopView: UIView!
-    @IBOutlet var navHolder: UIView!
+    @IBOutlet weak var navTopView: UIView!
+    @IBOutlet weak var navHolder: UIView!
     
     var appear = false
     var current = -1
@@ -223,7 +223,40 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             recomTableView.scrollsToTop = true
         }
     }
+    
+
+    
 }
+
+extension ExploreController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        logInfo("shouldRecognizeSimultaneouslyWithGestureRecognizer")
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return false
+        }
+        return true
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        logVerbose("shouldBeRequiredToFailByGestureRecognizer")
+        
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return true
+        }
+        return false
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        logWarn("shouldReceiveTouch")
+        
+        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
+            return false
+        }
+        return true
+    }
+}
+
+
 
 extension UILabel {
     func setTabAlpha(x: CGFloat, index: CGFloat) {

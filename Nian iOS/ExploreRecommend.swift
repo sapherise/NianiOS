@@ -133,7 +133,6 @@ class ExploreRecommend: ExploreProvider {
         load(false)
     }
     
-   
 }
 
 
@@ -172,8 +171,6 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             var cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
             cell!.data = self.listDataArray[indexPath.row] as! NSDictionary
             
-            logWarn("\(cell!.data)")
-            
             if indexPath.row == self.listDataArray.count - 1 {
                 cell!.viewLine.hidden = true
             } else {
@@ -182,7 +179,6 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             cell!._layoutSubviews()
             
             return cell!
-            
         } else if indexPath.section == 0 {
             var recomCell = tableView.dequeueReusableCellWithIdentifier("EditorRecomCell", forIndexPath: indexPath) as! EditorRecomCell
             recomCell.data = self.editorRecommArray
@@ -196,9 +192,8 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             
             return latestCell
         } else {
-        
-        var cell = UITableViewCell()
-        return cell
+            var cell = UITableViewCell()
+            return cell
         }
     }
     
