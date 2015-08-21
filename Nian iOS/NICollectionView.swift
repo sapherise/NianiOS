@@ -18,10 +18,20 @@ extension NICollectionView: UIGestureRecognizerDelegate {
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
         if disableScrollViewScroll {
-            if otherGestureRecognizer.state == .Ended || otherGestureRecognizer.state == .Failed {
+//            var _s = NSStringFromClass(gestureRecognizer.classForCoder)
+//            var _ss = NSStringFromClass(otherGestureRecognizer.classForCoder)
+//
+//            logError("gesture \(gestureRecognizer) ")
+//            logVerbose("other gesture \n \(_s) \n \n \(_ss) ")
+//
+//            if otherGestureRecognizer.state == .Ended || otherGestureRecognizer.state == .Failed || otherGestureRecognizer.state == .Cancelled || otherGestureRecognizer.state == .Possible {
+//                (self.findRootViewController() as! ExploreViewController).scrollView.scrollEnabled = true
+//            }
+            
+            if NSStringFromClass(gestureRecognizer.classForCoder) == "UIScrollViewPanGestureRecognizer" {
                 (self.findRootViewController() as! ExploreViewController).scrollView.scrollEnabled = true
+                disableScrollViewScroll = false
             }
-            disableScrollViewScroll = false
         }
         
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
@@ -31,7 +41,6 @@ extension NICollectionView: UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
             return true
         }
@@ -39,6 +48,9 @@ extension NICollectionView: UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        (self.findRootViewController() as! ExploreViewController).scrollView.scrollEnabled = false
+        disableScrollViewScroll = true
+        
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
             return false
         }
@@ -46,9 +58,7 @@ extension NICollectionView: UIGestureRecognizerDelegate {
     }
     
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        (self.findRootViewController() as! ExploreViewController).scrollView.scrollEnabled = false
-        disableScrollViewScroll = true
-        
+
         return true
     }
     

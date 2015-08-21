@@ -182,6 +182,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.section == 0 {
             var recomCell = tableView.dequeueReusableCellWithIdentifier("EditorRecomCell", forIndexPath: indexPath) as! EditorRecomCell
             recomCell.data = self.editorRecommArray
+            recomCell.collectionView.setContentOffset(CGPointMake(0, 0), animated: false)
             recomCell._layoutSubview()
             
             return recomCell

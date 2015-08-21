@@ -40,12 +40,12 @@ class ExploreRecomMore: UIViewController {
         
         var Q = isiPhone6P ? 4 : 3
         var x = (globalWidth - CGFloat(80 * Q))/CGFloat(2 * (Q + 1))
-        var y = x
+        var y = x + x
         
         flowLayout.minimumInteritemSpacing = x
-        flowLayout.minimumLineSpacing = 2 * x
+        flowLayout.minimumLineSpacing = y
         flowLayout.itemSize = CGSize(width: 80, height: 120)
-        flowLayout.sectionInset = UIEdgeInsets(top: y, left: y + x, bottom: y, right: y + x)
+        flowLayout.sectionInset = UIEdgeInsets(top: y, left: y, bottom: y, right: y)
         self.collectionView.collectionViewLayout = flowLayout
         
         self.collectionView.addHeaderWithCallback(onPullDown)

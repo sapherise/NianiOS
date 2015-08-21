@@ -76,6 +76,8 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
         navShow()
     }

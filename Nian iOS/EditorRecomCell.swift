@@ -72,6 +72,9 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
         var DreamVC = DreamViewController()
         DreamVC.Id = (self.data?.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
         
+        //
+        (self.findRootViewController() as! ExploreViewController).scrollView.scrollEnabled = true   
+        
         if DreamVC.Id != "0" && DreamVC.Id != "" {
             self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
         }
