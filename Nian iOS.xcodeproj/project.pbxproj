@@ -196,7 +196,6 @@
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C45158451B85C5F500A40593 /* NICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45158441B85C5F500A40593 /* NICollectionView.swift */; };
-		C45158471B85F4EA00A40593 /* ExMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C45158461B85F4EA00A40593 /* ExMoreCell.xib */; };
 		C472F75B1AE745D400ECC011 /* ExploreNewHot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7591AE745D400ECC011 /* ExploreNewHot.swift */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
@@ -220,6 +219,9 @@
 		C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
+		C4D8F3F01B871A8000F2BCE7 /* NIMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D8F3EF1B871A8000F2BCE7 /* NIMoreButton.swift */; };
+		C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */; };
+		C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */; };
 		C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */; };
 		C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D77A1B5E22880033671D /* PetCell.swift */; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
@@ -453,7 +455,6 @@
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		C45158441B85C5F500A40593 /* NICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NICollectionView.swift; sourceTree = "<group>"; };
-		C45158461B85F4EA00A40593 /* ExMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExMoreCell.xib; sourceTree = "<group>"; };
 		C472F7591AE745D400ECC011 /* ExploreNewHot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHot.swift; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
@@ -488,6 +489,9 @@
 		C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		C4CDB41E1AF8C79900936E03 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
 		C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		C4D8F3EF1B871A8000F2BCE7 /* NIMoreButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIMoreButton.swift; sourceTree = "<group>"; };
+		C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMoreCell.xib; sourceTree = "<group>"; };
+		C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMoreCell.swift; sourceTree = "<group>"; };
 		C4F6D7741B5DFCC30033671D /* UIImage+Grayscale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Grayscale.h"; sourceTree = "<group>"; };
 		C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Grayscale.m"; sourceTree = "<group>"; };
 		C4F6D77A1B5E22880033671D /* PetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetCell.swift; sourceTree = "<group>"; };
@@ -1155,11 +1159,13 @@
 				C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */,
 				3252850C1A10C2B600316021 /* Explore.storyboard */,
 				3252850E1A10C2C300316021 /* Explore.swift */,
+				C4D8F3EF1B871A8000F2BCE7 /* NIMoreButton.swift */,
 				3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */,
 				3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
 				C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */,
-				C45158461B85F4EA00A40593 /* ExMoreCell.xib */,
+				C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */,
+				C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1423,6 +1429,7 @@
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
+				C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
@@ -1434,7 +1441,6 @@
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
-				C45158471B85F4EA00A40593 /* ExMoreCell.xib in Resources */,
 				127155111A3FE83D00E27EC5 /* CircleDetailCell.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
@@ -1588,6 +1594,7 @@
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
 				C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */,
+				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
@@ -1619,6 +1626,7 @@
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
+				C4D8F3F01B871A8000F2BCE7 /* NIMoreButton.swift in Sources */,
 				C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */,
 				12BF1A6A1A427A3E0044CAF4 /* CircleJoin.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,

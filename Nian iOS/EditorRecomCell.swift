@@ -12,6 +12,7 @@ class EditorRecomCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: NICollectionView!
     @IBOutlet weak var sepLine: UIView!
+    @IBOutlet weak var moreButton: UIButton!
     
     var data: NSMutableArray?
 
@@ -30,6 +31,7 @@ class EditorRecomCell: UITableViewCell {
     }
 
     func _layoutSubview() {
+        
         if data?.count > 0 {
             self.collectionView.reloadData()
         }
@@ -39,11 +41,10 @@ class EditorRecomCell: UITableViewCell {
     @IBAction func onEditorMore(sender: UIButton) {
         
     }
-
-
 }
 
 extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate {
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let _count = self.data?.count {
             return _count

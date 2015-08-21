@@ -234,8 +234,6 @@ extension ExploreViewController {
         if segue.identifier == "toEditorMore" {
             var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
             exploreRecomMore.titleOn = "编辑推荐"
-            
-            
         } else if segue.identifier == "toLatestMore" {
             var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
             exploreRecomMore.titleOn = "最新"
