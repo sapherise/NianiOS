@@ -576,6 +576,18 @@ extension UIImageView{
         var y = self.convertPoint(CGPointZero, fromView: self.window)
         return y
     }
+    
+    
+    func drawCornerRadius(radius: CGFloat, image: UIImage) {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, image.scale)
+        UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).addClip()
+        
+        image.drawInRect(self.bounds)
+        self.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+    }
+    
 }
 
 extension UIViewController {

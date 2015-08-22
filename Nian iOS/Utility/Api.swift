@@ -96,6 +96,24 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_recommend.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
+    // MARK: - 发现-“热门” 之“编辑推荐”和“最新”
+    static func getDiscoverTop(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/discover/top?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
+    
+    // MARK: - 获取所有最新的梦想
+    static func getDiscoverLatest(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/discover/newest?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // MARK: - 获取所有编辑推荐的结果 
+    static func getDiscoverEditorRecom(page: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/discover/recommend?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/dream/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
@@ -423,7 +441,7 @@ struct Api {
     static func postCircleDisturb(circle: String, isDisturb: Bool, callback: V.JsonCallback) {
         loadCookies()
         var disturb: Int = isDisturb ? 1 : 0
-        V.httpDeleteForJson_AFN("http://nian.so/api/circle_disturb.php", content: ["circle": "\(circle)", "uid": "\(s_uid)", "shell": "\(s_shell)", "disturb": "\(disturb)" ], callback: callback)
+        V.httpPostForJson_AFN("http://nian.so/api/circle_disturb.php", content: ["circle": "\(circle)", "uid": "\(s_uid)", "shell": "\(s_shell)", "disturb": "\(disturb)" ], callback: callback)
     }
     
     static func postGameover(callback: V.JsonCallback) {

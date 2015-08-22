@@ -36,6 +36,8 @@ class PetCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
+        
         self.imgView?.cancelImageRequestOperation()
         self.imgView?.image = nil
     }

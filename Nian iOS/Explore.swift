@@ -22,22 +22,23 @@ class ExploreProvider: NSObject {
     }
 }
 
-class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+// MARK: - explore view controller
+class ExploreViewController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet var btnFollow: UILabel!
-    @IBOutlet var btnDynamic: UILabel!
-    @IBOutlet var btnHot: UILabel!
+    @IBOutlet weak var btnFollow: UILabel!
+    @IBOutlet weak var btnDynamic: UILabel!
+    @IBOutlet weak var btnHot: UILabel!
     
     @IBOutlet weak var imageSearch: UIImageView!
-    @IBOutlet var imageFriend: UIImageView!
+    @IBOutlet weak var imageFriend: UIImageView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dynamicTableView: UITableView!
     @IBOutlet weak var recomTableView: UITableView!
     
-    @IBOutlet var navTopView: UIView!
-    @IBOutlet var navHolder: UIView!
+    @IBOutlet weak var navTopView: UIView!
+    @IBOutlet weak var navHolder: UIView!
     
     var appear = false
     var current = -1
@@ -75,6 +76,8 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
         navShow()
     }
@@ -110,7 +113,7 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
         self.providers = [
             ExploreFollowProvider(viewController: self),
             ExploreDynamicProvider(viewController: self),
-            ExploreNewHot(viewController: self),
+            ExploreRecommend(viewController: self),
         ]
         globalNumExploreBar = 0
         
@@ -223,7 +226,23 @@ class ExploreViewController: UIViewController, UIGestureRecognizerDelegate, UISc
             recomTableView.scrollsToTop = true
         }
     }
+    
 }
+
+// MARK: - prepareForSegue
+extension ExploreViewController {
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toEditorMore" {
+            var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
+            exploreRecomMore.titleOn = "编辑推荐"
+        } else if segue.identifier == "toLatestMore" {
+            var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
+            exploreRecomMore.titleOn = "最新"
+        }
+    }
+}
+
 
 extension UILabel {
     func setTabAlpha(x: CGFloat, index: CGFloat) {
