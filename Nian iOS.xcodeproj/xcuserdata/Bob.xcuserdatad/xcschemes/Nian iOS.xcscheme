@@ -88,12 +88,14 @@
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
-      <AdditionalOptions>
-         <AdditionalOption
-            key = "NSZombieEnabled"
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "XcodeColors"
             value = "YES"
             isEnabled = "YES">
-         </AdditionalOption>
+         </EnvironmentVariable>
+      </EnvironmentVariables>
+      <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction

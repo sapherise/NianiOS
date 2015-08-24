@@ -35,7 +35,7 @@ var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
-var globalTab = [true, true, true]
+var globalTab = [true, true, true, true]
 
 var globalWidth = UIScreen.mainScreen().bounds.width
 var globalHeight = UIScreen.mainScreen().bounds.height
@@ -576,6 +576,18 @@ extension UIImageView{
         var y = self.convertPoint(CGPointZero, fromView: self.window)
         return y
     }
+    
+    
+    func drawCornerRadius(radius: CGFloat, image: UIImage) {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, image.scale)
+        UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).addClip()
+        
+        image.drawInRect(self.bounds)
+        self.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+    }
+    
 }
 
 extension UIViewController {
@@ -679,7 +691,7 @@ extension UIViewController {
                     viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
                 })
             })
-        }else{
+        } else {
             var views:NSArray = globalViewFilm!.subviews
             for view:AnyObject in views {
                 if NSStringFromClass(view.classForCoder) == "Nian_iOS.FilmCell" {

@@ -247,17 +247,20 @@ extension ExploreDynamicProvider : UIScrollViewDelegate  {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.targetRect = nil
-        
-        self.loadImagesForVisibleCells()
+        if scrollView is UITableView {
+            self.targetRect = nil
+            
+            self.loadImagesForVisibleCells()
+        }
     }
     
     func loadImagesForVisibleCells() {
-        var cellArray = self.bindViewController?.tableView.visibleCells()
+        var cellArray = self.bindViewController?.dynamicTableView.visibleCells()
         
         for cell in cellArray! {
             if cell is SAStepCell {
                 var indexPath = self.bindViewController?.dynamicTableView.indexPathForCell(cell as! SAStepCell)
+                
                 var _tmpShouldLoadImg = false
                 
                 if let _indexPath = indexPath {
@@ -300,6 +303,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
     @IBOutlet var imageCover: UIImageView!
     @IBOutlet var viewLine: UIView!
     var data: NSDictionary!
+    
     override func awakeFromNib() {
         imageCover.setX(globalWidth - 52)
         self.viewLine.setWidth(globalWidth - 40)

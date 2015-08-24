@@ -254,7 +254,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func onBubbleClick(sender:UIGestureRecognizer) {
         var index = sender.view!.tag
-        var data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
+        var data = self.dataArray[index] as! NSDictionary
         var user = data.stringAttributeForKey("user") as String
         var uid = data.stringAttributeForKey("uid")
         var content = data.stringAttributeForKey("content") as String
@@ -301,13 +301,15 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         c.data = data
         c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        c.imageContent.tag = index
+        c.imageContent.tag = dataArray.count - 1 - index
         c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
         c.View.tag = index
+//        c._layoutSubviews()
         cell = c
         return cell
     }
     
+
     func onCellClick(sender:UIPanGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Changed {
             var distanceX = sender.translationInView(self.view).x
@@ -378,9 +380,16 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
                 self.isKeyboardResign = 1
-                self.dataArray.removeObjectAtIndex(self.ReplyRow)
+                logInfo("\(self.dataArray.count)")
+                self.dataArray.removeObjectAtIndex(self.dataArray.count - 1 - self.ReplyRow)
+                logVerbose("\(self.dataArray.count)")
                 var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
-                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.None)
+                
+//                self.tableview.beginUpdates()
+//                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: .None)
+//                self.tableview.endUpdates()
+                self.tableview.reloadData()
+                
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0

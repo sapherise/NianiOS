@@ -21,21 +21,31 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Base64 (1.0.1)
-  - MJExtension (2.5.5)
+  - CocoaLumberjack (2.0.1):
+    - CocoaLumberjack/Default (= 2.0.1)
+    - CocoaLumberjack/Extensions (= 2.0.1)
+  - CocoaLumberjack/Core (2.0.1)
+  - CocoaLumberjack/Default (2.0.1):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.1):
+    - CocoaLumberjack/Default
+  - JSONModel (1.0.2)
   - NSData+MD5Digest (1.0.0)
   - UMengAnalytics-NO-IDFA (3.4.5)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
   - Base64
-  - MJExtension
+  - CocoaLumberjack (~> 2.0.1)
+  - JSONModel (~> 1.0.2)
   - NSData+MD5Digest
   - UMengAnalytics-NO-IDFA
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Base64: 4924bf3ca6fa559a5161ef717291bd450eb7bd1a
-  MJExtension: fa526531d00a7c88771bf72e626bb49fb9292b9c
+  CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
+  JSONModel: 6ffcb4ffa3659c9e9a2e5d45d6c7705bab187c03
   NSData+MD5Digest: 0743d53874455e2bdf49f70e7f815b0b963a355f
   UMengAnalytics-NO-IDFA: 1575e6c9be20320d547b71bb8a7eae0402f46aef
 

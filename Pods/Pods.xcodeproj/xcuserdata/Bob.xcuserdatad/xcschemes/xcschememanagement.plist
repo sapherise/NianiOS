@@ -14,7 +14,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Nian iOS-MJExtension.xcscheme</key>
+		<key>Pods-Nian iOS-CocoaLumberjack.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Nian iOS-JSONModel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,11 +52,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>291587A4959EC5F931A08D67</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>2BAB5DD93D6D3DEEC344E28A</key>
 		<dict>
 			<key>primary</key>
@@ -73,31 +73,6 @@
 			<true/>
 		</dict>
 		<key>730DB901251B58394F69148A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A314178ABA76EA2EA00D951F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B4E4763F4654C5E08E9ADB4C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DE6BA406562DB231280D4BF1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F41CCFC037701505582CD57E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F6CFA3A431074A4EE662ED75</key>
 		<dict>
 			<key>primary</key>
 			<true/>
