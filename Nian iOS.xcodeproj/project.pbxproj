@@ -201,6 +201,17 @@
 		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
+		C47689951B8C7C9C00A91DB7 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C47689941B8C7C9C00A91DB7 /* libPushSDK-1.8.5.a */; };
+		C47689981B8C7CE200A91DB7 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = C47689971B8C7CE200A91DB7 /* PushConfig.plist */; };
+		C47689991B8C806300A91DB7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */; };
+		C476899A1B8C807300A91DB7 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DE699419D198C40006B5B5 /* CoreText.framework */; };
+		C476899C1B8C808B00A91DB7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C476899B1B8C808B00A91DB7 /* CFNetwork.framework */; };
+		C476899F1B8C809400A91DB7 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C476899D1B8C809400A91DB7 /* CoreFoundation.framework */; };
+		C47689A01B8C809400A91DB7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C476899E1B8C809400A91DB7 /* Foundation.framework */; };
+		C47689A21B8C809D00A91DB7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47689A11B8C809D00A91DB7 /* CoreTelephony.framework */; };
+		C47689A41B8C80A700A91DB7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47689A31B8C80A700A91DB7 /* CoreGraphics.framework */; };
+		C47689A61B8C80B100A91DB7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47689A51B8C80B100A91DB7 /* UIKit.framework */; };
+		C47689A81B8C80D200A91DB7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C47689A71B8C80D200A91DB7 /* libz.dylib */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */; };
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
@@ -460,6 +471,16 @@
 		C47672E31B394A8C0011C9AC /* ForgetPwd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPwd.swift; sourceTree = "<group>"; };
 		C47672E41B394A8C0011C9AC /* ForgetPwd.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgetPwd.xib; sourceTree = "<group>"; };
 		C47672E81B394DC10011C9AC /* NIAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIAlert.swift; sourceTree = "<group>"; };
+		C47689941B8C7C9C00A91DB7 /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
+		C47689961B8C7CAD00A91DB7 /* APService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		C47689971B8C7CE200A91DB7 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		C476899B1B8C808B00A91DB7 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		C476899D1B8C809400A91DB7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		C476899E1B8C809400A91DB7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C47689A11B8C809D00A91DB7 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		C47689A31B8C80A700A91DB7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C47689A51B8C80B100A91DB7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C47689A71B8C80D200A91DB7 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
 		C48FBCDA1B4A5B2A007E0BF9 /* NSString+NSHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSHash.h"; sourceTree = "<group>"; };
 		C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSHash.m"; sourceTree = "<group>"; };
@@ -497,8 +518,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C47689A81B8C80D200A91DB7 /* libz.dylib in Frameworks */,
+				C47689A61B8C80B100A91DB7 /* UIKit.framework in Frameworks */,
+				C47689A41B8C80A700A91DB7 /* CoreGraphics.framework in Frameworks */,
+				C47689A21B8C809D00A91DB7 /* CoreTelephony.framework in Frameworks */,
+				C476899F1B8C809400A91DB7 /* CoreFoundation.framework in Frameworks */,
+				C47689A01B8C809400A91DB7 /* Foundation.framework in Frameworks */,
+				C476899C1B8C808B00A91DB7 /* CFNetwork.framework in Frameworks */,
+				C476899A1B8C807300A91DB7 /* CoreText.framework in Frameworks */,
+				C47689991B8C806300A91DB7 /* SystemConfiguration.framework in Frameworks */,
 				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */,
+				C47689951B8C7C9C00A91DB7 /* libPushSDK-1.8.5.a in Frameworks */,
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 				1214547E1A694F3C0091DCEE /* libWeiboSDK.a in Frameworks */,
 				12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */,
@@ -1065,6 +1096,7 @@
 			isa = PBXGroup;
 			children = (
 				12FB489D196AE76E0026DD51 /* Info.plist */,
+				C47689971B8C7CE200A91DB7 /* PushConfig.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1108,6 +1140,7 @@
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
 				C4C510EF1B7C952600865AD4 /* DDLogExt.swift */,
 				122AFE021A80864800464641 /* SqliteData.swift */,
+				C47689961B8C7CAD00A91DB7 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 			);
 			name = Utility;
@@ -1192,10 +1225,18 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C47689A71B8C80D200A91DB7 /* libz.dylib */,
+				C47689A51B8C80B100A91DB7 /* UIKit.framework */,
+				C47689A31B8C80A700A91DB7 /* CoreGraphics.framework */,
+				C47689A11B8C809D00A91DB7 /* CoreTelephony.framework */,
+				C476899D1B8C809400A91DB7 /* CoreFoundation.framework */,
+				C476899E1B8C809400A91DB7 /* Foundation.framework */,
+				C476899B1B8C808B00A91DB7 /* CFNetwork.framework */,
 				C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */,
 				C40F4F4A1B788630001A8216 /* WebKit.framework */,
 				C4A350BE1B6B6BEE00E8AF10 /* Security.framework */,
 				122AFE041A80869D00464641 /* libsqlite3.dylib */,
+				C47689941B8C7C9C00A91DB7 /* libPushSDK-1.8.5.a */,
 				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
@@ -1448,6 +1489,7 @@
 				120072901AE7943D000D74BA /* SAStepCell.xib in Resources */,
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
 				C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */,
+				C47689981B8C7CE200A91DB7 /* PushConfig.plist in Resources */,
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
@@ -1810,6 +1852,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/weibo",
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
+					"$(PROJECT_DIR)",
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1859,6 +1902,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/weibo",
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
+					"$(PROJECT_DIR)",
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = NO;
