@@ -254,10 +254,6 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
                 scrollView.delaysContentTouches = false
                 scrollView.userInteractionEnabled = true
                 scrollView.exclusiveTouch = true
-                
-                
-                println(scrollView.subviews)
-                
             }
             
         } else {

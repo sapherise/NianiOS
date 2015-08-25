@@ -826,6 +826,10 @@ extension UIColor {
         let blue  = CGFloat( (rgbValue & 0xFF) ) / 255.0
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
+    
+    class func b3() -> UIColor! {
+        return UIColor(red:0.7, green:0.7, blue:0.7, alpha:1)
+    }
 }
 
 

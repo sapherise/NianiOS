@@ -21,11 +21,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        
-        if globaliOS >= 8.4 {
-            return rect.size.height + 0.1
-        }
-        return rect.size.height
+        return SACeil(rect.size.height, 0, isCeil: true)
     }
     
     func stringHeightBoldWith(fontSize:CGFloat,width:CGFloat)->CGFloat {
@@ -37,11 +33,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        
-        if globaliOS >= 8.4 {
-            return rect.size.height + 0.1
-        }
-        return rect.size.height
+        return SACeil(rect.size.width, 0, isCeil: true)
     }
     
     func stringWidthWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
@@ -53,11 +45,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        
-        if globaliOS >= 8.4 {
-            return rect.size.width + 0.1
-        }
-        return rect.size.width
+        return SACeil(rect.size.width, 0, isCeil: true)
     }
     
     func stringWidthBoldWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
@@ -69,10 +57,6 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        
-        if globaliOS >= 8.4 {
-            return rect.size.width + 0.1
-        }
-        return rect.size.width
+        return SACeil(rect.size.width, 0, isCeil: true)
     }
 }

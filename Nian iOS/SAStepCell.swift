@@ -112,7 +112,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func _layoutSubviews(_ shouldLoadImage: Bool = true) {
-
         var sid = self.data.stringAttributeForKey("sid")
         if sid.toInt() != nil {
             self.sid = sid.toInt()!
@@ -133,6 +132,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             
             if shouldLoadImage {
                 self.imageHead.setHead(uid)
+            } else {
+                self.imageHead.backgroundColor = IconColor
             }
             
             self.labelLike.tag = sid.toInt()!
@@ -239,6 +240,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 
                 if shouldLoadImage {
                     self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
+                } else {
+                    self.imageHolder.backgroundColor = IconColor
                 }
                 
                 self.imageHolder.setHeight(CGFloat(imgHeight))
@@ -254,9 +257,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             }
             self.viewLine.setY(self.viewMenu.bottom()+25)
             viewLine.setHeightHalf()
-            
-            //主人
-//            var cookieuid: String = NSUserDefaults.standardUserDefaults().objectForKey("uid") as! String
             
             var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
             var cookieuid = uidKey.objectForKey(kSecAttrAccount) as! String
@@ -275,7 +275,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                     self.btnUnLike.hidden = false
                 }
             }
-            //==
             
             if !isDynamic {
                 self.imageHead.setHead(uid)
@@ -294,8 +293,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.labelName.text = userlike
                 self.labelDream.text = "赞了「\(title)」"
             }
-            
-            //==
             
             
         }
@@ -326,58 +323,85 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onMoreClick(){
-        var sid = data.stringAttributeForKey("sid")
-        var content = data.stringAttributeForKey("content").decode()
-        var uid = data.stringAttributeForKey("uid")
-        var url = NSURL(string: "http://nian.so/m/step/\(sid)")!
-        var row = index
-        
-        var customActivity = SAActivity()
-        customActivity.saActivityTitle = "举报"
-        customActivity.saActivityType = "举报"
-        customActivity.saActivityImage = UIImage(named: "av_report")
-        customActivity.saActivityFunction = {
-            self.showTipText("举报好了！", delay: 2)
+        btnMore.setImage(nil, forState: UIControlState.allZeros)
+        var ac = UIActivityIndicatorView()
+        ac.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        ac.color = UIColor.b3()
+        viewMenu.addSubview(ac)
+        ac.center = btnMore.center
+        ac.startAnimating()
+        go {
+            var sid = self.data.stringAttributeForKey("sid")
+            var content = self.data.stringAttributeForKey("content").decode()
+            var uid = self.data.stringAttributeForKey("uid")
+            var url = NSURL(string: "http://nian.so/m/step/\(sid)")!
+            var row = self.index
+            
+            // 分享的内容
+            var arr = [content, url]
+            var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+            card.content = content
+            card.widthImage = self.data.stringAttributeForKey("width")
+            card.heightImage = self.data.stringAttributeForKey("height")
+            card.url = "http://img.nian.so/step/" + self.data.stringAttributeForKey("image") + "!large"
+            arr.append(card.getCard())
+            
+            var customActivity = SAActivity()
+            customActivity.saActivityTitle = "举报"
+            customActivity.saActivityType = "举报"
+            customActivity.saActivityImage = UIImage(named: "av_report")
+            customActivity.saActivityFunction = {
+                self.showTipText("举报好了！", delay: 2)
+            }
+            // 保存卡片
+            var cardActivity = SAActivity()
+            cardActivity.saActivityTitle = "保存卡片"
+            cardActivity.saActivityType = "保存卡片"
+            cardActivity.saActivityImage = UIImage(named: "card")
+            cardActivity.saActivityFunction = {
+                card.onCardSave()
+                self.showTipText("保存好了！", delay: 2)
+            }
+            //编辑按钮
+            var editActivity = SAActivity()
+            editActivity.saActivityTitle = "编辑"
+            editActivity.saActivityType = "编辑"
+            editActivity.saActivityImage = UIImage(named: "av_edit")
+            editActivity.saActivityFunction = {
+                var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+                addstepVC.isEdit = 1
+                addstepVC.data = self.data
+                addstepVC.row = row
+                addstepVC.delegate = self
+                self.findRootViewController()?.navigationController?.pushViewController(addstepVC, animated: true)
+            }
+            //删除按钮
+            var deleteActivity = SAActivity()
+            deleteActivity.saActivityTitle = "删除"
+            deleteActivity.saActivityType = "删除"
+            deleteActivity.saActivityImage = UIImage(named: "av_delete")
+            deleteActivity.saActivityFunction = {
+                self.actionSheetDelete = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                self.actionSheetDelete.addButtonWithTitle("确定")
+                self.actionSheetDelete.addButtonWithTitle("取消")
+                self.actionSheetDelete.cancelButtonIndex = 1
+                self.actionSheetDelete.showInView(self.findRootViewController()?.view)
+            }
+            
+            var ActivityArray = [customActivity, cardActivity]
+            if uid == SAUid() {
+                ActivityArray = [deleteActivity, editActivity, cardActivity]
+            }
+            self.activityViewController = SAActivityViewController.shareSheetInView(arr, applicationActivities: ActivityArray, isStep: true)
+            
+            // 禁用原来的保存图片
+            self.activityViewController.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeSaveToCameraRoll]
+            back {
+                ac.removeFromSuperview()
+                self.btnMore.setImage(UIImage(named: "btnmore"), forState: UIControlState.allZeros)
+                self.findRootViewController()?.presentViewController(self.activityViewController, animated: true, completion: nil)
+            }
         }
-        //编辑按钮
-        var editActivity = SAActivity()
-        editActivity.saActivityTitle = "编辑"
-        editActivity.saActivityType = "编辑"
-        editActivity.saActivityImage = UIImage(named: "av_edit")
-        editActivity.saActivityFunction = {
-            var addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-            addstepVC.isEdit = 1
-            addstepVC.data = self.data
-            addstepVC.row = row
-            addstepVC.delegate = self
-            self.findRootViewController()?.navigationController?.pushViewController(addstepVC, animated: true)
-        }
-        //删除按钮
-        var deleteActivity = SAActivity()
-        deleteActivity.saActivityTitle = "删除"
-        deleteActivity.saActivityType = "删除"
-        deleteActivity.saActivityImage = UIImage(named: "av_delete")
-        deleteActivity.saActivityFunction = {
-            self.actionSheetDelete = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.actionSheetDelete.addButtonWithTitle("确定")
-            self.actionSheetDelete.addButtonWithTitle("取消")
-            self.actionSheetDelete.cancelButtonIndex = 1
-            self.actionSheetDelete.showInView(self.findRootViewController()?.view)
-        }
-        
-        var ActivityArray = [customActivity]
-        if uid == SAUid() {
-            ActivityArray = [deleteActivity, editActivity]
-        }
-        var arr = [content, url]
-        var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
-        card.content = content
-        card.widthImage = data.stringAttributeForKey("width")
-        card.heightImage = data.stringAttributeForKey("height")
-        card.url = "http://img.nian.so/step/" + data.stringAttributeForKey("image") + "!large"
-        arr.append(card.getCard())
-        self.activityViewController = SAActivityViewController.shareSheetInView(arr, applicationActivities: ActivityArray, isStep: true)
-        self.findRootViewController()?.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
@@ -437,7 +461,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     class func cellHeightByData(data: NSDictionary)->CGFloat {
-        var content = SADecode(data.stringAttributeForKey("content"))
+        var content = data.stringAttributeForKey("content").decode()
         var img0 = (data.stringAttributeForKey("width") as NSString).floatValue
         var img1 = (data.stringAttributeForKey("height") as NSString).floatValue
         var height = content.stringHeightWith(16,width:globalWidth-40)

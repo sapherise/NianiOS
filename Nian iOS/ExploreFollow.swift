@@ -114,13 +114,6 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         })
     }
     
-    /* 这是一个不可用的恶魔函数 */
-//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        println(" !@#$%^&*()___(*^%$#@!#$%^&*() indexPath \(indexPath.row)   ")
-//        
-//        return 200
-//    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
         c.delegate = self
