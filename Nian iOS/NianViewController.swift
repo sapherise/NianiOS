@@ -26,6 +26,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var imageBadge: SABadgeView!
     @IBOutlet var viewHolderHead: UIView!
     @IBOutlet var imageSettings: UIImageView!
+    @IBOutlet var activity: UIActivityIndicatorView!
     var currentCell:Int = 0
     var lastPoint:CGPoint!
     var dataArray = NSMutableArray()
@@ -33,7 +34,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var imagePicker:UIImagePickerController!
     var uploadUrl:String = ""
     var navView: UIImageView!
-    var viewErr: UIView!
     var viewHeader: UIView!
     var birthday: String = ""
     
@@ -68,6 +68,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.coinButton.frame.origin.x = globalWidth/2-104
         self.levelButton.frame.origin.x = globalWidth/2-104+108
         
+        self.activity.setX(globalWidth - 32)
+        self.activity.hidden = true
+        
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
         
@@ -81,19 +84,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navView.clipsToBounds = true
         self.navView.userInteractionEnabled = true
         self.view.addSubview(self.navView)
-        
-        // 加载中时
-        viewErr = UIView(frame: CGRectMake(0, 375, globalWidth, 200))
-        var viewQuestion = viewEmpty(globalWidth, content: "正在连接念的服务器")
-        viewQuestion.setY(0)
-        var btnGo = UIButton()
-        btnGo.setButtonNice("再试一试")
-        btnGo.setX(globalWidth/2-50)
-        btnGo.setY(viewQuestion.bottom())
-        btnGo.addTarget(self, action: "NianReload:", forControlEvents: UIControlEvents.TouchUpInside)
-        viewErr.addSubview(viewQuestion)
-        viewErr.addSubview(btnGo)
-        self.scrollView.addSubview(viewErr)
         
         viewHeader = UIView(frame: CGRectMake(0, 375, globalWidth, 200))
         var viewQuestionHeader = viewEmpty(globalWidth, content: "先随便写个记本吧\n比如日记、英语、画画...")
@@ -229,11 +219,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var safename = Sa.objectForKey("user") as! String
         var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
-        
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
+        var safeuid = SAUid()
         Api.getUserTop(safeuid.toInt()!){ json in
             if json != nil {
                 var data = json!.objectForKey("user") as! NSDictionary
@@ -305,11 +291,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if globalWillNianReload == 1 {
-            globalWillNianReload = 0
-            self.SAReloadData()
-            self.setupUserTop()
-        }
     }
     
     func NianReload(sender: UIButton) {
@@ -324,6 +305,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewDidAppear(animated: Bool) {
         navHide()
+        if globalWillNianReload == 1 {
+            globalWillNianReload = 0
+            self.SAReloadData()
+            self.setupUserTop()
+        }
     }
     
     func headClick(){
@@ -380,29 +366,46 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func SAReloadData(){
-        Api.getNian() { json in
-            if json != nil {
-                self.viewErr.hidden = true
-                var arr = json!.objectForKey("items") as! NSArray
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
-                }
-                self.collectionView.reloadData()
-                var height = ceil(CGFloat(self.dataArray.count) / 3) * 125
-                self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
-                var heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
-                self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
-                self.collectionView.contentSize.height = height
-                if self.dataArray.count == 0 {
-                    self.viewHeader.hidden = false
-                }else{
-                    self.viewHeader.hidden = true
-                }
-                globalNumberDream = self.dataArray.count
-            }
+        if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
+            self.dataArray = NianDream
+            reloadFromDataArray()
+            println("从缓存里加载")
         }
+        
+        activity.hidden = false
+        activity.startAnimating()
+            Api.getNian() { json in
+                if json != nil {
+                    self.activity.hidden = true
+                    var arr = json!.objectForKey("items") as! NSArray
+//                    self.dataArray.removeAllObjects()
+                    var mutableArray = NSMutableArray()
+                    for data : AnyObject  in arr {
+                        mutableArray.addObject(data)
+                    }
+                    self.dataArray = mutableArray
+                    Cookies.set(self.dataArray, forKey: "NianDream")
+                    self.reloadFromDataArray()
+                    println("从网络里加载")
+                }
+            }
+        
         Api.postDeviceToken() { string in
         }
+    }
+    
+    func reloadFromDataArray() {
+        self.collectionView.reloadData()
+        var height = ceil(CGFloat(self.dataArray.count) / 3) * 125
+        self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
+        var heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
+        self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
+        self.collectionView.contentSize.height = height
+        if self.dataArray.count == 0 {
+            self.viewHeader.hidden = false
+        }else{
+            self.viewHeader.hidden = true
+        }
+        globalNumberDream = self.dataArray.count
     }
 }
