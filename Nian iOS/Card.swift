@@ -77,43 +77,8 @@ class Card: UIView {
     func onCardSave() {
         go {
             var image = self.getCard()
-//            UIImageWriteToSavedPhotosAlbum(image, self, nil, nil)
-            self.savePicture(image)
+            UIImageWriteToSavedPhotosAlbum(image, self, nil, nil)
         }
     }
-    
-    
-    
-    func savePicture(image: UIImage) {
-        let albumName = "My Album"
-        var library = ALAssetsLibrary()
-            library.addAssetsGroupAlbumWithName(albumName, resultBlock: { (group) -> Void in
-                    library.enumerateGroupsWithTypes(ALAssetsGroupType(ALAssetsGroupAlbum),
-                        usingBlock: { (group: ALAssetsGroup!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                            if group != nil {
-                                println("1")
-                                if group.valueForProperty(ALAssetsGroupPropertyName).isEqualToString(albumName) {
-                                    println("2")
-                                    println(group)
-                                    //todo
-                                    var imageData = UIImagePNGRepresentation(image)
-                                    library.writeImageDataToSavedPhotosAlbum(UIImagePNGRepresentation(image), metadata: nil, completionBlock: {(assetURL: NSURL!, error: NSError!) -> Void in
-                                        println("3")
-                                        if (error == nil) {
-                                            println("4")
-                                            library.assetForURL(assetURL,
-                                                resultBlock: { (asset:ALAsset!) -> Void in
-                                                },
-                                                failureBlock: { (error2: NSError!) -> Void in
-                                            });
-                                        }
-                                    });
-                                }
-                            }
-                        },
-                        failureBlock: nil)
-                }, failureBlock: nil
-            )
-        }
 }
 
