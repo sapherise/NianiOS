@@ -315,11 +315,12 @@ class ExploreDynamicDreamCell: UITableViewCell {
         var img = data.stringAttributeForKey("image")
         var title = data.stringAttributeForKey("title").decode()
         self.imageHead.setHead(uidlike)
-        self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+        self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor, bool: false)
         self.labelName.text = userlike
         self.labelDream.text = "赞了「\(title)」"
         self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+        self.viewLine.setHeightHalf()
     }
     
     func onUserClick() {

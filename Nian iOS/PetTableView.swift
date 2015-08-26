@@ -22,6 +22,7 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
                     for item in arr {
                         self.dataArray.addObject(item)
                     }
+                    labelLeft.hidden = true
                     self.tableViewPet.reloadData()
                     self.setPetTitle()
                 }
@@ -30,6 +31,7 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
         
         Api.getAllPets() { json in
             if json != nil {
+                self.labelLeft.hidden = false
                 Cookies.set(json, forKey: "pets")
                 if let err = json!.objectForKey("error") as? NSNumber {
                     if err == 0 {

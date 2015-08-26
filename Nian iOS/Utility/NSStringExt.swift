@@ -33,7 +33,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         var text = self as NSString
         var rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.width, 0, isCeil: true)
+        return SACeil(rect.size.height, 0, isCeil: true)
     }
     
     func stringWidthWith(fontSize:CGFloat,height:CGFloat)->CGFloat {

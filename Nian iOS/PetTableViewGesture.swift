@@ -19,22 +19,23 @@ extension PetViewController: UIGestureRecognizerDelegate, NIAlertDelegate {
         var level = data.stringAttributeForKey("level")
         var owned = data.stringAttributeForKey("owned")
         var description = data.stringAttributeForKey("description")
-        var content = description + "\n ＿＿＿＿ \n"
-        
-        if let _level = level.toInt() {
-            if _level  < 15 {
-                var _tmp = _level % 5
-                content += "\n距离下次进化还有\(_tmp)级"
-            } else if _level == 15 {
-                content += "\n这只宠物满级了！"
-            }
-        }
+        var content = description
         
         var titleButton = "哦"
         if owned == "1" {
             titleButton = "分享"
+            if let _level = level.toInt() {
+                var _tmp = 5 - _level % 5
+                if _level  < 10 {
+                    content += "\n\n（距离下次进化还有 \(_tmp) 级）"
+                } else if _level < 15 {
+                    content += "\n\n（距离满级还有 \(_tmp) 级）"
+                } else if _level == 15 {
+                    content += "\n\n（这只宠物满级了！）"
+                }
+            }
         } else {
-            content += "\n还没获得这个宠物..."
+            content += "\n\n（还没获得这个宠物...）"
         }
         petDetailView?.dict = NSMutableDictionary(objects: [self.imageView, name, content, [titleButton]],
             forKeys: ["img", "title", "content", "buttonArray"])

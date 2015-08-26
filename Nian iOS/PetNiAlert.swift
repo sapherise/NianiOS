@@ -200,20 +200,4 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
         }
         giftView?.showWithAnimation(.flip)
     }
-    
-//    func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
-//        let _id = lotteryResult.objectForKey("id") as! String
-//        let img = lotteryResult.stringAttributeForKey("image")
-//
-//        var contained: Bool = false
-//
-//        // 遍历 petInfoArray, 看是否包含新抽得的宠物
-//
-//        for item in self.petInfoArray {
-//            let id = (item as! NSDictionary).objectForKey("id") as! String
-//
-//            if id == _id {
-//                contained = true
-//            }
-//        }
 }

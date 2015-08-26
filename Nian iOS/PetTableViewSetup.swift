@@ -78,14 +78,6 @@ extension PetViewController: NIAlertDelegate {
                 setPetTitle()
                 tableViewPet.reloadData()
                 pre = current
-                //----
-                
-//                for cell in tableViewPet.visibleCells() {
-//                    if abs((cell as! PetCell).frame.origin.y - _y - globalWidth/2) < NORMAL_WIDTH/2 {
-//                        
-//                    }
-//                }
-                
             }
         }
     }

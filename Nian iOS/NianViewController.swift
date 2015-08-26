@@ -369,7 +369,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
             self.dataArray = NianDream
             reloadFromDataArray()
-            println("从缓存里加载")
         }
         
         activity.hidden = false
@@ -386,7 +385,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.dataArray = mutableArray
                     Cookies.set(self.dataArray, forKey: "NianDream")
                     self.reloadFromDataArray()
-                    println("从网络里加载")
                 }
             }
         
