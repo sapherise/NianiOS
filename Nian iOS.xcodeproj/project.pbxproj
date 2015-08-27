@@ -84,8 +84,6 @@
 		12960F6F19BF230900CB973E /* Sign.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F6E19BF230900CB973E /* Sign.xib */; };
 		12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12960F7019BF2E3B00CB973E /* SignNext.swift */; };
 		12960F7319BF2E4500CB973E /* SignNext.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F7219BF2E4500CB973E /* SignNext.xib */; };
-		12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992EBF1B2EBB8E009F4501 /* AddCircle.swift */; };
-		12992EC21B2EBB9C009F4501 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12992EC11B2EBB9C009F4501 /* AddCircle.xib */; };
 		129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home+News.swift */; };
 		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
 		129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DD1B5E2F5100BDFE03 /* star.png */; };
@@ -316,8 +314,6 @@
 		12960F6E19BF230900CB973E /* Sign.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Sign.xib; sourceTree = "<group>"; };
 		12960F7019BF2E3B00CB973E /* SignNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignNext.swift; sourceTree = "<group>"; };
 		12960F7219BF2E4500CB973E /* SignNext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignNext.xib; sourceTree = "<group>"; };
-		12992EBF1B2EBB8E009F4501 /* AddCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCircle.swift; sourceTree = "<group>"; };
-		12992EC11B2EBB9C009F4501 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
 		129A76601B8DC92E00EC5A19 /* Home+News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+News.swift"; sourceTree = "<group>"; };
 		129FE4DB1B5E2DA400BDFE03 /* star.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = star.sks; path = Utility/star.sks; sourceTree = "<group>"; };
 		129FE4DD1B5E2F5100BDFE03 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star.png; path = Utility/star.png; sourceTree = "<group>"; };
@@ -497,8 +493,6 @@
 		12028E2E1A3EDA330072FBE1 /* 创建梦境 */ = {
 			isa = PBXGroup;
 			children = (
-				12992EBF1B2EBB8E009F4501 /* AddCircle.swift */,
-				12992EC11B2EBB9C009F4501 /* AddCircle.xib */,
 				12028E331A3EECBD0072FBE1 /* CircleTag.swift */,
 				12028E351A3EED220072FBE1 /* CircleTag.storyboard */,
 			);
@@ -1385,7 +1379,6 @@
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
-				12992EC21B2EBB9C009F4501 /* AddCircle.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
@@ -1593,7 +1586,6 @@
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
-				12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */,
 				C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
