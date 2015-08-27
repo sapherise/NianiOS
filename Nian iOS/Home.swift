@@ -8,9 +8,6 @@
 
 import UIKit
 
-var circleCollectionList: UIStoryboard = UIStoryboard(name: "CircleCollectionList", bundle: nil)
-let vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
-
 class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, MaskDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
@@ -29,6 +26,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var cancelSheet:UIActionSheet?
     var actionSheetGameOver: UIActionSheet?
     var timer:NSTimer?
+    var ni: NIAlert?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -78,6 +76,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         gameoverHead.setAnimationWanderY(60, endY: 64)
                         gameoverSpark.setAnimationWanderX(70-25, leftEndX: 125-25, rightStartX: 125+60, rightEndX: 70+60)
                         gameoverSpark.setAnimationWanderY(35, endY: 38, animated: false)
+                    } else {
+                        self.SANews()
                     }
                 }
             }
@@ -313,6 +313,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         var vc4 = MeViewController()
         //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
+        var vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 0

@@ -95,6 +95,7 @@
 		12960F7319BF2E4500CB973E /* SignNext.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F7219BF2E4500CB973E /* SignNext.xib */; };
 		12992EC01B2EBB8E009F4501 /* AddCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992EBF1B2EBB8E009F4501 /* AddCircle.swift */; };
 		12992EC21B2EBB9C009F4501 /* AddCircle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12992EC11B2EBB9C009F4501 /* AddCircle.xib */; };
+		129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home+News.swift */; };
 		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
 		129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DD1B5E2F5100BDFE03 /* star.png */; };
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
@@ -105,6 +106,8 @@
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
+		12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36911B8EABFA00B37573 /* Reddit.swift */; };
+		12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */; };
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
 		12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BE103C19C5EBF500370348 /* AddBBSComment.xib */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
@@ -338,6 +341,7 @@
 		12960F7219BF2E4500CB973E /* SignNext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignNext.xib; sourceTree = "<group>"; };
 		12992EBF1B2EBB8E009F4501 /* AddCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCircle.swift; sourceTree = "<group>"; };
 		12992EC11B2EBB9C009F4501 /* AddCircle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCircle.xib; sourceTree = "<group>"; };
+		129A76601B8DC92E00EC5A19 /* Home+News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+News.swift"; sourceTree = "<group>"; };
 		129FE4DB1B5E2DA400BDFE03 /* star.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = star.sks; path = Utility/star.sks; sourceTree = "<group>"; };
 		129FE4DD1B5E2F5100BDFE03 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star.png; path = Utility/star.png; sourceTree = "<group>"; };
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
@@ -348,6 +352,8 @@
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
+		12BD36911B8EABFA00B37573 /* Reddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reddit.swift; sourceTree = "<group>"; };
+		12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UITableView.swift"; sourceTree = "<group>"; };
 		12BE103A19C5EBEA00370348 /* AddBBSComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSComment.swift; sourceTree = "<group>"; };
 		12BE103C19C5EBF500370348 /* AddBBSComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSComment.xib; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
@@ -844,6 +850,15 @@
 			name = "设置";
 			sourceTree = "<group>";
 		};
+		12BD36901B8EABDC00B37573 /* 新广场 */ = {
+			isa = PBXGroup;
+			children = (
+				12BD36911B8EABFA00B37573 /* Reddit.swift */,
+				12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */,
+			);
+			name = "新广场";
+			sourceTree = "<group>";
+		};
 		12BE103919C5EBCB00370348 /* 更新广场评论 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1033,6 +1048,7 @@
 			isa = PBXGroup;
 			children = (
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
+				129A76601B8DC92E00EC5A19 /* Home+News.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
 				1291D59619BE0C39009F45F6 /* 欢迎 */,
 				12EAABFA1AB2923600D20676 /* 弹出层 */,
@@ -1042,6 +1058,7 @@
 				3252850B1A10C2A200316021 /* 发现 */,
 				323CD2E71A11EEC400FFE3F4 /* 广场 */,
 				12F65C071B64F44F0051A914 /* 宠物 */,
+				12BD36901B8EABDC00B37573 /* 新广场 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
 				121F66971B15B3DF00103B14 /* 新梦境列表 */,
 				12CE159B1A3E7AD8006AC031 /* 梦境 */,
@@ -1591,6 +1608,7 @@
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
+				129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
@@ -1678,9 +1696,11 @@
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
 				32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */,
+				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,
 				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
+				12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */,
 				12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */,
 				C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,

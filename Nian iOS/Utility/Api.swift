@@ -494,6 +494,11 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/dream/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    static func getNews(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/news.php", callback: callback)
+    }
+    
     static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
         loadCookies()
         if tags == "" {
