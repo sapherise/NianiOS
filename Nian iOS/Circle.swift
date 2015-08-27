@@ -393,17 +393,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.View.tag = index
             c.isDream = 0
             cell = c
-        }else if type == "2" {
+        }else{
             var c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
             c.data = data
             c.imageContent.tag = index
             c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.View.tag = index
-            cell = c
-        } else {
-            var c = tableView.dequeueReusableCellWithIdentifier("CircleType", forIndexPath: indexPath) as! CircleTypeCell
-            c.data = data
             cell = c
         }
         return cell

@@ -62,8 +62,6 @@
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
 		1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */; };
-		128C4E371A5038C3000D2B7C /* CircleType.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C4E361A5038C3000D2B7C /* CircleType.xib */; };
-		128C4E391A503C54000D2B7C /* CircleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C4E381A503C54000D2B7C /* CircleType.swift */; };
 		128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */; };
 		128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */; };
 		129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129089361B5E1EA100EB73E5 /* GameScene.swift */; };
@@ -292,8 +290,6 @@
 		1282230C19C7E6710002937D /* NSData+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Utils.m"; sourceTree = "<group>"; };
 		1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepViewController.swift; sourceTree = "<group>"; };
 		1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepViewController.xib; sourceTree = "<group>"; };
-		128C4E361A5038C3000D2B7C /* CircleType.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleType.xib; sourceTree = "<group>"; };
-		128C4E381A503C54000D2B7C /* CircleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleType.swift; sourceTree = "<group>"; };
 		128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageCell.swift; sourceTree = "<group>"; };
 		128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleImageCell.xib; sourceTree = "<group>"; };
 		129089361B5E1EA100EB73E5 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = Utility/GameScene.swift; sourceTree = "<group>"; };
@@ -847,8 +843,6 @@
 				1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */,
 				128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */,
 				128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */,
-				128C4E381A503C54000D2B7C /* CircleType.swift */,
-				128C4E361A5038C3000D2B7C /* CircleType.xib */,
 				12028E2E1A3EDA330072FBE1 /* 创建梦境 */,
 			);
 			name = "梦境";
@@ -1394,7 +1388,6 @@
 				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
-				128C4E371A5038C3000D2B7C /* CircleType.xib in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				12960F6F19BF230900CB973E /* Sign.xib in Resources */,
@@ -1476,7 +1469,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				128C4E391A503C54000D2B7C /* CircleType.swift in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
