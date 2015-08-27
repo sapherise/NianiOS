@@ -13,7 +13,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var currentViewController: UIViewController?
     var currentIndex: Int?
     var dot:UILabel?
-    var dotCircle: UILabel?
     var GameOverView:Popup!
     var animationBool:Int = 0
     var numExplore = 0
@@ -139,7 +138,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var isLoadFinish = 0
     func onCircleEnter() {
         isLoadFinish = 0
-        self.loadCircle()
         self.loadLetter()
     }
     
@@ -248,17 +246,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.text = "0"
         self.myTabbar!.addSubview(dot!)
         
-        self.dotCircle = UILabel(frame: CGRectMake(globalWidth*0.9+4, 10, 20, 15))
-        self.dotCircle!.textColor = UIColor.whiteColor()
-        self.dotCircle!.font = UIFont.systemFontOfSize(10)
-        self.dotCircle!.textAlignment = NSTextAlignment.Center
-        self.dotCircle!.backgroundColor = SeaColor
-        self.dotCircle!.layer.cornerRadius = 5
-        self.dotCircle!.layer.masksToBounds = true
-        self.dotCircle!.text = "0"
-        self.dotCircle!.hidden = true
-        self.myTabbar!.addSubview(dotCircle!)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
     }
     
@@ -349,8 +336,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
         }else if index == idBBS {     // 梦境
-            self.dotCircle!.hidden = true
-            self.dotCircle!.text = "0"
         }else if index == idDream {     // 记本
         }else if index == idMe {     // 消息
             self.dot!.hidden = true
@@ -453,7 +438,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func enter() {
-        if isLoadFinish == 2 {
+        if isLoadFinish == 1 {
             go {
                 var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                 var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
@@ -500,55 +485,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 var isread = 0
                                 // 如果是群聊
                                 if totype == "1" {
-                                    if circle == "\(globalCurrentCircle)" || uid == safeuid {
-                                        isread = 1
-                                    }
-                                    
-                                    //<<<<<<<<<<<
-                                    //先检查是否有这个 circle in circlelist, 没有就新建并请求网络图片
-                                    let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-                                    
-                                    if resultDes.count == 0 {
-                                        Api.getCircleStatus(circle) { json in
-                                            if json != nil {
-                                                var imageStatus = json!.objectForKey("img") as! String
-                                                var _title = json!.objectForKey("title") as! String
-                                                
-                                                SQLCircleListInsert(circle, _title, imageStatus, time)
-                                            }
-                                        }
-                                    }
-                                    //>>>>>>>>>>>>>>>
-                                    
-                                    SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-                                        if (type == "6") && ((cid == safeuid) || (cid == uid)) {
-                                            Api.getCircleStatus(circle) { json in
-                                                if json != nil {
-                                                    var numStatus = json!.objectForKey("count") as! String
-                                                    var titleStatus = json!.objectForKey("title") as! String
-                                                    var imageStatus = json!.objectForKey("img") as! String
-                                                    var postdateStatus = json!.objectForKey("postdate") as! String
-                                                    if numStatus == "1" {
-                                                        // 添加
-                                                        SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                                        NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                                        }
-                                    }
-                                    if safeuid != uid {     // 如果是朋友们发的
-                                        back {
-                                            if globalTabBarSelected != 104 {
-                                                self.dotCircle!.hidden = false
-                                                if let a = self.dotCircle!.text?.toInt() {
-                                                    self.dotCircle!.text = "\(a + 1)"
-                                                }
-                                            }
-                                        }
-                                    }
                                 } else {
                                     // 如果是私信
                                     shake()
@@ -563,98 +499,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-    
-    func loadCircle() {
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-        if safeuid != "" {
-            Api.postCircleInit() { json in
-                if json != nil {
-                    // 成功
-                    self.isLoadFinish++
-                    var a: Int = 0
-                    var arr = json!.objectForKey("items") as! NSArray
-                    var lastid = json!.objectForKey("lastid") as! String
-                    for i : AnyObject  in arr {
-                        var data = i as! NSDictionary
-                        var id = data.stringAttributeForKey("id")
-                        var uid = data.stringAttributeForKey("uid")
-                        var name = data.stringAttributeForKey("name")
-                        var cid = data.stringAttributeForKey("cid")
-                        var cname = data.stringAttributeForKey("cname")
-                        var circle = data.stringAttributeForKey("circle")
-                        var content = data.stringAttributeForKey("content")
-                        var type = data.stringAttributeForKey("type")
-                        var time = data.stringAttributeForKey("lastdate")
-                        var title = data.stringAttributeForKey("title")
-                        var isread = 0
-                        if circle == "\(globalCurrentCircle)" || uid == safeuid {
-                            isread = 1
-                        }
-                        
-                        //<<<<<<<<<<<
-                        //先检查是否有这个 circle in circlelist, 没有就新建并请求网络图片
-                        let (resultDes, err) = SD.executeQuery("select * from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
-                        
-                        if resultDes.count == 0 {
-                            Api.getCircleStatus(circle) { json in
-                                if json != nil {
-                                    var imageStatus = json!.objectForKey("img") as! String
-                                    var _title = json!.objectForKey("title") as! String
-                                    
-                                    SQLCircleListInsert(circle, _title, imageStatus, time)
-                                }
-                            }
-                        }
-                        //>>>>>>>>>>>>>>>
-                        
-                        let (resultSet2, err2) = SD.executeQuery("SELECT * FROM circle where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
-                        if resultSet2.count == 0 {
-                            
-                            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                            var safeshell = uidKey.objectForKey(kSecValueData) as! String
-                            
-                            if (type == "6") && ((cid == safeuid) || (cid == uid)) {
-                                Api.getCircleStatus(circle) { json in
-                                    if json != nil {
-                                        var numStatus = json!.objectForKey("count") as! String
-                                        var titleStatus = json!.objectForKey("title") as! String
-                                        var imageStatus = json!.objectForKey("img") as! String
-                                        var postdateStatus = json!.objectForKey("postdate") as! String
-                                        if numStatus == "1" {
-                                            // 添加
-                                            SQLCircleListInsert(circle, titleStatus, imageStatus, postdateStatus)
-                                        }
-                                    }
-                                }
-                            }
-                            SQLCircleContent(id, uid, name, cid, cname, circle, content, title, type, time, isread) {
-                                var data = NSDictionary(objects: [cid, uid, name, content, id, type, time, circle, "1"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
-                                NSNotificationCenter.defaultCenter().postNotificationName("Poll", object: data)
-                            }
-                            a++
-                        }
-                    }
-                    Api.postUserCircleLastid(lastid) { json in
-                    }
-                    if a != 0 {
-                        back {
-                            if globalTabBarSelected != 104 {
-                                self.dotCircle!.hidden = false
-                                if let b = self.dotCircle!.text?.toInt() {
-                                    self.dotCircle!.text = "\(b + a)"
-                                }
-                            }
-                        }
-                    }
-                    self.enter()
                 }
             }
         }
