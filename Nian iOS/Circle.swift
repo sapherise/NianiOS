@@ -217,9 +217,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onCircleDetailClick(){
-        var circledetailVC = CircleDetailController()
-        circledetailVC.Id = "\(self.ID)"
-        self.navigationController?.pushViewController(circledetailVC, animated: true)
     }
     
     //按下发送后调用此函数

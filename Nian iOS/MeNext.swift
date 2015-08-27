@@ -169,7 +169,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         var UserVC = PlayerViewController()
         var BBSVC = BBSViewController()
         var StepVC = SingleStepViewController()
-        var circleVC = CircleDetailController()
         if type == "0" {    //在你的记本留言
             if step != "0" {
                 StepVC.Id = step
@@ -216,12 +215,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 DreamVC.Id = dream
                 self.navigationController!.pushViewController(DreamVC, animated: true)
             }
-        }else if type == "9" {  //组长是否接受验证
-            circleVC.Id = step
-            self.navigationController!.pushViewController(circleVC, animated: true)
-        }else if type == "10" { //组长邀请
-            circleVC.Id = step
-            self.navigationController!.pushViewController(circleVC, animated: true)
         }
     }
     
