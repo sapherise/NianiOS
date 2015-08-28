@@ -298,16 +298,21 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     func labelWidthWithItsContent(label: NILabel, content: NSString) {
         var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
         var labelSize = CGSizeMake(ceil(content.sizeWithAttributes(dict).width), ceil(content.sizeWithAttributes(dict).height))
-        
-        label.numberOfLines = 1
-        label.textAlignment = .Center
-        label.font = UIFont.systemFontOfSize(12)
-        label.layer.borderWidth = 1
-        label.layer.borderColor = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1).CGColor
-        label.layer.cornerRadius = 4.0
-        label.layer.masksToBounds = true
-        label.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        label.backgroundColor = UIColor.whiteColor()
+        label.setTag()
         label.frame = CGRectMake(0, 0, labelSize.width + 16, 30)
+    }
+}
+
+extension UILabel {
+    func setTag() {
+        self.numberOfLines = 1
+        self.textAlignment = .Center
+        self.font = UIFont.systemFontOfSize(12)
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1).CGColor
+        self.layer.cornerRadius = 4.0
+        self.layer.masksToBounds = true
+        self.textColor = UIColor.b3()
+        self.backgroundColor = UIColor.whiteColor()
     }
 }

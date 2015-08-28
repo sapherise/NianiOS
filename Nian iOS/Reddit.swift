@@ -13,20 +13,37 @@ class RedditViewController: UIViewController {
     var scrollView: UIScrollView!
     var tableViewLeft: UITableView!
     var tableViewRight: UITableView!
+    var current: Int = 1
+    var pageLeft: Int = 1
+    var pageRight: Int = 1
+    var dataArrayLeft = NSMutableArray()
+    var dataArrayRight = NSMutableArray()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setupTable()
+        switchTab(current)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reddit", name: "reddit", object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         navShow()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "reddit", object:nil)
+    }
+    
+    func reddit() {
+        if current == 0 {
+            tableViewLeft.headerBeginRefreshing()
+        } else {
+            tableViewRight.headerBeginRefreshing()
+        }
     }
     
     func setupViews() {
@@ -41,18 +58,24 @@ class RedditViewController: UIViewController {
         self.view.addSubview(labelLeft)
         self.view.addSubview(labelRight)
         
-        scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth * 2, globalHeight - 64))
-        scrollView.backgroundColor = UIColor.yellowColor()
+        labelLeft.userInteractionEnabled = true
+        labelRight.userInteractionEnabled = true
+        labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLeft"))
+        labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onRight"))
+        
+        scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
+        scrollView.contentSize = CGSizeMake(globalWidth*2, globalHeight - 64 - 49)
+        scrollView.pagingEnabled = true
+        scrollView.delegate = self
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
         self.view.addSubview(scrollView)
         
-        tableViewLeft = UITableView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64))
-        tableViewLeft.backgroundColor = IconColor
-        tableViewRight = UITableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 64))
-        tableViewRight.backgroundColor = SeaColor
+        tableViewLeft = UITableView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 49))
+        tableViewRight = UITableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 64 - 49))
         scrollView.addSubview(tableViewLeft)
         scrollView.addSubview(tableViewRight)
     }
-    
 }
 
 extension UILabel {

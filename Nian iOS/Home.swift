@@ -336,6 +336,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
         }else if index == idBBS {     // 梦境
+            NSNotificationCenter.defaultCenter().postNotificationName("reddit", object:"1")
         }else if index == idDream {     // 记本
         }else if index == idMe {     // 消息
             self.dot!.hidden = true

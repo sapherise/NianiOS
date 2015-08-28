@@ -17,6 +17,9 @@
 		121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121F669E1B15CCC100103B14 /* SAMenu.xib */; };
 		121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F66A01B15CCCA00103B14 /* SAMenu.swift */; };
 		12216F941A61471C003701BF /* MeNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12216F931A61471C003701BF /* MeNext.swift */; };
+		1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226CE231B8EC585004E2F6C /* RedditCell.swift */; };
+		1226CE261B8EC5F9004E2F6C /* RedditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1226CE251B8EC5F9004E2F6C /* RedditCell.xib */; };
+		1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */; };
 		1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227F0EF1A615EB70088DEB1 /* LetterCell.swift */; };
 		1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1227F0F11A615EC20088DEB1 /* LetterCell.xib */; };
 		1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */; };
@@ -128,6 +131,7 @@
 		12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8090C1A2DBFB20022C094 /* SingleStep.swift */; };
 		12EAABFC1AB292A500D20676 /* Popup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EAABFB1AB292A500D20676 /* Popup.xib */; };
 		12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EAABFD1AB292AF00D20676 /* Popup.swift */; };
+		12ECF0C11B90D324004A4B1A /* Reddit + RedditDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECF0C01B90D324004A4B1A /* Reddit + RedditDelegate.swift */; };
 		12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9819B8B58B00CF1F98 /* BBS.swift */; };
 		12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */; };
 		12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */; };
@@ -240,6 +244,9 @@
 		121F669E1B15CCC100103B14 /* SAMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAMenu.xib; sourceTree = "<group>"; };
 		121F66A01B15CCCA00103B14 /* SAMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAMenu.swift; sourceTree = "<group>"; };
 		12216F931A61471C003701BF /* MeNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeNext.swift; sourceTree = "<group>"; };
+		1226CE231B8EC585004E2F6C /* RedditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditCell.swift; sourceTree = "<group>"; };
+		1226CE251B8EC5F9004E2F6C /* RedditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RedditCell.xib; sourceTree = "<group>"; };
+		1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UIScrollView.swift"; sourceTree = "<group>"; };
 		1227F0EF1A615EB70088DEB1 /* LetterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterCell.swift; sourceTree = "<group>"; };
 		1227F0F11A615EC20088DEB1 /* LetterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LetterCell.xib; sourceTree = "<group>"; };
 		1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAUserCell.xib; sourceTree = "<group>"; };
@@ -360,6 +367,7 @@
 		12E8090C1A2DBFB20022C094 /* SingleStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStep.swift; sourceTree = "<group>"; };
 		12EAABFB1AB292A500D20676 /* Popup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Popup.xib; sourceTree = "<group>"; };
 		12EAABFD1AB292AF00D20676 /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
+		12ECF0C01B90D324004A4B1A /* Reddit + RedditDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + RedditDelegate.swift"; sourceTree = "<group>"; };
 		12ECFC9819B8B58B00CF1F98 /* BBS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBS.swift; sourceTree = "<group>"; };
 		12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCell.xib; sourceTree = "<group>"; };
 		12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCell.swift; sourceTree = "<group>"; };
@@ -782,6 +790,10 @@
 			children = (
 				12BD36911B8EABFA00B37573 /* Reddit.swift */,
 				12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */,
+				12ECF0C01B90D324004A4B1A /* Reddit + RedditDelegate.swift */,
+				1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */,
+				1226CE231B8EC585004E2F6C /* RedditCell.swift */,
+				1226CE251B8EC5F9004E2F6C /* RedditCell.xib */,
 			);
 			name = "新广场";
 			sourceTree = "<group>";
@@ -835,7 +847,7 @@
 			name = "图片";
 			sourceTree = "<group>";
 		};
-		12CE159B1A3E7AD8006AC031 /* 梦境 */ = {
+		12CE159B1A3E7AD8006AC031 /* 私信详情 */ = {
 			isa = PBXGroup;
 			children = (
 				12CE15A61A3EC525006AC031 /* Circle.swift */,
@@ -845,7 +857,7 @@
 				128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */,
 				12028E2E1A3EDA330072FBE1 /* 创建梦境 */,
 			);
-			name = "梦境";
+			name = "私信详情";
 			sourceTree = "<group>";
 		};
 		12CE6A20196EEDA500F308FF /* 更新进展 */ = {
@@ -983,7 +995,7 @@
 				12BD36901B8EABDC00B37573 /* 新广场 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
 				121F66971B15B3DF00103B14 /* 新梦境列表 */,
-				12CE159B1A3E7AD8006AC031 /* 梦境 */,
+				12CE159B1A3E7AD8006AC031 /* 私信详情 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				126ABCC21A25DAD3001BB5DA /* 同类标签 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
@@ -1361,6 +1373,7 @@
 				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
+				1226CE261B8EC5F9004E2F6C /* RedditCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
 				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
@@ -1482,8 +1495,10 @@
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
+				12ECF0C11B90D324004A4B1A /* Reddit + RedditDelegate.swift in Sources */,
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
+				1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */,
 				12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				12F65C111B65084A0051A914 /* PetTableViewSetup.swift in Sources */,
@@ -1605,6 +1620,7 @@
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,
 				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
 				12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */,
+				1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */,
 				12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */,
 				C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,

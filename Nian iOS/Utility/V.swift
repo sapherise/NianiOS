@@ -233,9 +233,9 @@ struct V {
         if d < 10 {
             return "刚刚";
         } else if d < 60 {
-            return "\(Int(d))秒前"
+            return "\(Int(d)) 秒前"
         } else if d < 3600 {
-            return "\(NSNumber(double: floor(d / 60)).integerValue)分前"
+            return "\(NSNumber(double: floor(d / 60)).integerValue) 分前"
         }else if time >= today {
             formatter.dateFormat = "HH:mm"
         } else if d < 31536000 {
@@ -253,9 +253,9 @@ struct V {
         if d < 10 {
             return "刚刚";
         } else if d < 60 {
-            return "\(Int(d))秒前"
+            return "\(Int(d)) 秒前"
         } else if d < 3600 {
-            return "\(NSNumber(double: floor(d / 60)).integerValue)分前"
+            return "\(NSNumber(double: floor(d / 60)).integerValue) 分前"
         } else if d < 86400 {
             formatter.dateFormat = "HH:mm"
         } else if d < 31536000 {

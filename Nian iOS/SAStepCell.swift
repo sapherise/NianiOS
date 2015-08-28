@@ -200,7 +200,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.btnMore.tag = sid.toInt()!
             
             if comment != "0" {
-                comment = "\(comment) 回应"
+                comment = "回应 \(comment)"
             } else {
                 comment = "回应"
             }
@@ -209,7 +209,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.labelLike.hidden = true
             } else {
                 self.labelLike.hidden = false
-                like = "\(like) 赞"
+                like = "赞 \(like)"
                 self.labelLike.text = like
                 var likeWidth = like.stringWidthWith(13, height: 32) + 16
                 likeWidth = SACeil(likeWidth, 0)

@@ -39,7 +39,7 @@ class GroupCell: UITableViewCell {
         var lastdate = self.data.stringAttributeForKey("lastdate")
         var reply = self.data.stringAttributeForKey("reply")
         self.labelTime.text = V.relativeTime(lastdate)
-        self.labelComment.text = "\(reply) 回应"
+        self.labelComment.text = "回应 \(reply)"
         var height = title.stringHeightWith(16,width:globalWidth-40)
         self.labelContent!.setHeight(height)
         self.labelContent!.text = title

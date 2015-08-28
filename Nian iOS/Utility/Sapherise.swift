@@ -830,6 +830,10 @@ extension UIColor {
     class func b3() -> UIColor! {
         return UIColor(red:0.7, green:0.7, blue:0.7, alpha:1)
     }
+    
+    class func e6() -> UIColor! {
+        return UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+    }
 }
 
 
