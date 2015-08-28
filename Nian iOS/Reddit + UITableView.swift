@@ -112,4 +112,15 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         return c
     }
     
+    
+    func updateData(index: Int, key: String, value: String) {
+        var d = current == 0 ? dataArrayLeft : dataArrayRight
+        var t = current == 0 ? tableViewLeft : tableViewRight
+        SAUpdate(d, index, key, value, t)
+    }
+    
+    func updateTable() {
+        var t = current == 0 ? tableViewLeft : tableViewRight
+        t.reloadData()
+    }
 }

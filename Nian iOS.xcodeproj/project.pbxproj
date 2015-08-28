@@ -131,7 +131,6 @@
 		12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8090C1A2DBFB20022C094 /* SingleStep.swift */; };
 		12EAABFC1AB292A500D20676 /* Popup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EAABFB1AB292A500D20676 /* Popup.xib */; };
 		12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EAABFD1AB292AF00D20676 /* Popup.swift */; };
-		12ECF0C11B90D324004A4B1A /* Reddit + RedditDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECF0C01B90D324004A4B1A /* Reddit + RedditDelegate.swift */; };
 		12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9819B8B58B00CF1F98 /* BBS.swift */; };
 		12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */; };
 		12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */; };
@@ -367,7 +366,6 @@
 		12E8090C1A2DBFB20022C094 /* SingleStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStep.swift; sourceTree = "<group>"; };
 		12EAABFB1AB292A500D20676 /* Popup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Popup.xib; sourceTree = "<group>"; };
 		12EAABFD1AB292AF00D20676 /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
-		12ECF0C01B90D324004A4B1A /* Reddit + RedditDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + RedditDelegate.swift"; sourceTree = "<group>"; };
 		12ECFC9819B8B58B00CF1F98 /* BBS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBS.swift; sourceTree = "<group>"; };
 		12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCell.xib; sourceTree = "<group>"; };
 		12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCell.swift; sourceTree = "<group>"; };
@@ -790,7 +788,6 @@
 			children = (
 				12BD36911B8EABFA00B37573 /* Reddit.swift */,
 				12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */,
-				12ECF0C01B90D324004A4B1A /* Reddit + RedditDelegate.swift */,
 				1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */,
 				1226CE231B8EC585004E2F6C /* RedditCell.swift */,
 				1226CE251B8EC5F9004E2F6C /* RedditCell.xib */,
@@ -1495,7 +1492,6 @@
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
-				12ECF0C11B90D324004A4B1A /* Reddit + RedditDelegate.swift in Sources */,
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */,
