@@ -83,9 +83,9 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     }
 
     func pay(productId: String) -> Bool {
-        var allowed = SKPaymentQueue.canMakePayments()
+        let allowed = SKPaymentQueue.canMakePayments()
         if allowed {
-            var request = SKProductsRequest(productIdentifiers: NSSet(object: productId) as Set<NSObject>)
+            let request = SKProductsRequest(productIdentifiers: NSSet(object: productId) as! Set<String>)
             request.delegate = self
             request.start()
         }

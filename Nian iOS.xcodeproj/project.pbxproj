@@ -173,7 +173,6 @@
 		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
-		32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
@@ -411,7 +410,6 @@
 		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
 		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
 		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
-		32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFPlayer.swift; sourceTree = "<group>"; };
 		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1052,7 +1050,6 @@
 				322DB94B1A0C9E95005FD6AE /* Api.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
 				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
-				32E6917A1A1DF73000ACB73E /* GIFPlayer.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
 				C4C510EF1B7C952600865AD4 /* DDLogExt.swift */,
 				122AFE021A80864800464641 /* SqliteData.swift */,
@@ -1611,7 +1608,6 @@
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
-				32E6917B1A1DF73000ACB73E /* GIFPlayer.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,

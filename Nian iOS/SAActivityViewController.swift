@@ -7,11 +7,11 @@
 //
 
 class SAActivityViewController {
-    class func shareSheetInView(activityItems: [AnyObject], applicationActivities: [AnyObject], isStep: Bool = false) -> UIActivityViewController {
-        var newArray: [AnyObject] = applicationActivities
-        var WeChatSession = WeChatSessionActivity()
+    class func shareSheetInView(activityItems: [AnyObject], applicationActivities: [UIActivity], isStep: Bool = false) -> UIActivityViewController {
+        var newArray: [UIActivity] = applicationActivities
+        let WeChatSession = WeChatSessionActivity()
         WeChatSession.isStep = isStep
-        var WeChatMoments = WeChatMomentsActivity()
+        let WeChatMoments = WeChatMomentsActivity()
         WeChatMoments.isStep = isStep
         newArray.append(WeChatSession)
         newArray.append(WeChatMoments)

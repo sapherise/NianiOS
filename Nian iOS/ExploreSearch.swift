@@ -238,7 +238,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             userPage = 1
         }
         
-        Api.getSearchUsers(searchText.text!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++, callback: {
+        Api.getSearchUsers(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: userPage++, callback: {
             json in
             if json != nil {
                 if clear {
@@ -264,7 +264,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             dreamPage = 1
         }
-        Api.getSearchDream(searchText.text!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++, callback: {
+        Api.getSearchDream(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: dreamPage++, callback: {
             json in
             if json != nil {
                 if clear {

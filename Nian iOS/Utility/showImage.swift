@@ -25,7 +25,10 @@ extension UIImageView {
         globalImageYPoint = CGRectMake(x, y, w, h)
         
         // 不为 gif 的话
-        if imageURL.pathExtension != "gif!large" {
+        
+        let url = NSURL(string: imageURL)
+        
+        if url!.pathExtension != "gif!large" {
             let imageView = SAImageZoomingView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
             imageView.backgroundColor = UIColor.blackColor()
             imageView.imageURL = imageURL

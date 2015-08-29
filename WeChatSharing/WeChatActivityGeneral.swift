@@ -86,7 +86,7 @@ class WeChatActivityGeneral: UIActivity {
             req.message.setThumbImage(UIGraphicsGetImageFromCurrentImageContext())
             UIGraphicsEndImageContext()
             let webObject = WXWebpageObject()
-            webObject.webpageUrl = urlNew.absoluteString.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            webObject.webpageUrl = urlNew.absoluteString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())
             req.message.mediaObject = webObject
             req.message.title = textNew as String
             req.message.description = "「念」\n全宇宙最残酷的 App，\n每天更新才不会被停号。😱"

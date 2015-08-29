@@ -99,13 +99,13 @@ class RedditCell: UITableViewCell {
             viewBottomDot.setX(labelComment.right() + 8)
             labelTime.setX(viewBottomDot.right() + 8)
             
-            if 1 == 0 {
-                viewUp.layer.borderColor = SeaColor.CGColor
-                viewUp.backgroundColor = SeaColor
-                labelNum.textColor = UIColor.whiteColor()
-                viewVoteLine.backgroundColor = UIColor.whiteColor()
-                viewUp.image = UIImage(named: "voteupwhite")
-            } else {
+//            if 1 == 0 {
+//                viewUp.layer.borderColor = SeaColor.CGColor
+//                viewUp.backgroundColor = SeaColor
+//                labelNum.textColor = UIColor.whiteColor()
+//                viewVoteLine.backgroundColor = UIColor.whiteColor()
+//                viewUp.image = UIImage(named: "voteupwhite")
+//            } else {
                 // 上按钮
                 viewUp.layer.borderColor = UIColor.e6().CGColor
                 viewUp.backgroundColor = UIColor.whiteColor()
@@ -115,7 +115,7 @@ class RedditCell: UITableViewCell {
                 // 下按钮
                 viewDown.layer.borderColor = UIColor.e6().CGColor
                 viewDown.backgroundColor = UIColor.whiteColor()
-            }
+//            }
             
             // 绑定动作
 //            viewUp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUp"))

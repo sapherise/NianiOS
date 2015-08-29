@@ -47,7 +47,7 @@ var isiPhone6P: Bool = globalWidth == 414 ? true : false
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""
     let request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL(string: urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    request!.URL = NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!)
     request!.HTTPMethod = "POST"
     request!.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
@@ -69,7 +69,7 @@ func SAPost(postString:String, urlString:String)->String{
 
 func SAGet(getString:String, urlString:String)->String{
     let request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL(string: urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    request!.URL = NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!)
     request!.HTTPMethod = "GET"
     request!.HTTPBody = getString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
@@ -453,7 +453,13 @@ extension UIImage{
             break
         }
         
-        var ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), CGImageGetBitmapInfo(self.CGImage))
+//        var ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), CGImageGetBitmapInfo(self.CGImage))
+        
+        // todo: 不知道怎么把这个 BitmapInfo 转换为 UInt32
+        let ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), 1)
+        
+        
+//        CGBitmapInfo((CGBitmapInfo.ByteOrder32Little.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue) as UInt32)
         
         CGContextConcatCTM(ctx, transform)
         
@@ -464,8 +470,8 @@ extension UIImage{
             CGContextDrawImage(ctx, CGRectMake(0, 0, self.size.width, self.size.height), self.CGImage)
         }
         
-        var cgimg = CGBitmapContextCreateImage(ctx)
-        var img = UIImage(CGImage: cgimg)!
+        let cgimg = CGBitmapContextCreateImage(ctx)
+        let img = UIImage(CGImage: cgimg!)
         return img
     }
     

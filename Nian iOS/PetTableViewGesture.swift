@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension PetViewController: NIAlertDelegate {
+extension PetViewController {
     
     func showPetInfo() {
         petDetailView = NIAlert()

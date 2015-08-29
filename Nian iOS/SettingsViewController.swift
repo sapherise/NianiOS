@@ -676,11 +676,11 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func onStarClick(){
-        var storeProductVC = SKStoreProductViewController()
+        let storeProductVC = SKStoreProductViewController()
         storeProductVC.delegate = self
-        var dict = NSDictionary(object: "929448912", forKey: SKStoreProductParameterITunesItemIdentifier)
+        let dict = NSDictionary(object: "929448912", forKey: SKStoreProductParameterITunesItemIdentifier)
         self.navigationController?.presentViewController(storeProductVC, animated: true, completion: nil)
-        storeProductVC.loadProductWithParameters(dict as [NSObject : AnyObject], completionBlock: nil)
+        storeProductVC.loadProductWithParameters(dict as! [String : AnyObject], completionBlock: nil)
     }
     
     func productViewControllerDidFinish(viewController: SKStoreProductViewController) {
