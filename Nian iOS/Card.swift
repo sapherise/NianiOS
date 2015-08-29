@@ -39,8 +39,8 @@ class Card: UIView {
         }
         self.image.setImage(self.url, placeHolder: UIColor.clearColor())
         var heightNew: CGFloat = 0
-        var w = CGFloat((self.widthImage as NSString).floatValue)
-        var h = SACeil(CGFloat((self.heightImage as NSString).floatValue), 0, isCeil: false)
+        let w = CGFloat((self.widthImage as NSString).floatValue)
+        let h = SACeil(CGFloat((self.heightImage as NSString).floatValue), dot: 0, isCeil: false)
         if w != 0 {
             heightNew = h * (self.widthCard - self.num * 2) / w
             self.image.frame = CGRectMake(self.num, self.num * 2 + 1, self.widthCard - self.num * 2, heightNew)
@@ -49,7 +49,7 @@ class Card: UIView {
             self.image.hidden = true
             self.labelContent.setY(self.num * 2)
         }
-        var heightLine = "".stringHeightWith(12, width: self.widthCard - self.num * 4)
+        let heightLine = "".stringHeightWith(12, width: self.widthCard - self.num * 4)
         var heightContent = self.content.stringHeightWith(12, width: self.widthCard - self.num * 4)
         if SAstrlen(self.content) > 200 {
             heightContent = self.content.stringHeightWith(12, width: self.widthCard - self.num * 2)
@@ -70,13 +70,13 @@ class Card: UIView {
         if w == 0 {
             heightView = self.num * 5 + heightContent + heightLine
         }
-        self.setHeight(SACeil(heightView, 0, isCeil: false))
+        self.setHeight(SACeil(heightView, dot: 0, isCeil: false))
         return getImageFromView(self)
     }
     
     func onCardSave() {
         go {
-            var image = self.getCard()
+            let image = self.getCard()
             UIImageWriteToSavedPhotosAlbum(image, self, nil, nil)
         }
     }

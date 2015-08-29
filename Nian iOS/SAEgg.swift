@@ -29,7 +29,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
         self.delegate = self
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -62,9 +62,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 self.confirmNiAlert.delegate = self
                 self.confirmNiAlert.dict = NSMutableDictionary(objects: ["", "抽蛋", "在上方随便选一个蛋！", []],
                     forKeys: ["img", "title", "content", "buttonArray"])
-                var img1 = self.setupEgg(40, named: "pet_egg1")
-                var img2 = self.setupEgg(104, named: "pet_egg2")
-                var img3 = self.setupEgg(168, named: "pet_egg3")
+                let img1 = self.setupEgg(40, named: "pet_egg1")
+                let img2 = self.setupEgg(104, named: "pet_egg2")
+                let img3 = self.setupEgg(168, named: "pet_egg3")
                 self.confirmNiAlert._containerView?.addSubview(img1)
                 self.confirmNiAlert._containerView?.addSubview(img2)
                 self.confirmNiAlert._containerView?.addSubview(img3)
@@ -72,16 +72,16 @@ class SAEgg: NIAlert, NIAlertDelegate {
             }
         } else if niAlert == lotteryNiAlert {
             if didselectAtIndex == 0 {
-                var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
                 let petName = self.petData.stringAttributeForKey("name")
                 let petImage = self.petData.stringAttributeForKey("image")
-                var content = "我在念里拿到了可爱的「\(petName)」"
+                let content = "我在念里拿到了可爱的「\(petName)」"
                 card.content = content
                 card.widthImage = "360"
                 card.heightImage = "360"
                 card.url = "http://img.nian.so/pets/\(petImage)!d"
-                var img = card.getCard()
-                var avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
+                let img = card.getCard()
+                let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
                 delegateShare?.onShare(avc)
             } else if didselectAtIndex == 1 {
                 self.dismissWithAnimation(.normal)
@@ -117,7 +117,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
         UIView.animateWithDuration(0.6, animations: { () -> Void in
             sender.setX(104)
         })
-        var ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
+        let ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
         ac.color = SeaColor
         ac.hidden = false
         ac.startAnimating()
@@ -154,12 +154,12 @@ class SAEgg: NIAlert, NIAlertDelegate {
     }
     
     func setupEgg(x: CGFloat, named: String) -> UIButton {
-        var button = UIButton(frame: CGRectMake(x, 40, 64, 80))
+        let button = UIButton(frame: CGRectMake(x, 40, 64, 80))
         button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDown)
         button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDragInside)
         button.addTarget(self, action: "onEggTouchUp:", forControlEvents: UIControlEvents.TouchUpInside)
         button.addTarget(self, action: "onEggTouchCancel:", forControlEvents: UIControlEvents.TouchDragOutside)
-        button.setBackgroundImage(UIImage(named: named), forState: UIControlState.allZeros)
+        button.setBackgroundImage(UIImage(named: named), forState: UIControlState())
         button.setBackgroundImage(UIImage(named: named), forState: UIControlState.Highlighted)
         button.layer.cornerRadius = 8
         return button

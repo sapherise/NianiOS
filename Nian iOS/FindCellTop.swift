@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FindCellTop: UITableViewCell, UIGestureRecognizerDelegate{
+class FindCellTop: UITableViewCell {
     @IBOutlet var viewLeft: UIView!
     @IBOutlet var viewMiddle: UIView!
     @IBOutlet var viewRight: UIView!

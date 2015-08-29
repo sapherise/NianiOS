@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate{
     
     let identifier = "comment"
     var tableview:UITableView!
@@ -77,10 +77,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview.delegate = self;
         self.tableview.dataSource = self;
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib3 = UINib(nibName:"CommentCell", bundle: nil)
+        let nib3 = UINib(nibName:"CommentCell", bundle: nil)
         
         self.tableview.registerNib(nib3, forCellReuseIdentifier: identifier)
-        var pan = UIPanGestureRecognizer(target: self, action: "onCellClick:")
+        let pan = UIPanGestureRecognizer(target: self, action: "onCellClick:")
         pan.delegate = self
         self.tableview.addGestureRecognizer(pan)
         self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
@@ -98,7 +98,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         //输入框
         self.keyboardView = UIView(frame: CGRectMake(0, globalHeight - 44, globalWidth, 44))
         self.keyboardView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
-        var inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
+        let inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
         inputLineView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
         self.keyboardView.addSubview(inputLineView)
         self.inputKeyboard = UITextField(frame: CGRectMake(8, 8, globalWidth-16, 28))
@@ -122,7 +122,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.text = "回应"
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -133,9 +133,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     //按下发送后调用此函数
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        var contentComment = self.inputKeyboard.text
+        let contentComment = self.inputKeyboard.text
         if contentComment != "" {
-            commentFinish(contentComment)
+            commentFinish(contentComment!)
         }
         return true
     }
@@ -144,31 +144,31 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.isKeyboardResign = 1
         self.inputKeyboard.text = ""
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //        var safeuid = Sa.objectForKey("uid") as! String
-        var safeuser = Sa.objectForKey("user") as! String
+        let safeuser = Sa.objectForKey("user") as! String
         
-        var commentReplyRow = self.dataArray.count
-        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        let commentReplyRow = self.dataArray.count
+        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
         self.tableview.reloadData()
         //当提交评论后滚动到最新评论的底部
-        var offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+        let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
         if offset > 0 {
             self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
         }
         
         //  提交到服务器
-        var content = SAEncode(SAHtml(replyContent))
+        let content = SAEncode(SAHtml(replyContent))
         Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
             if json != nil {
                 if let status = json!.objectForKey("status") as? NSNumber {
                     if status == 200 {
-                        var newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+                        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
                         self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
                         self.tableview.reloadData()
                     } else {
@@ -184,19 +184,19 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func SAloadData() {
-        var heightBefore = self.tableview.contentSize.height
-        var url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
+        let heightBefore = self.tableview.contentSize.height
+        let url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull() {
-                var arr = data.objectForKey("items") as! NSArray
-                var total = data.objectForKey("total") as! NSString!
-                self.dataTotal = "\(total)".toInt()!
+                let arr = data.objectForKey("items") as! NSArray
+                let total = data.objectForKey("total") as! NSString!
+                self.dataTotal = Int("\(total)")!
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
                 }
                 self.tableview.reloadData()
-                var heightAfter = self.tableview.contentSize.height
-                var heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
+                let heightAfter = self.tableview.contentSize.height
+                let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
                 self.tableview.setContentOffset(CGPointMake(0, heightChange), animated: false)
                 self.page++
                 self.animating = 0
@@ -205,12 +205,12 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func SAReloadData(){
-        var url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
+        let url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                var arr = data.objectForKey("items") as! NSArray
-                var total = data.objectForKey("total") as! NSString!
-                self.dataTotal = "\(total)".toInt()!
+                let arr = data.objectForKey("items") as! NSArray
+                let total = data.objectForKey("total") as! NSString!
+                self.dataTotal = Int("\(total)")!
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr {
                     self.dataArray.addObject(data)
@@ -231,13 +231,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        var y = scrollView.contentOffset.y
+        let y = scrollView.contentOffset.y
         if self.dataTotal == 15 {
             self.viewTop.addSubview(self.activityIndicatorView)
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
-                    delay(0.5, { () -> () in
+                    delay(0.5, closure: { () -> () in
                         self.SAloadData()
                     })
                 }
@@ -253,12 +253,12 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func onBubbleClick(sender:UIGestureRecognizer) {
-        var index = sender.view!.tag
-        var data = self.dataArray[index] as! NSDictionary
-        var user = data.stringAttributeForKey("user") as String
-        var uid = data.stringAttributeForKey("uid")
-        var content = data.stringAttributeForKey("content") as String
-        var cid = data.stringAttributeForKey("id") as String
+        let index = sender.view!.tag
+        let data = self.dataArray[index] as! NSDictionary
+        let user = data.stringAttributeForKey("user") as String
+        let uid = data.stringAttributeForKey("uid")
+        let content = data.stringAttributeForKey("content") as String
+        let cid = data.stringAttributeForKey("id") as String
         self.ReplyRow = self.dataArray.count - 1 - index
         self.ReplyContent = content
         self.ReplyCid = cid
@@ -272,8 +272,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.replySheet!.cancelButtonIndex = 3
             self.replySheet!.showInView(self.view)
         }else{  //不是主人
-            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //            var safeshell = uidKey.objectForKey(kSecValueData) as! String
             
             if uid == safeuid {
@@ -296,9 +296,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! CommentCell
-        var index = indexPath.row
-        var data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
+        let c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! CommentCell
+        let index = indexPath.row
+        let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         c.data = data
         c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
         c.imageContent.tag = dataArray.count - 1 - index
@@ -312,8 +312,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
 
     func onCellClick(sender:UIPanGestureRecognizer){
         if sender.state == UIGestureRecognizerState.Changed {
-            var distanceX = sender.translationInView(self.view).x
-            var distanceY = sender.translationInView(self.view).y
+            let distanceX = sender.translationInView(self.view).x
+            let distanceY = sender.translationInView(self.view).y
             if fabs(distanceY) > fabs(distanceX) {
                 self.inputKeyboard.resignFirstResponder()
             }
@@ -326,40 +326,40 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func userclick(sender:UITapGestureRecognizer){
         self.inputKeyboard.resignFirstResponder()
-        var UserVC = PlayerViewController()
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var index = indexPath.row
-        var data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
+        let index = indexPath.row
+        let data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
         return  CommentCell.cellHeightByData(data)
     }
     
     func commentVC(){
         //这里是回应别人
         self.inputKeyboard.text = "@\(self.ReplyUserName) "
-        delay(0.3, {
+        delay(0.3, closure: {
             self.inputKeyboard.becomeFirstResponder()
             return
         })
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
                 self.commentVC()
             }else if buttonIndex == 1 { //复制
-                var pasteBoard = UIPasteboard.generalPasteboard()
+                let pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
-                var data = self.dataArray[self.ReplyRow] as! NSDictionary
-                var uid = data.stringAttributeForKey("uid")
+                let data = self.dataArray[self.ReplyRow] as! NSDictionary
+                let uid = data.stringAttributeForKey("uid")
                 if (( uid == safeuid ) || ( self.dreamowner == 1 )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                     self.deleteCommentSheet!.addButtonWithTitle("确定删除")
@@ -368,7 +368,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                     self.deleteCommentSheet!.showInView(self.view)
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
+                        let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", urlString: "http://nian.so/api/a.php")
                         if(sa == "1"){
                             dispatch_async(dispatch_get_main_queue(), {
                                 UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
@@ -383,15 +383,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 logInfo("\(self.dataArray.count)")
                 self.dataArray.removeObjectAtIndex(self.dataArray.count - 1 - self.ReplyRow)
                 logVerbose("\(self.dataArray.count)")
-                var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 0)
-                
 //                self.tableview.beginUpdates()
 //                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: .None)
 //                self.tableview.endUpdates()
                 self.tableview.reloadData()
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_comment.php")
+                    SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", urlString: "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0
                 })
             }
@@ -404,18 +402,17 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
-        var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
+        let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         self.keyboardHeight = keyboardSize.height
         self.keyboardView.setY( globalHeight - self.keyboardHeight - 44 )
-        var heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
-        var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
+        let heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
+        let contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.tableview.setHeight( heightScroll )
         self.tableview.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        var heightScroll = globalHeight - 44 - 64
-        var contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
+        let heightScroll = globalHeight - 44 - 64
         self.keyboardView.setY( globalHeight - 44 )
         self.tableview.setHeight( heightScroll )
     }

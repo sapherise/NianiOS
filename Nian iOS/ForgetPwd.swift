@@ -22,7 +22,7 @@ class ForgetPwd: UIViewController {
 
         // Do any additional setup after loading the view.
         self.viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
@@ -30,7 +30,7 @@ class ForgetPwd: UIViewController {
         _rightButton!.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [_rightButton!]
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "重置密码"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -52,25 +52,25 @@ class ForgetPwd: UIViewController {
     func resetPwd() {
         self.email.resignFirstResponder()
         
-        if !self.email.text.isValidEmail() {
+        if !self.email.text!.isValidEmail() {
             self.SAerr("不是地球上的邮箱...")
             self.email.becomeFirstResponder()
         } else {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            Api.postResetPwd(self.email.text) {
+            Api.postResetPwd(self.email.text!) {
                 json in
                 if json != nil {
-                    var error = json!.objectForKey("error") as! NSNumber
+                    let error = json!.objectForKey("error") as! NSNumber
                     
                     if error == 0 {
-                        var niAlert = NIAlert()
+                        let niAlert = NIAlert()
                         niAlert.delegate = self
                         niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
                                                            forKeys: ["img", "title", "content", "buttonArray"])
                         
                         niAlert.showWithAnimation(showAnimationStyle.spring)
                     } else {
-                        var msg = json!.objectForKey("message") as! String
+                        let msg = json!.objectForKey("message") as! String
                         
                         if msg == "The resources is not exist." {
                             self.SAerr("这个邮箱没注册过...")
@@ -121,11 +121,11 @@ extension ForgetPwd: NIAlertDelegate {
 extension ForgetPwd {
     
     func shakeAnimation(view: UIView) {
-        var viewLayer:CALayer = view.layer
-        var position:CGPoint = viewLayer.position
-        var x:CGPoint = CGPointMake(position.x + 3 , position.y)
-        var y:CGPoint = CGPointMake(position.x - 3 , position.y)
-        var animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
+        let viewLayer:CALayer = view.layer
+        let position:CGPoint = viewLayer.position
+        let x:CGPoint = CGPointMake(position.x + 3 , position.y)
+        let y:CGPoint = CGPointMake(position.x - 3 , position.y)
+        let animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
         animation.fromValue = NSValue(CGPoint: x)
         animation.toValue = NSValue(CGPoint: y)
         animation.autoreverses = true
@@ -140,13 +140,13 @@ extension ForgetPwd {
         if self.isAnimate == 0 {
             self.isAnimate = 1
             
-            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions(), animations: {
                 self.info.text = message
-                self.info.frame.offset(dx: 0, dy: -5)
+                self.info.frame.offsetInPlace(dx: 0, dy: -5)
                 self.info.alpha = 1
                 }, completion: { (complete: Bool) in
-                    UIView.animateWithDuration(0.1, delay:1.2, options: UIViewAnimationOptions.allZeros, animations: {
-                        self.info.frame.offset(dx: 0, dy: +5)
+                    UIView.animateWithDuration(0.1, delay:1.2, options: UIViewAnimationOptions(), animations: {
+                        self.info.frame.offsetInPlace(dx: 0, dy: +5)
                         self.info.alpha = 0
                         }, completion: { (complete: Bool) in
                             self.isAnimate = 0

@@ -39,9 +39,9 @@ class Popup: UIView {
         self.labelTitle.setY(self.heightImage + 20)
         self.labelContent.setY(self.labelTitle.bottom() + 8)
         self.labelContent.text = textContent
-        var h = textContent.stringHeightWith(13, width: 230)
+        let h = textContent.stringHeightWith(13, width: 230)
         self.labelContent.setHeight(h)
-        self.btnMain.setTitle(textBtnMain, forState: UIControlState.allZeros)
+        self.btnMain.setTitle(textBtnMain, forState: UIControlState())
         self.btnMain.setY(self.labelContent.bottom() + 20)
         var w = textBtnSub.stringWidthWith(14, height: 36)
         if SAstrlen(textBtnMain) > SAstrlen(textBtnSub) {
@@ -54,10 +54,10 @@ class Popup: UIView {
         self.btnMain.hidden = false
         if self.textBtnSub != "" {
             self.btnSub.setY(self.btnMain.bottom() + 6)
-            self.btnSub.setTitle(textBtnSub, forState: UIControlState.allZeros)
+            self.btnSub.setTitle(textBtnSub, forState: UIControlState())
             self.btnSub.hidden = false
         }
-        var heightHolder = self.textBtnSub != "" ? h + heightImage + 180 : h + heightImage + 180 - 42
+        let heightHolder = self.textBtnSub != "" ? h + heightImage + 180 : h + heightImage + 180 - 42
         self.viewHolder.setHeight(heightHolder)
         self.viewHolder.setY((globalHeight - heightHolder)/2)
     }

@@ -34,13 +34,12 @@ class GroupCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.stringAttributeForKey("id")
-        var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
-        var lastdate = self.data.stringAttributeForKey("lastdate")
-        var reply = self.data.stringAttributeForKey("reply")
+        let title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
+        let lastdate = self.data.stringAttributeForKey("lastdate")
+        let reply = self.data.stringAttributeForKey("reply")
         self.labelTime.text = V.relativeTime(lastdate)
         self.labelComment.text = "回应 \(reply)"
-        var height = title.stringHeightWith(16,width:globalWidth-40)
+        let height = title.stringHeightWith(16,width:globalWidth-40)
         self.labelContent!.setHeight(height)
         self.labelContent!.text = title
         self.line.setY(self.labelContent!.bottom())
@@ -49,8 +48,8 @@ class GroupCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        var height = title.stringHeightWith(16,width:globalWidth-40)
+        let title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        let height = title.stringHeightWith(16,width:globalWidth-40)
         return height + 74
     }
     

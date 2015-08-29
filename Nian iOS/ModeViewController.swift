@@ -37,17 +37,17 @@ class ModeViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "游戏模式"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignNext:")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignNext:")
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton]
         
@@ -95,7 +95,7 @@ class ModeViewController: UIViewController {
     
     func toSignNext(sender: AnyObject) {
         self.signInfo.mode = self.playMode
-        var signNextVC = SignNextController(nibName: "SignNext", bundle: nil)
+        let signNextVC = SignNextController(nibName: "SignNext", bundle: nil)
         signNextVC.signInfo = self.signInfo
         self.navigationItem.rightBarButtonItems = []
         self.navigationController!.pushViewController(signNextVC, animated: true)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPickerViewDataSource, UIPickerViewDelegate{
+class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate{
     
     var picker:UIPickerView!
     var startTime:Int = 20
@@ -22,8 +22,6 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = BGColor
-        var width = self.view.frame.size.width  //宽度
-        var height = self.view.frame.size.height   //高度
         
         self.picker = UIPickerView(frame: CGRectMake(0, 64, globalWidth, globalWidth))
         self.picker.dataSource = self
@@ -32,13 +30,13 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         
         self.view.addSubview(self.picker)
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "每日设定"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "startPush")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "startPush")
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
@@ -63,8 +61,8 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
         self.startTime = row + 1
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
-        var pkView = UILabel(frame: CGRectMake(0, 0, globalWidth, 50))
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        let pkView = UILabel(frame: CGRectMake(0, 0, globalWidth, 50))
         pkView.text = "每日 \(row+1) 时"
         pkView.textColor = UIColor.blackColor()
         pkView.textAlignment = NSTextAlignment.Center
@@ -76,11 +74,11 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
     }
     
     func startPush(){
-        var date = NSDate()
-        var comp = NSCalendar.currentCalendar().components( NSCalendarUnit.HourCalendarUnit | NSCalendarUnit.MinuteCalendarUnit | NSCalendarUnit.SecondCalendarUnit , fromDate: date)
-        var hour = comp.hour
-        var min = comp.minute
-        var sec = comp.second
+        let date = NSDate()
+        let comp = NSCalendar.currentCalendar().components( [NSCalendarUnit.NSHourCalendarUnit, NSCalendarUnit.NSMinuteCalendarUnit, NSCalendarUnit.NSSecondCalendarUnit] , fromDate: date)
+        let hour = comp.hour
+        let min = comp.minute
+        let sec = comp.second
         if hour < self.startTime {
             self.delayTime = (( self.startTime - hour ) * 60 * 60 - min * 60 - sec )
         }else{
@@ -101,18 +99,18 @@ class CareViewController: UIViewController, UIGestureRecognizerDelegate, UIPicke
             self.Greetings = "晚安。"
         }
         
-        var notification = UILocalNotification()
-        var pushDate = date.dateByAddingTimeInterval(Double(self.delayTime))
+        let notification = UILocalNotification()
+        let pushDate = date.dateByAddingTimeInterval(Double(self.delayTime))
         notification.fireDate = pushDate
         notification.timeZone = NSTimeZone.defaultTimeZone()
         notification.soundName = UILocalNotificationDefaultSoundName
-        var alertBodys = ["有句话我怕说出来我们就做不了朋友了，可是，你今天更新念了嘛？", "\(self.startTime) 点了！更新时间到！", "你收到这条消息，是因为在过去你设置了每日提醒。啊，过去的你是多么的冰雪聪明。", "打赌你今天还没更念，谁赢谁今天就不用更，怎样！", "要是忘了更新念，小心我请你喝咖啡啦！", "过去的你深情款款地对你说：「更吗？」", "每天都不忘了提醒你更新念，真羡慕你有这样尽责的朋友。", "现在是 \(self.startTime) 点整。我是今天第一个跟你说话的人吗？", "又到了每天一次的骚扰环节了。真担心我这样每天提醒你更新，你会不小心爱上我。千万别爱我啦。", "再不更念就阵亡啦。"]
-        var rand = arc4random() % 10
+//        var alertBodys = ["有句话我怕说出来我们就做不了朋友了，可是，你今天更新念了嘛？", "\(self.startTime) 点了！更新时间到！", "你收到这条消息，是因为在过去你设置了每日提醒。啊，过去的你是多么的冰雪聪明。", "打赌你今天还没更念，谁赢谁今天就不用更，怎样！", "要是忘了更新念，小心我请你喝咖啡啦！", "过去的你深情款款地对你说：「更吗？」", "每天都不忘了提醒你更新念，真羡慕你有这样尽责的朋友。", "现在是 \(self.startTime) 点整。我是今天第一个跟你说话的人吗？", "又到了每天一次的骚扰环节了。真担心我这样每天提醒你更新，你会不小心爱上我。千万别爱我啦。", "再不更念就阵亡啦。"]
+//        _ = arc4random() % 10
         notification.alertBody = "记得更新念。\(self.Greetings)"
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         Sa.setObject("1", forKey:"pushMode")
         Sa.synchronize()
-        notification.repeatInterval = NSCalendarUnit.CalendarUnitDay
+        notification.repeatInterval = NSCalendarUnit.Day
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
         self.navigationController?.popViewControllerAnimated(true)
     }

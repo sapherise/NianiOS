@@ -12,7 +12,7 @@ protocol editDreamDelegate {
     func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -101,15 +101,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.uploadWait!.hidden = false
         self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
-        var uy = UpYun()
+        let uy = UpYun()
         uy.successBlocker = ({(data: AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadUrl = data.objectForKey("url") as! String
-            self.uploadUrl = SAReplace(self.uploadUrl, "/dream/", "") as String
-            var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+            self.uploadUrl = SAReplace(self.uploadUrl, before: "/dream/", after: "") as String
+            let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.contentMode = .ScaleToFill
             self.imageDreamHead.image = img
-            setCacheImage(url, img, 0)
+            setCacheImage(url, img: img, width: 0)
             self.uploadWait!.stopAnimating()
         })
         uy.failBlocker = ({(error: NSError!) in
@@ -117,7 +117,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadWait!.stopAnimating()
             self.imageDreamHead.image = UIImage(named: "add_plus")
         })
-        uy.uploadImage(resizedImage(img, 260), savekey: getSaveKey("dream", "png") as String)
+        uy.uploadImage(resizedImage(img, newWidth: 260), savekey: getSaveKey("dream", png: "png") as String)
     }
     
     //MARK: view load 相关的方法
@@ -151,8 +151,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        var height = 78 + field2.frame.size.height + tokenView.tokenField.frame.size.height
-        var tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, UIScreen.mainScreen().bounds.size.height - 64))
+        let height = 78 + field2.frame.size.height + tokenView.tokenField.frame.size.height
+        let tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, UIScreen.mainScreen().bounds.size.height - 64))
         self.scrollView.contentSize = tmpSize
         
         self.view.layoutIfNeeded()
@@ -161,10 +161,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = self.isEdit == 1 ? "编辑记本" : "新记本！"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -243,21 +243,21 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.field1!.text = SADecode(self.editTitle)
             self.field2.text = SADecode(self.editContent)
             
-            if count(tagsArray) > 0 {
-                for i in 0...(count(tagsArray) - 1) {
+            if tagsArray.count > 0 {
+                for i in 0...(tagsArray.count - 1) {
                     tokenView.tokenField.addTokenWithTitle(SADecode(SADecode(tagsArray[i])))
                     tokenView.tokenField.layoutTokensAnimated(false)
                 }
             }
             
             self.uploadUrl = self.editImage
-            var url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+            let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             imageDreamHead.setImage(url, placeHolder: IconColor, bool: false)
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         } else {
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
@@ -293,18 +293,17 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     //MARK: 添加 new Dream
     
     func addDreamOK(){
-        var title = self.field1?.text
-        var content = self.field2.text
-        var tags = self.tokenView.tokenTitles
-        var tagsString = ""
+        let title = self.field1?.text
+        let content = self.field2.text
+        let tags = self.tokenView.tokenTitles
 
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
 //            title = SAEncode(SAHtml(title!))
 //            content = SAEncode(SAHtml(content!))
-            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags) {
+            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
                 json in
-                var error = json!.objectForKey("error") as! NSNumber
+                let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
                     dispatch_async(dispatch_get_main_queue(), {
                         globalWillNianReload = 1
@@ -327,9 +326,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var tagsString: String = ""
         var tagsArray: Array<String> = [String]()
         
-        if count(tags!) > 0 {
-            for i in 0...(count(tags!) - 1){
-                var tmpString = tags[i] as! String
+        if (tags!).count > 0 {
+            for i in 0...((tags!).count - 1){
+                let tmpString = tags![i] as! String
                 tagsArray.append(tmpString)
                 if i == 0 {
                     tagsString = "tags[]=\(SAEncode(SAHtml(tmpString)))"
@@ -346,17 +345,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
             
-//            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//            var safeuid = Sa.objectForKey("uid") as! String
-//            var safeshell = Sa.objectForKey("shell") as! String
-            
-            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-            var safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
             Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString){
                 json in
-                var error = json!.objectForKey("error") as! NSNumber
+                let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
                     globalWillNianReload = 1
                     self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray)
@@ -381,10 +372,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         
         // Convert the keyboard frame from screen to view coordinates.
-        let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
         let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
-        let keyboardViewBeginFrame = view.convertRect(keyboardScreenBeginFrame, fromView: view.window)
         let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
         let originDelta = keyboardViewEndFrame.height   // abs(keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y)
         keyboardHeight = originDelta
@@ -401,12 +390,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         
         if field2.isFirstResponder() {
-            var _rect = field2.caretRectForPosition(field2.selectedTextRange?.end)
+            let _rect = field2.caretRectForPosition((field2.selectedTextRange?.end)!)
             
             if ((_rect.origin.y + UIFont.systemFontOfSize(14).lineHeight + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
-                var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFontOfSize(14).lineHeight
-                var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
-                var extraScrollOffset = extraHeight - heightExcludeNavbar
+                let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFontOfSize(14).lineHeight
+                let heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+                let extraScrollOffset = extraHeight - heightExcludeNavbar
                 
                 UIView.animateWithDuration(animationDuration, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
                     self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
@@ -436,8 +425,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func textViewDidChangeSelection(textView: UITextView) {
         if textView.tag == 16555 {
             /**/
-            var tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - textView.contentInset.left * 2) + textView.contentInset.top * 2
-            var field2DefaultHeight: CGFloat = UIScreen.mainScreen().bounds.height > 480 ? 120 : 96
+            let tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - textView.contentInset.left * 2) + textView.contentInset.top * 2
+            let field2DefaultHeight: CGFloat = UIScreen.mainScreen().bounds.height > 480 ? 120 : 96
             self.field2.frame.size.height = field2DefaultHeight > tmpField2Height ? field2DefaultHeight : tmpField2Height
             self.tokenView.frame.origin.y = CGRectGetMaxY(self.field2.frame)
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: 78 + field2.frame.height + tokenView.frame.height)
@@ -447,12 +436,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func textViewDidChange(textView: UITextView) {
         if textView.tag == 16555 {
-            var _rect = field2.caretRectForPosition(field2.selectedTextRange?.end)
+            let _rect = field2.caretRectForPosition((field2.selectedTextRange?.end)!)
             
             if ((_rect.origin.y + UIFont.systemFontOfSize(14).lineHeight + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
-                var extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFontOfSize(14).lineHeight
-                var heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
-                var extraScrollOffset = extraHeight - heightExcludeNavbar
+                let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFontOfSize(14).lineHeight
+                let heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+                let extraScrollOffset = extraHeight - heightExcludeNavbar
                 
                 UIView.animateWithDuration(0, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
                     self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
@@ -462,7 +451,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view .isKindOfClass(UITableView) || touch.view .isKindOfClass(UITableViewCell) {
+        if touch.view!.isKindOfClass(UITableView) || touch.view!.isKindOfClass(UITableViewCell) {
             return false
         }
         
@@ -496,18 +485,18 @@ extension AddDreamController: TITokenFieldDelegate {
     func tokenField(field: TITokenField!, performCustomSearchForSearchString searchString: String!, withCompletionHandler completionHandler: (([AnyObject]!) -> Void)!) {
         var data: Array<String> = []
         
-        if count(searchString) > 0 {
-            var _string = SAEncode(SAHtml(searchString))
+        if searchString.characters.count > 0 {
+            let _string = SAEncode(SAHtml(searchString))
             Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
-                    var error = json!.objectForKey("error") as! NSNumber
+                    let error = json!.objectForKey("error") as! NSNumber
                     
                     if error == 0 {
                         data = json!.objectForKey("data") as! Array
                         
-                        if count(data) > 0 {
-                            for i in 0...(count(data) - 1) {
+                        if data.count > 0 {
+                            for i in 0...(data.count - 1) {
                                 data[i] = SADecode(SADecode(data[i]))
                             }
                         }
@@ -520,15 +509,12 @@ extension AddDreamController: TITokenFieldDelegate {
     
     func tokenField(tokenField: TITokenField!, didAddToken token: TIToken!) {
 //        _string.removeAtIndex(advance(token.title.startIndex, 0))
-        if contains(self.tagsArray, token.title) {
+        if self.tagsArray.contains(token.title) {
             return
         }
         
         Api.postTag(SAEncode(SAHtml(token.title)), callback: {
             json in
-            if json != nil {
-                var status = json!.objectForKey("error") as! NSNumber
-            }
         })
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
+class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     let identifier = "GroupCell"
     let identifier3 = "exploreall"
@@ -40,7 +40,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func setupViews()
     {
         viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
@@ -50,26 +50,26 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        var nib = UINib(nibName:"GroupCell", bundle: nil)
+        let nib = UINib(nibName:"GroupCell", bundle: nil)
         self.tableView?.registerNib(nib, forCellReuseIdentifier: identifier)
         
         self.view.addSubview(self.tableView!)
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "广场"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBS")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBS")
         rightButton.image = UIImage(named:"plus")
         self.navigationItem.rightBarButtonItem = rightButton
     }
     
     func addBBS() {
-        var addBBSVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
+        let addBBSVC = AddBBSController(nibName: "AddBBSController", bundle: nil)
         self.navigationController?.pushViewController(addBBSVC, animated: true)
     }
     
@@ -79,9 +79,9 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }
         Api.getBBS("0", page: page) { json in
             if json != nil {
-                var data: AnyObject? = json!.objectForKey("data")
-                var arr = data!.objectForKey("bbs") as! NSArray
-                var top = data!.objectForKey("top") as? NSArray
+                let data: AnyObject? = json!.objectForKey("data")
+                let arr = data!.objectForKey("bbs") as! NSArray
+                let top = data!.objectForKey("top") as? NSArray
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
@@ -116,9 +116,9 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
+        let c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? GroupCell
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
         c!.data = data
         if indexPath.row == self.dataArray.count - 1 {
             c!.viewLine.hidden = true
@@ -130,21 +130,21 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func dreamclick(sender:UITapGestureRecognizer){
-        var DreamVC = DreamViewController()
+        let DreamVC = DreamViewController()
         DreamVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
         return  GroupCell.cellHeightByData(data)
     }
     func tableView(tableView: UITableView,didSelectRowAtIndexPath indexPath: NSIndexPath)    {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
-        var BBSVC = BBSViewController()
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
+        let BBSVC = BBSViewController()
         BBSVC.Id = data.stringAttributeForKey("id")
         BBSVC.topcontent = data.stringAttributeForKey("content")
         BBSVC.topuid = data.stringAttributeForKey("uid")
@@ -163,7 +163,7 @@ class ExploreController: UIViewController,UITableViewDelegate,UITableViewDataSou
             self.load()
         })
         self.tableView!.addFooterWithCallback({
-            self.load(clear: false)
+            self.load(false)
         })
     }
 }

@@ -30,16 +30,16 @@ class BBSCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var id = self.data.stringAttributeForKey("id")
-        var uid = self.data.stringAttributeForKey("uid")
-        var user = self.data.stringAttributeForKey("user")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
+//        var id = self.data.stringAttributeForKey("id")
+        let uid = self.data.stringAttributeForKey("uid")
+        let user = self.data.stringAttributeForKey("user")
+        let lastdate = self.data.stringAttributeForKey("lastdate")
         content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
         self.nickLabel!.text = user
         self.lastdate!.text = V.relativeTime(lastdate)
         self.avatarView!.setHead(uid)
         self.avatarView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
-        var height = content.stringHeightWith(16,width:globalWidth-85)
+        let height = content.stringHeightWith(16,width:globalWidth-85)
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         self.Line!.setY(self.contentLabel!.bottom()+25)
@@ -47,15 +47,15 @@ class BBSCell: UITableViewCell {
     }
     
     func toUser() {
-        var vc = PlayerViewController()
+        let vc = PlayerViewController()
         vc.Id = data.stringAttributeForKey("uid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat
     {
-        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
-        var height = content.stringHeightWith(16,width:globalWidth-85)
+        let content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        let height = content.stringHeightWith(16,width:globalWidth-85)
         return height + 77 + 26
     }
 }

@@ -50,8 +50,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             json in
             if json != nil {
                 globalTab[1] = false
-                var data: AnyObject? = json!.objectForKey("data")
-                var items = data!.objectForKey("items") as! NSArray
+                let data: AnyObject? = json!.objectForKey("data")
+                let items = data!.objectForKey("items") as! NSArray
                 if items.count != 0 {
                     if clear {
                         self.dataArray.removeAllObjects()
@@ -61,8 +61,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                     }
                     self.bindViewController?.dynamicTableView.tableHeaderView = nil
                 } else if clear {
-                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    var viewQuestion = viewEmpty(globalWidth, content: "这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
+                    let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    let viewQuestion = viewEmpty(globalWidth, content: "这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
                     viewQuestion.setY(50)
                     viewHeader.addSubview(viewQuestion)
                     self.bindViewController?.dynamicTableView.tableHeaderView = viewHeader
@@ -77,7 +77,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     override func onHide() {
-        bindViewController!.dynamicTableView.headerEndRefreshing(animated: false)
+        bindViewController!.dynamicTableView.headerEndRefreshing(false)
     }
     
     override func onShow(loading: Bool) {
@@ -108,9 +108,9 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var viewController = DreamViewController()
-        var data = self.dataArray[indexPath.row] as! NSDictionary
-        var id = data.stringAttributeForKey("dream")
+        let viewController = DreamViewController()
+        let data = self.dataArray[indexPath.row] as! NSDictionary
+        let id = data.stringAttributeForKey("dream")
         viewController.Id = id
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -120,8 +120,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
 //    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var data = dataArray[indexPath.row] as! NSDictionary
-        var type = data.stringAttributeForKey("type")
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let type = data.stringAttributeForKey("type")
         switch type {
         case "0":
             return 77
@@ -140,14 +140,14 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell? = nil
-        var data = dataArray[indexPath.row] as! NSDictionary
-        var type = data.stringAttributeForKey("type")
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let type = data.stringAttributeForKey("type")
         
         switch type {
         case "0":
-            var c = tableView.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as? ExploreDynamicDreamCell
+            let c = tableView.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as? ExploreDynamicDreamCell
 //            dreamCell!.bindData(data, tableview: tableView)
-            var data = dataArray[indexPath.row] as! NSDictionary
+            let data = dataArray[indexPath.row] as! NSDictionary
             c?.data = data
             if indexPath.row == self.dataArray.count - 1 {
                 c!.viewLine.hidden = true
@@ -157,7 +157,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             cell = c
             break
         case "1":
-            var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+            let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
             c.isDynamic = true
             c.data = self.dataArray[indexPath.row] as! NSDictionary
@@ -167,7 +167,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             } else {
                 c.viewLine.hidden = false
             }
-            var _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
+            let _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
             c._layoutSubviews(_shouldLoadImage)
             cell = c
             
@@ -179,8 +179,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        var data = dataArray[indexPath.row] as! NSDictionary
-        var type = data.stringAttributeForKey("type")
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let type = data.stringAttributeForKey("type")
         
         switch type {
         case "0":
@@ -195,7 +195,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     /**
-    :returns: Bool值，代表是否要加载图片
+    - returns: Bool值，代表是否要加载图片
     */
     func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
         if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.dynamicTableView.rectForRowAtIndexPath(indexPath)) {
@@ -208,12 +208,12 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArray, index, key, value, bindViewController!.dynamicTableView!)
+        SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: bindViewController!.dynamicTableView!)
     }
     
     // 更新某个格子
     func updateStep(index: Int) {
-        SAUpdate(index, 0, bindViewController!.dynamicTableView!)
+        SAUpdate(index, section: 0, tableView: bindViewController!.dynamicTableView!)
     }
     
     // 重载表格
@@ -223,7 +223,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, self.dataArray, index, bindViewController!.dynamicTableView!, 0)
+        SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: bindViewController!.dynamicTableView!, section: 0)
     }
 }
 
@@ -242,7 +242,7 @@ extension ExploreDynamicProvider : UIScrollViewDelegate  {
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
         self.targetRect = NSValue(CGRect: targetRect)
     }
     
@@ -255,17 +255,14 @@ extension ExploreDynamicProvider : UIScrollViewDelegate  {
     }
     
     func loadImagesForVisibleCells() {
-        var cellArray = self.bindViewController?.dynamicTableView.visibleCells()
+        let cellArray = self.bindViewController?.dynamicTableView.visibleCells
         
         for cell in cellArray! {
             if cell is SAStepCell {
-                var indexPath = self.bindViewController?.dynamicTableView.indexPathForCell(cell as! SAStepCell)
+                let indexPath = self.bindViewController?.dynamicTableView.indexPathForCell(cell as! SAStepCell)
                 
                 var _tmpShouldLoadImg = false
-                
-                if let _indexPath = indexPath {
                     _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-                }
                 
                 if _tmpShouldLoadImg {
                     self.bindViewController?.dynamicTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
@@ -310,10 +307,10 @@ class ExploreDynamicDreamCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-        var uidlike = data.stringAttributeForKey("uidlike")
-        var userlike = data.stringAttributeForKey("userlike")
-        var img = data.stringAttributeForKey("image")
-        var title = data.stringAttributeForKey("title").decode()
+        let uidlike = data.stringAttributeForKey("uidlike")
+        let userlike = data.stringAttributeForKey("userlike")
+        let img = data.stringAttributeForKey("image")
+        let title = data.stringAttributeForKey("title").decode()
         self.imageHead.setHead(uidlike)
         self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor, bool: false)
         self.labelName.text = userlike
@@ -324,8 +321,8 @@ class ExploreDynamicDreamCell: UITableViewCell {
     }
     
     func onUserClick() {
-        var uid = data.stringAttributeForKey("uidlike")
-        var userVC = PlayerViewController()
+        let uid = data.stringAttributeForKey("uidlike")
+        let userVC = PlayerViewController()
         userVC.Id = uid
         self.findRootViewController()?.navigationController?.pushViewController(userVC, animated: true)
     }

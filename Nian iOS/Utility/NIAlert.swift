@@ -46,7 +46,7 @@ class NIAlert: UIView {
     weak var delegate: NIAlertDelegate?
     
     /**
-    :param: dict 包含构建界面的全部信息
+    - parameter dict: 包含构建界面的全部信息
     
     :contain: 
         img:          UIImage
@@ -59,7 +59,7 @@ class NIAlert: UIView {
     convenience init() {
         self.init(frame: UIScreen.mainScreen().bounds)
         self._containerView = UIView()
-        self._containerView?.frame = CGRect.zeroRect
+        self._containerView?.frame = CGRect.zero
         
         self.addSubview(_containerView!)
         
@@ -72,7 +72,7 @@ class NIAlert: UIView {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -172,7 +172,7 @@ class NIAlert: UIView {
     }
     
     func buttonTouch(sender: NIButton) {
-        var _index = sender.index!
+        let _index = sender.index!
         
         delegate?.niAlert?(self, didselectAtIndex: _index)
     }
@@ -180,7 +180,7 @@ class NIAlert: UIView {
     func showWithAnimation(animation: showAnimationStyle) {
         self._commonSetup()
         
-        var _windowView = UIApplication.sharedApplication().windows.first as! UIView
+        let _windowView = UIApplication.sharedApplication().windows.first as! UIView
         
         if isLayerHidden {
             self.backgroundColor = UIColor.clearColor()
@@ -207,8 +207,8 @@ class NIAlert: UIView {
             self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
             _windowView.addSubview(self)
 
-            var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
-            self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 1000)
+            let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+            self._containerView!.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: 1000)
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self._containerView!.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
             })
@@ -228,9 +228,9 @@ class NIAlert: UIView {
         case .normal:
             self._removeSubView()
         case .flip:
-            var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+            let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
+                self._containerView!.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: -1000)
             }, completion: { (Bool) -> Void in
                 self.removeFromSuperview()
             })
@@ -240,9 +240,9 @@ class NIAlert: UIView {
     }
     
     func dismissWithAnimationSwtich(view: UIView) {
-        var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+        let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
+            self._containerView!.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: -1000)
             }, completion: { (Bool) -> Void in
                 self._containerView!.removeFromSuperview()
                 if let v = view as? NIAlert {
@@ -253,9 +253,9 @@ class NIAlert: UIView {
     }
     
     func dismissWithAnimationSwtichEvolution(view: UIView, url: String) {
-        var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+        let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self._containerView!.layer.transform = CATransform3DPerspect(rotate, CGPointZero, -1000)
+            self._containerView!.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: -1000)
             }, completion: { (Bool) -> Void in
                 self._containerView!.removeFromSuperview()
                 if let v = view as? NIAlert {
@@ -268,7 +268,7 @@ class NIAlert: UIView {
     
     private func _removeSubView() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            var newTransform = CGAffineTransformScale(self.transform, 1.2, 1.2)
+            let newTransform = CGAffineTransformScale(self.transform, 1.2, 1.2)
             self.transform = newTransform
             self.alpha = 0
             }) { (Bool) -> Void in
@@ -323,7 +323,7 @@ class NIButton: UIButton {
     private var _spinner: UIActivityIndicatorView?
     private var _titleString: String?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

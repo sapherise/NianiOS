@@ -20,7 +20,7 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -56,7 +56,7 @@ class CellLabel: UILabel {
     }
     
     override func drawTextInRect(rect: CGRect) {
-        var _rect = self.textRectForBounds(rect, limitedToNumberOfLines: self.numberOfLines)
+        let _rect = self.textRectForBounds(rect, limitedToNumberOfLines: self.numberOfLines)
         
         super.drawTextInRect(_rect)
     }

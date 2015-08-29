@@ -56,17 +56,16 @@ class RedditCell: UITableViewCell {
             let comment = data.stringAttributeForKey("reply")
             let lastdate = data.stringAttributeForKey("lastdate")
             let time = V.relativeTime(lastdate)
-            var num = SAThousand(data.stringAttributeForKey("reply"))
-            var uid = data.stringAttributeForKey("uid").toInt()! % 2
+            let num = SAThousand(data.stringAttributeForKey("reply"))
             
             // 计算高度与宽度
-            var hTitle = title.stringHeightWith(16, width: globalWidth - 80)
-            var hContent = content.stringHeightWith(12, width: globalWidth - 80)
-            var hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
-            var hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
-            var wTag = tag.stringWidthWith(10, height: 18)
-            var wComment = "\(comment) 评论".stringWidthWith(12, height: 18)
-            var wTime = time.stringWidthWith(12, height: 18)
+            let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
+            let hContent = content.stringHeightWith(12, width: globalWidth - 80)
+            let hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
+            let hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
+            let wTag = tag.stringWidthWith(10, height: 18)
+            let wComment = "\(comment) 评论".stringWidthWith(12, height: 18)
+            let wTime = time.stringWidthWith(12, height: 18)
             
             // 填充内容
             labelTitle.text = title
@@ -124,7 +123,7 @@ class RedditCell: UITableViewCell {
     }
     
     func onUp() {
-        var uid = data.stringAttributeForKey("uid").toInt()! + 1
+        let uid = Int(data.stringAttributeForKey("uid"))! + 1
         delegate?.updateData(index, key: "uid", value: "\(uid)")
         delegate?.updateTable()
     }

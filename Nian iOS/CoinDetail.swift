@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
+class CoinDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var tableView: UITableView!
     var navView: UIView!
@@ -29,7 +29,7 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         self.viewBack()
-        var titleLabel:UILabel = UILabel(frame: CGRectZero)
+        let titleLabel:UILabel = UILabel(frame: CGRectZero)
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币详情"
         titleLabel.sizeToFit()
@@ -60,8 +60,8 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("CoinDetailCell", forIndexPath: indexPath) as? CoinDetailCell
-        let (icon, coin, thing, lastdate) = self.coinDetails[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("CoinDetailCell", forIndexPath: indexPath) as? CoinDetailCell
+        let (_, coin, thing, lastdate) = self.coinDetails[indexPath.row]
         cell!.textDetail.text = "\(coin) 念币"
         cell!.textType.text = "\(things[thing])"
         cell!.textDate.text = lastdate
@@ -75,7 +75,7 @@ class CoinDetailViewController: UIViewController, UIGestureRecognizerDelegate, U
                 let items = json!.objectForKey("items") as! NSArray
                 let success = (items.count != 0)
                 for item in items {
-                    self.coinDetails.append(("", (item.objectForKey("coin") as! String), (item.objectForKey("thing") as! String).toInt()!, V.relativeTime((item.objectForKey("lastdate") as! NSString).doubleValue, current: current)))
+                    self.coinDetails.append(("", (item.objectForKey("coin") as! String), Int((item.objectForKey("thing") as! String))!, V.relativeTime((item.objectForKey("lastdate") as! NSString).doubleValue, current: current)))
                 }
                 if success {
                     self.tableView.reloadData()

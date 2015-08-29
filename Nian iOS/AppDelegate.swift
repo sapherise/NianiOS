@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = BGColor
-        var navigationViewController = UINavigationController(rootViewController: WelcomeViewController())
+        let navigationViewController = UINavigationController(rootViewController: WelcomeViewController())
         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
         navigationViewController.navigationBar.clipsToBounds = true
@@ -25,11 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
         self.window!.makeKeyAndVisible()
         
         if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-            var settings = UIUserNotificationSettings(forTypes: (UIUserNotificationType.Sound | UIUserNotificationType.Alert | UIUserNotificationType.Badge), categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
+            if #available(iOS 8.0, *) {
+                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
+                application.registerUserNotificationSettings(settings)
+                application.registerForRemoteNotifications()
+            }
         } else {
-            application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Sound | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge)
+            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
         }
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
@@ -70,10 +72,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         go {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var newDeviceToken = SAReplace("\(deviceToken)", "<", "")
-            newDeviceToken = SAReplace("\(newDeviceToken)", ">", "")
-            newDeviceToken = SAReplace("\(newDeviceToken)", " ", "")
+            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            var newDeviceToken = SAReplace("\(deviceToken)", before: "<", after: "")
+            newDeviceToken = SAReplace("\(newDeviceToken)", before: ">", after: "")
+            newDeviceToken = SAReplace("\(newDeviceToken)", before: " ", after: "")
             Sa.setObject(newDeviceToken, forKey:"DeviceToken")
             Sa.synchronize()
         }
@@ -82,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     }
     
+    @available(iOS 8.0, *)
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
     }
     
@@ -91,25 +94,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        if let s = url.scheme {
-            if s == "nian" {
-                delay(1, { () -> () in
-                    NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
-                })
-                return true
-            }else if s == "wb4189056912" {
-                return WeiboSDK.handleOpenURL(url, delegate: self)
-            }
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        let s = url.scheme
+        if s == "nian" {
+            delay(1, closure: { () -> () in
+                NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
+            })
+            return true
+        }else if s == "wb4189056912" {
+            return WeiboSDK.handleOpenURL(url, delegate: self)
         }
         return true
     }
     
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        if let s = url.scheme {
-            if s == "wb4189056912" {
-                return WeiboSDK.handleOpenURL(url, delegate: self)
-            }
+        let s = url.scheme
+        if s == "wb4189056912" {
+            return WeiboSDK.handleOpenURL(url, delegate: self)
         }
         return true
     }
@@ -118,10 +119,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
     }
     
     func didReceiveWeiboResponse(response: WBBaseResponse!) {
-        var json = response.userInfo as NSDictionary
-        var uidWeibo = json.stringAttributeForKey("uid")
-        var token = json.stringAttributeForKey("access_token")
-        if let uid = uidWeibo.toInt() {
+        let json = response.userInfo as NSDictionary
+        let uidWeibo = json.stringAttributeForKey("uid")
+        let token = json.stringAttributeForKey("access_token")
+        if let uid = Int(uidWeibo) {
             NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
         }
     }

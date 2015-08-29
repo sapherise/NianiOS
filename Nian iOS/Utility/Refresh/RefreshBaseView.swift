@@ -109,7 +109,7 @@ class RefreshBaseView: UIView {
         activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
         activityView.color = SeaColor
 //        activityView.bounds = self.arrowImage.bounds
-        activityView.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin |  UIViewAutoresizing.FlexibleRightMargin
+        activityView.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin]
         self.addSubview(activityView)
         //自己的属性
         self.autoresizingMask = UIViewAutoresizing.FlexibleWidth
@@ -118,7 +118,7 @@ class RefreshBaseView: UIView {
         self.State = RefreshState.Normal;
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -175,7 +175,7 @@ class RefreshBaseView: UIView {
     func endRefreshing(animated: Bool = true) {
         if animated {
             let delayInSeconds:Double = 0.3
-            var popTime:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds))
+            let popTime:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds))
             dispatch_after(popTime, dispatch_get_main_queue(), {
                 self.State = RefreshState.Normal
             })

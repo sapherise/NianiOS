@@ -33,14 +33,13 @@ class BBSCellTop: UITableViewCell{
     
     override func layoutSubviews(){
         super.layoutSubviews()
-        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        var user = data.stringAttributeForKey("user")
-        var uid = data.stringAttributeForKey("uid")
-        var lastdate = data.stringAttributeForKey("postdate")
-        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
-        var reply = data.stringAttributeForKey("reply")
+        let title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        let user = data.stringAttributeForKey("user")
+        let uid = data.stringAttributeForKey("uid")
+        let lastdate = data.stringAttributeForKey("postdate")
+        let content = SADecode(SADecode(data.stringAttributeForKey("content")))
         self.BBStitle.text = title
-        var titleHeight = title.stringHeightWith(16,width:globalWidth-40)
+        let titleHeight = title.stringHeightWith(16,width:globalWidth-40)
         self.BBStitle!.setHeight(titleHeight)
         
         self.nickLabel.text = user
@@ -48,7 +47,7 @@ class BBSCellTop: UITableViewCell{
         self.dreamhead.setHead(uid)
         self.contentLabel.text = content
         
-        var height = content.stringHeightWith(16,width:globalWidth-85)
+        let height = content.stringHeightWith(16,width:globalWidth-85)
         self.contentLabel.setHeight(height)
         
         self.dreamhead!.setY(self.BBStitle!.bottom()+20)
@@ -66,10 +65,10 @@ class BBSCellTop: UITableViewCell{
     }
     
     class func cellHeightByData(data: NSDictionary)->CGFloat{
-        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
-        var titleHeight = title.stringHeightWith(16,width:globalWidth-40)
-        var height = content.stringHeightWith(16,width:globalWidth-85)
+        let title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        let content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        let titleHeight = title.stringHeightWith(16,width:globalWidth-40)
+        let height = content.stringHeightWith(16,width:globalWidth-85)
         return height + 178 + titleHeight
     }
 }

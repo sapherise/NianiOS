@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextViewDelegate{
+class AddBBSController: UIViewController, UITextViewDelegate{
     @IBOutlet var field1:UITextField!
     @IBOutlet var field2:UITextView!
     @IBOutlet var viewHolder: UIView!
@@ -19,7 +19,7 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
     }
     
     func setupViews(){
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
@@ -33,11 +33,11 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSOK")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addBBSOK")
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "新话题"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -63,9 +63,9 @@ class AddBBSController: UIViewController, UIGestureRecognizerDelegate, UITextVie
             self.navigationItem.rightBarButtonItems = buttonArray()
             var title = self.field1.text
             var content = self.field2.text
-            title = SAEncode(SAHtml(title))
+            title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content))
-            Api.postAddBBS(title, content: content, circle: circle) { json in
+            Api.postAddBBS(title!, content: content, circle: circle) { json in
                 if json != nil {
                     globalWillBBSReload = 1
                     self.navigationController?.popViewControllerAnimated(true)

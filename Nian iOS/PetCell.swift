@@ -24,10 +24,7 @@ class PetCell: UITableViewCell {
     func _layoutSubviews() {
         // 刷新界面
         let imgF = self.info?.stringAttributeForKey("image")
-        var id = self.info?.stringAttributeForKey("id")
-        var level = self.info?.stringAttributeForKey("level")
-        var name = self.info?.stringAttributeForKey("name")
-        var owned = self.info?.stringAttributeForKey("owned")
+        let owned = self.info?.stringAttributeForKey("owned")
         if owned == "0" {
             self.imgView.setImageGray("http://img.nian.so/pets/\(imgF!)!d")
         } else {

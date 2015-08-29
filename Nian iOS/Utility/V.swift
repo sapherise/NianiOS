@@ -58,7 +58,7 @@ struct V {
     typealias JsonCallback = AnyObject? -> Void
     
     static func httpGetForJson(requestURL: String, callback: JsonCallback) {
-        var manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.GET(requestURL,
@@ -72,7 +72,7 @@ struct V {
     }
     
     static func httpPostForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
-        var manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.POST(requestURL,
@@ -86,7 +86,7 @@ struct V {
     }
     
     static func httpPutForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
-        var manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.PUT(requestURL,
@@ -99,7 +99,7 @@ struct V {
     }
     
     static func httpDeleteForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
-        var manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.DELETE(requestURL,
@@ -114,11 +114,11 @@ struct V {
     
     static func httpGetForJsonSync(requestURL: String, callback: JsonCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var url = NSURL(string: requestURL)
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            let url = NSURL(string: requestURL)
+            let data = try? NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached)
             var json: AnyObject? = nil
             if data != nil {
-                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                json = try? NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
             }
             callback(json)
         })
@@ -126,8 +126,8 @@ struct V {
     
     static func httpGetForString(requestURL: String, callback: StringCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var url = NSURL(string: requestURL)
-            var data = NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached, error: nil)
+            let url = NSURL(string: requestURL)
+            let data = try? NSData(contentsOfURL: url!, options: NSDataReadingOptions.DataReadingUncached)
             var string: String?
             if data != nil {
                 string = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
@@ -140,13 +140,21 @@ struct V {
     
     static func httpPostForString(requestURL: String, content: String, callback: StringCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var request = NSMutableURLRequest()
+            let request = NSMutableURLRequest()
             request.URL = NSURL(string: requestURL)
             request.HTTPMethod = "POST"
             request.HTTPBody = content.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
             var response: NSURLResponse?
             var error: NSError?
-            var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+            var data: NSData?
+            do {
+                data = try NSURLConnection.sendSynchronousRequest(request, returningResponse : &response)
+            } catch let error1 as NSError {
+                error = error1
+                data = nil
+            } catch {
+                fatalError()
+            }
             var string: String?
             if  error == nil {
                 string = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
@@ -161,17 +169,28 @@ struct V {
     static func httpPostForJson(requestURL: String, content: String, callback: JsonCallback) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var request = NSMutableURLRequest()
+            let request = NSMutableURLRequest()
             request.URL = NSURL(string: requestURL)
             request.HTTPMethod = "POST"
             request.HTTPBody = content.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
             var response: NSURLResponse?
-            var error: NSError?
-            var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+            var data: NSData?
+            do {
+                data = try NSURLConnection.sendSynchronousRequest(request, returningResponse : &response)
+            } catch _ as NSError {
+                data = nil
+            } catch {
+                fatalError()
+            }
             var json: AnyObject? = nil
             if data != nil {
-                var _error: NSError?
-                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: &_error)
+                do {
+                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                } catch _ as NSError {
+                    json = nil
+                } catch {
+                    fatalError()
+                }
 
             }
             
@@ -183,16 +202,22 @@ struct V {
     
     static func httpPostForJsonSync(requestURL: String, content: String, callback: JsonCallback) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var request = NSMutableURLRequest()
+            let request = NSMutableURLRequest()
             request.URL = NSURL(string: requestURL)
             request.HTTPMethod = "POST"
             request.HTTPBody = content.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
             var response: NSURLResponse?
-            var error: NSError?
-            var data = NSURLConnection.sendSynchronousRequest(request, returningResponse : &response, error: &error)
+            var data: NSData?
+            do {
+                data = try NSURLConnection.sendSynchronousRequest(request, returningResponse : &response)
+            } catch _ as NSError {
+                data = nil
+            } catch {
+                fatalError()
+            }
             var json: AnyObject? = nil
             if data != nil {
-                json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                json = try? NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
             }
             // 为什么没有回到主线程 ?
             callback(json)
@@ -200,8 +225,8 @@ struct V {
     }
     
     static func enTime(timestamp: String) -> String {
-        var time = (timestamp as NSString).doubleValue
-        var formatter = NSDateFormatter()
+        let time = (timestamp as NSString).doubleValue
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "MMM dd"
         formatter.timeZone = NSTimeZone.systemTimeZone()
         formatter.locale = NSLocale(localeIdentifier: "en_US")
@@ -209,7 +234,7 @@ struct V {
     }
     
     static func enTime() -> String {
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "MMM dd"
         formatter.timeZone = NSTimeZone.systemTimeZone()
         formatter.locale = NSLocale(localeIdentifier: "en_US")
@@ -218,18 +243,17 @@ struct V {
     
     
     static func relativeTime(timestamp: String) -> String {
-        var current = NSDate().timeIntervalSince1970
-        var time = (timestamp as NSString).doubleValue
-        var d = current - time
-        var formatter = NSDateFormatter()
-        var component = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth
-            | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond,
+        let current = NSDate().timeIntervalSince1970
+        let time = (timestamp as NSString).doubleValue
+        let d = current - time
+        let formatter = NSDateFormatter()
+        let component = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second],
             fromDate: NSDate())
         component.timeZone = NSTimeZone.systemTimeZone()
         component.hour = 0
         component.minute = 0
         component.second = 0
-        var today = NSCalendar.currentCalendar().dateFromComponents(component)!.timeIntervalSince1970
+        let today = NSCalendar.currentCalendar().dateFromComponents(component)!.timeIntervalSince1970
         if d < 10 {
             return "刚刚";
         } else if d < 60 {
@@ -248,8 +272,8 @@ struct V {
     }
     
     static func relativeTime(time: NSTimeInterval, current: NSTimeInterval) -> String {
-        var d = current - time
-        var formatter = NSDateFormatter()
+        let d = current - time
+        let formatter = NSDateFormatter()
         if d < 10 {
             return "刚刚";
         } else if d < 60 {
@@ -268,8 +292,8 @@ struct V {
     }
     
     static func absoluteTime(time: NSTimeInterval) -> String {
-        var d = NSDate().timeIntervalSince1970 - time
-        var formatter = NSDateFormatter()
+        let d = NSDate().timeIntervalSince1970 - time
+        let formatter = NSDateFormatter()
         if d < 86400 {
             formatter.dateFormat = "HH:mm"
         } else if d < 31536000 {
@@ -309,7 +333,7 @@ struct V {
     }
     
     static func getDay(time: NSTimeInterval) -> String {
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "d"
         formatter.timeZone = NSTimeZone.systemTimeZone()
         return "\(formatter.stringFromDate(NSDate(timeIntervalSince1970: time)))"
@@ -320,7 +344,7 @@ extension UIView {
     
     func findRootViewController() -> UIViewController? {
         for var view: UIView? = self; view != nil; view = view!.superview {
-            var responder = view?.nextResponder()
+            let responder = view?.nextResponder()
             if responder! is UIViewController {
                 return responder as? UIViewController
             }
@@ -329,7 +353,7 @@ extension UIView {
     }
     
     func showTipText(text: String, delay: Double = 2.0) {
-        var tipView = UIView()
+        let tipView = UIView()
         tipView.layer.masksToBounds = true
         tipView.layer.cornerRadius = 4
         tipView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -342,19 +366,19 @@ extension UIView {
             w = textWidth
             h = text.stringHeightWith(fontSize, width: textWidth)
         }
-        var tipLabel = UILabel(frame: CGRectMake(15, 15, w, h))
+        let tipLabel = UILabel(frame: CGRectMake(15, 15, w, h))
         tipLabel.text = text
         tipLabel.font = UIFont.systemFontOfSize(fontSize)
         tipLabel.lineBreakMode = .ByWordWrapping
         tipLabel.numberOfLines = 0
         tipLabel.textAlignment = NSTextAlignment.Center
         tipLabel.textColor = UIColor.whiteColor()
-        var size = CGSizeMake(w + 30, h + 30)
+        let size = CGSizeMake(w + 30, h + 30)
         tipView.frame.size = size
         tipView.frame.origin = CGPointMake((globalWidth - size.width) / 2, globalHeight * 0.5 - size.height / 2)
         tipView.addSubview(tipLabel)
         self.window?.addSubview(tipView)
-        UIView.animateWithDuration(0.3, delay: delay, options: UIViewAnimationOptions.allZeros, animations: { tipView.alpha = 0 }, completion: {
+        UIView.animateWithDuration(0.3, delay: delay, options: UIViewAnimationOptions(), animations: { tipView.alpha = 0 }, completion: {
             finished in
             tipView.removeFromSuperview()
         })

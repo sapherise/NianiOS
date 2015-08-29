@@ -10,7 +10,7 @@ import Foundation
 extension RedditViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == self.scrollView {
-            var x = scrollView.contentOffset.x
+            let x = scrollView.contentOffset.x
             labelLeft.setTabAlpha(x, index: 0)
             labelRight.setTabAlpha(x, index: 1)
         }
@@ -49,7 +49,7 @@ extension RedditViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView == self.scrollView {
-            var x = scrollView.contentOffset.x
+            let x = scrollView.contentOffset.x
             current = Int(x / globalWidth)
             if current == 0 {
                 if dataArrayLeft.count == 0 {

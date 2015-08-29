@@ -47,7 +47,7 @@ class RedditViewController: UIViewController {
     }
     
     func setupViews() {
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         navView.userInteractionEnabled = true
         self.view.addSubview(navView)

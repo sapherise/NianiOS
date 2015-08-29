@@ -11,7 +11,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     func setupViews() {
-        var star = StarEmitter.emitternode()
+        let star = StarEmitter.emitternode()
         star.particlePosition = CGPointMake(self.frame.width/2, 0)
         self.addChild(star)
     }
@@ -20,8 +20,8 @@ class GameScene: SKScene {
 extension SKNode {
     class func unarchiveFromFile(file : String) -> SKNode? {
         if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
-            var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
-            var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
+            let sceneData = try! NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
+            let archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
             
             archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
             let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene

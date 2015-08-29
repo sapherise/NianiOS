@@ -11,13 +11,13 @@ import Foundation
 extension HomeViewController: NIAlertDelegate {
     func SANews() {
         Api.getNews() { json in
-            delay(3, {
+            delay(3, closure: {
                 if json != nil {
-                    var data = json!.objectForKey("news") as! NSDictionary
-                    var title = data.stringAttributeForKey("title")
-                    var content = data.stringAttributeForKey("content")
-                    var button = data.stringAttributeForKey("button")
-                    var version = data.stringAttributeForKey("version")
+                    let data = json!.objectForKey("news") as! NSDictionary
+                    let title = data.stringAttributeForKey("title")
+                    let content = data.stringAttributeForKey("content")
+                    let button = data.stringAttributeForKey("button")
+                    let version = data.stringAttributeForKey("version")
                     let v: AnyObject? = Cookies.get("SANews.\(version)")
                     if v == nil {
                         self.ni = NIAlert()

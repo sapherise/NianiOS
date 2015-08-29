@@ -9,7 +9,7 @@
 import UIKit
 class RefreshHeaderView: RefreshBaseView {
     class func footer()->RefreshHeaderView{
-        var footer:RefreshHeaderView  = RefreshHeaderView(frame: CGRectMake(0, 0,   UIScreen.mainScreen().bounds.width, RefreshViewHeight))
+        let footer:RefreshHeaderView  = RefreshHeaderView(frame: CGRectMake(0, 0,   UIScreen.mainScreen().bounds.width, RefreshViewHeight))
         return footer
     }
     
@@ -17,16 +17,16 @@ class RefreshHeaderView: RefreshBaseView {
         super.init(frame: frame)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var statusX:CGFloat = 0
-        var statusY:CGFloat = 0
-        var statusHeight:CGFloat = self.frame.size.height
-        var statusWidth:CGFloat = self.frame.size.width
+        let statusX:CGFloat = 0
+        let statusY:CGFloat = 0
+        let statusHeight:CGFloat = self.frame.size.height
+        let statusWidth:CGFloat = self.frame.size.width
         //状态标签
         self.statusLabel.frame = CGRectMake(statusX, statusY + 10.0, statusWidth, statusHeight)
         //指示器
@@ -42,14 +42,14 @@ class RefreshHeaderView: RefreshBaseView {
     }
     
     //监听UIScrollView的contentOffset属性
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
                 if (!self.userInteractionEnabled || self.hidden){
                     return
                 }
                 if (self.State == RefreshState.Refreshing) {
                     return
                 }
-                if RefreshContentOffset.isEqualToString(keyPath){
+                if RefreshContentOffset.isEqualToString(keyPath!){
                     self.adjustStateWithContentOffset()
                 }
     }
@@ -58,13 +58,13 @@ class RefreshHeaderView: RefreshBaseView {
     //调整状态
     func adjustStateWithContentOffset()
     {
-        var currentOffsetY:CGFloat = self.scrollView.contentOffset.y
-        var happenOffsetY:CGFloat = -self.scrollViewOriginalInset.top
+        let currentOffsetY:CGFloat = self.scrollView.contentOffset.y
+        let happenOffsetY:CGFloat = -self.scrollViewOriginalInset.top
         if (currentOffsetY >= happenOffsetY) {
             return
         }
         if self.scrollView.dragging{
-            var normal2pullingOffsetY:CGFloat = happenOffsetY - self.frame.size.height
+            let normal2pullingOffsetY:CGFloat = happenOffsetY - self.frame.size.height
             if  self.State == RefreshState.Normal && currentOffsetY < normal2pullingOffsetY{
                 self.State = RefreshState.Pulling
             }else if self.State == RefreshState.Pulling && currentOffsetY >= normal2pullingOffsetY{
@@ -106,7 +106,7 @@ class RefreshHeaderView: RefreshBaseView {
             self.statusLabel.text =  RefreshHeaderRefreshing as String;
             
             UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
-                var top:CGFloat = self.scrollViewOriginalInset.top + self.frame.size.height
+                let top:CGFloat = self.scrollViewOriginalInset.top + self.frame.size.height
                 var inset:UIEdgeInsets = self.scrollView.contentInset
                 inset.top = top
                 self.scrollView.contentInset = inset

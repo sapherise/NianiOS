@@ -29,8 +29,8 @@ class NianCell: UICollectionViewCell{
             globalhasLaunched = 1
         }
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if safeuid == "171264" {
@@ -47,9 +47,9 @@ class NianCell: UICollectionViewCell{
         
         if globaliOS >= 8.0 && globalhasLaunched == 0 {
             self.imageCover.alpha = 0
-            var rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
-            self.imageCover.layer.transform = CATransform3DPerspect(rotate, CGPointZero, 300)
-            delay(Double(inner.counter) * 0.2, {
+            let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
+            self.imageCover.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: 300)
+            delay(Double(inner.counter) * 0.2, closure: {
                 UIView.animateWithDuration(0.6, animations: {
                     self.imageCover.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
                 })
@@ -63,13 +63,13 @@ class NianCell: UICollectionViewCell{
 }
 
 func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform3D {
-    var transToCenter = CATransform3DMakeTranslation(-center.x, -center.y, 0)
-    var transBack = CATransform3DMakeTranslation(center.x, center.y, 0)
+    let transToCenter = CATransform3DMakeTranslation(-center.x, -center.y, 0)
+    let transBack = CATransform3DMakeTranslation(center.x, center.y, 0)
     var scale = CATransform3DIdentity
     scale.m34 = CGFloat(-1) / disZ
     return CATransform3DConcat(CATransform3DConcat(transToCenter, scale), transBack)
 }
 
 func CATransform3DPerspect(t: CATransform3D, center: CGPoint, disZ: CGFloat) -> CATransform3D {
-    return CATransform3DConcat(t, CATransform3DMakePerspective(center, disZ))
+    return CATransform3DConcat(t, CATransform3DMakePerspective(center, disZ: disZ))
 }

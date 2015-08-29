@@ -39,7 +39,7 @@ class LikeCell: MKTableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.uid = self.data.stringAttributeForKey("uid")
-        var follow = self.data.stringAttributeForKey("follow")
+        let follow = self.data.stringAttributeForKey("follow")
         user = self.data.stringAttributeForKey("user")
         self.nickLabel!.text = user
         self.avatarView.setHead(uid)
@@ -47,9 +47,8 @@ class LikeCell: MKTableViewCell {
         
         viewLine.setHeightHalf()
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
         
         if self.urlIdentify == 4 {
             self.btnFollow.layer.borderColor = SeaColor.CGColor
@@ -84,14 +83,14 @@ class LikeCell: MKTableViewCell {
     }
     
     func onUserClick() {
-        var vc = PlayerViewController()
+        let vc = PlayerViewController()
         vc.Id = data.stringAttributeForKey("uid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onLetterClick() {
-        if let uid = data.stringAttributeForKey("uid").toInt() {
-            var vc = CircleController()
+        if let uid = Int(data.stringAttributeForKey("uid")) {
+            let vc = CircleController()
             vc.ID = uid
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }
@@ -111,7 +110,7 @@ class LikeCell: MKTableViewCell {
     }
     
     func onFollowClick(sender:UIButton){
-        var tag = sender.tag
+        let tag = sender.tag
         if tag == 100 {     //没有关注
             self.data.setValue("1", forKey: "follow")
             sender.tag = 200
@@ -121,11 +120,11 @@ class LikeCell: MKTableViewCell {
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", urlString: "http://nian.so/api/fo.php")
                 if sa != "" && sa != "err" {
                 }
             })
@@ -138,11 +137,11 @@ class LikeCell: MKTableViewCell {
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", urlString: "http://nian.so/api/fo.php")
                 if sa != "" && sa != "err" {
                 }
             })

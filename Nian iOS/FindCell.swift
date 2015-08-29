@@ -28,9 +28,9 @@ class FindCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.uid = self.data.stringAttributeForKey("uid") as String
-        var follow = self.data.stringAttributeForKey("follow") as String
+        let follow = self.data.stringAttributeForKey("follow") as String
         self.labelNick!.text = self.data.stringAttributeForKey("user")
-        self.imageHead.tag = self.uid.toInt()!
+        self.imageHead.tag = Int(self.uid)!
         self.imageHead.setHead(uid)
         
         if follow == "0" {
@@ -51,9 +51,9 @@ class FindCell: UITableViewCell {
     }
     
     func onFollowClick(sender:UIButton){
-        var tag = sender.tag
+        let tag = sender.tag
         if tag == 100 {     //没有关注
-            var mutableItem = NSMutableDictionary(dictionary: data)
+            let mutableItem = NSMutableDictionary(dictionary: data)
             mutableItem.setObject("1", forKey: "follow")
             self.data = mutableItem
             sender.tag = 200
@@ -62,18 +62,18 @@ class FindCell: UITableViewCell {
             sender.backgroundColor = SeaColor
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", "http://nian.so/api/fo.php")
+                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", urlString: "http://nian.so/api/fo.php")
                 
                 if sa != "" && sa != "err" {
                 }
                 
             })
         }else if tag == 200 {   //正在关注
-            var mutableItem = NSMutableDictionary(dictionary: data)
+            let mutableItem = NSMutableDictionary(dictionary: data)
             mutableItem.setObject("0", forKey: "follow")
             self.data = mutableItem
             sender.tag = 100
@@ -83,11 +83,11 @@ class FindCell: UITableViewCell {
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
-                var sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", "http://nian.so/api/fo.php")
+                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", urlString: "http://nian.so/api/fo.php")
                 
                 if sa != "" && sa != "err" {
                 }

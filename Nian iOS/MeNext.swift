@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
+class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     let identifier = "me"
     var tableView:UITableView?
@@ -26,9 +26,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func setupViews() {
         viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        var labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
+        let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
         var textTitle = "消息"
         if self.tag == 1 {
             textTitle = "回应"
@@ -49,7 +49,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.tableView!.dataSource = self
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"MeCell", bundle: nil)
+        let nib = UINib(nibName:"MeCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView!)
@@ -57,13 +57,13 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     
     func loadData(){
-        var url = urlString()
+        let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
                 if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data.objectForKey("items") as! NSArray
+                let arr = data.objectForKey("items") as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
@@ -75,14 +75,14 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     func SAReloadData(){
         self.page = 0
-        var url = urlString()
+        let url = urlString()
         self.tableView!.setFooterHidden(false)
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
                 if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data.objectForKey("items") as! NSArray
+                let arr = data.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -96,9 +96,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     
     func urlString()->String{
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         return "http://nian.so/api/me_next.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)&&tag=\(self.tag)"
     }
@@ -118,9 +118,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
         cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
@@ -133,42 +133,37 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func onDreamClick(sender:UIGestureRecognizer){
-        var tag = sender.view!.tag
-        var dreamVC = DreamViewController()
+        let tag = sender.view!.tag
+        let dreamVC = DreamViewController()
         dreamVC.Id = "\(tag)"
         self.navigationController!.pushViewController(dreamVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = PlayerViewController()
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
         return  MeCell.cellHeightByData(data)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
-        var cid = data.stringAttributeForKey("cid")
-        var uid = data.stringAttributeForKey("cuid")
-        var user = data.stringAttributeForKey("cname")
-        var lastdate = data.stringAttributeForKey("lastdate")
-        var dreamtitle = data.stringAttributeForKey("dreamtitle")
-        var content = data.stringAttributeForKey("content")
-        var dream = data.stringAttributeForKey("dream")
-        var type = data.stringAttributeForKey("type")
-        var step = data.stringAttributeForKey("step") as String
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
+        let uid = data.stringAttributeForKey("cuid")
+        let dream = data.stringAttributeForKey("dream")
+        let type = data.stringAttributeForKey("type")
+        let step = data.stringAttributeForKey("step") as String
         
-        var DreamVC = DreamViewController()
-        var UserVC = PlayerViewController()
-        var BBSVC = BBSViewController()
-        var StepVC = SingleStepViewController()
+        let DreamVC = DreamViewController()
+        let UserVC = PlayerViewController()
+        let BBSVC = BBSViewController()
+        let StepVC = SingleStepViewController()
         if type == "0" {    //在你的记本留言
             if step != "0" {
                 StepVC.Id = step

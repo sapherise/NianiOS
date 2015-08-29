@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import StoreKit
 
-class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, SKStoreProductViewControllerDelegate {
+class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSCacheDelegate, UITextFieldDelegate, SKStoreProductViewControllerDelegate {
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var head:UIImageView!
     @IBOutlet var viewLogout:UIView!
@@ -78,13 +78,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func setupViews(){
         self.viewBack()
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "设置"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
@@ -126,27 +126,23 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.inputPhone.setGlobalX()
         self.labelSex.setGlobalX()
         self.cacheActivity.setGlobalX()
-        self.ImageSwitch.setGlobalX(x: 13)
-        self.CareSwitch.setGlobalX(x: 13)
-        self.PrivateSwitch.setGlobalX(x: 13)
-        self.switchMode.setGlobalX(x: 13)
-        self.switchCard.setGlobalX(x: 13)
-        self.arrowHelp.setGlobalX(x: 13)
-        self.arrowStar.setGlobalX(x: 13)
+        self.ImageSwitch.setGlobalX(13)
+        self.CareSwitch.setGlobalX(13)
+        self.PrivateSwitch.setGlobalX(13)
+        self.switchMode.setGlobalX(13)
+        self.switchCard.setGlobalX(13)
+        self.arrowHelp.setGlobalX(13)
+        self.arrowStar.setGlobalX(13)
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.contentSize = CGSizeMake(globalWidth, 1300)
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as! String
-//        var safeshell = Sa.objectForKey("shell") as! String
-        var safename = Sa.objectForKey("user") as! String
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         self.view.backgroundColor = BGColor
         self.head!.setHead(safeuid)
@@ -166,7 +162,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         //节省流量模式
         self.ImageSwitch.addTarget(self, action: "switchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.ImageSwitch.layer.cornerRadius = 16
-        var saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let saveMode: String? = Sa.objectForKey("saveMode") as? String
             if saveMode == "1" {
                 self.ImageSwitch.switchSetup(true, cacheName: "saveMode")
             }else{
@@ -176,7 +172,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         // 私密模式
         self.PrivateSwitch.addTarget(self, action: "privateSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.PrivateSwitch.layer.cornerRadius = 16
-        var privateMode: String? = Sa.objectForKey("privateMode") as? String
+        let privateMode: String? = Sa.objectForKey("privateMode") as? String
         if privateMode == "1" {
             self.PrivateSwitch.switchSetup(true, cacheName: "privateMode")
         }else{
@@ -187,7 +183,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         // 卡片模式
         self.switchCard.addTarget(self, action: "onCard:", forControlEvents: UIControlEvents.ValueChanged)
         self.switchCard.layer.cornerRadius = 16
-        var modeCard = SACookie("modeCard")
+        let modeCard = SACookie("modeCard")
         if modeCard == "0" {
             self.switchCard.switchSetup(false, cacheName: "modeCard")
         }else{
@@ -200,14 +196,14 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         //每日推送模式
         self.CareSwitch.addTarget(self, action: "pushSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.CareSwitch.layer.cornerRadius = 16
-        var pushMode: String? = Sa.objectForKey("pushMode") as? String
+        let pushMode: String? = Sa.objectForKey("pushMode") as? String
         if pushMode == "1" {
             self.pushSwitchSetup(true)
         }else{
             self.pushSwitchSetup(false)
         }
         
-        var longTap = UILongPressGestureRecognizer(target: self, action: "niceTry:")
+        let longTap = UILongPressGestureRecognizer(target: self, action: "niceTry:")
         longTap.minimumPressDuration = 0.5
         self.version.addGestureRecognizer(longTap)
         self.version.setX(globalWidth/2-36)
@@ -219,17 +215,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.viewSex.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSexClick"))
         
         //labelVersion.text = [NSString stringWithFormat:@"v%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
-        var numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
+        let numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
         self.version.text = "念 \(numberVersion)"
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!.objectForKey("user") as! NSDictionary
-                var email = data.stringAttributeForKey("email")
-                var name = data.stringAttributeForKey("name")
-                var phone = data.stringAttributeForKey("phone")
-                var sex = data.stringAttributeForKey("sex")
-                var isMonthly = data.stringAttributeForKey("isMonthly")
+                let data = json!.objectForKey("user") as! NSDictionary
+                let email = data.stringAttributeForKey("email")
+                let name = data.stringAttributeForKey("name")
+                let phone = data.stringAttributeForKey("phone")
+                let sex = data.stringAttributeForKey("sex")
+                let isMonthly = data.stringAttributeForKey("isMonthly")
                 if isMonthly == "1" {
                     self.switchMode.switchSetup(false, cacheName: "", isCache: false)
                 }else{
@@ -263,7 +259,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func onFindClick(){
-        var findVC = FindViewController()
+        let findVC = FindViewController()
         self.navigationController?.pushViewController(findVC, animated: true)
     }
     
@@ -278,7 +274,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        var y = self.scrollView.contentOffset.y
+        let y = self.scrollView.contentOffset.y
         if textField == self.inputName {
             if y < 150 {
                 self.scrollView.setContentOffset(CGPointMake(0, 150), animated: true)
@@ -295,30 +291,30 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if textField == self.inputName {
             if (textField.text != "") && (textField.text != self.accountName){
                 self.navigationItem.rightBarButtonItems = buttonArray()
-                if SAstrlen(self.inputName.text)>30 {
+                if SAstrlen(self.inputName.text!)>30 {
                     self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("昵称太长了...", delay: 1)
                     textField.text = self.accountName
-                }else if SAstrlen(self.inputName.text)<4 {
+                }else if SAstrlen(self.inputName.text!)<4 {
                     self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("昵称太短了...", delay: 1)
                     textField.text = self.accountName
-                }else if !self.inputName.text.isValidName() {
+                }else if !self.inputName.text!.isValidName() {
                     self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("名字里有奇怪的字符...", delay: 1)
                     textField.text = self.accountName
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                         var name = self.inputName.text
-                        name = SAEncode(SAHtml(name))
-                        var sa = SAPost("newname=\(name)&&uid=\(safeuid)&&shell=\(safeshell)&&type=2", "http://nian.so/api/user_update.php")
+                        name = SAEncode(SAHtml(name!))
+                        let sa = SAPost("newname=\(name)&&uid=\(safeuid)&&shell=\(safeshell)&&type=2", urlString: "http://nian.so/api/user_update.php")
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
                                 dispatch_async(dispatch_get_main_queue(), {
@@ -329,7 +325,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                             }else if sa == "1" {
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.navigationItem.rightBarButtonItems = []
-                                    self.accountName = self.inputName.text
+                                    self.accountName = self.inputName.text!
                                     self.view.showTipText("昵称改好啦", delay: 1)
                                     globalWillNianReload = 1
                                 })
@@ -343,19 +339,19 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }else if textField == self.inputEmail {
             if (textField.text != "") && (textField.text != self.accountEmail){
                 self.navigationItem.rightBarButtonItems = buttonArray()
-                if SAstrlen(self.inputEmail.text)>50 {
+                if SAstrlen(self.inputEmail.text!)>50 {
                     self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("邮箱太长了", delay: 1)
                     textField.text = self.accountEmail
-                }else if !self.inputEmail.text.isValidEmail() {
+                }else if !self.inputEmail.text!.isValidEmail() {
                     self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("不是地球上的邮箱", delay: 1)
                     textField.text = self.accountEmail
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                         var email = self.inputEmail.text
-                        email = SAEncode(SAHtml(email))
-                        var sa = SAPost("newemail=\(email)&&uid=\(safeuid)&&shell=\(safeshell)&&type=3", "http://nian.so/api/user_update.php")
+                        email = SAEncode(SAHtml(email!))
+                        let sa = SAPost("newemail=\(email)&&uid=\(safeuid)&&shell=\(safeshell)&&type=3", urlString: "http://nian.so/api/user_update.php")
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
                                 dispatch_async(dispatch_get_main_queue(), {
@@ -366,7 +362,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                             }else if sa == "1" {
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.navigationItem.rightBarButtonItems = []
-                                    self.accountEmail = self.inputEmail.text
+                                    self.accountEmail = self.inputEmail.text!
                                     self.view.showTipText("邮箱改好啦", delay: 1)
                                 })
                             }
@@ -379,17 +375,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }else if textField == self.inputPhone {
             if (textField.text != "") && (textField.text != self.accountPhone){
                 self.navigationItem.rightBarButtonItems = buttonArray()
-                if !self.inputPhone.text.isValidPhone() {   //正则
+                if !self.inputPhone.text!.isValidPhone() {   //正则
                     self.navigationItem.rightBarButtonItems = []
                     self.view.showTipText("不是大陆的手机号...", delay: 1)
                     textField.text = self.accountPhone
                 }else{
                     // 上传手机号
                     var phone = self.inputPhone.text
-                    phone = SAEncode(SAHtml(phone))
-                    Api.postUserPhone(phone) { json in
+                    phone = SAEncode(SAHtml(phone!))
+                    Api.postUserPhone(phone!) { json in
                         self.navigationItem.rightBarButtonItems = []
-                        self.accountPhone = self.inputPhone.text
+                        self.accountPhone = self.inputPhone.text!
                         self.view.showTipText("手机改好啦", delay: 1)
                     }
                 }
@@ -478,69 +474,67 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func uploadFile(img:UIImage){
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        var uy = UpYun()
+        let uy = UpYun()
         if self.uploadWay == 1 {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            var uy = UpYun()
+            let uy = UpYun()
             uy.successBlocker = ({(data2:AnyObject!) in
                 globalWillNianReload = 1
                 
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //                var safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
                 self.navigationItem.rightBarButtonItems = []
                 self.head.image = img
                 
-                setCacheImage("http://img.nian.so/head/\(safeuid).jpg!dream", img, 150)
+                setCacheImage("http://img.nian.so/head/\(safeuid).jpg!dream", img: img, width: 150)
             })
-            uy.uploadImage(resizedImage(img, 250), savekey: self.getSaveKeyPrivate("head") as String)
+            uy.uploadImage(resizedImage(img, newWidth: 250), savekey: self.getSaveKeyPrivate("head") as String)
         } else {
             self.btnCover.startLoading()
             uy.successBlocker = ({(data:AnyObject!) in
                 self.uploadUrl = data.objectForKey("url") as! String
-                self.uploadUrl = SAReplace(self.uploadUrl, "/cover/", "") as String
-                var userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
+                self.uploadUrl = SAReplace(self.uploadUrl, before: "/cover/", after: "") as String
+                let userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
                 
-                var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 Sa.setObject(userImageURL, forKey: "coverUrl")
                 Sa.synchronize()
                 
-                var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-                var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
-                var req = NSURLRequest(URL: NSURL(string: userImageURL)!)
-                var queue = NSOperationQueue();
+                let req = NSURLRequest(URL: NSURL(string: userImageURL)!)
+                let queue = NSOperationQueue();
                 
                 NSURLConnection.sendAsynchronousRequest(req, queue: queue, completionHandler: { response, data, error in
                     dispatch_async(dispatch_get_main_queue(),{
-                        var image:UIImage? = UIImage(data: data)
+                        let image:UIImage? = UIImage(data: data!)
                         if image != nil{
                             globalWillNianReload = 1
                             self.btnCover.endLoading("设定封面")
-                            setCacheImage(userImageURL, img, 500)
+                            setCacheImage(userImageURL, img: img, width: 500)
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                                var sa = SAPost("uid=\(safeuid)&&shell=\(safeshell)&&cover=\(self.uploadUrl)", "http://nian.so/api/change_cover.php")
+                                SAPost("uid=\(safeuid)&&shell=\(safeshell)&&cover=\(self.uploadUrl)", urlString: "http://nian.so/api/change_cover.php")
                             })
                         }
                     })
                 })
             })
             
-            uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("cover", "jpg") as String)
+            uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
             
         }
     }
     
     func getSaveKeyPrivate(title:NSString) -> NSString{
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        var string = NSString(string: "/\(title)/\(safeuid).jpg")
+        let string = NSString(string: "/\(title)/\(safeuid).jpg")
         return string
     }
     
@@ -556,8 +550,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     func pushSwitchAction(sender:UISwitch){
         if sender.on {
             self.pushSwitchSetup(true)
-            delay(0.3, {
-                var CareVC = CareViewController()
+            delay(0.3, closure: {
+                let CareVC = CareViewController()
                 self.navigationController!.pushViewController(CareVC, animated: true)
             })
         }else{
@@ -598,7 +592,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func pushSwitchSetup(bool:Bool){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.CareSwitch.thumbTintColor = UIColor.whiteColor()
             self.CareSwitch.onTintColor = SeaColor
@@ -642,15 +636,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func clearingCache(){
         go {
-            var searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-            var cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
-            var files = NSFileManager.defaultManager().subpathsAtPath(cachePath as String)
-            var p = ""
+            let searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
+            let cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
+            let files = NSFileManager.defaultManager().subpathsAtPath(cachePath as String)
             for p in files! as NSArray {
-                var path = cachePath.stringByAppendingPathComponent("\(p)")
+                let path = cachePath.stringByAppendingPathComponent("\(p)")
                 if NSFileManager.defaultManager().fileExistsAtPath(path) {
                     if "\(p)" != "\(SAUid()).jpg!dream" {
-                        NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+                        do {
+                            try NSFileManager.defaultManager().removeItemAtPath(path)
+                        } catch _ {
+                        }
                     }
                 }
             }
@@ -669,7 +665,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func SAhelp(){
-        var helpVC = HelpViewController()
+        let helpVC = HelpViewController()
         self.navigationController?.pushViewController(helpVC, animated: true)
     }
     
@@ -687,7 +683,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         storeProductVC.loadProductWithParameters(dict as [NSObject : AnyObject], completionBlock: nil)
     }
     
-    func productViewControllerDidFinish(viewController: SKStoreProductViewController!) {
+    func productViewControllerDidFinish(viewController: SKStoreProductViewController) {
         viewController.dismissViewControllerAnimated(true, completion: {
             if let v = self.navigationController {
                 v.view.showTipText("蟹蟹你！<3", delay: 2)
@@ -697,8 +693,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var pushMode: String? = Sa.objectForKey("pushMode") as? String
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let pushMode: String? = Sa.objectForKey("pushMode") as? String
         if pushMode != "1" {
             self.pushSwitchSetup(false)
         }
@@ -711,7 +707,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
 
 extension UISwitch {
     func switchSetup(bool: Bool, cacheName: String, isCache: Bool = true){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.thumbTintColor = UIColor.whiteColor()
             self.onTintColor = SeaColor

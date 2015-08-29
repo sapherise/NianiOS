@@ -32,39 +32,39 @@ class SADoubleCell: MKTableViewCell {
     }
     
     override func layoutSubviews() {
-        var id = data.stringAttributeForKey("id")
-        var user = data.stringAttributeForKey("user")
-        var uid = data.stringAttributeForKey("uid")
-        var bool = data.stringAttributeForKey("follow")
-        var img = data.stringAttributeForKey("image")
-        var title = SADecode(data.stringAttributeForKey("title"))
-        var des = SADecode(data.stringAttributeForKey("content"))
+        let id = data.stringAttributeForKey("id")
+        let user = data.stringAttributeForKey("user")
+        let uid = data.stringAttributeForKey("uid")
+        let bool = data.stringAttributeForKey("follow")
+        let img = data.stringAttributeForKey("image")
+        let title = SADecode(data.stringAttributeForKey("title"))
+        let des = SADecode(data.stringAttributeForKey("content"))
         self.labelName.text = type == 0 ? title : user
         self.labelContent.text = des == "" ? "暂无简介" : des
         viewLine.setHeightHalf()
         if type == 0 {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
-            if let tag = id.toInt() {
+            if let tag = Int(id) {
                 self.imageHead.tag = tag
             }
         } else {
             self.imageHead.setHead(uid)
-            if let tag = uid.toInt() {
+            if let tag = Int(uid) {
                 self.imageHead.tag = tag
             }
         }
         if bool == "0" {
             self.btnMain.layer.borderColor = SeaColor.CGColor
             self.btnMain.layer.borderWidth = 1
-            self.btnMain.setTitleColor(SeaColor, forState: UIControlState.allZeros)
+            self.btnMain.setTitleColor(SeaColor, forState: UIControlState())
             self.btnMain.backgroundColor = UIColor.whiteColor()
-            self.btnMain.setTitle(content[0], forState: UIControlState.allZeros)
+            self.btnMain.setTitle(content[0], forState: UIControlState())
         } else {
             self.btnMain.layer.borderColor = SeaColor.CGColor
             self.btnMain.layer.borderWidth = 1
-            self.btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState.allZeros)
+            self.btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
             self.btnMain.backgroundColor = SeaColor
-            self.btnMain.setTitle(content[1], forState: UIControlState.allZeros)
+            self.btnMain.setTitle(content[1], forState: UIControlState())
         }
     }
 }

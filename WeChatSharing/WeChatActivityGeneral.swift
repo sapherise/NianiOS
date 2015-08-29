@@ -16,7 +16,6 @@ class WeChatActivityGeneral: UIActivity {
     var isStep: Bool = false
     
     override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
-        var req:SendMessageToWXReq!
         if WXApi.isWXAppInstalled() && WXApi.isWXAppSupportApi() {
             for item in activityItems {
                 if item is UIImage {
@@ -48,13 +47,13 @@ class WeChatActivityGeneral: UIActivity {
     }
     
     override func performActivity() {
-        var req = SendMessageToWXReq()
+        let req = SendMessageToWXReq()
         req.bText = false
         req.message = WXMediaMessage()
         if isSessionScene {
-            req.scene = WXSceneSession.value
+            req.scene = WXSceneSession.rawValue
         } else {
-            req.scene = WXSceneTimeline.value
+            req.scene = WXSceneTimeline.rawValue
         }
         
         var imageNew = UIImage(named: "nian")!
@@ -74,20 +73,20 @@ class WeChatActivityGeneral: UIActivity {
         }
         
         if isStep {
-            var imageObject = WXImageObject()
+            let imageObject = WXImageObject()
             imageObject.imageData = UIImageJPEGRepresentation(imageNew, 1)
             req.message.mediaObject = imageObject
             WXApi.sendReq(req)
         } else {
             // 缩略图
-            var width = 240.0 as CGFloat
-            var height = width*(imageNew.size.height)/(imageNew.size.width)
+            let width = 240.0 as CGFloat
+            let height = width*(imageNew.size.height)/(imageNew.size.width)
             UIGraphicsBeginImageContext(CGSizeMake(width, height))
             imageNew.drawInRect(CGRectMake(0, 0, width, height))
             req.message.setThumbImage(UIGraphicsGetImageFromCurrentImageContext())
             UIGraphicsEndImageContext()
-            var webObject = WXWebpageObject()
-            webObject.webpageUrl = urlNew.absoluteString?.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            let webObject = WXWebpageObject()
+            webObject.webpageUrl = urlNew.absoluteString.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
             req.message.mediaObject = webObject
             req.message.title = textNew as String
             req.message.description = "「念」\n全宇宙最残酷的 App，\n每天更新才不会被停号。😱"

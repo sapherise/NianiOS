@@ -56,8 +56,8 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
-        var _tmpData = self.data?.objectAtIndex(indexPath.row) as! NSDictionary
+        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+        let _tmpData = self.data?.objectAtIndex(indexPath.row) as! NSDictionary
         
         if let _img = _tmpData.objectForKey("image") as? String {
             collectionCell.imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
@@ -69,7 +69,7 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var DreamVC = DreamViewController()
+        let DreamVC = DreamViewController()
         DreamVC.Id = (self.data?.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
         
         //

@@ -40,13 +40,12 @@ class ExploreNewHotCell: UITableViewCell {
 
     func _layoutSubviews() {
 //        super.layoutSubviews()
-        var id = self.data.stringAttributeForKey("id")
-        var title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
-        var img = self.data.stringAttributeForKey("img")
-        var tag = self.data.stringAttributeForKey("type")
-        var likes = self.data.stringAttributeForKey("likes")
-        var content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
-        var steps = self.data.stringAttributeForKey("steps")
+        let title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
+        let img = self.data.stringAttributeForKey("img")
+        let tag = self.data.stringAttributeForKey("type")
+        let likes = self.data.stringAttributeForKey("likes")
+        let content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
+        let steps = self.data.stringAttributeForKey("steps")
   
         switch tag {
         case "0":
@@ -63,15 +62,15 @@ class ExploreNewHotCell: UITableViewCell {
         
         self.labelTag.setRadius(4, isTop: false)
         
-        var titleHeight = title.stringHeightBoldWith(18, width: 240)
+        let titleHeight = title.stringHeightBoldWith(18, width: 240)
         self.labelTitle.text = SADecode(title)
         self.labelContent.text = content
         self.labelSupport.text = SAThousand(likes)  //点赞
         self.labelStep.text = SAThousand(steps)
         
-        var heightFit = content.stringHeightWith(12, width: 248)
-        var heightMax = "\n\n".stringHeightWith(12, width: 248)
-        var heightContent = heightFit > heightMax ? heightMax : heightFit
+        let heightFit = content.stringHeightWith(12, width: 248)
+        let heightMax = "\n\n".stringHeightWith(12, width: 248)
+        let heightContent = heightFit > heightMax ? heightMax : heightFit
         
         self.labelContent.setHeight(heightContent)
         self.labelTitle.setHeight(titleHeight)
@@ -96,17 +95,16 @@ class ExploreNewHotCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        var content = SADecode(SADecode(data.stringAttributeForKey("content")))
-        var tag = data.stringAttributeForKey("type")
-        var titleHeight = title.stringHeightBoldWith(18, width: 240)
+        let title = SADecode(SADecode(data.stringAttributeForKey("title")))
+        let content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        let titleHeight = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
             return 204.5 + titleHeight - 8
         }
         
-        var heightFit = content.stringHeightWith(12, width: 248)
-        var heightMax = "\n\n".stringHeightWith(12, width: 248)
-        var heightContent = heightFit > heightMax ? heightMax : heightFit
+        let heightFit = content.stringHeightWith(12, width: 248)
+        let heightMax = "\n\n".stringHeightWith(12, width: 248)
+        let heightContent = heightFit > heightMax ? heightMax : heightFit
         return heightContent + 204.5 + titleHeight
     }
 }

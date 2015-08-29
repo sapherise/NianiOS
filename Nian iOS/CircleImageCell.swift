@@ -34,22 +34,19 @@ class CircleImageCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var uid = self.data.stringAttributeForKey("uid")
-        var user = self.data.stringAttributeForKey("user")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
-        var content = self.data.stringAttributeForKey("content")
-        var cid = self.data.stringAttributeForKey("cid")
-        var type = (self.data.objectForKey("type") as! String).toInt()!
+        let uid = self.data.stringAttributeForKey("uid")
+        let user = self.data.stringAttributeForKey("user")
+        let lastdate = self.data.stringAttributeForKey("lastdate")
+        let content = self.data.stringAttributeForKey("content")
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         self.avatarView.setHead(uid)
-        var height = content.stringHeightWith(15,width:208)
-        self.avatarView!.tag = uid.toInt()!
+        let height = content.stringHeightWith(15,width:208)
+        self.avatarView!.tag = Int(uid)!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
         
         if uid == safeuid {
                 layoutImage(height, content: content, user: user, lastdate: lastdate, isMe: true)
@@ -62,10 +59,10 @@ class CircleImageCell: UITableViewCell {
         var arrContent = content.componentsSeparatedByString("_")
         if arrContent.count == 4 {
             if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                var width = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
-                var imageHeight = CGFloat(n)
+                let width = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
+                let imageHeight = CGFloat(n)
                 self.imageContent.frame = CGRectMake(0, 15, width, imageHeight)
-                var url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!a"
+                let url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!a"
                 if arrContent[1] == "loading" {
                     self.activity = UIActivityIndicatorView()
                     self.activity!.color = UIColor.whiteColor()
@@ -96,7 +93,7 @@ class CircleImageCell: UITableViewCell {
                 }
                 self.imageContent.setHeight(imageHeight)
                 self.imageContent.setWidth(width)
-                self.imageContent.SAMaskImage(isMe: isMe)
+                self.imageContent.SAMaskImage(isMe)
                 self.avatarView.setBottom(imageHeight + 35)
                 self.lastdate.setBottom(imageHeight + 40)
             }
@@ -104,13 +101,11 @@ class CircleImageCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var content = data.stringAttributeForKey("content")
-        var type = data.stringAttributeForKey("type")
-        var cid = data.stringAttributeForKey("cid")
+        let content = data.stringAttributeForKey("content")
         var arrContent = content.componentsSeparatedByString("_")
         if arrContent.count == 4 {
             if let n = NSNumberFormatter().numberFromString(arrContent[3]) {
-                var height = CGFloat(n)
+                let height = CGFloat(n)
                 return height + 40
             }
         }

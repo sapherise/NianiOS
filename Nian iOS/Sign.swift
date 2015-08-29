@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class SignViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet var inputName:UITextField!
     @IBOutlet var holder:UIView!
     @IBOutlet var errLabel:UILabel!
@@ -18,7 +18,7 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     
     func setupViews(){
         self.viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         self.inputName.textColor = UIColor.blackColor()
@@ -30,13 +30,13 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         self.holder.setX(globalWidth/2-140)
         self.errLabel.setX(globalWidth/2-100)
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "注册"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignMode")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignMode")
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton]
         
@@ -62,26 +62,26 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         
         if self.inputName.text == "" {
             self.SAerr("名字不能是空的...")
-        }else if SAstrlen(self.inputName.text)<4 {
+        }else if SAstrlen(self.inputName.text!)<4 {
             self.SAerr("名字有点短...")
-        }else if SAstrlen(self.inputName.text)>30 {
+        }else if SAstrlen(self.inputName.text!)>30 {
             self.SAerr("名字太长了...")
-        }else if !self.inputName.text.isValidName() {
+        }else if !self.inputName.text!.isValidName() {
             self.SAerr("名字里有奇怪的字符...")
         }else{
             var name = self.inputName.text
-            name = SAEncode(SAHtml(name))
+            name = SAEncode(SAHtml(name!))
             self.navigationItem.rightBarButtonItems = buttonArray()
-            Api.postCheckName(name) { string in
+            Api.postCheckName(name!) { string in
                 if string != nil {
-                    var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignMode")
+                    let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "toSignMode")
                     rightButton.image = UIImage(named:"newOK")
                     if string == "NO" {
                         self.SAerr("有人取这个名字了...")
                         self.navigationItem.rightBarButtonItems = [rightButton]
                     } else {
                         self.signInfo.name = name
-                        var modeVC = ModeViewController(nibName: "ModeViewController", bundle: nil)
+                        let modeVC = ModeViewController(nibName: "ModeViewController", bundle: nil)
                         modeVC.signInfo = self.signInfo
                         self.navigationItem.rightBarButtonItems = [rightButton]
                         self.navigationController?.pushViewController(modeVC, animated: true)
@@ -95,13 +95,13 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
         shakeAnimation(self.holder)
         if self.isAnimate == 0 {
             self.isAnimate = 1
-            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions(), animations: {
                 self.errLabel.text = message
-                self.errLabel.frame.offset(dx: 0, dy: -5)
+                self.errLabel.frame.offsetInPlace(dx: 0, dy: -5)
                 self.errLabel.alpha = 1
                 }, completion: { (complete: Bool) in
-                    UIView.animateWithDuration(0.1, delay:1.2, options: UIViewAnimationOptions.allZeros, animations: {
-                        self.errLabel.frame.offset(dx: 0, dy: +5)
+                    UIView.animateWithDuration(0.1, delay:1.2, options: UIViewAnimationOptions(), animations: {
+                        self.errLabel.frame.offsetInPlace(dx: 0, dy: +5)
                         self.errLabel.alpha = 0
                         }, completion: { (complete: Bool) in
                             self.isAnimate = 0
@@ -115,11 +115,11 @@ class SignViewController: UIViewController, UIGestureRecognizerDelegate, UITextF
     }
     
     func shakeAnimation(view:UIView){
-        var viewLayer:CALayer = view.layer
-        var position:CGPoint = viewLayer.position
-        var x:CGPoint = CGPointMake(position.x + 3 , position.y)
-        var y:CGPoint = CGPointMake(position.x - 3 , position.y)
-        var animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
+        let viewLayer:CALayer = view.layer
+        let position:CGPoint = viewLayer.position
+        let x:CGPoint = CGPointMake(position.x + 3 , position.y)
+        let y:CGPoint = CGPointMake(position.x - 3 , position.y)
+        let animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
         animation.fromValue = NSValue(CGPoint: x)
         animation.toValue = NSValue(CGPoint: y)
         animation.autoreverses = true

@@ -1310,8 +1310,9 @@
 		12FB4891196AE76E0026DD51 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Sa;
 				TargetAttributes = {
 					12FB4898196AE76E0026DD51 = {
@@ -1663,6 +1664,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: YIRONG ZENG (XPSX3WUES5)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1766,6 +1768,7 @@
 					"-framework",
 					"\"SystemConfiguration\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";
@@ -1815,6 +1818,7 @@
 					"-framework",
 					"\"SystemConfiguration\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";

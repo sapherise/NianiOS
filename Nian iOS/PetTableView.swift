@@ -11,14 +11,14 @@ import UIKit
 
 extension PetViewController: UITableViewDelegate, UITableViewDataSource {
     func load() {
-        var jsonCache: AnyObject? = Cookies.get("pets")
+        let jsonCache: AnyObject? = Cookies.get("pets")
         if jsonCache != nil {
             if let err = jsonCache!.objectForKey("error") as? NSNumber {
                 if err == 0 {
                     self.dataArray.removeAllObjects()
-                    var data = jsonCache!.objectForKey("data") as! NSDictionary
-                    var arr = data.objectForKey("pets") as! NSArray
-                    self.energy = data.stringAttributeForKey("energy").toInt()!
+                    let data = jsonCache!.objectForKey("data") as! NSDictionary
+                    let arr = data.objectForKey("pets") as! NSArray
+                    self.energy = Int(data.stringAttributeForKey("energy"))!
                     for item in arr {
                         self.dataArray.addObject(item)
                     }
@@ -36,9 +36,9 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
                 if let err = json!.objectForKey("error") as? NSNumber {
                     if err == 0 {
                         self.dataArray.removeAllObjects()
-                        var data = json!.objectForKey("data") as! NSDictionary
-                        var arr = data.objectForKey("pets") as! NSArray
-                        self.energy = data.stringAttributeForKey("energy").toInt()!
+                        let data = json!.objectForKey("data") as! NSDictionary
+                        let arr = data.objectForKey("pets") as! NSArray
+                        self.energy = Int(data.stringAttributeForKey("energy"))!
                         for item in arr {
                             self.dataArray.addObject(item)
                         }
@@ -70,12 +70,12 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if tableView == self.tableView {
-            var c = UITableViewCell()
+            let c = UITableViewCell()
             c.addSubview(tableViewPet)
             return c
         } else {
-            var c = tableViewPet.dequeueReusableCellWithIdentifier("PetCell", forIndexPath: indexPath) as! PetCell
-            var data = dataArray[indexPath.row] as? NSDictionary
+            let c = tableViewPet.dequeueReusableCellWithIdentifier("PetCell", forIndexPath: indexPath) as! PetCell
+            let data = dataArray[indexPath.row] as? NSDictionary
             c.info = data
             c._layoutSubviews()
             if indexPath.row == current {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, MaskDelegate{
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, MaskDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -40,19 +40,19 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func gameoverCheck() {
         Api.postGameover() { json in
             if json != nil {
-                var isgameover = json!.objectForKey("isgameover") as? String
-                var willLogout = json!.objectForKey("willlogout") as? String
+                let isgameover = json!.objectForKey("isgameover") as? String
+                let willLogout = json!.objectForKey("willlogout") as? String
                 // 账户验证不通过
                 if willLogout == "1" {
-                    delay(1, { () -> () in
+                    delay(1, closure: { () -> () in
                         self.SAlogout()
                     })
                 }else{
                     // 如果被封号
                     if isgameover != "0" {
-                        var data = json!.objectForKey("dream") as! NSDictionary
+                        let data = json!.objectForKey("dream") as! NSDictionary
                         self.gameoverId = data.stringAttributeForKey("id")
-                        var gameoverDays = data.stringAttributeForKey("days")
+                        let gameoverDays = data.stringAttributeForKey("days")
                         
                         self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
                         self.GameOverView.textTitle = "游戏结束"
@@ -64,9 +64,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         self.GameOverView.btnSub.tag = 2
                         self.GameOverView.btnMain.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
                         self.GameOverView.btnSub.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
-                        var gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
+                        let gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
                         gameoverHead.image = UIImage(named: "pet_ghost")
-                        var gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
+                        let gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
                         gameoverSpark.image = UIImage(named: "pet_ghost_spark")
                         self.GameOverView.viewHolder.addSubview(gameoverHead)
                         self.GameOverView.viewHolder.addSubview(gameoverSpark)
@@ -84,7 +84,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func onBtnGameOverClick(sender: UIButton) {
-        var tag = sender.tag
+        let tag = sender.tag
         self.gameoverMode = tag
         if tag == 1 {
             self.actionSheetGameOver = UIActionSheet(title: "勇敢的你\n确定继续玩日更模式吗？", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -104,7 +104,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
+        self.navigationController!.interactivePopGestureRecognizer!.enabled = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
@@ -168,24 +168,24 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func noticeDot() {
         if self.dot != nil {
-            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-            var safeshell = uidKey.objectForKey(kSecValueData) as! String
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            let safeshell = uidKey.objectForKey(kSecValueData) as! String
             
             if safeuid != "" {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let (resultSet, err) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
-                    var a = resultSet.count
-                    var b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", "http://nian.so/api/dot.php")
-                    if let number = b.toInt() {
+                    let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
+                    let a = resultSet.count
+                    let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
+                    if let number = Int(b) {
                         globalNoticeNumber = a + number
                         dispatch_async(dispatch_get_main_queue(), {
                             if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
                                 self.dot!.hidden = false
-                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
                                     self.dot!.frame = CGRectMake(globalWidth*0.7+4, 8, 20, 17)
                                     }, completion: { (complete: Bool) in
-                                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+                                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
                                             self.dot!.frame = CGRectMake(globalWidth*0.7+4, 10, 20, 15)
                                             }, completion: { (complete: Bool) in
                                                 self.dot!.text = "\(globalNoticeNumber)"
@@ -215,13 +215,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.view.addSubview(self.myTabbar!)
         
         //底部按钮
-        var count = 5
+        let count = 5
         for var index = 0; index < count; index++ {
-            var btnWidth = CGFloat(index) * globalWidth * 0.2
-            var button  = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            let btnWidth = CGFloat(index) * globalWidth * 0.2
+            let button  = UIButton(type: UIButtonType.Custom)
             button.frame = CGRectMake(btnWidth, 1, globalWidth * 0.2 ,49)
             button.tag = index+100
-            var image = self.imageArray[index]
+            let image = self.imageArray[index]
             let myImage = UIImage(named:"\(image)")
             let myImage2 = UIImage(named:"\(image)_s")
             
@@ -280,7 +280,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func gameoverButton(word:String) -> UIButton {
-        var button = UIButton(frame: CGRectMake(60, 0, 150, 36))
+        let button = UIButton(frame: CGRectMake(60, 0, 150, 36))
         button.backgroundColor = UIColor.blackColor()
         button.setTitle(word, forState: UIControlState.Normal)
         button.titleLabel!.font = UIFont.systemFontOfSize(14)
@@ -292,15 +292,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     //每个按钮跳转到哪个页面
     func initViewControllers() {
-        var storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
-        var NianStoryBoard: UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-        var NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! UIViewController
-        var vc1 = NianViewController
-        var vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") as! UIViewController
-        var vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-        var vc4 = MeViewController()
+        let storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
+        let NianStoryBoard: UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
+        let NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") 
+        let vc1 = NianViewController
+        let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
+        let vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let vc4 = MeViewController()
         //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
-        var vc5 = RedditViewController()
+        let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = 0
@@ -308,9 +308,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     //底部的按钮按下去
     func tabBarButtonClicked(sender:UIButton){
-        var index = sender.tag
+        let index = sender.tag
         for var i = 0; i < 5; i++ {
-            var button = self.view.viewWithTag(i+100) as? UIButton
+            let button = self.view.viewWithTag(i+100) as? UIButton
             if button != nil {
                 if index != 102 {
                     if button!.tag == index{
@@ -350,13 +350,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func addDreamButton(){
-        var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+        let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
     func addStep(){
         if globalNumberDream == 0 {
-            var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+            let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
             self.navigationController!.pushViewController(adddreamVC, animated: true)
         } else {
             self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
@@ -366,11 +366,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.addView.backgroundColor = UIColor.clearColor()
             self.addView.alpha = 0
             self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
-            var Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
+            let Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
             Tap.delegate = self
             self.addView.addGestureRecognizer(Tap)
             
-            var nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
+            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
             self.addStepView = nib.objectAtIndex(0) as! AddStep
             self.addStepView.delegate = self
             self.addStepView.setX(globalWidth/2-140)
@@ -391,7 +391,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if NSStringFromClass(touch.view.classForCoder) == "UITableViewCellContentView"  {
+        if NSStringFromClass(touch.view!.classForCoder) == "UITableViewCellContentView"  {
             return false
         }
         return true
@@ -401,7 +401,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.viewClose.removeFromSuperview()
         self.addStepView.textView.resignFirstResponder()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            var newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
+            let newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
             self.addView.transform = newTransform
             self.addView.alpha = 0
             }) { (Bool) -> Void in
@@ -441,11 +441,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func enter() {
         if isLoadFinish == 1 {
             go {
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 client.setOnState(self.on_state)
-                var r = client.enter(safeuid, shell: safeshell)
+                client.enter(safeuid, shell: safeshell)
             }
         }
     }
@@ -460,27 +460,24 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func on_poll(obj: AnyObject?) {
         go {
-            var safeuid = SAUid()
+            let safeuid = SAUid()
             if obj != nil {
-                var msg: AnyObject? = obj!.objectForKey("msg")
+                let msg: AnyObject? = obj!.objectForKey("msg")
                 if msg != nil {
-                    var json = msg!.objectForKey("msg") as? NSArray
+                    let json = msg!.objectForKey("msg") as? NSArray
                     if json != nil {
-                        var count = json!.count - 1
+                        let count = json!.count - 1
                         if count >= 0 {
                             for i: Int in 0...count {
-                                var data: NSDictionary = json![i] as! NSDictionary
-                                var id = data.stringAttributeForKey("msgid")
-                                var uid = data.stringAttributeForKey("from")
-                                var name = data.stringAttributeForKey("fromname")
-                                var cid = data.stringAttributeForKey("cid")
-                                var cname = data.stringAttributeForKey("cname")
+                                let data: NSDictionary = json![i] as! NSDictionary
+                                let id = data.stringAttributeForKey("msgid")
+                                let uid = data.stringAttributeForKey("from")
+                                let name = data.stringAttributeForKey("fromname")
                                 var content = data.stringAttributeForKey("msg")
-                                var type = data.stringAttributeForKey("msgtype")
-                                var time = data.stringAttributeForKey("time")
-                                var circle = data.stringAttributeForKey("to")
+                                let type = data.stringAttributeForKey("msgtype")
+                                let time = data.stringAttributeForKey("time")
                                 var title = data.stringAttributeForKey("title")
-                                var totype = data.stringAttributeForKey("totype")
+                                let totype = data.stringAttributeForKey("totype")
                                 content = SADecode(SADecode(content))
                                 title = SADecode(SADecode(title))
                                 var isread = 0
@@ -492,7 +489,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                     if uid == "\(globalCurrentLetter)" || uid == safeuid {
                                         isread = 1
                                     }
-                                    SQLLetterContent(id, uid, name, uid, content, type, time, isread) {
+                                    SQLLetterContent(id, uid: uid, name: name, circle: uid, content: content, type: type, time: time, isread: isread) {
                                         NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
                                         self.noticeDot()
                                     }
@@ -510,36 +507,29 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if json != nil {
                 // 成功
                 self.isLoadFinish++
-                var a: Int = 0
-                var arr = json!.objectForKey("items") as! NSArray
-                var lastid = json!.objectForKey("lastid") as! String
+                let arr = json!.objectForKey("items") as! NSArray
+                let lastid = json!.objectForKey("lastid") as! String
                 for i : AnyObject  in arr {
-                    var data = i as! NSDictionary
-                    var id = data.stringAttributeForKey("id")
-                    var uid = data.stringAttributeForKey("uid")
-                    var name = data.stringAttributeForKey("name")
-                    var circle = uid
-                    var content = data.stringAttributeForKey("content")
-                    var type = data.stringAttributeForKey("type")
-                    var time = data.stringAttributeForKey("lastdate")
+                    let data = i as! NSDictionary
+                    let id = data.stringAttributeForKey("id")
+                    let uid = data.stringAttributeForKey("uid")
+                    let name = data.stringAttributeForKey("name")
+                    let circle = uid
+                    let content = data.stringAttributeForKey("content")
+                    let type = data.stringAttributeForKey("type")
+                    let time = data.stringAttributeForKey("lastdate")
                     var isread = 0
                     if circle == "\(globalCurrentCircle)" {
                         isread = 1
                     }
                     
-                    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                    var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                    var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
                     
-                    let (resultSet2, err2) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
+                    let (resultSet2, _) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
-                        
-                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-                        
-                        SQLLetterContent(id, uid, name, circle, content, type, time, isread) {
-                            var data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
+                        SQLLetterContent(id, uid: uid, name: name, circle: circle, content: content, type: type, time: time, isread: isread) {
+                            let data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
                             NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
                         }
                     }

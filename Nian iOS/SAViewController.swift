@@ -14,7 +14,7 @@ class SAViewController: UIViewController {
         super.viewDidLoad()
         
         // 添加导航栏
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         navView.userInteractionEnabled = true
         self.view.addSubview(navView)
@@ -25,7 +25,7 @@ class SAViewController: UIViewController {
     }
     
     func _setTitle(content: String) {
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = content
         titleLabel.sizeToFit()
@@ -33,13 +33,13 @@ class SAViewController: UIViewController {
     }
     
     func setBarButton(content: String, actionGesture: Selector) {
-        var rightLabel = UILabel(frame: CGRectMake(globalWidth - 60, 20, 60, 44))
+        let rightLabel = UILabel(frame: CGRectMake(globalWidth - 60, 20, 60, 44))
         rightLabel.textColor = UIColor.whiteColor()
         rightLabel.text = content
         rightLabel.font = UIFont.systemFontOfSize(14)
         rightLabel.textAlignment = NSTextAlignment.Right
         rightLabel.userInteractionEnabled = true
-        var tap = UITapGestureRecognizer(target: self, action: actionGesture)
+        let tap = UITapGestureRecognizer(target: self, action: actionGesture)
         rightLabel.addGestureRecognizer(tap)
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel)]
     }

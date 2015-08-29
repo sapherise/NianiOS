@@ -48,7 +48,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        var nib = UINib(nibName:"AddStepCell", bundle: nil)
+        let nib = UINib(nibName:"AddStepCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "AddStepCell")
         self.viewTop.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewTopClick"))
         self.textView.delegate = self
@@ -61,18 +61,18 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         
         Api.getDreamNewest() { json in
             if json != nil {
-                var arr = json!.objectForKey("items") as! NSArray
+                let arr = json!.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 
                 for data : AnyObject in arr{
                     self.dataArray.addObject(data)
                 }
                 self.tableView!.reloadData()
-                var data = self.dataArray[0] as! NSDictionary
-                var id = data.objectForKey("id") as! String
-                var title = data.objectForKey("title") as! String
-                var image = data.objectForKey("img") as! String
-                var userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                let data = self.dataArray[0] as! NSDictionary
+                let id = data.objectForKey("id") as! String
+                let title = data.objectForKey("title") as! String
+                let image = data.objectForKey("img") as! String
+                let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                 self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
                 self.dreamID = id
                 self.labelDream.text = title
@@ -84,8 +84,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell
-        var c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as! AddStepCell
-        var index = indexPath.row
+        let c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as! AddStepCell
+        let index = indexPath.row
         c.data = self.dataArray[index] as? NSDictionary
         cell = c
         return cell
@@ -100,12 +100,12 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var index = indexPath.row
-        var data = self.dataArray[index] as? NSDictionary
-        var id = data!.objectForKey("id") as! String
-        var title = data!.objectForKey("title") as! String
-        var image = data!.objectForKey("img") as! String
-        var userImageURL = "http://img.nian.so/dream/\(image)!dream"
+        let index = indexPath.row
+        let data = self.dataArray[index] as? NSDictionary
+        let id = data!.objectForKey("id") as! String
+        let title = data!.objectForKey("title") as! String
+        let image = data!.objectForKey("img") as! String
+        let userImageURL = "http://img.nian.so/dream/\(image)!dream"
         self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
         self.labelDream.text = title
         self.tableView.hidden = true
@@ -138,9 +138,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     
     func textViewDidChange(textView: UITextView) {
         if (textView.text != "" && textView.text != "进展正文") || self.uploadUrl != "" {
-            self.btnOK.setTitle("写好了", forState: UIControlState.allZeros)
+            self.btnOK.setTitle("写好了", forState: UIControlState())
         }else{
-            self.btnOK.setTitle("签到", forState: UIControlState.allZeros)
+            self.btnOK.setTitle("签到", forState: UIControlState())
         }
     }
     
@@ -168,7 +168,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         if self.textView.text == "进展正文" {
             self.textView.text = ""
         }
-        var content = self.textView.text
+        let content = self.textView.text
         self.btnOK.setTitle("", forState: UIControlState.Normal)
         self.btnOK.enabled = false
         self.activityOK.hidden = false
@@ -177,8 +177,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         Api.postAddStep_AFN(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 self.textView.resignFirstResponder()
-                var coin = json!.objectForKey("coin") as! String
-                var totalCoin = json!.objectForKey("totalCoin") as! String
+                let coin = json!.objectForKey("coin") as! String
+                let totalCoin = json!.objectForKey("totalCoin") as! String
                 self.isfirst = json!.objectForKey("isfirst") as! String
                 globalWillNianReload = 1
                 
@@ -186,7 +186,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                 let modeCard = SACookie("modeCard")
                 if modeCard == "0" {
                 } else {
-                    var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                    let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
                     card.content = self.textView.text
                     card.widthImage = self.uploadWidth
                     card.heightImage = self.uploadHeight
@@ -201,7 +201,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     self.delegate?.onViewCloseClick()
 
                       // 如果念币小于 3
-                    if totalCoin.toInt() < 3 {
+                    if Int(totalCoin) < 3 {
                         self.niCoinLessAlert = NIAlert()
                         self.niCoinLessAlert?.delegate = self
                         self.niCoinLessAlert?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
@@ -209,7 +209,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                         self.niCoinLessAlert?.showWithAnimation(.flip)
                     } else {
                         // 如果念币多于 3， 那么就出现抽宠物
-                        var v = SAEgg()
+                        let v = SAEgg()
                         v.delegateShare = self
                         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
@@ -220,9 +220,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     self.activityOK.stopAnimating()
                     self.activityOK.hidden = true
                     self.btnOK.setTitle("发送好了", forState: UIControlState.Normal)
-                    delay(0.5, { () -> () in
+                    delay(0.5, closure: { () -> () in
                         self.delegate?.onViewCloseClick()
-                        var DreamVC = DreamViewController()
+                        let DreamVC = DreamViewController()
                         DreamVC.Id = self.dreamID
                         self.findRootViewController()?.navigationController?.pushViewController(DreamVC, animated: true)
                     })
@@ -245,7 +245,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var VC = findRootViewController()! as UIViewController
+        let VC = findRootViewController()! as UIViewController
         if buttonIndex == 0 {
             self.imagePicker = UIImagePickerController()
             self.imagePicker.delegate = self
@@ -276,30 +276,30 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.btnUpload.hidden = true
         self.activity.hidden = false
         self.activity.startAnimating()
-        var uy = UpYun()
+        let uy = UpYun()
         uy.successBlocker = ({(uploadData:AnyObject!) in
             self.activity.hidden = true
             self.activity.stopAnimating()
             self.btnUpload.hidden = false
             self.imageUploaded.hidden = false
-            self.imageUploaded.image = resizedImage(img, 150)
+            self.imageUploaded.image = resizedImage(img, newWidth: 150)
             self.imageUploaded.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageUploadedClick:"))
             self.imageUploaded.clipsToBounds = true
             self.textView.setWidth(208)
             self.uploadUrl = uploadData.objectForKey("url") as! String
-            var width: AnyObject? = uploadData.objectForKey("image-width")
+            let width: AnyObject? = uploadData.objectForKey("image-width")
             self.uploadWidth = "\(width!)"
-            var height: AnyObject? = uploadData.objectForKey("image-height")
+            let height: AnyObject? = uploadData.objectForKey("image-height")
             self.uploadHeight = "\(height!)"
-            self.uploadUrl = SAReplace(self.uploadUrl, "/step/", "") as String
-            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img, 0)
+            self.uploadUrl = SAReplace(self.uploadUrl, before: "/step/", after: "") as String
+            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img: img, width: 0)
         })
-        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png") as String)
+        uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("step", png: "png") as String)
     }
     
     func onImageUploadedClick(sender:UIGestureRecognizer) {
         if let v = sender.view as? UIImageView {
-            var yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
+            let yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
             var w = CGFloat((self.uploadWidth as NSString).floatValue)
             var h = CGFloat((self.uploadHeight as NSString).floatValue)
             if w * h > 0 {
@@ -311,7 +311,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     h = 50
                 }
             }
-            var rect = CGRectMake(-yPoint.x, -yPoint.y, w, h)
+            let rect = CGRectMake(-yPoint.x, -yPoint.y, w, h)
             self.textView.resignFirstResponder()
             v.showImage("http://img.nian.so/step/\(self.uploadUrl)!large", rect: rect)
         }
@@ -326,9 +326,9 @@ class AddStepCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            var title:String = self.data!.objectForKey("title") as! String
-            var image:String = self.data!.objectForKey("img") as! String
-            var userImageURL = "http://img.nian.so/dream/\(image)!dream"
+            let title:String = self.data!.objectForKey("title") as! String
+            let image:String = self.data!.objectForKey("img") as! String
+            let userImageURL = "http://img.nian.so/dream/\(image)!dream"
             self.labelTitle.text = title
             self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
         }
@@ -367,19 +367,17 @@ extension NIAlert {
                                                             }, completion: { (Bool) -> Void in
                                                                 self.imgView?.image = nil
                                                                 if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-                                                                    var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
-                                                                    
-                                                                    if globaliOS >= 8.0 {
+                                                                    let skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+                                                                    if #available(iOS 8.0, *) {
                                                                         skView.allowsTransparency = true
                                                                     }
-                                                                    
                                                                     self._containerView!.addSubview(skView)
                                                                     scene.scaleMode = SKSceneScaleMode.AspectFit
                                                                     skView.presentScene(scene)
                                                                     scene.setupViews()
                                                                     self._containerView?.sendSubviewToBack(skView)
                                                                 }
-                                                                delay(0.1, {
+                                                                delay(0.1, closure: {
                                                                     self.imgView!.setScale(1.35)
                                                                     self.imgView?.alpha = 0
                                                                     self.imgView?.setImage("http://img.nian.so/pets/\(url)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
@@ -390,7 +388,7 @@ extension NIAlert {
                                                                             UIView.animateWithDuration(0.2, animations: { () -> Void in
                                                                                 self.imgView!.setScale(1.2)
                                                                             })
-                                                                            UIView.animateWithDuration(1, delay: 1, options: UIViewAnimationOptions.allZeros, animations: {
+                                                                            UIView.animateWithDuration(1, delay: 1, options: UIViewAnimationOptions(), animations: {
                                                                                 self.imgView!.setScale(1)
                                                                                 }, completion: { (Bool) -> Void in
                                                                             })

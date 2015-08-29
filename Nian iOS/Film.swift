@@ -69,7 +69,7 @@ class FilmCell: UIView {
         self.imageView.contentMode = UIViewContentMode.Center
         self.imageView.center = self.btnBuy.center
         self.addSubview(self.imageView)
-        delay(1.5, { () -> () in
+        delay(1.5, closure: { () -> () in
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 if self.superview != nil {
                     self.superview!.alpha = 0

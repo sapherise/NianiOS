@@ -37,16 +37,16 @@ class MeCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var uid = self.data.stringAttributeForKey("cuid")
-        var user = self.data.stringAttributeForKey("cname")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
-        var dreamtitle = self.data.stringAttributeForKey("dreamtitle")
+        let uid = self.data.stringAttributeForKey("cuid")
+        let user = self.data.stringAttributeForKey("cname")
+        let lastdate = self.data.stringAttributeForKey("lastdate")
+        let dreamtitle = self.data.stringAttributeForKey("dreamtitle")
         var content = self.data.stringAttributeForKey("content")
-        var type = self.data.stringAttributeForKey("type")
-        var isread = self.data.stringAttributeForKey("isread")
-        var img = self.data.stringAttributeForKey("img")
-        var dream = self.data.stringAttributeForKey("dream")
-        var isConfirm = self.data.stringAttributeForKey("isConfirm")
+        let type = self.data.stringAttributeForKey("type")
+        let isread = self.data.stringAttributeForKey("isread")
+        let img = self.data.stringAttributeForKey("img")
+        let dream = self.data.stringAttributeForKey("dream")
+        let isConfirm = self.data.stringAttributeForKey("isConfirm")
         var word:String = ""
         
         switch type {
@@ -78,8 +78,8 @@ class MeCell: UITableViewCell {
             self.nickLabel!.textColor = SeaColor
         }
         self.avatarView?.setHead(uid)
-        self.avatarView!.tag = uid.toInt()!
-        var height = content.stringHeightWith(16,width:globalWidth-30)
+        self.avatarView!.tag = Int(uid)!
+        let height = content.stringHeightWith(16,width:globalWidth-30)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
@@ -87,11 +87,11 @@ class MeCell: UITableViewCell {
             self.labelConfirm.setY(self.contentLabel!.bottom()+20)
             self.imageDream.hidden = false
             self.labelConfirm.hidden = false
-            self.imageDream.tag = dream.toInt()!
+            self.imageDream.tag = Int(dream)!
             self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             self.lastdate!.hidden = true
             self.viewLine.setY(self.labelConfirm!.bottom()+25)
-            var tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
+            let tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
             if isConfirm == "0" {
                 self.labelConfirm.text = "接受"
                 self.labelConfirm.backgroundColor = SeaColor
@@ -111,16 +111,13 @@ class MeCell: UITableViewCell {
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {
-        var view = sender.view! as! UILabel
+        let view = sender.view! as! UILabel
         view.text = ""
-        var id = self.data.stringAttributeForKey("id") as String
+        let id = self.data.stringAttributeForKey("id") as String
         Api.getCircleJoinConfirmOK(id) { json in
             if json != nil {
-                var success = json!.objectForKey("success") as! String
-                var reason = json!.objectForKey("reason") as! String
-                var circle = json!.objectForKey("circle") as! String
-                var cid = json!.objectForKey("cid") as! String
-                var status = json!.objectForKey("status") as! String
+                let success = json!.objectForKey("success") as! String
+                let reason = json!.objectForKey("reason") as! String
                 if success == "1" {
                     view.text = "已接受"
                     view.backgroundColor = IconColor
@@ -143,13 +140,13 @@ class MeCell: UITableViewCell {
     
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var dreamtitle = data.stringAttributeForKey("dreamtitle")
+        let dreamtitle = data.stringAttributeForKey("dreamtitle")
         var content = data.stringAttributeForKey("content")
-        var type = data.stringAttributeForKey("type")
+        let type = data.stringAttributeForKey("type")
         if type == "8" {
             content = dreamtitle
         }
-        var height = content.stringHeightWith(16,width:globalWidth-30)
+        let height = content.stringHeightWith(16,width:globalWidth-30)
         if type == "9" {
             return 159 + height
         }else{

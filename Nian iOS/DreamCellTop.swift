@@ -12,7 +12,7 @@ protocol topDelegate {
     func editMyDream()
 }
 
-class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
+class DreamCellTop: UITableViewCell {
 
     @IBOutlet var nickLabel:UILabel!
     @IBOutlet var dreamhead:UIImageView!
@@ -94,19 +94,19 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     }
     
     func pan(pan:UIPanGestureRecognizer){
-        var point = pan.locationInView(self.View)
+        let point = pan.locationInView(self.View)
         if pan.state == UIGestureRecognizerState.Began {
             panStartPoint = point
         }
         if pan.state == UIGestureRecognizerState.Changed {
-            var distanceX = pan.translationInView(self.View!).x
+            let distanceX = pan.translationInView(self.View!).x
             self.View!.layer.removeAllAnimations()
             if self.toggle == 0 {
-                var ratio:CGFloat = (distanceX > 0) ? 0.5 : 1
+                let ratio:CGFloat = (distanceX > 0) ? 0.5 : 1
                 self.viewLeft.frame.origin.x = distanceX * ratio + globalWidth/2 - 160
                 self.viewRight.frame.origin.x = distanceX * ratio + globalWidth + globalWidth/2 - 160
             }else{
-                var ratio:CGFloat = (distanceX > 0) ? 1 : 0.5
+                let ratio:CGFloat = (distanceX > 0) ? 1 : 0.5
                 self.viewLeft.frame.origin.x = distanceX * ratio - globalWidth + globalWidth/2 - 160
                 self.viewRight.frame.origin.x = distanceX * ratio + globalWidth/2 - 160
             }
@@ -145,31 +145,30 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
         if data != nil {
             var title = SADecode(SADecode(data!.stringAttributeForKey("title")))
             var content = SADecode(SADecode(data!.stringAttributeForKey("content")))
-            var user = data!.stringAttributeForKey("user")
-            var img = data!.stringAttributeForKey("image")
-            var step = data!.stringAttributeForKey("step")
-            var likeDream = data!.stringAttributeForKey("like")
-            var likeStep = data!.stringAttributeForKey("like_step")
-            var like = likeDream.toInt()! + likeStep.toInt()!
-            var thePrivate = data!.stringAttributeForKey("private")
-            var percent = data!.stringAttributeForKey("percent")
-            var isFollow = data!.stringAttributeForKey("follow")
-            var uid = data!.stringAttributeForKey("uid")
+            let user = data!.stringAttributeForKey("user")
+            let img = data!.stringAttributeForKey("image")
+            let step = data!.stringAttributeForKey("step")
+            let likeDream = data!.stringAttributeForKey("like")
+            let likeStep = data!.stringAttributeForKey("like_step")
+            let like = Int(likeDream)! + Int(likeStep)!
+            let thePrivate = data!.stringAttributeForKey("private")
+            let percent = data!.stringAttributeForKey("percent")
+            let uid = data!.stringAttributeForKey("uid")
             dreamhead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
             var h: CGFloat = title.stringHeightBoldWith(18, width: 240)
             if thePrivate == "1" {
                 title = "\(title)（私密）"
-                var textTitle = NSMutableAttributedString(string: title)
-                var l = textTitle.length
+                let textTitle = NSMutableAttributedString(string: title)
+                let l = textTitle.length
                 textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, l-4))
                 textTitle.addAttribute(NSForegroundColorAttributeName, value: SeaColor, range: NSMakeRange(l-4, 4))
                 nickLabel.attributedText = textTitle
                 h = title.stringHeightBoldWith(18, width: 240)
             } else if percent == "1" {
                 title = "\(title)（完成）"
-                var textTitle = NSMutableAttributedString(string: title)
-                var l = textTitle.length
+                let textTitle = NSMutableAttributedString(string: title)
+                let l = textTitle.length
                 textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, l-4))
                 textTitle.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(l-4, 4))
                 nickLabel.attributedText = textTitle
@@ -181,22 +180,22 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             if content == "" {
                 content = "暂无简介"
             }
-            var bottom = nickLabel.bottom()
+            let bottom = nickLabel.bottom()
             viewHolder.setY(bottom + 8)
-            var heightContent = content.stringHeightWith(12, width: 200)
+            let heightContent = content.stringHeightWith(12, width: 200)
             labelDes.text = content
             labelDes.setHeight(heightContent)
             labelDes.setY(110 - heightContent / 2)
             viewRight.setY(52)
             viewBG.setY(52)
-            var bottomHolder = viewHolder.bottom() + 44
+            let bottomHolder = viewHolder.bottom() + 44
             btnMain.setY(bottomHolder + 16)
-            var bottomBtn = btnMain.bottom()
+            let bottomBtn = btnMain.bottom()
             dotLeft.setY(bottomBtn + 16)
             dotRight.setY(bottomBtn + 16)
             viewBG.setHeight(h + 252)
             viewLeft.setHeight(h + 252)
-            var bottomDot = dotLeft.bottom()
+            let bottomDot = dotLeft.bottom()
             viewLineTop.setY(bottomDot + 15)
             viewRight.setHeight(h + 252)
             
@@ -208,7 +207,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             tagArray = data!.objectForKey("tags") as! Array
             
             scrollView.contentSize =  CGSizeMake(8, 0)
-            var views: NSArray = scrollView.subviews
+            let views: NSArray = scrollView.subviews
             for view: AnyObject in views {
                 if view is NILabel {
                     (view as! UIView).removeFromSuperview()
@@ -216,7 +215,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             }
             
             if tagArray.count == 0 {
-                var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+                let label = NILabel(frame: CGRectMake(0, 0, 0, 0))
                 label.userInteractionEnabled = true
                 if SAUid() == uid {
                     label.text = "添加标签"
@@ -235,7 +234,7 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
             } else {
                 scrollView.hidden = false
                 for var i = 0; i < tagArray.count; i++ {
-                    var label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+                    let label = NILabel(frame: CGRectMake(0, 0, 0, 0))
                     label.userInteractionEnabled = true
                     label.text = SADecode(SADecode(tagArray[i] as String))
                     self.labelWidthWithItsContent(label, content: SADecode(tagArray[i]))
@@ -265,21 +264,21 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     func toUser() {
         if data != nil {
-            var vc = PlayerViewController()
+            let vc = PlayerViewController()
             vc.Id = data!.stringAttributeForKey("uid")
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     func onImage() {
-        var img = data!.stringAttributeForKey("image")
-        var point = self.dreamhead.getPoint()
-        var rect = CGRectMake(-point.x, -point.y, 60, 60)
+        let img = data!.stringAttributeForKey("image")
+        let point = self.dreamhead.getPoint()
+        let rect = CGRectMake(-point.x, -point.y, 60, 60)
         dreamhead.showImage("http://img.nian.so/dream/\(img)!large", rect: rect)
     }
     
     func onLike() {
-        var vc = LikeViewController()
+        let vc = LikeViewController()
         vc.Id = data!.stringAttributeForKey("id")
         vc.urlIdentify = 3
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
@@ -287,8 +286,8 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     func toSearch(sender: UIGestureRecognizer) {
         let label = sender.view
-        var storyboard = UIStoryboard(name: "Explore", bundle: nil)
-        var vc = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
+        let storyboard = UIStoryboard(name: "Explore", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
         vc.preSetSearch = SADecode(SADecode(tagArray[label!.tag - 12000]))
         vc.shouldPerformSearch = true
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
@@ -296,8 +295,8 @@ class DreamCellTop: UITableViewCell, UIGestureRecognizerDelegate{
     
     // 自定义 label
     func labelWidthWithItsContent(label: NILabel, content: NSString) {
-        var dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
-        var labelSize = CGSizeMake(ceil(content.sizeWithAttributes(dict).width), ceil(content.sizeWithAttributes(dict).height))
+        let dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
+        let labelSize = CGSizeMake(ceil(content.sizeWithAttributes(dict).width), ceil(content.sizeWithAttributes(dict).height))
         label.setTag()
         label.frame = CGRectMake(0, 0, labelSize.width + 16, 30)
     }

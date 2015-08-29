@@ -24,13 +24,13 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
             self.loadLeft()
         }
         tableViewLeft.addFooterWithCallback {
-            self.loadLeft(clear: false)
+            self.loadLeft(false)
         }
         tableViewRight.addHeaderWithCallback {
             self.loadRight()
         }
         tableViewRight.addFooterWithCallback {
-            self.loadRight(clear: false)
+            self.loadRight(false)
         }
     }
     
@@ -40,8 +40,8 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         }
         Api.getBBS("0", page: pageLeft) { json in
             if json != nil {
-                var data = json!.objectForKey("data") as! NSDictionary
-                var bbs = data.objectForKey("bbs") as! NSArray
+                let data = json!.objectForKey("data") as! NSDictionary
+                let bbs = data.objectForKey("bbs") as! NSArray
                 if clear {
                     self.dataArrayLeft.removeAllObjects()
                 }
@@ -62,8 +62,8 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         }
         Api.getBBS("0", page: pageRight) { json in
             if json != nil {
-                var data = json!.objectForKey("data") as! NSDictionary
-                var bbs = data.objectForKey("bbs") as! NSArray
+                let data = json!.objectForKey("data") as! NSDictionary
+                let bbs = data.objectForKey("bbs") as! NSArray
                 if clear {
                     self.dataArrayRight.removeAllObjects()
                 }
@@ -79,14 +79,14 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var dataArray = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
-        var data = dataArray[indexPath.row] as! NSDictionary
+        let dataArray = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
+        let data = dataArray[indexPath.row] as! NSDictionary
         let title = data.stringAttributeForKey("title").decode()
         let content = data.stringAttributeForKey("content").decode()
         var hTitle = title.stringHeightWith(16, width: globalWidth - 80)
         var hContent = content.stringHeightWith(12, width: globalWidth - 80)
-        var hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
-        var hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
+        let hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
+        let hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
         hTitle = min(hTitle, hTitleMax)
         hContent = min(hContent, hContentMax)
         return hTitle + hContent + 99
@@ -100,8 +100,8 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var c = tableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell
-        var i = indexPath.row
+        let c = tableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell
+        let i = indexPath.row
         if tableView == tableViewLeft {
             c.data = dataArrayLeft[i] as! NSDictionary
         } else {
@@ -114,13 +114,13 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
     
     
     func updateData(index: Int, key: String, value: String) {
-        var d = current == 0 ? dataArrayLeft : dataArrayRight
-        var t = current == 0 ? tableViewLeft : tableViewRight
-        SAUpdate(d, index, key, value, t)
+        let d = current == 0 ? dataArrayLeft : dataArrayRight
+        let t = current == 0 ? tableViewLeft : tableViewRight
+        SAUpdate(d, index: index, key: key, value: value, tableView: t)
     }
     
     func updateTable() {
-        var t = current == 0 ? tableViewLeft : tableViewRight
+        let t = current == 0 ? tableViewLeft : tableViewRight
         t.reloadData()
     }
 }

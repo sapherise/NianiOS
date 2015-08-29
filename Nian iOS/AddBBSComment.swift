@@ -15,7 +15,7 @@ protocol AddBBSCommentDelegate {   //😍
     func commentFinish()
 }
 
-class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate {
+class AddBBSCommentViewController: UIViewController {
     
     @IBOutlet var TextView:UITextView!
     var toggle:Int = 0
@@ -32,11 +32,11 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
         
         self.view.backgroundColor = BGColor
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addReply")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addReply")
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "回应话题"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -67,9 +67,9 @@ class AddBBSCommentViewController: UIViewController, UIGestureRecognizerDelegate
     
     func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
-        var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
-        var keyboardHeight = keyboardSize.height
-        var textHeight = globalHeight-keyboardHeight-20
+        let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
+        let keyboardHeight = keyboardSize.height
+        let textHeight = globalHeight-keyboardHeight-20
         if textHeight > 0 {
             self.TextView.setHeight(textHeight)
         }
