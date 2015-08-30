@@ -46,9 +46,9 @@ public struct SwiftData {
     
     - SQLite errors (0 - 101)
     
-    - parameter sqlStr:  The non-query string of SQL to be executed (INSERT, UPDATE, DELETE, etc.)
+    :param: sqlStr  The non-query string of SQL to be executed (INSERT, UPDATE, DELETE, etc.)
     
-    - returns:       An Int with the error code, or nil if there was no error
+    :returns:       An Int with the error code, or nil if there was no error
     */
     public static func executeChange(sqlStr: String) -> Int? {
         
@@ -83,10 +83,10 @@ public struct SwiftData {
     - SQLite errors (0 - 101)
     - binding errors (201 - 203)
     
-    - parameter sqlStr:    The non-query string of SQL to be executed (INSERT, UPDATE, DELETE, etc.)
-    - parameter withArgs:  An array of objects to bind to the "?" and "i?" characters in the sqlStr
+    :param: sqlStr    The non-query string of SQL to be executed (INSERT, UPDATE, DELETE, etc.)
+    :param: withArgs  An array of objects to bind to the "?" and "i?" characters in the sqlStr
     
-    - returns:         An Int with the error code, or nil if there was no error
+    :returns:         An Int with the error code, or nil if there was no error
     */
     public static func executeChange(sqlStr: String, withArgs: [AnyObject]) -> Int? {
         
@@ -110,9 +110,9 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - parameter sqlArr:  An array of non-query strings of SQL to be executed (INSERT, UPDATE, DELETE, etc.)
+    :param: sqlArr  An array of non-query strings of SQL to be executed (INSERT, UPDATE, DELETE, etc.)
     
-    - returns:       An Int with the error code, or nil if there was no error
+    :returns:       An Int with the error code, or nil if there was no error
     */
     public static func executeMultipleChanges(sqlArr: [String]) -> Int? {
         
@@ -153,9 +153,9 @@ public struct SwiftData {
     
     - SQLite errors (0 - 101)
     
-    - parameter sqlStr:  The query String of SQL to be executed (e.g. SELECT)
+    :param: sqlStr  The query String of SQL to be executed (e.g. SELECT)
     
-    - returns:       A tuple containing an Array of "SDRow"s, and an Int with the error code or nil if there was no error
+    :returns:       A tuple containing an Array of "SDRow"s, and an Int with the error code or nil if there was no error
     */
     public static func executeQuery(sqlStr: String) -> (result: [SDRow], error: Int?) {
         
@@ -182,10 +182,10 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     - binding errors (201 - 203)
-    - parameter sqlStr:    The query String of SQL to be executed (e.g. SELECT)
-    - parameter withArgs:  An array of objects that will be bound, in order, to the characters "?" (for values) and "i?" (for identifiers, e.g. table or column names) in the sqlStr.
+    :param: sqlStr    The query String of SQL to be executed (e.g. SELECT)
+    :param: withArgs  An array of objects that will be bound, in order, to the characters "?" (for values) and "i?" (for identifiers, e.g. table or column names) in the sqlStr.
     
-    - returns:       A tuple containing an Array of "SDRow"s, and an Int with the error code or nil if there was no error
+    :returns:       A tuple containing an Array of "SDRow"s, and an Int with the error code or nil if there was no error
     */
     public static func executeQuery(sqlStr: String, withArgs: [AnyObject]) -> (result: [SDRow], error: Int?) {
         
@@ -211,12 +211,12 @@ public struct SwiftData {
     Note: This function cannot be nested within itself, or inside a transaction/savepoint.
     Possible errors returned by this function are:
     - custom connection errors (301 - 306)
-    - parameter flags:    The custom flag associated with the connection. Can be either:
+    :param: flags    The custom flag associated with the connection. Can be either:
     - .ReadOnly
     - .ReadWrite
     - .ReadWriteCreate
-    - parameter closure:  A closure containing functions that will be executed on the custom connection
-    - returns:        An Int with the error code, or nil if there was no error
+    :param: closure  A closure containing functions that will be executed on the custom connection
+    :returns:        An Int with the error code, or nil if there was no error
     */
     public static func executeWithConnection(flags: SD.Flags, closure: ()->Void) -> Int? {
         
@@ -245,9 +245,9 @@ public struct SwiftData {
     
     NOTE: Supported object types are: String, Int, Double, Bool, NSData, NSDate, and nil. All other data types will return the String value "NULL", and a warning message will be printed.
     
-    - parameter obj:  The value to be escaped
+    :param: obj  The value to be escaped
     
-    - returns:    The escaped value as a String, ready to be inserted into a SQL statement. Note: Single quotes (') will be placed around the entire value, if necessary.
+    :returns:    The escaped value as a String, ready to be inserted into a SQL statement. Note: Single quotes (') will be placed around the entire value, if necessary.
     */
     public static func escapeValue(obj: AnyObject?) -> String {
         return SQLiteDB.sharedInstance.escapeValue(obj)
@@ -256,9 +256,9 @@ public struct SwiftData {
     /**
     Escape a string to be inserted into a SQLite statement as an indentifier (e.g. table or column name)
     
-    - parameter obj:  The identifier to be escaped. NOTE: This object must be of type String.
+    :param: obj  The identifier to be escaped. NOTE: This object must be of type String.
     
-    - returns:    The escaped identifier as a String, ready to be inserted into a SQL statement. Note: Double quotes (") will be placed around the entire identifier.
+    :returns:    The escaped identifier as a String, ready to be inserted into a SQL statement. Note: Double quotes (") will be placed around the entire identifier.
     */
     public static func escapeIdentifier(obj: String) -> String {
         return SQLiteDB.sharedInstance.escapeIdentifier(obj)
@@ -273,10 +273,10 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - parameter  table:                The table name to be created
-    - parameter  columnNamesAndTypes:  A dictionary where the key = column name, and the value = data type
+    :param:  table                The table name to be created
+    :param:  columnNamesAndTypes  A dictionary where the key = column name, and the value = data type
     
-    - returns:                     An Int with the error code, or nil if there was no error
+    :returns:                     An Int with the error code, or nil if there was no error
     */
     public static func createTable(table: String, withColumnNamesAndTypes values: [String: SwiftData.DataType]) -> Int? {
         
@@ -299,9 +299,9 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - parameter  table:  The table name to be deleted
+    :param:  table  The table name to be deleted
     
-    - returns:       An Int with the error code, or nil if there was no error
+    :returns:       An Int with the error code, or nil if there was no error
     */
     public static func deleteTable(table: String) -> Int? {
         
@@ -325,7 +325,7 @@ public struct SwiftData {
     - SQLite errors (0 - 101)
     - Table query error (403)
     
-    - returns:  A tuple containing an Array of all existing SQLite table names, and an Int with the error code or nil if there was no error
+    :returns:  A tuple containing an Array of all existing SQLite table names, and an Int with the error code or nil if there was no error
     */
     public static func existingTables() -> (result: [String], error: Int?) {
         
@@ -350,8 +350,8 @@ public struct SwiftData {
     
     /**
     Obtain the error message relating to the provided error code
-    - parameter code:  The error code provided
-    - returns:     The error message relating to the provided error code
+    :param: code  The error code provided
+    :returns:     The error message relating to the provided error code
     */
     public static func errorMessageForCode(code: Int) -> String {
         return SwiftData.SDError.errorMessageFromCode(code)
@@ -360,7 +360,7 @@ public struct SwiftData {
     /**
     Obtain the database path
     
-    - returns:  The path to the SwiftData database
+    :returns:  The path to the SwiftData database
     */
     public static func databasePath() -> String {
         return SQLiteDB.sharedInstance.dbPath
@@ -372,7 +372,7 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - returns:  A tuple of he ID of the last successfully inserted row's, and an Int of the error code or nil if there was no error
+    :returns:  A tuple of he ID of the last successfully inserted row's, and an Int of the error code or nil if there was no error
     */
     public static func lastInsertedRowID() -> (rowID: Int, error: Int?) {
         
@@ -397,7 +397,7 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - returns:  A tuple of the number of rows modified by the most recently completed SQLite statement, and an Int with the error code or nil if there was no error
+    :returns:  A tuple of the number of rows modified by the most recently completed SQLite statement, and an Int with the error code or nil if there was no error
     */
     public static func numberOfRowsModified() -> (rowID: Int, error: Int?) {
         
@@ -425,12 +425,12 @@ public struct SwiftData {
     - SQLite errors (0 - 101)
     - Index error (401)
     
-    - parameter name:       The index name that is being created
-    - parameter onColumns:  An array of column names that the index will be applied to (must be one column or greater)
-    - parameter inTable:    The table name where the index is being created
-    - parameter isUnique:   True if the index should be unique, false if it should not be unique (defaults to false)
+    :param: name       The index name that is being created
+    :param: onColumns  An array of column names that the index will be applied to (must be one column or greater)
+    :param: inTable    The table name where the index is being created
+    :param: isUnique   True if the index should be unique, false if it should not be unique (defaults to false)
     
-    - returns:          An Int with the error code, or nil if there was no error
+    :returns:          An Int with the error code, or nil if there was no error
     */
     public static func createIndex(name name: String, onColumns: [String], inTable: String, isUnique: Bool = false) -> Int? {
         
@@ -453,9 +453,9 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - parameter indexName:  The name of the index to be removed
+    :param: indexName  The name of the index to be removed
     
-    - returns:          An Int with the error code, or nil if there was no error
+    :returns:          An Int with the error code, or nil if there was no error
     */
     public static func removeIndex(indexName: String) -> Int? {
         
@@ -479,7 +479,7 @@ public struct SwiftData {
     - SQLite errors (0 - 101)
     - Index error (402)
     
-    - returns:  A tuple containing an Array of all existing index names on the SQLite database, and an Int with the error code or nil if there was no error
+    :returns:  A tuple containing an Array of all existing index names on the SQLite database, and an Int with the error code or nil if there was no error
     */
     public static func existingIndexes() -> (result: [String], error: Int?) {
         
@@ -504,9 +504,9 @@ public struct SwiftData {
     - SQLite errors (0 - 101)
     - Index error (402)
     
-    - parameter  table:  The name of the table that is being queried for indexes
+    :param:  table  The name of the table that is being queried for indexes
     
-    - returns:       A tuple containing an Array of all existing index names in the table, and an Int with the error code or nil if there was no error
+    :returns:       A tuple containing an Array of all existing index names in the table, and an Int with the error code or nil if there was no error
     */
     public static func existingIndexesForTable(table: String) -> (result: [String], error: Int?) {
         
@@ -536,9 +536,9 @@ public struct SwiftData {
     - SQLite errors (0 - 101)
     - Transaction errors (501 - 502)
     
-    - parameter transactionClosure:  A closure containing commands that will execute as part of a single transaction. If the transactionClosure returns true, the changes made within the closure will be committed. If false, the changes will be rolled back and will not be saved.
+    :param: transactionClosure  A closure containing commands that will execute as part of a single transaction. If the transactionClosure returns true, the changes made within the closure will be committed. If false, the changes will be rolled back and will not be saved.
     
-    - returns:                   An Int with the error code, or nil if there was no error committing or rolling back the transaction
+    :returns:                   An Int with the error code, or nil if there was no error committing or rolling back the transaction
     */
     public static func transaction(transactionClosure: ()->Bool) -> Int? {
         
@@ -578,9 +578,9 @@ public struct SwiftData {
     Possible errors returned by this function are:
     - SQLite errors (0 - 101)
     
-    - parameter savepointClosure:  A closure containing commands that will execute as part of a single savepoint. If the savepointClosure returns true, the changes made within the closure will be released. If false, the changes will be rolled back and will not be saved.
+    :param: savepointClosure  A closure containing commands that will execute as part of a single savepoint. If the savepointClosure returns true, the changes made within the closure will be released. If false, the changes will be rolled back and will not be saved.
     
-    - returns:                 An Int with the error code, or nil if there was no error releasing or rolling back the savepoint
+    :returns:                 An Int with the error code, or nil if there was no error releasing or rolling back the savepoint
     */
     public static func savepoint(savepointClosure: ()->Bool) -> Int? {
         
@@ -616,6 +616,47 @@ public struct SwiftData {
         putOnThread(task)
         return error
         
+    }
+    
+    /**
+    Convenience function to save a UIImage to disk and return the ID
+    :param: image  The UIImage to be saved
+    :returns:      The ID of the saved image as a String, or nil if there was an error saving the image to disk
+    */
+    public static func saveUIImage(image: UIImage) -> String? {
+        return ""
+//        
+//        let docsPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as NSString
+//        let imageDirPath = docsPath.stringByAppendingPathComponent("SwiftDataImages") as NSString
+//        if !NSFileManager.defaultManager().fileExistsAtPath(imageDirPath as String) {
+//            if !NSFileManager.defaultManager().createDirectoryAtPath(imageDirPath as String, withIntermediateDirectories: false, attributes: nil) {
+//                print("Error creating SwiftData image folder")
+//                return nil
+//            }
+//        }
+//        
+////        NSFileManager.defaultManager().createDirectoryAtPath(<#T##path: String##String#>, withIntermediateDirectories: <#T##Bool#>, attributes: <#T##[String : AnyObject]?#>)
+//        
+//        let imageID = NSUUID().UUIDString
+//        let imagePath = imageDirPath.stringByAppendingPathComponent(imageID)
+//        let imageAsData = UIImagePNGRepresentation(image)
+//        if !imageAsData!.writeToFile(imagePath, atomically: true) {
+//            print("Error saving image")
+//            return nil
+//        }
+//        return imageID
+//        
+    }
+    
+    /**
+    Convenience function to delete a UIImage with the specified ID
+    
+    :param: id  The id of the UIImage
+    
+    :returns:   True if the image was successfully deleted, or false if there was an error during the deletion
+    */
+    public static func deleteUIImageWithID(id: String) -> Bool {
+        return true
     }
     
     
@@ -760,10 +801,9 @@ public struct SwiftData {
         //create the database path
         class func createPath() -> String {
             
-            let docsPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] 
+            let docsPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as NSString
             let databaseStr = "SwiftData.sqlite"
-//            let dbPath = docsPath.stringByAppendingPathComponent(databaseStr)
-            let dbPath = docsPath.stringByAppendingString(databaseStr)
+            let dbPath = docsPath.stringByAppendingPathComponent(databaseStr)
             return dbPath
             
         }
@@ -1044,7 +1084,7 @@ public struct SwiftData {
         
         /**
         Return the column value as a String
-        - returns:  An Optional String corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a String, or the value is NULL
+        :returns:  An Optional String corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a String, or the value is NULL
         */
         public func asString() -> String {
             return "\(value)"
@@ -1052,7 +1092,7 @@ public struct SwiftData {
         
         /**
         Return the column value as an Int
-        - returns:  An Optional Int corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a Int, or the value is NULL
+        :returns:  An Optional Int corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a Int, or the value is NULL
         */
         public func asInt() -> Int? {
             return value as? Int
@@ -1060,7 +1100,7 @@ public struct SwiftData {
         
         /**
         Return the column value as a Double
-        - returns:  An Optional Double corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a Double, or the value is NULL
+        :returns:  An Optional Double corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a Double, or the value is NULL
         */
         public func asDouble() -> Double? {
             return value as? Double
@@ -1068,7 +1108,7 @@ public struct SwiftData {
         
         /**
         Return the column value as a Bool
-        - returns:  An Optional Bool corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a Bool, or the value is NULL
+        :returns:  An Optional Bool corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as a Bool, or the value is NULL
         */
         public func asBool() -> Bool? {
             return value as? Bool
@@ -1076,7 +1116,7 @@ public struct SwiftData {
         
         /**
         Return the column value as NSData
-        - returns:  An Optional NSData object corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as NSData, or the value is NULL
+        :returns:  An Optional NSData object corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as NSData, or the value is NULL
         */
         public func asData() -> NSData? {
             return value as? NSData
@@ -1084,7 +1124,7 @@ public struct SwiftData {
         
         /**
         Return the column value as an NSDate
-        - returns:  An Optional NSDate corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as an NSDate, or the value is NULL
+        :returns:  An Optional NSDate corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as an NSDate, or the value is NULL
         */
         public func asDate() -> NSDate? {
             return value as? NSDate
@@ -1092,12 +1132,33 @@ public struct SwiftData {
         
         /**
         Return the column value as an AnyObject
-        - returns:  An Optional AnyObject corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as an AnyObject, or the value is NULL
+        :returns:  An Optional AnyObject corresponding to the apprioriate column value. Will be nil if: the column name does not exist, the value cannot be cast as an AnyObject, or the value is NULL
         */
         public func asAnyObject() -> AnyObject? {
             return value
         }
         
+        /**
+        Return the column value path as a UIImage
+        :returns:  An Optional UIImage corresponding to the path of the apprioriate column value. Will be nil if: the column name does not exist, the value of the specified path cannot be cast as a UIImage, or the value is NULL
+        */
+        public func asUIImage() -> UIImage? {
+            
+            if let path = value as? String{
+                let docsPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as NSString
+                let imageDirPath = docsPath.stringByAppendingPathComponent("SwiftDataImages") as NSString
+                let fullPath = imageDirPath.stringByAppendingPathComponent(path)
+                if !NSFileManager.defaultManager().fileExistsAtPath(fullPath) {
+                    print("SwiftData Error -> Invalid image ID provided")
+                    return nil
+                }
+                if let imageAsData = NSData(contentsOfFile: fullPath) {
+                    return UIImage(data: imageAsData)
+                }
+            }
+            return nil
+            
+        }
         
     }
     
@@ -1209,6 +1270,13 @@ extension SwiftData.SQLiteDB {
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 return "\(escapeValue(dateFormatter.stringFromDate(obj as! NSDate)))"
             }
+            if obj is UIImage {
+//                if let imageID = SD.saveUIImage(obj as! UIImage) {
+//                    return "'\(escapeStringValue(imageID))'"
+//                }
+                print("SwiftData Warning -> Cannot save image, NULL will be inserted into the database")
+                return "NULL"
+            }
             print("SwiftData Warning -> Object \"\(obj)\" is not a supported type and will be inserted into the database as NULL")
             return "NULL"
         } else {
@@ -1227,15 +1295,15 @@ extension SwiftData.SQLiteDB {
     /**
     在解析 String 的 character 的时候， 用原生 String 解析貌似存在 Bug, 因此在这里用 NSString 来解析
     
-    - Author: Bob@nian.so
+    :author: Bob@nian.so
     
-    - parameter str: <#str description#>
+    :param: str <#str description#>
     
-    - returns: <#return value description#>
+    :returns: <#return value description#>
     */
     func escapeStringValue(str: String) -> String {
         var escapedStr = ""
-
+        
         for(var i = 0; i < (str as NSString).length; i++){
             let s = (str as NSString).substringWithRange(NSMakeRange(i, 1))
             
@@ -1270,13 +1338,13 @@ extension SwiftData {
     /**
     Column Data Types
     
-    - parameter  StringVal:   A column with type String, corresponds to SQLite type "TEXT"
-    - parameter  IntVal:      A column with type Int, corresponds to SQLite type "INTEGER"
-    - parameter  DoubleVal:   A column with type Double, corresponds to SQLite type "DOUBLE"
-    - parameter  BoolVal:     A column with type Bool, corresponds to SQLite type "BOOLEAN"
-    - parameter  DataVal:     A column with type NSdata, corresponds to SQLite type "BLOB"
-    - parameter  DateVal:     A column with type NSDate, corresponds to SQLite type "DATE"
-    - parameter  UIImageVal:  A column with type String (the path value of saved UIImage), corresponds to SQLite type "TEXT"
+    :param:  StringVal   A column with type String, corresponds to SQLite type "TEXT"
+    :param:  IntVal      A column with type Int, corresponds to SQLite type "INTEGER"
+    :param:  DoubleVal   A column with type Double, corresponds to SQLite type "DOUBLE"
+    :param:  BoolVal     A column with type Bool, corresponds to SQLite type "BOOLEAN"
+    :param:  DataVal     A column with type NSdata, corresponds to SQLite type "BLOB"
+    :param:  DateVal     A column with type NSDate, corresponds to SQLite type "DATE"
+    :param:  UIImageVal  A column with type String (the path value of saved UIImage), corresponds to SQLite type "TEXT"
     */
     public enum DataType {
         
@@ -1311,9 +1379,9 @@ extension SwiftData {
     /**
     Flags for custom connection to the SQLite database
     
-    - parameter  ReadOnly:         Opens the SQLite database with the flag "SQLITE_OPEN_READONLY"
-    - parameter  ReadWrite:        Opens the SQLite database with the flag "SQLITE_OPEN_READWRITE"
-    - parameter  ReadWriteCreate:  Opens the SQLite database with the flag "SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE"
+    :param:  ReadOnly         Opens the SQLite database with the flag "SQLITE_OPEN_READONLY"
+    :param:  ReadWrite        Opens the SQLite database with the flag "SQLITE_OPEN_READWRITE"
+    :param:  ReadWriteCreate  Opens the SQLite database with the flag "SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE"
     */
     public enum Flags {
         

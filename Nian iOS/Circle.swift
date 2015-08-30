@@ -311,43 +311,38 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.dataTotal = 0
             self.dataArray.removeAllObjects()
         }
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-            let (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(safeuid)' order by id desc limit \(self.page*30),30")
-            if err == nil {
-                self.page++
-                for row in resultSet {
-                    let id = row["id"]?.asString()
-                    let uid = row["uid"]?.asString()
-                    let user = row["name"]?.asString()
-                    let content = row["content"]?.asString()
-                    let type = row["type"]?.asString()
-                    let lastdate = row["lastdate"]?.asString()
-                    let time = V.absoluteTime((lastdate! as NSString).doubleValue)
-                    let data = NSDictionary(objects: [id!, uid!, user!, content!, type!, time], forKeys: ["id", "uid", "user", "content", "type", "lastdate"])
-                    self.dataArray.addObject(data)
-                    self.dataTotal++
-                }
-                let heightBefore = self.tableview.contentSize.height
-                self.tableview.reloadData()
-                let heightAfter = self.tableview.contentSize.height
-                if clear {
-                    let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0  {
-                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
-                    }
-                    if let v = (self.navigationItem.titleView as? UILabel) {
-                        v.text = self.circleTitle
-                    }
-                }else{
-                    let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                    self.tableview.contentOffset = CGPointMake(0, heightChange)
-                    self.animating = 0
-                }
+        let (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(SAUid())' order by id desc limit \(self.page*30),30")
+        if err == nil {
+            self.page++
+            for row in resultSet {
+                let id = row["id"]?.asString()
+                let uid = row["uid"]?.asString()
+                let user = row["name"]?.asString()
+                let content = row["content"]?.asString()
+                let type = row["type"]?.asString()
+                let lastdate = row["lastdate"]?.asString()
+                let time = V.absoluteTime((lastdate! as NSString).doubleValue)
+                let data = NSDictionary(objects: [id!, uid!, user!, content!, type!, time], forKeys: ["id", "uid", "user", "content", "type", "lastdate"])
+                self.dataArray.addObject(data)
+                self.dataTotal++
             }
+            let heightBefore = self.tableview.contentSize.height
+            self.tableview.reloadData()
+            let heightAfter = self.tableview.contentSize.height
+            if clear {
+                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                if offset > 0  {
+                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
+                }
+                if let v = (self.navigationItem.titleView as? UILabel) {
+                    v.text = self.circleTitle
+                }
+            }else{
+                let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
+                self.tableview.contentOffset = CGPointMake(0, heightChange)
+                self.animating = 0
+            }
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -375,11 +370,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if type == "1" {
             let c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
             c.data = data
+            print(data)
             c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
             c.View.tag = index
-            c.isDream = 0
             cell = c
         }else{
             let c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell

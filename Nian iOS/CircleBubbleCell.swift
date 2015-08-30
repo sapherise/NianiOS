@@ -22,7 +22,6 @@ class CircleBubbleCell: UITableViewCell {
     var activity: UIActivityIndicatorView?
     var data :NSDictionary!
     var contentLabelWidth:CGFloat = 0
-    var isDream: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,28 +34,25 @@ class CircleBubbleCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-        super.layoutSubviews()
-        let uid = self.data.stringAttributeForKey("uid")
-        let user = self.data.stringAttributeForKey("user")
-        let lastdate = self.data.stringAttributeForKey("lastdate")
-        var content = self.data.stringAttributeForKey("content")
-        if isDream == 1 {
-            content = "更新了记本「\(content)」"
-        }
-        self.nickLabel!.text = user
-        self.lastdate!.text = lastdate
-        self.avatarView.setHead(uid)
-        let height = content.stringHeightWith(15,width:208)
-        self.avatarView!.tag = Int(uid)!
-        self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        
-        if uid == safeuid {
-            layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: true)
-        }else{
-            layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: false)
+        if data != nil {
+            let uid = self.data.stringAttributeForKey("uid")
+            let user = self.data.stringAttributeForKey("user")
+            let lastdate = self.data.stringAttributeForKey("lastdate")
+            var content = self.data.stringAttributeForKey("content")
+            self.nickLabel!.text = user
+            self.lastdate!.text = lastdate
+            self.avatarView.setHead(uid)
+            let height = content.stringHeightWith(15,width:208)
+            self.avatarView!.tag = Int(uid)!
+            self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
+            
+            if uid == SAUid() {
+                layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: true)
+            }else{
+                layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: false)
+            }
+        } else {
+            print("NO！")
         }
     }
     
