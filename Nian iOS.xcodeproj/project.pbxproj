@@ -24,8 +24,9 @@
 		1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */; };
 		122AFE031A80864800464641 /* SqliteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122AFE021A80864800464641 /* SqliteData.swift */; };
 		122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 122AFE041A80869D00464641 /* libsqlite3.dylib */; };
-		122D939D1B932A9700968F3E /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D93911B932A9700968F3E /* libWeiboSDK.a */; settings = {ASSET_TAGS = (); }; };
 		122D939E1B932A9700968F3E /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D939A1B932A9700968F3E /* WeiboSDK.bundle */; settings = {ASSET_TAGS = (); }; };
+		122D93A11B932FC000968F3E /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D93A01B932FC000968F3E /* Topic.swift */; settings = {ASSET_TAGS = (); }; };
+		122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D93A21B93430700968F3E /* Topic + UITableView.swift */; settings = {ASSET_TAGS = (); }; };
 		122F39211B4E794700DE8628 /* Card.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122F39201B4E794700DE8628 /* Card.xib */; };
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
@@ -34,6 +35,7 @@
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
 		1243C6F71B4F60A0007F741C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C6F61B4F60A0007F741C /* Card.swift */; };
+		12459F3B1B93755C0066EFF0 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D93911B932A9700968F3E /* libWeiboSDK.a */; };
 		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
 		12497C371A7102C4001DBD0F /* mainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12497C361A7102C4001DBD0F /* mainClient.swift */; };
 		124EFD6A1A664912009D837B /* ImClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124EFD691A664912009D837B /* ImClient.swift */; };
@@ -106,6 +108,10 @@
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
+		12BB33451B93471F00B7E03F /* TopicCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BB33441B93471F00B7E03F /* TopicCellHeader.swift */; settings = {ASSET_TAGS = (); }; };
+		12BB33471B93473500B7E03F /* TopicCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BB33461B93473500B7E03F /* TopicCellHeader.xib */; settings = {ASSET_TAGS = (); }; };
+		12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BB33481B936C9200B7E03F /* TopicCell.swift */; settings = {ASSET_TAGS = (); }; };
+		12BB334B1B936CAB00B7E03F /* TopicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BB334A1B936CAB00B7E03F /* TopicCell.xib */; settings = {ASSET_TAGS = (); }; };
 		12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36911B8EABFA00B37573 /* Reddit.swift */; };
 		12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */; };
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
@@ -262,6 +268,8 @@
 		122D939A1B932A9700968F3E /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
 		122D939B1B932A9700968F3E /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
 		122D939C1B932A9700968F3E /* WeiboUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboUser.h; sourceTree = "<group>"; };
+		122D93A01B932FC000968F3E /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		122D93A21B93430700968F3E /* Topic + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + UITableView.swift"; sourceTree = "<group>"; };
 		122F39201B4E794700DE8628 /* Card.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Card.xib; sourceTree = "<group>"; };
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
@@ -345,6 +353,10 @@
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
+		12BB33441B93471F00B7E03F /* TopicCellHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCellHeader.swift; sourceTree = "<group>"; };
+		12BB33461B93473500B7E03F /* TopicCellHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCellHeader.xib; sourceTree = "<group>"; };
+		12BB33481B936C9200B7E03F /* TopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
+		12BB334A1B936CAB00B7E03F /* TopicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCell.xib; sourceTree = "<group>"; };
 		12BD36911B8EABFA00B37573 /* Reddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reddit.swift; sourceTree = "<group>"; };
 		12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UITableView.swift"; sourceTree = "<group>"; };
 		12BE103A19C5EBEA00370348 /* AddBBSComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSComment.swift; sourceTree = "<group>"; };
@@ -494,6 +506,7 @@
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
+				12459F3B1B93755C0066EFF0 /* libWeiboSDK.a in Frameworks */,
 				127497FA1B92DF880046B440 /* UIKit.framework in Frameworks */,
 				127497F81B92DF7F0046B440 /* CoreText.framework in Frameworks */,
 				127497F71B92DF750046B440 /* CoreTelephony.framework in Frameworks */,
@@ -501,7 +514,6 @@
 				127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */,
 				127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */,
 				127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */,
-				122D939D1B932A9700968F3E /* libWeiboSDK.a in Frameworks */,
 				122AFE051A80869D00464641 /* libsqlite3.dylib in Frameworks */,
 				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 				12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */,
@@ -593,6 +605,19 @@
 				122D939C1B932A9700968F3E /* WeiboUser.h */,
 			);
 			path = Weibo;
+			sourceTree = "<group>";
+		};
+		122D939F1B932FAE00968F3E /* 话题 */ = {
+			isa = PBXGroup;
+			children = (
+				122D93A01B932FC000968F3E /* Topic.swift */,
+				122D93A21B93430700968F3E /* Topic + UITableView.swift */,
+				12BB33441B93471F00B7E03F /* TopicCellHeader.swift */,
+				12BB33461B93473500B7E03F /* TopicCellHeader.xib */,
+				12BB33481B936C9200B7E03F /* TopicCell.swift */,
+				12BB334A1B936CAB00B7E03F /* TopicCell.xib */,
+			);
+			name = "话题";
 			sourceTree = "<group>";
 		};
 		122F7F591B5E6B7B00B4EA32 /* 游戏 */ = {
@@ -819,6 +844,7 @@
 				1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */,
 				1226CE231B8EC585004E2F6C /* RedditCell.swift */,
 				1226CE251B8EC5F9004E2F6C /* RedditCell.xib */,
+				122D939F1B932FAE00968F3E /* 话题 */,
 			);
 			name = "新广场";
 			sourceTree = "<group>";
@@ -1400,6 +1426,7 @@
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
+				12BB334B1B936CAB00B7E03F /* TopicCell.xib in Resources */,
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
@@ -1444,6 +1471,7 @@
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
 				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
+				12BB33471B93473500B7E03F /* TopicCellHeader.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 				12D846071A233F46005DCC08 /* AddStep.xib in Resources */,
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
@@ -1539,6 +1567,7 @@
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
 				12CE15A71A3EC525006AC031 /* Circle.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
+				12BB33451B93471F00B7E03F /* TopicCellHeader.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
@@ -1595,12 +1624,14 @@
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */,
+				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
 				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
 				C4C0F38E1B818D3F00ED22BE /* ExploreRecommend.swift in Sources */,
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
+				12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
@@ -1644,6 +1675,7 @@
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,
 				12F65C131B65098F0051A914 /* Level.swift in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
+				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,
@@ -1785,6 +1817,10 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1834,6 +1870,10 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 				);

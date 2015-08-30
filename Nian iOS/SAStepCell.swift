@@ -217,8 +217,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             }
             
             self.labelComment.text = comment
-            var commentWidth = comment.stringWidthWith(13, height: 32) + 16
-            commentWidth = SACeil(commentWidth, dot: 0)
+            let commentWidth = comment.stringWidthWith(13, height: 32) + 16
             self.labelComment.setWidth(commentWidth)
             self.labelLike.setX(commentWidth+28)
             

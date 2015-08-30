@@ -112,6 +112,15 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         return c
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let d = current == 0 ? dataArrayLeft : dataArrayRight
+        let data = d[indexPath.row] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        let vc = TopicViewController()
+        vc.id = id
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     func updateData(index: Int, key: String, value: String) {
         let d = current == 0 ? dataArrayLeft : dataArrayRight

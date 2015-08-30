@@ -64,7 +64,7 @@ class RedditCell: UITableViewCell {
             let hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
             let hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
             let wTag = tag.stringWidthWith(10, height: 18)
-            let wComment = "\(comment) 评论".stringWidthWith(12, height: 18)
+            let wComment = "回应 \(comment)".stringWidthWith(12, height: 18)
             let wTime = time.stringWidthWith(12, height: 18)
             
             // 填充内容
