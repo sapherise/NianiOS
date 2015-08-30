@@ -15,17 +15,19 @@ extension HomeViewController: NIAlertDelegate {
                 if json != nil {
                     let data = json!.objectForKey("news") as! NSDictionary
                     let title = data.stringAttributeForKey("title")
-                    let content = data.stringAttributeForKey("content")
-                    let button = data.stringAttributeForKey("button")
-                    let version = data.stringAttributeForKey("version")
-                    let v: AnyObject? = Cookies.get("SANews.\(version)")
-                    if v == nil {
-                        self.ni = NIAlert()
-                        self.ni!.delegate = self
-                        self.ni!.dict = NSMutableDictionary(objects: [UIImage(named: "pet_egg2")!, title, content, [button]],
-                            forKeys: ["img", "title", "content", "buttonArray"])
-                        self.ni!.showWithAnimation(.flip)
-                        Cookies.set("1", forKey: "SANews.\(version)")
+                    if title != "" {
+                        let content = data.stringAttributeForKey("content")
+                        let button = data.stringAttributeForKey("button")
+                        let version = data.stringAttributeForKey("version")
+                        let v: AnyObject? = Cookies.get("SANews.\(version)")
+                        if v == nil {
+                            self.ni = NIAlert()
+                            self.ni!.delegate = self
+                            self.ni!.dict = NSMutableDictionary(objects: [UIImage(named: "pet_egg2")!, title, content, [button]],
+                                forKeys: ["img", "title", "content", "buttonArray"])
+                            self.ni!.showWithAnimation(.flip)
+                            Cookies.set("1", forKey: "SANews.\(version)")
+                        }
                     }
                 }
             })
