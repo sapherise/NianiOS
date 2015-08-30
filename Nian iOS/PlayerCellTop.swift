@@ -50,9 +50,11 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
         let viewHit = super.hitTest(point, withEvent: event)
-        let v = NSStringFromClass((viewHit?.classForCoder)!)
-        if v == "UIView" {
-            return nil
+        if let v = viewHit?.classForCoder {
+            let cls = NSStringFromClass(v)
+            if cls == "UIView" {
+                return nil
+            }
         }
         return viewHit
     }

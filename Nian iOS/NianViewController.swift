@@ -107,7 +107,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let safename = Sa.objectForKey("user") as! String
+        let safename = Cookies.get("user")
         let cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         
         self.UserName.text = "\(safename)"
@@ -220,38 +220,40 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupUserTop(){
         let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let safeuid = SAUid()
-        Api.getUserTop(Int(safeuid)!){ json in
-            if json != nil {
-                let data = json!.objectForKey("user") as! NSDictionary
-                let name = data.stringAttributeForKey("name")
-                let coin = data.stringAttributeForKey("coin")
-                let dream = data.stringAttributeForKey("dream")
-                let step = data.stringAttributeForKey("step")
-                let coverURL = data.stringAttributeForKey("cover")
-                self.birthday = data.stringAttributeForKey("lastdate")
-                let petCount = data.stringAttributeForKey("pet_count")
-                let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
-                let vip = data.stringAttributeForKey("vip")
-                Sa.setObject(AllCoverURL, forKey: "coverUrl")
-                Sa.synchronize()
-                let deadLine = data.stringAttributeForKey("deadline")
-                self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
-                self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
-                self.UserName.text = "\(name)"
-                self.UserHead.setHead(safeuid)
-                self.imageBadge.setType(vip)
-                if deadLine == "0" {
-                    self.UserStep.text = "\(dream) 记本，\(step) 进展"
-                } else {
-                    self.UserStep.text = "倒计时 \(deadLine)"
-                }
-                if coverURL == "" {
-                    self.imageBG.image = UIImage(named: "bg")
-                    self.navView.image = UIImage(named: "bg")
-                    self.navView.contentMode = UIViewContentMode.ScaleAspectFill
-                }else{
-                    self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
-                    self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+        if let uid = Int(safeuid) {
+            Api.getUserTop(uid){ json in
+                if json != nil {
+                    let data = json!.objectForKey("user") as! NSDictionary
+                    let name = data.stringAttributeForKey("name")
+                    let coin = data.stringAttributeForKey("coin")
+                    let dream = data.stringAttributeForKey("dream")
+                    let step = data.stringAttributeForKey("step")
+                    let coverURL = data.stringAttributeForKey("cover")
+                    self.birthday = data.stringAttributeForKey("lastdate")
+                    let petCount = data.stringAttributeForKey("pet_count")
+                    let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                    let vip = data.stringAttributeForKey("vip")
+                    Sa.setObject(AllCoverURL, forKey: "coverUrl")
+                    Sa.synchronize()
+                    let deadLine = data.stringAttributeForKey("deadline")
+                    self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
+                    self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
+                    self.UserName.text = "\(name)"
+                    self.UserHead.setHead(safeuid)
+                    self.imageBadge.setType(vip)
+                    if deadLine == "0" {
+                        self.UserStep.text = "\(dream) 记本，\(step) 进展"
+                    } else {
+                        self.UserStep.text = "倒计时 \(deadLine)"
+                    }
+                    if coverURL == "" {
+                        self.imageBG.image = UIImage(named: "bg")
+                        self.navView.image = UIImage(named: "bg")
+                        self.navView.contentMode = UIViewContentMode.ScaleAspectFill
+                    }else{
+                        self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                        self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    }
                 }
             }
         }

@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     var window: UIWindow?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
@@ -101,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate{
                 NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
             })
             return true
-        }else if s == "wb4189056912" {
+        } else if s == "wb4189056912" {
             return WeiboSDK.handleOpenURL(url, delegate: self)
         }
         return true

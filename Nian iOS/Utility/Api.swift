@@ -453,6 +453,11 @@ struct Api {
         V.httpPostForJson_AFN("http://nian.so/api/gameover1.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)"], callback: callback)
     }
     
+    static func postLogin(email: String, password: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/login.php", content: "em=\(email)&pw=\(password)", callback: callback)
+    }
+    
     static func postGameoverCoin(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/gameover_coin.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
@@ -649,12 +654,6 @@ struct Api {
     static func getDreamLike(uid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/like_dream.php?page=\(page)&id=\(uid)&myuid=\(s_uid)", callback: callback)
-    }
-    
-    
-    static func postLogin(email: String, password: String, callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/login.php", content: "em=\(email)&&pw=\(password)", callback: callback)
     }
     
     

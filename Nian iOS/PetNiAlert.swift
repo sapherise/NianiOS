@@ -153,7 +153,7 @@ extension PetViewController {
         card.content = content
         card.widthImage = "360"
         card.heightImage = "360"
-        card.url = "http://img.nian.so/pets/\(image)!d"//todo
+        card.url = "http://img.nian.so/pets/\(image)!d"
         let img = card.getCard()
         let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
         self.presentViewController(avc, animated: true, completion: nil)

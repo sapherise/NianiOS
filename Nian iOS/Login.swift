@@ -72,29 +72,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
             
             self.navigationItem.rightBarButtonItems = buttonArray()
             let email = SAEncode(SAHtml(self.inputEmail.text!))
-            let password = "n*A\(self.inputPassword.text)"
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                let sa = SAPost("em=\(email)&&pw=\(password.md5)", urlString: "http://nian.so/api/login.php")
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    if sa == "err"{
-                        self.navigationItem.rightBarButtonItems = []
-                    } else if sa == "NO" {
+            let password = "n*A\(self.inputPassword.text!)"
+            Api.postLogin(email, password: password.md5) { string in
+                if string != nil {
+                    if string! == "err" || string! == "NO" {
                         self.shakeAnimation(self.holder)
                         self.navigationItem.rightBarButtonItems = []
                     } else {
                         self.navigationItem.rightBarButtonItems = buttonArray()
-                        let shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
+                        let shell = (("\(password.md5)\(string!)n*A").lowercaseString).md5
                         let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        let username = SAPost("uid=\(sa)", urlString: "http://nian.so/api/username.php")
-//                        Sa.setObject(sa, forKey: "uid")
-//                        Sa.setObject(shell, forKey: "shell")
+                        let username = SAPost("uid=\(string!)", urlString: "http://nian.so/api/username.php")
                         Sa.setObject(username, forKey:"user")
                         Sa.synchronize()
                         
                         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                        uidKey.setObject(sa, forKey: kSecAttrAccount)
+                        uidKey.setObject(string!, forKey: kSecAttrAccount)
                         uidKey.setObject(shell, forKey: kSecValueData)
                         
                         Api.requestLoad()
@@ -116,8 +109,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
                         Api.postDeviceToken() { string in
                         }
                     }
-                })
-            })
+                }
+            }
         }
     }
     

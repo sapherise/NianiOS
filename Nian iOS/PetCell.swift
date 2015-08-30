@@ -16,8 +16,6 @@ class PetCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // todo: 设置 cell
         self.selectionStyle = .None
     }
     
