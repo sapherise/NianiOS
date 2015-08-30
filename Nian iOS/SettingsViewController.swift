@@ -406,6 +406,9 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func actionShow(){
+        inputEmail.resignFirstResponder()
+        inputName.resignFirstResponder()
+        inputPhone.resignFirstResponder()
         var actionTitle:String = ""
         if self.uploadWay == 0 {
             actionTitle = "设定封面"

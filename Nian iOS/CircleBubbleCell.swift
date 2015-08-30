@@ -51,8 +51,6 @@ class CircleBubbleCell: UITableViewCell {
             }else{
                 layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: false)
             }
-        } else {
-            print("NO！")
         }
     }
     

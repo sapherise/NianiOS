@@ -198,6 +198,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
+        inputKeyboard.resignFirstResponder()
         self.actionSheetPhoto = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheetPhoto!.addButtonWithTitle("相册")
         self.actionSheetPhoto!.addButtonWithTitle("拍照")
@@ -370,7 +371,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if type == "1" {
             let c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
             c.data = data
-            print(data)
             c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))

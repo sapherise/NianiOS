@@ -459,7 +459,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func on_poll(obj: AnyObject?) {
-        print(obj)
         go {
             let safeuid = SAUid()
             if obj != nil {
