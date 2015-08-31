@@ -29,11 +29,11 @@ class TagCell: UITableViewCell {
     {
         super.layoutSubviews()
         self.Id = self.data.stringAttributeForKey("id") as String
-        var title = self.data.stringAttributeForKey("title") as String
-        var img = self.data.stringAttributeForKey("img") as String
+        let title = self.data.stringAttributeForKey("title") as String
+        let img = self.data.stringAttributeForKey("img") as String
         self.nickLabel!.text = title
-        var userImageURL = "http://img.nian.so/dream/\(img)!dream"
-        self.tag = self.Id.toInt()!
+        let userImageURL = "http://img.nian.so/dream/\(img)!dream"
+        self.tag = Int(self.Id)!
         self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
     }
 }

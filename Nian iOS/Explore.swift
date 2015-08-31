@@ -101,7 +101,7 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
         if current == -1 {
             switchTab(0)
         }else{
-            if let v = "\(noti.object!)".toInt() {
+            if let v = Int("\(noti.object!)") {
                 if v > 0 {
                     switchTab(current)
                 }
@@ -161,7 +161,7 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
         if current != -1 {
             currentProvider.onHide()
         }
-        var loading = current == tab ? true : false
+        let loading = current == tab ? true : false
         current = tab
         currentProvider = self.providers[tab]
         
@@ -178,8 +178,8 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        var xOffset = scrollView.contentOffset.x
-        var page: Int = Int(xOffset / globalWidth)
+        let xOffset = scrollView.contentOffset.x
+        let page: Int = Int(xOffset / globalWidth)
         
         if current != -1 {
             currentProvider.onHide()
@@ -197,7 +197,7 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        var x = scrollView.contentOffset.x
+        let x = scrollView.contentOffset.x
         self.btnFollow.setTabAlpha(x, index: 0)
         self.btnDynamic.setTabAlpha(x, index: 1)
         self.btnHot.setTabAlpha(x, index: 2)
@@ -234,10 +234,10 @@ extension ExploreViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toEditorMore" {
-            var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
+            let exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
             exploreRecomMore.titleOn = "编辑推荐"
         } else if segue.identifier == "toLatestMore" {
-            var exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
+            let exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
             exploreRecomMore.titleOn = "最新"
         }
     }
@@ -247,9 +247,9 @@ extension ExploreViewController {
 extension UILabel {
     func setTabAlpha(x: CGFloat, index: CGFloat) {
         var a:CGFloat = 0
-        var big = globalWidth * (index + 1)
-        var middle = globalWidth * index
-        var small = globalWidth * (index - 1)
+        let big = globalWidth * (index + 1)
+        let middle = globalWidth * index
+        let small = globalWidth * (index - 1)
         if x <= big && x >= middle {
             a = (big - x) * 0.6 / globalWidth + 0.4
         } else if x <= middle && x >= small {

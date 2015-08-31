@@ -9,7 +9,7 @@
 import UIKit
 
 
-class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class LoginViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet var loginButton:UIImageView!
     @IBOutlet var loginButtonBorder:UIView!
     @IBOutlet var inputEmail:UITextField!
@@ -19,7 +19,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
     
     func setupViews(){
         self.viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         self.loginButton.layer.cornerRadius = 20
@@ -46,7 +46,7 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         self.loginButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginAlert"))
         self.forgetPwdLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toForgetPwd:"))
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "登录"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -71,36 +71,29 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
 //            self.inputPassword.resignFirstResponder()
             
             self.navigationItem.rightBarButtonItems = buttonArray()
-            var email = SAEncode(SAHtml(self.inputEmail.text))
-            var password = "n*A\(self.inputPassword.text)"
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("em=\(email)&&pw=\(password.md5)", "http://nian.so/api/login.php")
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    if sa == "err"{
-                        self.navigationItem.rightBarButtonItems = []
-                    } else if sa == "NO" {
+            let email = SAEncode(SAHtml(self.inputEmail.text!))
+            let password = "n*A\(self.inputPassword.text!)"
+            Api.postLogin(email, password: password.md5) { string in
+                if string != nil {
+                    if string! == "err" || string! == "NO" {
                         self.shakeAnimation(self.holder)
                         self.navigationItem.rightBarButtonItems = []
                     } else {
                         self.navigationItem.rightBarButtonItems = buttonArray()
-                        var shell = (("\(password.md5)\(sa)n*A").lowercaseString).md5
-                        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                        var username = SAPost("uid=\(sa)", "http://nian.so/api/username.php")
-//                        Sa.setObject(sa, forKey: "uid")
-//                        Sa.setObject(shell, forKey: "shell")
+                        let shell = (("\(password.md5)\(string!)n*A").lowercaseString).md5
+                        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        let username = SAPost("uid=\(string!)", urlString: "http://nian.so/api/username.php")
                         Sa.setObject(username, forKey:"user")
                         Sa.synchronize()
                         
-                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                        uidKey.setObject(sa, forKey: kSecAttrAccount)
+                        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                        uidKey.setObject(string!, forKey: kSecAttrAccount)
                         uidKey.setObject(shell, forKey: kSecValueData)
                         
                         Api.requestLoad()
                         globalWillReEnter = 1
-                        var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                        var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                        let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                        let navigationViewController = UINavigationController(rootViewController: mainViewController)
                         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
                         navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
                         navigationViewController.navigationBar.translucent = true
@@ -116,8 +109,8 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                         Api.postDeviceToken() { string in
                         }
                     }
-                })
-            })
+                }
+            }
         }
     }
     
@@ -131,11 +124,11 @@ class LoginViewController: UIViewController, UIGestureRecognizerDelegate, UIText
     }
 
     func shakeAnimation(view:UIView){
-        var viewLayer:CALayer = view.layer
-        var position:CGPoint = viewLayer.position
-        var x:CGPoint = CGPointMake(position.x + 3 , position.y)
-        var y:CGPoint = CGPointMake(position.x - 3 , position.y)
-        var animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
+        let viewLayer:CALayer = view.layer
+        let position:CGPoint = viewLayer.position
+        let x:CGPoint = CGPointMake(position.x + 3 , position.y)
+        let y:CGPoint = CGPointMake(position.x - 3 , position.y)
+        let animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
         animation.fromValue = NSValue(CGPoint: x)
         animation.toValue = NSValue(CGPoint: y)
         animation.autoreverses = true

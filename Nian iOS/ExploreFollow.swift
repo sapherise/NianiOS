@@ -49,16 +49,16 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
-                var data: AnyObject? = json!.objectForKey("data")
-                var items = data!.objectForKey("items") as! NSArray
+                let data: AnyObject? = json!.objectForKey("data")
+                let items = data!.objectForKey("items") as! NSArray
                 if items.count != 0 {
                     for item in items {
                         self.dataArray.addObject(item)
                     }
                     self.bindViewController?.tableView.tableHeaderView = nil
                 } else if clear {
-                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    var viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
+                    let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    let viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
                     viewQuestion.setY(50)
                     viewHeader.addSubview(viewQuestion)
                     self.bindViewController?.tableView.tableHeaderView = viewHeader
@@ -73,7 +73,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     override func onHide() {
-        bindViewController!.tableView.headerEndRefreshing(animated: false)
+        bindViewController!.tableView.headerEndRefreshing(false)
     }
     
     override func onShow(loading: Bool) {
@@ -104,7 +104,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var data = self.dataArray[indexPath.row] as! NSDictionary
+        let data = self.dataArray[indexPath.row] as! NSDictionary
         
         return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
             (cell as! SAStepCell).celldataSource = self
@@ -114,15 +114,8 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         })
     }
     
-    /* 这是一个不可用的恶魔函数 */
-//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        println(" !@#$%^&*()___(*^%$#@!#$%^&*() indexPath \(indexPath.row)   ")
-//        
-//        return 200
-//    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+        let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
         c.delegate = self
 //        if indexPath.row > self.dataArray.count {
 //            return c
@@ -135,23 +128,23 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
             c.viewLine.hidden = false
         }
         
-        var _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
+        let _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
         c._layoutSubviews(_shouldLoadImage)
         
         return c
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var viewController = DreamViewController()
-        var data = dataArray[indexPath.row] as! NSDictionary
-        var id = data.stringAttributeForKey("dream")
+        let viewController = DreamViewController()
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let id = data.stringAttributeForKey("dream")
         viewController.Id = id
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        var data = dataArray[indexPath.row] as! NSDictionary
-        var type = data.stringAttributeForKey("type")
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let type = data.stringAttributeForKey("type")
         
         switch type {
         case "0":
@@ -166,7 +159,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     /**
-    :returns: Bool值，代表是否要加载图片
+    - returns: Bool值，代表是否要加载图片
     */
     func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
         if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.tableView.rectForRowAtIndexPath(indexPath)) {
@@ -179,12 +172,12 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArray, index, key, value, bindViewController!.tableView!)
+        SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: bindViewController!.tableView!)
     }
     
     // 更新某个格子
     func updateStep(index: Int) {
-        SAUpdate(index, 0, bindViewController!.tableView!)
+        SAUpdate(index, section: 0, tableView: bindViewController!.tableView!)
     }
     
     // 重载表格
@@ -194,7 +187,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, self.dataArray, index, bindViewController!.tableView!, 0)
+        SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: bindViewController!.tableView!, section: 0)
     }
     
 }
@@ -217,7 +210,7 @@ extension ExploreFollowProvider: SAStepCellDatasource {
 
 
 // MARK: - 实现 scroll view delegate, aim --> 优化用户体验
-extension ExploreFollowProvider: UIScrollViewDelegate {
+extension ExploreFollowProvider {
     func scrollViewDidScroll(scrollView: UIScrollView) {
     }
     
@@ -231,7 +224,7 @@ extension ExploreFollowProvider: UIScrollViewDelegate {
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
         self.targetRect = NSValue(CGRect: targetRect)
     }
     
@@ -245,11 +238,11 @@ extension ExploreFollowProvider: UIScrollViewDelegate {
     
     
     func loadImagesForVisibleCells() {
-        var cellArray = self.bindViewController?.tableView.visibleCells()
+        let cellArray = self.bindViewController?.tableView.visibleCells
         
         for cell in cellArray! {
             if cell is SAStepCell {
-                var indexPath = self.bindViewController?.tableView.indexPathForCell(cell as! SAStepCell)
+                let indexPath = self.bindViewController?.tableView.indexPathForCell(cell as! SAStepCell)
                 var _tmpShouldLoadImg = false
                 
                 if let _indexPath = indexPath {

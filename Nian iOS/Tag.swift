@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
+class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     let identifier = "tagCell"
     var tableView:UITableView?
@@ -38,16 +38,16 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"TagCell", bundle: nil)
+        let nib = UINib(nibName:"TagCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView!.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 10))
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
-        var hashtag = self.Id.toInt()! - 1
+        let hashtag = Int(self.Id)! - 1
         if hashtag >= 0 {
             titleLabel.text = "\(self.tagArray[hashtag])标签"
         }
@@ -59,10 +59,10 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     
     func loadData(){
-        var url = urlString()
+        let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                var arr = data.objectForKey("items") as! NSArray
+                let arr = data.objectForKey("items") as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
@@ -78,13 +78,13 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     func SAReloadData(){
         self.tableView!.setFooterHidden(false)
         self.page = 0
-        var url = urlString()
+        let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
                 if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data.objectForKey("items") as! NSArray
+                let arr = data.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -116,9 +116,9 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? TagCell
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? TagCell
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         return cell!
     }
@@ -130,10 +130,10 @@ class TagViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
-        var id = data.objectForKey("id") as! String
-        var DreamVC = DreamViewController()
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
+        let id = data.objectForKey("id") as! String
+        let DreamVC = DreamViewController()
         DreamVC.Id = id
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }

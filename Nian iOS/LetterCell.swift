@@ -35,7 +35,7 @@ class LetterCell: MKTableViewCell {
     }
     
     func onUserClick(sender: UIGestureRecognizer) {
-        var UserVC = PlayerViewController()
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
     }
@@ -43,25 +43,25 @@ class LetterCell: MKTableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if data != nil {
-            var id = self.data!.stringAttributeForKey("id")
-            var title = self.data!.stringAttributeForKey("title")
+            let id = self.data!.stringAttributeForKey("id")
+            let title = self.data!.stringAttributeForKey("title")
             self.imageHead.setHead(id)
-            if let v = id.toInt() {
+            if let v = Int(id) {
                 self.imageHead.tag = v
             }
             self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             self.labelTitle.text = title
-            let (resultSet2, err2) = SD.executeQuery("select * from letter where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
+            let (resultSet2, _) = SD.executeQuery("select * from letter where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
             if resultSet2.count > 0 {
                 for row in resultSet2 {
-                    var postdate = (row["lastdate"]!.asString() as NSString).doubleValue
-                    var content = row["content"]!.asString()
-                    var type = row["type"]!.asString()
+                    let postdate = (row["lastdate"]!.asString() as NSString).doubleValue
+                    let content = row["content"]!.asString()
+                    let type = row["type"]!.asString()
                     var textContent = content
                     if type == "2" {
                         textContent = "发了一张图片"
@@ -76,13 +76,13 @@ class LetterCell: MKTableViewCell {
             }
             let (resultSet, err) = SD.executeQuery("select id from letter where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
             if err == nil {
-                var count = resultSet.count
+                let count = resultSet.count
                 if count == 0 {
                     self.labelCount.text = "0"
                     self.labelCount.hidden = true
                 }else{
                     self.labelCount.hidden = false
-                    var widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
+                    let widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
                     self.labelCount.text = "\(count)"
                     self.labelCount.setWidth(widthCount)
                     self.labelCount.setX(globalWidth-15-widthCount)

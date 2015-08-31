@@ -22,7 +22,6 @@ class CircleBubbleCell: UITableViewCell {
     var activity: UIActivityIndicatorView?
     var data :NSDictionary!
     var contentLabelWidth:CGFloat = 0
-    var isDream: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,31 +34,23 @@ class CircleBubbleCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-        super.layoutSubviews()
-        var uid = self.data.stringAttributeForKey("uid")
-        var user = self.data.stringAttributeForKey("user")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
-        var content = self.data.stringAttributeForKey("content")
-        if isDream == 1 {
-            content = "更新了记本「\(content)」"
-        }
-        var cid = self.data.stringAttributeForKey("cid")
-        var type = (self.data.objectForKey("type") as! String).toInt()!
-        self.nickLabel!.text = user
-        self.lastdate!.text = lastdate
-        self.avatarView.setHead(uid)
-        var height = content.stringHeightWith(15,width:208)
-        self.avatarView!.tag = uid.toInt()!
-        self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
-        
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-        if uid == safeuid {
-            layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: true)
-        }else{
-            layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: false)
+        if data != nil {
+            let uid = self.data.stringAttributeForKey("uid")
+            let user = self.data.stringAttributeForKey("user")
+            let lastdate = self.data.stringAttributeForKey("lastdate")
+            let content = self.data.stringAttributeForKey("content")
+            self.nickLabel!.text = user
+            self.lastdate!.text = lastdate
+            self.avatarView.setHead(uid)
+            let height = content.stringHeightWith(15,width:208)
+            self.avatarView!.tag = Int(uid)!
+            self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
+            
+            if uid == SAUid() {
+                layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: true)
+            }else{
+                layoutWord(height, content: content, user: user, lastdate: lastdate, isMe: false)
+            }
         }
     }
     
@@ -68,7 +59,7 @@ class CircleBubbleCell: UITableViewCell {
         self.contentLabel.setY(25)
         self.contentLabel!.text = content
         if height == "".stringHeightWith(15,width:208) {      //如果是单行
-            var oneLineWidth = content.stringWidthWith(15, height: 24)
+            let oneLineWidth = content.stringWidthWith(15, height: 24)
             self.textContent.setWidth(oneLineWidth + 27)
             self.textContent.setHeight(37)
             self.contentLabelWidth = content.stringWidthWith(15, height: 24)
@@ -101,10 +92,8 @@ class CircleBubbleCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var content = data.stringAttributeForKey("content")
-        var type = data.stringAttributeForKey("type")
-        var cid = data.stringAttributeForKey("cid")
-        var height = content.stringHeightWith(15,width:208)
+        let content = data.stringAttributeForKey("content")
+        let height = content.stringHeightWith(15,width:208)
         return height + 60
     }
     

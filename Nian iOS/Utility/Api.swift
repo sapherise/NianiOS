@@ -16,14 +16,14 @@ struct Api {
     
     private static func loadCookies() {
         if (!s_load) {
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             
             /*
             TODO: 将废弃原来写在 NSUserDefault 里的 uid 和 shell, 
                   uid 和 shell 放到 Keychain 里面
             */
             
-            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
             
             if let _s_uid = Sa.objectForKey("uid") as? String {
                 s_uid = _s_uid
@@ -134,7 +134,7 @@ struct Api {
     static func getAutoComplete(keyword: String, callback: V.JsonCallback) {
         loadCookies()
         
-        var manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPRequestOperationManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         manager.operationQueue.cancelAllOperations()
         manager.GET("http://api.nian.so/tags/autocomplete?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)",
@@ -233,10 +233,14 @@ struct Api {
     
     static func postIapVerify(transactionId: String, data: NSData, callback: V.JsonCallback) {
         loadCookies()
-        var receiptData = ["receipt-data" : data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)]
-        var err: NSError?
-        var jsonData = NSJSONSerialization.dataWithJSONObject(receiptData, options: NSJSONWritingOptions.allZeros, error: &err)
-        V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&transaction_id=\(transactionId)&data=\(jsonData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros))", callback: callback)
+        let receiptData = ["receipt-data" : data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions())]
+        var jsonData: NSData?
+        do {
+            jsonData = try NSJSONSerialization.dataWithJSONObject(receiptData, options: NSJSONWritingOptions())
+        } catch _ as NSError {
+            jsonData = nil
+        }
+        V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&transaction_id=\(transactionId)&data=\(jsonData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions()))", callback: callback)
     }
     
     static func postLabTrip(id: String, subid: Int = 0, callback: V.JsonCallback) {
@@ -246,7 +250,7 @@ struct Api {
     
     static func postCircleNew(name: String, content: String, img: String, privateType: Int, dream: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_new2.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&dream=\(dream)&circleshellid=\(sid)", callback: callback)
 //        V.httpPostForJson_AFN("http://nian.so/api/circle_new2.php",
 //            content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "title": "\(name)", "content": "\(content)", "img": "\(img)", "private": "\(privateType)", "dream": "\(dream)", "circleshellid": "\(sid)" ],
@@ -255,7 +259,7 @@ struct Api {
     
     static func postCircleEdit(name: String, content: String, img: String, privateType: Int, ID: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_edit.php", content: "id=\(ID)&uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&circleshellid=\(sid)", callback: callback)
 //        V.httpPostForJson_AFN("http://nian.so/api/circle_edit.php",
 //            content: ["id": "\(ID)", "uid": "\(s_uid)", "shell": "\(s_shell)", "title": "\(name)", "content": "\(content)", "img": "\(img)", "private": "\(privateType)", "circleshellid": "\(sid)"],
@@ -264,43 +268,43 @@ struct Api {
     
     static func postCircleChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJsonSync("http://nian.so/api/circle_chat2.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCircleQuit(Id: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_quit.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCircleDelete(Id: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_delete.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCircleFire(Id: String, fireuid:Int, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_fire.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&fireuid=\(fireuid)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postCirclePromo(Id: String, promouid: Int, promoname: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_promote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&promouid=\(promouid)&circleshellid=\(sid)&promoname=\(promoname)", callback: callback)
     }
     
     static func postCircleDemo(Id: String, promouid: Int, promoname: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_demote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&promouid=\(promouid)&circleshellid=\(sid)&promoname=\(promoname)", callback: callback)
     }
     
     static func postCircleJoinDirectly(Id: String, dream:String, word:String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_join.php", content: "uid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&dream=\(dream)&word=\(word)&circleshellid=\(sid)", callback: callback)
     }
     
@@ -317,7 +321,7 @@ struct Api {
     
     static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)&circleshellid=\(sid)", callback: callback)
     }
     
@@ -328,7 +332,7 @@ struct Api {
     
     static func postCircleInvite(Id: String, uid: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/circle_invite.php", content: "uid=\(uid)&myuid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&circleshellid=\(sid)", callback: callback)
     }
     
@@ -398,7 +402,7 @@ struct Api {
     
     static func getBBSComment(id: String, page: Int, isAsc: Bool, callback: V.JsonCallback) {
         loadCookies()
-        var sort = isAsc ? "asc" : "desc"
+        let sort = isAsc ? "asc" : "desc"
         V.httpGetForJson("http://api.nian.so/bbs/\(id)/comments?page=\(page)&sort=\(sort)", callback: callback)
     }
     
@@ -414,7 +418,7 @@ struct Api {
     
     static func postLetterChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJsonSync("http://nian.so/api/letter_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
     }
     
@@ -440,13 +444,18 @@ struct Api {
     
     static func postCircleDisturb(circle: String, isDisturb: Bool, callback: V.JsonCallback) {
         loadCookies()
-        var disturb: Int = isDisturb ? 1 : 0
+        let disturb: Int = isDisturb ? 1 : 0
         V.httpPostForJson_AFN("http://nian.so/api/circle_disturb.php", content: ["circle": "\(circle)", "uid": "\(s_uid)", "shell": "\(s_shell)", "disturb": "\(disturb)" ], callback: callback)
     }
     
     static func postGameover(callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson_AFN("http://nian.so/api/gameover1.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)"], callback: callback)
+    }
+    
+    static func postLogin(email: String, password: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/login.php", content: "em=\(email)&pw=\(password)", callback: callback)
     }
     
     static func postGameoverCoin(id: String, callback: V.JsonCallback) {
@@ -456,7 +465,7 @@ struct Api {
     
     static func postAddStep(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://nian.so/api/addstep_query2.php", content: "uid=\(s_uid)&shell=\(s_shell)&dream=\(dream)&content=\(content)&img=\(img)&img0=\(img0)&img1=\(img1)&circleshellid=\(sid)", callback: callback)
         
 //        ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"]
@@ -470,7 +479,7 @@ struct Api {
     */
     static func postAddStep_AFN(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson_AFN("http://nian.so/api/addstep_query2.php",
             content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"],
             callback: callback)
@@ -485,13 +494,18 @@ struct Api {
     
     static func postAddBBS(title: String, content: String, circle: String, callback: V.JsonCallback) {
         loadCookies()
-        var sid = client.getSid()
+        let sid = client.getSid()
         V.httpPostForJson("http://api.nian.so/bbs?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&circle_id=\(circle)&circleshellid=\(sid)", callback: callback)
     }
     
     static func getDeleteDream(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/dream/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getNews(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/news.php", callback: callback)
     }
     
     static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
@@ -643,12 +657,6 @@ struct Api {
     }
     
     
-    static func postLogin(email: String, password: String, callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/login.php", content: "em=\(email)&&pw=\(password)", callback: callback)
-    }
-    
-    
     static func postUsername(uid: String, callback: V.StringCallback) {
         loadCookies()
         V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
@@ -662,8 +670,8 @@ struct Api {
     
     static func postDeviceToken(callback: V.StringCallback) {
         loadCookies()
-        var UserDefaults = NSUserDefaults.standardUserDefaults()
-        var DeviceToken = UserDefaults.objectForKey("DeviceToken") as? String
+        let UserDefaults = NSUserDefaults.standardUserDefaults()
+        let DeviceToken = UserDefaults.objectForKey("DeviceToken") as? String
         if DeviceToken != nil {
             V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=\(DeviceToken!)&&uid=\(s_uid)&&shell=\(s_shell)&&type=1", callback: callback)
         }
@@ -751,7 +759,7 @@ extension  Api {
     /**
     抽取宠物
     
-    :param: callback <#callback description#>
+    - parameter callback: <#callback description#>
     */
     static func postPetLottery(callback: V.JsonCallback) {
         let _sha256String = ((s_uid + s_shell) as NSString).SHA256()
@@ -761,8 +769,8 @@ extension  Api {
     /**
     获得用户的宠物
     
-    :param: page     <#page description#>
-    :param: callback <#callback description#>
+    - parameter page:     <#page description#>
+    - parameter callback: <#callback description#>
     */
     static func getUserPet(page: Int, callback: V.JsonCallback) {
         loadCookies()

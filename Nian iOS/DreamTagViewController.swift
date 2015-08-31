@@ -19,7 +19,7 @@ protocol DreamTagDelegate {
     func onTagSelected(tag: String, tagType: Int)
 }
 
-class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
+class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet var collectionView: UICollectionView!
     
@@ -32,7 +32,7 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func setupViews(){
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.viewBack()
         self.view.addSubview(navView)
@@ -44,7 +44,7 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
         self.collectionView.frame.size = CGSizeMake(globalWidth, globalHeight)
         self.view.frame.size = CGSizeMake(globalWidth, globalHeight)
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "选择标签"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -56,8 +56,8 @@ class DreamTagViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var index = indexPath.row
-        var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as! TagMediaCell
+        let index = indexPath.row
+        let mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as! TagMediaCell
         mediaCell.label.text = "\(V.Tags[index])"
         mediaCell.imageView.image = UIImage(named: "tag\(self.imgArray[index])")
         return mediaCell

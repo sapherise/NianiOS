@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SingleStepViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, delegateSAStepCell{
+class SingleStepViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, delegateSAStepCell{
     
     var tableView:UITableView!
     var dataArray = NSMutableArray()
@@ -49,7 +49,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "进展"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -61,12 +61,12 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         Api.getSingleStep(self.Id) { json in
             if json != nil {
                 self.dataArray.removeAllObjects()
-                var data = json!.objectForKey("data") as! NSDictionary
-                var hidden = data.stringAttributeForKey("hidden")
+                let data = json!.objectForKey("data") as! NSDictionary
+                let hidden = data.stringAttributeForKey("hidden")
                 if hidden == "1" {
-                    var viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
+                    let viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
                     viewTop.setY(40)
-                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     viewHolder.addSubview(viewTop)
                     self.tableView?.tableHeaderView = viewHolder
                 } else {
@@ -84,7 +84,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+        let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
         c.delegate = self
         c.data = self.dataArray[indexPath.row] as! NSDictionary
         c.index = indexPath.row
@@ -98,7 +98,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var data = self.dataArray[indexPath.row] as! NSDictionary
+        let data = self.dataArray[indexPath.row] as! NSDictionary
         
         return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
             (cell as! SAStepCell).celldataSource = self
@@ -124,12 +124,12 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArray, index, key, value, self.tableView)
+        SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: self.tableView)
     }
     
     // 更新某个格子
     func updateStep(index: Int) {
-        SAUpdate(index, 0, self.tableView)
+        SAUpdate(index, section: 0, tableView: self.tableView)
     }
     
     // 重载表格
@@ -139,7 +139,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, self.dataArray, index, self.tableView, 0)
+        SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: self.tableView, section: 0)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

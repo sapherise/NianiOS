@@ -16,7 +16,7 @@ protocol DreamPromoDelegate {
     func onPromoClick(id: Int, content: String)
 }
 
-class CircleTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
+class CircleTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet var collectionView: UICollectionView!
     
@@ -32,7 +32,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func setupViews(){
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.viewBack()
         self.view.addSubview(navView)
@@ -42,7 +42,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         self.collectionView.contentInset.bottom = 60
         self.extendedLayoutIncludesOpaqueBars = true
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if dreamPromoDelegate != nil {
             titleLabel.text = "推广记本"
@@ -61,23 +61,23 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var index = indexPath.row
-        var mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as! TagMediaCell
-        var data = self.dataArray[index] as! NSDictionary
-        var title = data.objectForKey("title") as! String
-        var img = data.objectForKey("img") as! String
+        let index = indexPath.row
+        let mediaCell = collectionView.dequeueReusableCellWithReuseIdentifier("TagMediaCell", forIndexPath: indexPath) as! TagMediaCell
+        let data = self.dataArray[index] as! NSDictionary
+        let title = data.objectForKey("title") as! String
+        let img = data.objectForKey("img") as! String
         mediaCell.label.text = "\(title)"
         mediaCell.imageView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
         return mediaCell
     }
     
     func collectionView(collectionView:UICollectionView, didSelectItemAtIndexPath indexPath:NSIndexPath) {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
-        var id = data.stringAttributeForKey("id")
-        var title = data.stringAttributeForKey("title")
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        let title = data.stringAttributeForKey("title")
         if dreamPromoDelegate != nil {  // 如果是推广记本
-            if let v = id.toInt() {
+            if let v = Int(id) {
                 dreamPromoDelegate?.onPromoClick(v, content: title)
                 self.navigationController?.popViewControllerAnimated(true)
             }
@@ -90,16 +90,16 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     func load(){
         Api.postCircleTag() { json in
             if json != nil {
-                var arr = json!.objectForKey("items") as! NSArray
+                let arr = json!.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data in arr {
                     self.dataArray.addObject(data)
                 }
                 if self.dataArray.count == 0 {
-                    var textEmpty = "要先有一个\n公开中的记本"
-                    var viewTop = viewEmpty(globalWidth, content: textEmpty)
+                    let textEmpty = "要先有一个\n公开中的记本"
+                    let viewTop = viewEmpty(globalWidth, content: textEmpty)
                     viewTop.setY(104)
-                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     viewHolder.addSubview(viewTop)
                     self.view.addSubview(viewHolder)
                     self.collectionView?.hidden = true

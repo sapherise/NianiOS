@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate, delegateSAStepCell{
+class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, delegateSAStepCell{
     var dataArrayUser = NSMutableArray()
     var dataArrayDream = NSMutableArray()
     var dataArrayStep = NSMutableArray()
@@ -61,7 +61,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.viewBackFix()
         
         
-        if count(preSetSearch) > 0 {
+        if preSetSearch.characters.count > 0 {
             searchText.text = preSetSearch
         }
         
@@ -77,7 +77,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-        if (count(preSetSearch) > 0 && shouldPerformSearch) {
+        if (preSetSearch.characters.count > 0 && shouldPerformSearch) {
             if index == 0 {
                 self.dreamTableView.headerBeginRefreshing()
             } else {
@@ -143,7 +143,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         floatView.backgroundColor = SeaColor
         
         searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth-60, 26))
-        var color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
+        let color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
         searchText.layer.cornerRadius = 13
         searchText.layer.masksToBounds = true
         searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)
@@ -196,7 +196,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @IBAction func dream(sender: AnyObject) {
-        var tmp = index
+        let tmp = index
         index = 0
         setupButtonColor(index)
         self.dreamTableView.hidden = false
@@ -215,7 +215,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @IBAction func user(sender: AnyObject) {
-        var tmp = index
+        let tmp = index
         index = 1
         setupButtonColor(1)
         self.tableView.hidden = false
@@ -237,13 +237,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             userPage = 1
         }
-        Api.getSearchUsers(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: userPage++, callback: {
+        
+        Api.getSearchUsers(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: userPage++, callback: {
             json in
             if json != nil {
                 if clear {
                     self.dataArrayUser.removeAllObjects()
                 }
-                var items = json!.objectForKey("users") as? NSArray
+                let items = json!.objectForKey("users") as? NSArray
                 if items != nil {
                     for item in items! {
                         self.dataArrayUser.addObject(item)
@@ -263,21 +264,21 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             dreamPage = 1
         }
-        Api.getSearchDream(searchText.text.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, page: dreamPage++, callback: {
+        Api.getSearchDream(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: dreamPage++, callback: {
             json in
             if json != nil {
                 if clear {
                     self.dataArrayDream.removeAllObjects()
                     self.dataArrayStep.removeAllObjects()
                 }
-                var data: AnyObject? = json!.objectForKey("data")
-                var itemsDream = data!.objectForKey("dreams") as? NSArray
+                let data: AnyObject? = json!.objectForKey("data")
+                let itemsDream = data!.objectForKey("dreams") as? NSArray
                 if itemsDream != nil {
                     for item in itemsDream! {
                         self.dataArrayDream.addObject(item)
                     }
                 }
-                var itemsStep = data!.objectForKey("steps") as? NSArray
+                let itemsStep = data!.objectForKey("steps") as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
                         self.dataArrayStep.addObject(item)
@@ -319,7 +320,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if index == 0 {
             if section == 0 {
                 if self.dataArrayDream.count != 0 {
-                    var viewFooter = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
+                    let viewFooter = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
                     viewFooter.backgroundColor = IconColor
                     return viewFooter
                 }
@@ -342,8 +343,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if index == 0 {
             if indexPath.section == 0 {
-                var c = dreamTableView.dequeueReusableCellWithIdentifier("SADoubleCell", forIndexPath: indexPath) as! SADoubleCell
-                var data = self.dataArrayDream[indexPath.row] as! NSDictionary
+                let c = dreamTableView.dequeueReusableCellWithIdentifier("SADoubleCell", forIndexPath: indexPath) as! SADoubleCell
+                let data = self.dataArrayDream[indexPath.row] as! NSDictionary
                 c.data = data
                 c.btnMain.tag = indexPath.row
                 c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toDream:"))
@@ -353,7 +354,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 }
                 return c
             } else {
-                var c = dreamTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+                let c = dreamTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
                 c.delegate = self
                 c.data = self.dataArrayStep[indexPath.row] as! NSDictionary
                 c.index = indexPath.row
@@ -366,8 +367,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 return c
             }
         } else {
-            var cell = self.tableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
-            var data = self.dataArrayUser[indexPath.row] as! NSDictionary
+            let cell = self.tableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
+            let data = self.dataArrayUser[indexPath.row] as! NSDictionary
             cell?.data = data
             cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
             cell?.btnMain.tag = indexPath.row
@@ -379,16 +380,16 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if index == 0 {
             if indexPath.section == 1 {
-                var index = indexPath.row
-                var data = self.dataArrayStep[index] as! NSDictionary
-                var dream = data.stringAttributeForKey("dream")
+                let index = indexPath.row
+                let data = self.dataArrayStep[index] as! NSDictionary
+                let dream = data.stringAttributeForKey("dream")
                 SADream(dream)
             }
         }
     }
     
     /**
-    :returns: Bool值，代表是否要加载图片
+    - returns: Bool值，代表是否要加载图片
     */
     func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
         if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.dreamTableView.rectForRowAtIndexPath(indexPath)) {
@@ -411,12 +412,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func onFollowDream(sender: UIButton) {
-        var tag = sender.tag
-        var data = self.dataArrayDream[tag] as! NSDictionary
-        var id = data.stringAttributeForKey("id")
-        var follow = data.stringAttributeForKey("follow")
-        var newFollow = follow == "0" ? "1" : "0"
-        var mutableData = NSMutableDictionary(dictionary: data)
+        let tag = sender.tag
+        let data = self.dataArrayDream[tag] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        let follow = data.stringAttributeForKey("follow")
+        let newFollow = follow == "0" ? "1" : "0"
+        let mutableData = NSMutableDictionary(dictionary: data)
         mutableData.setValue(newFollow, forKey: "follow")
         self.dataArrayDream[tag] = mutableData
         self.dreamTableView.reloadData()
@@ -425,12 +426,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func onFollow(sender: UIButton) {
-        var tag = sender.tag
-        var data = self.dataArrayUser[tag] as! NSDictionary
-        var uid = data.stringAttributeForKey("uid")
-        var follow = data.stringAttributeForKey("follow")
-        var newFollow = follow == "0" ? "1" : "0"
-        var mutableData = NSMutableDictionary(dictionary: data)
+        let tag = sender.tag
+        let data = self.dataArrayUser[tag] as! NSDictionary
+        let uid = data.stringAttributeForKey("uid")
+        let follow = data.stringAttributeForKey("follow")
+        let newFollow = follow == "0" ? "1" : "0"
+        let mutableData = NSMutableDictionary(dictionary: data)
         mutableData.setValue(newFollow, forKey: "follow")
         self.dataArrayUser[tag] = mutableData
         self.tableView.reloadData()
@@ -448,7 +449,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             if indexPath.section == 0 {
                 return 81
             } else {
-                var data = self.dataArrayStep[indexPath.row] as! NSDictionary
+                let data = self.dataArrayStep[indexPath.row] as! NSDictionary
                 
                 return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
                     (cell as! SAStepCell).celldataSource = self
@@ -477,12 +478,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArrayStep, index, key, value, self.dreamTableView)
+        SAUpdate(self.dataArrayStep, index: index, key: key, value: value, tableView: self.dreamTableView)
     }
     
     // 更新某个格子
     func updateStep(index: Int) {
-        SAUpdate(index, 1, self.dreamTableView)
+        SAUpdate(index, section: 1, tableView: self.dreamTableView)
     }
     
     // 重载表格
@@ -492,7 +493,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, self.dataArrayStep, index, self.dreamTableView, 1)
+        SAUpdate(delete, dataArray: self.dataArrayStep, index: index, tableView: self.dreamTableView, section: 1)
     }
 }
 
@@ -525,7 +526,7 @@ extension ExploreSearch {
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
         self.targetRect = NSValue(CGRect: targetRect)
     }
     
@@ -538,16 +539,14 @@ extension ExploreSearch {
     }
     
     func loadImagesForVisibleCells() {
-        var cellArray = self.tableView.visibleCells()
+        let cellArray = self.tableView.visibleCells
         
         for cell in cellArray {
             if cell is SAStepCell {
-                var indexPath = self.dreamTableView.indexPathForCell(cell as! SAStepCell)
+                let indexPath = self.dreamTableView.indexPathForCell(cell as! SAStepCell)
                 var _tmpShouldLoadImg = false
                 
-                if let _indexPath = indexPath {
-                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-                }
+                _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
                 
                 if _tmpShouldLoadImg {
                     self.dreamTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)

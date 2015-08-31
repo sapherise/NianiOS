@@ -37,9 +37,9 @@ class ExploreRecommend: ExploreProvider {
                 json in
                 
                 if json != nil {
-                    var err = json!.objectForKey("error") as? NSNumber
+                    let err = json!.objectForKey("error") as? NSNumber
                     if err == 0 {
-                        var data = json!.objectForKey("data") as? NSDictionary
+                        let data = json!.objectForKey("data") as? NSDictionary
                         if data != nil {
                             
                             if let _editorArray = data!.objectForKey("recommend") as? NSMutableArray {
@@ -73,7 +73,7 @@ class ExploreRecommend: ExploreProvider {
             json in
             if json != nil {
                 globalTab[2] = false
-                var arr = json!.objectForKey("items") as! NSArray
+                let arr = json!.objectForKey("items") as! NSArray
                 if clear {
                     self.listDataArray.removeAllObjects()
                 }
@@ -92,9 +92,9 @@ class ExploreRecommend: ExploreProvider {
                         self.bindViewController?.recomTableView.reloadData()
                     }
                 }
-                var count = self.listDataArray.count
+                let count = self.listDataArray.count
                 if count >= 1 {
-                    var data = self.listDataArray[count - 1] as! NSDictionary
+                    let data = self.listDataArray[count - 1] as! NSDictionary
                     self.lastID = data.stringAttributeForKey("sid")
                 }
             }
@@ -103,7 +103,7 @@ class ExploreRecommend: ExploreProvider {
     
     
     override func onHide() {
-        bindViewController!.recomTableView.headerEndRefreshing(animated: false)
+        bindViewController!.recomTableView.headerEndRefreshing(false)
     }
     
     override func onShow(loading: Bool) {
@@ -154,8 +154,8 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 2 {
-            var index = indexPath.row
-            var data = self.listDataArray[index] as! NSDictionary
+            let index = indexPath.row
+            let data = self.listDataArray[index] as! NSDictionary
             
             return  ExploreNewHotCell.cellHeightByData(data)
         } else if indexPath.section == 0 || indexPath.section == 1 {
@@ -168,7 +168,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 2 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
             cell!.data = self.listDataArray[indexPath.row] as! NSDictionary
             
             if indexPath.row == self.listDataArray.count - 1 {
@@ -180,20 +180,20 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             
             return cell!
         } else if indexPath.section == 0 {
-            var recomCell = tableView.dequeueReusableCellWithIdentifier("EditorRecomCell", forIndexPath: indexPath) as! EditorRecomCell
+            let recomCell = tableView.dequeueReusableCellWithIdentifier("EditorRecomCell", forIndexPath: indexPath) as! EditorRecomCell
             recomCell.data = self.editorRecommArray
             recomCell.collectionView.setContentOffset(CGPointMake(0, 0), animated: false)
             recomCell._layoutSubview()
             
             return recomCell
         } else if indexPath.section == 1 {
-            var latestCell = tableView.dequeueReusableCellWithIdentifier("LatestNoteCell", forIndexPath: indexPath) as! LatestNoteCell
+            let latestCell = tableView.dequeueReusableCellWithIdentifier("LatestNoteCell", forIndexPath: indexPath) as! LatestNoteCell
             latestCell.data = self.latestArray
             latestCell._layoutSubview()
             
             return latestCell
         } else {
-            var cell = UITableViewCell()
+            let cell = UITableViewCell()
             return cell
         }
     }
@@ -208,7 +208,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 2 {
-            var DreamVC = DreamViewController()
+            let DreamVC = DreamViewController()
             DreamVC.Id = (self.listDataArray[indexPath.row] as! NSDictionary)["id"] as! String
             
             self.bindViewController?.navigationController?.pushViewController(DreamVC, animated: true)

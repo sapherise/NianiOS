@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension PetViewController: NIAlertDelegate, ShareDelegate {
+extension PetViewController {
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self.upgradeView {
             if didselectAtIndex == 1 {
@@ -27,15 +27,15 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
                         if err == 0 {
                             self.isUpgradeSuccess = true
                             globalWillNianReload = 1
-                            var data = json!.objectForKey("data") as! NSDictionary
-                            var id = data.stringAttributeForKey("id")
-                            var level = data.stringAttributeForKey("level")
-                            var image = data.stringAttributeForKey("image")
-                            var name = data.stringAttributeForKey("name")
+                            let data = json!.objectForKey("data") as! NSDictionary
+                            let id = data.stringAttributeForKey("id")
+                            let level = data.stringAttributeForKey("level")
+                            let image = data.stringAttributeForKey("image")
+                            let name = data.stringAttributeForKey("name")
                             if self.dataArray.count >= 1 {
                                 for i: Int in 0...self.dataArray.count - 1 {
-                                    var d = self.dataArray[i] as! NSDictionary
-                                    var _id = d.stringAttributeForKey("id")
+                                    let d = self.dataArray[i] as! NSDictionary
+                                    let _id = d.stringAttributeForKey("id")
                                     if _id == id {
                                         if level == "5" || level == "10" {
                                             self.evolutionView = NIAlert()
@@ -43,17 +43,17 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
                                             self.evolutionView!.dict = NSMutableDictionary(objects: [self.imageView, name, "\(name)进化了！", [" 嗯！"]],
                                                 forKeys: ["img", "title", "content", "buttonArray"])
                                             self.upgradeView?.dismissWithAnimationSwtichEvolution(self.evolutionView!, url: image)
-                                            var mutableData = NSMutableDictionary(dictionary: d)
+                                            let mutableData = NSMutableDictionary(dictionary: d)
                                             mutableData.setValue(image, forKey: "image")
                                             mutableData.setValue(level, forKey: "level")
                                             self.dataArray[i] = mutableData
                                             self.tableViewPet.reloadData()
-                                            delay(1, {
+                                            delay(1, closure: {
                                                 self.setPetTitle()
                                             })
                                             break
                                         } else {
-                                            var mutableData = NSMutableDictionary(dictionary: d)
+                                            let mutableData = NSMutableDictionary(dictionary: d)
                                             mutableData.setValue(image, forKey: "image")
                                             mutableData.setValue(level, forKey: "level")
                                             self.dataArray[i] = mutableData
@@ -86,8 +86,8 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
             
         } else if niAlert == self.petDetailView {
             if didselectAtIndex == 0 {
-                var data = dataArray[current] as! NSDictionary
-                var owned = data.stringAttributeForKey("owned")
+                let data = dataArray[current] as! NSDictionary
+                let owned = data.stringAttributeForKey("owned")
                 if owned == "1" {
                     shareVC()
                 } else {
@@ -109,7 +109,7 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
             if energy >= 100 {
                 let _btn = giftView!.niButtonArray.firstObject as! NIButton
                 _btn.startAnimating()
-                var coins = energy/100
+                let coins = energy/100
                 Api.getConsume("energy", coins: coins) { json in
                     if json != nil {
                         let err = json!.objectForKey("error") as! NSNumber
@@ -145,22 +145,22 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
     }
     
     func shareVC() {
-        var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
-        var data = dataArray[current] as! NSDictionary
-        var name = data.stringAttributeForKey("name")
-        var image = data.stringAttributeForKey("image")
-        var content = "我在念里拿到了可爱的「\(name)」"
+        let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+        let data = dataArray[current] as! NSDictionary
+        let name = data.stringAttributeForKey("name")
+        let image = data.stringAttributeForKey("image")
+        let content = "我在念里拿到了可爱的「\(name)」"
         card.content = content
         card.widthImage = "360"
         card.heightImage = "360"
-        card.url = "http://img.nian.so/pets/\(image)!d"//todo
-        var img = card.getCard()
-        var avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
+        card.url = "http://img.nian.so/pets/\(image)!d"
+        let img = card.getCard()
+        let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
     func onEgg() {
-        var v = SAEgg()
+        let v = SAEgg()
         v.delegateShare = self
         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
             forKeys: ["img", "title", "content", "buttonArray"])
@@ -168,15 +168,15 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
     }
     
     func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
-        var id = lotteryResult.stringAttributeForKey("id")
+        let id = lotteryResult.stringAttributeForKey("id")
         
         if self.dataArray.count >= 1 {
             for i: Int in 0...self.dataArray.count - 1 {
-                var d = self.dataArray[i] as! NSDictionary
-                var _id = d.stringAttributeForKey("id")
-                var level = d.stringAttributeForKey("level")
+                let d = self.dataArray[i] as! NSDictionary
+                let _id = d.stringAttributeForKey("id")
+                let level = d.stringAttributeForKey("level")
                 if _id == id && level == "1" {
-                    var mutableData = NSMutableDictionary(dictionary: d)
+                    let mutableData = NSMutableDictionary(dictionary: d)
                     mutableData.setValue(level, forKey: "level")
                     mutableData.setValue("1", forKey: "owned")
                     self.dataArray[i] = mutableData
@@ -200,20 +200,4 @@ extension PetViewController: NIAlertDelegate, ShareDelegate {
         }
         giftView?.showWithAnimation(.flip)
     }
-    
-//    func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
-//        let _id = lotteryResult.objectForKey("id") as! String
-//        let img = lotteryResult.stringAttributeForKey("image")
-//
-//        var contained: Bool = false
-//
-//        // 遍历 petInfoArray, 看是否包含新抽得的宠物
-//
-//        for item in self.petInfoArray {
-//            let id = (item as! NSDictionary).objectForKey("id") as! String
-//
-//            if id == _id {
-//                contained = true
-//            }
-//        }
 }

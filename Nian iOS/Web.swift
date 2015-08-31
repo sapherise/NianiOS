@@ -9,7 +9,7 @@
 import UIKit
 
 
-class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebViewDelegate{
+class WebViewController: UIViewController, UIWebViewDelegate{
     var urlString = ""
     var webTitle = ""
     var actionSheet: UIActionSheet?
@@ -17,15 +17,15 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
     func setupViews(string: String, title: String){
         self.view.backgroundColor = BGColor
         
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
-        var btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
+        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
         btnMore.image = UIImage(named: "more")
         self.navigationItem.rightBarButtonItems = [btnMore]
         
-        var web = UIWebView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        let web = UIWebView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         web.delegate = self
         web.userInteractionEnabled = true
         self.view.addSubview(web)
@@ -38,7 +38,7 @@ class WebViewController: UIViewController, UIGestureRecognizerDelegate, UIWebVie
             self.view.showTipText("网址错误", delay: 2)
         }
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = webTitle
         titleLabel.textAlignment = NSTextAlignment.Center

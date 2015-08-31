@@ -21,7 +21,7 @@ extension UIImageView {
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
     func setImage(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
-        var url = NSURL(string: urlString)
+        let url = NSURL(string: urlString)
         if bool == true {
             self.image = UIImage(named: "drop")!
         } else {
@@ -31,10 +31,10 @@ extension UIImageView {
         self.backgroundColor = placeHolder
         self.contentMode = .Center
         
-        var networkStatus = checkNetworkStatus()
-        var Sa: NSUserDefaults = .standardUserDefaults()
-        var saveMode: String? = Sa.objectForKey("saveMode") as? String
-        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        let networkStatus = checkNetworkStatus()
+        let Sa: NSUserDefaults = .standardUserDefaults()
+        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
@@ -56,7 +56,7 @@ extension UIImageView {
     }
     
     func setCover(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
-        var url = NSURL(string: urlString)
+        let url = NSURL(string: urlString)
         if bool == true {
             self.image = UIImage(named: "drop")!
         } else {
@@ -65,10 +65,10 @@ extension UIImageView {
         self.backgroundColor = placeHolder
         self.contentMode = .Center
         
-        var networkStatus = checkNetworkStatus()
-        var Sa: NSUserDefaults = .standardUserDefaults()
-        var saveMode: String? = Sa.objectForKey("saveMode") as? String
-        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        let networkStatus = checkNetworkStatus()
+        let Sa: NSUserDefaults = .standardUserDefaults()
+        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {    //如果是开启了同时还是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
@@ -90,14 +90,14 @@ extension UIImageView {
     }
 
     func setHead(uid: String) {
-        var url = NSURL(string: "http://img.nian.so/head/\(uid).jpg!dream")
+        let url = NSURL(string: "http://img.nian.so/head/\(uid).jpg!dream")
         self.image = UIImage(named: "head")
         self.contentMode = .ScaleAspectFill
         
-        var networkStatus = checkNetworkStatus()
-        var Sa: NSUserDefaults = .standardUserDefaults()
-        var saveMode: String? = Sa.objectForKey("saveMode") as? String
-        var req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        let networkStatus = checkNetworkStatus()
+        let Sa: NSUserDefaults = .standardUserDefaults()
+        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) {    //如果是开启了同时还是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
@@ -123,7 +123,7 @@ extension UIImageView {
     }
     
     func loadCacheImage(request: NSURLRequest, placeholderImage: UIImage) {
-        var cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(request)
+        let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(request)
         if cachedImage != nil {
             self.image = cachedImage
             self.contentMode = .ScaleAspectFill

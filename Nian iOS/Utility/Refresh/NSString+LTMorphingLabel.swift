@@ -27,7 +27,7 @@
 import Foundation
 
 
-enum LTCharacterDiffType: Int, DebugPrintable {
+enum LTCharacterDiffType: Int, CustomDebugStringConvertible {
     
     case Same = 0
     case Add = 1
@@ -58,7 +58,7 @@ enum LTCharacterDiffType: Int, DebugPrintable {
 }
 
 
-struct LTCharacterDiffResult: DebugPrintable {
+struct LTCharacterDiffResult: CustomDebugStringConvertible {
     
     var diffType: LTCharacterDiffType
     var moveOffset: Int
@@ -89,9 +89,9 @@ struct LTCharacterDiffResult: DebugPrintable {
 func >>(lhs: String, rhs: String) -> Array<LTCharacterDiffResult> {
     
     var diffResults = Array<LTCharacterDiffResult>()
-    let newChars = enumerate(rhs)
-    let lhsLength = count(lhs)
-    let rhsLength = count(rhs)
+    let newChars = rhs.characters.enumerate()
+    let lhsLength = lhs.characters.count
+    let rhsLength = rhs.characters.count
     var skipIndexes = Array<Int>()
     
     for i in 0..<(max(lhsLength, rhsLength) + 1) {
@@ -104,7 +104,7 @@ func >>(lhs: String, rhs: String) -> Array<LTCharacterDiffResult> {
             continue
         }
         
-        let leftChar = Array(lhs)[i]
+        let leftChar = Array(lhs.characters)[i]
         
         // Search left character in the new string
         var foundCharacterInRhs = false
@@ -143,7 +143,7 @@ func >>(lhs: String, rhs: String) -> Array<LTCharacterDiffResult> {
         }
         
         if !foundCharacterInRhs {
-            if i < count(rhs) - 1 {
+            if i < rhs.characters.count - 1 {
                 result.diffType = .Replace
             } else {
                 result.diffType = .Delete

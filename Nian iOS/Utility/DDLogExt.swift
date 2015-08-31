@@ -28,9 +28,9 @@ extension DDLog {
     class func log(flag: DDLogFlag, @autoclosure message:  () -> String,
         function: String = __FUNCTION__, file: String = __FILE__,  line: UInt = __LINE__) {
             if flag.rawValue & logLevel.rawValue != 0 {
-                var logMsg = DDLogMessage(message: message(), level: logLevel, flag: flag, context: 0,
+                let logMsg = DDLogMessage(message: message(), level: logLevel, flag: flag, context: 0,
                     file: file, function: function, line: line,
-                    tag: nil, options: DDLogMessageOptions(0), timestamp: nil)
+                    tag: nil, options: DDLogMessageOptions(rawValue: 0), timestamp: nil)
                 DDLog.log(logAsync, message: logMsg)
             }
     }
@@ -62,7 +62,7 @@ func logVerbose(@autoclosure message:  () -> String, function: String = __FUNCTI
 }
 
 
-class Formatter: DDDispatchQueueLogFormatter, DDLogFormatter {
+class Formatter: DDDispatchQueueLogFormatter {
     let threadUnsafeDateFormatter: NSDateFormatter
     
     override init() {
@@ -78,15 +78,15 @@ class Formatter: DDDispatchQueueLogFormatter, DDLogFormatter {
         
         var logLevel: String
         let logFlag = logMessage.flag
-        if logFlag & .Error == .Error {
+        if logFlag.intersect(.Error) == .Error {
             logLevel = "E"
-        } else if logFlag & .Warning == .Warning {
+        } else if logFlag.intersect(.Warning) == .Warning {
             logLevel = "W"
-        } else if logFlag & .Info == .Info {
+        } else if logFlag.intersect(.Info) == .Info {
             logLevel = "I"
-        } else if logFlag & .Debug == .Debug {
+        } else if logFlag.intersect(.Debug) == .Debug {
             logLevel = "D"
-        } else if logFlag & .Verbose == .Verbose {
+        } else if logFlag.intersect(.Verbose) == .Verbose {
             logLevel = "V"
         } else {
             logLevel = "?"

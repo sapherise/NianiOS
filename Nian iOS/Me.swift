@@ -44,7 +44,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
-        self.navigationController!.interactivePopGestureRecognizer.enabled = false
+        self.navigationController!.interactivePopGestureRecognizer!.enabled = false
         SALoadLetter()
     }
     
@@ -53,9 +53,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func setupViews() {
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        var labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
+        let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
         labelNav.text = "消息"
         labelNav.textColor = UIColor.whiteColor()
         labelNav.font = UIFont.systemFontOfSize(17)
@@ -68,8 +68,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"LetterCell", bundle: nil)
-        var nib2 = UINib(nibName:"MeCellTop", bundle: nil)
+        let nib = UINib(nibName:"LetterCell", bundle: nil)
+        let nib2 = UINib(nibName:"MeCellTop", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.tableView!.registerNib(nib2, forCellReuseIdentifier: "MeCellTop")
@@ -79,7 +79,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func SALoadData() {
         var isLoaded = 0
-        delay(3, {
+        delay(3, closure: {
             if isLoaded == 0 {
                 self.view.showTipText("念没有踩你，再试试看", delay: 2)
                 self.tableView.headerEndRefreshing()
@@ -102,19 +102,19 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if !isLoadingLetter {
             isLoadingLetter = true
             
-            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //            var safeshell = uidKey.objectForKey(kSecValueData) as! String
             
-            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //            var safeuid = Sa.objectForKey("uid") as! String
-            var safename = Sa.objectForKey("user") as! String
-            let (resultCircle, errCircle) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
+            let safename = Sa.objectForKey("user") as! String
+            let (resultCircle, _) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
             for row in resultCircle {
-                var id = (row["circle"]?.asString())!
+                let id = (row["circle"]?.asString())!
                 var title = "玩家 #\(id)"
-                let (resultDes, err) = SD.executeQuery("select * from letter where circle = '\(id)' and owner = '\(safeuid)' order by id desc limit 1")
+                let (resultDes, _) = SD.executeQuery("select * from letter where circle = '\(id)' and owner = '\(safeuid)' order by id desc limit 1")
                 if resultDes.count > 0 {
                     for row in resultDes {
                         title = (row["name"]?.asString())!
@@ -122,16 +122,16 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 }else if safeuid == id {
                     title = safename
                 }
-                var data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
+                let data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
                 self.dataArray.addObject(data)
             }
             back {
                 self.tableView.reloadData()
                 if self.dataArray.count == 0 {
-                    var viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    var viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
+                    let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                    let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
                     viewQuestion.setY(70)
-                    var btnGo = UIButton()
+                    let btnGo = UIButton()
                     btnGo.setButtonNice("  嗯！")
                     btnGo.setX(globalWidth/2-50)
                     btnGo.setY(viewQuestion.bottom())
@@ -148,7 +148,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onBtnGoClick() {
-        var LikeVC = LikeViewController()
+        let LikeVC = LikeViewController()
         LikeVC.Id = SAUid()
         LikeVC.urlIdentify = 1
         self.navigationController!.pushViewController(LikeVC, animated: true)
@@ -174,15 +174,15 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        var data = self.dataArray[indexPath.row] as! NSDictionary
-        var id = data.stringAttributeForKey("id")
+        let data = self.dataArray[indexPath.row] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
         SQLLetterDelete(id)
         SALoadLetter()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("MeCellTop", forIndexPath: indexPath) as? MeCellTop
+            let cell = tableView.dequeueReusableCellWithIdentifier("MeCellTop", forIndexPath: indexPath) as? MeCellTop
             cell!.numLeft.text = self.numLeft
             cell!.numMiddle.text = self.numMiddel
             cell!.numRight.text = self.numRight
@@ -197,11 +197,11 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             cell!.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
             return cell!
         }else{
-            var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LetterCell
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
+            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LetterCell
+            let index = indexPath.row
+            let data = self.dataArray[index] as! NSDictionary
             cell!.data = data
-            if let tag = data.stringAttributeForKey("uid").toInt() {
+            if let tag = Int(data.stringAttributeForKey("uid")) {
                 cell!.imageHead.tag = tag
                 cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             }
@@ -218,15 +218,15 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }else if tag == 3 {
                 self.numRight = "0"
             }
-            var MeNextVC = MeNextViewController()
+            let MeNextVC = MeNextViewController()
             MeNextVC.tag = tag
             self.navigationController?.pushViewController(MeNextVC, animated: true)
         }
         if let v = sender.view {
-            var views:NSArray = v.subviews
+            let views:NSArray = v.subviews
             for view:AnyObject in views {
                 if NSStringFromClass(view.classForCoder) == "UILabel"  {
-                    var l = view as! UILabel
+                    let l = view as! UILabel
                     if l.frame.origin.y == 25 {
                         l.text = "0"
                         l.textColor = UIColor.blackColor()
@@ -237,21 +237,21 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onUserClick(sender:UIGestureRecognizer) {
-        var tag = sender.view!.tag
-        var UserVC = PlayerViewController()
+        let tag = sender.view!.tag
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func onDreamClick(sender:UIGestureRecognizer){
-        var tag = sender.view!.tag
-        var dreamVC = DreamViewController()
+        let tag = sender.view!.tag
+        let dreamVC = DreamViewController()
         dreamVC.Id = "\(tag)"
         self.navigationController!.pushViewController(dreamVC, animated: true)
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = PlayerViewController()
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
@@ -266,17 +266,17 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
-            var letterVC = CircleController()
-            if let id = data.stringAttributeForKey("id").toInt() {
-                var title = data.stringAttributeForKey("title")
+            let index = indexPath.row
+            let data = self.dataArray[index] as! NSDictionary
+            let letterVC = CircleController()
+            if let id = Int(data.stringAttributeForKey("id")) {
+                let title = data.stringAttributeForKey("title")
                 letterVC.ID = id
                 letterVC.circleTitle = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
                 
-                var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //                var safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
                 SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
@@ -294,7 +294,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
 
 extension UILabel {
     func setColorful(){
-        if let content = self.text?.toInt() {
+        if let content = Int(self.text!) {
             if content == 0 {
                 self.textColor = UIColor.blackColor()
             }else{

@@ -38,9 +38,9 @@ class ExploreRecomMore: UIViewController {
     func setupView() {
         let flowLayout = UICollectionViewFlowLayout()
         
-        var Q = isiPhone6P ? 4 : 3
-        var x = (globalWidth - CGFloat(80 * Q))/CGFloat(2 * (Q + 1))
-        var y = x + x
+        let Q = isiPhone6P ? 4 : 3
+        let x = (globalWidth - CGFloat(80 * Q))/CGFloat(2 * (Q + 1))
+        let y = x + x
         
         flowLayout.minimumInteritemSpacing = x
         flowLayout.minimumLineSpacing = y
@@ -73,12 +73,12 @@ class ExploreRecomMore: UIViewController {
             Api.getDiscoverEditorRecom("\(page++)", callback: {
                 json in
                 if json != nil {
-                    var err = json!.objectForKey("error") as? NSNumber
+                    let err = json!.objectForKey("error") as? NSNumber
                     if err == 0 {
                         if clear {
                             self.dataArray.removeAllObjects()
                         }
-                        var data = json!.objectForKey("data") as? NSArray
+                        let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
                                 self.dataArray.addObject(item)
@@ -96,12 +96,12 @@ class ExploreRecomMore: UIViewController {
             Api.getDiscoverLatest("\(page++)", callback: {
                 json in
                 if json != nil {
-                    var err = json!.objectForKey("error") as? NSNumber
+                    let err = json!.objectForKey("error") as? NSNumber
                     if err == 0 {
                         if clear {
                             self.dataArray.removeAllObjects()
                         }
-                        var data = json!.objectForKey("data") as? NSArray
+                        let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
                                 self.dataArray.addObject(item)
@@ -126,8 +126,8 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreMoreCell", forIndexPath: indexPath) as! ExploreMoreCell
-        var _tmpData = self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreMoreCell", forIndexPath: indexPath) as! ExploreMoreCell
+        let _tmpData = self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary
         
         if let _img = _tmpData.objectForKey("image") as? String {
             cell.coverImageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
@@ -139,7 +139,7 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
     
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var DreamVC = DreamViewController()
+        let DreamVC = DreamViewController()
         DreamVC.Id = (self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
         
         if DreamVC.Id != "0" && DreamVC.Id != "" {

@@ -30,10 +30,10 @@ extension PetViewController: NIAlertDelegate {
         tableViewPet.showsVerticalScrollIndicator = false
         tableViewPet.registerNib(UINib(nibName: "PetCell", bundle: nil), forCellReuseIdentifier: "PetCell")
         
-        var viewHeader = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
+        let viewHeader = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
         viewHeader.userInteractionEnabled = true
         viewHeader.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo"))
-        var viewFooter = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
+        let viewFooter = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
         viewFooter.userInteractionEnabled = true
         viewFooter.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo"))
         tableViewPet.tableHeaderView = viewHeader
@@ -72,31 +72,23 @@ extension PetViewController: NIAlertDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == tableViewPet {
-            var _y = tableViewPet.contentOffset.y
+            let _y = tableViewPet.contentOffset.y
             current = max(min(Int(floor((_y+36)/72)), dataArray.count - 1), 0)
             if pre != current {
                 setPetTitle()
                 tableViewPet.reloadData()
                 pre = current
-                //----
-                
-//                for cell in tableViewPet.visibleCells() {
-//                    if abs((cell as! PetCell).frame.origin.y - _y - globalWidth/2) < NORMAL_WIDTH/2 {
-//                        
-//                    }
-//                }
-                
             }
         }
     }
     
     func setPetTitle() {
         if dataArray.count > 0 {
-            var data = dataArray[current] as! NSDictionary
-            var name = data.stringAttributeForKey("name")
-            var level = data.stringAttributeForKey("level")
-            var owned = data.stringAttributeForKey("owned")
-            var image = data.stringAttributeForKey("image")
+            let data = dataArray[current] as! NSDictionary
+            let name = data.stringAttributeForKey("name")
+            let level = data.stringAttributeForKey("level")
+            let owned = data.stringAttributeForKey("owned")
+            let image = data.stringAttributeForKey("image")
             labelName.text = name
             if owned == "1" {   // 拥有这个宠物
                 labelLevel.text = "Lv \(level)"
@@ -127,14 +119,14 @@ extension PetViewController: NIAlertDelegate {
     
     func toUpgrade() {
         if dataArray.count > 0 {
-            var data = dataArray[current] as! NSDictionary
-            var id = data.stringAttributeForKey("id").toInt()!
-            var level = data.stringAttributeForKey("level")
-            var name = data.stringAttributeForKey("name")
-            var owned = data.stringAttributeForKey("owned")
+            let data = dataArray[current] as! NSDictionary
+            let id = Int(data.stringAttributeForKey("id"))!
+            let level = data.stringAttributeForKey("level")
+            let name = data.stringAttributeForKey("name")
+            let owned = data.stringAttributeForKey("owned")
             if owned == "1" && level != "15" {
                 var coin = 0
-                if let _level = level.toInt() {
+                if let _level = Int(level) {
                     if _level < 5 {
                         coin = 5
                     } else if _level < 10 {

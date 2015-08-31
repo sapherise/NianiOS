@@ -34,9 +34,9 @@ let stdout = NSFileHandle.fileHandleWithStandardOutput()
 let lineCharset = NSCharacterSet.newlineCharacterSet()
 
 func readline(tip: String) -> String {
-    print(tip)
-    var indata = stdin.availableData
-    var s = NSString(data: indata, encoding: NSUTF8StringEncoding)
+    print(tip, terminator: "")
+    let indata = stdin.availableData
+    let s = NSString(data: indata, encoding: NSUTF8StringEncoding)
     if s == nil {
         return ""
     }
@@ -49,5 +49,5 @@ func on_say(vs: [String]) {
 }
 
 func on_gay(vs: [String]) {
-    var r: AnyObject? = client.sendGroupMessage(vs[0].toInt()!, msgtype: vs[2].toInt()!, msg: vs[1], cid: vs[3].toInt()!)
+    client.sendGroupMessage(Int(vs[0])!, msgtype: Int(vs[2])!, msg: vs[1], cid: Int(vs[3])!)
 }

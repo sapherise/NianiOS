@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SpriteKit
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NIAlertDelegate {
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NIAlertDelegate {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -26,6 +26,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var imageBadge: SABadgeView!
     @IBOutlet var viewHolderHead: UIView!
     @IBOutlet var imageSettings: UIImageView!
+    @IBOutlet var activity: UIActivityIndicatorView!
     var currentCell:Int = 0
     var lastPoint:CGPoint!
     var dataArray = NSMutableArray()
@@ -33,7 +34,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var imagePicker:UIImagePickerController!
     var uploadUrl:String = ""
     var navView: UIImageView!
-    var viewErr: UIView!
     var viewHeader: UIView!
     var birthday: String = ""
     
@@ -48,7 +48,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setupViews(){
-        var frameSquare = CGRectMake(0, 0, globalWidth, 320)
+        let frameSquare = CGRectMake(0, 0, globalWidth, 320)
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.scrollView.contentSize.height = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
@@ -68,6 +68,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.coinButton.frame.origin.x = globalWidth/2-104
         self.levelButton.frame.origin.x = globalWidth/2-104+108
         
+        self.activity.setX(globalWidth - 32)
+        self.activity.hidden = true
+        
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
         
@@ -82,23 +85,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navView.userInteractionEnabled = true
         self.view.addSubview(self.navView)
         
-        // 加载中时
-        viewErr = UIView(frame: CGRectMake(0, 375, globalWidth, 200))
-        var viewQuestion = viewEmpty(globalWidth, content: "正在连接念的服务器")
-        viewQuestion.setY(0)
-        var btnGo = UIButton()
-        btnGo.setButtonNice("再试一试")
-        btnGo.setX(globalWidth/2-50)
-        btnGo.setY(viewQuestion.bottom())
-        btnGo.addTarget(self, action: "NianReload:", forControlEvents: UIControlEvents.TouchUpInside)
-        viewErr.addSubview(viewQuestion)
-        viewErr.addSubview(btnGo)
-        self.scrollView.addSubview(viewErr)
-        
         viewHeader = UIView(frame: CGRectMake(0, 375, globalWidth, 200))
-        var viewQuestionHeader = viewEmpty(globalWidth, content: "先随便写个记本吧\n比如日记、英语、画画...")
+        let viewQuestionHeader = viewEmpty(globalWidth, content: "先随便写个记本吧\n比如日记、英语、画画...")
         viewQuestionHeader.setY(0)
-        var btnGoHeader = UIButton()
+        let btnGoHeader = UIButton()
         btnGoHeader.setButtonNice("  嗯！")
         btnGoHeader.setX(globalWidth/2-50)
         btnGoHeader.setY(viewQuestionHeader.bottom())
@@ -108,17 +98,17 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         viewHeader.hidden = true
         self.scrollView.addSubview(viewHeader)
         
-        var nib = UINib(nibName: "NianCell", bundle: nil)
+        let nib = UINib(nibName: "NianCell", bundle: nil)
         self.collectionView.registerNib(nib, forCellWithReuseIdentifier: "NianCell")
         
         /* 这里本来是从 NSUserDefaults 里面读出来的 */
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safename = Sa.objectForKey("user") as! String
-        var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let safename = Cookies.get("user")
+        let cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
         
         self.UserName.text = "\(safename)"
         self.UserHead.setHead(safeuid)
@@ -144,13 +134,15 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func EggShell(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Began {
-            var eggShell = NIAlert()
+            let eggShell = NIAlert()
             eggShell.delegate = self
             eggShell.dict = NSMutableDictionary(objects: [UserHead, " 彩蛋！", "你在念上的第一秒\n\(self.birthday)", ["太开心"]], forKeys: ["img", "title", "content", "buttonArray"])
             eggShell.showWithAnimation(.flip)
             if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-                var skView = SKView(frame: CGRectMake(0, 0, 272, 108))
-                skView.allowsTransparency = true
+                let skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+                if #available(iOS 8.0, *) {
+                    skView.allowsTransparency = true
+                }
                 eggShell._containerView!.addSubview(skView)
                 scene.scaleMode = SKSceneScaleMode.AspectFit
                 skView.presentScene(scene)
@@ -166,7 +158,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == self.scrollView {
-            var height = scrollView.contentOffset.y
+            let height = scrollView.contentOffset.y
             self.heightScroll = height
             if self.viewHolder != nil {
                 if height > 0 {
@@ -199,10 +191,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        var visiblePaths = self.collectionView!.indexPathsForVisibleItems() as Array
+        let visiblePaths = self.collectionView!.indexPathsForVisibleItems() as Array
         
         for item in visiblePaths {
-            let indexPath = item as! NSIndexPath
+            let indexPath = item 
             let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! NianCell
             
             if cell.imageCover.image == nil {
@@ -226,94 +218,83 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setupUserTop(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safename = Sa.objectForKey("user") as! String
-        var cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
-        
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-        Api.getUserTop(safeuid.toInt()!){ json in
-            if json != nil {
-                var data = json!.objectForKey("user") as! NSDictionary
-                var name = data.stringAttributeForKey("name")
-                var email = data.stringAttributeForKey("email")
-                var coin = data.stringAttributeForKey("coin")
-                var dream = data.stringAttributeForKey("dream")
-                var step = data.stringAttributeForKey("step")
-                var level = data.stringAttributeForKey("level")
-                var coverURL = data.stringAttributeForKey("cover")
-                self.birthday = data.stringAttributeForKey("lastdate")
-                var petCount = data.stringAttributeForKey("pet_count")
-                var AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
-                var vip = data.stringAttributeForKey("vip")
-                Sa.setObject(AllCoverURL, forKey: "coverUrl")
-                Sa.synchronize()
-                var deadLine = data.stringAttributeForKey("deadline")
-                self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
-                self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
-                self.UserName.text = "\(name)"
-                self.UserHead.setHead(safeuid)
-                self.imageBadge.setType(vip)
-                if deadLine == "0" {
-                    self.UserStep.text = "\(dream) 记本，\(step) 进展"
-                } else {
-                    self.UserStep.text = "倒计时 \(deadLine)"
-                }
-                if coverURL == "" {
-                    self.imageBG.image = UIImage(named: "bg")
-                    self.navView.image = UIImage(named: "bg")
-                    self.navView.contentMode = UIViewContentMode.ScaleAspectFill
-                }else{
-                    self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
-                    self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let safeuid = SAUid()
+        if let uid = Int(safeuid) {
+            Api.getUserTop(uid){ json in
+                if json != nil {
+                    let data = json!.objectForKey("user") as! NSDictionary
+                    let name = data.stringAttributeForKey("name")
+                    let coin = data.stringAttributeForKey("coin")
+                    let dream = data.stringAttributeForKey("dream")
+                    let step = data.stringAttributeForKey("step")
+                    let coverURL = data.stringAttributeForKey("cover")
+                    self.birthday = data.stringAttributeForKey("lastdate")
+                    let petCount = data.stringAttributeForKey("pet_count")
+                    let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                    let vip = data.stringAttributeForKey("vip")
+                    Sa.setObject(AllCoverURL, forKey: "coverUrl")
+                    Sa.synchronize()
+                    let deadLine = data.stringAttributeForKey("deadline")
+                    self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
+                    self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
+                    self.UserName.text = "\(name)"
+                    self.UserHead.setHead(safeuid)
+                    self.imageBadge.setType(vip)
+                    if deadLine == "0" {
+                        self.UserStep.text = "\(dream) 记本，\(step) 进展"
+                    } else {
+                        self.UserStep.text = "倒计时 \(deadLine)"
+                    }
+                    if coverURL == "" {
+                        self.imageBG.image = UIImage(named: "bg")
+                        self.navView.image = UIImage(named: "bg")
+                        self.navView.contentMode = UIViewContentMode.ScaleAspectFill
+                    }else{
+                        self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                        self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    }
                 }
             }
         }
     }
     
     func addDreamButton(){
-        var adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+        let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
     func onDreamLabelClick(sender:UIGestureRecognizer){
-        var tag = sender.view!.tag
+        let tag = sender.view!.tag
         self.onDreamClick("\(tag)")
     }
     
     func stepClick(){
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        var userVC = PlayerViewController()
+        let userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)
     }
     
     func levelClick(){
-        var vc = PetViewController()
+        let vc = PetViewController()
         self.navigationController!.pushViewController(vc, animated: true)
     }
     
     func coinClick(){
-        var storyboard = UIStoryboard(name: "Coin", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") as! UIViewController
+        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if globalWillNianReload == 1 {
-            globalWillNianReload = 0
-            self.SAReloadData()
-            self.setupUserTop()
-        }
     }
     
     func NianReload(sender: UIButton) {
-        sender.setTitle("加载中", forState: UIControlState.allZeros)
+        sender.setTitle("加载中", forState: UIControlState())
         self.SAReloadData()
         self.setupUserTop()
     }
@@ -324,10 +305,15 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewDidAppear(animated: Bool) {
         navHide()
+        if globalWillNianReload == 1 {
+            globalWillNianReload = 0
+            self.SAReloadData()
+            self.setupUserTop()
+        }
     }
     
     func headClick(){
-        var PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         self.navigationController!.pushViewController(PlayerVC, animated: true)
     }
     
@@ -337,9 +323,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell:UICollectionViewCell
-        var index = indexPath.row
-        var c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as! NianCell
-        var data = self.dataArray[index] as! NSDictionary
+        let index = indexPath.row
+        let c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as! NianCell
+        let data = self.dataArray[index] as! NSDictionary
         c.data = data
         c.total = self.dataArray.count
         
@@ -357,52 +343,67 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
-        var id = data.stringAttributeForKey("id")
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
         self.onDreamClick(id)
     }
     
     func onDreamClick(ID:String){
         if ID != "0" && ID != "" {
-            var DreamVC = DreamViewController()
+            let DreamVC = DreamViewController()
             DreamVC.Id = ID
             self.navigationController!.pushViewController(DreamVC, animated: true)
         }
     }
     
     func onDreamLikeClick(sender:UIGestureRecognizer){
-        var tag = sender.view!.tag
-        var LikeVC = LikeViewController()
+        let tag = sender.view!.tag
+        let LikeVC = LikeViewController()
         LikeVC.Id = "\(tag)"
         LikeVC.urlIdentify = 3
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
     func SAReloadData(){
-        Api.getNian() { json in
-            if json != nil {
-                self.viewErr.hidden = true
-                var arr = json!.objectForKey("items") as! NSArray
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
-                }
-                self.collectionView.reloadData()
-                var height = ceil(CGFloat(self.dataArray.count) / 3) * 125
-                self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
-                var heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
-                self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
-                self.collectionView.contentSize.height = height
-                if self.dataArray.count == 0 {
-                    self.viewHeader.hidden = false
-                }else{
-                    self.viewHeader.hidden = true
-                }
-                globalNumberDream = self.dataArray.count
-            }
+        if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
+            self.dataArray = NianDream
+            reloadFromDataArray()
         }
+        
+        activity.hidden = false
+        activity.startAnimating()
+            Api.getNian() { json in
+                if json != nil {
+                    self.activity.hidden = true
+                    let arr = json!.objectForKey("items") as! NSArray
+//                    self.dataArray.removeAllObjects()
+                    let mutableArray = NSMutableArray()
+                    for data : AnyObject  in arr {
+                        mutableArray.addObject(data)
+                    }
+                    self.dataArray = mutableArray
+                    Cookies.set(self.dataArray, forKey: "NianDream")
+                    self.reloadFromDataArray()
+                }
+            }
+        
         Api.postDeviceToken() { string in
         }
+    }
+    
+    func reloadFromDataArray() {
+        self.collectionView.reloadData()
+        let height = ceil(CGFloat(self.dataArray.count) / 3) * 125
+        self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
+        let heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
+        self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
+        self.collectionView.contentSize.height = height
+        if self.dataArray.count == 0 {
+            self.viewHeader.hidden = false
+        }else{
+            self.viewHeader.hidden = true
+        }
+        globalNumberDream = self.dataArray.count
     }
 }

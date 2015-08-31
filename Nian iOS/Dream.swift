@@ -10,13 +10,13 @@ import UIKit
 
 class NILabel: UILabel {
     override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
-        var rect = CGRectInset(bounds, 4, 0)
+        let rect = CGRectInset(bounds, 4, 0)
         
         return rect
     }
 }
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, UIGestureRecognizerDelegate, editDreamDelegate, delegateSAStepCell, topDelegate, ShareDelegate{
+class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, editDreamDelegate, delegateSAStepCell, topDelegate, ShareDelegate{
     
     var tableView: UITableView!
     var page: Int = 1
@@ -66,9 +66,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.tableView!.dataSource = self
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        var nib = UINib(nibName:"DreamCell", bundle: nil)
-        var nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
-        var nib3 = UINib(nibName:"CommentCell", bundle: nil)
+        let nib = UINib(nibName:"DreamCell", bundle: nil)
+        let nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         
         self.tableView?.registerNib(nib, forCellReuseIdentifier: "dream")
         self.tableView?.registerNib(nib2, forCellReuseIdentifier: "dreamtop")
@@ -77,7 +76,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -91,34 +90,34 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         Api.getDreamStep(Id, page: page) { json in
             if json != nil {
                 if json!.objectForKey("error") as! NSNumber != 0 {
-                    var status = json!.objectForKey("status") as! NSNumber
+                    let status = json!.objectForKey("status") as! NSNumber
                     self.tableView?.hidden = true
                     self.navigationItem.rightBarButtonItems = []
                     if status == 404 {
-                        var viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
+                        let viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
                         viewTop.setY(104)
-                        var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                        let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                         viewHolder.addSubview(viewTop)
                         self.view.addSubview(viewHolder)
                     } else if status == 403 {
-                        var viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
+                        let viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
                         viewTop.setY(104)
-                        var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                        let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                         viewHolder.addSubview(viewTop)
                         self.view.addSubview(viewHolder)
                     } else {
                         self.view.showTipText("遇到了一个奇怪的错误，代码是 \(status)", delay: 2)
                     }
                 } else {
-                    var data: AnyObject? = json!.objectForKey("data")
+                    let data: AnyObject? = json!.objectForKey("data")
                     if clear {
                         self.dataArrayTop = data!.objectForKey("dream") as! NSDictionary
                         self.dataArray.removeAllObjects()
-                        var btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
+                        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
                         btnMore.image = UIImage(named: "more")
                         self.navigationItem.rightBarButtonItems = [btnMore]
                     }
-                    var steps = data!.objectForKey("steps") as! NSArray
+                    let steps = data!.objectForKey("steps") as! NSArray
                     for data in steps {
                         self.dataArray.addObject(data)
                     }
@@ -132,13 +131,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func setupNavBtn() {
-        var uid = dataArrayTop.stringAttributeForKey("uid")
-        var percent = dataArrayTop.stringAttributeForKey("percent")
-        var title = dataArrayTop.stringAttributeForKey("title")
-        var follow = dataArrayTop.stringAttributeForKey("follow")
-        var isLiked = dataArrayTop.stringAttributeForKey("isliked")
+        let uid = dataArrayTop.stringAttributeForKey("uid")
+        let percent = dataArrayTop.stringAttributeForKey("percent")
+        let title = dataArrayTop.stringAttributeForKey("title")
+        let isLiked = dataArrayTop.stringAttributeForKey("isliked")
         
-        var acEdit = SAActivity()
+        let acEdit = SAActivity()
         acEdit.saActivityTitle = "编辑"
         acEdit.saActivityType = "编辑"
         acEdit.saActivityImage = UIImage(named: "av_edit")
@@ -146,14 +144,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.editMyDream()
         }
         
-        var acDone = SAActivity()
+        let acDone = SAActivity()
         acDone.saActivityTitle = percent == "0" ? "完成" : "未完成"
-        var percentNew = percent == "0" ? "1" : "0"
-        var imageNew = percent == "0" ? "av_finish" : "av_nofinish"
+        let percentNew = percent == "0" ? "1" : "0"
+        let imageNew = percent == "0" ? "av_finish" : "av_nofinish"
         acDone.saActivityType = "完成"
         acDone.saActivityImage = UIImage(named: imageNew)
         acDone.saActivityFunction = {
-            var mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
+            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(percentNew, forKey: "percent")
             self.dataArrayTop = mutableData
             self.tableView.reloadData()
@@ -161,7 +159,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
         }
         
-        var acDelete = SAActivity()
+        let acDelete = SAActivity()
         acDelete.saActivityTitle = "删除"
         acDelete.saActivityType = "删除"
         acDelete.saActivityImage = UIImage(named: "av_delete")
@@ -173,20 +171,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.deleteDreamSheet!.showInView(self.view)
         }
         
-        var acLike = SAActivity()
+        let acLike = SAActivity()
         acLike.saActivityTitle = isLiked == "0" ? "赞" : "取消赞"
-        var isLikedNew = isLiked == "0" ? "1" : "0"
+        let isLikedNew = isLiked == "0" ? "1" : "0"
         acLike.saActivityType = "赞"
         acLike.saActivityImage = UIImage(named: "av_like")
         acLike.saActivityFunction = {
-            var mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
+            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(isLikedNew, forKey: "isliked")
             self.dataArrayTop = mutableData
             self.tableView.reloadData()
             Api.postLikeDream(self.Id, like: isLikedNew) { string in }
         }
         
-        var acReport = SAActivity()
+        let acReport = SAActivity()
         acReport.saActivityTitle = "举报"
         acReport.saActivityType = "举报"
         acReport.saActivityImage = UIImage(named: "av_report")
@@ -194,12 +192,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.view.showTipText("举报好了！", delay: 2)
         }
         
-        var arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]
+        let arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]
 //        var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
 //        acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
 //        self.presentViewController(acv, animated: true, completion: nil)
         
-        var avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+        let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
@@ -223,30 +221,30 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
+            let c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
             c.data = dataArrayTop
             c.delegate = self
             if dataArrayTop != nil {
-                var uid = dataArrayTop.stringAttributeForKey("uid")
-                var follow = dataArrayTop.stringAttributeForKey("follow")
+                let uid = dataArrayTop.stringAttributeForKey("uid")
+                let follow = dataArrayTop.stringAttributeForKey("follow")
                 c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStep"))
                 if SAUid() == uid {
                     c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
-                    c.btnMain.setTitle("更新", forState: UIControlState.allZeros)
+                    c.btnMain.setTitle("更新", forState: UIControlState())
                 } else {
                     self.btnMain = c.btnMain
                     if follow == "0" {
-                        c.btnMain.setTitle("关注", forState: UIControlState.allZeros)
+                        c.btnMain.setTitle("关注", forState: UIControlState())
                         c.btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
                     } else {
-                        c.btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+                        c.btnMain.setTitle("关注中", forState: UIControlState())
                         c.btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
                     }
                 }
             }
             return c
         } else {
-            var c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+            let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
             c.data = self.dataArray[indexPath.row] as! NSDictionary
             c.index = indexPath.row
@@ -255,7 +253,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             } else {
                 c.viewLine.hidden = false
             }
-            var _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
+            let _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
             c._layoutSubviews(_shouldLoadImage)
             
             return c
@@ -263,7 +261,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     /**
-    :returns: Bool值，代表是否要加载图片
+    - returns: Bool值，代表是否要加载图片
     */
     func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
         if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.tableView.rectForRowAtIndexPath(indexPath)) {
@@ -276,22 +274,22 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     // MARK: - 分割线 ---------------------------------------------------------
     
     func onFo() {
-        btnMain.setTitle("关注中", forState: UIControlState.allZeros)
+        btnMain.setTitle("关注中", forState: UIControlState())
         btnMain.removeTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
         btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
-        var id = dataArrayTop.stringAttributeForKey("id")
-        var mutableData = NSMutableDictionary(dictionary: dataArrayTop)
+        let id = dataArrayTop.stringAttributeForKey("id")
+        let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue("1", forKey: "follow")
         dataArrayTop = mutableData
         Api.postFollowDream(id, follow: "1") { string in }
     }
     
     func onUnFo() {
-        btnMain.setTitle("关注", forState: UIControlState.allZeros)
+        btnMain.setTitle("关注", forState: UIControlState())
         btnMain.removeTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
         btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
-        var id = dataArrayTop.stringAttributeForKey("id")
-        var mutableData = NSMutableDictionary(dictionary: dataArrayTop)
+        let id = dataArrayTop.stringAttributeForKey("id")
+        let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue("0", forKey: "follow")
         dataArrayTop = mutableData
         Api.postFollowDream(id, follow: "0") { string in }
@@ -310,7 +308,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             return 0
         }else{
-            var data = self.dataArray[indexPath.row] as! NSDictionary
+            let data = self.dataArray[indexPath.row] as! NSDictionary
             return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
                 (cell as! SAStepCell).celldataSource = self
                 (cell as! SAStepCell).fd_enforceFrameLayout = true
@@ -329,7 +327,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func onAddStep(){
-        var vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        let vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         vc.Id = self.Id
         vc.delegate = self    //😍
         self.navigationController?.pushViewController(vc, animated: true)
@@ -341,15 +339,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.load()
         
         /* dataArrayTop 实际上是一个 Dict */
-        if let step = dataArrayTop.stringAttributeForKey("step").toInt() {
-            var mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
+        if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
+            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue("\(step + 1)", forKey: "step")
             dataArrayTop = mutableData
             tableView.reloadData()
         }
         
         if isfirst == "1" {
-            if total.toInt() < 3 {
+            if Int(total) < 3 {
                 self.alertCoin = NIAlert()
                 self.alertCoin?.delegate = self
                 self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
@@ -357,7 +355,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 self.alertCoin?.showWithAnimation(.flip)
             } else {
                 // 如果念币多于 3， 那么就出现抽宠物
-                var v = SAEgg()
+                let v = SAEgg()
                 v.delegateShare = self
                 v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
                     forKeys: ["img", "title", "content", "buttonArray"])
@@ -368,7 +366,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func Editstep() {      //😍
         self.dataArray[self.editStepRow] = self.editStepData!
-        var newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
+        let newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
         self.tableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     /*               */
@@ -379,15 +377,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             self.load()
         })
         self.tableView!.addFooterWithCallback({
-            self.load(clear: false)
+            self.load(false)
         })
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
         if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除记本
                 self.navigationItem.rightBarButtonItems = buttonArray()
@@ -401,26 +395,26 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     
     func editMyDream() {
-        var editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+        let editdreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
         editdreamVC.delegate = self
         editdreamVC.isEdit = 1
-        var id = dataArrayTop.stringAttributeForKey("id")
-        var title = dataArrayTop.stringAttributeForKey("title")
-        var content = dataArrayTop.stringAttributeForKey("content")
-        var img = dataArrayTop.stringAttributeForKey("image")
-        var thePrivate = dataArrayTop.stringAttributeForKey("private").toInt()!
+        let id = dataArrayTop.stringAttributeForKey("id")
+        let title = dataArrayTop.stringAttributeForKey("title")
+        let content = dataArrayTop.stringAttributeForKey("content")
+        let img = dataArrayTop.stringAttributeForKey("image")
+        let thePrivate = Int(dataArrayTop.stringAttributeForKey("private"))!
         editdreamVC.editId = id
         editdreamVC.editTitle = SADecode(SADecode(title))
         editdreamVC.editContent = SADecode(SADecode(content))
         editdreamVC.editImage = img
         editdreamVC.isPrivate = thePrivate
-        var tags: Array<String> = dataArrayTop.objectForKey("tags") as! Array
+        let tags: Array<String> = dataArrayTop.objectForKey("tags") as! Array
         editdreamVC.tagsArray = tags
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
     func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags:Array<String>) {
-        var mutableData = NSMutableDictionary(dictionary: dataArrayTop)
+        let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue(editPrivate, forKey: "private")
         mutableData.setValue(editTitle, forKey: "title")
         mutableData.setValue(editDes, forKey: "content")
@@ -432,7 +426,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
-            var v = otherGestureRecognizer.view?.frame.origin.y
+            let v = otherGestureRecognizer.view?.frame.origin.y
             if v > 0 {
                 return false
             }
@@ -442,7 +436,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
-            var v = otherGestureRecognizer.view?.frame.origin.y
+            let v = otherGestureRecognizer.view?.frame.origin.y
             if v == 0 {
                 return true
             }
@@ -456,12 +450,12 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArray, index, key, value, self.tableView)
+        SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: self.tableView)
     }
     
     // 更新某个格子
     func updateStep(index: Int) {
-        SAUpdate(index, 1, self.tableView)
+        SAUpdate(index, section: 1, tableView: self.tableView)
     }
     
     // 重载表格
@@ -471,7 +465,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, self.dataArray, index, self.tableView, 1)
+        SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: self.tableView, section: 1)
     }
     
 }
@@ -516,7 +510,7 @@ extension DreamViewController {
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        var targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
         self.targetRect = NSValue(CGRect: targetRect)
     }
     
@@ -527,16 +521,14 @@ extension DreamViewController {
     }
     
     func loadImagesForVisibleCells() {
-        var cellArray = self.tableView.visibleCells()
+        let cellArray = self.tableView.visibleCells
         
         for cell in cellArray {
             if cell is SAStepCell {
-                var indexPath = self.tableView.indexPathForCell(cell as! SAStepCell)
+                let indexPath = self.tableView.indexPathForCell(cell as! SAStepCell)
                 var _tmpShouldLoadImg = false
                 
-                if let _indexPath = indexPath {
                     _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-                }
                 
                 if _tmpShouldLoadImg {
                     self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)

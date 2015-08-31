@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,  UIActionSheetDelegate, AddBBSCommentDelegate, UIGestureRecognizerDelegate{
+class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,  UIActionSheetDelegate, AddBBSCommentDelegate {
     
     let identifier = "bbs"
     let identifier2 = "bbstop"
@@ -55,8 +55,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView.backgroundColor = BGColor
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        var nib = UINib(nibName:"BBSCell", bundle: nil)
-        var nib2 = UINib(nibName:"BBSCellTop", bundle: nil)
+        let nib = UINib(nibName:"BBSCell", bundle: nil)
+        let nib2 = UINib(nibName:"BBSCellTop", bundle: nil)
         
         
         self.title = "记本"
@@ -64,17 +64,17 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         self.tableView.registerNib(nib2, forCellReuseIdentifier: identifier2)
         self.view.addSubview(self.tableView)
         
-        var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStepButton")
         rightButton.image = UIImage(named:"newcomment")
         
-        var moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "bbsMore")
+        let moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "bbsMore")
         moreButton.image = UIImage(named:"more")
         
 //        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //        var safeuid = Sa.objectForKey("uid") as! String
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if safeuid == self.topuid {
@@ -85,7 +85,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
@@ -100,14 +100,14 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }
         Api.getBBSComment(Id, page: page, isAsc: isAsc) { json in
             if json != nil {
-                var data: AnyObject? = json!.objectForKey("data")
+                let data: AnyObject? = json!.objectForKey("data")
                 if clear {
                     if let bbs = data!.objectForKey("bbs") as? NSDictionary {
                         self.dataArrayTop = bbs
                     }
                     self.dataArray.removeAllObjects()
                 }
-                var comments = data!.objectForKey("comments") as! NSArray
+                let comments = data!.objectForKey("comments") as! NSArray
                 for data in comments {
                     self.dataArray.addObject(data)
                 }
@@ -118,9 +118,9 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                 self.tableView.headerEndRefreshing()
                 self.tableView.footerEndRefreshing()
                 if self.dataArrayTop.count == 0 {
-                    var viewTop = viewEmpty(globalWidth, content: "这个话题\n不见了")
+                    let viewTop = viewEmpty(globalWidth, content: "这个话题\n不见了")
                     viewTop.setY(40)
-                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
+                    let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
                     viewHolder.addSubview(viewTop)
                     self.tableView.tableHeaderView = viewHolder
                     self.tableView.setFooterHidden(true)
@@ -151,16 +151,16 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section==0{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as! BBSCellTop
+            let c = tableView.dequeueReusableCellWithIdentifier(identifier2, forIndexPath: indexPath) as! BBSCellTop
             c.data = dataArrayTop
             c.viewFlow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFlowClick"))
             c.dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
             c.viewFlow.text = isAsc ? "倒序" : "正序"
             return c
         }else{
-            var c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! BBSCell
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
+            let c = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! BBSCell
+            let index = indexPath.row
+            let data = self.dataArray[index] as! NSDictionary
             c.data = data
             if indexPath.row == self.dataArray.count - 1 {
                 c.Line!.hidden = true
@@ -172,17 +172,17 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func toUser() {
-        var uid = dataArrayTop.stringAttributeForKey("uid")
+        let uid = dataArrayTop.stringAttributeForKey("uid")
         SAUser(uid)
     }
     
     func onFlowClick(){
         isAsc = !isAsc
-        load(clear: true, isAsc: isAsc)
+        load(true, isAsc: isAsc)
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        var UserVC = PlayerViewController()
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
@@ -191,8 +191,8 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         if indexPath.section==0{
             return BBSCellTop.cellHeightByData(dataArrayTop)
         }else{
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
+            let index = indexPath.row
+            let data = self.dataArray[index] as! NSDictionary
             return  BBSCell.cellHeightByData(data)
         }
     }
@@ -202,16 +202,16 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
 //            var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //            var safeuid = Sa.objectForKey("uid") as! String
             
-            var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //            var safeshell = uidKey.objectForKey(kSecValueData) as! String
             
-            var index = indexPath.row
-            var data = self.dataArray[index] as! NSDictionary
-            var user = data.stringAttributeForKey("user")
-            var uid = data.stringAttributeForKey("uid")
-            var content = data.stringAttributeForKey("content")
-            var cid = data.stringAttributeForKey("id")
+            let index = indexPath.row
+            let data = self.dataArray[index] as! NSDictionary
+            let user = data.stringAttributeForKey("user")
+            let uid = data.stringAttributeForKey("uid")
+            let content = data.stringAttributeForKey("content")
+            let cid = data.stringAttributeForKey("id")
             
             self.ReplyContent = content
             self.ReplyUser = "\(user)"
@@ -250,24 +250,24 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
 //        var safeuid = Sa.objectForKey("uid") as! String
 //        var safeshell = Sa.objectForKey("shell") as! String
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if actionSheet == self.sheet {
             if buttonIndex == 0 {
-                var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
+                let addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
                 addVC.delegate = self
                 addVC.content = "@\(self.ReplyUser) "
                 addVC.Id = self.Id
                 addVC.Row = self.ReplyRow
                 self.navigationController?.pushViewController(addVC, animated: true)
             }else if buttonIndex == 1 { //复制
-                var pasteBoard = UIPasteboard.generalPasteboard()
+                let pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }else if buttonIndex == 2 {
-                var data = self.dataArray[self.ReplyRow] as! NSDictionary
-                var uid = data.stringAttributeForKey("uid")
+                let data = self.dataArray[self.ReplyRow] as! NSDictionary
+                let uid = data.stringAttributeForKey("uid")
                 if (( uid == safeuid ) || ( self.topuid == safeuid )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                     self.deleteCommentSheet!.addButtonWithTitle("确定删除")
@@ -276,7 +276,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
                     self.deleteCommentSheet!.showInView(self.view)
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", "http://nian.so/api/a.php")
+                        let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", urlString: "http://nian.so/api/a.php")
                         if(sa == "1"){
                             dispatch_async(dispatch_get_main_queue(), {
                                 UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
@@ -288,10 +288,10 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
                 self.dataArray.removeObjectAtIndex(self.ReplyRow)
-                var deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
+                let deleteCommentPath = NSIndexPath(forRow: self.ReplyRow, inSection: 1)
                 self.tableView!.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: UITableViewRowAnimation.Fade)
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", "http://nian.so/api/delete_bbscomment.php")
+                let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", urlString: "http://nian.so/api/delete_bbscomment.php")
                 if(sa == "1"){
                 }
                 })
@@ -299,7 +299,7 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
         }else if actionSheet == self.reportSheet {
             if buttonIndex == 0 {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var sa = SAPost("uid=1", "http://nian.so/api/a.php")
+                    let sa = SAPost("uid=1", urlString: "http://nian.so/api/a.php")
                     if(sa == "1"){
                         dispatch_async(dispatch_get_main_queue(), {
                             UIView.showAlertView("谢谢", message: "如果这个话题不合适，我们会将其移除。")
@@ -311,21 +311,21 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func commentFinish(){
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuser = Sa.objectForKey("user") as! String
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let safeuser = Sa.objectForKey("user") as! String
         
-        var current = NSDate().timeIntervalSince1970
-        var newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "\(current)", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        let current = NSDate().timeIntervalSince1970
+        let newinsert = NSDictionary(objects: ["\(self.ReturnReplyContent)", "\(self.ReturnReplyId)", "\(current)", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: self.ReturnReplyRow)
         self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.ReturnReplyRow, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
     func addStepButton(){
-        var addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
+        let addVC = AddBBSCommentViewController(nibName: "AddBBSComment", bundle: nil)
         addVC.delegate = self
         addVC.content = ""
         addVC.Id = self.Id
@@ -343,10 +343,10 @@ class BBSViewController: UIViewController,UITableViewDelegate,UITableViewDataSou
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.load(clear: true, isAsc: self.isAsc)
+            self.load(true, isAsc: self.isAsc)
         })
         self.tableView!.addFooterWithCallback({
-            self.load(clear: false, isAsc: self.isAsc)
+            self.load(false, isAsc: self.isAsc)
         })
     }
 }

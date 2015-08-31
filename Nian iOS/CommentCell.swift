@@ -33,19 +33,19 @@ class CommentCell: UITableViewCell {
     override func layoutSubviews()
     {
         super.layoutSubviews()
-        var uid = self.data.stringAttributeForKey("uid")
-        var user = self.data.stringAttributeForKey("user")
-        var lastdate = self.data.stringAttributeForKey("lastdate")
-        var content = self.data.stringAttributeForKey("content")
+        let uid = self.data.stringAttributeForKey("uid")
+        let user = self.data.stringAttributeForKey("user")
+        let lastdate = self.data.stringAttributeForKey("lastdate")
+        let content = self.data.stringAttributeForKey("content")
         self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         self.avatarView!.setHead(uid)
-        var height = content.stringHeightWith(15,width:208)
-        self.avatarView?.tag = uid.toInt()!
+        let height = content.stringHeightWith(15,width:208)
+        self.avatarView?.tag = Int(uid)!
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
         if height == "".stringHeightWith(15,width:208) {      //如果是单行
-            var oneLineWidth = content.stringWidthWith(15, height: 24)
+            let oneLineWidth = content.stringWidthWith(15, height: 24)
             self.imageContent.setWidth(oneLineWidth + 27)
             self.imageContent.setHeight(37)
             self.contentLabelWidth = content.stringWidthWith(15, height: 24)
@@ -60,9 +60,8 @@ class CommentCell: UITableViewCell {
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         self.lastdate.setBottom(height + 60)
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
         
         if uid == safeuid {
             self.imageContent.image = UIImage(named: "bubble_me")
@@ -84,8 +83,8 @@ class CommentCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        var content = data.stringAttributeForKey("content")
-        var height = content.stringHeightWith(15,width:208)
+        let content = data.stringAttributeForKey("content")
+        let height = content.stringHeightWith(15,width:208)
         return height + 60
     }
     

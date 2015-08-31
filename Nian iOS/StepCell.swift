@@ -45,21 +45,21 @@ class StepCell: UITableViewCell {
     override func layoutSubviews()
     {
         super.layoutSubviews()
-        var id1 = self.data1.stringAttributeForKey("id")
-        var title1 = self.data1.stringAttributeForKey("title")
-        var img1 = self.data1.stringAttributeForKey("img")
-        var id2 = self.data2.stringAttributeForKey("id")
-        var title2 = self.data2.stringAttributeForKey("title")
-        var img2 = self.data2.stringAttributeForKey("img")
-        var id3 = self.data3.stringAttributeForKey("id")
-        var title3 = self.data3.stringAttributeForKey("title")
-        var img3 = self.data3.stringAttributeForKey("img")
+        let id1 = self.data1.stringAttributeForKey("id")
+        let title1 = self.data1.stringAttributeForKey("title")
+        let img1 = self.data1.stringAttributeForKey("img")
+        let id2 = self.data2.stringAttributeForKey("id")
+        let title2 = self.data2.stringAttributeForKey("title")
+        let img2 = self.data2.stringAttributeForKey("img")
+        let id3 = self.data3.stringAttributeForKey("id")
+        let title3 = self.data3.stringAttributeForKey("title")
+        let img3 = self.data3.stringAttributeForKey("img")
         
         
         if(id1 != ""){
             self.title1!.text = title1
             self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: IconColor)
-            self.img1?.tag = id1.toInt()!
+            self.img1?.tag = Int(id1)!
             self.title1?.hidden = false
             self.img1?.hidden = false
         }else{
@@ -69,7 +69,7 @@ class StepCell: UITableViewCell {
         if(id2 != ""){
             self.title2!.text = title2
             self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: IconColor)
-            self.img2?.tag = id2.toInt()!
+            self.img2?.tag = Int(id2)!
             self.title2?.hidden = false
             self.img2?.hidden = false
         }else{
@@ -79,7 +79,7 @@ class StepCell: UITableViewCell {
         if(id3 != ""){
             self.title3!.text = title3
             self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: IconColor)
-            self.img3?.tag = id3.toInt()!
+            self.img3?.tag = Int(id3)!
             self.title3?.hidden = false
             self.img3?.hidden = false
         }else{

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate{
+class SignNextController: UIViewController, UITextFieldDelegate{
     @IBOutlet var loginButton:UIImageView!
     @IBOutlet var loginButtonBorder:UIView!
     @IBOutlet var inputEmail:UITextField!
@@ -23,7 +23,7 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
     
     func setupViews(){
         self.viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
@@ -51,7 +51,7 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
         
         self.loginButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginAlert"))
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "完成注册"
         titleLabel.textAlignment = NSTextAlignment.Center
@@ -73,16 +73,15 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
             SAerr("注册邮箱不能是空的...")
         }else if self.inputPassword.text == "" {
             SAerr("注册密码不能是空的...")
-        }else if !self.inputEmail.text.isValidEmail() {
+        }else if !self.inputEmail.text!.isValidEmail() {
             SAerr("不是地球上的邮箱...")
-        }else if SAstrlen(self.inputPassword.text)<4 {
+        }else if SAstrlen(self.inputPassword.text!)<4 {
             SAerr("密码太短了...")
         }else{
-            var email = SAEncode(SAHtml(self.inputEmail.text))
-            var password = ("n*A\(self.inputPassword.text)").md5
-            Api.postSignUp(self.signInfo.name!, password: password, email: self.inputEmail.text, daily: self.signInfo.mode!.rawValue) {
+            let password = ("n*A\(self.inputPassword.text)").md5
+            Api.postSignUp(self.signInfo.name!, password: password, email: self.inputEmail.text!, daily: self.signInfo.mode!.rawValue) {
                 json in
-                SAPush("Mua!", NSDate().dateByAddingTimeInterval(Double(60*60*24)))
+                SAPush("Mua!", pushDate: NSDate().dateByAddingTimeInterval(Double(60*60*24)))
                 
                 if json != nil {
                     let error = json!.objectForKey("error") as! NSNumber
@@ -92,21 +91,21 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
                         
                         self.holder!.hidden = true
                         self.navigationItem.rightBarButtonItems = buttonArray()
-                        var shell = (("\(password)\(sa)n*A").lowercaseString).md5
-                        var Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                        let shell = (("\(password)\(sa)n*A").lowercaseString).md5
+                        let Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //                        Sa.setObject(sa, forKey: "uid")
 //                        Sa.setObject(shell, forKey: "shell")
                         Sa.setObject(self.signInfo.name!, forKey: "user")
                         Sa.synchronize()
                         
-                        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                         uidKey.setObject(sa, forKey: kSecAttrAccount)
                         uidKey.setObject(shell, forKey: kSecValueData)
                         
                         Api.requestLoad()
                         
-                        var mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                        var navigationViewController = UINavigationController(rootViewController: mainViewController)
+                        let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                        let navigationViewController = UINavigationController(rootViewController: mainViewController)
                         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
                         navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
                         navigationViewController.navigationBar.translucent = true
@@ -139,13 +138,13 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
         shakeAnimation(self.holder)
         if self.isAnimate == 0 {
             self.isAnimate = 1
-            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions.allZeros, animations: {
+            UIView.animateWithDuration(0.3, delay:0, options: UIViewAnimationOptions(), animations: {
                 self.errLabel.text = message
-                self.errLabel.frame.offset(dx: 0, dy: -5)
+                self.errLabel.frame.offsetInPlace(dx: 0, dy: -5)
                 self.errLabel.alpha = 1
                 }, completion: { (complete: Bool) in
-                    UIView.animateWithDuration(0.1, delay:1.2, options: UIViewAnimationOptions.allZeros, animations: {
-                        self.errLabel.frame.offset(dx: 0, dy: +5)
+                    UIView.animateWithDuration(0.1, delay:1.2, options: UIViewAnimationOptions(), animations: {
+                        self.errLabel.frame.offsetInPlace(dx: 0, dy: +5)
                         self.errLabel.alpha = 0
                         }, completion: { (complete: Bool) in
                             self.isAnimate = 0
@@ -155,11 +154,11 @@ class SignNextController: UIViewController, UIGestureRecognizerDelegate, UITextF
     }
     
     func shakeAnimation(view:UIView){
-        var viewLayer:CALayer = view.layer
-        var position:CGPoint = viewLayer.position
-        var x:CGPoint = CGPointMake(position.x + 3 , position.y)
-        var y:CGPoint = CGPointMake(position.x - 3 , position.y)
-        var animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
+        let viewLayer:CALayer = view.layer
+        let position:CGPoint = viewLayer.position
+        let x:CGPoint = CGPointMake(position.x + 3 , position.y)
+        let y:CGPoint = CGPointMake(position.x - 3 , position.y)
+        let animation:CABasicAnimation = CABasicAnimation(keyPath: "position")
         animation.fromValue = NSValue(CGPoint: x)
         animation.toValue = NSValue(CGPoint: y)
         animation.autoreverses = true

@@ -16,7 +16,7 @@ import UIKit
     var editStepData:NSDictionary? { get set }
 }
 
-class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate{
+class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet var uploadButton: UIButton!
     @IBOutlet var uploadWait: UIActivityIndicatorView!
@@ -70,25 +70,25 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         self.uploadWait!.hidden = false
         self.uploadWait!.startAnimating()
         self.uploadDone!.hidden = true
-        var uy = UpYun()
+        let uy = UpYun()
         uy.successBlocker = ({(uploadData:AnyObject!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
             self.uploadDone!.hidden = false
             self.uploadUrl = uploadData.objectForKey("url") as! String
-            var width: AnyObject? = uploadData.objectForKey("image-width")
+            let width: AnyObject? = uploadData.objectForKey("image-width")
             self.uploadWidth = "\(width!)"
-            var height: AnyObject? = uploadData.objectForKey("image-height")
+            let height: AnyObject? = uploadData.objectForKey("image-height")
             self.uploadHeight = "\(height!)"
-            self.uploadUrl = SAReplace(self.uploadUrl, "/step/", "") as String
-            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img, 0)
+            self.uploadUrl = SAReplace(self.uploadUrl, before: "/step/", after: "") as String
+            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img: img, width: 0)
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
             self.uploadWait!.stopAnimating()
             self.uploadDone!.hidden = true
         })
-        uy.uploadImage(resizedImage(img, 500), savekey: getSaveKey("step", "png") as String)
+        uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("step", png: "png") as String)
     }
     
     
@@ -97,13 +97,13 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         // Custom initialization
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func setupViews(){
         
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         self.view.addSubview(navView)
         
@@ -123,18 +123,18 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             self.uploadUrl = self.data!.stringAttributeForKey("image")
             self.uploadWidth = self.data!.stringAttributeForKey("width")
             self.uploadHeight = self.data!.stringAttributeForKey("height")
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editStep")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }else{
-            var rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStep")
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addStep")
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard:"))
         
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if self.isEdit == 1 {
             titleLabel.text = "编辑进展！"
@@ -161,20 +161,20 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     
     func addStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
-        var content = self.TextView.text
+        let content = self.TextView.text
 //        content = SAEncode(SAHtml(content))
         Api.postAddStep_AFN(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 globalWillNianReload = 1
-                var coin = json!.objectForKey("coin") as! String
-                var isfirst = json!.objectForKey("isfirst") as! String
-                var totalCoin = json!.objectForKey("totalCoin") as! String
+                let coin = json!.objectForKey("coin") as! String
+                let isfirst = json!.objectForKey("isfirst") as! String
+                let totalCoin = json!.objectForKey("totalCoin") as! String
                 
                 //  创建卡片
                 let modeCard = SACookie("modeCard")
                 if modeCard == "0" {
                 } else {
-                    var card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                    let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
                     card.content = self.TextView.text
                     card.widthImage = self.uploadWidth
                     card.heightImage = self.uploadHeight
@@ -192,26 +192,25 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     
     func editStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
-        var content = self.TextView.text
+        let content = self.TextView.text
 //        content = SAEncode(SAHtml(content))
 //        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 //        var safeuid = Sa.objectForKey("uid") as! String
 //        var safeshell = Sa.objectForKey("shell") as! String
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+//        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         Api.postEditStep_AFN(self.Id, content: content, uploadUrl: self.uploadUrl, uploadWidth: self.uploadWidth, uploadHeight: self.uploadHeight) { json in 
             
             if json != nil {
-                var _error = json!.objectForKey("error") as! NSNumber
+                let _error = json!.objectForKey("error") as! NSNumber
                 
                 if _error == 0 {
                     globalWillNianReload = 1
                     dispatch_async(dispatch_get_main_queue(), {
                         if self.data != nil {
-                            var mutableData = NSMutableDictionary(dictionary: self.data!)
+                            let mutableData = NSMutableDictionary(dictionary: self.data!)
                             mutableData.setValue(self.TextView.text, forKey: "content")
                             mutableData.setValue(self.uploadUrl, forKey: "image")
                             mutableData.setValue(self.uploadWidth, forKey: "width")
@@ -232,10 +231,10 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     
     func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
-        var keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size)!
+        let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         self.keyboardHeight = keyboardSize.height
         self.viewHolder.setY(globalHeight-50-self.keyboardHeight)
-        var textHeight = globalHeight-self.keyboardHeight-50-64-20
+        let textHeight = globalHeight-self.keyboardHeight-50-64-20
         if textHeight > 0 {
             self.TextView.setHeight(textHeight)
         }

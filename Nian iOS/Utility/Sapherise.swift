@@ -46,13 +46,19 @@ var isiPhone6P: Bool = globalWidth == 414 ? true : false
 
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""
-    var request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL(string: urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    let request : NSMutableURLRequest? = NSMutableURLRequest()
+    request!.URL = NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!)
     request!.HTTPMethod = "POST"
     request!.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
     var error : NSError?
-    var returnData : NSData? = NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response, error: &error)
+    var returnData : NSData?
+    do {
+        returnData = try NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response)
+    } catch let error1 as NSError {
+        error = error1
+        returnData = nil
+    }
     if  error == nil {
         strRet = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
     }else{
@@ -62,40 +68,44 @@ func SAPost(postString:String, urlString:String)->String{
 }
 
 func SAGet(getString:String, urlString:String)->String{
-    var request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL(string: urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)
+    let request : NSMutableURLRequest? = NSMutableURLRequest()
+    request!.URL = NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!)
     request!.HTTPMethod = "GET"
     request!.HTTPBody = getString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
-    var error : NSError?
-    var returnData : NSData? = NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response, error: &error)
-    var strRet:NSString? = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
+    var returnData : NSData?
+    do {
+        returnData = try NSURLConnection.sendSynchronousRequest(request!, returningResponse : &response)
+    } catch _ as NSError {
+        returnData = nil
+    }
+    let strRet:NSString? = NSString(data: returnData!, encoding:NSUTF8StringEncoding)
     return strRet! as String
 }
 
 //替换，用法：var sa = SAReplace("This is my string", " ", "___")
 func SAReplace(word:String, before:String, after:String)->NSString{
-    return word.stringByReplacingOccurrencesOfString(before, withString: after, options: nil, range: nil)
+    return word.stringByReplacingOccurrencesOfString(before, withString: after, options: [], range: nil)
 }
 
 //替换危险字符
 func SAHtml(content:String) -> String {
-    var s = CFStringCreateMutableCopy(nil, 0, content)
+    let s = CFStringCreateMutableCopy(nil, 0, content)
     var r = CFRangeMake(0, 0)
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "&", "&amp;", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, "&", "&amp;", r, CFStringCompareFlags())
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "<", "&lt;", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, "<", "&lt;", r, CFStringCompareFlags())
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, ">", "&gt;", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, ">", "&gt;", r, CFStringCompareFlags())
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "\"", "&quot;", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, "\"", "&quot;", r, CFStringCompareFlags())
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "'", "&#039;", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, "'", "&#039;", r, CFStringCompareFlags())
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, " ", "&nbsp;", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, " ", "&nbsp;", r, CFStringCompareFlags())
     r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "\n", "<br>", r, CFStringCompareFlags.allZeros)
+    CFStringFindAndReplace(s, "\n", "<br>", r, CFStringCompareFlags())
     
     return s as String
 }
@@ -107,23 +117,23 @@ func SAEncode(content:String) -> String {
 
 func SADecode(word: String) -> String {
     var content = word
-    content = SAReplace(content, "&amp;", "&") as String
-    content = SAReplace(content, "&lt;", "<") as String
-    content = SAReplace(content, "&gt;", ">") as String
-    content = SAReplace(content, "&quot;", "\\") as String
-    content = SAReplace(content, "&#039;", "'") as String
-    content = SAReplace(content, "&nbsp;", " ") as String
-    content = SAReplace(content, "<br>", "\n") as String
+    content = SAReplace(content, before: "&amp;", after: "&") as String
+    content = SAReplace(content, before: "&lt;", after: "<") as String
+    content = SAReplace(content, before: "&gt;", after: ">") as String
+    content = SAReplace(content, before: "&quot;", after: "\\") as String
+    content = SAReplace(content, before: "&#039;", after: "'") as String
+    content = SAReplace(content, before: "&nbsp;", after: " ") as String
+    content = SAReplace(content, before: "<br>", after: "\n") as String
     return content
 }
 
 func SAColorImg(theColor:UIColor)->UIImage{
-    var rect = CGRectMake(0, 0, 1, 1)
+    let rect = CGRectMake(0, 0, 1, 1)
     UIGraphicsBeginImageContext(rect.size)
-    var context = UIGraphicsGetCurrentContext()
+    let context = UIGraphicsGetCurrentContext()
     CGContextSetFillColorWithColor(context, theColor.CGColor)
     CGContextFillRect(context, rect)
-    var theImage = UIGraphicsGetImageFromCurrentImageContext()
+    let theImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return theImage
 }
@@ -137,7 +147,7 @@ extension String  {
 
         CC_MD5(str!, strLen, result)
 
-        var hash = NSMutableString(capacity: digestLen)
+        let hash = NSMutableString(capacity: digestLen)
         for var i = 0; i < digestLen; i++ {
             hash.appendFormat("%02x", result[i])
         }
@@ -160,8 +170,8 @@ extension String  {
     }
     
     func isValidName()->Bool {
-        var regex = "^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$"
-        var nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
+        let regex = "^[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+$"
+        let nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
         return nameTest.evaluateWithObject(self)
     }
     
@@ -172,12 +182,12 @@ extension String  {
 
 
 func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
-    var width = initalImage.size.width
-    var height = initalImage.size.height
+    let width = initalImage.size.width
+    let height = initalImage.size.height
     var newheight:CGFloat = 0
     if width != 0 {
         newheight = height * newWidth / width
-        newheight = SACeil(newheight, 0, isCeil: false)
+        newheight = SACeil(newheight, dot: 0, isCeil: false)
     }
     var newImage: UIImage
     if width >= newWidth {
@@ -192,13 +202,13 @@ func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
 }
 
 func getSaveKey(title:NSString, png:NSString) -> NSString{
-    var date = NSDate().timeIntervalSince1970
+    let date = NSDate().timeIntervalSince1970
     
-    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //    var safeshell = uidKey.objectForKey(kSecValueData) as! String
     
-    var string = NSString(string: "/\(title)/\(safeuid)_\(Int(date)).\(png)")
+    let string = NSString(string: "/\(title)/\(safeuid)_\(Int(date)).\(png)")
     return string
 }
 
@@ -209,15 +219,15 @@ func checkNetworkStatus() -> Int{
 }
 
 func buttonArray()->[UIBarButtonItem]{
-    var spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
+    let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
     spaceButton.width = -14
-    var rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
-    var activity = UIActivityIndicatorView()
+    let rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
+    let activity = UIActivityIndicatorView()
     activity.startAnimating()
     activity.color = IconColor
     activity.frame = CGRectMake(14, 9, 12, 12)
     rightButtonView.addSubview(activity)
-    var rightLoadButton = UIBarButtonItem(customView: rightButtonView)
+    let rightLoadButton = UIBarButtonItem(customView: rightButtonView)
     return [ spaceButton, rightLoadButton ]
 }
 
@@ -232,7 +242,7 @@ func delay(delay:Double, closure:()->()) {
 
 extension UIViewController: UIGestureRecognizerDelegate {
     func viewBack(){
-        var leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigation")
+        let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigation")
         leftButton.image = UIImage(named:"newBack")
         self.navigationItem.leftBarButtonItem = leftButton
         viewBackFix()
@@ -243,8 +253,8 @@ extension UIViewController: UIGestureRecognizerDelegate {
         }
     }
     func viewBackFix(){
-        self.navigationController?.interactivePopGestureRecognizer.enabled = true
-        self.navigationController?.interactivePopGestureRecognizer.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer!.enabled = true
+        self.navigationController?.interactivePopGestureRecognizer!.delegate = self
     }
     
     func navMove(yPoint:CGFloat){
@@ -264,13 +274,13 @@ extension UIViewController: UIGestureRecognizerDelegate {
     }
     
     func SAUser(uid: String) {
-        var UserVC = PlayerViewController()
+        let UserVC = PlayerViewController()
         UserVC.Id = uid
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func SADream(id: String) {
-        var DreamVC = DreamViewController()
+        let DreamVC = DreamViewController()
         DreamVC.Id = id
         self.navigationController?.pushViewController(DreamVC, animated: true)
     }
@@ -282,8 +292,8 @@ extension UIViewController: UIGestureRecognizerDelegate {
 
 func getImageFromView(view: UIView)->UIImage {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 8);
-    view.layer.renderInContext(UIGraphicsGetCurrentContext())
-    var image = UIGraphicsGetImageFromCurrentImageContext()
+    view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
 }
@@ -291,29 +301,22 @@ func getImageFromView(view: UIView)->UIImage {
 func SAstrlen(stremp:NSString)->Int{
     let cfEncoding = CFStringConvertWindowsCodepageToEncoding(54936)
     let gbkEncoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding)
-    var da:NSData = stremp.dataUsingEncoding(gbkEncoding)!
+    let da:NSData = stremp.dataUsingEncoding(gbkEncoding)!
     return da.length
 }
 
-extension UIVisualEffectView {
-    override public func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        let view = super.hitTest(point, withEvent: event)
-        return view == self ? nil : view
-    }
-}
-
 func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
-    var viewEmpty = UIView(frame: CGRectMake(0, 0, width, 55))
-    var imageEmpty = UIImageView(frame: CGRectMake(0, 0, width, 35))
+    let viewEmpty = UIView(frame: CGRectMake(0, 0, width, 55))
+    let imageEmpty = UIImageView(frame: CGRectMake(0, 0, width, 35))
     imageEmpty.image = UIImage(named: "smile")
     imageEmpty.contentMode = UIViewContentMode.Center
-    var labelEmpty = UILabel(frame: CGRectMake(0, 40, width, 20))
+    let labelEmpty = UILabel(frame: CGRectMake(0, 40, width, 20))
     labelEmpty.font = UIFont.systemFontOfSize(11)
     labelEmpty.textAlignment = NSTextAlignment.Center
     labelEmpty.textColor = UIColor(red:0.65, green:0.65, blue:0.65, alpha:1)
     labelEmpty.numberOfLines = 0
     labelEmpty.text = content
-    var height = content.stringHeightWith(11, width: width)
+    let height = content.stringHeightWith(11, width: width)
     labelEmpty.setHeight(height)
     viewEmpty.addSubview(imageEmpty)
     viewEmpty.addSubview(labelEmpty)
@@ -329,7 +332,7 @@ extension UIViewController {
         globalViewLoading!.layer.masksToBounds = true
         globalViewLoading!.userInteractionEnabled = false
         globalViewLoading?.hidden = true
-        var activity = UIActivityIndicatorView(frame: CGRectMake(10, 10, 30, 30))
+        let activity = UIActivityIndicatorView(frame: CGRectMake(10, 10, 30, 30))
         activity.color = UIColor.whiteColor()
         activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
         activity.hidden = false
@@ -337,7 +340,7 @@ extension UIViewController {
         globalViewLoading!.addSubview(activity)
         if let v = self.navigationController?.navigationBar.window {
             v.addSubview(globalViewLoading!)
-            delay(0.3, { () -> () in
+            delay(0.3, closure: { () -> () in
                 globalViewLoading!.hidden = false
                 return
             })
@@ -348,11 +351,9 @@ extension UIViewController {
     }
     
     func SAlogout(){
-        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var safeuid = Sa.objectForKey("uid") as? String
-        var safeshell = Sa.objectForKey("shell") as? String
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         uidKey.resetKeychainItem()
         
         Api.postDeviceTokenClear() { string in
@@ -452,7 +453,13 @@ extension UIImage{
             break
         }
         
-        var ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), CGImageGetBitmapInfo(self.CGImage))
+//        var ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), CGImageGetBitmapInfo(self.CGImage))
+        
+        // todo: 不知道怎么把这个 BitmapInfo 转换为 UInt32
+        let ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), 1)
+        
+        
+//        CGBitmapInfo((CGBitmapInfo.ByteOrder32Little.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue) as UInt32)
         
         CGContextConcatCTM(ctx, transform)
         
@@ -463,20 +470,18 @@ extension UIImage{
             CGContextDrawImage(ctx, CGRectMake(0, 0, self.size.width, self.size.height), self.CGImage)
         }
         
-        var cgimg = CGBitmapContextCreateImage(ctx)
-        var img = UIImage(CGImage: cgimg)!
+        let cgimg = CGBitmapContextCreateImage(ctx)
+        let img = UIImage(CGImage: cgimg!)
         return img
     }
     
     class func imageFromURL(aURL: NSURL, success: ((image: UIImage) -> Void), error: () -> Void) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            var response: NSURLResponse?
-            var error: NSErrorPointer?
             
-            var mutableRequest: NSMutableURLRequest = NSMutableURLRequest(URL: aURL,
+            let mutableRequest: NSMutableURLRequest = NSMutableURLRequest(URL: aURL,
                                                                           cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad,
                                                                           timeoutInterval: 30.0)
-            var rcvData: NSData? = NSURLConnection.sendSynchronousRequest(mutableRequest, returningResponse: nil, error: nil)
+            let rcvData: NSData? = try? NSURLConnection.sendSynchronousRequest(mutableRequest, returningResponse: nil)
 //            var img: UIImage = UIImage(data: rcvData!)!
             
             dispatch_async(dispatch_get_main_queue(), {
@@ -496,21 +501,21 @@ extension UIImageView{
         if isMe {
             textMask = "bubble_me"
         }
-        var size = CGSizeMake(self.bounds.size.width, self.bounds.size.height)
+        let size = CGSizeMake(self.bounds.size.width, self.bounds.size.height)
         UIGraphicsBeginImageContext(size)
-        var ctx = UIGraphicsGetCurrentContext()
+        let ctx = UIGraphicsGetCurrentContext()
         CGContextSetFillColor(ctx, [1.0,1.0,1.0,1.0])
         CGContextFillRect(ctx, CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
-        var background = UIGraphicsGetImageFromCurrentImageContext()
+        let background = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        var subLayer = CALayer()
+        let subLayer = CALayer()
         subLayer.frame = self.bounds
         subLayer.contents = background.CGImage
         subLayer.rasterizationScale = UIScreen.mainScreen().scale
-        var maskLayer = CALayer()
+        let maskLayer = CALayer()
         maskLayer.frame = self.bounds
         subLayer.mask = maskLayer
-        var roundCornerLayer = CALayer()
+        let roundCornerLayer = CALayer()
         roundCornerLayer.frame = self.bounds
         roundCornerLayer.contents = UIImage(named: textMask)!.resetToSize(self.bounds.size).CGImage
         self.layer.addSublayer(subLayer)
@@ -563,9 +568,9 @@ extension UIImageView{
             })
         }else{
             self.setY(startY)
-            delay(1, { () -> () in
+            delay(1, closure: { () -> () in
                 self.setY(endY)
-                delay(1, { () -> () in
+                delay(1, closure: { () -> () in
                     self.setAnimationWanderY(startY, endY: endY, animated: animated)
                 })
             })
@@ -573,7 +578,7 @@ extension UIImageView{
     }
     
     func getPoint() -> CGPoint {
-        var y = self.convertPoint(CGPointZero, fromView: self.window)
+        let y = self.convertPoint(CGPointZero, fromView: self.window)
         return y
     }
     
@@ -592,18 +597,18 @@ extension UIImageView{
 
 extension UIViewController {
     func onURL(sender: NSNotification){
-        var url = sender.object as! String
+        let url = sender.object as! String
         var urlArray = "\(url)".componentsSeparatedByString("nian://")
         if urlArray.count == 2 {
             urlArray = urlArray[1].componentsSeparatedByString("/")
             if urlArray.count == 2 {
-                if let id = urlArray[1].toInt() {
+                if let id = Int(urlArray[1]) {
                     if urlArray[0] == "dream" {
-                        var DreamVC = DreamViewController()
+                        let DreamVC = DreamViewController()
                         DreamVC.Id = "\(id)"
                         self.navigationController?.pushViewController(DreamVC, animated: true)
                     }else if urlArray[0] == "user" {
-                        var UserVC = PlayerViewController()
+                        let UserVC = PlayerViewController()
                         UserVC.Id = "\(id)"
                         self.navigationController?.pushViewController(UserVC, animated: true)
                     }
@@ -615,10 +620,9 @@ extension UIViewController {
 
 extension UIButton {
     func startLoading() {
-        var height = self.height()
         self.enabled = false
-        self.setTitle("", forState: UIControlState.allZeros)
-        var activity = UIActivityIndicatorView(frame: CGRectMake(self.width()/2 - 10, self.height()/2 - 10, 20, 20))
+        self.setTitle("", forState: UIControlState())
+        let activity = UIActivityIndicatorView(frame: CGRectMake(self.width()/2 - 10, self.height()/2 - 10, 20, 20))
         activity.color = UIColor.whiteColor()
         activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
         self.addSubview(activity)
@@ -626,18 +630,18 @@ extension UIButton {
         activity.startAnimating()
     }
     func endLoading(text: String) {
-        var views:NSArray = self.subviews
+        let views:NSArray = self.subviews
         for view:AnyObject in views {
             if NSStringFromClass(view.classForCoder) == "UIActivityIndicatorView"  {
                 view.removeFromSuperview()
             }
         }
-        var imageView = UIImageView(frame: CGRectMake(self.width()/2 - 12, self.height()/2 - 12, 24, 24))
+        let imageView = UIImageView(frame: CGRectMake(self.width()/2 - 12, self.height()/2 - 12, 24, 24))
         imageView.image = UIImage(named: "newOK")
         imageView.contentMode = UIViewContentMode.Center
         self.addSubview(imageView)
-        delay(2, { () -> () in
-            self.setTitle(text, forState: UIControlState.allZeros)
+        delay(2, closure: { () -> () in
+            self.setTitle(text, forState: UIControlState())
             imageView.removeFromSuperview()
             self.enabled = true
             return
@@ -648,9 +652,9 @@ extension UIButton {
         self.layer.cornerRadius = 18
         self.backgroundColor = SeaColor
         self.layer.masksToBounds = true
-        self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.allZeros)
+        self.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
         self.titleLabel!.font = UIFont.systemFontOfSize(13)
-        self.setTitle(content, forState: UIControlState.allZeros)
+        self.setTitle(content, forState: UIControlState())
     }
 }
 
@@ -669,8 +673,8 @@ extension UIViewController {
             globalViewFilm!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)
             globalViewFilm!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
             globalViewFilm!.userInteractionEnabled = true
-            var nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
-            var viewFilmDialog: FilmCell = nib.objectAtIndex(0) as! FilmCell
+            let nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
+            let viewFilmDialog: FilmCell = nib.objectAtIndex(0) as! FilmCell
             viewFilmDialog.frame.origin.x = ( globalWidth - 270 ) / 2
             viewFilmDialog.frame.origin.y = -270
             viewFilmDialog.labelTitle.text = title
@@ -686,13 +690,13 @@ extension UIViewController {
                 globalViewFilm!.alpha = 1
                 viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 45
             })
-            delay(0.3, {
+            delay(0.3, closure: {
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
                     viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
                 })
             })
         } else {
-            var views:NSArray = globalViewFilm!.subviews
+            let views:NSArray = globalViewFilm!.subviews
             for view:AnyObject in views {
                 if NSStringFromClass(view.classForCoder) == "Nian_iOS.FilmCell" {
                     if let v = view as? FilmCell {
@@ -739,7 +743,7 @@ func shake() {
 }
 
 func SAPush(content: String, pushDate: NSDate) {
-    var notification = UILocalNotification()
+    let notification = UILocalNotification()
     notification.fireDate = pushDate
     notification.timeZone = NSTimeZone.defaultTimeZone()
     notification.alertBody = content
@@ -747,23 +751,23 @@ func SAPush(content: String, pushDate: NSDate) {
 }
 
 func getCacheImage(url: String) -> UIImage? {
-    var urlImage = NSURL(string: url)!
-    var req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-    var cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(req)
+    let urlImage = NSURL(string: url)!
+    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+    let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(req)
     return cachedImage
 }
 
 func setCacheImage(url: String, img: UIImage, width: CGFloat) {
-    var urlImage = NSURL(string: url)!
-    var req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-    var imageNew = width == 0 ? img : resizedImage(img, width)
+    let urlImage = NSURL(string: url)!
+    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+    var imageNew = width == 0 ? img : resizedImage(img, newWidth: width)
     imageNew = imageNew.fixOrientation()
     UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
 }
 
 func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: String, tableView: UITableView) {
-    var data = dataArray[index] as! NSDictionary
-    var mutableItem = NSMutableDictionary(dictionary: data)
+    let data = dataArray[index] as! NSDictionary
+    let mutableItem = NSMutableDictionary(dictionary: data)
     mutableItem.setValue(value, forKey: key)
     dataArray.replaceObjectAtIndex(index, withObject: mutableItem)
 }
@@ -785,8 +789,8 @@ func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UI
 
 func SAUid() -> String {
 //    var uid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
-    var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    var uid = uidKey.objectForKey(kSecAttrAccount) as? String
+    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+    let uid = uidKey.objectForKey(kSecAttrAccount) as? String
     
     if uid != nil {
         return uid!
@@ -796,7 +800,7 @@ func SAUid() -> String {
 
 func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
     // ceil 向上取整
-    var a = pow(10, Double(dot))
+    let a = pow(10, Double(dot))
     var b: CGFloat
     if isCeil {
         b = CGFloat(ceil(Double(num) * a) / a)
@@ -808,12 +812,11 @@ func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
 
 extension UIColor {
     class func colorWithHex(hexString: String) -> UIColor! {
-        let regexp = NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
-            options: .CaseInsensitive,
-            error: nil)
+        let regexp = try? NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
+            options: .CaseInsensitive)
         let num = regexp?.numberOfMatchesInString(hexString,
             options: .ReportProgress,
-            range: NSMakeRange(0, count(hexString)))
+            range: NSMakeRange(0, hexString.characters.count))
         if num != 1 {
             return SeaColor
         }
@@ -825,6 +828,14 @@ extension UIColor {
         let green = CGFloat( (rgbValue & 0xFF00) >> 8) / 255.0
         let blue  = CGFloat( (rgbValue & 0xFF) ) / 255.0
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
+    }
+    
+    class func b3() -> UIColor! {
+        return UIColor(red:0.7, green:0.7, blue:0.7, alpha:1)
+    }
+    
+    class func e6() -> UIColor! {
+        return UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
     }
 }
 
@@ -838,10 +849,10 @@ let lineColor: UIColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
 let greyColor = UIColor(red:0.18, green:0.18, blue:0.18, alpha:1) // #333333
 
 func SAThousand(num: String) -> String {
-    if var IntNum = num.toInt() {
+    if var IntNum = Int(num) {
         if IntNum >= 1000 {
             IntNum = IntNum / 100
-            var FloatNum = Float(IntNum) / 10
+            let FloatNum = Float(IntNum) / 10
             return "\(FloatNum)K"
         } else {
             return num
@@ -852,12 +863,12 @@ func SAThousand(num: String) -> String {
 
 extension UIView {
     func setRadius(size: CGFloat, isTop: Bool) {
-        var rectCorner = UIRectCorner.TopLeft | UIRectCorner.TopRight
+        var rectCorner: UIRectCorner = [UIRectCorner.TopLeft, UIRectCorner.TopRight]
         if !isTop {
-            rectCorner = UIRectCorner.BottomLeft | UIRectCorner.BottomRight
+            rectCorner = [UIRectCorner.BottomLeft, UIRectCorner.BottomRight]
         }
         let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: rectCorner, cornerRadii: CGSizeMake(size, size))
-        var maskLayer = CAShapeLayer()
+        let maskLayer = CAShapeLayer()
         maskLayer.frame = self.bounds
         maskLayer.path = maskPath.CGPath
         self.layer.mask = maskLayer
@@ -877,12 +888,12 @@ func SACookie(key: String) -> String? {
 
 class Cookies {
     class func set(value: AnyObject?, forKey: String) {
-        var Cookie = NSUserDefaults.standardUserDefaults()
+        let Cookie = NSUserDefaults.standardUserDefaults()
         Cookie.setObject(value, forKey: forKey)
         Cookie.synchronize()
     }
     class func get(key: String) -> AnyObject? {
-        var Cookie = NSUserDefaults.standardUserDefaults()
+        let Cookie = NSUserDefaults.standardUserDefaults()
         return Cookie.objectForKey(key)
     }
 }
@@ -890,8 +901,8 @@ class Cookies {
 /**
 等价于 objective-c 里面的 synchonized
 
-:param: lock    <#lock description#>
-:param: closure <#closure description#>
+- parameter lock:    <#lock description#>
+- parameter closure: <#closure description#>
 */
 public func synchronized(lock: AnyObject, closure: () -> ()) {
     objc_sync_enter(lock)

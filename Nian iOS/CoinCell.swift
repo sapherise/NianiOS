@@ -39,7 +39,6 @@ class CoinCell : UITableViewCell {
             self.labelImage.text = imageURL
             self.labelImage.textColor = SeaColor
         }else{
-            var height = CoinCell.getDespHeight(description)
             self.textDescription.setHeight(CoinCell.getDespHeight(description))
             self.textDescription.hidden = false
             self.viewLine.setY(self.textDescription.bottom()+20)

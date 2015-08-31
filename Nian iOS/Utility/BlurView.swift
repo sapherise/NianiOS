@@ -100,7 +100,7 @@ class ILTranslucentView: UIView {
         self.createUI()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.createUI()
     }
@@ -113,17 +113,17 @@ extension ILTranslucentView {
         self.translucent = true
         self.translucentAlpha = 1
         
-        var _nonExistentSubview = UIView(frame: self.bounds)
+        let _nonExistentSubview = UIView(frame: self.bounds)
         _nonExistentSubview.backgroundColor = UIColor.clearColor()
         _nonExistentSubview.clipsToBounds = true
-        _nonExistentSubview.autoresizingMask = (UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleTopMargin)
+        _nonExistentSubview.autoresizingMask = ([UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleTopMargin])
         self.nonExistentSubview = _nonExistentSubview
         self.insertSubview(self.nonExistentSubview!, atIndex: 0)
         
-        var _toolbarContainerClipView = UIView(frame: self.bounds)
+        let _toolbarContainerClipView = UIView(frame: self.bounds)
         _toolbarContainerClipView.backgroundColor = UIColor.clearColor()
         _toolbarContainerClipView.clipsToBounds = true
-        _toolbarContainerClipView.autoresizingMask = (UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleTopMargin)
+        _toolbarContainerClipView.autoresizingMask = ([UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleTopMargin])
         self.toolbarContainerClipView = _toolbarContainerClipView
         self.nonExistentSubview!.addSubview(self.toolbarContainerClipView!)
         
@@ -131,16 +131,16 @@ extension ILTranslucentView {
         rect.origin.y -= 1
         rect.size.height += 1
         
-        var _toolbarBG = UIToolbar(frame: rect)
-        _toolbarBG.autoresizingMask = (UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight)
+        let _toolbarBG = UIToolbar(frame: rect)
+        _toolbarBG.autoresizingMask = ([UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight])
         self.toolbarBG = _toolbarBG
         
         self.toolbarContainerClipView!.addSubview(self.toolbarBG!)
         self.ilDefaultColorBG = self.toolbarBG!.barTintColor
         
-        var _overlayBackgroundView = UIView(frame: self.bounds)
+        let _overlayBackgroundView = UIView(frame: self.bounds)
         _overlayBackgroundView.backgroundColor = self.backgroundColor
-        _overlayBackgroundView.autoresizingMask = (UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight)
+        _overlayBackgroundView.autoresizingMask = ([UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight])
         self.overlayBackgroundView = _overlayBackgroundView
         self.toolbarContainerClipView!.addSubview(self.overlayBackgroundView!)
         
@@ -167,12 +167,12 @@ extension ILTranslucentView {
             var rect = newValue
             rect.origin = CGPointZero
             
-            var width = CGRectGetWidth(self.toolbarContainerClipView!.frame)
+            let width = CGRectGetWidth(self.toolbarContainerClipView!.frame)
             if width > CGRectGetWidth(rect) {
                 rect.size.width = width
             }
             
-            var height = CGRectGetHeight(self.toolbarContainerClipView!.frame)
+            let height = CGRectGetHeight(self.toolbarContainerClipView!.frame)
             if height > CGRectGetHeight(rect) {
                 rect.size.height = height
             }
@@ -192,12 +192,12 @@ extension ILTranslucentView {
             var rect = newValue
             rect.origin = CGPointZero
             
-            var width = CGRectGetWidth(self.toolbarContainerClipView!.bounds)
+            let width = CGRectGetWidth(self.toolbarContainerClipView!.bounds)
             if width > CGRectGetWidth(rect) {
                 rect.size.width = width
             }
             
-            var height = CGRectGetHeight(self.toolbarContainerClipView!.bounds)
+            let height = CGRectGetHeight(self.toolbarContainerClipView!.bounds)
             if height > CGRectGetHeight(rect) {
                 rect.size.height = height
             }
@@ -228,9 +228,9 @@ extension ILTranslucentView {
         }
     }
     
-    @objc override var subviews : Array<AnyObject> {
+    @objc override var subviews : Array<UIView> {
         if self.initComplete {
-            var array = super.subviews as! Array<UIView>
+            var array = super.subviews 
             
             var index = 0
             for view in array {

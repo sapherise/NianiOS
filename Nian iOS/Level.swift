@@ -42,11 +42,10 @@ class LevelView: UIView {
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!.objectForKey("user") as! NSDictionary
-                var foed = data.stringAttributeForKey("foed")
-                var like = data.stringAttributeForKey("like")
-                var step = data.stringAttributeForKey("step")
-                var level = data.stringAttributeForKey("level")
+                let data = json!.objectForKey("user") as! NSDictionary
+                let foed = data.stringAttributeForKey("foed")
+                let like = data.stringAttributeForKey("like")
+                let step = data.stringAttributeForKey("step")
                 self.menuLeft.text = like
                 self.menuMiddle.text = step
                 self.menuRight.text = foed
@@ -56,11 +55,11 @@ class LevelView: UIView {
         Api.getLevelCalendar(){ json in
             if json != nil {
                 self.marks = [Bool](count: 32, repeatedValue: false)
-                var items = json!.objectForKey("items") as! NSArray
+                let items = json!.objectForKey("items") as! NSArray
                 for item in items {
-                    var lastdate = (item.objectForKey("lastdate") as! NSString).doubleValue
-                    var date = V.getDay(lastdate)
-                    self.marks[date.toInt()!] = true
+                    let lastdate = (item.objectForKey("lastdate") as! NSString).doubleValue
+                    let date = V.getDay(lastdate)
+                    self.marks[Int(date)!] = true
                 }
                 self.layoutAMonth(self.marks)
                 self.labelMonthLeft.text = "\(self.textLeft)"
@@ -70,10 +69,10 @@ class LevelView: UIView {
     }
     
     func layoutAMonth(marks: [Bool]) {
-        var calendar = NSCalendar.currentCalendar()
-        var comoponents = calendar.components(NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit, fromDate: NSDate())
-        var year = comoponents.year
-        var month = comoponents.month
+        let calendar = NSCalendar.currentCalendar()
+        let comoponents = calendar.components([NSCalendarUnit.NSYearCalendarUnit, NSCalendarUnit.NSMonthCalendarUnit], fromDate: NSDate())
+        let year = comoponents.year
+        let month = comoponents.month
         
         let dffd = NSDateFormatter()
         dffd.dateFormat = "MM/dd/yyyy"
@@ -85,7 +84,6 @@ class LevelView: UIView {
         
         let dfm = NSDateFormatter()
         dfm.dateFormat = "MMMM"
-        let dMonth = dfm.stringFromDate(firstDay)
         
         let df = NSDateFormatter()
         df.dateFormat = "e"
@@ -97,9 +95,9 @@ class LevelView: UIView {
         
         let todayD = NSDateFormatter()
         todayD.dateFormat = "d"
-        let todayDInt = todayD.stringFromDate(NSDate()).toInt()!
+        let todayDInt = Int(todayD.stringFromDate(NSDate()))!
         
-        var numDaysInMonth = 31
+        let numDaysInMonth = 31
         
         for index in 1 ... numDaysInMonth {
             
@@ -113,7 +111,6 @@ class LevelView: UIView {
             let firstDay = todayF.stringFromDate(NSDate())
             let cF = NSDateFormatter()
             cF.dateFormat = "MM/dd/yyyy"
-            if let d = cF.dateFromString(strAll) { // date is valid
                 //make a button
                 let myB = UILabel()
                 myB.text = "\(index)"
@@ -149,7 +146,6 @@ class LevelView: UIView {
                     thePosX = 15
                     thePosY = thePosY + 29
                 }
-            }
         }
     }
 }

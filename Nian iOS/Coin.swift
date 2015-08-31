@@ -9,7 +9,7 @@
 import UIKit
 import StoreKit
 
-class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, LTMorphingLabelDelegate, DreamPromoDelegate {
+class CoinViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, LTMorphingLabelDelegate, DreamPromoDelegate {
     
     typealias CoinCellData = (icon: String, title: String, description: String, cost: String)
     
@@ -50,7 +50,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.viewBack()
         scrollView.setHeight(globalHeight)
         self.scrollView.contentSize.height = 1000 > globalHeight ? 1000 : globalHeight + 1
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.text = "念币"
         titleLabel.sizeToFit()
@@ -60,7 +60,6 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.tableView.delegate = self
         self.tableView.allowsSelection = false
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        var header = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
         
         self.viewCircleBackground.layer.cornerRadius = 84
         self.viewCircleBackground.layer.masksToBounds = true
@@ -78,8 +77,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         
         Api.getUserMe() { json in
             if json != nil {
-                var data = json!.objectForKey("user") as! NSDictionary
-                if let coin = data.stringAttributeForKey("coin").toInt() {
+                let data = json!.objectForKey("user") as! NSDictionary
+                if let coin = Int(data.stringAttributeForKey("coin")) {
                     self.levelLabelCount(coin)
                 }
             }
@@ -87,12 +86,12 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     }
     
     func levelLabelCount(totalNumber:Int){
-        var x = Int(floor(Double(totalNumber) / 20) + 1)
+        let x = Int(floor(Double(totalNumber) / 20) + 1)
         var y:Double = 0
         var z = 0
         for i:Int in 0...20 {
             z = z + x
-            var j = z + i
+            let j = z + i
             if j < totalNumber {
                 var textI = "0"
                 if j <= 0 {
@@ -103,11 +102,11 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     textI = "0\(j)"
                 }
                 y = y + 0.1
-                delay( y , {
+                delay( y , closure: {
                     self.labelCoin.text = textI
                 })
             } else {
-                delay( y + 0.1 , {
+                delay( y + 0.1 , closure: {
                     var textI = "0"
                     if totalNumber <= 0 {
                         textI = "\(totalNumber)"
@@ -141,9 +140,9 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("CoinCell", forIndexPath: indexPath) as? CoinCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("CoinCell", forIndexPath: indexPath) as? CoinCell
         cell!.btnBuy.tag = indexPath.row + 100 * indexPath.section
-        var (icon, title, desp, cost) = indexPath.section == 0 ? coinItems[indexPath.row] : propItems[indexPath.row]
+        let (icon, title, desp, cost) = indexPath.section == 0 ? coinItems[indexPath.row] : propItems[indexPath.row]
         cell!.setupView(icon, title: title, description: desp, cost: cost, sectionNumber: indexPath.section)
         if indexPath.section == 0 {
             cell!.btnBuy.addTarget(self, action: "onBuyCoinClick:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -159,16 +158,16 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     }
     
     func onHeaderCoinClick() {
-        var storyboard = UIStoryboard(name: "CoinDetail", bundle: nil)
-        var viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController") as! UIViewController
+        let storyboard = UIStoryboard(name: "CoinDetail", bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController") 
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func onBuyCoinClick(sender: UIButton) {
-        var tag = sender.tag
-        var coinData = coinItems[tag]
+        let tag = sender.tag
+        let coinData = coinItems[tag]
         showFilm("购买念币", prompt: "立刻获得 \(coinData.title)", button: coinData.cost, transDirectly: true) { [unowned self] film in
-            var payment = Payment() {
+            let payment = Payment() {
                 [unowned self] state, data in
                 if film.hidden {
                     film.removeFromSuperview()
@@ -203,14 +202,12 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                     case .Purchased:
                         prompt = "念币买好啦"
                         film.showOK()
-                        self.levelLabelCount((data!.objectForKey("coin") as! String).toInt()!)
+                        self.levelLabelCount(Int((data!.objectForKey("coin") as! String))!)
                         globalWillNianReload = 1
                         break
                     case .VerifyFailed:
                         prompt = "出了点问题...\n如果念币没到账，记得和管理员联系！"
                         film.showOK()
-                        break
-                    default:
                         break
                     }
                     film.labelDes.text = prompt
@@ -262,7 +259,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         default:
             break
         }
-        var tag = sender.tag
+        let tag = sender.tag
         if tag == 100 || tag == 101 {
             showFilm(title, prompt: des, button: button, transDirectly: true) { film in
                 Api.postLabTrip("\(tag)", subid: 0) { json in
@@ -272,7 +269,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                         if json != nil {
                             if json!.objectForKey("success") as! String == "1" {
                                 film.showOK()
-                                self.levelLabelCount((json!.objectForKey("coin") as! String).toInt()!)
+                                self.levelLabelCount(Int((json!.objectForKey("coin") as! String))!)
                                 globalWillNianReload = 1
                             }else if json!.objectForKey("success") as! String == "2" {
                                 film.showError("念币不足")
@@ -287,8 +284,8 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             }
         }else if tag == 102 {
             showFilm(title, prompt: des, button: button, transDirectly: false){ film in
-                var storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
-                var viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as! CircleTagViewController
+                let storyboard = UIStoryboard(name: "CircleTag", bundle: nil)
+                let viewController = storyboard.instantiateViewControllerWithIdentifier("CircleTagViewController") as! CircleTagViewController
                 viewController.dreamPromoDelegate = self
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
@@ -299,7 +296,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
     
     func SACircle(float:CGFloat){
         self.top = CAShapeLayer()
-        var path = CGPathCreateMutable()
+        let path = CGPathCreateMutable()
         CGPathMoveToPoint(path, nil, 160, 80)
         CGPathAddCurveToPoint(path, nil, 160, 35.82, 124.18, 0, 80, 0)
         CGPathAddCurveToPoint(path, nil, 35.82, 0, 0, 35.82, 0, 80)
@@ -311,7 +308,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
         self.top.lineWidth = 8
         self.top.lineCap = kCALineCapRound
         self.top.masksToBounds = true
-        let strokingPath = CGPathCreateCopyByStrokingPath(top.path, nil, 8, kCGLineCapRound, kCGLineJoinMiter, 4)
+        let strokingPath = CGPathCreateCopyByStrokingPath(top.path, nil, 8, CGLineCap.Round, CGLineJoin.Miter, 4)
         self.top.bounds = CGPathGetPathBoundingBox(strokingPath)
         self.top.anchorPoint = CGPointMake(0, 0)
         self.top.position = CGPointZero
@@ -324,7 +321,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
             "transform": NSNull()
         ]
         self.viewCircle.layer.addSublayer(top)
-        delay(0.5, { () -> () in
+        delay(0.5, closure: { () -> () in
             let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
             strokeEnd.toValue = 0.8 * float
             strokeEnd.duration = 1
@@ -339,7 +336,7 @@ class CoinViewController: UIViewController, UIGestureRecognizerDelegate, UITable
                 if json != nil {
                     if json!.objectForKey("success") as! String == "1" {
                         film.showOK()
-                        self.levelLabelCount((json!.objectForKey("coin") as! String).toInt()!)
+                        self.levelLabelCount(Int((json!.objectForKey("coin") as! String))!)
                         globalWillNianReload = 1
                     }else{
                         if json!.objectForKey("reason") as! String == "1" {

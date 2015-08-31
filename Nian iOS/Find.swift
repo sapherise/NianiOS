@@ -30,9 +30,9 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func setupViews() {
         viewBack()
-        var navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        var labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
+        let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
         labelNav.text = "发现好友"
         labelNav.textColor = UIColor.whiteColor()
         labelNav.font = UIFont.systemFontOfSize(17)
@@ -51,7 +51,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         imagePromo.layer.masksToBounds = true
         imagePromo.layer.cornerRadius = 8
         self.viewPromo.addSubview(imagePromo)
-        var btnPromo = UIButton()
+        let btnPromo = UIButton()
         btnPromo.setButtonNice("发给伙伴")
         btnPromo.frame = CGRectMake(globalWidth/2-50, imagePromo.bottom() + 16, 100, 36)
         btnPromo.addTarget(self, action: "sharePromo", forControlEvents: UIControlEvents.TouchUpInside)
@@ -59,17 +59,17 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.view.addSubview(self.viewPromo)
         
         
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        Api.getUserTop(safeuid.toInt()!){ json in
+        Api.getUserTop(Int(safeuid)!){ json in
             if json != nil {
-                var data  = json!.objectForKey("user") as! NSDictionary
-                var name = data.stringAttributeForKey("name")
-                var coverURL = data.stringAttributeForKey("cover")
-                var urlCover = "http://img.nian.so/cover/\(coverURL)!cover"
-                var imageHead = UIImageView(frame: CGRectMake(60, 45, 40, 40))
+                let data  = json!.objectForKey("user") as! NSDictionary
+                let name = data.stringAttributeForKey("name")
+                let coverURL = data.stringAttributeForKey("cover")
+                let urlCover = "http://img.nian.so/cover/\(coverURL)!cover"
+                let imageHead = UIImageView(frame: CGRectMake(60, 45, 40, 40))
                 imageHead.layer.cornerRadius = 20
                 imageHead.layer.masksToBounds = true
                 imageHead.setHead(safeuid)
@@ -80,15 +80,15 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 }else{
                     self.imagePromo.setImage(urlCover, placeHolder: IconColor, bool: false)
                 }
-                var labelName = UILabel(frame: CGRectMake(0, imageHead.bottom()+10, 160, name.stringHeightWith(13, width: 160)))
+                let labelName = UILabel(frame: CGRectMake(0, imageHead.bottom()+10, 160, name.stringHeightWith(13, width: 160)))
                 labelName.text = name
                 labelName.textAlignment = NSTextAlignment.Center
                 labelName.textColor = UIColor.whiteColor()
                 labelName.font = UIFont.boldSystemFontOfSize(13)
                 labelName.numberOfLines = 0
                 self.imagePromo.addSubview(labelName)
-                var textPromo = "来念找我玩"
-                var label = UILabel(frame: CGRectMake(0, labelName.bottom()+5, 160, textPromo.stringHeightWith(11, width: 160)))
+                let textPromo = "来念找我玩"
+                let label = UILabel(frame: CGRectMake(0, labelName.bottom()+5, 160, textPromo.stringHeightWith(11, width: 160)))
                 label.text = textPromo
                 label.textAlignment = NSTextAlignment.Center
                 label.textColor = UIColor.whiteColor()
@@ -101,7 +101,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         
         // 顶部
-        var nib2 = NSBundle.mainBundle().loadNibNamed("FindCellTop", owner: self, options: nil) as NSArray
+        let nib2 = NSBundle.mainBundle().loadNibNamed("FindCellTop", owner: self, options: nil) as NSArray
         self.viewFindCellTop = nib2.objectAtIndex(0) as! FindCellTop
         self.viewFindCellTop.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
         self.viewFindCellTop.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
@@ -122,7 +122,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.viewFindCellTop.imageLeft.image = UIImage(named: arr[0])
         self.viewFindCellTop.imageMiddle.image = UIImage(named: arr[1])
         self.viewFindCellTop.imageRight.image = UIImage(named: arr[2])
-        var tag = sender.view!.tag
+        let tag = sender.view!.tag
         if tag == 1 {
             self.tableView.hidden = false
             self.viewFindCellTop.imageLeft.image = UIImage(named: arrSelected[0])
@@ -162,15 +162,15 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("FindCell", forIndexPath: indexPath) as? FindCell
-        var index = indexPath.row
+        let cell = tableView.dequeueReusableCellWithIdentifier("FindCell", forIndexPath: indexPath) as? FindCell
+        let index = indexPath.row
         if tableView == self.tableView {
-            var data = self.dataArray[index] as! NSDictionary
+            let data = self.dataArray[index] as! NSDictionary
             cell!.data = data
             cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             return cell!
         }else{
-            var data = self.dataArrayPhone[index] as! NSDictionary
+            let data = self.dataArrayPhone[index] as! NSDictionary
             cell!.data = data
             cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             return cell!
@@ -178,14 +178,14 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func onUserClick(sender:UIGestureRecognizer) {
-        var tag = sender.view!.tag
-        var UserVC = PlayerViewController()
+        let tag = sender.view!.tag
+        let UserVC = PlayerViewController()
         UserVC.Id = "\(tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func onWeiboClick() {
-        var request: WBAuthorizeRequest! = WBAuthorizeRequest.request() as! WBAuthorizeRequest
+        let request: WBAuthorizeRequest! = WBAuthorizeRequest.request() as! WBAuthorizeRequest
         request.redirectURI = "https://api.weibo.com/oauth2/default.html"
         request.scope = "follow_app_official_microblog"
         WeiboSDK.sendRequest(request)
@@ -193,12 +193,12 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     // 获得通讯录权限
     func onPhoneClick(sender: UIButton) {
-        var addressBook = ContactsHelper()
-        var status = addressBook.determineStatus()
+        let addressBook = ContactsHelper()
+        let status = addressBook.determineStatus()
         if status {
             self.transPhone()
         }else{
-            sender.setTitle("发现通讯录", forState: UIControlState.allZeros)
+            sender.setTitle("发现通讯录", forState: UIControlState())
             sender.removeTarget(self, action: "onPhoneClick:", forControlEvents: UIControlEvents.TouchUpInside)
             sender.addTarget(self, action: "onPhoneFindClick", forControlEvents: UIControlEvents.TouchUpInside)
         }
@@ -206,13 +206,13 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     // 搜索通讯录
     func onPhoneFindClick() {
-        var addressBook = ContactsHelper()
-        var status = addressBook.determineStatus()
+        let addressBook = ContactsHelper()
+        let status = addressBook.determineStatus()
         if status {
             self.transPhone()
         }else{
-            var viewEm = viewEmpty(globalWidth, content: "失败了\n念不能获得你的通讯录")
-            var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+            let viewEm = viewEmpty(globalWidth, content: "失败了\n念不能获得你的通讯录")
+            let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
             viewEm.setY(40)
             viewHolder.addSubview(viewEm)
             self.tableViewPhone.tableFooterView = viewHolder
@@ -222,21 +222,21 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     // 将通讯录提交到数据库
     func transPhone() {
         self.viewLoadingShow()
-        var addressBook = ContactsHelper()
+        let addressBook = ContactsHelper()
         addressBook.createAddressBook()
-        var list = addressBook.getContactNames()
+        let list = addressBook.getContactNames()
         Api.postPhone(list) { json in
             self.viewLoadingHide()
             if json != nil {
-                var arr = json!.objectForKey("items") as! NSArray
+                let arr = json!.objectForKey("items") as! NSArray
                 self.dataArrayPhone.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArrayPhone.addObject(data)
                 }
                 self.tableViewPhone!.reloadData()
                 if self.dataArrayPhone.count == 0 {
-                    var viewEm = viewEmpty(globalWidth, content: "手机里的好友们\n还没有来玩念")
-                    var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                    let viewEm = viewEmpty(globalWidth, content: "手机里的好友们\n还没有来玩念")
+                    let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
                     viewEm.setY(40)
                     viewHolder.addSubview(viewEm)
                     self.tableViewPhone.tableFooterView = viewHolder
@@ -257,7 +257,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.navigationController!.interactivePopGestureRecognizer.enabled = true
+        self.navigationController!.interactivePopGestureRecognizer!.enabled = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -272,22 +272,22 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func weibo(sender: NSNotification) {
         self.viewLoadingShow()
-        var object: NSArray? = sender.object as? NSArray
+        let object: NSArray? = sender.object as? NSArray
         if object != nil {
-            var uid = "\(object![0])"
-            var token = "\(object![1])"
+            let uid = "\(object![0])"
+            let token = "\(object![1])"
             Api.getWeibo(uid, Token: token) { json in
                 self.viewLoadingHide()
                 if json != nil {
-                    var arr = json!.objectForKey("items") as! NSArray
+                    let arr = json!.objectForKey("items") as! NSArray
                     self.dataArray.removeAllObjects()
                     for data : AnyObject  in arr{
                         self.dataArray.addObject(data)
                     }
                     self.tableView!.reloadData()
                     if self.dataArray.count == 0 {
-                        var viewEm = viewEmpty(globalWidth, content: "微博上的好友们\n还没有来玩念")
-                        var viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                        let viewEm = viewEmpty(globalWidth, content: "微博上的好友们\n还没有来玩念")
+                        let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
                         viewEm.setY(40)
                         viewHolder.addSubview(viewEm)
                         self.tableView.tableFooterView = viewHolder
@@ -300,19 +300,19 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func setupTable() -> UITableView {
-        var theTableView = UITableView(frame:CGRectMake(0, 64 + 75, globalWidth, globalHeight - 64 - 75))
+        let theTableView = UITableView(frame:CGRectMake(0, 64 + 75, globalWidth, globalHeight - 64 - 75))
         theTableView.delegate = self
         theTableView.dataSource = self
         theTableView.backgroundColor = BGColor
         theTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"FindCell", bundle: nil)
+        let nib = UINib(nibName:"FindCell", bundle: nil)
         theTableView.registerNib(nib, forCellReuseIdentifier: "FindCell")
         return theTableView
     }
     
     func setupFooter(textButton: String, funcButton: Selector) -> UIView {
-        var viewFooter = UIView(frame: CGRectMake(0, 0, globalWidth, 120))
-        var btnConnect = UIButton()
+        let viewFooter = UIView(frame: CGRectMake(0, 0, globalWidth, 120))
+        let btnConnect = UIButton()
         btnConnect.setButtonNice(textButton)
         viewFooter.addSubview(btnConnect)
         btnConnect.center = viewFooter.center
@@ -321,9 +321,9 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func sharePromo() {
-        var url:NSURL = NSURL(string: "http://nian.so/m/user/\(SAUid())")!
+        let url:NSURL = NSURL(string: "http://nian.so/m/user/\(SAUid())")!
         imagePromo.layer.cornerRadius = 0
-        var image = getImageFromView(imagePromo)
+        let image = getImageFromView(imagePromo)
         var avc = SAActivityViewController.shareSheetInView([image, "来念上找我玩", url], applicationActivities: [])
         avc = SAActivityViewController.shareSheetInView([image, "来念上找我玩", url], applicationActivities: [], isStep: true)
         self.presentViewController(avc, animated: true, completion: { () -> Void in

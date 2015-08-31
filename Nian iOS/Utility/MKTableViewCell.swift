@@ -43,7 +43,7 @@ class MKTableViewCell : UITableViewCell {
 //        setupLayer()
 //    }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupLayer()
     }
@@ -55,10 +55,9 @@ class MKTableViewCell : UITableViewCell {
         mkLayer.circleGrowRatioMax = 1.2
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        super.touchesBegan(touches as Set<NSObject>, withEvent: event)
-        
-        if let firstTouch = touches.first as? UITouch {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches as Set<UITouch>, withEvent: event)
+        if let firstTouch = touches.first {
             if !contentViewResized {
                 mkLayer.superLayerDidResize()
                 contentViewResized = true

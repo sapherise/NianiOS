@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIGestureRecognizerDelegate{
+class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     let identifier = "like"
     var tableView:UITableView?
@@ -37,12 +37,12 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        var nib = UINib(nibName:"LikeCell", bundle: nil)
+        let nib = UINib(nibName:"LikeCell", bundle: nil)
         
         self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView!)
         
-        var titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
         if self.urlIdentify == 0 {
             titleLabel.text = "赞过"
@@ -63,10 +63,10 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     func loadData(){
-        var url = urlString()
+        let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                var arr = data.objectForKey("items") as! NSArray
+                let arr = data.objectForKey("items") as! NSArray
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
                 }
@@ -82,13 +82,13 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func SAReloadData(){
         self.tableView!.setFooterHidden(false)
         self.page = 0
-        var url = urlString()
+        let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
                 if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                var arr = data.objectForKey("items") as! NSArray
+                let arr = data.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
                     self.dataArray.addObject(data)
@@ -102,8 +102,8 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     func urlString()->String{
-        var uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if self.urlIdentify == 0 {
@@ -128,9 +128,9 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
-        var index = indexPath.row
-        var data = self.dataArray[index] as! NSDictionary
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
+        let index = indexPath.row
+        let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.urlIdentify = self.urlIdentify
         cell!.circleID = self.circleID
