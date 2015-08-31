@@ -77,9 +77,27 @@ class TopicCell: UITableViewCell {
             labelNum.textColor = UIColor.b3()
             viewVoteLine.backgroundColor = UIColor.e6()
             viewUp.image = UIImage(named: "voteup")
+            
             // 下按钮
             viewDown.layer.borderColor = UIColor.e6().CGColor
             viewDown.backgroundColor = UIColor.whiteColor()
+            
+            // 绑定事件
+            imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+            labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+            labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
         }
+    }
+    
+    func onComment() {
+        let vc = TopicComment()
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onUser() {
+        let uid = data.stringAttributeForKey("uid")
+        let vc = PlayerViewController()
+        vc.Id = uid
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
 }

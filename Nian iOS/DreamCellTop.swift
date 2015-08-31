@@ -34,8 +34,6 @@ class DreamCellTop: UITableViewCell {
     @IBOutlet var viewBG: UIView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var viewLineTop: UIView!
-    @IBOutlet var viewLineTag: UIView!
-    @IBOutlet var viewLineTagTop: UIView!
     var delegate: topDelegate?
     
     var data: NSDictionary?
@@ -58,22 +56,9 @@ class DreamCellTop: UITableViewCell {
         self.dotLeft.setX(globalWidth/2-8)
         self.dotRight.setX(globalWidth/2+2)
         self.viewLineTop.setWidth(globalWidth - 40)
-        self.viewLineTag.setWidth(globalWidth)
-        self.viewLineTagTop.setWidth(globalWidth)
-//        self.viewLineTag.setHeight(0.5)
-//        self.viewLineTagTop.setHeight(0.5)
         viewLineLeft.setWidth(0.5)
-//        viewLineTop.setHeight(0.5)
-        
-        viewLineTag.setHeightHalf()
-        viewLineTagTop.setHeightHalf()
         viewLineTop.setHeightHalf()
-    
-        self.scrollView.setWidth(globalWidth)
-        self.scrollView.setY(0)
-        self.scrollView.showsHorizontalScrollIndicator = false
-        self.scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
+        scrollView.setTag()
     }
 
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -209,13 +194,13 @@ class DreamCellTop: UITableViewCell {
             scrollView.contentSize =  CGSizeMake(8, 0)
             let views: NSArray = scrollView.subviews
             for view: AnyObject in views {
-                if view is NILabel {
+                if view is UILabel {
                     (view as! UIView).removeFromSuperview()
                 }
             }
             
             if tagArray.count == 0 {
-                let label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+                let label = UILabel(frame: CGRectMake(0, 0, 0, 0))
                 label.userInteractionEnabled = true
                 if SAUid() == uid {
                     label.text = "添加标签"
@@ -233,8 +218,9 @@ class DreamCellTop: UITableViewCell {
                 scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
             } else {
                 scrollView.hidden = false
+                print(tagArray)
                 for var i = 0; i < tagArray.count; i++ {
-                    let label = NILabel(frame: CGRectMake(0, 0, 0, 0))
+                    let label = UILabel(frame: CGRectMake(0, 0, 0, 0))
                     label.userInteractionEnabled = true
                     label.text = SADecode(SADecode(tagArray[i] as String))
                     self.labelWidthWithItsContent(label, content: SADecode(tagArray[i]))
@@ -247,10 +233,6 @@ class DreamCellTop: UITableViewCell {
                 }
                 
                 scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + CGFloat(16), scrollView.frame.height)
-                scrollView.canCancelContentTouches = false
-                scrollView.delaysContentTouches = false
-                scrollView.userInteractionEnabled = true
-                scrollView.exclusiveTouch = true
             }
             
         } else {
@@ -294,16 +276,33 @@ class DreamCellTop: UITableViewCell {
     }
     
     // 自定义 label
-    func labelWidthWithItsContent(label: NILabel, content: NSString) {
-        let dict = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
-        let labelSize = CGSizeMake(ceil(content.sizeWithAttributes(dict).width), ceil(content.sizeWithAttributes(dict).height))
-        label.setTag()
-        label.frame = CGRectMake(0, 0, labelSize.width + 16, 30)
+    func labelWidthWithItsContent(label: UILabel, content: String) {
+        label.setTagLabel(content)
+    }
+}
+
+extension UIScrollView {
+    func setTag() {
+        self.setWidth(globalWidth)
+        self.setY(0)
+        self.showsHorizontalScrollIndicator = false
+        self.showsVerticalScrollIndicator = false
+        self.backgroundColor = UIColor.C98()
+        let viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 0.5))
+        let viewBottom = UIView(frame: CGRectMake(0, 51.5, globalWidth, 0.5))
+        viewTop.backgroundColor = UIColor.f0()
+        viewBottom.backgroundColor = UIColor.f0()
+        self.superview?.addSubview(viewTop)
+        self.superview?.addSubview(viewBottom)
+        self.canCancelContentTouches = false
+        self.delaysContentTouches = false
+        self.userInteractionEnabled = true
+        self.exclusiveTouch = true
     }
 }
 
 extension UILabel {
-    func setTag() {
+    func setTagLabel(content: String) {
         self.numberOfLines = 1
         self.textAlignment = .Center
         self.font = UIFont.systemFontOfSize(12)
@@ -313,5 +312,8 @@ extension UILabel {
         self.layer.masksToBounds = true
         self.textColor = UIColor.b3()
         self.backgroundColor = UIColor.whiteColor()
+        let width = content.stringWidthWith(12, height: 30)
+        self.frame = CGRectMake(0, 11, width + 16, 30)
+        self.text = content
     }
 }

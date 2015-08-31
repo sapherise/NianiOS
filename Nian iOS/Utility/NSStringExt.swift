@@ -45,7 +45,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.width, dot: 0, isCeil: true)
+        return SACeil(rect.size.width, dot: 0, isCeil: true) + 1
     }
     
     func stringWidthBoldWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
@@ -57,6 +57,6 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.width, dot: 0, isCeil: true)
+        return SACeil(rect.size.width, dot: 0, isCeil: true) + 1
     }
 }

@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol TopicDelegate {
+    func changeTopic(index: Int)
+}
+
 class TopicCellHeader: UITableViewCell {
     
     @IBOutlet var labelTitle: UILabel!
@@ -23,8 +27,10 @@ class TopicCellHeader: UITableViewCell {
     @IBOutlet var labelNew: UILabel!
     @IBOutlet var viewLine: UIView!
     @IBOutlet var viewLineClick: UIView!
+    @IBOutlet var scrollView: UIScrollView!
     var data: NSDictionary!
     var index: Int = 0
+    var delegate: TopicDelegate?
     
     override func awakeFromNib() {
         self.setWidth(globalWidth)
@@ -44,6 +50,22 @@ class TopicCellHeader: UITableViewCell {
         viewLine.setHeight(0.5)
         viewLine.setY(31.5)
         viewLineClick.frame = CGRectMake(labelHot.x() + 0.5, 31.5, 47, 0.5)
+        scrollView.setTag()
+        scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
+        labelNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNew"))
+        labelHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHot"))
+    }
+    
+    func onNew() {
+        delegate?.changeTopic(1)
+    }
+    
+    func onHot() {
+        delegate?.changeTopic(0)
+    }
+    
+    func hello() {
+        print("哈哈")
     }
     
     override func layoutSubviews() {
@@ -80,6 +102,38 @@ class TopicCellHeader: UITableViewCell {
             // 下按钮
             viewDown.layer.borderColor = UIColor.e6().CGColor
             viewDown.backgroundColor = UIColor.whiteColor()
+            
+            // 绑定事件
+            labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
+            
+            let tags = ["daily&nbsp;diary", "daily&nbsp;life", "Nissan", "NIPPON&nbsp;&nbsp;COLORS", "New&nbsp;life", "ABOUT&nbsp;ME", "one豆包2号"]
+            var x: CGFloat = 11
+            for tag in tags {
+                let t = tag.decode()
+                let label = UILabel()
+                label.setTagLabel(t)
+                label.setX(x)
+                scrollView.addSubview(label)
+                x = x + label.width() + 8
+            }
+            scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
+            
+            // 导航菜单
+            if index == 0 {
+                labelHot.layer.borderWidth = 0.5
+                labelHot.layer.borderColor = lineColor.CGColor
+                viewLineClick.setX(labelHot.x() + 0.5)
+                labelNew.layer.borderWidth = 0
+                labelHot.textColor = UIColor.C33()
+                labelNew.textColor = UIColor.b3()
+            } else {
+                labelNew.layer.borderWidth = 0.5
+                labelNew.layer.borderColor = lineColor.CGColor
+                viewLineClick.setX(labelNew.x() + 0.5)
+                labelHot.layer.borderWidth = 0
+                labelNew.textColor = UIColor.C33()
+                labelHot.textColor = UIColor.b3()
+            }
         }
     }
 }
