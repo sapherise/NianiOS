@@ -43,4 +43,10 @@ class SAViewController: UIViewController {
         rightLabel.addGestureRecognizer(tap)
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel)]
     }
+    
+    func setBarButtonImage(image: String, actionGesture: Selector) {
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: actionGesture)
+        rightButton.image = UIImage(named: image)
+        self.navigationItem.rightBarButtonItems = [rightButton];
+    }
 }

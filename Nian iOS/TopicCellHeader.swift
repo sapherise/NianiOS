@@ -65,7 +65,6 @@ class TopicCellHeader: UITableViewCell {
     }
     
     func hello() {
-        print("哈哈")
     }
     
     override func layoutSubviews() {

@@ -162,7 +162,6 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        print("哈哈")
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
