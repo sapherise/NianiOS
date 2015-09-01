@@ -4,7 +4,7 @@
 <dict>
 	<key>version</key>
 	<string></string>
-	<key>hasQuery</key>
+	<key>hasMark</key>
 	<false/>
 	<key>likeCount</key>
 	<integer>0</integer>

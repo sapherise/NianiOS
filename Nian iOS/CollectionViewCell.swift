@@ -30,6 +30,15 @@ class CollectionViewCell: UICollectionViewCell {
     
     
     func setupView() {
+        
+        // 实际判断的是屏幕的宽度
+        if isiPhone6 || isiPhone6P {
+            self.imageView.frame = CGRectMake(0, 0, 80, 80)
+            self.label.frame = CGRectMake(0, 88, 80, 34)
+            
+            self.setNeedsDisplay()
+        }
+        
         self.imageView?.layer.cornerRadius = 6.0
         self.imageView?.layer.borderWidth = 0.5
         self.imageView?.layer.borderColor = UIColor.colorWithHex("#E6E6E6").CGColor

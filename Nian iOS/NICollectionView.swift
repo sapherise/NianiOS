@@ -37,7 +37,7 @@ extension NICollectionView: UIGestureRecognizerDelegate {
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
             return false
         }
-        return true
+        return false    
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {

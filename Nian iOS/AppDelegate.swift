@@ -25,21 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         self.window!.makeKeyAndVisible()
         
 //        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-//            var settings = UIUserNotificationSettings(forTypes: (UIUserNotificationType.Sound | UIUserNotificationType.Alert | UIUserNotificationType.Badge), categories: nil)
-//            application.registerUserNotificationSettings(settings)
-//            application.registerForRemoteNotifications()
+//            if #available(iOS 8.0, *) {
+//                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
+//                application.registerUserNotificationSettings(settings)
+//                application.registerForRemoteNotifications()
+//            }
 //        } else {
-//            application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Sound | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge)
+//            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
 //        }
-        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-            if #available(iOS 8.0, *) {
-                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
-                application.registerUserNotificationSettings(settings)
-                application.registerForRemoteNotifications()
-            }
-        } else {
-            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
-        }
         
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
@@ -87,6 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         
         application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()
+
     }
     
     func applicationDidBecomeActive(application: UIApplication) {

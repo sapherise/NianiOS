@@ -243,6 +243,14 @@ extension ExploreViewController {
     }
 }
 
+extension ExploreViewController {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer
+                                                                    otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+    
+}
+
 
 extension UILabel {
     func setTabAlpha(x: CGFloat, index: CGFloat) {

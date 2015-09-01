@@ -20,7 +20,7 @@ class ExploreRecommend: ExploreProvider {
     // 编辑推荐数据源
     var editorRecommArray = NSMutableArray()
     // 最新的数据源
-    var latestArray = NSMutableArray()
+    var latestDict = NSMutableDictionary()
     
     init(viewController: ExploreViewController) {
         self.bindViewController = viewController
@@ -52,10 +52,10 @@ class ExploreRecommend: ExploreProvider {
                                 }
                             }
                             
-                            if let _latestArray = data!.objectForKey("newest") as? NSMutableArray {
-                                self.latestArray = _latestArray
+                            if let _latestDict = data!.objectForKey("newest") as? NSMutableDictionary {
+                                self.latestDict = _latestDict
                                 
-                                if self.latestArray.count > 0 {
+                                if self.latestDict.count > 0 {
                                     self.bindViewController?.recomTableView.beginUpdates()
                                     self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
                                     self.bindViewController?.recomTableView.endUpdates()
@@ -159,6 +159,9 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             
             return  ExploreNewHotCell.cellHeightByData(data)
         } else if indexPath.section == 0 || indexPath.section == 1 {
+            if isiPhone6 || isiPhone6P {
+                return 200
+            }
             return 185
         }
         
@@ -188,7 +191,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             return recomCell
         } else if indexPath.section == 1 {
             let latestCell = tableView.dequeueReusableCellWithIdentifier("LatestNoteCell", forIndexPath: indexPath) as! LatestNoteCell
-            latestCell.data = self.latestArray
+            latestCell.data = self.latestDict
             latestCell._layoutSubview()
             
             return latestCell
