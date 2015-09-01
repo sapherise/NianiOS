@@ -8,14 +8,6 @@
 
 import UIKit
 
-class NILabel: UILabel {
-    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
-        let rect = CGRectInset(bounds, 4, 0)
-        
-        return rect
-    }
-}
-
 class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, editDreamDelegate, delegateSAStepCell, topDelegate, ShareDelegate{
     
     var tableView: UITableView!
@@ -193,10 +185,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
         
         let arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]
-//        var acv = UIActivityViewController(activityItems: ["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
-//        acv.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop,UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr,UIActivityTypePostToVimeo, UIActivityTypePrint, UIActivityTypeCopyToPasteboard]
-//        self.presentViewController(acv, animated: true, completion: nil)
-        
         let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
         self.presentViewController(avc, animated: true, completion: nil)
     }
