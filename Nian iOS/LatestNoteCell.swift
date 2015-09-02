@@ -13,7 +13,9 @@ class LatestNoteCell: UITableViewCell {
     @IBOutlet weak var collectionView: NICollectionView!
     @IBOutlet weak var sepLine: UIView!
     
-    var data: NSMutableArray?
+    var data: NSMutableDictionary?
+    var promoArray: NSArray?
+    var itemsArray: NSArray?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,6 +33,9 @@ class LatestNoteCell: UITableViewCell {
 
     func _layoutSubview() {
         if data?.count > 0 {
+            self.promoArray = self.data?.objectForKey("promo") as? NSArray
+            self.itemsArray = self.data?.objectForKey("items") as? NSArray
+            
             self.collectionView.reloadData()
         }
     }
@@ -45,8 +50,12 @@ class LatestNoteCell: UITableViewCell {
 extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let _count = self.data?.count {
-            return _count
+        if let _itemsCount = self.itemsArray?.count {
+            if let _promoCount = self.promoArray?.count {
+                return _itemsCount + _promoCount
+            } else {
+                return _itemsCount
+            }
         } else {
             return 0
         }
@@ -55,20 +64,31 @@ extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
-        let _tmpData = self.data?.objectAtIndex(indexPath.row) as! NSDictionary
+        var _tmpData: NSDictionary?
         
-        if let _img = _tmpData.objectForKey("image") as? String {
+        if indexPath.row < 3 {
+            _tmpData = self.promoArray?.objectAtIndex(indexPath.row) as? NSDictionary
+        } else {
+            _tmpData = self.itemsArray?.objectAtIndex(indexPath.row - 3) as? NSDictionary
+        }
+        
+        if let _img = _tmpData!.objectForKey("image") as? String {
             collectionCell.imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
         }
         
-        collectionCell.label?.text = SADecode(_tmpData.objectForKey("title") as! String)
+        collectionCell.label?.text = SADecode(_tmpData!.objectForKey("title") as! String)
         
         return collectionCell
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let DreamVC = DreamViewController()
-        DreamVC.Id = (self.data?.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
+        
+        if indexPath.row < 3 {
+            DreamVC.Id = (self.promoArray?.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
+        } else {
+            DreamVC.Id = (self.itemsArray?.objectAtIndex(indexPath.row - 3) as! NSDictionary)["id"] as! String
+        }
         
         // 
         (self.findRootViewController() as! ExploreViewController).scrollView.scrollEnabled = true

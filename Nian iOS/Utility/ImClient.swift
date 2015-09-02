@@ -294,7 +294,7 @@ class ImClient {
         m_polling = true
         m_onPull = handler
         go {
-            self.polling()
+//            self.polling()
         }
     }
     

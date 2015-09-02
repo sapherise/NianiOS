@@ -38,7 +38,8 @@ class ExploreRecomMore: UIViewController {
     func setupView() {
         let flowLayout = UICollectionViewFlowLayout()
         
-        let Q = isiPhone6P ? 4 : 3
+//        let Q = isiPhone6P ? 4 : 3
+        let Q = 3
         let x = (globalWidth - CGFloat(80 * Q))/CGFloat(2 * (Q + 1))
         let y = x + x
         

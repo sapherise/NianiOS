@@ -24,20 +24,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
         
-        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-            if #available(iOS 8.0, *) {
-                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
-                application.registerUserNotificationSettings(settings)
-                application.registerForRemoteNotifications()
-            }
-        } else {
-            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
-        }
+//        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
+//            if #available(iOS 8.0, *) {
+//                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
+//                application.registerUserNotificationSettings(settings)
+//                application.registerForRemoteNotifications()
+//            }
+//        } else {
+//            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
+//        }
+        
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
+        /* 极光推送 */
+
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
+        
+        let notiCenter = NSNotificationCenter.defaultCenter()
+        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+        
+        /* DDLog */
         let formatter = Formatter()
         DDTTYLogger.sharedInstance().logFormatter = formatter
         DDLog.addLogger(DDTTYLogger.sharedInstance())
@@ -46,6 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
         
         application.cancelAllLocalNotifications()
+        
+//        var paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        
         
         return true
     }
@@ -57,10 +70,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     
     func applicationDidEnterBackground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
+        
+        application.applicationIconBadgeNumber = 0
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
+//        vc5._addObserver()
+        
+        application.applicationIconBadgeNumber = 0
+        application.cancelAllLocalNotifications()
+
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
@@ -79,9 +99,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
             Sa.setObject(newDeviceToken, forKey:"DeviceToken")
             Sa.synchronize()
         }
+        
+        /* 设置极光推送 */
+        
+        APService.registerDeviceToken(deviceToken)
+        let cc = APService.registrationID()
+        logInfo("\(cc)")
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        logError("\(error)")
     }
     
     @available(iOS 8.0, *)
@@ -89,6 +116,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        let aps = userInfo["aps"] as! NSDictionary
+
+        
+        // TODO: - 处理
+        
+        handleReceiveRemoteNotification(aps)
+        
+        APService.handleRemoteNotification(userInfo)
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
@@ -105,6 +140,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
             return WeiboSDK.handleOpenURL(url, delegate: self)
         }
         return true
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
+                    fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        let aps = userInfo["aps"] as! NSDictionary
+                        
+        handleReceiveRemoteNotification(aps)
+        /*    */
+        APService.handleRemoteNotification(userInfo)
+        completionHandler(UIBackgroundFetchResult.NewData)
+
     }
     
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
@@ -127,5 +173,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         }
     }
     
+    func handleNetworkReceiveMsg(noti: NSNotification) {
+    
+    
+    }
+    
+    // 收到消息通知，
+    func handleReceiveRemoteNotification(aps: NSDictionary) {
+//        var content = aps["alert"] as! NSString
+//        var badge = aps["badge"] as! NSInteger
+//        var sound = aps["sound"] as! NSString
+    }
 }
 
