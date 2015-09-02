@@ -23,7 +23,11 @@ class LatestNoteCell: UITableViewCell {
         
         self.sepLine.setHeightHalf()
         
-        self.collectionView.registerNib(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
+        if isiPhone6 || isiPhone6P {
+            self.collectionView.registerNib(UINib(nibName: "CollectionViewCell_XL", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell_XL")
+        } else {
+            self.collectionView.registerNib(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
+        }
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
@@ -63,7 +67,13 @@ extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+        var collectionCell = UICollectionViewCell()
+        
+        if isiPhone6 || isiPhone6P {
+            collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell_XL", forIndexPath: indexPath) as! CollectionViewCell_XL
+        } else {
+            collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+        }
         var _tmpData: NSDictionary?
         
         if indexPath.row < 3 {
@@ -73,10 +83,18 @@ extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
         }
         
         if let _img = _tmpData!.objectForKey("image") as? String {
-            collectionCell.imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+            if isiPhone6 || isiPhone6P {
+                (collectionCell as! CollectionViewCell_XL).imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+            } else {
+                (collectionCell as! CollectionViewCell).imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+            }
         }
         
-        collectionCell.label?.text = SADecode(_tmpData!.objectForKey("title") as! String)
+        if isiPhone6 || isiPhone6P {
+            (collectionCell as! CollectionViewCell_XL).label?.text = SADecode(_tmpData!.objectForKey("title") as! String)
+        } else {
+            (collectionCell as! CollectionViewCell).label?.text = SADecode(_tmpData!.objectForKey("title") as! String)
+        }
         
         return collectionCell
     }

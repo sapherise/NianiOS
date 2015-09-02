@@ -886,6 +886,8 @@ extension UIView {
         self.layer.mask = maskLayer
     }
     
+    // https://developer.apple.com/library/ios/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/GraphicsDrawingOverview/GraphicsDrawingOverview.html
+    // 根据官方文档，需要一定的位移才能画出高度为 0.5 的线。
     func setHeightHalf() {
         let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
         let SINGLE_LINE_ADJUST_OFFSET = (1 / UIScreen.mainScreen().scale) / 2

@@ -115,7 +115,7 @@
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
 		12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BE103C19C5EBF500370348 /* AddBBSComment.xib */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
-		12BE1B901B943344005976B8 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D93911B932A9700968F3E /* libWeiboSDK.a */; };
+		12BE1B901B943344005976B8 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE1B921B945FFA005976B8 /* TopicComment.swift */; settings = {ASSET_TAGS = (); }; };
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
@@ -192,7 +192,7 @@
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C404F1371B94668900E93A7C /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C404F1331B94668900E93A7C /* WeiboSDK.bundle */; settings = {ASSET_TAGS = (); }; };
-		C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
+		C407DB251B9698F8009BB25D /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
 		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263251B82E49900C0F011 /* EditorRecomCell.swift */; };
 		C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */; };
@@ -204,7 +204,6 @@
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C45158451B85C5F500A40593 /* NICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45158441B85C5F500A40593 /* NICollectionView.swift */; };
-		C470B22C1B94016400863821 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C448F55B1B93F9A000214984 /* libPushSDK-1.8.5.a */; };
 		C470B22E1B94024A00863821 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22D1B94024A00863821 /* PushConfig.plist */; settings = {ASSET_TAGS = (); }; };
 		C470B2301B94029E00863821 /* LikeCount.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22F1B94029E00863821 /* LikeCount.plist */; settings = {ASSET_TAGS = (); }; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
@@ -213,6 +212,8 @@
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
+		C48ACB891B958B8C009A9C30 /* CollectionViewCell_XL.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */; settings = {ASSET_TAGS = (); }; };
+		C48ACB8B1B958CF8009A9C30 /* CollectionViewCell_XL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48ACB8A1B958CF8009A9C30 /* CollectionViewCell_XL.swift */; settings = {ASSET_TAGS = (); }; };
 		C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */; };
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
 		C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C492D6191B4D10E800EEA71F /* PetCell.xib */; };
@@ -220,6 +221,7 @@
 		C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A350BE1B6B6BEE00E8AF10 /* Security.framework */; };
 		C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
+		C4A4B9791B95BB3900ADD5A5 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4C0F38E1B818D3F00ED22BE /* ExploreRecommend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C0F38D1B818D3F00ED22BE /* ExploreRecommend.swift */; };
 		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
@@ -463,7 +465,6 @@
 		C42B7D491B564137008D3B36 /* ModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeViewController.xib; sourceTree = "<group>"; };
 		C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreRecomMore.swift; sourceTree = "<group>"; };
-		C448F55B1B93F9A000214984 /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
 		C448F55D1B93F9F200214984 /* APService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
@@ -479,6 +480,9 @@
 		C47672E41B394A8C0011C9AC /* ForgetPwd.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgetPwd.xib; sourceTree = "<group>"; };
 		C47672E81B394DC10011C9AC /* NIAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIAlert.swift; sourceTree = "<group>"; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
+		C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
+		C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionViewCell_XL.xib; sourceTree = "<group>"; };
+		C48ACB8A1B958CF8009A9C30 /* CollectionViewCell_XL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell_XL.swift; sourceTree = "<group>"; };
 		C48FBCDA1B4A5B2A007E0BF9 /* NSString+NSHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSHash.h"; sourceTree = "<group>"; };
 		C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSHash.m"; sourceTree = "<group>"; };
 		C48FBCDC1B4A5B2A007E0BF9 /* NSData+NSHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NSHash.h"; sourceTree = "<group>"; };
@@ -512,14 +516,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C470B22C1B94016400863821 /* libPushSDK-1.8.5.a in Frameworks */,
-				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
+				C407DB251B9698F8009BB25D /* libWeiboSDK.a in Frameworks */,
+				C4A4B9791B95BB3900ADD5A5 /* libPushSDK-1.8.5.a in Frameworks */,
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
 				127497FA1B92DF880046B440 /* UIKit.framework in Frameworks */,
-				12BE1B901B943344005976B8 /* libWeiboSDK.a in Frameworks */,
+				12BE1B901B943344005976B8 /* (null) in Frameworks */,
 				127497F81B92DF7F0046B440 /* CoreText.framework in Frameworks */,
 				127497F71B92DF750046B440 /* CoreTelephony.framework in Frameworks */,
 				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
@@ -1151,6 +1155,8 @@
 				C45158441B85C5F500A40593 /* NICollectionView.swift */,
 				C42263301B82F1E500C0F011 /* CollectionViewCell.swift */,
 				C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */,
+				C48ACB8A1B958CF8009A9C30 /* CollectionViewCell_XL.swift */,
+				C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */,
 				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
 				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
 				C483CF901AEB435200E1C550 /* ExploreSearch.swift */,
@@ -1200,7 +1206,7 @@
 			children = (
 				127498011B92DFC60046B440 /* libz.tbd */,
 				127497FF1B92DFB80046B440 /* libsqlite3.tbd */,
-				C448F55B1B93F9A000214984 /* libPushSDK-1.8.5.a */,
+				C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */,
 				127497FD1B92DF9A0046B440 /* CoreGraphics.framework */,
 				127497FB1B92DF920046B440 /* Foundation.framework */,
 				127497F91B92DF880046B440 /* UIKit.framework */,
@@ -1474,6 +1480,7 @@
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
+				C48ACB891B958B8C009A9C30 /* CollectionViewCell_XL.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */,
@@ -1707,6 +1714,7 @@
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,
+				C48ACB8B1B958CF8009A9C30 /* CollectionViewCell_XL.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,
 				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
@@ -1845,6 +1853,7 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 				);
@@ -1898,6 +1907,7 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 				);

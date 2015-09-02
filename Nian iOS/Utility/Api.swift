@@ -424,7 +424,8 @@ struct Api {
     
     static func postLetterInit(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJsonSync("http://nian.so/api/letter_init2.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+//        V.httpPostForJsonSync("http://nian.so/api/letter_init2.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpPostForJson_AFN("http://nian.so/api/letter_init2.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)" ], callback: callback)
     }
     
     static func postUserLetterLastid(lastid: String, callback: V.JsonCallback) {

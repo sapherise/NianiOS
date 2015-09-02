@@ -12,6 +12,38 @@ class NICollectionView: UICollectionView {
     
     var disableScrollViewScroll: Bool = false
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+//        setupView()
+        
+        if isiPhone6 || isiPhone6P {
+            self.setHeight(120)
+        }
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.setupView()
+    }
+    
+    func setupView() {
+        let layout = UICollectionViewFlowLayout()
+        let width = (isiPhone6 || isiPhone6P) ? 80 : 64
+        let height = (isiPhone6 || isiPhone6P) ? 120 : 104
+        
+        layout.minimumInteritemSpacing = 0.0
+        layout.minimumLineSpacing = 16.0
+        layout.itemSize = CGSize(width: width, height: height)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        layout.scrollDirection = .Horizontal
+        
+        self.collectionViewLayout = layout
+
+    }
+    
 }
 
 extension NICollectionView: UIGestureRecognizerDelegate {

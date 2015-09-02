@@ -50,12 +50,7 @@
                                                             <rect key="frame" x="0.0" y="56" width="320" height="104"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="16" minimumInteritemSpacing="16" id="c1n-RG-YNy">
-                                                                <size key="itemSize" width="64" height="104"/>
-                                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                                <inset key="sectionInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
-                                                            </collectionViewFlowLayout>
+                                                            <collectionViewLayout key="collectionViewLayout" id="YJ9-3K-Oum"/>
                                                             <cells/>
                                                         </collectionView>
                                                         <view contentMode="scaleToFill" id="VMT-1f-Wkq" userLabel="Seperator View">
@@ -109,12 +104,7 @@
                                                             <rect key="frame" x="0.0" y="56" width="320" height="104"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="16" minimumInteritemSpacing="16" id="8ZJ-rh-234">
-                                                                <size key="itemSize" width="64" height="104"/>
-                                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                                <inset key="sectionInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
-                                                            </collectionViewFlowLayout>
+                                                            <collectionViewLayout key="collectionViewLayout" id="ziT-4k-R1T"/>
                                                             <cells/>
                                                         </collectionView>
                                                         <view contentMode="scaleToFill" id="u7u-4b-8Vg" userLabel="Seperator View">

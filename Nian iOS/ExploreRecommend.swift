@@ -160,7 +160,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             return  ExploreNewHotCell.cellHeightByData(data)
         } else if indexPath.section == 0 || indexPath.section == 1 {
             if isiPhone6 || isiPhone6P {
-                return 200
+                return 202
             }
             return 185
         }
