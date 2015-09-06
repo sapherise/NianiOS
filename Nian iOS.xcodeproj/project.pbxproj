@@ -21,9 +21,6 @@
 		12245DAC1B95906F00D831AC /* TopicCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DAB1B95906F00D831AC /* TopicCommentCell.swift */; settings = {ASSET_TAGS = (); }; };
 		12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12245DAD1B95907B00D831AC /* TopicCommentCell.xib */; settings = {ASSET_TAGS = (); }; };
 		12245DB11B95A9A000D831AC /* AddReddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DB01B95A9A000D831AC /* AddReddit.swift */; settings = {ASSET_TAGS = (); }; };
-		12245DB31B95BD6600D831AC /* AddReddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DB21B95BD6600D831AC /* AddReddit + UITableView.swift */; settings = {ASSET_TAGS = (); }; };
-		12245DB51B95BF2600D831AC /* AddRedditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12245DB41B95BF2600D831AC /* AddRedditCell.xib */; settings = {ASSET_TAGS = (); }; };
-		12245DB71B95BF5E00D831AC /* AddRedditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DB61B95BF5E00D831AC /* AddRedditCell.swift */; settings = {ASSET_TAGS = (); }; };
 		1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226CE231B8EC585004E2F6C /* RedditCell.swift */; };
 		1226CE261B8EC5F9004E2F6C /* RedditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1226CE251B8EC5F9004E2F6C /* RedditCell.xib */; };
 		1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */; };
@@ -80,6 +77,7 @@
 		127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497FF1B92DFB80046B440 /* libsqlite3.tbd */; };
 		127498021B92DFC60046B440 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127498011B92DFC60046B440 /* libz.tbd */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
+		1277478F1B9704BC00001A44 /* AddReddit + UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1277478E1B9704BC00001A44 /* AddReddit + UIScrollView.swift */; settings = {ASSET_TAGS = (); }; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
@@ -124,7 +122,6 @@
 		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
 		12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BE103C19C5EBF500370348 /* AddBBSComment.xib */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
-		12BE1B901B943344005976B8 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D93911B932A9700968F3E /* libWeiboSDK.a */; };
 		12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE1B921B945FFA005976B8 /* TopicComment.swift */; settings = {ASSET_TAGS = (); }; };
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
 		12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF5FF919BB479900DE0ABE /* Login.xib */; };
@@ -269,9 +266,6 @@
 		12245DAB1B95906F00D831AC /* TopicCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCommentCell.swift; sourceTree = "<group>"; };
 		12245DAD1B95907B00D831AC /* TopicCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCommentCell.xib; sourceTree = "<group>"; };
 		12245DB01B95A9A000D831AC /* AddReddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReddit.swift; sourceTree = "<group>"; };
-		12245DB21B95BD6600D831AC /* AddReddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddReddit + UITableView.swift"; sourceTree = "<group>"; };
-		12245DB41B95BF2600D831AC /* AddRedditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRedditCell.xib; sourceTree = "<group>"; };
-		12245DB61B95BF5E00D831AC /* AddRedditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRedditCell.swift; sourceTree = "<group>"; };
 		1226CE231B8EC585004E2F6C /* RedditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditCell.swift; sourceTree = "<group>"; };
 		1226CE251B8EC5F9004E2F6C /* RedditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RedditCell.xib; sourceTree = "<group>"; };
 		1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UIScrollView.swift"; sourceTree = "<group>"; };
@@ -328,6 +322,7 @@
 		127497FF1B92DFB80046B440 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		127498011B92DFC60046B440 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
+		1277478E1B9704BC00001A44 /* AddReddit + UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddReddit + UIScrollView.swift"; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
 		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
 		1282230819C7E6710002937D /* UpYunSDK2.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UpYunSDK2.0-Prefix.pch"; sourceTree = "<group>"; };
@@ -534,16 +529,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C470B22C1B94016400863821 /* libPushSDK-1.8.5.a in Frameworks */,
-				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
-				12BE1B901B943344005976B8 /* libWeiboSDK.a in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
+				C470B22C1B94016400863821 /* libPushSDK-1.8.5.a in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
 				127497FA1B92DF880046B440 /* UIKit.framework in Frameworks */,
 				127497F81B92DF7F0046B440 /* CoreText.framework in Frameworks */,
 				127497F71B92DF750046B440 /* CoreTelephony.framework in Frameworks */,
+				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
 				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */,
 				127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */,
@@ -609,9 +603,7 @@
 			isa = PBXGroup;
 			children = (
 				12245DB01B95A9A000D831AC /* AddReddit.swift */,
-				12245DB21B95BD6600D831AC /* AddReddit + UITableView.swift */,
-				12245DB41B95BF2600D831AC /* AddRedditCell.xib */,
-				12245DB61B95BF5E00D831AC /* AddRedditCell.swift */,
+				1277478E1B9704BC00001A44 /* AddReddit + UIScrollView.swift */,
 			);
 			name = "发表话题";
 			sourceTree = "<group>";
@@ -1509,7 +1501,6 @@
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
-				12245DB51B95BF2600D831AC /* AddRedditCell.xib in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
@@ -1645,7 +1636,6 @@
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
-				12245DB31B95BD6600D831AC /* AddReddit + UITableView.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
@@ -1657,7 +1647,6 @@
 				C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
-				12245DB71B95BF5E00D831AC /* AddRedditCell.swift in Sources */,
 				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
@@ -1709,6 +1698,7 @@
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
 				12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
+				1277478F1B9704BC00001A44 /* AddReddit + UIScrollView.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
 				1243C6F71B4F60A0007F741C /* Card.swift in Sources */,
@@ -1905,6 +1895,9 @@
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)",
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1964,6 +1957,9 @@
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)",
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = NO;
