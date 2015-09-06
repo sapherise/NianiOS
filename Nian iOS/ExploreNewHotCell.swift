@@ -41,7 +41,7 @@ class ExploreNewHotCell: UITableViewCell {
     func _layoutSubviews() {
 //        super.layoutSubviews()
         let title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
-        let img = self.data.stringAttributeForKey("img")
+        let img = self.data.stringAttributeForKey("image")
         let tag = self.data.stringAttributeForKey("type")
         let likes = self.data.stringAttributeForKey("likes")
         let content = SADecode(SADecode(self.data.stringAttributeForKey("content")))

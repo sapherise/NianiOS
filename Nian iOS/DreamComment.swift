@@ -72,7 +72,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
         
-        self.tableview = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64 - 44))
+        self.tableview = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64 - 56))
         self.tableview.backgroundColor = UIColor.clearColor()
         self.tableview.delegate = self;
         self.tableview.dataSource = self;
@@ -86,7 +86,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
-        self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 44))
+        self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 56))
         self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
         self.activityIndicatorView.hidden = false
         self.activityIndicatorView.startAnimating()
@@ -96,29 +96,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview.tableFooterView = self.viewBottom
         
         //输入框
-        self.keyboardView = UIView(frame: CGRectMake(0, globalHeight - 44, globalWidth, 44))
-        self.keyboardView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
-        let inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
-        inputLineView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
-        self.keyboardView.addSubview(inputLineView)
-        self.inputKeyboard = UITextField(frame: CGRectMake(8, 8, globalWidth-16, 28))
-        self.inputKeyboard.layer.cornerRadius = 4
-        self.inputKeyboard.layer.masksToBounds = true
-        self.inputKeyboard.font = UIFont.systemFontOfSize(16)
-        
-        self.inputKeyboard.leftView = UIView(frame: CGRectMake(0, 0, 8, 28))
-        self.inputKeyboard.rightView = UIView(frame: CGRectMake(0, 0, 8, 28))
-        self.inputKeyboard.leftViewMode = UITextFieldViewMode.Always
-        self.inputKeyboard.rightViewMode = UITextFieldViewMode.Always
-        
-        
-        self.inputKeyboard.delegate = self
-        self.inputKeyboard.backgroundColor = UIColor.whiteColor()
-        self.keyboardView.addSubview(self.inputKeyboard)
-        self.view.addSubview(self.keyboardView)
-        
-        
-        self.inputKeyboard.returnKeyType = UIReturnKeyType.Send
+        keyboardView = UIView()
+        inputKeyboard = UITextField()
+        inputKeyboard.delegate = self
+        keyboardView.setTextField(inputKeyboard)
+        self.view.addSubview(keyboardView)
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
@@ -253,6 +235,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func onBubbleClick(sender:UIGestureRecognizer) {
+        inputKeyboard.resignFirstResponder()
         let index = sender.view!.tag
         let data = self.dataArray[index] as! NSDictionary
         let user = data.stringAttributeForKey("user") as String
@@ -404,16 +387,16 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         self.keyboardHeight = keyboardSize.height
-        self.keyboardView.setY( globalHeight - self.keyboardHeight - 44 )
-        let heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
+        self.keyboardView.setY( globalHeight - self.keyboardHeight - 56 )
+        let heightScroll = globalHeight - 56 - 64 - self.keyboardHeight
         let contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
         self.tableview.setHeight( heightScroll )
         self.tableview.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        let heightScroll = globalHeight - 44 - 64
-        self.keyboardView.setY( globalHeight - 44 )
+        let heightScroll = globalHeight - 56 - 64
+        self.keyboardView.setY( globalHeight - 56 )
         self.tableview.setHeight( heightScroll )
     }
     

@@ -177,6 +177,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
                     let a = resultSet.count
                     let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
+                    
+                    logError(" b = \(b)")
+                    
                     if let number = Int(b) {
                         globalNoticeNumber = a + number
                         dispatch_async(dispatch_get_main_queue(), {
@@ -191,11 +194,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                                 self.dot!.text = "\(globalNoticeNumber)"
                                         })
                                 })
-                            }else{
+                            } else {  // if globalNoticeNumber != 0 && globalTabBarSelected != 103
                                 self.dot!.hidden = true
                             }
                         })
-                    }
+                    } // if let number = Int(b)
                 })
             }
         }

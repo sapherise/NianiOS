@@ -32,6 +32,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     override func viewDidLoad(){
         super.viewDidLoad()
+            
         setupViews()
         setupRefresh()
         tableView.headerBeginRefreshing()
@@ -321,7 +322,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
-    // MARK: add step delegate
+    // MARK: - add step delegate
     
     func countUp(coin: String, total: String, isfirst: String) {
         self.load()

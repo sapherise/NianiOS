@@ -55,8 +55,17 @@ class RedditViewController: UIViewController {
         labelLeft.setupLabel(globalWidth/2 - 64, content: "关注")
         labelRight = UILabel()
         labelRight.setupLabel(globalWidth/2, content: "所有")
-        self.view.addSubview(labelLeft)
-        self.view.addSubview(labelRight)
+        navView.addSubview(labelLeft)
+        navView.addSubview(labelRight)
+        
+        // 导航栏菜单
+        let imageRight = UIImageView(frame: CGRectMake(globalWidth - 44, 20, 44, 44))
+        imageRight.image = UIImage(named: "plus")
+        imageRight.userInteractionEnabled = true
+        imageRight.contentMode = .Center
+        let tap = UITapGestureRecognizer(target: self, action: "addReddit")
+        imageRight.addGestureRecognizer(tap)
+        navView.addSubview(imageRight)
         
         labelLeft.userInteractionEnabled = true
         labelRight.userInteractionEnabled = true
@@ -75,6 +84,11 @@ class RedditViewController: UIViewController {
         tableViewRight = UITableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 64 - 49))
         scrollView.addSubview(tableViewLeft)
         scrollView.addSubview(tableViewRight)
+    }
+    
+    func addReddit() {
+        let vc = AddReddit()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

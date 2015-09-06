@@ -108,7 +108,13 @@ class ExploreRecomMore: UIViewController {
                         let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
-                                self.dataArray.addObject(item)
+                                let _img = (item as! NSDictionary).objectForKey("image") as! String
+                                let _imgSplit = _img.componentsSeparatedByString(".")  //_img.characters.split{$0 = "."}.map(String.init)    //split(_img.characters){$0 = "."}.map(String.init)
+                                
+                                if let _ = Int(_imgSplit[0]) {
+                                } else {
+                                    self.dataArray.addObject(item)
+                                }
                             }
                             
                             self.collectionView.headerEndRefreshing()

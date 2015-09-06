@@ -218,7 +218,6 @@ class DreamCellTop: UITableViewCell {
                 scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
             } else {
                 scrollView.hidden = false
-                print(tagArray)
                 for var i = 0; i < tagArray.count; i++ {
                     let label = UILabel(frame: CGRectMake(0, 0, 0, 0))
                     label.userInteractionEnabled = true

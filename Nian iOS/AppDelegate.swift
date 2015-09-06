@@ -55,9 +55,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         DDTTYLogger.sharedInstance().colorsEnabled = true
         DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
         
+        application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()
         
 //        var paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        
+        // 处理通知
+        if launchOptions != nil {
+            logInfo("\(launchOptions)")
+            
+            let dict = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as! NSDictionary!
+            
+            if dict != nil {
+               handleReceiveRemoteNotification(dict)
+                
+            }
+        
+        
+        }
+        
         
         
         return true
@@ -114,18 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     @available(iOS 8.0, *)
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
     }
-    
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        let aps = userInfo["aps"] as! NSDictionary
 
-        
-        // TODO: - 处理
-        
-        handleReceiveRemoteNotification(aps)
-        
-        APService.handleRemoteNotification(userInfo)
-    }
-    
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
     }
     
@@ -174,15 +179,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     }
     
     func handleNetworkReceiveMsg(noti: NSNotification) {
-    
+        logWarn("\(noti)")
+        
+//        let userInfo = noti.userInfo
+//        let _content = (userInfo as! Dictionary<String, NSObject>)["content"]
+//        
+        
     
     }
     
     // 收到消息通知，
     func handleReceiveRemoteNotification(aps: NSDictionary) {
-//        var content = aps["alert"] as! NSString
-//        var badge = aps["badge"] as! NSInteger
-//        var sound = aps["sound"] as! NSString
+        let content = aps["alert"] as! NSString
+        let badge = aps["badge"] as! NSInteger
+        let sound = aps["sound"] as! NSString
+        
+        logVerbose("\(content) \(badge) \(sound)")
+        
+        
     }
 }
 

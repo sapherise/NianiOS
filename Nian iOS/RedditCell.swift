@@ -49,7 +49,6 @@ class RedditCell: UITableViewCell {
     }
     
     func hello() {
-        print("啦啦")
     }
     
     override func layoutSubviews() {

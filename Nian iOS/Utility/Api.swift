@@ -91,9 +91,10 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_all2.php?lastid=\(lastid)&&page=\(page)", callback: callback)
     }
     
-    static func getExploreNewHot(lastid: String, page: String,callback: V.JsonCallback) {
+    // MARK: - 获得排行
+    static func getExploreNewHot(page page: String,callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_recommend.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/discover/ranking?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
     // MARK: - 发现-“热门” 之“编辑推荐”和“最新”
@@ -542,7 +543,7 @@ struct Api {
     static func postEditStep_AFN(sid: String, content: String, uploadUrl: String, uploadWidth: String, uploadHeight: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/step/\(sid)/edit?uid=\(s_uid)&shell=\(s_shell)",
-            content: ["content": "\(content)", "img": "\(uploadUrl)", "img0": "\(uploadWidth)", "img1": "\(uploadHeight)"],
+            content: ["content": "\(content)", "image": "\(uploadUrl)", "img0": "\(uploadWidth)", "img1": "\(uploadHeight)"],
             callback: callback)
     }
     

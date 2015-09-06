@@ -214,7 +214,7 @@ class ImClient {
                 if prev_nil == 0 {
                     r  = httpGet(m_landServer + "poll", params: "")
                     if r != nil {
-//                        m_onState?(.live)
+                        //                        m_onState?(.live)
                         r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
                     }
                 } else if prev_nil == 2 {
@@ -306,7 +306,7 @@ class ImClient {
         _ = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         
         let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as! String
+        //        var safeuid = Sa.objectForKey("uid") as! String
         let safename = Sa.objectForKey("user") as! String
         
         let json: AnyObject? = httpPost(m_landServer  + "gmsg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)", "msgid": "1"]))
@@ -317,7 +317,7 @@ class ImClient {
     func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
         
         let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as! String
+        //        var safeuid = Sa.objectForKey("uid") as! String
         let safename = Sa.objectForKey("user") as! String
         let json: AnyObject? = httpPost(m_landServer  + "msg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "msgid": "1"]))
         return json

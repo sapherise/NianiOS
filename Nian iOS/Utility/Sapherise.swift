@@ -849,6 +849,14 @@ extension UIColor {
     class func f0() -> UIColor! {
         return UIColor(red:0.94, green:0.94, blue:0.94, alpha:1)
     }
+    
+    class func C96() -> UIColor! {
+        return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+    }
+    
+    class func C94() -> UIColor! {
+        return UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
+    }
 }
 
 
