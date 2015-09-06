@@ -47,6 +47,7 @@
 @synthesize separator = _separator;
 @synthesize spinner = _spinner;
 @synthesize sourceArray = _sourceArray;
+@synthesize paddingRight = _paddingRight;
 
 #pragma mark Init
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -144,8 +145,7 @@
     [_separator setFrame:((CGRect){_separator.frame.origin, {width, _separator.bounds.size.height}})];
     [_resultsTable setFrame:((CGRect){_resultsTable.frame.origin, {width, _resultsTable.bounds.size.height}})];
     [_contentView setFrame:((CGRect){_contentView.frame.origin, {width, (frame.size.height - CGRectGetMaxY(_tokenField.frame))}})];
-    [_tokenField setFrame:((CGRect){_tokenField.frame.origin, {width, _tokenField.bounds.size.height}})];
-    
+    [_tokenField setFrame:((CGRect){_tokenField.frame.origin, {width - _paddingRight, _tokenField.bounds.size.height}})];
     _spinner.frame = CGRectMake((_resultsTable.frame.size.width - _spinner.frame.size.width)/2,
                                 (_resultsTable.frame.size.height - _spinner.frame.size.height)/2 + 40,
                                 _spinner.frame.size.width,
@@ -156,8 +156,7 @@
 	
 	[super setFrame:frame];
 	
-    [self setChildFrames:frame];
-	
+//    [self setChildFrames:frame];
 	if (_popoverController.popoverVisible){
 		[_popoverController dismissPopoverAnimated:NO];
 		[self presentpopoverAtTokenFieldCaretAnimated:NO];
@@ -195,7 +194,6 @@
 	[super layoutSubviews];
 	
     [self setChildFrames:self.frame];
-    
 	CGFloat relativeFieldHeight = CGRectGetMaxY(_tokenField.frame) - self.contentOffset.y;
 	CGFloat newHeight = self.bounds.size.height - relativeFieldHeight;
     

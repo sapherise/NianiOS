@@ -87,7 +87,7 @@ class RedditViewController: UIViewController {
     }
     
     func addReddit() {
-        let vc = AddReddit()
+        let vc = AddRedditController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
