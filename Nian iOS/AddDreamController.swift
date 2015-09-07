@@ -296,7 +296,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let title = self.field1?.text
         let content = self.field2.text
         let tags = self.tokenView.tokenTitles
-        print(tags)
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
 //            title = SAEncode(SAHtml(title!))

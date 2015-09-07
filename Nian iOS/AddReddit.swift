@@ -20,10 +20,15 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
     @IBOutlet weak var field2: SZTextView!
     @IBOutlet weak var tokenView: TITokenFieldView!
     @IBOutlet weak var seperatorView: UIView!
+    @IBOutlet var viewHolder: UIView!
+    @IBOutlet var imageUpload: UIImageView!
+    @IBOutlet var imageDream: UIImageView!
     
     var actionSheet: UIActionSheet?
     var imagePicker: UIImagePickerController?
     var delegate: editRedditDelegate?
+    var dict = NSMutableDictionary()
+    var hImage: CGFloat = 0
     
     var uploadUrl: String = ""
     
@@ -45,13 +50,11 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
             if buttonIndex == 0 {
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
-                self.imagePicker!.allowsEditing = true
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
             } else if buttonIndex == 1 {
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
-                self.imagePicker!.allowsEditing = true
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                     self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
                     self.presentViewController(self.imagePicker!, animated: true, completion: nil)
@@ -127,14 +130,24 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         self.scrollView.setHeight(globalHeight - 64)
         self.containerView.setWidth(globalWidth)
         self.containerView.setHeight(self.scrollView.frame.height - 1)
-        self.field1.setWidth(globalWidth - 124)
+        self.field1.setWidth(globalWidth)
+        
+        self.field1.leftView = UIView(frame: CGRectMake(0, 0, 16, 1))
+        self.field1.rightView = UIView(frame: CGRectMake(0, 0, 16, 1))
+        self.field1.leftViewMode = .Always
+        self.field1.rightViewMode = .Always
         self.field2.setWidth(globalWidth)
         UIScreen.mainScreen().bounds.height > 480 ? self.field2.setHeight(120) : self.field2.setHeight(96)
         self.field2.textContainerInset = UIEdgeInsets(top: 0, left: 12, bottom: 12, right: 12)
-        self.tokenView.setY(CGRectGetMaxY(self.field2.frame))
+        self.tokenView.setY(self.field2.bottom())
         self.tokenView.setWidth(globalWidth)
         self.seperatorView.setWidth(globalWidth)
         self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+        
+        viewHolder.setX(globalWidth - 38 * 2 - 8)
+        viewHolder.setY(field2.bottom() + 1)
+        imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
+        imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDream"))
         
         self.view.backgroundColor = UIColor.whiteColor()
         self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
@@ -154,10 +167,9 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         tokenView.shouldSearchInBackground = false
         tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
         tokenView.tokenField.setPromptText("     ")
-        tokenView.tokenField.tokenLimit = 20;
-        tokenView.tokenField.backgroundColor = UIColor.yellowColor()
+        tokenView.tokenField.tokenLimit = 20
         tokenView.tokenField.frame.size.width = 19
-        tokenView.paddingRight = 50
+        tokenView.paddingRight = 38 * 2 + 8
         tokenView.tokenField.placeholder = "添加标签"
         tokenView.canCancelContentTouches = false
         tokenView.delaysContentTouches = false

@@ -26,7 +26,6 @@ extension UIScrollView {
         }
     }
     
-    
     func headerBeginRefreshing() {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{

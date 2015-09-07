@@ -42,6 +42,8 @@
 		1243C6F71B4F60A0007F741C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C6F61B4F60A0007F741C /* Card.swift */; };
 		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
 		12497C371A7102C4001DBD0F /* mainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12497C361A7102C4001DBD0F /* mainClient.swift */; };
+		124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFFE21B9D82B100345299 /* AddRedditDream.xib */; settings = {ASSET_TAGS = (); }; };
+		124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124DFFE41B9D866D00345299 /* AddRedditDream.swift */; settings = {ASSET_TAGS = (); }; };
 		124EFD6A1A664912009D837B /* ImClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124EFD691A664912009D837B /* ImClient.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
 		1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6131975729100F55389 /* RefreshBaseView.swift */; };
@@ -294,6 +296,8 @@
 		1248FB9E1A91B46100110EEF /* NSObject+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swift.h"; sourceTree = "<group>"; };
 		1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swift.m"; sourceTree = "<group>"; };
 		12497C361A7102C4001DBD0F /* mainClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainClient.swift; sourceTree = "<group>"; };
+		124DFFE21B9D82B100345299 /* AddRedditDream.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRedditDream.xib; sourceTree = "<group>"; };
+		124DFFE41B9D866D00345299 /* AddRedditDream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRedditDream.swift; sourceTree = "<group>"; };
 		124EFD691A664912009D837B /* ImClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImClient.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
 		1251D6131975729100F55389 /* RefreshBaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshBaseView.swift; sourceTree = "<group>"; };
@@ -543,8 +547,8 @@
 			files = (
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
-				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
 				C470B22C1B94016400863821 /* libPushSDK-1.8.5.a in Frameworks */,
+				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
 				127497FA1B92DF880046B440 /* UIKit.framework in Frameworks */,
@@ -622,6 +626,8 @@
 				12ABFD2A1B9C1EAE00E2870C /* AddReddit + UIGesture.swift */,
 				12ABFD2C1B9C217800E2870C /* AddReddit + Function.swift */,
 				12ABFD241B9C14FA00E2870C /* AddReddit.xib */,
+				124DFFE21B9D82B100345299 /* AddRedditDream.xib */,
+				124DFFE41B9D866D00345299 /* AddRedditDream.swift */,
 			);
 			name = "发表话题";
 			sourceTree = "<group>";
@@ -1514,6 +1520,7 @@
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
 				12245DAA1B95868000D831AC /* TopicCommentCellHeader.xib in Resources */,
+				124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */,
 				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
 				C470B22E1B94024A00863821 /* PushConfig.plist in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
@@ -1751,6 +1758,7 @@
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
+				124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */,
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
 				C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */,
@@ -1926,6 +1934,14 @@
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1988,6 +2004,14 @@
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",

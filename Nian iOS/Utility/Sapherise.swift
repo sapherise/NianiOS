@@ -286,7 +286,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
 }
 
 func getImageFromView(view: UIView)->UIImage {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 8);
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 2);
     view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()

@@ -12,28 +12,21 @@ extension AddRedditController {
     //MARK: keyboard notification && UITextView Delegate method
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
-        let userInfo = notification.userInfo!
-        
-        // Convert the keyboard frame from screen to view coordinates.
-        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
-        let originDelta = keyboardViewEndFrame.height   // abs(keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y)
-        keyboardHeight = originDelta
-        
-        if self.tokenView.tokenField.isFirstResponder() {
-            print(1)
-            tokenView.frame.size = CGSize(width: self.tokenView.frame.width, height: globalHeight - keyboardHeight - 64)
-            adjustScroll()
-            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
-        }
-        
+        let info: Dictionary = notification.userInfo!
+        let h = info[UIKeyboardFrameEndUserInfoKey]!.CGRectValue.size.height
+        keyboardHeight = h
         if field2.isFirstResponder() {
             adjustPoint()
+        }
+        if tokenView.isFirstResponder() {
+            tokenView.frame.size.height = globalHeight - keyboardHeight - 64
+            adjustScroll()
+            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
         }
     }
     
     func handleKeyboardWillHideNotification(notification: NSNotification) {
+        tokenView.frame.size.height = tokenView.tokenField.frame.size.height + 1
         adjustScroll()
         self.scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
     }
@@ -43,7 +36,8 @@ extension AddRedditController {
     }
     
     func adjustScroll() {
-        scrollView.contentSize.height = 78 + field2.height() + tokenView.height()
-        self.containerView.setHeight(self.scrollView.contentSize.height - 1)
+        let h = 78 + field2.height() + tokenView.height()
+        scrollView.contentSize.height = h
+        self.containerView.setHeight(h - 1)
     }
 }

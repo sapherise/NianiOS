@@ -16,11 +16,11 @@ extension AddRedditController {
         return true
     }
     
-    // text view delegate
     /* 在编辑 “记本简介” 时，根据选择的内容来实现滚动 */
     func textViewDidChangeSelection(textView: UITextView) {
         if textView == field2 {
-            let tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - 24) + 12
+            print("1")
+            let tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - 24) + 12 + getImageHeight()
             let field2DefaultHeight: CGFloat = globalHeight > 480 ? 120 : 96
             let h = max(field2DefaultHeight, tmpField2Height)
             adjustHeight(h)
@@ -28,6 +28,7 @@ extension AddRedditController {
         }
     }
     
+    // 设定 scrollView 的滚动距离
     func adjustPoint() {
         let y = field2.caretRectForPosition((field2.selectedTextRange?.end)!).origin.y
         let hN = y + UIFont.systemFontOfSize(14).lineHeight + 78 + keyboardHeight + 12 - (globalHeight - 64)

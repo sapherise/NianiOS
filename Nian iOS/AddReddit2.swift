@@ -41,13 +41,11 @@ class AddReddit2: SAViewController, UITextViewDelegate {
     
     func post() {
         if textView.attributedText == nil {
-            print("没有富文本！")
         } else {
             var content = ""
             let range = NSMakeRange(0, textView.attributedText.length)
             textView.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
                 if let d = dict["NSAttachment"] {
-//                    print(dict)
                     let textAttachment = d as! NSTextAttachment
                     let b = self.dict.stringAttributeForKey("\(textAttachment.image!)")
                     content += b
@@ -56,7 +54,6 @@ class AddReddit2: SAViewController, UITextViewDelegate {
                     content += str
                 }
             })
-            print("内容为：\(content)")
         }
     }
     
@@ -75,7 +72,6 @@ class AddReddit2: SAViewController, UITextViewDelegate {
         let newSelectedRange = NSMakeRange(selectedRange.location+1, 0)
         textView.attributedText = mutableStr
         textView.selectedRange = newSelectedRange
-        print("开始上传图片")
         self.navigationItem.rightBarButtonItems = buttonArray()
         let uy = UpYun()
         uy.successBlocker = ({(data: AnyObject!) in

@@ -9,11 +9,10 @@
 import Foundation
 extension AddRedditController: TITokenFieldDelegate {
     func tokenFieldDidBeginEditing(field: TITokenField!) {
-        if self.tokenView.tokenField.isFirstResponder() {
-            tokenView.frame.size = CGSize(width: self.tokenView.frame.width, height: UIScreen.mainScreen().bounds.height - keyboardHeight - 64)
+        if tokenView.tokenField.isFirstResponder() {
+            tokenView.frame.size.height = globalHeight - keyboardHeight - 64
             adjustScroll()
-            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
-            
+            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 57), animated: true)
         }
     }
     
@@ -36,7 +35,7 @@ extension AddRedditController: TITokenFieldDelegate {
                         
                         if data.count > 0 {
                             for i in 0...(data.count - 1) {
-                                data[i] = SADecode(SADecode(data[i]))
+                                data[i] = data[i].decode()
                             }
                         }
                     }

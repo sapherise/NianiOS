@@ -7,8 +7,9 @@
 //
 
 import Foundation
-extension AddRedditController {
-    func uploadClick() {
+
+extension AddRedditController: DreamSelectedDelegate {
+    func onImage() {
         self.dismissKeyboard()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheet!.addButtonWithTitle("相册")
@@ -18,9 +19,70 @@ extension AddRedditController {
         self.actionSheet!.showInView(self.view)
     }
     
+    func dreamSelected(id: String, title: String, content: String, image: String) {
+        let v = (NSBundle.mainBundle().loadNibNamed("AddRedditDream", owner: self, options: nil) as NSArray).objectAtIndex(0) as! AddRedditDream
+        v.title = title
+        v.content = content
+        v.image = "http://img.nian.so/dream/\(image)!dream"
+        print(image)
+        v.layoutSubviews()
+        let image = getImageFromView(v)
+        insertDream(image)
+    }
+    
+    func onDream() {
+        let sb = UIStoryboard(name: "Explore", bundle: nil)
+        let vc = sb.instantiateViewControllerWithIdentifier("ExploreRecomMore") as! ExploreRecomMore
+//        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController")
+//        let vc2 = ExploreRecomMore()
+        vc.titleOn = "插入记本"
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     func uploadFile(image: UIImage) {
-        print("哈哈")
+        
+        let attachment = NSTextAttachment()
+        let _image = resizedImage(image, newWidth: globalWidth - 32 - 4)
+        attachment.image = _image
+        attachment.bounds = CGRectMake(0, 0, _image.size.width, _image.size.height)
+        let attStr = NSAttributedString(attachment: attachment)
+        let mutableStr = NSMutableAttributedString(attributedString: field2.attributedText)
+        let selectedRange = field2.selectedRange
+        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location)
+        mutableStr.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14), range: NSMakeRange(0,mutableStr.length))
+        let newSelectedRange = NSMakeRange(selectedRange.location + 1, 0)
+        field2.attributedText = mutableStr
+        field2.selectedRange = newSelectedRange
+        self.navigationItem.rightBarButtonItems = buttonArray()
+        let uy = UpYun()
+        uy.successBlocker = ({(data: AnyObject!) in
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "add")
+            rightButton.image = UIImage(named:"newOK")
+            self.navigationItem.rightBarButtonItems = [rightButton]
+            var url = data.objectForKey("url") as! String
+            url = SAReplace(url, before: "/bbs/", after: "<img:") as String
+            url = "\(url)>"
+            self.dict.setValue("\(url)", forKey: "\(attachment.image!)")
+        })
+        // todo: 下面的宽度要改成 500
+        uy.uploadImage(resizedImage(attachment.image!, newWidth: 50), savekey: getSaveKey("bbs", png: "png") as String)
+    }
+    
+    
+    func insertDream(image: UIImage) {
+        let attachment = NSTextAttachment()
+        attachment.image = image
+        attachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height)
+        let attStr = NSAttributedString(attachment: attachment)
+        let mutableStr = NSMutableAttributedString(attributedString: field2.attributedText)
+        let selectedRange = field2.selectedRange
+        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location)
+        mutableStr.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14), range: NSMakeRange(0,mutableStr.length))
+        let newSelectedRange = NSMakeRange(selectedRange.location + 1, 0)
+        field2.attributedText = mutableStr
+        field2.selectedRange = newSelectedRange
+        self.dict.setValue("<dream:1>", forKey: "\(attachment.image!)")
     }
     
     func add() {
@@ -40,8 +102,6 @@ extension AddRedditController {
             Api.postAddReddit(title, content: content, tags: tags) { json in
                 if json != nil {
                     print(json)
-                } else {
-                    print("是空的！")
                 }
             }
         }
@@ -51,7 +111,6 @@ extension AddRedditController {
         let title = self.field1?.text
         let content = self.field2.text
         let tags = self.tokenView.tokenTitles
-        print(tags)
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
             //            title = SAEncode(SAHtml(title!))
@@ -114,12 +173,28 @@ extension AddRedditController {
         }
     }
     
+    // 内容框做高度调整，同时其他视图随之调整
     func adjustHeight(h: CGFloat) {
         field2.setHeight(h)
         self.tokenView.setY(field2.bottom())
+        viewHolder.setY(field2.bottom() + 1)
         let hScroll = 78 + h + tokenView.frame.height
         scrollView.contentSize.height = hScroll
         self.containerView.setHeight(hScroll)
+    }
+    
+    func getImageHeight() -> CGFloat {
+        var h: CGFloat = 0
+        let range = NSMakeRange(0, field2.attributedText.length)
+        field2.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
+            if let d = dict["NSAttachment"] {
+                let textAttachment = d as! NSTextAttachment
+                let hNew = textAttachment.image!.size.height
+                print("原来是：\(h)，添加了：\(hNew)")
+                h += hNew
+            }
+        })
+        return h
     }
 
 }
