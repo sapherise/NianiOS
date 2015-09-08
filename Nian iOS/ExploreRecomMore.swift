@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol DreamSelectedDelegate {
+    func dreamSelected(id: String, title: String, content: String, image: String)
+}
+
 class ExploreRecomMore: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -16,6 +20,7 @@ class ExploreRecomMore: UIViewController {
     /// 显示在 Nav Bar 上的 title， 为了避免和 UIViewController 的 title 冲突
     var titleOn: String!
     var dataArray = NSMutableArray()
+    var delegate: DreamSelectedDelegate?
     
     var page = 0
     var lastID = ""
@@ -36,7 +41,6 @@ class ExploreRecomMore: UIViewController {
         self.collectionView.delegate = self 
         
         self.collectionView.headerBeginRefreshing()
-//        load(false)
     }
 
     func setupView() {
@@ -126,6 +130,23 @@ class ExploreRecomMore: UIViewController {
                     }
                 }
             })
+        } else if titleOn == "插入记本" {
+            if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
+                for data in NianDream {
+                    let d = data as! NSDictionary
+                    
+                    let image = d.stringAttributeForKey("img")
+                    let _private = d.stringAttributeForKey("private")
+                    if _private == "0" {
+                        let mutableData = NSMutableDictionary(dictionary: d)
+                        mutableData.setValue(image, forKey: "image")
+                        dataArray.addObject(mutableData)
+                    }
+                }
+            }
+            self.collectionView.headerEndRefreshing()
+            self.collectionView.footerEndRefreshing()
+            self.collectionView.reloadData()
         }
     }
     
@@ -166,10 +187,20 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let DreamVC = DreamViewController()
-        DreamVC.Id = (self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary)["id"] as! String
-        
-        if DreamVC.Id != "0" && DreamVC.Id != "" {
-            self.navigationController?.pushViewController(DreamVC, animated: true)
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        let title = data.stringAttributeForKey("title")
+        var lastdate = data.stringAttributeForKey("lastdate")
+        let image = data.stringAttributeForKey("image")
+        lastdate = V.relativeTime(lastdate)
+        if id != "0" && id != "" {
+            DreamVC.Id = id
+            if titleOn == "插入记本" {
+                delegate?.dreamSelected(id, title: title, content: lastdate, image: image)
+                self.navigationController?.popViewControllerAnimated(true)
+            } else {
+                self.navigationController?.pushViewController(DreamVC, animated: true)
+            }
         }
     }
     

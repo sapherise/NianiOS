@@ -12,7 +12,7 @@ protocol editDreamDelegate {
     func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DreamTagDelegate, UITextViewDelegate, UITextFieldDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -296,7 +296,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let title = self.field1?.text
         let content = self.field2.text
         let tags = self.tokenView.tokenTitles
-
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
 //            title = SAEncode(SAHtml(title!))

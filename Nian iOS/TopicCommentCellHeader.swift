@@ -48,7 +48,7 @@ class TopicCommentCellHeader: UITableViewCell {
             
             // 计算高度与宽度
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
-            let hComment = comment.stringWidthWith(13, height: 32) + 16
+//            let hComment = comment.stringWidthWith(13, height: 32) + 16
             
             // 填充内容
             labelContent.text = content

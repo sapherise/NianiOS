@@ -203,12 +203,7 @@ func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {
 
 func getSaveKey(title:NSString, png:NSString) -> NSString{
     let date = NSDate().timeIntervalSince1970
-    
-    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
-    
-    let string = NSString(string: "/\(title)/\(safeuid)_\(Int(date)).\(png)")
+    let string = NSString(string: "/\(title)/\(SAUid())_\(Int(date)).\(png)")
     return string
 }
 
@@ -291,7 +286,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
 }
 
 func getImageFromView(view: UIView)->UIImage {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 8);
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 2);
     view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()

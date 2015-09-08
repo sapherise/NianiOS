@@ -40,9 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
         /* 极光推送 */
-
-        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-        APService.setupWithOption(launchOptions)
+//        todo
+//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+//        APService.setupWithOption(launchOptions)
         
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)

@@ -527,20 +527,13 @@ struct Api {
     static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
         loadCookies()
         if tags == "" {
-//            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)", callback: callback)
-            
             V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
                 content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)" ],
                 callback: callback)
-            
-            
         } else {
-//            V.httpPostForJson("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&img=\(uploadUrl)&private=\(isPrivate)&\(tags)", callback: callback)
-            
             V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
                 content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags],
                 callback: callback)
-            
         }
     }
     
@@ -814,6 +807,36 @@ extension Api {
 
 }
 
+// MARK: - 新广场 API
+extension Api {
+    static func postAddReddit(title: String, content: String, tags: NSArray, callback: V.JsonCallback) {
+        loadCookies()
+        if tags == "" {
+            V.httpPostForJson_AFN("http://api.nian.so/topic?uid=\(s_uid)&shell=\(s_shell)", content: ["title": "\(title)", "content": "\(content)", "type": "question"], callback: callback)
+        } else {
+            V.httpPostForJson_AFN("http://api.nian.so/topic?uid=\(s_uid)&shell=\(s_shell)", content: ["title": "\(title)", "content": "\(content)", "tags": tags, "type": "question"], callback: callback)
+        }
+    }
+    
+//    title	string
+//    content	text
+//    tags	array
+//    type	question 或 answer
+//    question_id	int
+//
+//    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
+//        loadCookies()
+//        if tags == "" {
+//            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
+//                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)" ],
+//                callback: callback)
+//        } else {
+//            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
+//                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags],
+//                callback: callback)
+//        }
+//    }
+}
 
 
 

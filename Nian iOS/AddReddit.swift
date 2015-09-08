@@ -1,72 +1,204 @@
 //
-//  AddReddit.swift
-//  Nian iOS
+//  YRAboutViewController.swift
+//  JokeClient-Swift
 //
-//  Created by Sa on 15/9/1.
-//  Copyright © 2015年 Sa. All rights reserved.
+//  Created by YANGReal on 14-6-5.
+//  Copyright (c) 2014年 YANGReal. All rights reserved.
 //
 
-import Foundation
-class AddReddit: SAViewController, UITextViewDelegate {
-    var total: Int = 0
-    var viewBottom: UIView!
-    var y: CGFloat = 64
-    var textView: UITextView!
+import UIKit
+
+protocol editRedditDelegate {
+    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
+}
+
+class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-    }
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var field1: UITextField!  //title text field
+    @IBOutlet weak var field2: SZTextView!
+    @IBOutlet weak var tokenView: TITokenFieldView!
+    @IBOutlet weak var seperatorView: UIView!
+    @IBOutlet var viewHolder: UIView!
+    @IBOutlet var imageUpload: UIImageView!
+    @IBOutlet var imageDream: UIImageView!
     
-    func setupViews() {
-        _setTitle("新话题！")
-        setBarButtonImage("newOK", actionGesture: "hello")
-        
-        // 底部菜单栏
-        let viewBottom = UIView(frame: CGRectMake(0, globalHeight - 44, globalWidth, 44))
-        viewBottom.backgroundColor = UIColor.yellowColor()
-        self.view.addSubview(viewBottom)
-        viewBottom.userInteractionEnabled = true
-        viewBottom.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "imageInsert"))
-        
-        // 输入框
-        textView = UITextView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 44 - 64))
-        textView.backgroundColor = SeaColor
-        textView.textContainerInset = UIEdgeInsetsMake(16, 16, 16, 16)
-        textView.font = UIFont.systemFontOfSize(14)
-        textView.delegate = self
-        self.view.addSubview(textView)
-    }
+    var actionSheet: UIActionSheet?
+    var imagePicker: UIImagePickerController?
+    var delegate: editRedditDelegate?
+    var dict = NSMutableDictionary()
+    var hImage: CGFloat = 0
     
-    func hello() {
-        if textView.attributedText == nil {
-            print("没有富文本！")
-        } else {
-            var content = ""
-            let range = NSMakeRange(0, textView.attributedText.length)
-            textView.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
-                if let _ = dict["NSAttachment"] {
-                    content += "👿"
-                } else {
-                    let str = (self.textView.attributedText.string as NSString).substringWithRange(range)
-                    content += str
+    var uploadUrl: String = ""
+    
+    var isEdit: Int = 0
+    var editId: String = ""
+    var editTitle: String = ""
+    var editContent: String = ""
+    var editImage: String = ""
+    var tagsArray: Array<String> = [String]()
+    
+    var caretPosition: CGFloat = 0.0   // 获得 caret(光标)的位置
+    var keyboardHeight: CGFloat = 0.0  // 键盘的高度
+    
+    var swipeGesuture: UISwipeGestureRecognizer?
+    
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.actionSheet {
+            if buttonIndex == 0 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            } else if buttonIndex == 1 {
+                self.imagePicker = UIImagePickerController()
+                self.imagePicker!.delegate = self
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
+                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
+                    self.presentViewController(self.imagePicker!, animated: true, completion: nil)
                 }
-            })
-            print(content)
+            }
         }
     }
     
-    func imageInsert() {
-        let attachment = NSTextAttachment()
-        attachment.image = UIImage(named: "bg")
-        attachment.bounds = CGRectMake(0, 0, globalWidth - 32 - 9, globalWidth)
-        let attStr = NSAttributedString(attachment: attachment)
-        let mutableStr = NSMutableAttributedString(attributedString: textView.attributedText)
-        let selectedRange = textView.selectedRange
-        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location)
-        mutableStr.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14), range: NSMakeRange(0,mutableStr.length))
-        let newSelectedRange = NSMakeRange(selectedRange.location+1, 0)
-        textView.attributedText = mutableStr
-        textView.selectedRange = newSelectedRange
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        self.uploadFile(image)
+    }
+    
+    //MARK: view load 相关的方法
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupViews()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        let height = 78 + field2.frame.size.height + tokenView.tokenField.frame.size.height
+        let tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, globalHeight - 64))
+        self.scrollView.contentSize = tmpSize
+        
+        self.view.layoutIfNeeded()
+    }
+    
+    func setupViews(){
+        self.automaticallyAdjustsScrollViewInsets = false
+        
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = BarColor
+        
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = self.isEdit == 1 ? "编辑话题" : "新话题！"
+        titleLabel.textAlignment = NSTextAlignment.Center
+        self.navigationItem.titleView = titleLabel
+        
+        self.viewBack()
+        self.view.addSubview(navView)
+        
+        swipeGesuture = UISwipeGestureRecognizer(target: self, action: "dismissKeyboard:")
+        swipeGesuture!.direction = UISwipeGestureRecognizerDirection.Down
+        swipeGesuture!.cancelsTouchesInView = true
+        self.view.addGestureRecognizer(swipeGesuture!)
+        
+        self.scrollView.setWidth(globalWidth)
+        self.scrollView.setHeight(globalHeight - 64)
+        self.containerView.setWidth(globalWidth)
+        self.containerView.setHeight(self.scrollView.frame.height - 1)
+        self.field1.setWidth(globalWidth)
+        
+        self.field1.leftView = UIView(frame: CGRectMake(0, 0, 16, 1))
+        self.field1.rightView = UIView(frame: CGRectMake(0, 0, 16, 1))
+        self.field1.leftViewMode = .Always
+        self.field1.rightViewMode = .Always
+        self.field2.setWidth(globalWidth)
+        UIScreen.mainScreen().bounds.height > 480 ? self.field2.setHeight(120) : self.field2.setHeight(96)
+        self.field2.textContainerInset = UIEdgeInsets(top: 0, left: 12, bottom: 12, right: 12)
+        self.tokenView.setY(self.field2.bottom())
+        self.tokenView.setWidth(globalWidth)
+        self.seperatorView.setWidth(globalWidth)
+        self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+        
+        viewHolder.setX(globalWidth - 38 * 2 - 8)
+        viewHolder.setY(field2.bottom() + 1)
+        imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
+        imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDream"))
+        
+        self.view.backgroundColor = UIColor.whiteColor()
+        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
+        
+        self.field2.attributedPlaceholder = NSAttributedString(string: "话题正文" ,
+            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
+                NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field2.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
+        self.field2.delegate = self
+        
+        self.scrollView.delegate = self
+        
+        //设置 tag view ---- 引用了第三方库
+        tokenView.delegate = self
+        tokenView.tokenField.delegate = self
+        tokenView.shouldSearchInBackground = false
+        tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
+        tokenView.tokenField.setPromptText("     ")
+        tokenView.tokenField.tokenLimit = 20
+        tokenView.tokenField.frame.size.width = 19
+        tokenView.paddingRight = 38 * 2 + 8
+        tokenView.tokenField.placeholder = "添加标签"
+        tokenView.canCancelContentTouches = false
+        tokenView.delaysContentTouches = false
+        tokenView.scrollEnabled = false
+        
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "add")
+        rightButton.image = UIImage(named:"newOK")
+        self.navigationItem.rightBarButtonItems = [rightButton]
+        
+        if self.isEdit == 1 {
+            self.field1!.text = self.editTitle.decode()
+            self.field2.text = self.editContent.decode()
+            if tagsArray.count > 0 {
+                for i in 0...(tagsArray.count - 1) {
+                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
+                    tokenView.tokenField.layoutTokensAnimated(false)
+                }
+            }
+            self.uploadUrl = self.editImage
+        }
+    }
+    
+    func dismissKeyboard(sender: UISwipeGestureRecognizer){
+        self.dismissKeyboard()
+    }
+    
+    func dismissKeyboard() {
+        self.field1!.resignFirstResponder()
+        self.field2.resignFirstResponder()
+        self.tokenView.tokenField.resignFirstResponder()
     }
 }
