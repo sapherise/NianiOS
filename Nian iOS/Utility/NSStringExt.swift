@@ -24,6 +24,18 @@ extension String {
         return SACeil(rect.size.height, dot: 0, isCeil: true)
     }
     
+    // 拥有行距的 TextView 的函数
+    func stringHeightWithSZTextView(fontSize: CGFloat, width: CGFloat) -> CGFloat {
+        let font = UIFont.systemFontOfSize(fontSize)
+        let paragraphStyle = NSMutableParagraphStyle()
+        let size = CGSizeMake(width, CGFloat.max)
+        paragraphStyle.lineSpacing = 8
+        let attrDictionary = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
+        let text = self as NSString
+        let rect = text.boundingRectWithSize(size, options: .UsesLineFragmentOrigin, attributes: attrDictionary, context: nil)
+        return SACeil(rect.size.height, dot: 0, isCeil: true)
+    }
+    
     func stringHeightBoldWith(fontSize:CGFloat,width:CGFloat)->CGFloat {
         let font = UIFont.boldSystemFontOfSize(fontSize)
         let size = CGSizeMake(width,CGFloat.max)

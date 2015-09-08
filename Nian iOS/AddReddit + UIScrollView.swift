@@ -21,23 +21,17 @@ extension AddRedditController {
         if tokenView.isFirstResponder() {
             tokenView.frame.size.height = globalHeight - keyboardHeight - 64
             adjustScroll()
-            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
+            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 57), animated: false)
         }
     }
     
     func handleKeyboardWillHideNotification(notification: NSNotification) {
         tokenView.frame.size.height = tokenView.tokenField.frame.size.height + 1
         adjustScroll()
-        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
+//        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.dismissKeyboard()
-    }
-    
-    func adjustScroll() {
-        let h = 78 + field2.height() + tokenView.height()
-        scrollView.contentSize.height = h
-        self.containerView.setHeight(h - 1)
     }
 }
