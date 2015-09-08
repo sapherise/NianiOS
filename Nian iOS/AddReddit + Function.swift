@@ -24,10 +24,9 @@ extension AddRedditController: DreamSelectedDelegate {
         v.title = title
         v.content = content
         v.image = "http://img.nian.so/dream/\(image)!dream"
-        print(image)
         v.layoutSubviews()
         let image = getImageFromView(v)
-        insertDream(image)
+        insertDream(image, dreamid: id)
     }
     
     func onDream() {
@@ -61,7 +60,7 @@ extension AddRedditController: DreamSelectedDelegate {
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton]
             var url = data.objectForKey("url") as! String
-            url = SAReplace(url, before: "/bbs/", after: "<img:") as String
+            url = SAReplace(url, before: "/bbs/", after: "<image:") as String
             url = "\(url)>"
             self.dict.setValue("\(url)", forKey: "\(attachment.image!)")
         })
@@ -70,7 +69,7 @@ extension AddRedditController: DreamSelectedDelegate {
     }
     
     
-    func insertDream(image: UIImage) {
+    func insertDream(image: UIImage, dreamid: String) {
         let attachment = NSTextAttachment()
         attachment.image = image
         attachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height)
@@ -82,29 +81,42 @@ extension AddRedditController: DreamSelectedDelegate {
         let newSelectedRange = NSMakeRange(selectedRange.location + 1, 0)
         field2.attributedText = mutableStr
         field2.selectedRange = newSelectedRange
-        self.dict.setValue("<dream:1>", forKey: "\(attachment.image!)")
+        self.dict.setValue("<dream:\(dreamid)>", forKey: "\(attachment.image!)")
     }
     
     func add() {
-        if isEdit == 1 {
-            
-        }
-        let title = field1.text!
-        let content = field2.text!
-        let tags = tokenView.tokenTitles!
-        if title == "" {
-            self.view.showTipText("标题不能是空的...")
-            field1.becomeFirstResponder()
-        } else if content == "" {
-            self.view.showTipText("正文不能是空的...")
-            field2.becomeFirstResponder()
-        } else {
-            Api.postAddReddit(title, content: content, tags: tags) { json in
-                if json != nil {
-                    print(json)
-                }
+        var content = ""
+        let range = NSMakeRange(0, field2.attributedText.length)
+        field2.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
+            if let d = dict["NSAttachment"] {
+                let textAttachment = d as! NSTextAttachment
+                let b = self.dict.stringAttributeForKey("\(textAttachment.image!)")
+                content += b
+            } else {
+                let str = (self.field2.attributedText.string as NSString).substringWithRange(range)
+                content += str
             }
-        }
+        })
+        print(content)
+//        if isEdit == 1 {
+//
+//        }
+//        let title = field1.text!
+//        let content = field2.text!
+//        let tags = tokenView.tokenTitles!
+//        if title == "" {
+//            self.view.showTipText("标题不能是空的...")
+//            field1.becomeFirstResponder()
+//        } else if content == "" {
+//            self.view.showTipText("正文不能是空的...")
+//            field2.becomeFirstResponder()
+//        } else {
+//            Api.postAddReddit(title, content: content, tags: tags) { json in
+//                if json != nil {
+//                    print(json)
+//                }
+//            }
+//        }
     }
     
     func addDreamOK(){
@@ -178,23 +190,24 @@ extension AddRedditController: DreamSelectedDelegate {
         field2.setHeight(h)
         self.tokenView.setY(field2.bottom())
         viewHolder.setY(field2.bottom() + 1)
-        let hScroll = 78 + h + tokenView.frame.height
+        let hScroll = max(h + tokenView.frame.height, globalHeight - 64)
+        let h = max(scrollView.height(), globalWidth - keyboardHeight - 64)
+        print(scrollView.height())
+        scrollView.setHeight(h)
         scrollView.contentSize.height = hScroll
         self.containerView.setHeight(hScroll)
     }
     
-    func getImageHeight() -> CGFloat {
-        var h: CGFloat = 0
-        let range = NSMakeRange(0, field2.attributedText.length)
-        field2.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
-            if let d = dict["NSAttachment"] {
-                let textAttachment = d as! NSTextAttachment
-                let hNew = textAttachment.image!.size.height
-                print("原来是：\(h)，添加了：\(hNew)")
-                h += hNew
-            }
-        })
-        return h
-    }
-
+//    func getImageHeight() -> CGFloat {
+//        var h: CGFloat = 0
+//        let range = NSMakeRange(0, field2.attributedText.length)
+//        field2.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
+//            if let d = dict["NSAttachment"] {
+//                let textAttachment = d as! NSTextAttachment
+//                let hNew = textAttachment.image!.size.height
+//                h += hNew
+//            }
+//        })
+//        return h
+//    }
 }

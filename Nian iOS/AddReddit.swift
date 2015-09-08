@@ -12,7 +12,7 @@ protocol editRedditDelegate {
     func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
 }
 
-class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
+class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, NSLayoutManagerDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -98,12 +98,18 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
-        let height = 78 + field2.frame.size.height + tokenView.tokenField.frame.size.height
-        let tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, globalHeight - 64))
-        self.scrollView.contentSize = tmpSize
-        
+//        let height = 58 + field2.frame.size.height + tokenView.tokenField.frame.size.height
+//        let tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, globalHeight - 64))
+//        self.scrollView.contentSize = tmpSize
+        adjustScroll()
         self.view.layoutIfNeeded()
+        
+        
+//        func adjustScroll() {
+//            let h = 58 + field2.height() + tokenView.height()
+//            scrollView.contentSize.height = h
+//            self.containerView.setHeight(h - 1)
+//        }
     }
     
     func setupViews(){
@@ -143,6 +149,30 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         self.tokenView.setWidth(globalWidth)
         self.seperatorView.setWidth(globalWidth)
         self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
+        
+//        field2.setLineSpacing(20)
+        
+//        let font = UIFont.systemFontOfSize(17)
+//        let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy()
+//        paragraphStyle.setLineSpacing(12)
+//        let attributes = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
+//        let attributedString = NSAttributedString().
+        field2.layoutManager.delegate = self
+        
+//        let font = UIFont.systemFontOfSize(17)
+//        let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy()
+//        paragraphStyle.setLineSpacing = 12
+//
+//        NSFont *font = /* set font */;
+//        
+//        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//        [paragraphStyle setLineSpacing: /* required line spacing */];
+//        
+//        NSDictionary *attributes = @{ NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle };
+//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"strigil" attributes:attributes];
+//        
+//        [label setAttributedText: attributedString];
+        
         
         viewHolder.setX(globalWidth - 38 * 2 - 8)
         viewHolder.setY(field2.bottom() + 1)
@@ -190,6 +220,10 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
             }
             self.uploadUrl = self.editImage
         }
+    }
+    
+    func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return 8
     }
     
     func dismissKeyboard(sender: UISwipeGestureRecognizer){

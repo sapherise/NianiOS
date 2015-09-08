@@ -16,7 +16,6 @@ class AddRedditDream: UIView {
     var image = ""
     
     override func awakeFromNib() {
-        print("1")
     }
     
     override func layoutSubviews() {

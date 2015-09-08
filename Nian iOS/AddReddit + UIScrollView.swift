@@ -28,7 +28,7 @@ extension AddRedditController {
     func handleKeyboardWillHideNotification(notification: NSNotification) {
         tokenView.frame.size.height = tokenView.tokenField.frame.size.height + 1
         adjustScroll()
-        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
+//        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -36,7 +36,7 @@ extension AddRedditController {
     }
     
     func adjustScroll() {
-        let h = 78 + field2.height() + tokenView.height()
+        let h = max(58 + field2.height() + tokenView.height(), globalHeight - 64)
         scrollView.contentSize.height = h
         self.containerView.setHeight(h - 1)
     }
