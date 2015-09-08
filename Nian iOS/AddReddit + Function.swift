@@ -97,26 +97,21 @@ extension AddRedditController: DreamSelectedDelegate {
                 content += str
             }
         })
-        print(content)
-//        if isEdit == 1 {
-//
-//        }
-//        let title = field1.text!
-//        let content = field2.text!
-//        let tags = tokenView.tokenTitles!
-//        if title == "" {
-//            self.view.showTipText("标题不能是空的...")
-//            field1.becomeFirstResponder()
-//        } else if content == "" {
-//            self.view.showTipText("正文不能是空的...")
-//            field2.becomeFirstResponder()
-//        } else {
-//            Api.postAddReddit(title, content: content, tags: tags) { json in
-//                if json != nil {
-//                    print(json)
-//                }
-//            }
-//        }
+        let title = field1.text!
+        let tags = tokenView.tokenTitles!
+        if title == "" {
+            self.view.showTipText("标题不能是空的...")
+            field1.becomeFirstResponder()
+        } else if content == "" {
+            self.view.showTipText("正文不能是空的...")
+            field2.becomeFirstResponder()
+        } else {
+            Api.postAddReddit(title, content: content, tags: tags) { json in
+                if json != nil {
+                    print(json)
+                }
+            }
+        }
     }
     
     func addDreamOK(){
@@ -186,7 +181,7 @@ extension AddRedditController: DreamSelectedDelegate {
     }
     
 //    func getImageHeight() -> CGFloat {
-//        var h: CGFloat = 0
+//        var hCGFloat = 0
 //        let range = NSMakeRange(0, field2.attributedText.length)
 //        field2.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
 //            if let d = dict["NSAttachment"] {

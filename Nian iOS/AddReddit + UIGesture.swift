@@ -23,13 +23,10 @@ extension AddRedditController {
             let field2DefaultHeight: CGFloat = globalHeight > 480 ? 120 : 96
             let h = max(field2DefaultHeight, hN)
             field2.setHeight(h)
-            let a = field2.height()
-            print("高度是！\(a)")
             print(textView.textContainer)
             self.tokenView.setY(field2.bottom())
             viewHolder.setY(field2.bottom() + 1)
             adjustScroll()
-            print(containerView.height())
             adjustPoint()
         }
     }
@@ -41,15 +38,9 @@ extension AddRedditController {
         let hPoint = point.size.height
         var h = yPoint + hPoint + 116 - (globalHeight - keyboardHeight - 64)
         h = max(h, 0)
-//        h = SACeil(h, dot: 0)
-        print(point)
         // 前半段是光标距离设备顶部的高度，后半段是弹起键盘后、去除导航栏的显示区域高度
         if !isinf(h) {
             self.scrollView.contentOffset.y = h
-            let a = scrollView.contentSize.height
-            let b = a - h
-            
-//            print("滚动高度为：\(a)，当前为：\(h)，相减为：\(b)")
         }
     }
     
