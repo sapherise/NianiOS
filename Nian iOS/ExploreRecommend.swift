@@ -69,11 +69,11 @@ class ExploreRecommend: ExploreProvider {
             }
         } // if page == 1
         
-        Api.getExploreNewHot("\(lastID)", page: "\(page++)", callback: {
+        Api.getExploreNewHot(page: "\(page++)", callback: {
             json in
             if json != nil {
                 globalTab[2] = false
-                let arr = json!.objectForKey("items") as! NSArray
+                let arr = json!.objectForKey("data") as! NSArray
                 if clear {
                     self.listDataArray.removeAllObjects()
                 }
@@ -160,7 +160,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             return  ExploreNewHotCell.cellHeightByData(data)
         } else if indexPath.section == 0 || indexPath.section == 1 {
             if isiPhone6 || isiPhone6P {
-                return 200
+                return 202
             }
             return 185
         }

@@ -17,12 +17,16 @@ class ExploreRecomMore: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    /// 显示在 Nav Bar 上的 title， 为了避免和 UIViewController 的 title 冲突
     var titleOn: String!
     var dataArray = NSMutableArray()
     var delegate: DreamSelectedDelegate?
     
     var page = 0
     var lastID = ""
+    
+    // 设置一个滚动时的 target rect, 目的是为了判断要不要加载图片
+    var targetRect: NSValue?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +113,13 @@ class ExploreRecomMore: UIViewController {
                         let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
-                                self.dataArray.addObject(item)
+                                let _img = (item as! NSDictionary).objectForKey("image") as! String
+                                let _imgSplit = _img.componentsSeparatedByString(".")  //_img.characters.split{$0 = "."}.map(String.init)    //split(_img.characters){$0 = "."}.map(String.init)
+                                
+                                if let _ = Int(_imgSplit[0]) {
+                                } else {
+                                    self.dataArray.addObject(item)
+                                }
                             }
                             
                             self.collectionView.headerEndRefreshing()
@@ -140,6 +150,21 @@ class ExploreRecomMore: UIViewController {
         }
     }
     
+    
+    /**
+    - returns: Bool值，代表是否要加载图片
+    */
+    func shouldLoadCellImage(cell: ExploreMoreCell, withIndexPath indexPath: NSIndexPath) -> Bool {
+        let attr = self.collectionView.layoutAttributesForItemAtIndexPath(indexPath)
+        let cellFrame = attr?.frame
+        
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), cellFrame!) {
+            return false
+        }
+        
+        return true
+    }
+    
 }
 
 extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegate {
@@ -152,7 +177,7 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         let _tmpData = self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary
         
         if let _img = _tmpData.objectForKey("image") as? String {
-            cell.coverImageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+            cell.coverImageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor, bool: false)
         }
         cell.titleLabel?.text = SADecode(_tmpData.objectForKey("title") as! String)
         
@@ -181,6 +206,49 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
     
 }
 
+extension ExploreRecomMore: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.targetRect = nil
+        
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+        self.targetRect = NSValue(CGRect: targetRect)
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if scrollView is UITableView {
+            self.targetRect = nil
+            
+            self.loadImagesForVisibleCells()
+        }
+    }
+    
+    func loadImagesForVisibleCells() {
+        let cellArray = self.collectionView.visibleCells
+        
+        for cell in cellArray() {
+            if cell is ExploreMoreCell {
+                let indexPath = self.collectionView.indexPathForCell(cell as! ExploreMoreCell)
+                
+                var _tmpShouldLoadImg = false
+                _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! ExploreMoreCell, withIndexPath: indexPath!)
+                
+                if _tmpShouldLoadImg {
+                    self.collectionView.reloadItemsAtIndexPaths([indexPath!])
+                }
+            }
+        }
+    }
+}
 
 
 

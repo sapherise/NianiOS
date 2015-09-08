@@ -19,7 +19,7 @@ struct Api {
             let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             
             /*
-            TODO: 将废弃原来写在 NSUserDefault 里的 uid 和 shell, 
+                  废弃原来写在 NSUserDefault 里的 uid 和 shell, 
                   uid 和 shell 放到 Keychain 里面
             */
             
@@ -91,9 +91,10 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/explore_all2.php?lastid=\(lastid)&&page=\(page)", callback: callback)
     }
     
-    static func getExploreNewHot(lastid: String, page: String,callback: V.JsonCallback) {
+    // MARK: - 获得排行
+    static func getExploreNewHot(page page: String,callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/explore_recommend.php?lastid=\(lastid)&&uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/discover/ranking?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
     // MARK: - 发现-“热门” 之“编辑推荐”和“最新”
@@ -114,17 +115,31 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/discover/recommend?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    // MARK: - 搜索梦想
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/dream/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
         ///dream/search?keyword=php&page=2
     }
     
+    // MARK: - 搜索用户
     static func getSearchUsers(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/searchuser.php?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
     }
-        
+    
+    // MARK: - 搜索进展
+    static func getSearchSteps(keyword: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
+    }
+    
+    // MARK: - 搜索话题
+    static func getSearchTopics(keyword: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
+    }
+    
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/search_user.php", callback: callback)
@@ -424,7 +439,8 @@ struct Api {
     
     static func postLetterInit(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJsonSync("http://nian.so/api/letter_init2.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+//        V.httpPostForJsonSync("http://nian.so/api/letter_init2.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpPostForJson_AFN("http://nian.so/api/letter_init2.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)" ], callback: callback)
     }
     
     static func postUserLetterLastid(lastid: String, callback: V.JsonCallback) {
@@ -534,7 +550,7 @@ struct Api {
     static func postEditStep_AFN(sid: String, content: String, uploadUrl: String, uploadWidth: String, uploadHeight: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/step/\(sid)/edit?uid=\(s_uid)&shell=\(s_shell)",
-            content: ["content": "\(content)", "img": "\(uploadUrl)", "img0": "\(uploadWidth)", "img1": "\(uploadHeight)"],
+            content: ["content": "\(content)", "image": "\(uploadUrl)", "img0": "\(uploadWidth)", "img1": "\(uploadHeight)"],
             callback: callback)
     }
     
