@@ -16,13 +16,20 @@ extension AddRedditController {
     }
     
     /* 在编辑 “记本简介” 时，根据选择的内容来实现滚动 */
-    func textViewDidChangeSelection(textView: UITextView) {
+    func textViewDidChange(textView: UITextView) {
         if textView == field2 {
             field2.setHeight(999999)
             let hN = field2.layoutManager.usedRectForTextContainer(textView.textContainer).size.height + 12
             let field2DefaultHeight: CGFloat = globalHeight > 480 ? 120 : 96
             let h = max(field2DefaultHeight, hN)
-            adjustHeight(h)
+            field2.setHeight(h)
+            let a = field2.height()
+            print("高度是！\(a)")
+            print(textView.textContainer)
+            self.tokenView.setY(field2.bottom())
+            viewHolder.setY(field2.bottom() + 1)
+            adjustScroll()
+            print(containerView.height())
             adjustPoint()
         }
     }
@@ -32,11 +39,24 @@ extension AddRedditController {
         let point = field2.caretRectForPosition((field2.selectedTextRange?.end)!)
         let yPoint = point.origin.y
         let hPoint = point.size.height
-        let h = yPoint + hPoint + 116 - (globalHeight - keyboardHeight - 64)
+        var h = yPoint + hPoint + 116 - (globalHeight - keyboardHeight - 64)
+        h = max(h, 0)
+//        h = SACeil(h, dot: 0)
+        print(point)
         // 前半段是光标距离设备顶部的高度，后半段是弹起键盘后、去除导航栏的显示区域高度
         if !isinf(h) {
-            self.scrollView.contentOffset.y = max(h, 0)
+            self.scrollView.contentOffset.y = h
+            let a = scrollView.contentSize.height
+            let b = a - h
+            
+//            print("滚动高度为：\(a)，当前为：\(h)，相减为：\(b)")
         }
+    }
+    
+    func adjustScroll() {
+        let h = max(58 + field2.height() + tokenView.height(), globalHeight - 64)
+        scrollView.contentSize.height = h
+        self.containerView.setHeight(h - 1)
     }
 }
 

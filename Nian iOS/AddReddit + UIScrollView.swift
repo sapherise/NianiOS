@@ -21,7 +21,7 @@ extension AddRedditController {
         if tokenView.isFirstResponder() {
             tokenView.frame.size.height = globalHeight - keyboardHeight - 64
             adjustScroll()
-            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
+            self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 57), animated: false)
         }
     }
     
@@ -33,11 +33,5 @@ extension AddRedditController {
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.dismissKeyboard()
-    }
-    
-    func adjustScroll() {
-        let h = max(58 + field2.height() + tokenView.height(), globalHeight - 64)
-        scrollView.contentSize.height = h
-        self.containerView.setHeight(h - 1)
     }
 }

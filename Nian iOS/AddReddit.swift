@@ -135,7 +135,7 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         self.scrollView.setWidth(globalWidth)
         self.scrollView.setHeight(globalHeight - 64)
         self.containerView.setWidth(globalWidth)
-        self.containerView.setHeight(self.scrollView.frame.height - 1)
+        self.containerView.setHeight(self.scrollView.height() - 1)
         self.field1.setWidth(globalWidth)
         
         self.field1.leftView = UIView(frame: CGRectMake(0, 0, 16, 1))
@@ -158,6 +158,7 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
 //        let attributes = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
 //        let attributedString = NSAttributedString().
         field2.layoutManager.delegate = self
+        field2.textContainer.heightTracksTextView = false
         
 //        let font = UIFont.systemFontOfSize(17)
 //        let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy()

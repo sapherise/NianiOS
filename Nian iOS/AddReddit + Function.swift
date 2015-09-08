@@ -185,19 +185,6 @@ extension AddRedditController: DreamSelectedDelegate {
         }
     }
     
-    // 内容框做高度调整，同时其他视图随之调整
-    func adjustHeight(h: CGFloat) {
-        field2.setHeight(h)
-        self.tokenView.setY(field2.bottom())
-        viewHolder.setY(field2.bottom() + 1)
-        let hScroll = max(h + tokenView.frame.height, globalHeight - 64)
-        let h = max(scrollView.height(), globalWidth - keyboardHeight - 64)
-        print(scrollView.height())
-        scrollView.setHeight(h)
-        scrollView.contentSize.height = hScroll
-        self.containerView.setHeight(hScroll)
-    }
-    
 //    func getImageHeight() -> CGFloat {
 //        var h: CGFloat = 0
 //        let range = NSMakeRange(0, field2.attributedText.length)

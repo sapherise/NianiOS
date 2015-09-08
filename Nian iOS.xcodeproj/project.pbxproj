@@ -547,8 +547,8 @@
 			files = (
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
-				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
 				C470B22C1B94016400863821 /* libPushSDK-1.8.5.a in Frameworks */,
+				C404F1381B94669D00E93A7C /* libWeiboSDK.a in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
 				127497FA1B92DF880046B440 /* UIKit.framework in Frameworks */,
@@ -1948,6 +1948,10 @@
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -2010,6 +2014,10 @@
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
