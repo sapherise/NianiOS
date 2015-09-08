@@ -221,7 +221,7 @@
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
 		C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */; };
-		C47C12E51B9C4643003BD1E8 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
+		C483A0661B9E966800A76620 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C48ACB891B958B8C009A9C30 /* CollectionViewCell_XL.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */; settings = {ASSET_TAGS = (); }; };
 		C48ACB8B1B958CF8009A9C30 /* CollectionViewCell_XL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48ACB8A1B958CF8009A9C30 /* CollectionViewCell_XL.swift */; settings = {ASSET_TAGS = (); }; };
@@ -538,7 +538,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */,
-				C47C12E51B9C4643003BD1E8 /* libWeiboSDK.a in Frameworks */,
+				C483A0661B9E966800A76620 /* libWeiboSDK.a in Frameworks */,
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
@@ -1904,6 +1904,10 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1954,6 +1958,10 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 				);

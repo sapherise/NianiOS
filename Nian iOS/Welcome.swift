@@ -9,6 +9,8 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
+    /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。 
+    var shouldNavToMe = false
     
     func setupViews(){
         self.view.hidden = true
@@ -74,6 +76,7 @@ class WelcomeViewController: UIViewController {
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                        mainViewController.shouldNavToMe = self.shouldNavToMe
                         let navigationViewController = UINavigationController(rootViewController: mainViewController)
                         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
                         navigationViewController.navigationBar.tintColor = UIColor.whiteColor()

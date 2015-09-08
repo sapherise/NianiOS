@@ -13,6 +13,7 @@ class ExploreRecomMore: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    /// 显示在 Nav Bar 上的 title， 为了避免和 UIViewController 的 title 冲突
     var titleOn: String!
     var dataArray = NSMutableArray()
     
@@ -35,7 +36,7 @@ class ExploreRecomMore: UIViewController {
         self.collectionView.delegate = self 
         
         self.collectionView.headerBeginRefreshing()
-        load(false)
+//        load(false)
     }
 
     func setupView() {

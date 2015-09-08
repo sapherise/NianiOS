@@ -64,10 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         if launchOptions != nil {
             logInfo("\(launchOptions)")
             
-            let dict = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as! NSDictionary!
+            let dict = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
             
             if dict != nil {
-               handleReceiveRemoteNotification(dict)
+//               handleReceiveRemoteNotification(dict!)
                 
             }
         
@@ -178,6 +178,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         }
     }
     
+    /**
+    处理在 app 打开的情况下，通过极光 TCP 推送来的消息
+    
+    :param: noti <#noti description#>
+    */
     func handleNetworkReceiveMsg(noti: NSNotification) {
         logWarn("\(noti)")
         
@@ -185,7 +190,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
 //        let _content = (userInfo as! Dictionary<String, NSObject>)["content"]
 //        
         
-    
+//        navTo_MEVC()
     }
     
     // 收到消息通知，
@@ -196,7 +201,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         
         logVerbose("\(content) \(badge) \(sound)")
         
-        
+        navTo_MEVC()
     }
+    
+    /**
+    到 tab[3] 对应的 VC， 即私信界面
+    */
+    func navTo_MEVC() {
+        let navViewController = window?.rootViewController as! UINavigationController
+        let welcomeVC = navViewController.viewControllers[0] as! WelcomeViewController
+        welcomeVC.shouldNavToMe = true
+        
+        
+        logWarn("\(navViewController.viewControllers)")
+    }
+    
 }
 

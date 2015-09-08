@@ -19,7 +19,7 @@ struct Api {
             let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             
             /*
-            TODO: 将废弃原来写在 NSUserDefault 里的 uid 和 shell, 
+                  废弃原来写在 NSUserDefault 里的 uid 和 shell, 
                   uid 和 shell 放到 Keychain 里面
             */
             
@@ -115,17 +115,31 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/discover/recommend?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    // MARK: - 搜索梦想
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/dream/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
         ///dream/search?keyword=php&page=2
     }
     
+    // MARK: - 搜索用户
     static func getSearchUsers(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/searchuser.php?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
     }
-        
+    
+    // MARK: - 搜索进展
+    static func getSearchSteps(keyword: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
+    }
+    
+    // MARK: - 搜索话题
+    static func getSearchTopics(keyword: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
+    }
+    
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/search_user.php", callback: callback)

@@ -27,6 +27,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var timer:NSTimer?
     var ni: NIAlert?
     
+    /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
+    var shouldNavToMe: Bool = false
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         SQLInit()
@@ -103,6 +106,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         navHide()
         self.navigationController!.interactivePopGestureRecognizer!.enabled = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive", name: "AppActive", object: nil)
@@ -112,6 +116,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if globalWillReEnter == 1 {
             globalWillReEnter = 0
             onCircleEnter()
+        }
+        
+        if shouldNavToMe {
+            if let _ = self.viewControllers  {
+                self.selectedIndex = 3
+            }
         }
     }
     
@@ -178,7 +188,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     let a = resultSet.count
                     let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
                     
-                    logError(" b = \(b)")
+//                    logError(" b = \(b)")
                     
                     if let number = Int(b) {
                         globalNoticeNumber = a + number
