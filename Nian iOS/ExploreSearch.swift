@@ -39,9 +39,36 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
         }
     }
-    var dataArrayDream = NSMutableArray()
-    var dataArrayStep = NSMutableArray()
-    var dataArrayTopic = NSMutableArray()
+    var dataArrayDream = NSMutableArray() {
+        didSet {
+            if dataArrayDream.count > 0 {
+                if index == 1 {
+                    dreamTableView.hidden = false
+                }
+            }
+        }
+    }
+    var dataArrayStep = NSMutableArray() {
+        didSet {
+            if dataArrayStep.count > 0 {
+                if index == 2 {
+                    stepTableView.hidden = false
+                }
+            }
+        }
+    }
+    var dataArrayTopic = NSMutableArray() {
+        didSet {
+            if dataArrayTopic.count > 0 {
+                if index == 3 {
+                    topicTableView.hidden = false
+                }
+            }
+        }
+    }
+    
+    /* dataSourceArray 里面存的是上面的 dataArray */
+    var dataSourceArray: [NSMutableArray] = []
     
     var preSetSearch: String = ""
     var shouldPerformSearch: Bool = false
@@ -58,7 +85,15 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var topicButton: UIButton!
     @IBOutlet weak var floatView: UIView!
     
+    @IBOutlet weak var followButton: UIButton!
+    
     // MARK: -
+    
+    var index: Int = 0  /* 用来指示当前的 table，在其他文件里可能相当于 current */
+    var dreamPage: Int = 1
+    var userPage: Int = 1
+    var stepPage: Int = 1
+    var topicPage: Int = 1
     
     /* 改变 Button 的颜色时使用 */
     var btnArray:[UIButton] = []
@@ -66,19 +101,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     /* 统一 UITableview 的 header call back 和 footer call back */
     var tableDict = Dictionary<Int, UITableView>()
     
+    /* 代码生成的搜索框 */
     var searchText = NITextfield()
-    
-    var index: Int = 0 {
-        didSet {
-            
-        }
-    }
-    var dreamPage: Int = 1
-    var userPage: Int = 1
-    var stepPage: Int = 1
-    var topicPage: Int = 1
-    
-    var dreamStepArray = NSMutableArray()
     
     // 用在计算 table view 滚动时应不应该加载图片
     var targetRect: NSValue?
@@ -86,63 +110,63 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - all table view 都是延迟加载的
     
     lazy var userTableView: UITableView = {
-        let userTableView = UITableView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        let userTableView = UITableView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 104))
         userTableView.registerNib(UINib(nibName: "SAUserCell", bundle: nil), forCellReuseIdentifier: "SAUserCell")
+        userTableView.separatorStyle = .None
         
         userTableView.dataSource = self
         userTableView.delegate = self
         
+        if self.dataArrayUser.count == 0 {
+            userTableView.hidden = true
+        }
+        
         return userTableView
     }()
     
-    lazy var userDataArray: NSMutableArray = {
-        let userDataArray = NSMutableArray()
-        return userDataArray
-    }()
-    
     lazy var dreamTableView: UITableView = {
-        let dreamTableView = UITableView(frame: CGRectMake(0, globalWidth, globalWidth, globalHeight))
+        let dreamTableView = UITableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 104))
         dreamTableView.registerNib(UINib(nibName: "ExploreNewHotCell", bundle: nil), forCellReuseIdentifier: "ExploreNewHotCell")
+        dreamTableView.separatorStyle = .None
         
         dreamTableView.dataSource = self
         dreamTableView.delegate = self
         
+        if self.dataArrayDream.count == 0 {
+            dreamTableView.hidden = true
+        }
+        
         return dreamTableView
     }()
-    
-    lazy var dreamDataArray: NSMutableArray = {
-        let dreamDataArray = NSMutableArray()
-        return dreamDataArray
-    }()
-    
+   
     lazy var stepTableView: UITableView = {
-        let stepTableView = UITableView(frame: CGRectMake(0, globalWidth * 2, globalWidth, globalHeight))
+        let stepTableView = UITableView(frame: CGRectMake(globalWidth * 2, 0, globalWidth, globalHeight - 104))
         stepTableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
+        stepTableView.separatorStyle = .None
         
         stepTableView.dataSource = self
         stepTableView.delegate = self
         
+        if self.dataArrayStep.count == 0 {
+            stepTableView.hidden = true
+        }
+        
         return stepTableView
     }()
-    
-    lazy var stepDataArray: NSMutableArray = {
-        let stepDataArray = NSMutableArray()
-        return stepDataArray
-    }()
-    
+   
     lazy var topicTableView: UITableView = {
-        let topicTableView = UITableView(frame: CGRectMake(0, globalWidth * 3, globalWidth, globalHeight))
+        let topicTableView = UITableView(frame: CGRectMake(globalWidth * 3, 0, globalWidth, globalHeight - 104))
         topicTableView.registerNib(UINib(nibName: "RedditCell", bundle: nil), forCellReuseIdentifier: "RedditCell")
+        topicTableView.separatorStyle = .None
         
         topicTableView.dataSource = self
         topicTableView.delegate = self
         
+        if self.dataArrayTopic.count == 0 {
+            topicTableView.hidden = true
+        }
+        
         return topicTableView
-    }()
-    
-    lazy var topicDataArray: NSMutableArray = {
-        let topicDataArray = NSMutableArray()
-        return topicDataArray
     }()
 
     // MARK: - View Controller 的生命周期和 View 的颜色、位置的控制
@@ -160,26 +184,26 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-//        self.dreamTableView.hidden = !(index == 0)
-//        self.tableView.hidden = !self.dreamTableView.hidden
-        
-//        self.userTableView.hidden = !(index == 0)
-//        self.tableSet.insert(self.userTableView)
         
         self.showTableViewWithIndex(index)
-        
         self.viewBackFix()
         
         if preSetSearch.characters.count > 0 {
             searchText.text = preSetSearch
         }
         
+        self.navigationController?.navigationBar.addSubview(searchText)
+        searchText.alpha = 0.0
+        
+        UIView.animateWithDuration(0.5, animations: {
+            self.searchText.alpha = 1.0
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.navigationController?.navigationBar.addSubview(searchText)
+//        self.navigationController?.navigationBar.addSubview(searchText)
         NSNotificationCenter.defaultCenter().addObserverForName(UITextFieldTextDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { _ in
             if self.searchText.text != "" {
                 self.searchText.rightViewMode = .Always
@@ -189,18 +213,16 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         
         if (preSetSearch.characters.count > 0 && shouldPerformSearch) {
-            if index == 0 {
-                self.dreamTableView.headerBeginRefreshing()
-            } else {
-                self.userTableView.headerBeginRefreshing()
-            }
-            
             if let _ = self.tableDict[index] {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.floatView.setX(globalWidth/2 - 65)
+                })
+                setupButtonColor(index)
             } else {
                 self.showTableViewWithIndex(index)
             }
             
-            self.beginSearch(clear: true, index: index, table: self.tableDict[index]!)
+            self.tableDict[index]?.headerBeginRefreshing()
         }
         
     }
@@ -230,9 +252,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         floatView.backgroundColor = SeaColor
         
         btnArray = [userButton, dreamButton, stepButton, topicButton]
+        dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep, dataArrayTopic]
         
         let color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
-        searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth-60, 26))
+        searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth-100, 26))
         searchText.layer.cornerRadius = 13
         searchText.layer.masksToBounds = true
         searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)
@@ -255,21 +278,9 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         scrollView.scrollsToTop = false
         scrollView.contentSize = CGSizeMake(globalWidth * 4, scrollView.frame.size.height)
         scrollView.delegate = self
-        
-//        tableView.addHeaderWithCallback(onPullDown)
-//        tableView.addFooterWithCallback(onPullUp)
-//        dreamTableView.addHeaderWithCallback(onPullDown)
-//        dreamTableView.addFooterWithCallback(onPullUp)
     }
     
     func setupButtonColor(index: Int) {
-//        if index == 0 {
-//            dreamButton.setTitleColor(SeaColor, forState: .Normal)
-//            userButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-//        } else {
-//            userButton.setTitleColor(SeaColor, forState: .Normal)
-//            dreamButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-//        }
         
         /* 改变 Button 的颜色 */
         for (_index, _btn) in self.btnArray.enumerate() {
@@ -279,7 +290,19 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 _btn.setTitleColor(UIColor.blackColor(), forState: .Normal)
             }
         }
-        
+    }
+    
+    /**
+    which table 能 scrollToTop
+    */
+    func tableScrollToTop() {
+        for (_index, _table) in self.tableDict {
+            if _index == index {
+                _table.scrollsToTop = true
+            } else {
+                _table.scrollsToTop = false
+            }
+        }
     }
     
     // MARK: - 数据加载和 Table 的使用控制
@@ -330,28 +353,13 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         default:
             break
         }
-        
-        // ????
-        //使用元组
-        for (_index, _table) in self.tableDict {
-            if _index == index {
-                _table.hidden = false
-            } else {
-                _table.hidden = true
-            }
-        }
     }
     
     func load(index: Int, clear: Bool) {
-//        if index == 0 {
-//            self.dreamSearch(clear)
-//        } else {
-//            self.userSearch(clear)
-//        }
-        
         for (_index, _table) in self.tableDict {
             if _index == index {
-                self.beginSearch(clear: clear, index: _index, table: _table)
+                _table.hidden = false
+                self.beginSearch(clear: clear, index: _index)
             }
         }
         
@@ -363,7 +371,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     :param: clear <#clear description#>
     :param: table <#table description#>
     */
-    func beginSearch(clear clear: Bool, index: Int, table: UITableView) {
+    func beginSearch(clear clear: Bool, index: Int) {
         if index == 0 {
             self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
             
@@ -373,10 +381,16 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             dreamSearch(clear)
         } else if index == 2 {
-        
+            self.scrollView.setContentOffset(CGPointMake(globalWidth * 2, 0), animated: true)
+            
+            stepSearch(clear)
         } else if index == 3 {
-        
+            self.scrollView.setContentOffset(CGPointMake(globalWidth * 3, 0), animated: true)
+            
+            topicSearch(clear)
         }
+        
+        tableScrollToTop()
     }
     
     func onRefresh() {
@@ -422,35 +436,92 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         searchText.becomeFirstResponder()
     }
     
-    @IBAction func dream(sender: AnyObject) {
-        let tmp = index
-        index = 0
-        setupButtonColor(index)
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.floatView.setX(globalWidth/2 - 65)
-        })
-        
-        if searchText.text != "" && (dataArrayDream.count + dataArrayStep.count == 0) {
-            self.dreamTableView.headerBeginRefreshing()
-        } else if tmp == 0 {
-            self.dreamTableView.headerBeginRefreshing()
+    // MARK: - 关注搜索的内容
+    /* */
+    // TODO: -
+    @IBAction func Follow(sender: AnyObject) {
+        self.followButton.hidden = true
+        self.navigationItem.rightBarButtonItems = buttonArray()
+    
+        Api.postSearchFollow(self.searchText.text!) {
+            json in
+            self.navigationItem.rightBarButtonItems = []
+            self.followButton.hidden = false
+            
+            if json != nil {
+                
+            }
         }
     }
     
+    /* */
+    //MARK: -
+    
     @IBAction func user(sender: AnyObject) {
         let tmp = index
-        index = 1
-        setupButtonColor(1)
+        index = 0
+        setupButtonColor(index)
+        showTableViewWithIndex(index)
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 - 145)
         })
         
-        if searchText.text != "" && dataArrayUser.count == 0 {
+        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
+
+        if searchText.text != "" && (tmp == index || self.dataArrayUser.count == 0) {
             self.userTableView.headerBeginRefreshing()
-        } else if tmp == 1 {
-            self.userTableView.headerBeginRefreshing()
+        }
+    }
+    
+    @IBAction func dream(sender: AnyObject) {
+        let tmp = index
+        index = 1
+        setupButtonColor(index)
+        showTableViewWithIndex(index)
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.floatView.setX(globalWidth/2 - 65)
+        })
+        
+        self.scrollView.setContentOffset(CGPointMake(globalWidth, 0), animated: true)
+        
+        if searchText.text != "" && (tmp == index || self.dataArrayDream.count == 0) {
+            self.dreamTableView.headerBeginRefreshing()
+        }
+    }
+    
+    @IBAction func step(sender: AnyObject) {
+        let tmp = index
+        index = 2
+        setupButtonColor(index)
+        showTableViewWithIndex(index)
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.floatView.setX(globalWidth/2 + 15)
+        })
+        
+        self.scrollView.setContentOffset(CGPointMake(globalWidth * 2, 0), animated: true)
+
+        if searchText.text != ""  && (tmp == index || self.dataArrayStep.count == 0) {
+            self.stepTableView.headerBeginRefreshing()
+        }
+    }
+    
+    @IBAction func topic(sender: AnyObject) {
+        let tmp = index
+        index = 3
+        setupButtonColor(index)
+        showTableViewWithIndex(index)
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.floatView.setX(globalWidth/2 + 95)
+        })
+        
+        self.scrollView.setContentOffset(CGPointMake(globalWidth, 0), animated: true)
+
+        if searchText.text != "" && (tmp == index || self.dataArrayTopic.count == 0) {
+            self.topicTableView.headerBeginRefreshing()
         }
     }
     
@@ -498,12 +569,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                         self.dataArrayDream.addObject(item)
                     }
                 }
-                let itemsStep = data!.objectForKey("steps") as? NSArray
-                if itemsStep != nil {
-                    for item in itemsStep! {
-                        self.dataArrayStep.addObject(item)
-                    }
-                }
             }
             self.dreamTableView.reloadData()
             self.dreamTableView.headerEndRefreshing()
@@ -515,12 +580,44 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             stepPage = 1
         }
+        Api.getSearchSteps(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: stepPage++, callback: {
+            json in
+            if json != nil {
+                if clear {
+                    self.dataArrayStep.removeAllObjects()
+                }
+            }
+            let data: AnyObject? = json!.objectForKey("data")
+            let itemsStep = data!.objectForKey("steps") as? NSArray
+            if itemsStep != nil {
+                for item in itemsStep! {
+                    self.dataArrayStep.addObject(item)
+                }
+            }
+            self.stepTableView.reloadData()
+            self.stepTableView.headerEndRefreshing()
+            self.stepTableView.footerEndRefreshing()
+        })
     }
     
     func topicSearch(clear: Bool) {
         if clear {
             topicPage = 1
         }
+        Api.getSearchTopics(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: topicPage++, callback: {
+            json in
+            if json != nil {
+                if clear {
+                    self.dataArrayTopic.removeAllObjects()
+                }
+            }
+            
+            // TODO: - 补充 topic 数据
+            
+            self.topicTableView.reloadData()
+            self.topicTableView.headerEndRefreshing()
+            self.topicTableView.footerEndRefreshing()
+        })
     }
     
     // MARK: - table view delegate
@@ -540,66 +637,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-//    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        if index == 0 {
-//            if section == 0 {
-//                if self.dataArrayDream.count != 0 {
-//                    let viewFooter = UIView(frame: CGRectMake(0, 0, globalWidth, 15))
-//                    viewFooter.backgroundColor = IconColor
-//                    return viewFooter
-//                }
-//            }
-//        }
-//        return nil
-//    }
-//    
-//    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        if index == 0 {
-//            if section == 0 {
-//                if self.dataArrayDream.count != 0 {
-//                    return 15
-//                }
-//            }
-//        }
-//        return 0
-//    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        if index == 0 {
-//            if indexPath.section == 0 {
-//                let c = dreamTableView.dequeueReusableCellWithIdentifier("SADoubleCell", forIndexPath: indexPath) as! SADoubleCell
-//                let data = self.dataArrayDream[indexPath.row] as! NSDictionary
-//                c.data = data
-//                c.btnMain.tag = indexPath.row
-//                c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toDream:"))
-//                c.btnMain.addTarget(self, action: "onFollowDream:", forControlEvents: UIControlEvents.TouchUpInside)
-//                if indexPath.row == dataArrayDream.count - 1 {
-//                    c.viewLine.hidden = true
-//                }
-//                return c
-//            } else {
-//                let c = dreamTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
-//                c.delegate = self
-//                c.data = self.dataArrayStep[indexPath.row] as! NSDictionary
-//                c.index = indexPath.row
-//                if indexPath.row == self.dataArrayStep.count - 1 {
-//                    c.viewLine.hidden = true
-//                } else {
-//                    c.viewLine.hidden = false
-//                }
-//                c._layoutSubviews()
-//                return c
-//            }
-//        } else {
-//            let cell = self.tableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
-//            let data = self.dataArrayUser[indexPath.row] as! NSDictionary
-//            cell?.data = data
-//            cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
-//            cell?.btnMain.tag = indexPath.row
-//            cell?.btnMain.addTarget(self, action: "onFollow:", forControlEvents: UIControlEvents.TouchUpInside)
-//            return cell!
-//        }
-        
         switch index {
         case 0:
             let cell = self.userTableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
@@ -608,6 +646,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
             cell?.btnMain.tag = indexPath.row
             cell?.btnMain.addTarget(self, action: "onFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+            
             return cell!           
         case 1:
             let cell = self.dreamTableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
@@ -622,8 +661,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             return cell!
         case 2:
-            let c = stepTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
-//            c.delegate = self
+            let c = self.stepTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+            c.delegate = self
             c.data = self.dataArrayStep[indexPath.row] as! NSDictionary
             c.index = indexPath.row
             if indexPath.row == self.dataArrayStep.count - 1 {
@@ -632,13 +671,16 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 c.viewLine.hidden = false
             }
             c._layoutSubviews()
+            
             return c
         case 3:
+            // TODO: - 完成 topic cell
             let cell = UITableViewCell()
             
             return cell
         default:
             let cell = UITableViewCell()
+            
             return cell
         }
         
@@ -652,36 +694,44 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let dream = data.stringAttributeForKey("dream")
                 SADream(dream)
             }
+        } else if index == 1 {
+            let DreamVC = DreamViewController()
+            DreamVC.Id = (self.dataArrayDream[indexPath.row] as! NSDictionary)["id"] as! String
+            
+            self.navigationController?.pushViewController(DreamVC, animated: true)
+        } else if index == 2 {
+            let viewController = DreamViewController()
+            let data = dataArrayStep[indexPath.row] as! NSDictionary
+            viewController.Id = data.stringAttributeForKey("dream")
+            
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else if index == 3 {
+            // TODO: - topic cell select 事件
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if index == 0 {
             return 71
-            
-//            if indexPath.section == 0 {
-//                return 81
-//            } else {
-//                let data = self.dataArrayStep[indexPath.row] as! NSDictionary
-//                
-//                return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-//                    (cell as! SAStepCell).celldataSource = self
-//                    (cell as! SAStepCell).fd_enforceFrameLayout = true
-//                    (cell as! SAStepCell).data  = data
-//                    (cell as! SAStepCell).indexPath = indexPath
-//                })
-//            }
         } else if index == 1 {
             let index = indexPath.row
             let data = self.dataArrayDream[index] as! NSDictionary
             
             return  ExploreNewHotCell.cellHeightByData(data)
         } else if index == 2 {
-            return 1
+            let data = self.dataArrayStep[indexPath.row] as! NSDictionary
+
+            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
+                (cell as! SAStepCell).celldataSource = self
+                (cell as! SAStepCell).fd_enforceFrameLayout = true
+                (cell as! SAStepCell).data  = data
+                (cell as! SAStepCell).indexPath = indexPath
+            })
         } else if index == 3 {
+            // TODO: - topic cell 高度
             return 1
         } else {
-            return 1
+            return 0
         }
     }
     
@@ -689,7 +739,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     - returns: Bool值，代表是否要加载图片
     */
     func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
-        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.dreamTableView.rectForRowAtIndexPath(indexPath)) {
+        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.stepTableView.rectForRowAtIndexPath(indexPath)) {
             return false
         }
         
@@ -747,14 +797,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.searchText.resignFirstResponder()
         if searchText.text != "" {
             searchText.rightViewMode = .Always
-//            if index == 0 {
-//                self.dreamTableView.headerBeginRefreshing()
-//            } else {
-//                self.userTableView.headerBeginRefreshing()
-//            }
-            
+
             for (_index, _table) in self.tableDict {
                 if _index == index {
+                    showTableViewWithIndex(index)
                     _table.headerBeginRefreshing()
                 }
             }
@@ -787,7 +833,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
 // MARK: - SAStepCellDatasource
 extension ExploreSearch: SAStepCellDatasource {
     func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
-        if index == 0 {
+        if index == 2 {
             var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayStep[indexPath.row] as! NSDictionary)
             _tmpDict.setObject(content as NSString, forKey: "content")
             
@@ -821,27 +867,73 @@ extension ExploreSearch {
         if scrollView is UITableView {
             self.targetRect = nil
             
-            if index == 0 {
+            if index == 2 {
                 self.loadImagesForVisibleCells()
+            }
+        } else if scrollView .isMemberOfClass(UIScrollView) {
+            let xOffset = scrollView.contentOffset.x
+            let page: Int = Int(xOffset / globalWidth)
+            
+            /* */
+            index = page
+            /* */
+            
+            setupButtonColor(page)
+            
+            UIView.animateWithDuration(0.2, animations: {
+               self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)
+            })
+            
+            if self.dataSourceArray[index].count == 0 {
+                showTableViewWithIndex(index)
+                self.tableDict[index]?.headerBeginRefreshing()
             }
         }
     }
     
+    /**
+    主要针对 Step table 优化，因为这一页的图片往往很大
+    */
     func loadImagesForVisibleCells() {
-        let cellArray = self.userTableView.visibleCells
+        let cellArray = self.stepTableView.visibleCells
         
         for cell in cellArray {
             if cell is SAStepCell {
-                let indexPath = self.dreamTableView.indexPathForCell(cell as! SAStepCell)
+                let indexPath = self.stepTableView.indexPathForCell(cell as! SAStepCell)
                 var _tmpShouldLoadImg = false
                 
                 _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
                 
                 if _tmpShouldLoadImg {
-                    self.dreamTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
+                    self.stepTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
                 }
             }
         }
     }
 }
+
+// MARK: - UIGestureRecognizerDelegate
+extension ExploreSearch {
+    /**
+    不能同时响应多个手势
+    */
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

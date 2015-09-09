@@ -271,6 +271,7 @@ class DreamCellTop: UITableViewCell {
         let vc = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
         vc.preSetSearch = SADecode(SADecode(tagArray[label!.tag - 12000]))
         vc.shouldPerformSearch = true
+        vc.index = 1
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
