@@ -18,17 +18,21 @@ extension AddRedditController {
     /* 在编辑 “记本简介” 时，根据选择的内容来实现滚动 */
     func textViewDidChange(textView: UITextView) {
         if textView == field2 {
-            field2.setHeight(999999)
-            let hN = field2.layoutManager.usedRectForTextContainer(textView.textContainer).size.height + 12
-            let field2DefaultHeight: CGFloat = globalHeight > 480 ? 120 : 96
-            let h = max(field2DefaultHeight, hN)
-            field2.setHeight(h)
-            print(textView.textContainer)
-            self.tokenView.setY(field2.bottom())
-            viewHolder.setY(field2.bottom() + 1)
-            adjustScroll()
-            adjustPoint()
+            adjustAll()
         }
+    }
+    
+    // 调整全局视图参数
+    func adjustAll() {
+        field2.setHeight(999999)
+        let hN = field2.layoutManager.usedRectForTextContainer(field2.textContainer).size.height + 12
+        let field2DefaultHeight: CGFloat = globalHeight > 480 ? 120 : 96
+        let h = max(field2DefaultHeight, hN)
+        field2.setHeight(h)
+        self.tokenView.setY(field2.bottom())
+        viewHolder.setY(field2.bottom() + 1)
+        adjustScroll()
+        adjustPoint()
     }
     
     // 设定 scrollView 的滚动距离

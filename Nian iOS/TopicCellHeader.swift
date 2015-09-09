@@ -70,6 +70,7 @@ class TopicCellHeader: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
+            print(data)
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode()
             let comment = data.stringAttributeForKey("reply")
@@ -78,6 +79,8 @@ class TopicCellHeader: UITableViewCell {
             // 计算高度与宽度
             let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
+            
+            let tags = data.objectForKey("tags") as! Array<String>
             
             // 填充内容
             labelTitle.text = title
@@ -105,7 +108,6 @@ class TopicCellHeader: UITableViewCell {
             // 绑定事件
             labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
             
-            let tags = ["daily&nbsp;diary", "daily&nbsp;life", "Nissan", "NIPPON&nbsp;&nbsp;COLORS", "New&nbsp;life", "ABOUT&nbsp;ME", "one豆包2号"]
             var x: CGFloat = 11
             for tag in tags {
                 let t = tag.decode()

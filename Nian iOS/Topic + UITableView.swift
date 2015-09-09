@@ -57,7 +57,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
                 let data = json!.objectForKey("data")
                 if clear {
                     if let bbs = data!.objectForKey("bbs") as? NSDictionary {
-                        self.dataArrayTop = bbs
+//                        self.dataArrayTop = bbs
                     }
                     self.dataArrayLeft.removeAllObjects()
                 }
@@ -82,7 +82,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
                 let data = json!.objectForKey("data")
                 if clear {
                     if let bbs = data!.objectForKey("bbs") as? NSDictionary {
-                        self.dataArrayTop = bbs
+//                        self.dataArrayTop = bbs
                     }
                     self.dataArrayRight.removeAllObjects()
                 }

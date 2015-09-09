@@ -40,9 +40,10 @@ extension AddRedditController: DreamSelectedDelegate {
     }
     
     func uploadFile(image: UIImage) {
-        
         let attachment = NSTextAttachment()
         let _image = resizedImage(image, newWidth: globalWidth - 32 - 4)
+        let w = _image.size.width
+        let h = _image.size.height
         attachment.image = _image
         attachment.bounds = CGRectMake(0, 0, _image.size.width, _image.size.height)
         let attStr = NSAttributedString(attachment: attachment)
@@ -61,13 +62,13 @@ extension AddRedditController: DreamSelectedDelegate {
             self.navigationItem.rightBarButtonItems = [rightButton]
             var url = data.objectForKey("url") as! String
             url = SAReplace(url, before: "/bbs/", after: "<image:") as String
-            url = "\(url)>"
+            url = "\(url) w:\(w) h:\(h)>"
             self.dict.setValue("\(url)", forKey: "\(attachment.image!)")
+            self.adjustAll()
         })
         // todo: 下面的宽度要改成 500
         uy.uploadImage(resizedImage(attachment.image!, newWidth: 50), savekey: getSaveKey("bbs", png: "png") as String)
     }
-    
     
     func insertDream(image: UIImage, dreamid: String) {
         let attachment = NSTextAttachment()
@@ -82,6 +83,7 @@ extension AddRedditController: DreamSelectedDelegate {
         field2.attributedText = mutableStr
         field2.selectedRange = newSelectedRange
         self.dict.setValue("<dream:\(dreamid)>", forKey: "\(attachment.image!)")
+        adjustAll()
     }
     
     func add() {
@@ -179,17 +181,4 @@ extension AddRedditController: DreamSelectedDelegate {
             self.field1!.becomeFirstResponder()
         }
     }
-    
-//    func getImageHeight() -> CGFloat {
-//        var hCGFloat = 0
-//        let range = NSMakeRange(0, field2.attributedText.length)
-//        field2.attributedText.enumerateAttributesInRange(range, options: NSAttributedStringEnumerationOptions(rawValue: 0), usingBlock: { (dict, range, _) -> Void in
-//            if let d = dict["NSAttachment"] {
-//                let textAttachment = d as! NSTextAttachment
-//                let hNew = textAttachment.image!.size.height
-//                h += hNew
-//            }
-//        })
-//        return h
-//    }
 }
