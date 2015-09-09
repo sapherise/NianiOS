@@ -38,20 +38,24 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         if clear {
             pageLeft = 1
         }
-        Api.getBBS("0", page: pageLeft) { json in
+        Api.getReddit(pageLeft) { json in
             if json != nil {
-                let data = json!.objectForKey("data") as! NSDictionary
-                let bbs = data.objectForKey("bbs") as! NSArray
-                if clear {
-                    self.dataArrayLeft.removeAllObjects()
+                let err = json!.objectForKey("error") as! NSNumber
+                let data = json!.objectForKey("data") as! NSArray
+                if err == 0 {
+                    if clear {
+                        self.dataArrayLeft.removeAllObjects()
+                    }
+                    for d in data {
+                        self.dataArrayLeft.addObject(d)
+                    }
+                    self.tableViewLeft.reloadData()
+                    self.tableViewLeft.headerEndRefreshing()
+                    self.tableViewLeft.footerEndRefreshing()
+                    self.pageLeft++
+                } else {
+                    self.view.showTipText("服务器坏了", delay: 2)
                 }
-                for d in bbs {
-                    self.dataArrayLeft.addObject(d)
-                }
-                self.tableViewLeft.reloadData()
-                self.tableViewLeft.headerEndRefreshing()
-                self.tableViewLeft.footerEndRefreshing()
-                self.pageLeft++
             }
         }
     }
@@ -60,20 +64,24 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         if clear {
             pageRight = 1
         }
-        Api.getBBS("0", page: pageRight) { json in
+        Api.getReddit(pageRight) { json in
             if json != nil {
-                let data = json!.objectForKey("data") as! NSDictionary
-                let bbs = data.objectForKey("bbs") as! NSArray
-                if clear {
-                    self.dataArrayRight.removeAllObjects()
+                let err = json!.objectForKey("error") as! NSNumber
+                let data = json!.objectForKey("data") as! NSArray
+                if err == 0 {
+                    if clear {
+                        self.dataArrayRight.removeAllObjects()
+                    }
+                    for d in data {
+                        self.dataArrayRight.addObject(d)
+                    }
+                    self.tableViewRight.reloadData()
+                    self.tableViewRight.headerEndRefreshing()
+                    self.tableViewRight.footerEndRefreshing()
+                    self.pageRight++
+                } else {
+                    self.view.showTipText("服务器坏了", delay: 2)
                 }
-                for d in bbs {
-                    self.dataArrayRight.addObject(d)
-                }
-                self.tableViewRight.reloadData()
-                self.tableViewRight.headerEndRefreshing()
-                self.tableViewRight.footerEndRefreshing()
-                self.pageRight++
             }
         }
     }
@@ -118,6 +126,7 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         let id = data.stringAttributeForKey("id")
         let vc = TopicViewController()
         vc.id = id
+        vc.dataArrayTop = data
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

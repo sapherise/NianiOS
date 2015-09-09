@@ -827,24 +827,32 @@ extension Api {
         }
     }
     
-//    title	string
-//    content	text
-//    tags	array
-//    type	question 或 answer
-//    question_id	int
-//
-//    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
-//        loadCookies()
-//        if tags == "" {
-//            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
-//                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)" ],
-//                callback: callback)
-//        } else {
-//            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
-//                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags],
-//                callback: callback)
-//        }
-//    }
+    static func getReddit(page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topics?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getVoteUp(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/vote/up?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getVoteDown(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/vote/down?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    
+    static func getVoteUpDelete(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/vote/up/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getVoteDownDelete(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/vote/down/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    ///topic/{topic_id}/vote/down/delete
 }
 
 
