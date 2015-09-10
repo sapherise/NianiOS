@@ -95,7 +95,6 @@
 		129152E71A6A910200BB213C /* FindCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E61A6A910200BB213C /* FindCellTop.xib */; };
 		1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291D59719BE0C55009F45F6 /* Welcome.swift */; };
 		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
-		129375191A236E8B001F7442 /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
 		12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12941A0019CFA8650008B274 /* AddBBSController.swift */; };
 		12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12941A0219CFA87C0008B274 /* AddBBSController.xib */; };
 		129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492811AD9322A000E7461 /* MKTableViewCell.swift */; };
@@ -208,13 +207,11 @@
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C404F1371B94668900E93A7C /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C404F1331B94668900E93A7C /* WeiboSDK.bundle */; settings = {ASSET_TAGS = (); }; };
-		C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263251B82E49900C0F011 /* EditorRecomCell.swift */; };
 		C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */; };
 		C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263301B82F1E500C0F011 /* CollectionViewCell.swift */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
-		C43A52571BA038F4009BA734 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
 		C4446D6E1B8426CA0037DC59 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */; };
 		C4446D701B847D460037DC59 /* ExploreRecomMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
@@ -227,6 +224,7 @@
 		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
+		C478E7DC1BA18D1E00039416 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
 		C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C48ACB891B958B8C009A9C30 /* CollectionViewCell_XL.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */; settings = {ASSET_TAGS = (); }; };
@@ -241,6 +239,8 @@
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4C0F38E1B818D3F00ED22BE /* ExploreRecommend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C0F38D1B818D3F00ED22BE /* ExploreRecommend.swift */; };
 		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
+		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
+		C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
 		C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
@@ -550,9 +550,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */,
-				C43A52571BA038F4009BA734 /* libWeiboSDK.a in Frameworks */,
+				C478E7DC1BA18D1E00039416 /* libWeiboSDK.a in Frameworks */,
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
-				C4A25BC61B9EF9DA009012F4 /* libWeiboSDK.a in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
@@ -1510,6 +1509,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */,
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
 				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
@@ -1545,7 +1545,6 @@
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */,
-				129375191A236E8B001F7442 /* AddStepCell.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
 				C4446D6E1B8426CA0037DC59 /* CollectionViewCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
@@ -1639,6 +1638,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
@@ -1686,7 +1686,6 @@
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
-				C41634EF1B2002FC00DC9899 /* SZTextView.m in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
@@ -1929,6 +1928,12 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1979,6 +1984,12 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 				);

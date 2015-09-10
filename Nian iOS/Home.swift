@@ -312,7 +312,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
         let vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         let vc4 = MeViewController()
-        //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
+//        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
@@ -383,8 +383,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             Tap.delegate = self
             self.addView.addGestureRecognizer(Tap)
             
-            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
-            self.addStepView = nib.objectAtIndex(0) as! AddStep
+            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil)
+            self.addStepView = nib[0] as! AddStep
             self.addStepView.delegate = self
             self.addStepView.setX(globalWidth/2-140)
             self.addStepView.setY(globalHeight/2-106)
