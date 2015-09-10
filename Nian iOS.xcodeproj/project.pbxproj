@@ -224,7 +224,6 @@
 		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
-		C478E7DC1BA18D1E00039416 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C404F12A1B94668900E93A7C /* libWeiboSDK.a */; };
 		C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
 		C48ACB891B958B8C009A9C30 /* CollectionViewCell_XL.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */; settings = {ASSET_TAGS = (); }; };
@@ -549,8 +548,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */,
-				C478E7DC1BA18D1E00039416 /* libWeiboSDK.a in Frameworks */,
 				127498021B92DFC60046B440 /* libz.tbd in Frameworks */,
+				1217015C1BA1814B00656AE1 /* libWeiboSDK.a in Frameworks */,
 				127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */,
 				127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */,
 				127497FC1B92DF920046B440 /* Foundation.framework in Frameworks */,
@@ -1926,6 +1925,8 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 				);
 				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1976,6 +1977,8 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Weibo,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Weibo,
 				);
