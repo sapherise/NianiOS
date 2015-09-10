@@ -70,6 +70,7 @@ class TopicCellHeader: UITableViewCell {
     func onComment() {
         let vc = AddTopic()
         vc.type = 1
+        vc.id = data.stringAttributeForKey("id")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

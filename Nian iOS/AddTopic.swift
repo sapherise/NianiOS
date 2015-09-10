@@ -31,6 +31,7 @@ class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerController
     var dict = NSMutableDictionary()
     var hImage: CGFloat = 0
     var type: Int = 0   // 0 为话题，1 为回应
+    var id: String = ""
     
     var uploadUrl: String = ""
     

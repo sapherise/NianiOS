@@ -125,7 +125,12 @@ extension AddTopic {
             } else {
                 // 提交评论
                 // todo
-                navigationController?.popViewControllerAnimated(true)
+                Api.postAddRedditComment(id, content: content) { json in
+                    if json != nil {
+                        print(json)
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }
+                }
             }
         }
     }
