@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8187.4" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddRedditController" customModule="Nian_iOS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddTopic" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
-                <outlet property="containerView" destination="dod-yq-bOE" id="9W0-yY-w3a"/>
-                <outlet property="field1" destination="aat-4T-03D" id="he5-SR-znw"/>
-                <outlet property="field2" destination="EZL-oA-Yx2" id="3O8-5J-BLI"/>
-                <outlet property="imageDream" destination="AJf-Oe-PUu" id="xd7-Lk-f10"/>
-                <outlet property="imageUpload" destination="WNs-0U-lad" id="tHm-Mj-3Zb"/>
-                <outlet property="scrollView" destination="duq-5f-H8d" id="9h3-rM-aux"/>
-                <outlet property="seperatorView" destination="bzo-NM-uTw" id="8GN-ZM-CBo"/>
-                <outlet property="tokenView" destination="wsh-5q-dYC" id="tjJ-eB-azz"/>
-                <outlet property="view" destination="GFo-cZ-YNp" id="B3b-Fz-IGk"/>
-                <outlet property="viewHolder" destination="xvg-eM-gHH" id="Jo3-SR-15K"/>
+                <outlet property="containerView" destination="Evh-Tg-hQS" id="aAz-Vc-cwV"/>
+                <outlet property="field1" destination="2mQ-f4-oUQ" id="bcQ-oE-ZJI"/>
+                <outlet property="field2" destination="9uN-08-GA5" id="DiF-BT-IXz"/>
+                <outlet property="imageDream" destination="W1S-HA-VL6" id="JFd-YI-Ovs"/>
+                <outlet property="imageUpload" destination="XPf-V0-rf2" id="UKM-53-Inn"/>
+                <outlet property="scrollView" destination="szB-ak-Mnq" id="8DP-9R-tnt"/>
+                <outlet property="seperatorView" destination="TRK-v9-bSh" id="ds4-Nm-P2L"/>
+                <outlet property="tokenView" destination="aZt-zR-wxT" id="giP-Kf-gSR"/>
+                <outlet property="view" destination="BLQ-ER-oFc" id="veO-rm-UZy"/>
+                <outlet property="viewHolder" destination="VcJ-fp-bZx" id="FQE-ls-meO"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="GFo-cZ-YNp">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+        <view contentMode="scaleToFill" id="BLQ-ER-oFc">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" id="duq-5f-H8d">
+                <scrollView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" id="szB-ak-Mnq">
                     <rect key="frame" x="0.0" y="64" width="320" height="536"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" id="dod-yq-bOE" userLabel="Container View">
+                        <view contentMode="scaleToFill" id="Evh-Tg-hQS" userLabel="Container View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="535"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="aat-4T-03D">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="2mQ-f4-oUQ">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
-                                <view contentMode="scaleToFill" id="bzo-NM-uTw" userLabel="Seperator View">
+                                <view contentMode="scaleToFill" id="TRK-v9-bSh" userLabel="Seperator View">
                                     <rect key="frame" x="0.0" y="44" width="320" height="1"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="justified" id="EZL-oA-Yx2" customClass="SZTextView">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="justified" id="9uN-08-GA5" customClass="SZTextView">
                                     <rect key="frame" x="0.0" y="57" width="320" height="96"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
                                 </textView>
-                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" id="wsh-5q-dYC" customClass="TITokenFieldView">
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" id="aZt-zR-wxT" customClass="TITokenFieldView">
                                     <rect key="frame" x="0.0" y="153" width="320" height="250"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 </scrollView>
-                                <view contentMode="scaleToFill" id="xvg-eM-gHH">
+                                <view contentMode="scaleToFill" id="VcJ-fp-bZx">
                                     <rect key="frame" x="0.0" y="153" width="76" height="38"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="newimg" id="WNs-0U-lad">
+                                        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="newimg" id="XPf-V0-rf2">
                                             <rect key="frame" x="0.0" y="0.0" width="38" height="38"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="link" id="AJf-Oe-PUu">
+                                        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="link" id="W1S-HA-VL6">
                                             <rect key="frame" x="38" y="0.0" width="38" height="38"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
@@ -75,7 +75,9 @@
                     </subviews>
                 </scrollView>
             </subviews>
-            <point key="canvasLocation" x="-2439" y="292"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="295" y="446"/>
         </view>
     </objects>
     <resources>

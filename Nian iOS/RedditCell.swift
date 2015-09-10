@@ -62,7 +62,6 @@ class RedditCell: UITableViewCell {
             let numLike = Int(data.stringAttributeForKey("like_count"))
             let numDislike = Int(data.stringAttributeForKey("dislike_count"))
             let num = numLike! - numDislike!
-            let vote = data.stringAttributeForKey("vote")
             let tags = data.objectForKey("tags") as! Array<String>
             var tag: String?
             if tags.count > 0 {
@@ -110,133 +109,25 @@ class RedditCell: UITableViewCell {
             viewBottomDot.setX(labelComment.right() + 8)
             labelTime.setX(viewBottomDot.right() + 8)
             
-//            if 1 == 0 {
-//                viewUp.layer.borderColor = SeaColor.CGColor
-//                viewUp.backgroundColor = SeaColor
-//                labelNum.textColor = UIColor.whiteColor()
-//                viewVoteLine.backgroundColor = UIColor.whiteColor()
-//                viewUp.image = UIImage(named: "voteupwhite")
-//            } else {
-                // 上按钮
-                viewUp.layer.borderColor = UIColor.e6().CGColor
-                viewUp.backgroundColor = UIColor.whiteColor()
-                labelNum.textColor = UIColor.b3()
-                viewVoteLine.backgroundColor = UIColor.e6()
-                viewUp.image = UIImage(named: "voteup")
-                // 下按钮
-                viewDown.layer.borderColor = UIColor.e6().CGColor
-                viewDown.backgroundColor = UIColor.whiteColor()
-//            }
-            
-            if vote == "1" {
-                setupVoteUp(true)
-                setupVoteDown(false)
-            } else if vote == "-1" {
-                setupVoteUp(false)
-                setupVoteDown(true)
-            } else {
-                setupVoteUp(false)
-                setupVoteDown(false)
-            }
-            
-            // 绑定动作
-            viewUp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUp"))
-            viewDown.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDown"))
+            setupVote()
         }
     }
     
-    func setupVoteUp(selected: Bool) {
-        if selected {
-            viewUp.layer.borderColor = SeaColor.CGColor
-            viewUp.backgroundColor = SeaColor
-            labelNum.textColor = UIColor.whiteColor()
-            viewVoteLine.backgroundColor = UIColor.whiteColor()
-            viewUp.image = UIImage(named: "voteupwhite")
-        } else {
-            viewUp.layer.borderColor = UIColor.e6().CGColor
-            viewUp.backgroundColor = UIColor.whiteColor()
-            labelNum.textColor = UIColor.b3()
-            viewVoteLine.backgroundColor = UIColor.e6()
-            viewUp.image = UIImage(named: "voteup")
-        }
+    // 投票 - 绑定事件
+    func setupVote() {
+        Vote().setupVote(data, viewUp: viewUp, viewDown: viewDown, viewVoteLine: viewVoteLine, labelNum: labelNum)
+        viewUp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUp"))
+        viewDown.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDown"))
     }
     
-    func setupVoteDown(selected: Bool) {
-        if selected {
-            viewDown.layer.borderColor = SeaColor.CGColor
-            viewDown.backgroundColor = SeaColor
-            viewDown.image = UIImage(named: "votedownwhite")
-        } else {
-            viewDown.layer.borderColor = UIColor.e6().CGColor
-            viewDown.backgroundColor = UIColor.whiteColor()
-            viewDown.image = UIImage(named: "votedown")
-        }
-    }
-    
+    // 投票 - 赞
     func onUp() {
-        let vote = data.stringAttributeForKey("vote")
-        let numLike = Int(data.stringAttributeForKey("like_count"))
-        let numDislike = Int(data.stringAttributeForKey("dislike_count"))
-        if vote == "0" {
-            delegate?.updateData(index, key: "like_count", value: "\(numLike! + 1)")
-            delegate?.updateData(index, key: "vote", value: "1")
-            voteUp()
-        } else if vote == "-1" {
-            delegate?.updateData(index, key: "like_count", value: "\(numLike! + 1)")
-            delegate?.updateData(index, key: "dislike_count", value: "\(numDislike! - 1)")
-            delegate?.updateData(index, key: "vote", value: "1")
-            voteUp()
-        } else if vote == "1" {
-            delegate?.updateData(index, key: "like_count", value: "\(numLike! - 1)")
-            delegate?.updateData(index, key: "vote", value: "0")
-            voteUpDelete()
-        }
-        delegate?.updateTable()
+        Vote.onUp(data, delegate: delegate, index: index)
     }
     
+    // 投票 - 踩
     func onDown() {
-        let vote = data.stringAttributeForKey("vote")
-        let numLike = Int(data.stringAttributeForKey("like_count"))
-        let numDislike = Int(data.stringAttributeForKey("dislike_count"))
-        if vote == "0" {
-            delegate?.updateData(index, key: "dislike_count", value: "\(numDislike! + 1)")
-            delegate?.updateData(index, key: "vote", value: "-1")
-            voteDown()
-        } else if vote == "1" {
-            delegate?.updateData(index, key: "like_count", value: "\(numLike! - 1)")
-            delegate?.updateData(index, key: "dislike_count", value: "\(numDislike! + 1)")
-            delegate?.updateData(index, key: "vote", value: "-1")
-            voteDown()
-        } else if vote == "-1" {
-            delegate?.updateData(index, key: "dislike_count", value: "\(numDislike! - 1)")
-            delegate?.updateData(index, key: "vote", value: "0")
-            voteDownDelete()
-        }
-        delegate?.updateTable()
-    }
-    
-    func voteUp() {
-        let id = data.stringAttributeForKey("id")
-        Api.getVoteUp(id) { json in
-        }
-    }
-    
-    func voteDown() {
-        let id = data.stringAttributeForKey("id")
-        Api.getVoteDown(id) { json in
-        }
-    }
-    
-    func voteUpDelete() {
-        let id = data.stringAttributeForKey("id")
-        Api.getVoteUpDelete(id) { json in
-        }
-    }
-    
-    func voteDownDelete() {
-        let id = data.stringAttributeForKey("id")
-        Api.getVoteDownDelete(id) { json in
-        }
+        Vote.onDown(data, delegate: delegate, index: index)
     }
 }
 

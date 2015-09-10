@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension AddRedditController {
+extension AddTopic {
     
     //MARK: keyboard notification && UITextView Delegate method
     
