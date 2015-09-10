@@ -247,8 +247,7 @@
                                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="dream:" destination="Til-rz-lZK" eventType="touchUpInside" id="sKd-cU-1tn"/>
-                                                    <action selector="step:" destination="Til-rz-lZK" eventType="touchUpInside" id="qMJ-QE-kjh"/>
+                                                    <action selector="step:" destination="Til-rz-lZK" eventType="touchUpInside" id="ku2-4v-4bq"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="a8Z-Q9-fW7" userLabel="Topic Button">
@@ -260,13 +259,20 @@
                                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="dream:" destination="Til-rz-lZK" eventType="touchUpInside" id="gND-ch-GEA"/>
-                                                    <action selector="topic:" destination="Til-rz-lZK" eventType="touchUpInside" id="slT-vz-jHA"/>
+                                                    <action selector="topic:" destination="Til-rz-lZK" eventType="touchUpInside" id="Dbe-ni-gQq"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FM9-DX-GvR">
+                                        <rect key="frame" x="266" y="26" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="Follow:" destination="Til-rz-lZK" eventType="touchUpInside" id="E5Y-qn-1lp"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -283,6 +289,7 @@
                     <connections>
                         <outlet property="dreamButton" destination="9Ko-jA-FJI" id="caO-2i-SW3"/>
                         <outlet property="floatView" destination="6Yz-HA-6O1" id="0Br-M9-WX9"/>
+                        <outlet property="followButton" destination="FM9-DX-GvR" id="6LX-lP-V40"/>
                         <outlet property="indiView" destination="rqO-tL-xUd" id="CIe-sS-fDE"/>
                         <outlet property="navView" destination="ppe-xh-f8d" id="cvB-wl-klp"/>
                         <outlet property="scrollView" destination="Yd5-E7-F3g" id="RgM-GF-bdW"/>

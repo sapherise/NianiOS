@@ -118,7 +118,7 @@ struct Api {
     // MARK: - 搜索梦想
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/dream/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/search/dream?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
         ///dream/search?keyword=php&page=2
     }
     
@@ -131,7 +131,7 @@ struct Api {
     // MARK: - 搜索进展
     static func getSearchSteps(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
+        V.httpGetForJson("http://api.nian.so/search/step?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
     }
     
     // MARK: - 搜索话题
@@ -139,6 +139,15 @@ struct Api {
         loadCookies()
 //        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
     }
+    
+    // MARK: -
+    // MARK: - 关注搜索内容
+    static func postSearchFollow(keyword: String, callback: V.JsonCallback) {
+        loadCookies()
+//        V.httpPostForJson_AFN(<#T##requestURL: String##String#>, content: ["keyword": "\(keyword)"], callback: callback)
+    }
+    // TODO: -
+    // MARK: -
     
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()

@@ -54,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         DDLog.logLevel = .Verbose
         DDTTYLogger.sharedInstance().colorsEnabled = true
         DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
+        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.orangeColor(), backgroundColor: nil, forFlag: .Warning)
         
         application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()

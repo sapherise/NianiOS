@@ -18,7 +18,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     @IBOutlet var imageDream: UIImageView!
     @IBOutlet var imageArrow: UIImageView!
     @IBOutlet var labelDream: UILabel!
-    @IBOutlet var textView: UITextView!
+    @IBOutlet var textView: SZTextView!
     @IBOutlet var btnUpload: UIButton!
     @IBOutlet var btnOK: UIButton!
     @IBOutlet var viewHolder: UIView!
@@ -43,6 +43,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     var niCoinLessAlert: NIAlert?
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.viewHolder.layer.cornerRadius = 4
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -58,6 +60,9 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         self.activityOK.hidden = true
         self.imageUploaded.hidden = true
         self.btnOK.enabled = false
+        self.textView.attributedPlaceholder = NSAttributedString(string: "进展正文" ,
+                                                                attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
+                                                                NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
         
         Api.getDreamNewest() { json in
             if json != nil {
