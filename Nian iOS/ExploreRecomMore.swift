@@ -28,6 +28,11 @@ class ExploreRecomMore: UIViewController {
     // 设置一个滚动时的 target rect, 目的是为了判断要不要加载图片
     var targetRect: NSValue?
     
+    /* 用队列下载图片，减轻 mainQueue 的压力 */
+    var currentQueue = NSOperationQueue.mainQueue()
+    
+    var cellImageDict = Dictionary<NSIndexPath, NSBlockOperation>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,6 +45,9 @@ class ExploreRecomMore: UIViewController {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self 
         
+        /* 设置同时请求图片的并发数  = 3 */
+        currentQueue.maxConcurrentOperationCount = 3
+
         self.collectionView.headerBeginRefreshing()
     }
 
@@ -114,7 +122,8 @@ class ExploreRecomMore: UIViewController {
                         if data != nil {
                             for item: AnyObject in data! {
                                 let _img = (item as! NSDictionary).objectForKey("image") as! String
-                                let _imgSplit = _img.componentsSeparatedByString(".")  //_img.characters.split{$0 = "."}.map(String.init)    //split(_img.characters){$0 = "."}.map(String.init)
+                                let _imgSplit = _img.componentsSeparatedByString(".")
+                                //_img.characters.split{$0 = "."}.map(String.init)    //split(_img.characters){$0 = "."}.map(String.init)
                                 
                                 if let _ = Int(_imgSplit[0]) {
                                 } else {
@@ -177,7 +186,13 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         let _tmpData = self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary
         
         if let _img = _tmpData.objectForKey("image") as? String {
-            cell.coverImageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor, bool: false)
+            
+            let imgOp = NSBlockOperation(block: {
+                cell.coverImageView.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+            })
+            
+            cellImageDict[indexPath] = imgOp
+            currentQueue.addOperations([imgOp], waitUntilFinished: false)
         }
         cell.titleLabel?.text = SADecode(_tmpData.objectForKey("title") as! String)
         
@@ -200,6 +215,17 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
                 self.navigationController?.pushViewController(DreamVC, animated: true)
+            }
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let op = cellImageDict[indexPath]
+        
+        if let _op = op {
+            if _op.ready || _op.executing {
+                cellImageDict[indexPath]?.cancel()
+                cellImageDict[indexPath] = nil
             }
         }
     }

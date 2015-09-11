@@ -110,9 +110,62 @@ extension UIImageView {
                                         },
                                         failure: nil)
         }
-        
-        
     }
+    
+    /*=========================================================================================================================================*/
+    /**
+    更好的绘制圆角矩形， 性能好
+    */
+    func setImageWithRounded(radius: CGFloat, urlString: String, placeHolder: UIColor!, ignore: Bool = false) {
+        let url = NSURL(string: urlString)
+        
+        self.image = UIImage(named: "drop")!
+        self.backgroundColor = placeHolder
+        self.contentMode = .Center
+        
+        let networkStatus = checkNetworkStatus()
+        let Sa: NSUserDefaults = .standardUserDefaults()
+        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        
+        if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
+            self.loadCacheImage(req, placeholderImage: self.image!)
+        } else {
+            self.setImageWithURLRequest(req,
+                placeholderImage: nil,
+                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                    
+                    /*================最佳的绘制圆角图片的方式==============*/
+                    UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+                    
+                    /* 先设置将要 stroke 的颜色 */
+                    let _color = UIColor.colorWithHex("#E6E6E6")
+                    _color.set()
+                    
+                    /* 设置 bezierPath 并切去圆角 */
+                    let bPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: radius)
+                    bPath.addClip()
+                    
+                    /* 在新的 bezierPath 里面 draw image */
+                    image.drawInRect(self.bounds)
+                    
+                    /* 在图片周围再画 0.5 的线宽，并填色 */
+                    let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
+                    bPath.lineWidth = SINGLE_LINE_HEIGHT
+                    bPath.stroke()
+                    
+                    /* 获得当前图片 */
+                    self.image = UIGraphicsGetImageFromCurrentImageContext()
+                    
+                    UIGraphicsEndImageContext()
+                    
+                    self.contentMode = .ScaleAspectFill
+                },
+                failure: nil)
+        }
+    }
+    
+    
     
     // 设置图片渐变动画
     func setAnimated(){

@@ -15,6 +15,11 @@ class EditorRecomCell: UITableViewCell {
     @IBOutlet weak var moreButton: UIButton!
     
     var data: NSMutableArray?
+    
+    /* 用队列下载图片，减轻 mainQueue 的压力 */
+    var currentQueue = NSOperationQueue.mainQueue()
+    
+    var cellImageDict = Dictionary<NSIndexPath, NSBlockOperation>()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -69,11 +74,17 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
         let _tmpData = self.data?.objectAtIndex(indexPath.row) as! NSDictionary
         
         if let _img = _tmpData.objectForKey("image") as? String {
-            if isiPhone6 || isiPhone6P {
-                (collectionCell as! CollectionViewCell_XL).imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
-            } else {
-                (collectionCell as! CollectionViewCell).imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
-            }
+
+            let imgOp = NSBlockOperation(block: {
+                if isiPhone6 || isiPhone6P {
+                    (collectionCell as! CollectionViewCell_XL).imageView?.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                } else {
+                    (collectionCell as! CollectionViewCell).imageView?.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                }           
+            })
+            
+            cellImageDict[indexPath] = imgOp
+            currentQueue.addOperations([imgOp], waitUntilFinished: false)
         }
         
         if isiPhone6 || isiPhone6P {
@@ -97,6 +108,19 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
         }
     }
     
+    /**
+    
+    */
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let op = cellImageDict[indexPath]
+        
+        if let _op = op {
+            if _op.ready || _op.executing {
+                cellImageDict[indexPath]?.cancel()
+                cellImageDict[indexPath] = nil
+            }
+        }
+    }
 }
 
 

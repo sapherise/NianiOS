@@ -42,23 +42,24 @@ class ExploreNewHotCell: UITableViewCell {
 //        super.layoutSubviews()
         let title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
         let img = self.data.stringAttributeForKey("image")
-        let tag = self.data.stringAttributeForKey("type")
+//        let tag = self.data.stringAttributeForKey("type")
         let likes = self.data.stringAttributeForKey("likes")
         let content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
         let steps = self.data.stringAttributeForKey("steps")
   
-        switch tag {
-        case "0":
-            self.labelTag.text = "最新"
-        case "1":
-            self.labelTag.text = "榜单"
-        case "2":
-            self.labelTag.text = "精选"
-        case "3":
-            self.labelTag.text = "推广"
-        default:
-            break
-        }
+        self.labelTag.text = "热门"
+//        switch tag {
+//        case "0":
+//            self.labelTag.text = "最新"
+//        case "1":
+//            self.labelTag.text = "榜单"
+//        case "2":
+//            self.labelTag.text = "精选"
+//        case "3":
+//            self.labelTag.text = "推广"
+//        default:
+//            break
+//        }
         
         self.labelTag.setRadius(4, isTop: false)
         
