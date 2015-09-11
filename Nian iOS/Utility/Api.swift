@@ -827,6 +827,11 @@ extension Api {
         }
     }
     
+    static func postAddRedditComment(id: String, content: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson_AFN("http://api.nian.so/topic?uid=\(s_uid)&shell=\(s_shell)", content: ["content": "\(content)", "type": "answer", "question_id": "\(id)"], callback: callback)
+    }
+    
     static func getReddit(page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topics?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)

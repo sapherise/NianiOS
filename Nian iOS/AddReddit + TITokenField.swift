@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension AddRedditController: TITokenFieldDelegate {
+extension AddTopic {
     func tokenFieldDidBeginEditing(field: TITokenField!) {
         if tokenView.tokenField.isFirstResponder() {
             tokenView.frame.size.height = globalHeight - keyboardHeight - 64

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension TopicViewController: UITableViewDataSource, UITableViewDelegate, TopicDelegate {
+extension TopicViewController: UITableViewDataSource, UITableViewDelegate, TopicDelegate, RedditDelegate {
     func setupTableViews() {
         // tableViewLeft
         tableViewLeft = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
@@ -120,6 +120,8 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
             c.data = dataArrayTop!
             c.delegate = self
             c.index = tableView == tableViewLeft ? 0 : 1
+            c.delegateVote = self
+            c.indexVote = 0
             return c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCell", forIndexPath: indexPath) as! TopicCell
@@ -166,5 +168,16 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
+    }
+    
+    func updateData(index: Int, key: String, value: String) {
+        let mutableItem = NSMutableDictionary(dictionary: dataArrayTop!)
+        mutableItem.setValue(value, forKey: key)
+        dataArrayTop = mutableItem
+    }
+    
+    func updateTable() {
+        tableViewLeft.reloadData()
+        tableViewRight.reloadData()
     }
 }

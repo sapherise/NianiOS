@@ -29,8 +29,11 @@ class TopicCellHeader: UITableViewCell {
     @IBOutlet var viewLineClick: UIView!
     @IBOutlet var scrollView: UIScrollView!
     var data: NSDictionary!
-    var index: Int = 0
     var delegate: TopicDelegate?
+    var index: Int = 0
+    var isLayoutSubviews: Bool = false
+    var delegateVote: RedditDelegate?
+    var indexVote: Int = 0
     
     override func awakeFromNib() {
         self.setWidth(globalWidth)
@@ -51,9 +54,9 @@ class TopicCellHeader: UITableViewCell {
         viewLine.setY(31.5)
         viewLineClick.frame = CGRectMake(labelHot.x() + 0.5, 31.5, 47, 0.5)
         scrollView.setTag()
-        scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
         labelNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNew"))
         labelHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHot"))
+        labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
     }
     
     func onNew() {
@@ -64,7 +67,11 @@ class TopicCellHeader: UITableViewCell {
         delegate?.changeTopic(0)
     }
     
-    func hello() {
+    func onComment() {
+        let vc = AddTopic()
+        vc.type = 1
+        vc.id = data.stringAttributeForKey("id")
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func layoutSubviews() {
@@ -73,8 +80,10 @@ class TopicCellHeader: UITableViewCell {
             print(data)
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode()
-            let comment = data.stringAttributeForKey("reply")
-            let num = SAThousand(data.stringAttributeForKey("reply"))
+            let comment = data.stringAttributeForKey("answers_count")
+            let numLike = Int(data.stringAttributeForKey("like_count"))
+            let numDislike = Int(data.stringAttributeForKey("dislike_count"))
+            let num = SAThousand("\(numLike! - numDislike!)")
             
             // 计算高度与宽度
             let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
@@ -105,9 +114,6 @@ class TopicCellHeader: UITableViewCell {
             viewDown.layer.borderColor = UIColor.e6().CGColor
             viewDown.backgroundColor = UIColor.whiteColor()
             
-            // 绑定事件
-            labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
-            
             var x: CGFloat = 11
             for tag in tags {
                 let t = tag.decode()
@@ -135,6 +141,25 @@ class TopicCellHeader: UITableViewCell {
                 labelNew.textColor = UIColor.C33()
                 labelHot.textColor = UIColor.b3()
             }
+            
+            setupVote()
         }
+    }
+    
+    // 投票 - 绑定事件
+    func setupVote() {
+        Vote().setupVote(data, viewUp: viewUp, viewDown: viewDown, viewVoteLine: viewVoteLine, labelNum: labelNum)
+        viewUp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUp"))
+        viewDown.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDown"))
+    }
+    
+    // 投票 - 赞
+    func onUp() {
+        Vote.onUp(data, delegate: delegateVote, index: indexVote)
+    }
+    
+    // 投票 - 踩
+    func onDown() {
+        Vote.onDown(data, delegate: delegateVote, index: indexVote)
     }
 }

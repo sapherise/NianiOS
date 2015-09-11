@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension AddRedditController {
+extension AddTopic {
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if touch.view!.isKindOfClass(UITableView) || touch.view!.isKindOfClass(UITableViewCell) {
             return false
@@ -33,6 +33,10 @@ extension AddRedditController {
         viewHolder.setY(field2.bottom() + 1)
         adjustScroll()
         adjustPoint()
+        if type == 1 {
+            viewHolder.setY(field2.bottom() + 1)
+            seperatorView.setY(viewHolder.bottom())
+        }
     }
     
     // 设定 scrollView 的滚动距离
@@ -41,6 +45,9 @@ extension AddRedditController {
         let yPoint = point.origin.y
         let hPoint = point.size.height
         var h = yPoint + hPoint + 116 - (globalHeight - keyboardHeight - 64)
+        if type == 1 {
+            h = h - 44
+        }
         h = max(h, 0)
         // 前半段是光标距离设备顶部的高度，后半段是弹起键盘后、去除导航栏的显示区域高度
         if !isinf(h) {

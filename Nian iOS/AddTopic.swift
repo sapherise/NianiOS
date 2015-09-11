@@ -1,21 +1,22 @@
 //
-//  YRAboutViewController.swift
-//  JokeClient-Swift
+//  AddTopic.swift
+//  Nian iOS
 //
-//  Created by YANGReal on 14-6-5.
-//  Copyright (c) 2014年 YANGReal. All rights reserved.
+//  Created by Sa on 15/9/10.
+//  Copyright © 2015年 Sa. All rights reserved.
 //
 
-import UIKit
+import Foundation
+
 
 protocol editRedditDelegate {
     func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
 }
 
-class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, NSLayoutManagerDelegate {
+class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, NSLayoutManagerDelegate, TITokenFieldDelegate, DreamSelectedDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet var containerView: UIView!
     @IBOutlet weak var field1: UITextField!  //title text field
     @IBOutlet weak var field2: SZTextView!
     @IBOutlet weak var tokenView: TITokenFieldView!
@@ -29,17 +30,17 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
     var delegate: editRedditDelegate?
     var dict = NSMutableDictionary()
     var hImage: CGFloat = 0
+    var type: Int = 0   // 0 为话题，1 为回应
+    var id: String = ""
     
     var uploadUrl: String = ""
     
-    var isEdit: Int = 0
+    //    var isEdit: Int = 0
     var editId: String = ""
     var editTitle: String = ""
     var editContent: String = ""
     var editImage: String = ""
     var tagsArray: Array<String> = [String]()
-    
-    var caretPosition: CGFloat = 0.0   // 获得 caret(光标)的位置
     var keyboardHeight: CGFloat = 0.0  // 键盘的高度
     
     var swipeGesuture: UISwipeGestureRecognizer?
@@ -98,18 +99,8 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-//        let height = 58 + field2.frame.size.height + tokenView.tokenField.frame.size.height
-//        let tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, globalHeight - 64))
-//        self.scrollView.contentSize = tmpSize
-        adjustScroll()
-        self.view.layoutIfNeeded()
-        
-        
-//        func adjustScroll() {
-//            let h = 58 + field2.height() + tokenView.height()
-//            scrollView.contentSize.height = h
-//            self.containerView.setHeight(h - 1)
-//        }
+        //        adjustScroll()
+        //        self.view.layoutIfNeeded()
     }
     
     func setupViews(){
@@ -120,7 +111,7 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         
         let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = self.isEdit == 1 ? "编辑话题" : "新话题！"
+        titleLabel.text = type == 0 ? "新话题！" : "新回应！"
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
@@ -137,7 +128,6 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         self.containerView.setWidth(globalWidth)
         self.containerView.setHeight(self.scrollView.height() - 1)
         self.field1.setWidth(globalWidth)
-        
         self.field1.leftView = UIView(frame: CGRectMake(0, 0, 16, 1))
         self.field1.rightView = UIView(frame: CGRectMake(0, 0, 16, 1))
         self.field1.leftViewMode = .Always
@@ -150,30 +140,7 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         self.seperatorView.setWidth(globalWidth)
         self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
         
-//        field2.setLineSpacing(20)
-        
-//        let font = UIFont.systemFontOfSize(17)
-//        let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy()
-//        paragraphStyle.setLineSpacing(12)
-//        let attributes = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
-//        let attributedString = NSAttributedString().
         field2.layoutManager.delegate = self
-        field2.textContainer.heightTracksTextView = false
-        
-//        let font = UIFont.systemFontOfSize(17)
-//        let paragraphStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy()
-//        paragraphStyle.setLineSpacing = 12
-//
-//        NSFont *font = /* set font */;
-//        
-//        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-//        [paragraphStyle setLineSpacing: /* required line spacing */];
-//        
-//        NSDictionary *attributes = @{ NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle };
-//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"strigil" attributes:attributes];
-//        
-//        [label setAttributedText: attributedString];
-        
         
         viewHolder.setX(globalWidth - 38 * 2 - 8)
         viewHolder.setY(field2.bottom() + 1)
@@ -210,16 +177,24 @@ class AddRedditController: UIViewController, UIActionSheetDelegate, UIImagePicke
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton]
         
-        if self.isEdit == 1 {
-            self.field1!.text = self.editTitle.decode()
-            self.field2.text = self.editContent.decode()
-            if tagsArray.count > 0 {
-                for i in 0...(tagsArray.count - 1) {
-                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
-                    tokenView.tokenField.layoutTokensAnimated(false)
-                }
-            }
-            self.uploadUrl = self.editImage
+        //        if self.isEdit == 1 {
+        //            self.field1!.text = self.editTitle.decode()
+        //            self.field2.text = self.editContent.decode()
+        //            if tagsArray.count > 0 {
+        //                for i in 0...(tagsArray.count - 1) {
+        //                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
+        //                    tokenView.tokenField.layoutTokensAnimated(false)
+        //                }
+        //            }
+        //            self.uploadUrl = self.editImage
+        //        }
+        
+        if type == 1 {
+            field1.hidden = true
+            field2.setY(13)
+            viewHolder.setY(field2.bottom() + 1)
+            seperatorView.setY(viewHolder.bottom())
+            tokenView.hidden = true
         }
     }
     

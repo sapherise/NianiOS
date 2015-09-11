@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension AddRedditController: DreamSelectedDelegate {
+extension AddTopic {
     func onImage() {
         self.dismissKeyboard()
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -32,8 +32,8 @@ extension AddRedditController: DreamSelectedDelegate {
     func onDream() {
         let sb = UIStoryboard(name: "Explore", bundle: nil)
         let vc = sb.instantiateViewControllerWithIdentifier("ExploreRecomMore") as! ExploreRecomMore
-//        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController")
-//        let vc2 = ExploreRecomMore()
+        //        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController")
+        //        let vc2 = ExploreRecomMore()
         vc.titleOn = "插入记本"
         vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
@@ -99,86 +99,39 @@ extension AddRedditController: DreamSelectedDelegate {
                 content += str
             }
         })
-        let title = field1.text!
-        let tags = tokenView.tokenTitles!
-        if title == "" {
-            self.view.showTipText("标题不能是空的...")
-            field1.becomeFirstResponder()
-        } else if content == "" {
-            self.view.showTipText("正文不能是空的...")
-            field2.becomeFirstResponder()
-        } else {
-            Api.postAddReddit(title, content: content, tags: tags) { json in
-                if json != nil {
-                    print(json)
-                }
-            }
-        }
-    }
-    
-    func addDreamOK(){
-        let title = self.field1?.text
-        let content = self.field2.text
-        let tags = self.tokenView.tokenTitles
-        if title != "" {
-            self.navigationItem.rightBarButtonItems = buttonArray()
-            //            title = SAEncode(SAHtml(title!))
-            //            content = SAEncode(SAHtml(content!))
-            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: 0, tags: tags!) {
-                json in
-                let error = json!.objectForKey("error") as! NSNumber
-                if error == 0 {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        globalWillNianReload = 1
+        if type == 0 {
+            // 发布话题
+            let title = field1.text!
+            let tags = tokenView.tokenTitles!
+            if title == "" {
+                self.view.showTipText("标题不能是空的...")
+                field1.becomeFirstResponder()
+            } else if content == "" {
+                self.view.showTipText("正文不能是空的...")
+                field2.becomeFirstResponder()
+            } else {
+                Api.postAddReddit(title, content: content, tags: tags) { json in
+                    if json != nil {
+                        print(json)
                         self.navigationController?.popViewControllerAnimated(true)
-                    })
+                    }
                 }
             }
-        } else {
-            self.field1!.becomeFirstResponder()
-        }
-        
-    }
-    
-    //MARK: edit dream
-    
-    func editDreamOK(){
-        var title = self.field1?.text
-        var content = self.field2.text
-        var tags = self.tokenView.tokenTitles
-        var tagsString: String = ""
-        var tagsArray: Array<String> = [String]()
-        
-        if (tags!).count > 0 {
-            for i in 0...((tags!).count - 1){
-                let tmpString = tags![i] as! String
-                tagsArray.append(tmpString)
-                if i == 0 {
-                    tagsString = "tags[]=\(SAEncode(SAHtml(tmpString)))"
-                } else {
-                    tagsString = tagsString + "&&tags[]=\(SAEncode(SAHtml(tmpString)))"
+        } else if type == 1 {
+            // 发布回应
+            if content == "" {
+                self.view.showTipText("正文不能是空的...")
+                field2.becomeFirstResponder()
+            } else {
+                // 提交评论
+                // todo
+                Api.postAddRedditComment(id, content: content) { json in
+                    if json != nil {
+                        print(json)
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }
                 }
             }
-        } else {
-            tagsString = "tags[]="
-        }
-        
-        if title != "" {
-            self.navigationItem.rightBarButtonItems = buttonArray()
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            
-            Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: 0, tags: tagsString){
-                json in
-                let error = json!.objectForKey("error") as! NSNumber
-                if error == 0 {
-                    globalWillNianReload = 1
-                    self.delegate?.editDream(0, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray)
-                    self.navigationController?.popViewControllerAnimated(true)
-                }
-            }
-        } else {
-            self.field1!.becomeFirstResponder()
         }
     }
 }
