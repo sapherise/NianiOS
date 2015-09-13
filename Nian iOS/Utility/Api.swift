@@ -857,35 +857,18 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/\(id)/vote/down/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
-    ///topic/{topic_id}/vote/down/delete
+//    GET /topic/{topic_id}/hot
+    
+    // 获得热门评论
+    static func getTopicCommentHot(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/hot?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
+    // 获得热门评论
+    static func getTopicCommentNew(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/newest?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

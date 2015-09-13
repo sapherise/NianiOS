@@ -112,7 +112,6 @@ extension AddTopic {
             } else {
                 Api.postAddReddit(title, content: content, tags: tags) { json in
                     if json != nil {
-                        print(json)
                         self.navigationController?.popViewControllerAnimated(true)
                     }
                 }
@@ -127,7 +126,6 @@ extension AddTopic {
                 // todo
                 Api.postAddRedditComment(id, content: content) { json in
                     if json != nil {
-                        print(json)
                         self.navigationController?.popViewControllerAnimated(true)
                     }
                 }

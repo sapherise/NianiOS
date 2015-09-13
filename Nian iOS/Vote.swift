@@ -14,6 +14,7 @@ struct Vote {
         let vote = data.stringAttributeForKey("vote")
         let numLike = Int(data.stringAttributeForKey("like_count"))
         let numDislike = Int(data.stringAttributeForKey("dislike_count"))
+        print(data)
         if vote == "0" {
             delegate?.updateData(index, key: "like_count", value: "\(numLike! + 1)")
             delegate?.updateData(index, key: "vote", value: "1")

@@ -15,7 +15,7 @@ protocol TopicDelegate {
 class TopicCellHeader: UITableViewCell {
     
     @IBOutlet var labelTitle: UILabel!
-    @IBOutlet var labelContent: UILabel!
+    @IBOutlet var labelContent: UITextView!
     @IBOutlet var viewUp: UIImageView!
     @IBOutlet var viewDown: UIImageView!
     @IBOutlet var viewVoteLine: UIView!
@@ -77,7 +77,6 @@ class TopicCellHeader: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            print(data)
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode()
             let comment = data.stringAttributeForKey("answers_count")
@@ -93,16 +92,25 @@ class TopicCellHeader: UITableViewCell {
             
             // 填充内容
             labelTitle.text = title
-            labelContent.text = content
             labelNum.text = num
+            labelContent.attributedText = content.toRedditDecode()
             labelTotal.text = "\(comment) 条回应"
             
             // 设定高度与宽度
             labelTitle.setHeight(hTitle)
-            labelContent.setHeight(hContent)
+//            labelContent.setHeight(hContent)
+            
+            
+            let hFits = labelContent.sizeThatFits(CGSizeMake(labelContent.bounds.width, 10000))
+            labelContent.setHeight(hFits.height)
+            
             labelContent.setY(labelTitle.bottom() + 16)
             labelComment.setY(labelContent.bottom() + 24)
             viewBottom.setY(labelComment.bottom() + 24)
+            
+//            let sz = self.tv.sizeThatFits(CGSizeMake(self.tv.bounds.width, 10000))
+//            self.heightConstraint.constant = ceil(sz.height)
+            print(hFits)
             
             // 上按钮
             viewUp.layer.borderColor = UIColor.e6().CGColor

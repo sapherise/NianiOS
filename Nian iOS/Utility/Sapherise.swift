@@ -187,6 +187,51 @@ extension String  {
     func decode() -> String {
         return SADecode(SADecode(self))
     }
+    
+    func toRedditDecode() -> NSAttributedString {
+        let content = self
+        let length = (content as NSString).length
+        let regexImage = "<image:[a-z0-9._]* w:[0-9.]* h:[0-9.]*>"
+        let regexDream = "<dream:[0-9]*>"
+        let expImage = try! NSRegularExpression(pattern: regexImage, options: NSRegularExpressionOptions.CaseInsensitive)
+        let expDream = try! NSRegularExpression(pattern: regexDream, options: NSRegularExpressionOptions.CaseInsensitive)
+        let dreams = expDream.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, length))
+        let emojis = expImage.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, length))
+        var location: Int = 0
+        let contentAttributed = NSMutableAttributedString()
+        for result in emojis {
+            let range = result.range
+            let subStr = (content as NSString).substringWithRange(NSMakeRange(location, range.location - location))
+            let attSubStr = NSAttributedString(string: subStr)
+            contentAttributed.appendAttributedString(attSubStr)
+            location = NSMaxRange(range)
+            let attachment = NSTextAttachment()
+            let image = SAColorImg(UIColor.yellowColor())
+            attachment.image = image
+            attachment.bounds = CGRectMake(0, 0, 200, 54)
+            let attachmentStr = NSAttributedString(attachment: attachment)
+            contentAttributed.appendAttributedString(attachmentStr)
+        }
+        for result in dreams {
+            let range = result.range
+            let subStr = (content as NSString).substringWithRange(NSMakeRange(location, range.location - location))
+            let attSubStr = NSAttributedString(string: subStr)
+            contentAttributed.appendAttributedString(attSubStr)
+            location = NSMaxRange(range)
+            let attachment = NSTextAttachment()
+            let image = SAColorImg(UIColor.redColor())
+            attachment.image = image
+            attachment.bounds = CGRectMake(0, 0, 200, 54)
+            let attachmentStr = NSAttributedString(attachment: attachment)
+            contentAttributed.appendAttributedString(attachmentStr)
+        }
+        if (location < (content as NSString).length) {
+            let subStr = (content as NSString).substringWithRange(NSMakeRange(location, length - location))
+            let attSubStr = NSAttributedString(string: subStr)
+            contentAttributed.appendAttributedString(attSubStr)
+        }
+        return contentAttributed
+    }
  }
 
 

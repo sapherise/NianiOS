@@ -130,7 +130,6 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    
     func updateData(index: Int, key: String, value: String) {
         let d = current == 0 ? dataArrayLeft : dataArrayRight
         let t = current == 0 ? tableViewLeft : tableViewRight

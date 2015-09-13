@@ -52,20 +52,24 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         if clear {
             pageLeft = 1
         }
-        Api.getBBSComment(id, page: pageLeft, isAsc: true) { json in
+        Api.getTopicCommentHot(id, page: pageLeft) { json in
             if json != nil {
-                let data = json!.objectForKey("data")
-                if clear {
-                    self.dataArrayLeft.removeAllObjects()
+                let err = json!.objectForKey("error") as! NSNumber
+                if err == 0 {
+                    if clear {
+                        self.dataArrayLeft.removeAllObjects()
+                    }
+                    let data = json!.objectForKey("data") as! NSArray
+                    for d in data {
+                        self.dataArrayLeft.addObject(d)
+                    }
+                    self.tableViewLeft.reloadData()
+                    self.pageLeft++
+                } else {
+                    self.view.showTipText("服务器坏了")
                 }
-                let comments = data!.objectForKey("comments") as! NSArray
-                for d in comments {
-                    self.dataArrayLeft.addObject(d)
-                }
-                self.tableViewLeft.reloadData()
                 self.tableViewLeft.headerEndRefreshing()
                 self.tableViewLeft.footerEndRefreshing()
-                self.pageLeft++
             }
         }
     }
@@ -74,20 +78,24 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         if clear {
             pageRight = 1
         }
-        Api.getBBSComment(id, page: pageRight, isAsc: false) { json in
+        Api.getTopicCommentNew(id, page: pageRight) { json in
             if json != nil {
-                let data = json!.objectForKey("data")
-                if clear {
-                    self.dataArrayRight.removeAllObjects()
+                let err = json!.objectForKey("error") as! NSNumber
+                if err == 0 {
+                    if clear {
+                        self.dataArrayRight.removeAllObjects()
+                    }
+                    let data = json!.objectForKey("data") as! NSArray
+                    for d in data {
+                        self.dataArrayRight.addObject(d)
+                    }
+                    self.tableViewRight.reloadData()
+                    self.pageRight++
+                } else {
+                    self.view.showTipText("服务器坏了")
                 }
-                let comments = data!.objectForKey("comments") as! NSArray
-                for d in comments {
-                    self.dataArrayRight.addObject(d)
-                }
-                self.tableViewRight.reloadData()
                 self.tableViewRight.headerEndRefreshing()
                 self.tableViewRight.footerEndRefreshing()
-                self.pageRight++
             }
         }
     }
@@ -98,13 +106,15 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
             let content = dataArrayTop!.stringAttributeForKey("content").decode()
             let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
-            return hTitle + hContent + 152 + 52
+//            return hTitle + hContent + 152 + 52
+            return 600
         } else {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary
             let content = data.stringAttributeForKey("content").decode()
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
-            return hContent + 72 + 72 + 1
+            let hContentMax = "\n\n\n".stringHeightWith(14, width: globalWidth - 80)
+            return min(hContent, hContentMax) + 72 + 72 + 1
         }
     }
     
@@ -122,6 +132,8 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary
             c.data = data
+            c.indexVote = indexPath.row
+            c.delegate = self
             return c
         }
     }

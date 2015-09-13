@@ -24,6 +24,8 @@ class TopicCell: UITableViewCell {
     @IBOutlet var btnMore: UIButton!
     var data: NSDictionary!
     var index: Int = 0
+    var delegate: RedditDelegate?
+    var indexVote: Int = 0
     
     override func awakeFromNib() {
         self.setWidth(globalWidth)
@@ -42,18 +44,20 @@ class TopicCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            let content = data.stringAttributeForKey("content").decode()
-            let uid = data.stringAttributeForKey("uid")
-            let name = data.stringAttributeForKey("user")
-            let lastdate = data.stringAttributeForKey("lastdate")
+            let content = data.stringAttributeForKey("content").decode().toRedditReduce()
+            let uid = data.stringAttributeForKey("user_id")
+            let name = data.stringAttributeForKey("username")
+            let lastdate = data.stringAttributeForKey("created_at")
             let time = V.relativeTime(lastdate)
             var comment = "12"
             comment = "回应 \(comment)"
-//            let num = SAThousand(data.stringAttributeForKey("reply"))
-            let num = "32"
+            let numLike = Int(data.stringAttributeForKey("like_count"))
+            let numDislike = Int(data.stringAttributeForKey("dislike_count"))
+            let num = SAThousand("\(numLike! - numDislike!)")
             
             // 计算高度与宽度
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
+            let hContentMax = "\n\n\n".stringHeightWith(14, width: globalWidth - 80)
             let hComment = comment.stringWidthWith(13, height: 32) + 16
             
             // 填充内容
@@ -66,7 +70,7 @@ class TopicCell: UITableViewCell {
             labelComment.text = comment
             
             // 设定高度与宽度
-            labelContent.setHeight(hContent)
+            labelContent.setHeight(min(hContent, hContentMax))
             viewBottom.setY(labelContent.bottom() + 16)
             viewLine.setY(viewBottom.bottom() + 24)
             labelComment.setWidth(hComment)
@@ -86,7 +90,26 @@ class TopicCell: UITableViewCell {
             imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
             labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
             labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
+            
+            setupVote()
         }
+    }
+    
+    // 投票 - 绑定事件
+    func setupVote() {
+        Vote().setupVote(data, viewUp: viewUp, viewDown: viewDown, viewVoteLine: viewVoteLine, labelNum: labelNum)
+        viewUp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUp"))
+        viewDown.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDown"))
+    }
+    
+    // 投票 - 赞
+    func onUp() {
+        Vote.onUp(data, delegate: delegate, index: indexVote)
+    }
+    
+    // 投票 - 踩
+    func onDown() {
+        Vote.onDown(data, delegate: delegate, index: indexVote)
     }
     
     func onComment() {
@@ -95,7 +118,7 @@ class TopicCell: UITableViewCell {
     }
     
     func onUser() {
-        let uid = data.stringAttributeForKey("uid")
+        let uid = data.stringAttributeForKey("user_id")
         let vc = PlayerViewController()
         vc.Id = uid
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
