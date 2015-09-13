@@ -254,6 +254,13 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                         self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                     }
+                    
+                    if let _ = Cookies.get("user") {
+                    } else {
+                        NSUserDefaults.standardUserDefaults().setObject(name, forKey: "user")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
+                    
                 }
             }
         }
