@@ -15,7 +15,7 @@ class TopicViewController: SAViewController {
     var pageRight: Int = 1
     var dataArrayLeft = NSMutableArray()
     var dataArrayRight = NSMutableArray()
-    var dataArrayTop: NSDictionary?
+    var dataArrayTop: NSMutableDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()

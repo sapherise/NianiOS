@@ -10,9 +10,10 @@ import Foundation
 
 protocol TopicDelegate {
     func changeTopic(index: Int)
+    func updateData(index: Int, key: String, value: String)
 }
 
-class TopicCellHeader: UITableViewCell {
+class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
     
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var labelContent: UITextView!
@@ -28,7 +29,7 @@ class TopicCellHeader: UITableViewCell {
     @IBOutlet var viewLine: UIView!
     @IBOutlet var viewLineClick: UIView!
     @IBOutlet var scrollView: UIScrollView!
-    var data: NSDictionary!
+    var data: NSMutableDictionary!
     var delegate: TopicDelegate?
     var index: Int = 0
     var isLayoutSubviews: Bool = false
@@ -41,7 +42,7 @@ class TopicCellHeader: UITableViewCell {
         viewUp.setVote()
         viewDown.setVote()
         labelTitle.setWidth(globalWidth - 80)
-        labelContent.setWidth(globalWidth - 80)
+        labelContent.setWidth(globalWidth - 80 + 8)
         viewBottom.setWidth(globalWidth - 32)
         viewVoteLine.setHeight(0.5)
         labelComment.backgroundColor = SeaColor
@@ -57,6 +58,7 @@ class TopicCellHeader: UITableViewCell {
         labelNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNew"))
         labelHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHot"))
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
+        labelContent.layoutManager.delegate = self
     }
     
     func onNew() {
@@ -77,6 +79,7 @@ class TopicCellHeader: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
+            print("哈哈")
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode()
             let comment = data.stringAttributeForKey("answers_count")
@@ -86,8 +89,6 @@ class TopicCellHeader: UITableViewCell {
             
             // 计算高度与宽度
             let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
-            let hContent = content.stringHeightWith(14, width: globalWidth - 80)
-            
             let tags = data.objectForKey("tags") as! Array<String>
             
             // 填充内容
@@ -101,26 +102,13 @@ class TopicCellHeader: UITableViewCell {
 //            labelContent.setHeight(hContent)
             
             
-            let hFits = labelContent.sizeThatFits(CGSizeMake(labelContent.bounds.width, 10000))
-            labelContent.setHeight(hFits.height)
+            let hFits = labelContent.sizeThatFits(CGSizeMake(labelContent.bounds.width, 10000)).height
+            labelContent.setHeight(hFits)
             
-            labelContent.setY(labelTitle.bottom() + 16)
+            
+            labelContent.setY(labelTitle.bottom() + 16 - 4)
             labelComment.setY(labelContent.bottom() + 24)
             viewBottom.setY(labelComment.bottom() + 24)
-            
-//            let sz = self.tv.sizeThatFits(CGSizeMake(self.tv.bounds.width, 10000))
-//            self.heightConstraint.constant = ceil(sz.height)
-            print(hFits)
-            
-            // 上按钮
-            viewUp.layer.borderColor = UIColor.e6().CGColor
-            viewUp.backgroundColor = UIColor.whiteColor()
-            labelNum.textColor = UIColor.b3()
-            viewVoteLine.backgroundColor = UIColor.e6()
-            viewUp.image = UIImage(named: "voteup")
-            // 下按钮
-            viewDown.layer.borderColor = UIColor.e6().CGColor
-            viewDown.backgroundColor = UIColor.whiteColor()
             
             var x: CGFloat = 11
             for tag in tags {
@@ -151,6 +139,7 @@ class TopicCellHeader: UITableViewCell {
             }
             
             setupVote()
+            delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())")
         }
     }
     
@@ -169,5 +158,9 @@ class TopicCellHeader: UITableViewCell {
     // 投票 - 踩
     func onDown() {
         Vote.onDown(data, delegate: delegateVote, index: indexVote)
+    }
+    
+    func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return 4
     }
 }

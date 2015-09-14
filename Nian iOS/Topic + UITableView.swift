@@ -102,12 +102,8 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            let title = dataArrayTop!.stringAttributeForKey("title").decode()
-            let content = dataArrayTop!.stringAttributeForKey("content").decode()
-            let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
-            let hContent = content.stringHeightWith(14, width: globalWidth - 80)
-//            return hTitle + hContent + 152 + 52
-            return 600
+            let h = CGFloat((dataArrayTop!.stringAttributeForKey("heightCell") as NSString).floatValue)
+            return h
         } else {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary

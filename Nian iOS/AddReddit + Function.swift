@@ -49,9 +49,11 @@ extension AddTopic {
         let attStr = NSAttributedString(attachment: attachment)
         let mutableStr = NSMutableAttributedString(attributedString: field2.attributedText)
         let selectedRange = field2.selectedRange
-        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location)
+        mutableStr.insertAttributedString(NSAttributedString(string: "\n"), atIndex: selectedRange.location)
+        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location + 1)
+        mutableStr.insertAttributedString(NSAttributedString(string: "\n"), atIndex: selectedRange.location + 2)
         mutableStr.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14), range: NSMakeRange(0,mutableStr.length))
-        let newSelectedRange = NSMakeRange(selectedRange.location + 1, 0)
+        let newSelectedRange = NSMakeRange(selectedRange.location + 3, 0)
         field2.attributedText = mutableStr
         field2.selectedRange = newSelectedRange
         self.navigationItem.rightBarButtonItems = buttonArray()
@@ -77,9 +79,11 @@ extension AddTopic {
         let attStr = NSAttributedString(attachment: attachment)
         let mutableStr = NSMutableAttributedString(attributedString: field2.attributedText)
         let selectedRange = field2.selectedRange
-        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location)
+        mutableStr.insertAttributedString(NSAttributedString(string: "\n"), atIndex: selectedRange.location)
+        mutableStr.insertAttributedString(attStr, atIndex: selectedRange.location + 1)
+        mutableStr.insertAttributedString(NSAttributedString(string: "\n"), atIndex: selectedRange.location + 2)
         mutableStr.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(14), range: NSMakeRange(0,mutableStr.length))
-        let newSelectedRange = NSMakeRange(selectedRange.location + 1, 0)
+        let newSelectedRange = NSMakeRange(selectedRange.location + 3, 0)
         field2.attributedText = mutableStr
         field2.selectedRange = newSelectedRange
         self.dict.setValue("<dream:\(dreamid)>", forKey: "\(attachment.image!)")
@@ -113,6 +117,7 @@ extension AddTopic {
                 Api.postAddReddit(title, content: content, tags: tags) { json in
                     if json != nil {
                         self.navigationController?.popViewControllerAnimated(true)
+                        print(json)
                     }
                 }
             }
@@ -127,6 +132,7 @@ extension AddTopic {
                 Api.postAddRedditComment(id, content: content) { json in
                     if json != nil {
                         self.navigationController?.popViewControllerAnimated(true)
+                        print(json)
                     }
                 }
             }

@@ -97,7 +97,7 @@
                         <color key="backgroundColor" red="1" green="0.46205986370000002" blue="0.33561506600000002" alpha="1" colorSpace="calibratedRGB"/>
                     </scrollView>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="content" textAlignment="natural" id="2FL-AL-dcJ">
-                        <rect key="frame" x="64" y="108" width="240" height="12"/>
+                        <rect key="frame" x="60" y="108" width="240" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>

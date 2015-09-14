@@ -83,7 +83,6 @@ func SAGet(getString:String, urlString:String)->String{
     return strRet! as String
 }
 
-//替换，用法：var sa = SAReplace("This is my string", " ", "___")
 func SAReplace(word:String, before:String, after:String)->NSString{
     return word.stringByReplacingOccurrencesOfString(before, withString: after, options: [], range: nil)
 }
@@ -175,6 +174,18 @@ extension String  {
         return nameTest.evaluateWithObject(self)
     }
     
+    func isImage() -> Bool {
+        let regex = "<image:[a-z0-9._]* w:[0-9.]* h:[0-9.]*>"
+        let nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
+        return nameTest.evaluateWithObject(self)
+    }
+    
+    func isDream() -> Bool {
+        let regex = "<dream:[0-9]*>"
+        let nameTest = NSPredicate(format: "SELF MATCHES %@", regex)
+        return nameTest.evaluateWithObject(self)
+    }
+    
     func toRedditReduce() -> String{
         var content = self
         let expDream = try! NSRegularExpression(pattern: "<dream:[0-9]*>", options: NSRegularExpressionOptions())
@@ -196,15 +207,47 @@ extension String  {
         let expImage = try! NSRegularExpression(pattern: regexImage, options: NSRegularExpressionOptions.CaseInsensitive)
         let expDream = try! NSRegularExpression(pattern: regexDream, options: NSRegularExpressionOptions.CaseInsensitive)
         let dreams = expDream.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, length))
-        let emojis = expImage.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, length))
-        var location: Int = 0
+        let images = expImage.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, length))
+//        var locationImage: Int = 0
+//        var locationDream: Int = 0
         let contentAttributed = NSMutableAttributedString()
-        for result in emojis {
+        
+        
+        //==
+        //        let mutParaStyle = NSMutableParagraphStyle()
+        //        mutParaStyle.lineSpacing = 20
+        let attrs = [NSFontAttributeName : UIFont.systemFontOfSize(14),
+            NSForegroundColorAttributeName: UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
+            //            NSParagraphStyleAttributeName : mutParaStyle
+        ]
+        //
+        
+        let arr = NSMutableArray()
+        for result in images {
+            arr.addObject(result)
+        }
+        for result in dreams {
+            arr.addObject(result)
+        }
+        
+        var dataArray = NSMutableArray()
+        var location: Int = 0
+        for result in arr {
             let range = result.range
             let subStr = (content as NSString).substringWithRange(NSMakeRange(location, range.location - location))
-            let attSubStr = NSAttributedString(string: subStr)
+            let attSubStr = NSAttributedString(string: subStr, attributes: attrs)
             contentAttributed.appendAttributedString(attSubStr)
+            if location < range.location {
+                dataArray.addObject("文本：\(subStr)")
+            }
             location = NSMaxRange(range)
+            
+            let a = (content as NSString).substringWithRange(NSMakeRange(range.location, range.length))
+            if a.isDream() {
+                dataArray.addObject("记本")
+            } else if a.isImage() {
+                dataArray.addObject("图片")
+            }
             let attachment = NSTextAttachment()
             let image = SAColorImg(UIColor.yellowColor())
             attachment.image = image
@@ -212,27 +255,77 @@ extension String  {
             let attachmentStr = NSAttributedString(attachment: attachment)
             contentAttributed.appendAttributedString(attachmentStr)
         }
-        for result in dreams {
-            let range = result.range
-            let subStr = (content as NSString).substringWithRange(NSMakeRange(location, range.location - location))
-            let attSubStr = NSAttributedString(string: subStr)
-            contentAttributed.appendAttributedString(attSubStr)
-            location = NSMaxRange(range)
-            let attachment = NSTextAttachment()
-            let image = SAColorImg(UIColor.redColor())
-            attachment.image = image
-            attachment.bounds = CGRectMake(0, 0, 200, 54)
-            let attachmentStr = NSAttributedString(attachment: attachment)
-            contentAttributed.appendAttributedString(attachmentStr)
-        }
+        
+//        for result in images {
+//            let range = result.range
+//            let subStr = (content as NSString).substringWithRange(NSMakeRange(locationImage, range.location - locationImage))
+//            let attSubStr = NSAttributedString(string: subStr, attributes: attrs)
+//            contentAttributed.appendAttributedString(attSubStr)
+//            locationImage = NSMaxRange(range)
+//            let attachment = NSTextAttachment()
+//            let image = SAColorImg(UIColor.yellowColor())
+//            attachment.image = image
+//            attachment.bounds = CGRectMake(0, 0, 200, 54)
+//            let attachmentStr = NSAttributedString(attachment: attachment)
+//            contentAttributed.appendAttributedString(attachmentStr)
+//        }
+//        print(dreams)
+//        for result in dreams {
+//            let range = result.range
+////            print(range)
+////                print(range.location, location)
+//                let subStr = (content as NSString).substringWithRange(NSMakeRange(locationDream, range.location - locationDream))
+//                var id = (content as NSString).substringWithRange(range)
+//                id = SAReplace(id, before: "<dream:", after: "") as String
+//                id = SAReplace(id, before: ">", after: "") as String
+//                let attSubStr = NSAttributedString(string: subStr, attributes: attrs)
+//                contentAttributed.appendAttributedString(attSubStr)
+//                locationDream = NSMaxRange(range)
+//                let attachment = NSTextAttachment()
+//                let v = (NSBundle.mainBundle().loadNibNamed("AddRedditDream", owner: self, options: nil) as NSArray).objectAtIndex(0) as! AddRedditDream
+//                attachment.image = getImageFromView(v)
+//                attachment.bounds = CGRectMake(0, 0, 200, 54)
+//                let attachmentStr = NSAttributedString(attachment: attachment)
+//                contentAttributed.appendAttributedString(attachmentStr)
+//                //            var isLoading = false
+//                //            if !isLoading {
+//                //                isLoading = true
+//                //                Api.getDream(id) { json in
+//                //                    print(json)
+//                //                    isLoading = false
+//                //                    let data = json!.objectForKey("data") as! NSDictionary
+//                //                    v.title = data.stringAttributeForKey("title").decode()
+//                //                    let steps_count = data.stringAttributeForKey("steps_count")
+//                //                    v.content = "\(steps_count) 进展"
+//                //                    let dream_image = data.stringAttributeForKey("image")
+//                //                    v.image = "http://img.nian.so/dream/\(dream_image)!dream"
+//                //                    v.layoutSubviews()
+//                //                }
+//                //            }
+//        }
+//        if (locationImage < (content as NSString).length) {
+//            let subStr = (content as NSString).substringWithRange(NSMakeRange(locationImage, length - locationImage))
+//            let attSubStr = NSAttributedString(string: subStr, attributes: attrs)
+//            contentAttributed.appendAttributedString(attSubStr)
+//        }
         if (location < (content as NSString).length) {
+            dataArray.addObject("文本")
             let subStr = (content as NSString).substringWithRange(NSMakeRange(location, length - location))
-            let attSubStr = NSAttributedString(string: subStr)
+            let attSubStr = NSAttributedString(string: subStr, attributes: attrs)
             contentAttributed.appendAttributedString(attSubStr)
+        }
+        //        print(dataArray)
+        print("---")
+        for arr in dataArray {
+            let a = "\(arr as? String)"
+            print(a)
         }
         return contentAttributed
     }
- }
+    
+}
+
+
 
 
 func resizedImage(initalImage: UIImage, newWidth:CGFloat) -> UIImage {

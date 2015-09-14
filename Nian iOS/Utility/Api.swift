@@ -870,5 +870,11 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/\(id)/newest?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
     }
+    
+    // 获得记本信息
+    static func getDream(id: String, callback : V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/dream/\(id)", callback: callback)
+    }
 }
 

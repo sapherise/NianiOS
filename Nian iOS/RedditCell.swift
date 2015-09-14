@@ -62,10 +62,12 @@ class RedditCell: UITableViewCell {
             let numLike = Int(data.stringAttributeForKey("like_count"))
             let numDislike = Int(data.stringAttributeForKey("dislike_count"))
             let num = numLike! - numDislike!
-            let tags = data.objectForKey("tags") as! Array<String>
+            let tags = data.objectForKey("tags") as? Array<String>
             var tag: String?
-            if tags.count > 0 {
-                tag = "\(tags[0])"
+            if tags != nil {
+                if tags!.count > 0 {
+                    tag = "\(tags![0])"
+                }
             }
             
             // 计算高度与宽度
