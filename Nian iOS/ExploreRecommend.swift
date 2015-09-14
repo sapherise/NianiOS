@@ -84,7 +84,7 @@ class ExploreRecommend: ExploreProvider {
                     self.bindViewController?.recomTableView.headerEndRefreshing()
                     self.bindViewController?.recomTableView.footerEndRefreshing()
                     
-                    if self.page == 1 {
+                    if self.page == 1 || self.page == 2 {
                         self.bindViewController?.recomTableView.beginUpdates()
                         self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .None)
                         self.bindViewController?.recomTableView.endUpdates()
@@ -107,7 +107,7 @@ class ExploreRecommend: ExploreProvider {
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.recomTableView.reloadData()
+//        bindViewController!.recomTableView.reloadData()
         
         if listDataArray.count == 0 {
             bindViewController!.recomTableView.headerBeginRefreshing()
@@ -157,7 +157,14 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             let index = indexPath.row
             let data = self.listDataArray[index] as! NSDictionary
             
-            return  ExploreNewHotCell.cellHeightByData(data)
+            return tableView.fd_heightForCellWithIdentifier("ExploreNewHotCell", cacheByIndexPath: indexPath, configuration: {
+                cell in
+                (cell as! ExploreNewHotCell).cellDataSource = self
+                (cell as! ExploreNewHotCell).fd_enforceFrameLayout = true
+                (cell as! ExploreNewHotCell).data = data
+                (cell as! ExploreNewHotCell).indexPath = indexPath
+            })
+            
         } else if indexPath.section == 0 || indexPath.section == 1 {
             if isiPhone6 || isiPhone6P {
                 return 202
@@ -219,3 +226,43 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
+
+extension ExploreRecommend: ENHCDataSource {
+    func enhcDataCell(indexPath: NSIndexPath, content: String, title: String) {
+        let _tmpDict = NSMutableDictionary(dictionary: self.listDataArray[indexPath.row] as! NSDictionary)
+        _tmpDict.setObject(content, forKey: "content")
+        _tmpDict.setObject(title, forKey: "title")
+
+        self.listDataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+    }
+    
+    func enhcDataCell(indexPath: NSIndexPath, contentHeight: CGFloat, titleHeight: CGFloat) {
+        let _tmpDict = NSMutableDictionary(dictionary: self.listDataArray[indexPath.row] as! NSDictionary)
+        
+        #if CGFLOAT_IS_DOUBLE
+        _tmpDict.setObject(NSNumber(double: Double(titleHeight)), forKey: "titleHeight")
+        _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
+        #else
+        _tmpDict.setObject(NSNumber(float: Float(titleHeight)), forKey: "titleHeight")
+        _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
+        #endif
+        
+        self.listDataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

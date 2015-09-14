@@ -47,7 +47,7 @@ var isiPhone6P: Bool = globalWidth == 414 ? true : false
 func SAPost(postString:String, urlString:String)->String{
     var strRet:NSString? = ""
     let request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!)
+    request!.URL = NSURL(string: urlString)
     request!.HTTPMethod = "POST"
     request!.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?

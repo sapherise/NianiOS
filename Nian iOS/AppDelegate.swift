@@ -40,9 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
         /* 极光推送 */
-//        todo
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
+        /**
+        * 1 << 0 : UIUserNotificationType.Sound
+        * 1 << 1 : UIUserNotificationType.Alert
+        * 1 << 2 : UIUserNotificationType.Badge
+        */
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
@@ -62,18 +66,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
 //        var paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         
         // 处理通知
-        if launchOptions != nil {
-            logInfo("\(launchOptions)")
-            
-            let dict = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
-            
-            if dict != nil {
-//               handleReceiveRemoteNotification(dict!)
-                
-            }
-        
-        
-        }
+//        if launchOptions != nil {
+//            logInfo("\(launchOptions)")
+//            
+//            let dict = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
+//            
+//            if dict != nil {
+////               handleReceiveRemoteNotification(dict!)
+//                
+//            }
+//        
+//        
+//        }
         
         
         
@@ -93,7 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     
     func applicationWillEnterForeground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
-//        vc5._addObserver()
         
         application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()
@@ -196,9 +199,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     
     // 收到消息通知，
     func handleReceiveRemoteNotification(aps: NSDictionary) {
-        let content = aps["alert"] as! NSString
-        let badge = aps["badge"] as! NSInteger
-        let sound = aps["sound"] as! NSString
+        let content = aps["alert"] as? NSString
+        let badge = aps["badge"] as? NSInteger
+        let sound = aps["sound"] as? NSString
         
         logVerbose("\(content) \(badge) \(sound)")
         

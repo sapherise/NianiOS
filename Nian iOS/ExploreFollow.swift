@@ -77,7 +77,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.tableView.reloadData()
+//        bindViewController!.tableView.reloadData()
         if dataArray.count == 0 {
             bindViewController!.tableView.headerBeginRefreshing()
         } else {
@@ -211,18 +211,11 @@ extension ExploreFollowProvider: SAStepCellDatasource {
 
 // MARK: - 实现 scroll view delegate, aim --> 优化用户体验
 extension ExploreFollowProvider {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-    }
-    
+
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.targetRect = nil
-        
     }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-    }
-    
+
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
         self.targetRect = NSValue(CGRect: targetRect)

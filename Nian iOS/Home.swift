@@ -29,6 +29,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var shouldNavToMe: Bool = false
+    var tabButtonArray = NSMutableArray()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -117,23 +118,37 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             globalWillReEnter = 0
             onCircleEnter()
         }
+    }
+    
+    /**
+    主要是为了处理通知，跳转到 tab[3] 去
+    */
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         if shouldNavToMe {
             if let _ = self.viewControllers  {
                 self.selectedIndex = 3
+                
+                (self.tabButtonArray[0] as! UIButton).selected = false
+                (self.tabButtonArray[3] as! UIButton).selected = true
+                
+                self.dot!.hidden = true
+                NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
             }
+            shouldNavToMe = false
         }
     }
     
-    //    不可以添加这个函数，会导致 NianViewController 失效
-    //    override func viewWillAppear(animated: Bool) {
-    //    }
-    
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         navShow()
     }
     
     override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "CircleLeave", object: nil)
@@ -187,8 +202,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
                     let a = resultSet.count
                     let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
-                    
-//                    logError(" b = \(b)")
                     
                     if let number = Int(b) {
                         globalNoticeNumber = a + number
@@ -247,7 +260,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if index == 0 {
                 button.selected = true
             }
+            
+            tabButtonArray.insertObject(button, atIndex: index)
         }
+        
         self.dot = UILabel(frame: CGRectMake(globalWidth*0.7+4, 10, 20, 15))
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
@@ -397,6 +413,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.viewClose.userInteractionEnabled = true
             self.view.window!.addSubview(self.viewClose)
             self.view.addSubview(self.addView)
+            
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.addView.alpha = 1
             })

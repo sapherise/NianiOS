@@ -85,6 +85,7 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
             
             cellImageDict[indexPath] = imgOp
             currentQueue.addOperations([imgOp], waitUntilFinished: false)
+            
         }
         
         if isiPhone6 || isiPhone6P {

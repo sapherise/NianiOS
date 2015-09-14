@@ -67,8 +67,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     var img1:Float = 0.0
     var ImageURL:String = ""
     
-    var indexSection: Int = 0
-    var indexPathRow: Int = 0
+//    var indexSection: Int = 0
+//    var indexPathRow: Int = 0
     var indexPath: NSIndexPath?
     
     var sid:Int = 0
@@ -492,6 +492,13 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.imageHolder.image = nil
     }
     
+    /**
+    <#Description#>
+    
+    :param: size <#size description#>
+    
+    :returns: <#return value description#>
+    */
     override func sizeThatFits(size: CGSize) -> CGSize {
         content = SADecode(self.data.stringAttributeForKey("content"))
         contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
