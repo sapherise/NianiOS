@@ -15,7 +15,8 @@ class TopicViewController: SAViewController {
     var pageRight: Int = 1
     var dataArrayLeft = NSMutableArray()
     var dataArrayRight = NSMutableArray()
-    var dataArrayTop: NSMutableDictionary?
+    var dataArrayTopLeft: NSMutableDictionary?
+    var dataArrayTopRight: NSMutableDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +32,8 @@ class TopicViewController: SAViewController {
     }
     
     func more() {
-        if dataArrayTop != nil {
-            let title = dataArrayTop!.stringAttributeForKey("title")
+        if dataArrayTopLeft != nil {
+            let title = dataArrayTopLeft!.stringAttributeForKey("title")
             let acReport = SAActivity()
             acReport.saActivityTitle = "举报"
             acReport.saActivityType = "举报"

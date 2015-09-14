@@ -96,18 +96,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.46205986370000002" blue="0.33561506600000002" alpha="1" colorSpace="calibratedRGB"/>
                     </scrollView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="content" textAlignment="natural" id="2FL-AL-dcJ">
-                        <rect key="frame" x="60" y="108" width="240" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="labelComment" destination="VEk-8R-X9I" id="C4y-if-ohH"/>
-                <outlet property="labelContent" destination="2FL-AL-dcJ" id="2WH-PT-d6U"/>
                 <outlet property="labelHot" destination="dwo-ph-hwx" id="6eV-lc-ALL"/>
                 <outlet property="labelNew" destination="CWB-FX-o70" id="auA-f3-ELn"/>
                 <outlet property="labelNum" destination="ngA-1l-sBt" id="U8u-c1-v0m"/>

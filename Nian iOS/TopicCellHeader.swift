@@ -13,10 +13,9 @@ protocol TopicDelegate {
     func updateData(index: Int, key: String, value: String)
 }
 
-class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
+class TopicCellHeader: UITableViewCell {
     
     @IBOutlet var labelTitle: UILabel!
-    @IBOutlet var labelContent: UITextView!
     @IBOutlet var viewUp: UIImageView!
     @IBOutlet var viewDown: UIImageView!
     @IBOutlet var viewVoteLine: UIView!
@@ -29,12 +28,12 @@ class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
     @IBOutlet var viewLine: UIView!
     @IBOutlet var viewLineClick: UIView!
     @IBOutlet var scrollView: UIScrollView!
-    var data: NSMutableDictionary!
+    var data: NSMutableDictionary?
     var delegate: TopicDelegate?
     var index: Int = 0
-    var isLayoutSubviews: Bool = false
     var delegateVote: RedditDelegate?
     var indexVote: Int = 0
+    var arr: NSMutableArray?
     
     override func awakeFromNib() {
         self.setWidth(globalWidth)
@@ -42,7 +41,6 @@ class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
         viewUp.setVote()
         viewDown.setVote()
         labelTitle.setWidth(globalWidth - 80)
-        labelContent.setWidth(globalWidth - 80 + 8)
         viewBottom.setWidth(globalWidth - 32)
         viewVoteLine.setHeight(0.5)
         labelComment.backgroundColor = SeaColor
@@ -58,7 +56,6 @@ class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
         labelNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNew"))
         labelHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHot"))
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
-        labelContent.layoutManager.delegate = self
     }
     
     func onNew() {
@@ -72,7 +69,7 @@ class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
     func onComment() {
         let vc = AddTopic()
         vc.type = 1
-        vc.id = data.stringAttributeForKey("id")
+        vc.id = data!.stringAttributeForKey("id")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -80,87 +77,116 @@ class TopicCellHeader: UITableViewCell, NSLayoutManagerDelegate {
         super.layoutSubviews()
         if data != nil {
             print("哈哈")
-            let title = data.stringAttributeForKey("title").decode()
-            let content = data.stringAttributeForKey("content").decode()
-            let comment = data.stringAttributeForKey("answers_count")
-            let numLike = Int(data.stringAttributeForKey("like_count"))
-            let numDislike = Int(data.stringAttributeForKey("dislike_count"))
+            let title = data!.stringAttributeForKey("title").decode()
+            let content = data!.stringAttributeForKey("content").decode()
+            let comment = data!.stringAttributeForKey("answers_count")
+            let numLike = Int(data!.stringAttributeForKey("like_count"))
+            let numDislike = Int(data!.stringAttributeForKey("dislike_count"))
             let num = SAThousand("\(numLike! - numDislike!)")
             
             // 计算高度与宽度
             let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
-            let tags = data.objectForKey("tags") as! Array<String>
+            let tags = data!.objectForKey("tags") as? Array<String>
             
             // 填充内容
             labelTitle.text = title
             labelNum.text = num
-            labelContent.attributedText = content.toRedditDecode()
             labelTotal.text = "\(comment) 条回应"
             
-            // 设定高度与宽度
-            labelTitle.setHeight(hTitle)
-//            labelContent.setHeight(hContent)
-            
-            
-            let hFits = labelContent.sizeThatFits(CGSizeMake(labelContent.bounds.width, 10000)).height
-            labelContent.setHeight(hFits)
-            
-            
-            labelContent.setY(labelTitle.bottom() + 16 - 4)
-            labelComment.setY(labelContent.bottom() + 24)
-            viewBottom.setY(labelComment.bottom() + 24)
-            
-            var x: CGFloat = 11
-            for tag in tags {
-                let t = tag.decode()
-                let label = UILabel()
-                label.setTagLabel(t)
-                label.setX(x)
-                scrollView.addSubview(label)
-                x = x + label.width() + 8
+            // 填充正文
+            if arr == nil {
+                arr = getRedditArray(content)
+                var numBottom = labelTitle.bottom() + 16
+                for d in arr! {
+                    let data = d as! NSDictionary
+                    //                print("==")
+                    //                print(data)
+                    let type = data.stringAttributeForKey("type")
+                    if type == "text" {
+                        let c = data.stringAttributeForKey("content")
+                        let h = c.stringHeightWith(14, width: globalWidth - 80)
+                        let label = UILabel(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
+                        label.text = c
+                        label.numberOfLines = 0
+                        label.textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
+                        label.font = UIFont.systemFontOfSize(14)
+                        numBottom = numBottom + h + 16
+                        self.addSubview(label)
+                    } else if type == "image" {
+                        let w = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
+                        var h = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
+                        let url = data.stringAttributeForKey("url")
+                        if w > 0 {
+                            h = (globalWidth - 80) * h / w
+                            let image = UIImageView(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
+                            print(numBottom)
+                            image.setImage("http://img.nian.so/bbs/\(url)!large", placeHolder: IconColor)
+                            numBottom = numBottom + h + 16
+                            self.addSubview(image)
+                        }
+                    } else if type == "dream" {
+                        let image = UIImageView(frame: CGRectMake(64, numBottom, 100, 20))
+                        image.backgroundColor = UIColor.yellowColor()
+                        numBottom = numBottom + 20 + 16
+                        self.addSubview(image)
+                    }
+                }
+                
+                // 设定高度与宽度
+                labelTitle.setHeight(hTitle)
+                labelComment.setY(numBottom)
+                viewBottom.setY(labelComment.bottom() + 24)
+                
+                var x: CGFloat = 11
+                if tags != nil {
+                    for tag in tags! {
+                        let t = tag.decode()
+                        let label = UILabel()
+                        label.setTagLabel(t)
+                        label.setX(x)
+                        scrollView.addSubview(label)
+                        x = x + label.width() + 8
+                    }
+                }
+                scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
+                
+                // 导航菜单
+                if index == 0 {
+                    labelHot.layer.borderWidth = 0.5
+                    labelHot.layer.borderColor = lineColor.CGColor
+                    viewLineClick.setX(labelHot.x() + 0.5)
+                    labelNew.layer.borderWidth = 0
+                    labelHot.textColor = UIColor.C33()
+                    labelNew.textColor = UIColor.b3()
+                } else {
+                    labelNew.layer.borderWidth = 0.5
+                    labelNew.layer.borderColor = lineColor.CGColor
+                    viewLineClick.setX(labelNew.x() + 0.5)
+                    labelHot.layer.borderWidth = 0
+                    labelNew.textColor = UIColor.C33()
+                    labelHot.textColor = UIColor.b3()
+                }
+                
+                setupVote()
+                delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())")
             }
-            scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
-            
-            // 导航菜单
-            if index == 0 {
-                labelHot.layer.borderWidth = 0.5
-                labelHot.layer.borderColor = lineColor.CGColor
-                viewLineClick.setX(labelHot.x() + 0.5)
-                labelNew.layer.borderWidth = 0
-                labelHot.textColor = UIColor.C33()
-                labelNew.textColor = UIColor.b3()
-            } else {
-                labelNew.layer.borderWidth = 0.5
-                labelNew.layer.borderColor = lineColor.CGColor
-                viewLineClick.setX(labelNew.x() + 0.5)
-                labelHot.layer.borderWidth = 0
-                labelNew.textColor = UIColor.C33()
-                labelHot.textColor = UIColor.b3()
-            }
-            
-            setupVote()
-            delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())")
         }
     }
     
     // 投票 - 绑定事件
     func setupVote() {
-        Vote().setupVote(data, viewUp: viewUp, viewDown: viewDown, viewVoteLine: viewVoteLine, labelNum: labelNum)
+        Vote().setupVote(data!, viewUp: viewUp, viewDown: viewDown, viewVoteLine: viewVoteLine, labelNum: labelNum)
         viewUp.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUp"))
         viewDown.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDown"))
     }
     
     // 投票 - 赞
     func onUp() {
-        Vote.onUp(data, delegate: delegateVote, index: indexVote)
+        Vote.onUp(data!, delegate: delegateVote, index: indexVote)
     }
     
     // 投票 - 踩
     func onDown() {
-        Vote.onDown(data, delegate: delegateVote, index: indexVote)
-    }
-    
-    func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return 4
+        Vote.onDown(data!, delegate: delegateVote, index: indexVote)
     }
 }

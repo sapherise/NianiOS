@@ -69,7 +69,7 @@ extension AddTopic {
             self.adjustAll()
         })
         // todo: 下面的宽度要改成 500
-        uy.uploadImage(resizedImage(attachment.image!, newWidth: 50), savekey: getSaveKey("bbs", png: "png") as String)
+        uy.uploadImage(resizedImage(attachment.image!, newWidth: 500), savekey: getSaveKey("bbs", png: "png") as String)
     }
     
     func insertDream(image: UIImage, dreamid: String) {

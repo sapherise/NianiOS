@@ -81,6 +81,7 @@
 		127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497FF1B92DFB80046B440 /* libsqlite3.tbd */; };
 		127498021B92DFC60046B440 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127498011B92DFC60046B440 /* libz.tbd */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
+		12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12779FAA1BA71E7F00956B46 /* Topic + Function.swift */; settings = {ASSET_TAGS = (); }; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
@@ -336,6 +337,7 @@
 		127497FF1B92DFB80046B440 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		127498011B92DFC60046B440 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
+		12779FAA1BA71E7F00956B46 /* Topic + Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + Function.swift"; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
 		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
 		1282230819C7E6710002937D /* UpYunSDK2.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UpYunSDK2.0-Prefix.pch"; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 			children = (
 				122D93A01B932FC000968F3E /* Topic.swift */,
 				122D93A21B93430700968F3E /* Topic + UITableView.swift */,
+				12779FAA1BA71E7F00956B46 /* Topic + Function.swift */,
 				12BB33441B93471F00B7E03F /* TopicCellHeader.swift */,
 				12BB33461B93473500B7E03F /* TopicCellHeader.xib */,
 				12BB33481B936C9200B7E03F /* TopicCell.swift */,
@@ -1670,6 +1673,7 @@
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
+				12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,

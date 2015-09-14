@@ -126,7 +126,7 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         let id = data.stringAttributeForKey("id")
         let vc = TopicViewController()
         vc.id = id
-        vc.dataArrayTop = NSMutableDictionary(dictionary: data)
+        vc.dataArrayTopLeft = NSMutableDictionary(dictionary: data)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

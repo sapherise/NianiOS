@@ -63,7 +63,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
                     for d in data {
                         self.dataArrayLeft.addObject(d)
                     }
-                    self.tableViewLeft.reloadData()
+                    self.tableViewLeft.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
                     self.pageLeft++
                 } else {
                     self.view.showTipText("服务器坏了")
@@ -89,7 +89,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
                     for d in data {
                         self.dataArrayRight.addObject(d)
                     }
-                    self.tableViewRight.reloadData()
+                    self.tableViewRight.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
                     self.pageRight++
                 } else {
                     self.view.showTipText("服务器坏了")
@@ -102,7 +102,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            let h = CGFloat((dataArrayTop!.stringAttributeForKey("heightCell") as NSString).floatValue)
+            let h = CGFloat((dataArrayTopLeft!.stringAttributeForKey("heightCell") as NSString).floatValue)
             return h
         } else {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
@@ -117,7 +117,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCellHeader", forIndexPath: indexPath) as! TopicCellHeader
-            c.data = dataArrayTop!
+            c.data = tableView == tableViewLeft ? dataArrayTopLeft : dataArrayTopRight
             c.delegate = self
             c.index = tableView == tableViewLeft ? 0 : 1
             c.delegateVote = self
@@ -138,13 +138,18 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         if index == 0 {
             tableViewLeft.hidden = false
             tableViewRight.hidden = true
-            tableViewLeft.reloadData()
+            tableViewLeft.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
             let y = tableViewRight.contentOffset.y
             tableViewLeft.setContentOffset(CGPointMake(0, y), animated: false)
         } else {
             tableViewLeft.hidden = true
             tableViewRight.hidden = false
-            tableViewRight.reloadData()
+            if dataArrayTopRight == nil {
+                dataArrayTopRight = dataArrayTopLeft
+                tableViewRight.reloadData()
+            } else {
+                tableViewRight.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+            }
             let y = tableViewLeft.contentOffset.y
             tableViewRight.setContentOffset(CGPointMake(0, y), animated: false)
             if dataArrayRight.count == 0 {
@@ -154,11 +159,8 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if dataArrayTop == nil {
-            return 0
-        }
         if section == 0 {
-            return 1
+            return dataArrayTopLeft == nil ? 0 : 1
         } else {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             return d.count
@@ -173,9 +175,10 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     }
     
     func updateData(index: Int, key: String, value: String) {
-        let mutableItem = NSMutableDictionary(dictionary: dataArrayTop!)
+        let mutableItem = NSMutableDictionary(dictionary: dataArrayTopLeft!)
         mutableItem.setValue(value, forKey: key)
-        dataArrayTop = mutableItem
+        dataArrayTopLeft = mutableItem
+//        dataArrayTopRight = mutableItem
     }
     
     func updateTable() {
