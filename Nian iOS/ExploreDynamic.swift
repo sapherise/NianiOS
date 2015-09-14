@@ -81,7 +81,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     override func onShow(loading: Bool) {
-        bindViewController!.dynamicTableView.reloadData()
+//        bindViewController!.dynamicTableView.reloadData()
         if dataArray.count == 0 {
             bindViewController!.dynamicTableView.headerBeginRefreshing()
         } else {
@@ -229,16 +229,9 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
 
 // MARK: - 实现 UIScrollviewDelegate
 extension ExploreDynamicProvider : UIScrollViewDelegate  {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-    }
-    
+
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.targetRect = nil
-        
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

@@ -559,7 +559,7 @@ struct Api {
     static func postEditStep_AFN(sid: String, content: String, uploadUrl: String, uploadWidth: String, uploadHeight: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/step/\(sid)/edit?uid=\(s_uid)&shell=\(s_shell)",
-            content: ["content": "\(content)", "image": "\(uploadUrl)", "img0": "\(uploadWidth)", "img1": "\(uploadHeight)"],
+            content: ["content": "\(content)", "image": "\(uploadUrl)", "width": "\(uploadWidth)", "height": "\(uploadHeight)"],
             callback: callback)
     }
     
