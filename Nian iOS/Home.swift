@@ -39,6 +39,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         gameoverCheck()
         launchTimer()
         onCircleEnter()
+        
+        let notiCenter = NSNotificationCenter.defaultCenter()
+        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     func gameoverCheck() {
@@ -154,6 +157,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "CircleLeave", object: nil)
     }
     
+    /**
+    处理在 app 打开的情况下，通过极光 TCP 推送来的消息
+    
+    :param: noti <#noti description#>
+    */
+    func handleNetworkReceiveMsg(noti: NSNotification) {
+        logWarn("\(noti)")
+        
+        self.noticeDot()
+    }
+    
     func onObserveActive() {
         launchTimer()
         onCircleEnter()
@@ -180,8 +194,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             return
         }
         noticeDot()
-        timer = NSTimer(timeInterval: 15, target: self, selector: "noticeDot", userInfo: nil, repeats: true)
-        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+//        timer = NSTimer(timeInterval: 15, target: self, selector: "noticeDot", userInfo: nil, repeats: true)
+//        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
     func stopTimer() {
@@ -219,6 +233,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 })
                             } else {  // if globalNoticeNumber != 0 && globalTabBarSelected != 103
                                 self.dot!.hidden = true
+                                if number > 0 {
+                                    NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object: nil)
+                                }
+                                if a > 0 {
+                                    NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: nil)
+                                }
                             }
                         })
                     } // if let number = Int(b)
@@ -490,6 +510,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func on_poll(obj: AnyObject?) {
         go {
+            logInfo("+++ \(obj) ===")
+            
             let safeuid = SAUid()
             if obj != nil {
                 let msg: AnyObject? = obj!.objectForKey("msg")

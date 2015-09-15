@@ -30,18 +30,25 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate {
         if clear {
             page = 1
         }
-        Api.getBBSComment("59288", page: page, isAsc: true) { json in
+        
+        /**
+        *  @brief: 根据当前 topic ID 显示对应 comment 的 comment. --> 楼中楼
+        */
+        Api.getCommentInComment(self.topicID!, page: page) { json in
             if json != nil {
-                let data = json!.objectForKey("data")
+                let data = json!.objectForKey("data") as! [AnyObject]
                 if clear {
-                    if let bbs = data!.objectForKey("bbs") as? NSDictionary {
-                        self.dataArrayTop = bbs
-                    }
+//                    if let bbs = data!.objectForKey("bbs") as? NSDictionary {
+//                        self.dataArrayTop = bbs
+//                    }
                     self.dataArray.removeAllObjects()
                 }
-                let comments = data!.objectForKey("comments") as! NSArray
-                for d in comments {
-                    self.dataArray.addObject(d)
+//                let comments = data!.objectForKey("comments") as! NSArray
+//                for d in comments {
+//                    self.dataArray.addObject(d)
+//                }
+                if data.count > 0 {
+                    self.dataArray.addObjectsFromArray(data)
                 }
                 self.tableView.reloadData()
                 self.tableView.headerEndRefreshing()

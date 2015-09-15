@@ -48,9 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
         APService.setupWithOption(launchOptions)
         
-        let notiCenter = NSNotificationCenter.defaultCenter()
-        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
-        
         /* DDLog */
         let formatter = Formatter()
         DDTTYLogger.sharedInstance().logFormatter = formatter
@@ -182,22 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         }
     }
     
-    /**
-    处理在 app 打开的情况下，通过极光 TCP 推送来的消息
-    
-    :param: noti <#noti description#>
-    */
-    func handleNetworkReceiveMsg(noti: NSNotification) {
-        logWarn("\(noti)")
-        
-//        let userInfo = noti.userInfo
-//        let _content = (userInfo as! Dictionary<String, NSObject>)["content"]
-//        
-        
-//        navTo_MEVC()
-    }
-    
-    // 收到消息通知，
+    // 收到消息通知， JPush
     func handleReceiveRemoteNotification(aps: NSDictionary) {
         let content = aps["alert"] as? NSString
         let badge = aps["badge"] as? NSInteger
@@ -215,9 +197,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         let navViewController = window?.rootViewController as! UINavigationController
         let welcomeVC = navViewController.viewControllers[0] as! WelcomeViewController
         welcomeVC.shouldNavToMe = true
-        
-        
-        logWarn("\(navViewController.viewControllers)")
     }
     
 }

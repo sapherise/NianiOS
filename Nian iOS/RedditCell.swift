@@ -33,6 +33,8 @@ class RedditCell: UITableViewCell {
     var index: Int = 0
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         viewUp.setVote()
@@ -49,6 +51,7 @@ class RedditCell: UITableViewCell {
     }
     
     func hello() {
+        
     }
     
     override func layoutSubviews() {

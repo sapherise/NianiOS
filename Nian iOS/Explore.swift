@@ -243,6 +243,7 @@ extension ExploreViewController {
     }
 }
 
+// MARK: -  Explore VC 不能同时响应多个手势
 extension ExploreViewController {
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer
                                                                     otherGestureRecognizer: UIGestureRecognizer) -> Bool {

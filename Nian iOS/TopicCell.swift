@@ -27,6 +27,9 @@ class TopicCell: UITableViewCell {
     var delegate: RedditDelegate?
     var indexVote: Int = 0
     
+    /* cell 需要知道自己是属于哪个 Topic 的 */
+    var topicId: String?
+    
     override func awakeFromNib() {
         self.setWidth(globalWidth)
         self.selectionStyle = .None
@@ -114,6 +117,8 @@ class TopicCell: UITableViewCell {
     
     func onComment() {
         let vc = TopicComment()
+        /* 即将载入的 VC 的 topic == 当前 comment cell 对应的 topic id */
+        vc.topicID = self.topicId
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

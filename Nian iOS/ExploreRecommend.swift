@@ -175,11 +175,24 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 2 {
+            logVerbose("&&&&&&&&&&&&&&&&&&&& \(indexPath.row) ++++++++++++")
+            return 364
+        } else {
+            if isiPhone6 || isiPhone6P {
+                return 202
+            }
+            return 185
+        }
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
             cell!.data = self.listDataArray[indexPath.row] as! NSDictionary
+            
+            logInfo("========================= \(indexPath.row) ")
             
             if indexPath.row == self.listDataArray.count - 1 {
                 cell!.viewLine.hidden = true

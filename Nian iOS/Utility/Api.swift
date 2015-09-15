@@ -876,5 +876,15 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/dream/\(id)", callback: callback)
     }
+    
+    /**
+    获得“楼中楼”， or 获取回答的评论列表
+    */
+    static func getCommentInComment(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)/comments?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
+    
 }
 

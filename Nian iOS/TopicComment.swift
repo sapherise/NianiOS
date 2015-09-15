@@ -16,6 +16,9 @@ class TopicComment: SAViewController, UITextFieldDelegate {
     var dataArrayTop: NSDictionary!
     var dataArray = NSMutableArray()
     
+    /* topic id */
+    var topicID: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -40,4 +43,7 @@ class TopicComment: SAViewController, UITextFieldDelegate {
         inputKeyboard.setTextField(textField)
         self.view.addSubview(inputKeyboard)
     }
+    
+    
+    
 }

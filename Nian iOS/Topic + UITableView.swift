@@ -128,6 +128,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary
             c.data = data
+            c.topicId = self.id // 使 Topic cell 知道自己对应哪个 topic ID
             c.indexVote = indexPath.row
             c.delegate = self
             return c

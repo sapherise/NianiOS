@@ -90,6 +90,7 @@ class WelcomeViewController: UIViewController {
                             self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
                                 self.view.hidden = false
                             })
+                            self.view.findRootViewController()
                         })
                     })
             } else { // 没有登录
