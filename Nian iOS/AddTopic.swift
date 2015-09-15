@@ -15,12 +15,12 @@ protocol editRedditDelegate {
 
 class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, NSLayoutManagerDelegate, TITokenFieldDelegate, DreamSelectedDelegate {
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var containerView: UIView!
-    @IBOutlet weak var field1: UITextField!  //title text field
-    @IBOutlet weak var field2: SZTextView!
-    @IBOutlet weak var tokenView: TITokenFieldView!
-    @IBOutlet weak var seperatorView: UIView!
+    @IBOutlet var field1: UITextField!  //title text field
+    @IBOutlet var field2: SZTextView!
+    @IBOutlet var tokenView: TITokenFieldView!
+    @IBOutlet var seperatorView: UIView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var imageUpload: UIImageView!
     @IBOutlet var imageDream: UIImageView!
@@ -102,6 +102,13 @@ class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerController
         //        adjustScroll()
         //        self.view.layoutIfNeeded()
     }
+//    - (id)initWithFrame:(CGRect)frame {
+//    self = [super initWithFrame:CGRectMake(0.0, 0.0, 310, 166)];
+//    if (self) {
+//    self = [[[NSBundle mainBundle] loadNibNamed:@"MyView" owner:self options:nil] firstObject];
+//    }
+//    return self;
+//    }
     
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false

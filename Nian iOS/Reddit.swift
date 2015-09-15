@@ -87,7 +87,7 @@ class RedditViewController: UIViewController, UIScrollViewDelegate, UITableViewD
     }
     
     func addReddit() {
-        let vc = AddTopic()
+        let vc = AddTopic(nibName: "AddTopic", bundle: nil)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

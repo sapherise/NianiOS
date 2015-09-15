@@ -27,6 +27,10 @@ class TopicViewController: SAViewController {
         setupTableViews()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        viewBackFix()
+    }
+    
     func setupViews() {
         _setTitle("话题")
         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "more")
