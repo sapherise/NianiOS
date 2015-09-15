@@ -837,6 +837,11 @@ extension Api {
         V.httpGetForJson("http://api.nian.so/topics?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    static func getRedditFollow(page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/user/\(s_uid)/follow/topics?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
     static func getVoteUp(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/\(id)/vote/up?uid=\(s_uid)&shell=\(s_shell)", callback: callback)

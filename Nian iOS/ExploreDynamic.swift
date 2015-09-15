@@ -61,11 +61,8 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
                     }
                     self.bindViewController?.dynamicTableView.tableHeaderView = nil
                 } else if clear {
-                    let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    let viewQuestion = viewEmpty(globalWidth, content: "这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
-                    viewQuestion.setY(50)
-                    viewHeader.addSubview(viewQuestion)
-                    self.bindViewController?.dynamicTableView.tableHeaderView = viewHeader
+                    self.bindViewController?.dynamicTableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                    self.bindViewController?.dynamicTableView.tableHeaderView?.addGhost("这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
                 }
                 if self.bindViewController!.current == 1 {
                     self.bindViewController?.dynamicTableView.headerEndRefreshing()

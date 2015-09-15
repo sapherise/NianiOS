@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class RedditViewController: UIViewController {
+class RedditViewController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, RedditDelegate {
     var labelLeft: UILabel!
     var labelRight: UILabel!
     var scrollView: UIScrollView!

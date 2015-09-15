@@ -426,12 +426,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             let img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
             if img0 != 0 {
                 if let v = sender.view as? UIImageView {
-                    let w = sender.view!.width()
-                    let h = sender.view!.height()
                     let url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!large"
-                    let yPoint = sender.view?.convertPoint(CGPointZero, fromView: self.view.window)
-                    let rect = CGRectMake(-yPoint!.x, -yPoint!.y, w, h)
-                    v.showImage(url, rect: rect)
+                    v.showImage(url)
                 }
             }
         }

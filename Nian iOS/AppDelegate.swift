@@ -45,20 +45,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-        APService.setupWithOption(launchOptions)
-        
-        let notiCenter = NSNotificationCenter.defaultCenter()
-        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
-        
-        /* DDLog */
-        let formatter = Formatter()
-        DDTTYLogger.sharedInstance().logFormatter = formatter
-        DDLog.addLogger(DDTTYLogger.sharedInstance())
-        DDLog.logLevel = .Verbose
-        DDTTYLogger.sharedInstance().colorsEnabled = true
-        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
-        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.orangeColor(), backgroundColor: nil, forFlag: .Warning)
+//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+//        APService.setupWithOption(launchOptions)
+//        
+//        let notiCenter = NSNotificationCenter.defaultCenter()
+//        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+//        
+//        /* DDLog */
+//        let formatter = Formatter()
+//        DDTTYLogger.sharedInstance().logFormatter = formatter
+//        DDLog.addLogger(DDTTYLogger.sharedInstance())
+//        DDLog.logLevel = .Verbose
+//        DDTTYLogger.sharedInstance().colorsEnabled = true
+//        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
+//        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.orangeColor(), backgroundColor: nil, forFlag: .Warning)
         
         application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()

@@ -87,17 +87,9 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     self.tableView?.hidden = true
                     self.navigationItem.rightBarButtonItems = []
                     if status == 404 {
-                        let viewTop = viewEmpty(globalWidth, content: "这个记本\n不见了")
-                        viewTop.setY(104)
-                        let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                        viewHolder.addSubview(viewTop)
-                        self.view.addSubview(viewHolder)
+                        self.view.addGhost("这个记本\n不见了")
                     } else if status == 403 {
-                        let viewTop = viewEmpty(globalWidth, content: "你发现了\n一个私密的记本\n里面记着什么？")
-                        viewTop.setY(104)
-                        let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                        viewHolder.addSubview(viewTop)
-                        self.view.addSubview(viewHolder)
+                        self.view.addGhost("你发现了\n一个私密的记本\n里面记着什么？")
                     } else {
                         self.view.showTipText("遇到了一个奇怪的错误，代码是 \(status)", delay: 2)
                     }
@@ -192,7 +184,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     func onStep(){
         if dataArrayTop != nil {
-            var title = SADecode(SADecode(dataArrayTop.stringAttributeForKey("title")))
+            var title = dataArrayTop.stringAttributeForKey("title").decode()
             if dataArrayTop.stringAttributeForKey("private") == "1" {
                 title = "\(title)（私密）"
             } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
@@ -287,7 +279,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if dataArrayTop != nil {
-                var title = SADecode(SADecode(dataArrayTop.stringAttributeForKey("title")))
+                var title = dataArrayTop.stringAttributeForKey("title").decode()
                 if dataArrayTop.stringAttributeForKey("private") == "1" {
                     title = "\(title)（私密）"
                 } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
@@ -393,8 +385,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         let img = dataArrayTop.stringAttributeForKey("image")
         let thePrivate = Int(dataArrayTop.stringAttributeForKey("private"))!
         editdreamVC.editId = id
-        editdreamVC.editTitle = SADecode(SADecode(title))
-        editdreamVC.editContent = SADecode(SADecode(content))
+        editdreamVC.editTitle = title.decode()
+        editdreamVC.editContent = content.decode()
         editdreamVC.editImage = img
         editdreamVC.isPrivate = thePrivate
         let tags: Array<String> = dataArrayTop.objectForKey("tags") as! Array

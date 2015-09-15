@@ -586,12 +586,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if clear {
                     self.dataArrayStep.removeAllObjects()
                 }
-            }
-            let data: AnyObject? = json!.objectForKey("data")
-            let itemsStep = data!.objectForKey("steps") as? NSArray
-            if itemsStep != nil {
-                for item in itemsStep! {
-                    self.dataArrayStep.addObject(item)
+                let data: AnyObject? = json!.objectForKey("data")
+                let itemsStep = data!.objectForKey("steps") as? NSArray
+                if itemsStep != nil {
+                    for item in itemsStep! {
+                        self.dataArrayStep.addObject(item)
+                    }
                 }
             }
             self.stepTableView.reloadData()
@@ -610,9 +610,18 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if clear {
                     self.dataArrayTopic.removeAllObjects()
                 }
+                print(json!)
+//                let data: AnyObject? = json!.objectForKey("data")
+//                let itemTopic = data!.objectForKey("steps") as? NSArray
+//                if itemsStep != nil {
+//                    for item in itemsStep! {
+//                        self.dataArrayStep.addObject(item)
+//                    }
+//                }
+                // todo
             }
             
-            // TODO: - 补充 topic 数据
+            
             
             self.topicTableView.reloadData()
             self.topicTableView.headerEndRefreshing()

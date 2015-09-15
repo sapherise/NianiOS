@@ -253,9 +253,7 @@ class DreamCellTop: UITableViewCell {
     
     func onImage() {
         let img = data!.stringAttributeForKey("image")
-        let point = self.dreamhead.getPoint()
-        let rect = CGRectMake(-point.x, -point.y, 60, 60)
-        dreamhead.showImage("http://img.nian.so/dream/\(img)!large", rect: rect)
+        dreamhead.showImage("http://img.nian.so/dream/\(img)!large")
     }
     
     func onLike() {

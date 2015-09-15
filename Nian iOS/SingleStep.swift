@@ -64,11 +64,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
                 let data = json!.objectForKey("data") as! NSDictionary
                 let hidden = data.stringAttributeForKey("hidden")
                 if hidden == "1" {
-                    let viewTop = viewEmpty(globalWidth, content: "这条进展\n不见了")
-                    viewTop.setY(40)
-                    let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    viewHolder.addSubview(viewTop)
-                    self.tableView?.tableHeaderView = viewHolder
+                    self.tableView?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                    self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
                 } else {
                     self.dataArray.addObject(data)
                 }

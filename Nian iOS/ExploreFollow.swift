@@ -57,11 +57,8 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
                     }
                     self.bindViewController?.tableView.tableHeaderView = nil
                 } else if clear {
-                    let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 400))
-                    let viewQuestion = viewEmpty(globalWidth, content: "这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
-                    viewQuestion.setY(50)
-                    viewHeader.addSubview(viewQuestion)
-                    self.bindViewController?.tableView.tableHeaderView = viewHeader
+                    self.bindViewController?.tableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                    self.bindViewController?.tableView.tableHeaderView?.addGhost("这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
                 }
                 if self.bindViewController!.current == 0 {
                     self.bindViewController!.tableView.headerEndRefreshing()

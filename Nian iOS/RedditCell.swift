@@ -9,8 +9,9 @@
 import Foundation
 
 protocol RedditDelegate {
-    func updateData(index: Int, key: String, value: String)
+    func updateData(index: Int, key: String, value: String, section: Int)
     func updateTable()
+    func updateTableFooter()
 }
 
 class RedditCell: UITableViewCell {
@@ -124,12 +125,12 @@ class RedditCell: UITableViewCell {
     
     // 投票 - 赞
     func onUp() {
-        Vote.onUp(data, delegate: delegate, index: index)
+        Vote.onUp(data, delegate: delegate, index: index, section: 0)
     }
     
     // 投票 - 踩
     func onDown() {
-        Vote.onDown(data, delegate: delegate, index: index)
+        Vote.onDown(data, delegate: delegate, index: index, section: 0)
     }
 }
 
