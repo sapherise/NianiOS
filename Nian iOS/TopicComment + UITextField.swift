@@ -27,6 +27,24 @@ extension TopicComment {
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == self.textField {
+            let content = self.textField.text!
+            if content != "" {
+                let uid = SAUid()
+                let name = Cookies.get("user")
+                let time = V.now()
+                let dic = NSDictionary(objects: [content, time, "-1", uid, name!], forKeys: ["content", "created_at", "id", "user_id", "username"])
+                dataArray.addObject(dic)
+                tableView.reloadData()
+                let h = tableView.contentSize.height
+                tableView.setContentOffset(CGPointMake(0, h - globalHeight), animated: true)
+//                Api.postTopicCommentComment(id, content: content) { json in
+//                    if json != nil {
+//                        print(json)
+//                    }
+//                }
+            }
+        }
         return true
     }
 }

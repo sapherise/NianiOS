@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension TopicComment: UITableViewDataSource, UITableViewDelegate {
+extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelegate {
     func setupTableViews() {
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64 - 56))
         tableView.delegate = self
@@ -30,25 +30,18 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate {
         if clear {
             page = 1
         }
-        
-        /**
-        *  @brief: 根据当前 topic ID 显示对应 comment 的 comment. --> 楼中楼
-        */
-        Api.getCommentInComment(self.topicID!, page: page) { json in
+        Api.getTopicCommentComment(id, page: page) { json in
             if json != nil {
-                let data = json!.objectForKey("data") as! [AnyObject]
+                let data = json!.objectForKey("data") as! NSDictionary
+                if self.dataArrayTop == nil {
+                    self.dataArrayTop = data.objectForKey("answer") as! NSDictionary
+                }
+                let arr = data.objectForKey("comments") as! NSArray
                 if clear {
-//                    if let bbs = data!.objectForKey("bbs") as? NSDictionary {
-//                        self.dataArrayTop = bbs
-//                    }
                     self.dataArray.removeAllObjects()
                 }
-//                let comments = data!.objectForKey("comments") as! NSArray
-//                for d in comments {
-//                    self.dataArray.addObject(d)
-//                }
-                if data.count > 0 {
-                    self.dataArray.addObjectsFromArray(data)
+                for d in arr {
+                    self.dataArray.addObject(d)
                 }
                 self.tableView.reloadData()
                 self.tableView.headerEndRefreshing()
@@ -56,12 +49,28 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate {
                 self.page++
             }
         }
+//        Api.getBBSComment("59288", page: page, isAsc: true) { json in
+//            if json != nil {
+//                let data = json!.objectForKey("data")
+//                if clear {
+//                    if let bbs = data!.objectForKey("bbs") as? NSDictionary {
+//                        self.dataArrayTop = bbs
+//                    }
+//                    self.dataArray.removeAllObjects()
+//                }
+//                let comments = data!.objectForKey("comments") as! NSArray
+//                for d in comments {
+//                    self.dataArray.addObject(d)
+//                }
+//            }
+//        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCommentCellHeader", forIndexPath: indexPath) as! TopicCommentCellHeader
             c.data = dataArrayTop
+            c.delegateVote = self
             return c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCommentCell", forIndexPath: indexPath) as! TopicCommentCell
@@ -73,9 +82,11 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            let content = dataArrayTop!.stringAttributeForKey("content").decode()
-            let hContent = content.stringHeightWith(14, width: globalWidth - 80)
-            return hContent + 97
+            if dataArrayTop != nil {
+                let h = CGFloat((dataArrayTop!.stringAttributeForKey("heightCell") as NSString).floatValue)
+                return h
+            }
+            return 0
         } else {
             let data = dataArray[indexPath.row] as! NSDictionary
             let content = data.stringAttributeForKey("content").decode()
@@ -94,5 +105,20 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
+    }
+    
+    
+    func updateData(index: Int, key: String, value: String, section: Int) {
+        let mutableItem = NSMutableDictionary(dictionary: dataArrayTop!)
+        mutableItem.setValue(value, forKey: key)
+        dataArrayTop = mutableItem
+    }
+    
+    func updateTable() {
+        tableView.reloadData()
+    }
+    
+    func updateTableFooter() {
+        
     }
 }

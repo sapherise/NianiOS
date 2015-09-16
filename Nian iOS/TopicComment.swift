@@ -15,6 +15,7 @@ class TopicComment: SAViewController, UITextFieldDelegate {
     var page: Int = 1
     var dataArrayTop: NSDictionary!
     var dataArray = NSMutableArray()
+    var id = ""
     
     /* topic id */
     var topicID: String?

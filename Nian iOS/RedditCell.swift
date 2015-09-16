@@ -34,8 +34,6 @@ class RedditCell: UITableViewCell {
     var index: Int = 0
     
     override func awakeFromNib() {
-        super.awakeFromNib()
-        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         viewUp.setVote()
@@ -48,11 +46,6 @@ class RedditCell: UITableViewCell {
         viewBottomLine.setWidth(0.5)
         viewVoteLine.setHeight(0.5)
         labelTag.backgroundColor = SeaColor
-        labelTag.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hello"))
-    }
-    
-    func hello() {
-        
     }
     
     override func layoutSubviews() {

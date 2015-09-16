@@ -118,7 +118,7 @@ struct Api {
     // MARK: - 搜索梦想
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/tags/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/search/dream?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
         ///dream/search?keyword=php&page=2
     }
     
@@ -137,7 +137,7 @@ struct Api {
     // MARK: - 搜索话题
     static func getSearchTopics(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/follow/tag?uid=\(s_uid)&&shell=\(s_shell)&&tag=\(keyword)&&page=\(page)", callback: callback)
+//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
     }
     
     // MARK: -
@@ -882,14 +882,22 @@ extension Api {
         V.httpGetForJson("http://api.nian.so/topic/dream/\(id)", callback: callback)
     }
     
-    /**
-    获得“楼中楼”， or 获取回答的评论列表
-    */
-    static func getCommentInComment(id: String, page: Int, callback: V.JsonCallback) {
+    // 获得话题顶部
+    static func getTopic(id: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/topic/\(id)/comments?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/topic/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    // 发布评论的评论
+    static func postTopicCommentComment(id: String, content: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson_AFN("http://api.nian.so/topic/comment?uid=\(s_uid)&shell=\(s_shell)", content: ["topic_id": "\(id)", "content": content], callback: callback)
+    }
     
+    // 获得评论的评论
+    static func getTopicCommentComment(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/answer/\(id)/comments?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
 }
 

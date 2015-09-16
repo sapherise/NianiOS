@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension TopicViewController: UITableViewDataSource, UITableViewDelegate, TopicDelegate, RedditDelegate {
+extension TopicViewController {
     func setupTableViews() {
         // tableViewLeft
         tableViewLeft = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
@@ -52,6 +52,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         if clear {
             pageLeft = 1
         }
+        navigationItem.rightBarButtonItems = buttonArray()
         Api.getTopicCommentHot(id, page: pageLeft) { json in
             if json != nil {
                 let err = json!.objectForKey("error") as! NSNumber
@@ -63,13 +64,16 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
                     for d in data {
                         self.dataArrayLeft.addObject(d)
                     }
-                    self.tableViewLeft.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+                    self.tableViewLeft.reloadData()
                     self.pageLeft++
                 } else {
                     self.view.showTipText("服务器坏了")
                 }
                 self.tableViewLeft.headerEndRefreshing()
                 self.tableViewLeft.footerEndRefreshing()
+                let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "more")
+                btnMore.image = UIImage(named: "more")
+                self.navigationItem.rightBarButtonItems = [btnMore]
             }
         }
     }
@@ -78,6 +82,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         if clear {
             pageRight = 1
         }
+        navigationItem.rightBarButtonItems = buttonArray()
         Api.getTopicCommentNew(id, page: pageRight) { json in
             if json != nil {
                 let err = json!.objectForKey("error") as! NSNumber
@@ -89,25 +94,31 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
                     for d in data {
                         self.dataArrayRight.addObject(d)
                     }
-                    self.tableViewRight.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+                    self.tableViewRight.reloadData()
                     self.pageRight++
                 } else {
                     self.view.showTipText("服务器坏了")
                 }
                 self.tableViewRight.headerEndRefreshing()
                 self.tableViewRight.footerEndRefreshing()
+                let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "more")
+                btnMore.image = UIImage(named: "more")
+                self.navigationItem.rightBarButtonItems = [btnMore]
             }
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            let h = CGFloat((dataArrayTopLeft!.stringAttributeForKey("heightCell") as NSString).floatValue)
-            return h
+            if dataArrayTopLeft != nil {
+                let h = CGFloat((dataArrayTopLeft!.stringAttributeForKey("heightCell") as NSString).floatValue)
+                return h
+            }
+            return 0
         } else {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary
-            let content = data.stringAttributeForKey("content").decode()
+            let content = data.stringAttributeForKey("content").decode().toRedditReduce()
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
             let hContentMax = "\n\n\n".stringHeightWith(14, width: globalWidth - 80)
             return min(hContent, hContentMax) + 72 + 72 + 1
@@ -118,10 +129,13 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         if indexPath.section == 0 {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCellHeader", forIndexPath: indexPath) as! TopicCellHeader
             c.data = tableView == tableViewLeft ? dataArrayTopLeft : dataArrayTopRight
-            c.delegate = self
             c.index = tableView == tableViewLeft ? 0 : 1
+            c.delegate = self
+            c.delegateComment = self
             c.delegateVote = self
+            c.delegateTop = self
             c.indexVote = 0
+            c.id = id
             return c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCell", forIndexPath: indexPath) as! TopicCell
@@ -157,7 +171,7 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return dataArrayTopLeft == nil ? 0 : 1
+            return 1
         } else {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             return d.count
@@ -165,10 +179,24 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 {
+            let dataArray = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
+            let data = dataArray[indexPath.row] as! NSDictionary
+            let id = data.stringAttributeForKey("id")
+            let vc = TopicComment()
+            vc.id = id
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
+    }
+    
+    func updateDic(data: NSMutableDictionary) {
+        if dataArrayTopLeft == nil {
+            dataArrayTopLeft = data
+        }
     }
     
     func updateData(index: Int, key: String, value: String, section: Int) {
@@ -187,6 +215,15 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
             } else {
                 dataArrayRight.replaceObjectAtIndex(index, withObject: mutableItem)
             }
+        }
+    }
+    
+    // 添加新评论后的功能
+    func getComment(content: String) {
+        if current == 0 {
+            load()
+        } else {
+            loadRight()
         }
     }
     
