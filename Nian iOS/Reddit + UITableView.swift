@@ -97,7 +97,7 @@ extension RedditViewController {
         let dataArray = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
         let data = dataArray[indexPath.row] as! NSDictionary
         let title = data.stringAttributeForKey("title").decode()
-        let content = data.stringAttributeForKey("content").decode()
+        let content = data.stringAttributeForKey("content").decode().toRedditReduce()
         var hTitle = title.stringHeightWith(16, width: globalWidth - 80)
         var hContent = content.stringHeightWith(12, width: globalWidth - 80)
         let hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)

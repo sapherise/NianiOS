@@ -241,6 +241,9 @@ struct V {
         return "\(formatter.stringFromDate(NSDate()))"
     }
     
+    static func now() -> String {
+        return "\(Int(NSDate().timeIntervalSince1970))"
+    }
     
     static func relativeTime(timestamp: String) -> String {
         let current = NSDate().timeIntervalSince1970

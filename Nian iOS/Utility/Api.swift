@@ -881,5 +881,23 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/dream/\(id)", callback: callback)
     }
+    
+    // 获得话题顶部
+    static func getTopic(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // 发布评论的评论
+    static func postTopicCommentComment(id: String, content: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson_AFN("http://api.nian.so/topic/comment?uid=\(s_uid)&shell=\(s_shell)", content: ["topic_id": "\(id)", "content": content], callback: callback)
+    }
+    
+    // 获得评论的评论
+    static func getTopicCommentComment(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/topic/answer/\(id)/comments?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
 }
 

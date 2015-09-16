@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class TopicViewController: SAViewController {
+class TopicViewController: SAViewController, getCommentDelegate, UITableViewDataSource, UITableViewDelegate, TopicDelegate, RedditDelegate, RedditTopDelegate {
     var tableViewLeft: UITableView!
     var tableViewRight: UITableView!
     var id: String = ""

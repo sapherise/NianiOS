@@ -89,7 +89,6 @@ class TopicCell: UITableViewCell {
             // 绑定事件
             imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
             labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
-            labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
             
             setupVote()
         }
@@ -110,11 +109,6 @@ class TopicCell: UITableViewCell {
     // 投票 - 踩
     func onDown() {
         Vote.onDown(data, delegate: delegate, index: indexVote, section: 1)
-    }
-    
-    func onComment() {
-        let vc = TopicComment()
-        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onUser() {

@@ -187,7 +187,7 @@ extension String  {
     }
     
     func toRedditReduce() -> String{
-        var content = self
+        var content = self.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
         let expDream = try! NSRegularExpression(pattern: "<dream:[0-9]*>", options: NSRegularExpressionOptions())
         let expImage = try! NSRegularExpression(pattern: "<image:[a-z0-9._]* w:[0-9.]* h:[0-9.]*>", options: NSRegularExpressionOptions())
         content = expDream.stringByReplacingMatchesInString(content, options: NSMatchingOptions(), range: NSMakeRange(0, (content as NSString).length), withTemplate: "<记本>")

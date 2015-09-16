@@ -114,9 +114,15 @@ extension AddTopic {
                 self.view.showTipText("正文不能是空的...")
                 field2.becomeFirstResponder()
             } else {
+                navigationItem.rightBarButtonItems = buttonArray()
                 Api.postAddReddit(title, content: content, tags: tags) { json in
                     if json != nil {
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.navigationItem.rightBarButtonItems = nil
+                        if let j = json as? NSDictionary {
+                            let vc = TopicViewController()
+                            vc.id = j.stringAttributeForKey("data")
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
                     }
                 }
             }
@@ -126,10 +132,10 @@ extension AddTopic {
                 self.view.showTipText("正文不能是空的...")
                 field2.becomeFirstResponder()
             } else {
-                // 提交评论
-                // todo
+                navigationItem.rightBarButtonItems = buttonArray()
                 Api.postAddRedditComment(id, content: content) { json in
                     if json != nil {
+                        self.delegateComment?.getComment(content)
                         self.navigationController?.popViewControllerAnimated(true)
                     }
                 }

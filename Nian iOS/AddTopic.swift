@@ -13,6 +13,10 @@ protocol editRedditDelegate {
     func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
 }
 
+protocol getCommentDelegate {
+    func getComment(content: String)
+}
+
 class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, NSLayoutManagerDelegate, TITokenFieldDelegate, DreamSelectedDelegate {
     
     @IBOutlet var scrollView: UIScrollView!
@@ -28,6 +32,7 @@ class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerController
     var actionSheet: UIActionSheet?
     var imagePicker: UIImagePickerController?
     var delegate: editRedditDelegate?
+    var delegateComment: getCommentDelegate?
     var dict = NSMutableDictionary()
     var hImage: CGFloat = 0
     var type: Int = 0   // 0 为话题，1 为回应
