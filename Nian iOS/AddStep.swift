@@ -304,21 +304,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
     
     func onImageUploadedClick(sender:UIGestureRecognizer) {
         if let v = sender.view as? UIImageView {
-            let yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
-            var w = CGFloat((self.uploadWidth as NSString).floatValue)
-            var h = CGFloat((self.uploadHeight as NSString).floatValue)
-            if w * h > 0 {
-                if w > h {
-                    h = 50 * h / w
-                    w = 50
-                }else{
-                    w = 50 * w / h
-                    h = 50
-                }
-            }
-            let rect = CGRectMake(-yPoint.x, -yPoint.y, w, h)
             self.textView.resignFirstResponder()
-            v.showImage("http://img.nian.so/step/\(self.uploadUrl)!large", rect: rect)
+            v.showImage("http://img.nian.so/step/\(self.uploadUrl)!large")
         }
     }
 }

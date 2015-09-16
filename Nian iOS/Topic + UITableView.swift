@@ -136,26 +136,22 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
     }
     
     func changeTopic(index: Int) {
+        current = index
         if index == 0 {
             tableViewLeft.hidden = false
             tableViewRight.hidden = true
             tableViewLeft.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
             let y = tableViewRight.contentOffset.y
             tableViewLeft.setContentOffset(CGPointMake(0, y), animated: false)
+            load()
         } else {
             tableViewLeft.hidden = true
             tableViewRight.hidden = false
-            if dataArrayTopRight == nil {
-                dataArrayTopRight = dataArrayTopLeft
-                tableViewRight.reloadData()
-            } else {
-                tableViewRight.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
-            }
+            dataArrayTopRight = dataArrayTopLeft
+            tableViewRight.reloadData()
             let y = tableViewLeft.contentOffset.y
             tableViewRight.setContentOffset(CGPointMake(0, y), animated: false)
-            if dataArrayRight.count == 0 {
-                loadRight()
-            }
+            loadRight()
         }
     }
     
@@ -175,15 +171,33 @@ extension TopicViewController: UITableViewDataSource, UITableViewDelegate, Topic
         return 2
     }
     
-    func updateData(index: Int, key: String, value: String) {
-        let mutableItem = NSMutableDictionary(dictionary: dataArrayTopLeft!)
-        mutableItem.setValue(value, forKey: key)
-        dataArrayTopLeft = mutableItem
-//        dataArrayTopRight = mutableItem
+    func updateData(index: Int, key: String, value: String, section: Int) {
+        if section == 0 {
+            let mutableItem = NSMutableDictionary(dictionary: dataArrayTopLeft!)
+            mutableItem.setValue(value, forKey: key)
+            dataArrayTopLeft = mutableItem
+            dataArrayTopRight = mutableItem
+            delegate?.updateData(self.index, key: key, value: value, section: 0)
+        } else {
+            let d = current == 0 ? dataArrayLeft[index] : dataArrayRight[index]
+            let mutableItem = NSMutableDictionary(dictionary: d as! NSDictionary)
+            mutableItem.setValue(value, forKey: key)
+            if current == 0 {
+                dataArrayLeft.replaceObjectAtIndex(index, withObject: mutableItem)
+            } else {
+                dataArrayRight.replaceObjectAtIndex(index, withObject: mutableItem)
+            }
+        }
     }
     
     func updateTable() {
         tableViewLeft.reloadData()
         tableViewRight.reloadData()
+        delegate?.updateTable()
+    }
+    
+    func updateTableFooter() {
+        tableViewLeft.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+        tableViewRight.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
     }
 }

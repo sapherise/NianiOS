@@ -107,12 +107,12 @@ class TopicCell: UITableViewCell {
     
     // 投票 - 赞
     func onUp() {
-        Vote.onUp(data, delegate: delegate, index: indexVote)
+        Vote.onUp(data, delegate: delegate, index: indexVote, section: 1)
     }
     
     // 投票 - 踩
     func onDown() {
-        Vote.onDown(data, delegate: delegate, index: indexVote)
+        Vote.onDown(data, delegate: delegate, index: indexVote, section: 1)
     }
     
     func onComment() {

@@ -10,7 +10,7 @@ import Foundation
 
 protocol TopicDelegate {
     func changeTopic(index: Int)
-    func updateData(index: Int, key: String, value: String)
+    func updateData(index: Int, key: String, value: String, section: Int)
 }
 
 class TopicCellHeader: UITableViewCell {
@@ -28,12 +28,14 @@ class TopicCellHeader: UITableViewCell {
     @IBOutlet var viewLine: UIView!
     @IBOutlet var viewLineClick: UIView!
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var viewHolder: UIView!
     var data: NSMutableDictionary?
     var delegate: TopicDelegate?
     var index: Int = 0
     var delegateVote: RedditDelegate?
     var indexVote: Int = 0
     var arr: NSMutableArray?
+    var url: String = ""
     
     override func awakeFromNib() {
         self.setWidth(globalWidth)
@@ -52,10 +54,10 @@ class TopicCellHeader: UITableViewCell {
         viewLine.setHeight(0.5)
         viewLine.setY(31.5)
         viewLineClick.frame = CGRectMake(labelHot.x() + 0.5, 31.5, 47, 0.5)
-        scrollView.setTag()
         labelNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNew"))
         labelHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHot"))
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
+        viewHolder.setWidth(globalWidth)
     }
     
     func onNew() {
@@ -67,7 +69,7 @@ class TopicCellHeader: UITableViewCell {
     }
     
     func onComment() {
-        let vc = AddTopic()
+        let vc = AddTopic(nibName: "AddTopic", bundle: nil)
         vc.type = 1
         vc.id = data!.stringAttributeForKey("id")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
@@ -76,7 +78,6 @@ class TopicCellHeader: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            print("哈哈")
             let title = data!.stringAttributeForKey("title").decode()
             let content = data!.stringAttributeForKey("content").decode()
             let comment = data!.stringAttributeForKey("answers_count")
@@ -99,8 +100,6 @@ class TopicCellHeader: UITableViewCell {
                 var numBottom = labelTitle.bottom() + 16
                 for d in arr! {
                     let data = d as! NSDictionary
-                    //                print("==")
-                    //                print(data)
                     let type = data.stringAttributeForKey("type")
                     if type == "text" {
                         let c = data.stringAttributeForKey("content")
@@ -111,24 +110,43 @@ class TopicCellHeader: UITableViewCell {
                         label.textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
                         label.font = UIFont.systemFontOfSize(14)
                         numBottom = numBottom + h + 16
-                        self.addSubview(label)
+                        self.viewHolder.addSubview(label)
                     } else if type == "image" {
                         let w = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
                         var h = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
+                        let count = data.stringAttributeForKey("count")
                         let url = data.stringAttributeForKey("url")
                         if w > 0 {
                             h = (globalWidth - 80) * h / w
                             let image = UIImageView(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
-                            print(numBottom)
                             image.setImage("http://img.nian.so/bbs/\(url)!large", placeHolder: IconColor)
+                            image.userInteractionEnabled = true
+                            image.tag = Int(count)!
+                            image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage:"))
                             numBottom = numBottom + h + 16
-                            self.addSubview(image)
+                            self.viewHolder.addSubview(image)
                         }
                     } else if type == "dream" {
-                        let image = UIImageView(frame: CGRectMake(64, numBottom, 100, 20))
-                        image.backgroundColor = UIColor.yellowColor()
-                        numBottom = numBottom + 20 + 16
-                        self.addSubview(image)
+                        let id = data.stringAttributeForKey("id")
+                        let b = numBottom
+                        Api.getDream(id) { json in
+                            if json != nil {
+                                let d = json!.objectForKey("data") as! NSDictionary
+                                let img = d.stringAttributeForKey("image")
+                                let numSteps = d.stringAttributeForKey("steps_count")
+                                let title = d.stringAttributeForKey("title").decode()
+                                let v = (NSBundle.mainBundle().loadNibNamed("AddRedditDream", owner: self, options: nil) as NSArray).objectAtIndex(0) as! AddRedditDream
+                                v.title = title
+                                v.content = "\(numSteps) 进展"
+                                v.image = "http://img.nian.so/dream/\(img)!dream"
+                                v.frame = CGRectMake(64, b, 232, 64)
+                                v.userInteractionEnabled = true
+                                v.tag = Int(id)!
+                                v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDream:"))
+                                self.viewHolder.addSubview(v)
+                            }
+                        }
+                        numBottom = numBottom + 64 + 16
                     }
                 }
                 
@@ -136,19 +154,6 @@ class TopicCellHeader: UITableViewCell {
                 labelTitle.setHeight(hTitle)
                 labelComment.setY(numBottom)
                 viewBottom.setY(labelComment.bottom() + 24)
-                
-                var x: CGFloat = 11
-                if tags != nil {
-                    for tag in tags! {
-                        let t = tag.decode()
-                        let label = UILabel()
-                        label.setTagLabel(t)
-                        label.setX(x)
-                        scrollView.addSubview(label)
-                        x = x + label.width() + 8
-                    }
-                }
-                scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
                 
                 // 导航菜单
                 if index == 0 {
@@ -167,8 +172,67 @@ class TopicCellHeader: UITableViewCell {
                     labelHot.textColor = UIColor.b3()
                 }
                 
-                setupVote()
-                delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())")
+                // 设置标签
+                var x: CGFloat = 11
+                if tags != nil {
+                    if tags?.count > 0 {
+                        for tag in tags! {
+                            let t = tag.decode()
+                            let label = UILabel()
+                            label.setTagLabel(t)
+                            label.setX(x)
+                            label.userInteractionEnabled = true
+                            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
+                            scrollView.addSubview(label)
+                            x = x + label.width() + 8
+                        }
+                        scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
+                        scrollView.setTag()
+                        viewHolder.setHeight(viewBottom.bottom() + 52)
+                        delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom() + 52)", section: 0)
+                    } else {
+                        scrollView.hidden = true
+                        viewHolder.setY(0)
+                        viewHolder.setHeight(viewBottom.bottom())
+                        delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())", section: 0)
+                    }
+                }
+            }
+            setupVote()
+        }
+    }
+    
+    // 搜索标签
+    func toSearch(sender: UIGestureRecognizer) {
+        let label = sender.view as! UILabel
+        let storyboard = UIStoryboard(name: "Explore", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
+        vc.preSetSearch = label.text!
+        vc.shouldPerformSearch = true
+        vc.index = 3
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    // 点击记本
+    func onDream(sender: UIGestureRecognizer) {
+        let id = (sender.view?.tag)!
+        let vc = DreamViewController()
+        vc.Id = "\(id)"
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onImage(sender: UIGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let tag = imageView.tag
+        if arr != nil {
+            for d in arr! {
+                let data = d as! NSDictionary
+                let count = data.stringAttributeForKey("count")
+                if count == "\(tag)" {
+                    let url = data.stringAttributeForKey("url")
+                    imageView.showImage("http://img.nian.so/bbs/\(url)!large")
+                    break
+                }
             }
         }
     }
@@ -182,11 +246,11 @@ class TopicCellHeader: UITableViewCell {
     
     // 投票 - 赞
     func onUp() {
-        Vote.onUp(data!, delegate: delegateVote, index: indexVote)
+        Vote.onUp(data!, delegate: delegateVote, index: indexVote, section: 0)
     }
     
     // 投票 - 踩
     func onDown() {
-        Vote.onDown(data!, delegate: delegateVote, index: indexVote)
+        Vote.onDown(data!, delegate: delegateVote, index: indexVote, section: 0)
     }
 }

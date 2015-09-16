@@ -261,10 +261,21 @@ class ImClient {
                 m_repollDelay = m_repollDelay + 0.5
             }
         }
-        logError("^^^^^^^^^^^^^^^^^^^^^^")
+        logError("^^^^^^^^^^^^^^^^^^^^^^ \(prev_nil)")
         NSThread.sleepForTimeInterval(m_repollDelay)
         }
         m_polling = false
+    }
+    
+    func getLetter() {
+        
+        var r: AnyObject? = nil
+        r  = httpGet(m_landServer + "poll", params: "")
+        logInfo("++++ \(r)")
+        if r != nil {
+            r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
+            logInfo("++++ \(r)")
+        }
     }
     
     func setOnState(handler: State -> Void) {
@@ -308,7 +319,8 @@ class ImClient {
         m_polling = true
         m_onPull = handler
         go {
-            self.polling()
+//            self.polling()
+            self.getLetter()
         }
     }
     
@@ -328,16 +340,16 @@ class ImClient {
         return json
     }
     
-//    func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
-//        
-//        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        //        var safeuid = Sa.objectForKey("uid") as! String
-//        let safename = Sa.objectForKey("user") as! String
-//        let json: AnyObject? = httpPost(m_landServer  + "msg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "msgid": "1"]))
-//        return json
-//        // gmsg 变成 msg，cid 删除掉
-//    }
-//    
+    func sendMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
+        
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        //        var safeuid = Sa.objectForKey("uid") as! String
+        let safename = Sa.objectForKey("user") as! String
+        let json: AnyObject? = httpPost(m_landServer  + "msg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "msgid": "1"]))
+        return json
+        // gmsg 变成 msg，cid 删除掉
+    }
+    
     func getSid() -> String {
         return m_sid
     }

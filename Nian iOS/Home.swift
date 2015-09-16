@@ -163,9 +163,26 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     :param: noti <#noti description#>
     */
     func handleNetworkReceiveMsg(noti: NSNotification) {
-        logWarn("\(noti)")
+        // 设置 [String: AnyObject] 的别名 Dict, 下面代码会略简洁
+        typealias Dict = [String: AnyObject]
         
-        self.noticeDot()
+        if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
+            switch _string {
+            case "你收到一条回应",
+                 "你收到一条按赞",
+                 "你收到一条通知":
+                
+                /* 获得私信、按赞和通知 */
+                self.noticeDot()
+                
+            case "你收到一条私信":
+                self.loadLetter()
+                
+            default:
+                break
+            }
+        }
+        
     }
     
     func onObserveActive() {
@@ -194,8 +211,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             return
         }
         noticeDot()
-//        timer = NSTimer(timeInterval: 15, target: self, selector: "noticeDot", userInfo: nil, repeats: true)
-//        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
     func stopTimer() {
@@ -235,9 +250,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 self.dot!.hidden = true
                                 if number > 0 {
                                     NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object: nil)
-                                }
-                                if a > 0 {
-                                    NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: nil)
                                 }
                             }
                         })
@@ -488,72 +500,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func enter() {
-        if isLoadFinish == 1 {
-            go {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                client.setOnState(self.on_state)
-                client.enter(safeuid, shell: safeshell)
-            }
-        }
-    }
-    
-    func on_state(st: ImClient.State) {
-        if st == .authed {
-            client.pollBegin(self.on_poll)
-        } else if st == .live {
-            onCircleEnter()
-        }
-    }
-    
-    func on_poll(obj: AnyObject?) {
-        go {
-            logInfo("+++ \(obj) ===")
-            
-            let safeuid = SAUid()
-            if obj != nil {
-                let msg: AnyObject? = obj!.objectForKey("msg")
-                if msg != nil {
-                    let json = msg!.objectForKey("msg") as? NSArray
-                    if json != nil {
-                        let count = json!.count - 1
-                        if count >= 0 {
-                            for i: Int in 0...count {
-                                let data: NSDictionary = json![i] as! NSDictionary
-                                let id = data.stringAttributeForKey("msgid")
-                                let uid = data.stringAttributeForKey("from")
-                                let name = data.stringAttributeForKey("fromname")
-                                var content = data.stringAttributeForKey("msg")
-                                let type = data.stringAttributeForKey("msgtype")
-                                let time = data.stringAttributeForKey("time")
-                                var title = data.stringAttributeForKey("title")
-                                let totype = data.stringAttributeForKey("totype")
-                                content = SADecode(SADecode(content))
-                                title = SADecode(SADecode(title))
-                                var isread = 0
-                                // 如果是群聊
-                                if totype == "1" {
-                                } else {
-                                    // 如果是私信
-                                    shake()
-                                    if uid == "\(globalCurrentLetter)" || uid == safeuid {
-                                        isread = 1
-                                    }
-                                    SQLLetterContent(id, uid: uid, name: name, circle: uid, content: content, type: type, time: time, isread: isread) {
-                                        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
-                                        self.noticeDot()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     func loadLetter() {
         Api.postLetterInit() { json in
             if json != nil {
@@ -561,6 +507,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 self.isLoadFinish++
                 let arr = json!.objectForKey("items") as! NSArray
                 let lastid = json!.objectForKey("lastid") as! String
+                
                 for i : AnyObject  in arr {
                     let data = i as! NSDictionary
                     let id = data.stringAttributeForKey("id")
@@ -586,11 +533,79 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         }
                     }
                 }
+                
                 self.noticeDot()
-                Api.postUserLetterLastid(lastid) { json in
+                Api.postUserLetterLastid(lastid) { _ in
                 }
-                self.enter()
             }
         }
     }
+    
+    
+//    func enter() {
+//        if isLoadFinish == 1 {
+//            go {
+//                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//                let safeshell = uidKey.objectForKey(kSecValueData) as! String
+//                client.setOnState(self.on_state)
+//                client.enter(safeuid, shell: safeshell)
+//            }
+//        }
+//    }
+
+//    func on_state(st: ImClient.State) {
+//        if st == .authed {
+//            client.pollBegin(self.on_poll)
+//        } else if st == .live {
+//            onCircleEnter()
+//        }
+//    }
+//
+//    func on_poll(obj: AnyObject?) {
+//        go {
+//            logInfo("+++ \(obj) ===")
+//
+//            let safeuid = SAUid()
+//            if obj != nil {
+//                let msg: AnyObject? = obj!.objectForKey("msg")
+//                if msg != nil {
+//                    let json = msg!.objectForKey("msg") as? NSArray
+//                    if json != nil {
+//                        let count = json!.count - 1
+//                        if count >= 0 {
+//                            for i: Int in 0...count {
+//                                let data: NSDictionary = json![i] as! NSDictionary
+//                                let id = data.stringAttributeForKey("msgid")
+//                                let uid = data.stringAttributeForKey("from")
+//                                let name = data.stringAttributeForKey("fromname")
+//                                var content = data.stringAttributeForKey("msg")
+//                                let type = data.stringAttributeForKey("msgtype")
+//                                let time = data.stringAttributeForKey("time")
+//                                var title = data.stringAttributeForKey("title")
+//                                let totype = data.stringAttributeForKey("totype")
+//                                content = SADecode(SADecode(content))
+//                                title = SADecode(SADecode(title))
+//                                var isread = 0
+//                                // 如果是群聊
+//                                if totype == "1" {
+//                                } else {
+//                                    // 如果是私信
+//                                    shake()
+//                                    if uid == "\(globalCurrentLetter)" || uid == safeuid {
+//                                        isread = 1
+//                                    }
+//                                    SQLLetterContent(id, uid: uid, name: name, circle: uid, content: content, type: type, time: time, isread: isread) {
+//                                        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+//                                        self.noticeDot()
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
 }

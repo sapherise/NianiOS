@@ -212,16 +212,20 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
         }
         
+        /* 现在可能预先设置的搜索来自 Dream cell top, 对应 index == 1； Topic cell top 对应 index == 3  */
+        let flowViewOffset = index == 1 ? (globalWidth/2 - 65) : (index == 3 ? globalWidth/2 + 95 : 0)
+        
         if (preSetSearch.characters.count > 0 && shouldPerformSearch) {
             if let _ = self.tableDict[index] {
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.floatView.setX(globalWidth/2 - 65)
+                    self.floatView.setX(flowViewOffset)
                 })
                 setupButtonColor(index)
             } else {
                 self.showTableViewWithIndex(index)
             }
             
+            preSetSearch = ""
             self.tableDict[index]?.headerBeginRefreshing()
         }
         
@@ -586,12 +590,12 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if clear {
                     self.dataArrayStep.removeAllObjects()
                 }
-            }
-            let data: AnyObject? = json!.objectForKey("data")
-            let itemsStep = data!.objectForKey("steps") as? NSArray
-            if itemsStep != nil {
-                for item in itemsStep! {
-                    self.dataArrayStep.addObject(item)
+                let data: AnyObject? = json!.objectForKey("data")
+                let itemsStep = data!.objectForKey("steps") as? NSArray
+                if itemsStep != nil {
+                    for item in itemsStep! {
+                        self.dataArrayStep.addObject(item)
+                    }
                 }
             }
             self.stepTableView.reloadData()
@@ -610,9 +614,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if clear {
                     self.dataArrayTopic.removeAllObjects()
                 }
+                let data: AnyObject? = json!.objectForKey("data")
+                let itemTopic = data!.objectForKey("topics") as? NSArray
+                if itemTopic != nil {
+                    for item in itemTopic! {
+                        self.dataArrayTopic.addObject(item)
+                    }
+                }
             }
-            
-            // TODO: - 补充 topic 数据
             
             self.topicTableView.reloadData()
             self.topicTableView.headerEndRefreshing()
@@ -675,7 +684,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             return c
         case 3:
             // TODO: - 完成 topic cell
-            let cell = UITableViewCell()
+            let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  // UITableViewCell()
+            cell.delegate = self
+            cell.data = self.dataArrayTopic[indexPath.row] as! NSDictionary
+            cell.index = indexPath.row
             
             return cell
         default:
@@ -707,6 +719,15 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.navigationController?.pushViewController(viewController, animated: true)
         } else if index == 3 {
             // TODO: - topic cell select 事件
+            let dict = dataArrayTopic[indexPath.row] as! NSDictionary
+            
+            let TopicVC = TopicViewController()
+            TopicVC.id = dict["id"] as! String
+            TopicVC.index = index
+            TopicVC.dataArrayTopLeft = NSMutableDictionary(dictionary: dict)
+            TopicVC.delegate = self
+            
+            self.navigationController?.pushViewController(TopicVC, animated: true)
         }
     }
     
@@ -735,7 +756,17 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             })
         } else if index == 3 {
             // TODO: - topic cell 高度
-            return 1
+            let data = dataArrayTopic[indexPath.row] as! NSDictionary
+            let title = data.stringAttributeForKey("title").decode()
+            let content = data.stringAttributeForKey("content").decode()
+            var hTitle = title.stringHeightWith(16, width: globalWidth - 80)
+            var hContent = content.stringHeightWith(12, width: globalWidth - 80)
+            let hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
+            let hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
+            hTitle = min(hTitle, hTitleMax)
+            hContent = min(hContent, hContentMax)
+            
+            return hTitle + hContent + 99
         } else {
             return 0
         }
@@ -852,6 +883,24 @@ extension ExploreSearch: SAStepCellDatasource {
             self.dataArrayStep.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
         }
     }
+}
+
+extension ExploreSearch: RedditDelegate {
+    /**
+    <#Description#>
+    */
+    func updateData(index: Int, key: String, value: String, section: Int) {
+        
+    }
+    
+    func updateTable() {
+        
+    }
+    
+    func updateTableFooter() {
+        
+    }
+    
 }
 
 // MARK: - 实现 UIScrollView Delegate

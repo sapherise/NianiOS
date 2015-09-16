@@ -530,9 +530,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func onUserHeadClick(sender:UIGestureRecognizer) {
         if let v = sender.view as? UIImageView {
-            let yPoint = v.convertPoint(CGPointMake(0, 0), fromView: v.window!)
-            let rect = CGRectMake(-yPoint.x, -yPoint.y, 60, 60)
-            v.showImage("http://img.nian.so/head/\(self.Id).jpg!large", rect: rect)
+            v.showImage("http://img.nian.so/head/\(self.Id).jpg!large")
         }
     }
     

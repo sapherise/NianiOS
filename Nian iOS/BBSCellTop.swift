@@ -33,35 +33,37 @@ class BBSCellTop: UITableViewCell{
     
     override func layoutSubviews(){
         super.layoutSubviews()
-        let title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        let user = data.stringAttributeForKey("user")
-        let uid = data.stringAttributeForKey("uid")
-        let lastdate = data.stringAttributeForKey("postdate")
-        let content = SADecode(SADecode(data.stringAttributeForKey("content")))
-        self.BBStitle.text = title
-        let titleHeight = title.stringHeightWith(16,width:globalWidth-40)
-        self.BBStitle!.setHeight(titleHeight)
-        
-        self.nickLabel.text = user
-        self.lastdate.text = V.relativeTime(lastdate)
-        self.dreamhead.setHead(uid)
-        self.contentLabel.text = content
-        
-        let height = content.stringHeightWith(16,width:globalWidth-85)
-        self.contentLabel.setHeight(height)
-        
-        self.dreamhead!.setY(self.BBStitle!.bottom()+20)
-        self.nickLabel!.setY(self.BBStitle!.bottom()+20)
-        self.lastdate!.setY(self.nickLabel!.bottom()+6)
-        self.contentLabel!.setY(self.dreamhead!.bottom()+20)
-        self.viewFlow.setY(self.contentLabel!.bottom()+20)
-        self.Line!.setY(self.viewFlow!.bottom()+25)
-        if uid == "" {
-            View.hidden = true
-        } else {
-            View.hidden = false
+        if data != nil {
+            let title = data.stringAttributeForKey("title").decode()
+            let user = data.stringAttributeForKey("user")
+            let uid = data.stringAttributeForKey("uid")
+            let lastdate = data.stringAttributeForKey("postdate")
+            let content = SADecode(SADecode(data.stringAttributeForKey("content")))
+            self.BBStitle.text = title
+            let titleHeight = title.stringHeightWith(16,width:globalWidth-40)
+            self.BBStitle!.setHeight(titleHeight)
+            
+            self.nickLabel.text = user
+            self.lastdate.text = V.relativeTime(lastdate)
+            self.dreamhead.setHead(uid)
+            self.contentLabel.text = content
+            
+            let height = content.stringHeightWith(16,width:globalWidth-85)
+            self.contentLabel.setHeight(height)
+            
+            self.dreamhead!.setY(self.BBStitle!.bottom()+20)
+            self.nickLabel!.setY(self.BBStitle!.bottom()+20)
+            self.lastdate!.setY(self.nickLabel!.bottom()+6)
+            self.contentLabel!.setY(self.dreamhead!.bottom()+20)
+            self.viewFlow.setY(self.contentLabel!.bottom()+20)
+            self.Line!.setY(self.viewFlow!.bottom()+25)
+            if uid == "" {
+                View.hidden = true
+            } else {
+                View.hidden = false
+            }
+            Line.setHeightHalf()
         }
-        Line.setHeightHalf()
     }
     
     class func cellHeightByData(data: NSDictionary)->CGFloat{

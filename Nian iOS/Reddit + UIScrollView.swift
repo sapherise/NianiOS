@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension RedditViewController: UIScrollViewDelegate {
+extension RedditViewController {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == self.scrollView {
             let x = scrollView.contentOffset.x
@@ -43,14 +43,25 @@ extension RedditViewController: UIScrollViewDelegate {
                 }
             }
             current = index
+            setupScrollToTop()
         }
     }
     
+    func setupScrollToTop() {
+        if current == 1 {
+            tableViewRight.scrollsToTop = true
+            tableViewLeft.scrollsToTop = false
+        } else {
+            tableViewLeft.scrollsToTop = true
+            tableViewRight.scrollsToTop = false
+        }
+    }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView == self.scrollView {
             let x = scrollView.contentOffset.x
             current = Int(x / globalWidth)
+            setupScrollToTop()
             if current == 0 {
                 if dataArrayLeft.count == 0 {
                     tableViewLeft.headerBeginRefreshing()

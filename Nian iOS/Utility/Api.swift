@@ -118,7 +118,7 @@ struct Api {
     // MARK: - 搜索梦想
     static func getSearchDream(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/search/dream?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/tags/search?uid=\(s_uid)&&shell=\(s_shell)&&keyword=\(keyword)&&page=\(page)", callback: callback)
         ///dream/search?keyword=php&page=2
     }
     
@@ -137,7 +137,7 @@ struct Api {
     // MARK: - 搜索话题
     static func getSearchTopics(keyword: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-//        V.httpGetForJson(<#T##requestURL: String##String#>, callback: <#T##JsonCallback##JsonCallback##AnyObject? -> Void#>)
+        V.httpGetForJson("http://api.nian.so/follow/tag?uid=\(s_uid)&&shell=\(s_shell)&&tag=\(keyword)&&page=\(page)", callback: callback)
     }
     
     // MARK: -
@@ -835,6 +835,11 @@ extension Api {
     static func getReddit(page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topics?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getRedditFollow(page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/user/\(s_uid)/follow/topics?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func getVoteUp(id: String, callback: V.JsonCallback) {

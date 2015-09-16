@@ -324,9 +324,6 @@ func SAstrlen(stremp:NSString)->Int{
 
 func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
     let viewEmpty = UIView(frame: CGRectMake(0, 0, width, 55))
-    let imageEmpty = UIImageView(frame: CGRectMake(0, 0, width, 35))
-    imageEmpty.image = UIImage(named: "smile")
-    imageEmpty.contentMode = UIViewContentMode.Center
     let labelEmpty = UILabel(frame: CGRectMake(0, 40, width, 20))
     labelEmpty.font = UIFont.systemFontOfSize(11)
     labelEmpty.textAlignment = NSTextAlignment.Center
@@ -335,7 +332,6 @@ func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
     labelEmpty.text = content
     let height = content.stringHeightWith(11, width: width)
     labelEmpty.setHeight(height)
-    viewEmpty.addSubview(imageEmpty)
     viewEmpty.addSubview(labelEmpty)
     viewEmpty.setHeight(height + 60)
     return viewEmpty
@@ -918,6 +914,26 @@ extension UIView {
         let SINGLE_LINE_ADJUST_OFFSET = (1 / UIScreen.mainScreen().scale) / 2
         self.setHeight(SINGLE_LINE_HEIGHT)
         self.setY(self.frame.origin.y - SINGLE_LINE_ADJUST_OFFSET)
+    }
+    
+    func addGhost(content: String) {
+        let vHolder = UIView(frame: CGRectMake(0, 0, 280, 110))
+        let v = UIImageView(frame: CGRectMake(0, 0, 280, 60))
+        v.image = UIImage(named: "pet_ghost")
+        v.contentMode = UIViewContentMode.Center
+        let label = UILabel(frame: CGRectMake(0, 76, 280, 40))
+        let h = content.stringHeightWith(13, width: 280)
+        label.text = content
+        label.font = UIFont.systemFontOfSize(13)
+        label.numberOfLines = 0
+        label.textAlignment = .Center
+        label.textColor = UIColor.b3()
+        label.setHeight(h)
+        vHolder.addSubview(v)
+        vHolder.addSubview(label)
+        vHolder.setHeight(h + 76)
+        vHolder.center = self.center
+        self.addSubview(vHolder)
     }
 }
 

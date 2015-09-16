@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class RedditViewController: UIViewController {
+class RedditViewController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, RedditDelegate {
     var labelLeft: UILabel!
     var labelRight: UILabel!
     var scrollView: UIScrollView!
@@ -87,7 +87,7 @@ class RedditViewController: UIViewController {
     }
     
     func addReddit() {
-        let vc = AddTopic()
+        let vc = AddTopic(nibName: "AddTopic", bundle: nil)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

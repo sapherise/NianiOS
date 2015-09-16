@@ -56,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         DDTTYLogger.sharedInstance().colorsEnabled = true
         DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
         DDTTYLogger.sharedInstance().setForegroundColor(UIColor.orangeColor(), backgroundColor: nil, forFlag: .Warning)
+
         
         application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()
@@ -67,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
 //            logInfo("\(launchOptions)")
 //            
 //            let dict = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
-//            
+//
 //            if dict != nil {
 ////               handleReceiveRemoteNotification(dict!)
 //                
@@ -121,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         
         APService.registerDeviceToken(deviceToken)
         let cc = APService.registrationID()
-        logInfo("\(cc)")
+        logInfo("\(cc), \(NSString(data: deviceToken, encoding:NSUTF8StringEncoding)))")
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -181,12 +182,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     
     // 收到消息通知， JPush
     func handleReceiveRemoteNotification(aps: NSDictionary) {
-        let content = aps["alert"] as? NSString
-        let badge = aps["badge"] as? NSInteger
-        let sound = aps["sound"] as? NSString
-        
-        logVerbose("\(content) \(badge) \(sound)")
-        
         navTo_MEVC()
     }
     

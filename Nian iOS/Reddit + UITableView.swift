@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension RedditViewController: UITableViewDelegate, UITableViewDataSource, RedditDelegate {
+extension RedditViewController {
     
     func setupTable() {
         tableViewLeft.registerNib(UINib(nibName: "RedditCell", bundle: nil), forCellReuseIdentifier: "RedditCell")
@@ -19,6 +19,10 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         
         tableViewLeft.separatorStyle = .None
         tableViewRight.separatorStyle = .None
+        
+        tableViewRight.scrollsToTop = true
+        tableViewLeft.scrollsToTop = false
+        scrollView.scrollsToTop = false
         
         tableViewLeft.addHeaderWithCallback {
             self.loadLeft()
@@ -38,7 +42,7 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         if clear {
             pageLeft = 1
         }
-        Api.getReddit(pageLeft) { json in
+        Api.getRedditFollow(pageLeft) { json in
             if json != nil {
                 let err = json!.objectForKey("error") as! NSNumber
                 let data = json!.objectForKey("data") as! NSArray
@@ -48,6 +52,9 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
                     }
                     for d in data {
                         self.dataArrayLeft.addObject(d)
+                    }
+                    if self.dataArrayLeft.count == 0 {
+                        self.tableViewLeft.addGhost("关注一些标签后\n这里会出现新的东西")
                     }
                     self.tableViewLeft.reloadData()
                     self.tableViewLeft.headerEndRefreshing()
@@ -126,11 +133,13 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
         let id = data.stringAttributeForKey("id")
         let vc = TopicViewController()
         vc.id = id
+        vc.index = indexPath.row
+        vc.delegate = self
         vc.dataArrayTopLeft = NSMutableDictionary(dictionary: data)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func updateData(index: Int, key: String, value: String) {
+    func updateData(index: Int, key: String, value: String, section: Int) {
         let d = current == 0 ? dataArrayLeft : dataArrayRight
         let t = current == 0 ? tableViewLeft : tableViewRight
         SAUpdate(d, index: index, key: key, value: value, tableView: t)
@@ -139,5 +148,8 @@ extension RedditViewController: UITableViewDelegate, UITableViewDataSource, Redd
     func updateTable() {
         let t = current == 0 ? tableViewLeft : tableViewRight
         t.reloadData()
+    }
+    
+    func updateTableFooter() {
     }
 }

@@ -8,13 +8,13 @@
 
 import Foundation
 extension UIImageView {
-    func showImage(imageURL: String, rect: CGRect = CGRectZero) {
+    func showImage(imageURL: String) {
         
         // 这是打开前的状态
-        let w = rect.width
-        let h = rect.height
-        let x: CGFloat = rect.origin.x
-        let y: CGFloat = rect.origin.y
+        let w = self.frame.size.width
+        let h = self.frame.size.height
+        let x: CGFloat = -self.getPoint().x
+        let y: CGFloat = -self.getPoint().y
         
         // 这是打开后的状态
         let nw = globalWidth
@@ -65,7 +65,7 @@ extension UIImageView {
             webView.hidden = true
             
             //var viewImage = UIImageView(frame: CGRectMake(0, -yPoint.y, CGFloat(globalWidth), heightGif))
-            let viewImage = UIImageView(frame: rect)
+            let viewImage = UIImageView(frame: self.frame)
             viewImage.setImage(imageURL, placeHolder: IconColor)
             viewHolder.addSubview(viewImage)
             viewHolder.addSubview(webView)

@@ -211,11 +211,8 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         if status {
             self.transPhone()
         }else{
-            let viewEm = viewEmpty(globalWidth, content: "失败了\n念不能获得你的通讯录")
-            let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-            viewEm.setY(40)
-            viewHolder.addSubview(viewEm)
-            self.tableViewPhone.tableFooterView = viewHolder
+            self.tableViewPhone.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 75))
+            self.tableViewPhone.tableFooterView?.addGhost("失败了\n念不能获得你的通讯录")
         }
     }
     
@@ -235,11 +232,8 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 }
                 self.tableViewPhone!.reloadData()
                 if self.dataArrayPhone.count == 0 {
-                    let viewEm = viewEmpty(globalWidth, content: "手机里的好友们\n还没有来玩念")
-                    let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    viewEm.setY(40)
-                    viewHolder.addSubview(viewEm)
-                    self.tableViewPhone.tableFooterView = viewHolder
+                    self.tableViewPhone.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 75))
+                    self.tableViewPhone.tableFooterView?.addGhost("手机里的好友们\n还没有来玩念")
                 }else{
                     self.tableViewPhone.tableFooterView = UIView(frame: CGRectMake(0, 0, 1, 50))
                 }
@@ -286,11 +280,8 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                     }
                     self.tableView!.reloadData()
                     if self.dataArray.count == 0 {
-                        let viewEm = viewEmpty(globalWidth, content: "微博上的好友们\n还没有来玩念")
-                        let viewHolder = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                        viewEm.setY(40)
-                        viewHolder.addSubview(viewEm)
-                        self.tableView.tableFooterView = viewHolder
+                        self.tableViewPhone.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 75))
+                        self.tableViewPhone.tableFooterView?.addGhost("微博上的好友们\n还没有来玩念")
                     }else{
                         self.tableView.tableFooterView = UIView(frame: CGRectMake(0, 0, 1, 50))
                     }

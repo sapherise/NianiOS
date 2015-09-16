@@ -40,8 +40,9 @@ func getRedditArray(content: String) -> NSMutableArray {
     var count: Int = 0
     for result in arr {
         let range = result.range
-        let subStr = (content as NSString).substringWithRange(NSMakeRange(location, range.location - location))
-        if location < range.location {
+        var subStr = (content as NSString).substringWithRange(NSMakeRange(location, range.location - location))
+        subStr = subStr.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
+        if location < range.location && subStr != "" {
             count++
             dataArray.addObject(["type": "text", "content": subStr, "count": "\(count)"])
         }
@@ -63,9 +64,12 @@ func getRedditArray(content: String) -> NSMutableArray {
         }
     }
     if (location < (content as NSString).length) {
-        let subStr = (content as NSString).substringWithRange(NSMakeRange(location, length - location))
-        count++
-        dataArray.addObject(["type": "text", "content": subStr, "count": "\(count)"])
+        var subStr = (content as NSString).substringWithRange(NSMakeRange(location, length - location))
+        subStr = subStr.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
+        if subStr != "" {
+            count++
+            dataArray.addObject(["type": "text", "content": subStr, "count": "\(count)"])
+        }
     }
     return dataArray
 }

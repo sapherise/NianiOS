@@ -122,7 +122,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             img1 = (self.data.stringAttributeForKey("height") as NSString).floatValue
             var like = self.data.stringAttributeForKey("likes")
             var comment = self.data.stringAttributeForKey("comments")
-            let title = SADecode(SADecode(self.data.stringAttributeForKey("title")))
+            let title = self.data.stringAttributeForKey("title").decode()
             lastdate = V.relativeTime(lastdate)
             
             self.labelTime.text = lastdate
@@ -413,14 +413,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     func onImageClick() {
         let img = data.stringAttributeForKey("image")
-        let width = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
-        var height = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
-        let point = self.imageHolder.getPoint()
-        if width * height != 0 {
-            height = height * (globalWidth - 40) / width
-            let rect = CGRectMake(-point.x, -point.y, globalWidth - 40, height)
-            self.imageHolder.showImage(V.urlStepImage(img, tag: .Large), rect: rect)
-        }
+        self.imageHolder.showImage(V.urlStepImage(img, tag: .Large))
     }
     
     func onCommentClick() {
@@ -500,7 +493,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     :returns: <#return value description#>
     */
     override func sizeThatFits(size: CGSize) -> CGSize {
-        content = SADecode(self.data.stringAttributeForKey("content"))
+        content = self.data.stringAttributeForKey("content").decode()
         contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
         
         let img0 = (data.stringAttributeForKey("width") as NSString).floatValue

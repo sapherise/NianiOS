@@ -30,20 +30,21 @@ class BBSCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-//        var id = self.data.stringAttributeForKey("id")
-        let uid = self.data.stringAttributeForKey("uid")
-        let user = self.data.stringAttributeForKey("user")
-        let lastdate = self.data.stringAttributeForKey("lastdate")
-        content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
-        self.nickLabel!.text = user
-        self.lastdate!.text = V.relativeTime(lastdate)
-        self.avatarView!.setHead(uid)
-        self.avatarView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
-        let height = content.stringHeightWith(16,width:globalWidth-85)
-        self.contentLabel!.setHeight(height)
-        self.contentLabel!.text = content
-        self.Line!.setY(self.contentLabel!.bottom()+25)
-        Line?.setHeightHalf()
+        if data != nil {
+            let uid = self.data.stringAttributeForKey("uid")
+            let user = self.data.stringAttributeForKey("user")
+            let lastdate = self.data.stringAttributeForKey("lastdate")
+            content = SADecode(SADecode(self.data.stringAttributeForKey("content")))
+            self.nickLabel!.text = user
+            self.lastdate!.text = V.relativeTime(lastdate)
+            self.avatarView!.setHead(uid)
+            self.avatarView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
+            let height = content.stringHeightWith(16,width:globalWidth-85)
+            self.contentLabel!.setHeight(height)
+            self.contentLabel!.text = content
+            self.Line!.setY(self.contentLabel!.bottom()+25)
+            Line?.setHeightHalf()
+        }
     }
     
     func toUser() {

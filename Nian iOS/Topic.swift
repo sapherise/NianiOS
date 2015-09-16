@@ -17,11 +17,18 @@ class TopicViewController: SAViewController {
     var dataArrayRight = NSMutableArray()
     var dataArrayTopLeft: NSMutableDictionary?
     var dataArrayTopRight: NSMutableDictionary?
+    var delegate: RedditDelegate?
+    var index: Int = -1 // 这是用来与 Reddit 建立 Delegate 的值
+    var current: Int = 0 // 这是最热与最新的值，默认为最热
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupTableViews()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        viewBackFix()
     }
     
     func setupViews() {
