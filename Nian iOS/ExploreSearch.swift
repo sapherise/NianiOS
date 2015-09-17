@@ -897,10 +897,6 @@ extension ExploreSearch: RedditDelegate {
         
     }
     
-    func updateTableFooter() {
-        
-    }
-    
 }
 
 // MARK: - 实现 UIScrollView Delegate

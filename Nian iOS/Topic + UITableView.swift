@@ -142,7 +142,8 @@ extension TopicViewController {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary
             c.data = data
-            c.topicId = self.id // 使 Topic cell 知道自己对应哪个 topic ID
+//            c.topicId = self.id // 使 Topic cell 知道自己对应哪个 topic ID
+            // todo: 什么意思？
             c.indexVote = indexPath.row
             c.delegate = self
             return c
@@ -185,6 +186,8 @@ extension TopicViewController {
             let id = data.stringAttributeForKey("id")
             let vc = TopicComment()
             vc.id = id
+            vc.delegate = self
+            vc.index = indexPath.row
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -231,10 +234,5 @@ extension TopicViewController {
         tableViewLeft.reloadData()
         tableViewRight.reloadData()
         delegate?.updateTable()
-    }
-    
-    func updateTableFooter() {
-        tableViewLeft.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
-        tableViewRight.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
     }
 }

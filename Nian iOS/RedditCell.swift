@@ -11,7 +11,6 @@ import Foundation
 protocol RedditDelegate {
     func updateData(index: Int, key: String, value: String, section: Int)
     func updateTable()
-    func updateTableFooter()
 }
 
 class RedditCell: UITableViewCell {

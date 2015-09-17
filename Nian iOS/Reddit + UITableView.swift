@@ -149,7 +149,4 @@ extension RedditViewController {
         let t = current == 0 ? tableViewLeft : tableViewRight
         t.reloadData()
     }
-    
-    func updateTableFooter() {
-    }
 }

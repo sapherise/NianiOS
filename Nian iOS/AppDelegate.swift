@@ -45,8 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-        APService.setupWithOption(launchOptions)
+//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+//        APService.setupWithOption(launchOptions)
         
         /* DDLog */
         let formatter = Formatter()

@@ -11,14 +11,11 @@ extension TopicComment {
     
     func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
-        let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
-        let h = keyboardSize.height
-        let hBefore = tableView.frame.size.height
-        let hAfter = hBefore - h
-        tableView.setHeight(hAfter)
+        let hKeyboard = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!.height
+        // 这个是弹起键盘后的 tableView 的高度
+        let h = globalHeight - 64 - 56 - hKeyboard
+        tableView.setHeight(h)
         inputKeyboard.setY(tableView.bottom())
-        let y = tableView.contentSize.height > hAfter ? tableView.contentSize.height - hAfter : 0
-        tableView.setContentOffset(CGPointMake(0, y), animated: false)
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
@@ -33,16 +30,18 @@ extension TopicComment {
                 let uid = SAUid()
                 let name = Cookies.get("user")
                 let time = V.now()
-                let dic = NSDictionary(objects: [content, time, "-1", uid, name!], forKeys: ["content", "created_at", "id", "user_id", "username"])
-                dataArray.addObject(dic)
+                let dic = NSMutableDictionary(objects: [content, "-1", "-1", uid, name!], forKeys: ["content", "created_at", "id", "user_id", "username"])
+                dataArray.insertObject(dic, atIndex: 0)
                 tableView.reloadData()
-                let h = tableView.contentSize.height
-                tableView.setContentOffset(CGPointMake(0, h - globalHeight), animated: true)
-//                Api.postTopicCommentComment(id, content: content) { json in
-//                    if json != nil {
-//                        print(json)
-//                    }
-//                }
+                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Left)
+                Api.postTopicCommentComment(id, content: content) { json in
+                    if json != nil {
+                        dic.setValue(time, forKey: "created_at")
+                        self.dataArray.replaceObjectAtIndex(0, withObject: dic)
+                        self.tableView.reloadData()
+                    }
+                }
+                textField.text = ""
             }
         }
         return true
