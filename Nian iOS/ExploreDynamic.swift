@@ -176,19 +176,20 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        let data = dataArray[indexPath.row] as! NSDictionary
-        let type = data.stringAttributeForKey("type")
-        
-        switch type {
-        case "0":
-            break
-        case "1":
-            (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
-            (cell as! SAStepCell).imageHolder.image = nil
-        default:
-            break
+        if dataArray.count > indexPath.row {
+            let data = dataArray[indexPath.row] as! NSDictionary
+            let type = data.stringAttributeForKey("type")
+            
+            switch type {
+            case "0":
+                break
+            case "1":
+                (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
+                (cell as! SAStepCell).imageHolder.image = nil
+            default:
+                break
+            }
         }
-        
     }
     
     /**

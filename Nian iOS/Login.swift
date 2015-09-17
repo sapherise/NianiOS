@@ -108,6 +108,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
                         })
                         Api.postDeviceToken() { string in
                         }
+                        Api.postJpushBinding(){_ in }
                     }
                 }
             }

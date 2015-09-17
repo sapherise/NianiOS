@@ -27,6 +27,8 @@ class TopicCell: UITableViewCell {
     var delegate: RedditDelegate?
     var indexVote: Int = 0
     
+    var topicId: String = ""
+    
     override func awakeFromNib() {
         self.setWidth(globalWidth)
         self.selectionStyle = .None

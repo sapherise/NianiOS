@@ -123,6 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         APService.registerDeviceToken(deviceToken)
         let cc = APService.registrationID()
         logInfo("\(cc), \(NSString(data: deviceToken, encoding:NSUTF8StringEncoding)))")
+        Api.postJpushBinding(){_ in }
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

@@ -166,16 +166,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         // 设置 [String: AnyObject] 的别名 Dict, 下面代码会略简洁
         typealias Dict = [String: AnyObject]
         
+        /* 只能用很差的方式来实现 */
         if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
-            switch _string {
-            case "你收到一条回应",
-                 "你收到一条按赞",
-                 "你收到一条通知":
+            let _char = _string[_string.startIndex.advancedBy(_string.characters.count - 2)]
+            
+            switch _char {
+            case "了":
                 
                 /* 获得私信、按赞和通知 */
                 self.noticeDot()
                 
-            case "你收到一条私信":
+            case "你":
                 self.loadLetter()
                 
             default:

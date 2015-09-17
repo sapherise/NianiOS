@@ -24,7 +24,6 @@ class NITextfield: UITextField {
 // MARK: -
 
 /**
-*  @author Bob Wei, 15-09-07 17:09:24
 *
 *  @brief  <#Description#>
 *
@@ -85,11 +84,11 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var topicButton: UIButton!
     @IBOutlet weak var floatView: UIView!
     
-    @IBOutlet weak var followButton: UIButton!
-    
+    var hasFollowTag: Bool = false
+    var tagFollowActionSheet: UIActionSheet?
     // MARK: -
     
-    var index: Int = 0  /* 用来指示当前的 table，在其他文件里可能相当于 current */
+    var index: Int = 0     /* 用来指示当前的 table，在其他文件里可能相当于 current */
     var dreamPage: Int = 1
     var userPage: Int = 1
     var stepPage: Int = 1
@@ -103,6 +102,9 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     /* 代码生成的搜索框 */
     var searchText = NITextfield()
+    
+    /*  */
+    var rightButton: UIBarButtonItem?
     
     // 用在计算 table view 滚动时应不应该加载图片
     var targetRect: NSValue?
@@ -246,6 +248,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         navView.setWidth(globalWidth)
         indiView.setWidth(globalWidth)
         
+        rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "Follow:")
+        rightButton!.image = UIImage(named:"more")
+        self.navigationItem.rightBarButtonItems = [rightButton!];
+        
         let _tmpWidth = globalWidth/2
         userButton.setX(_tmpWidth - 160)
         dreamButton.setX(_tmpWidth - 80)
@@ -259,7 +265,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep, dataArrayTopic]
         
         let color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
-        searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth-100, 26))
+        searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth - 88, 26))
         searchText.layer.cornerRadius = 13
         searchText.layer.masksToBounds = true
         searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)
@@ -443,17 +449,27 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - 关注搜索的内容
     /* */
     // TODO: -
-    @IBAction func Follow(sender: AnyObject) {
-        self.followButton.hidden = true
-        self.navigationItem.rightBarButtonItems = buttonArray()
-    
-        Api.postSearchFollow(self.searchText.text!) {
-            json in
-            self.navigationItem.rightBarButtonItems = []
-            self.followButton.hidden = false
-            
-            if json != nil {
-                
+    func Follow(sender: AnyObject) {
+        if self.searchText.text?.characters.count > 0{
+            self.navigationItem.rightBarButtonItems = buttonArray()
+            self.searchText.resignFirstResponder()
+        
+            Api.getHasFollowTopic(self.searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!) {
+                [unowned self] json in
+                if json != nil {
+                    self.navigationItem.rightBarButtonItems = [self.rightButton!]
+                    
+                    if let _data = json!.objectForKey("data") as? String {
+                        self.hasFollowTag = _data == "1" ? true : false
+                        let destructiveButtonTilte = _data == "1" ? "取消关注该标签" : "关注该标签"
+                        
+                        self.tagFollowActionSheet = UIActionSheet(title: "#" + self.searchText.text!,
+                                                                delegate: self,
+                                                                cancelButtonTitle: "算了",
+                                                                destructiveButtonTitle: destructiveButtonTilte)
+                        self.tagFollowActionSheet?.showInView(self.view)
+                    }
+                }
             }
         }
     }
@@ -522,7 +538,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.floatView.setX(globalWidth/2 + 95)
         })
         
-        self.scrollView.setContentOffset(CGPointMake(globalWidth, 0), animated: true)
+        self.scrollView.setContentOffset(CGPointMake(globalWidth * 3, 0), animated: true)
 
         if searchText.text != "" && (tmp == index || self.dataArrayTopic.count == 0) {
             self.topicTableView.headerBeginRefreshing()
@@ -621,6 +637,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                         self.dataArrayTopic.addObject(item)
                     }
                 }
+                
+                self.hasFollowTag = (data!.objectForKey("followed") as? String) == "1" ? true : false
             }
             
             self.topicTableView.reloadData()
@@ -684,7 +702,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             return c
         case 3:
             // TODO: - 完成 topic cell
-            let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  // UITableViewCell()
+            let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  
             cell.delegate = self
             cell.data = self.dataArrayTopic[indexPath.row] as! NSDictionary
             cell.index = indexPath.row
@@ -700,12 +718,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if index == 0 {
-            if indexPath.section == 1 {
-                let index = indexPath.row
-                let data = self.dataArrayStep[index] as! NSDictionary
-                let dream = data.stringAttributeForKey("dream")
-                SADream(dream)
-            }
+            let index = indexPath.row
+            let data = self.dataArrayStep[index] as! NSDictionary
+            let dream = data.stringAttributeForKey("dream")
+            SADream(dream)
         } else if index == 1 {
             let DreamVC = DreamViewController()
             DreamVC.Id = (self.dataArrayDream[indexPath.row] as! NSDictionary)["id"] as! String
@@ -723,7 +739,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             let TopicVC = TopicViewController()
             TopicVC.id = dict["id"] as! String
-            TopicVC.index = index
+            TopicVC.index = indexPath.row
             TopicVC.dataArrayTopLeft = NSMutableDictionary(dictionary: dict)
             TopicVC.delegate = self
             
@@ -890,17 +906,42 @@ extension ExploreSearch: RedditDelegate {
     <#Description#>
     */
     func updateData(index: Int, key: String, value: String, section: Int) {
-        
+        SAUpdate(self.dataArrayTopic, index: index, key: key, value: value, tableView: self.topicTableView)
     }
     
     func updateTable() {
-        
+        self.topicTableView.reloadData()
     }
     
     func updateTableFooter() {
-        
+        self.topicTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }
-    
+}
+
+// MARK: - UIActionSheet Delegate
+extension ExploreSearch: UIActionSheetDelegate {
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            let type = self.hasFollowTag ? "unfollow" : "follow"
+            
+            Api.postSearchFollow(self.searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, type: type) {
+                json in
+                
+                if json != nil {
+                    if let _data = json!.objectForKey("data") as? String {
+                        if _data == "success" {
+                            if self.hasFollowTag {
+                                self.view.showTipText("已取消关注标签 #\(self.searchText.text!)")
+                            } else {
+                                self.view.showTipText("已关注标签 #\(self.searchText.text!)")
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
 }
 
 // MARK: - 实现 UIScrollView Delegate
@@ -993,7 +1034,7 @@ extension ExploreSearch: ENHCDataSource {
         #if CGFLOAT_IS_DOUBLE
             _tmpDict.setObject(NSNumber(double: Double(titleHeight)), forKey: "titleHeight")
             _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-            #else
+        #else
             _tmpDict.setObject(NSNumber(float: Float(titleHeight)), forKey: "titleHeight")
             _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
         #endif
