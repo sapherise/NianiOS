@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelegate {
+extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelegate, UIActionSheetDelegate {
     func setupTableViews() {
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64 - 56))
         tableView.delegate = self
@@ -107,18 +107,78 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
         return 2
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 {
+            row = indexPath.row
+            textField.resignFirstResponder()
+            let ac = UIActionSheet()
+            ac.delegate = self
+            let data = dataArray[indexPath.row] as! NSDictionary
+            let userQ = dataArrayTop.stringAttributeForKey("user_id")
+            let userA = data.stringAttributeForKey("user_id")
+            let userMe = SAUid()
+            var arr = []
+            if userMe == userQ || userMe == userA {
+                arr = ["回应", "删除", "标记为不合适"]
+            } else {
+                arr = ["回应", "标记为不合适"]
+            }
+            for a in arr {
+                ac.addButtonWithTitle(a as? String)
+            }
+            ac.addButtonWithTitle("取消")
+            ac.cancelButtonIndex = arr.count
+            ac.showInView(self.view)
+        }
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+            let data = dataArray[row] as! NSDictionary
+            let userQ = dataArrayTop.stringAttributeForKey("user_id")
+            let userA = data.stringAttributeForKey("user_id")
+            let userMe = SAUid()
+            if userMe == userQ || userMe == userA {
+                if buttonIndex == 0 {
+                    onReply()
+                } else if buttonIndex == 1 {
+                    onDelete()
+                } else if buttonIndex == 2 {
+                    onReport()
+                }
+            } else {
+                if buttonIndex == 0 {
+                    onReply()
+                } else if buttonIndex == 1 {
+                    onReport()
+                }
+            }
+    }
+    
+    // 回应
+    func onReply() {
+        let data = dataArray[row] as! NSDictionary
+        let user = data.stringAttributeForKey("username")
+        textField.text = "@\(user) \(textField.text!)"
+        textField.becomeFirstResponder()
+    }
+    
+    func onDelete() {
+        // todo: 需要接入删除回应的回应 API
+    }
+    
+    func onReport() {
+        self.view.showTipText("举报好了！", delay: 2)
+    }
     
     func updateData(index: Int, key: String, value: String, section: Int) {
         let mutableItem = NSMutableDictionary(dictionary: dataArrayTop!)
         mutableItem.setValue(value, forKey: key)
         dataArrayTop = mutableItem
+        delegate?.updateData(self.index, key: key, value: value, section: 1)
     }
     
     func updateTable() {
         tableView.reloadData()
-    }
-    
-    func updateTableFooter() {
-        
+        delegate?.updateTable()
     }
 }

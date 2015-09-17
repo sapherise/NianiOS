@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TopicCell: UITableViewCell {
+class TopicCell: UITableViewCell, UIActionSheetDelegate {
     
     @IBOutlet var labelContent: UILabel!
     @IBOutlet var viewUp: UIImageView!
@@ -91,9 +91,51 @@ class TopicCell: UITableViewCell {
             // 绑定事件
             imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
             labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+            btnMore.addTarget(self, action: "onMore:", forControlEvents: .TouchUpInside)
             
             setupVote()
         }
+    }
+    
+    func onMore(sender: UIButton) {
+        let ac = UIActionSheet()
+        ac.delegate = self
+        let userA = data.stringAttributeForKey("user_id")
+        let userMe = SAUid()
+        var arr = ["标记为不合适"]
+        if userA == userMe {
+            arr = ["删除", "标记为不合适"]
+        }
+        for a in arr {
+            ac.addButtonWithTitle(a)
+        }
+        ac.addButtonWithTitle("取消")
+        ac.cancelButtonIndex = arr.count
+        ac.showInView((self.findRootViewController()?.view)!)
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        let userA = data.stringAttributeForKey("user_id")
+        let userMe = SAUid()
+        if userA == userMe {
+            if buttonIndex == 0 {
+                onDelete()
+            } else if buttonIndex == 1 {
+                onReport()
+            }
+        } else {
+            if buttonIndex == 0 {
+                onReport()
+            }
+        }
+    }
+    
+    func onReport() {
+        self.viewLine.showTipText("举报好了！", delay: 2)
+    }
+    
+    func onDelete() {
+        // todo: 需要接入删除的 API
     }
     
     // 投票 - 绑定事件

@@ -52,6 +52,5 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
             let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/bbs/\(self.id)")!], applicationActivities: arr)
             self.presentViewController(avc, animated: true, completion: nil)
         }
-        
     }
 }
