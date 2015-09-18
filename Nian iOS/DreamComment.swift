@@ -350,31 +350,22 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                     self.deleteCommentSheet!.cancelButtonIndex = 1
                     self.deleteCommentSheet!.showInView(self.view)
                 }else{
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", urlString: "http://nian.so/api/a.php")
-                        if(sa == "1"){
-                            dispatch_async(dispatch_get_main_queue(), {
-                                UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
-                            })
-                        }
-                    })
+                    UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
                 }
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
                 self.isKeyboardResign = 1
-                logInfo("\(self.dataArray.count)")
-                self.dataArray.removeObjectAtIndex(self.dataArray.count - 1 - self.ReplyRow)
-                logVerbose("\(self.dataArray.count)")
-//                self.tableview.beginUpdates()
-//                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: .None)
-//                self.tableview.endUpdates()
+                let row = self.dataArray.count - 1 - self.ReplyRow
+                self.dataArray.removeObjectAtIndex(row)
+                self.tableview.beginUpdates()
+                self.tableview.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .Fade)
                 self.tableview.reloadData()
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                self.tableview.endUpdates()
+                go {
                     SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", urlString: "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0
-                })
+                }
             }
         }
     }

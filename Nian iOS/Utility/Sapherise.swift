@@ -796,15 +796,16 @@ func SAUpdate(tableView: UITableView) {
 func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UITableView, section: Int) {
     if delete {
         dataArray.removeObjectAtIndex(index)
-        tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
+        tableView.beginUpdates()
+        tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Fade)
+        tableView.reloadData()
+        tableView.endUpdates()
     }
 }
 
 func SAUid() -> String {
-//    var uid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
     let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
     let uid = uidKey.objectForKey(kSecAttrAccount) as? String
-    
     if uid != nil {
         return uid!
     }

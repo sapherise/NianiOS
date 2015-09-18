@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+protocol RedditDeleteDelegate {
+    func onDelete(index: Int)
+}
 class TopicCell: UITableViewCell, UIActionSheetDelegate {
     
     @IBOutlet var labelContent: UILabel!
@@ -25,6 +27,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     var data: NSDictionary!
     var index: Int = 0
     var delegate: RedditDelegate?
+    var delegateDelete: RedditDeleteDelegate?
     var indexVote: Int = 0
     
     var topicId: String = ""
@@ -135,7 +138,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     }
     
     func onDelete() {
-        // todo: 需要接入删除的 API
+        delegateDelete?.onDelete(indexVote)
     }
     
     // 投票 - 绑定事件

@@ -18,7 +18,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var page: Int = 0
     var pageStep: Int = 1
     var Id:String = "0"
-    var deleteSheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
     var guestMoreSheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
@@ -134,22 +133,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if actionSheet == self.deleteSheet {
-            if buttonIndex == 0 {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                let newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
-                self.dataArrayStep.removeObjectAtIndex(newpath.row)
-                self.tableViewStep.deleteRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Fade)
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", urlString: "http://nian.so/api/delete_step.php")
-                    if(sa == "1"){
-                    }
-                })
-            }
-        }else if actionSheet == self.userMoreSheet {
+        if actionSheet == self.userMoreSheet {
             if buttonIndex == 0 {
                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                 let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String

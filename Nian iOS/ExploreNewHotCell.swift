@@ -64,7 +64,8 @@ class ExploreNewHotCell: UITableViewCell {
         let content = self.data.stringAttributeForKey("content")
         let steps = self.data.stringAttributeForKey("steps")
   
-        self.labelTag.text = "热门"
+        self.labelTag.text = "\(indexPath?.row)"
+        print(indexPath)
 
         self.labelTag.setRadius(4, isTop: false)
         

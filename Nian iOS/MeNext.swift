@@ -162,7 +162,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()
-        let BBSVC = BBSViewController()
         let StepVC = SingleStepViewController()
         if type == "0" {    //在你的记本留言
             if step != "0" {
@@ -187,14 +186,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             UserVC.Id = uid
             self.navigationController!.pushViewController(UserVC, animated: true)
         }else if type == "4" {  //参与了你的话题
-            BBSVC.Id = dream
-            BBSVC.isAsc = false
-            self.navigationController!.pushViewController(BBSVC, animated: true)
+            self.view.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！", delay: 2)
         }else if type == "5" {  //在某个话题提及你
-            BBSVC.Id = dream
-            BBSVC.isAsc = false
-            self.navigationController!.pushViewController(BBSVC, animated: true)
-            //BBS要倒叙
+            self.view.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！", delay: 2)
         }else if type == "6" {  //为你更新了记本
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)

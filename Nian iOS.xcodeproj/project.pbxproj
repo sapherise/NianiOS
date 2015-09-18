@@ -97,8 +97,6 @@
 		129152E71A6A910200BB213C /* FindCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E61A6A910200BB213C /* FindCellTop.xib */; };
 		1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291D59719BE0C55009F45F6 /* Welcome.swift */; };
 		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
-		12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12941A0019CFA8650008B274 /* AddBBSController.swift */; };
-		12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12941A0219CFA87C0008B274 /* AddBBSController.xib */; };
 		129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492811AD9322A000E7461 /* MKTableViewCell.swift */; };
 		129492841AD9329D000E7461 /* MKLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492831AD9329D000E7461 /* MKLayer.swift */; };
 		12960F6D19BF230100CB973E /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12960F6C19BF230100CB973E /* Sign.swift */; };
@@ -128,8 +126,6 @@
 		12BB334B1B936CAB00B7E03F /* TopicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BB334A1B936CAB00B7E03F /* TopicCell.xib */; settings = {ASSET_TAGS = (); }; };
 		12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36911B8EABFA00B37573 /* Reddit.swift */; };
 		12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */; };
-		12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103A19C5EBEA00370348 /* AddBBSComment.swift */; };
-		12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BE103C19C5EBF500370348 /* AddBBSComment.xib */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
 		12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE1B921B945FFA005976B8 /* TopicComment.swift */; settings = {ASSET_TAGS = (); }; };
 		12BF5FF819BB478300DE0ABE /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BF5FF719BB478300DE0ABE /* Login.swift */; };
@@ -164,11 +160,6 @@
 		12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8090C1A2DBFB20022C094 /* SingleStep.swift */; };
 		12EAABFC1AB292A500D20676 /* Popup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EAABFB1AB292A500D20676 /* Popup.xib */; };
 		12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EAABFD1AB292AF00D20676 /* Popup.swift */; };
-		12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9819B8B58B00CF1F98 /* BBS.swift */; };
-		12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */; };
-		12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */; };
-		12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */; };
-		12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */; };
 		12F65C091B64F46C0051A914 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C081B64F46C0051A914 /* Pet.swift */; };
 		12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0A1B64F5AE0051A914 /* SAViewController.swift */; };
 		12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0C1B64F98D0051A914 /* PetTableView.swift */; };
@@ -188,9 +179,6 @@
 		12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C2196AE8010026DD51 /* UIViewExt.swift */; };
 		12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */; };
 		322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322DB94B1A0C9E95005FD6AE /* Api.swift */; };
-		323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2EA1A11EEF300FFE3F4 /* Group.swift */; };
-		323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */; };
-		323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */; };
 		323F783E1A105C93003C3755 /* V.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323F783D1A105C93003C3755 /* V.swift */; };
 		324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324C2AEC1A28119E00E6A299 /* StoreKit.framework */; };
 		3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */; };
@@ -357,8 +345,6 @@
 		1291D59719BE0C55009F45F6 /* Welcome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		1292ABA51A5FB45B0091CC5F /* showImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showImage.swift; sourceTree = "<group>"; };
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
-		12941A0019CFA8650008B274 /* AddBBSController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSController.swift; sourceTree = "<group>"; };
-		12941A0219CFA87C0008B274 /* AddBBSController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSController.xib; sourceTree = "<group>"; };
 		129492811AD9322A000E7461 /* MKTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTableViewCell.swift; sourceTree = "<group>"; };
 		129492831AD9329D000E7461 /* MKLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLayer.swift; sourceTree = "<group>"; };
 		12960F6C19BF230100CB973E /* Sign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
@@ -398,8 +384,6 @@
 		12BB334A1B936CAB00B7E03F /* TopicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCell.xib; sourceTree = "<group>"; };
 		12BD36911B8EABFA00B37573 /* Reddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reddit.swift; sourceTree = "<group>"; };
 		12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UITableView.swift"; sourceTree = "<group>"; };
-		12BE103A19C5EBEA00370348 /* AddBBSComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBBSComment.swift; sourceTree = "<group>"; };
-		12BE103C19C5EBF500370348 /* AddBBSComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddBBSComment.xib; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		12BE1B921B945FFA005976B8 /* TopicComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicComment.swift; sourceTree = "<group>"; };
 		12BF5FF719BB478300DE0ABE /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
@@ -438,11 +422,6 @@
 		12E8090C1A2DBFB20022C094 /* SingleStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStep.swift; sourceTree = "<group>"; };
 		12EAABFB1AB292A500D20676 /* Popup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Popup.xib; sourceTree = "<group>"; };
 		12EAABFD1AB292AF00D20676 /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
-		12ECFC9819B8B58B00CF1F98 /* BBS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBS.swift; sourceTree = "<group>"; };
-		12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCell.xib; sourceTree = "<group>"; };
-		12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCell.swift; sourceTree = "<group>"; };
-		12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BBSCellTop.swift; sourceTree = "<group>"; };
-		12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBSCellTop.xib; sourceTree = "<group>"; };
 		12F65C081B64F46C0051A914 /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		12F65C0A1B64F5AE0051A914 /* SAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAViewController.swift; sourceTree = "<group>"; };
 		12F65C0C1B64F98D0051A914 /* PetTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableView.swift; sourceTree = "<group>"; };
@@ -465,9 +444,6 @@
 		12FB48C2196AE8010026DD51 /* UIViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAHttpRequest.swift; sourceTree = "<group>"; };
 		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
-		323CD2EA1A11EEF300FFE3F4 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
-		323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
-		323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
 		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
 		324C2AEC1A28119E00E6A299 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicDreamCell.xib; sourceTree = "<group>"; };
@@ -830,15 +806,6 @@
 			name = "欢迎";
 			sourceTree = "<group>";
 		};
-		129419FF19CFA8480008B274 /* 更新广场 */ = {
-			isa = PBXGroup;
-			children = (
-				12941A0019CFA8650008B274 /* AddBBSController.swift */,
-				12941A0219CFA87C0008B274 /* AddBBSController.xib */,
-			);
-			name = "更新广场";
-			sourceTree = "<group>";
-		};
 		129492801AD93211000E7461 /* MaterialKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -917,15 +884,6 @@
 				12BE1B911B945FBC005976B8 /* 回应层 */,
 			);
 			name = "新广场";
-			sourceTree = "<group>";
-		};
-		12BE103919C5EBCB00370348 /* 更新广场评论 */ = {
-			isa = PBXGroup;
-			children = (
-				12BE103A19C5EBEA00370348 /* AddBBSComment.swift */,
-				12BE103C19C5EBF500370348 /* AddBBSComment.xib */,
-			);
-			name = "更新广场评论";
 			sourceTree = "<group>";
 		};
 		12BE1B911B945FBC005976B8 /* 回应层 */ = {
@@ -1049,18 +1007,6 @@
 			name = "弹出层";
 			sourceTree = "<group>";
 		};
-		12ECFC9719B8B56300CF1F98 /* 话题 */ = {
-			isa = PBXGroup;
-			children = (
-				12ECFC9819B8B58B00CF1F98 /* BBS.swift */,
-				12ECFC9C19B8B5AF00CF1F98 /* BBSCell.swift */,
-				12ECFC9A19B8B59C00CF1F98 /* BBSCell.xib */,
-				12ECFC9E19B8B5BF00CF1F98 /* BBSCellTop.swift */,
-				12ECFCA019B8B5D200CF1F98 /* BBSCellTop.xib */,
-			);
-			name = "话题";
-			sourceTree = "<group>";
-		};
 		12F65C071B64F44F0051A914 /* 宠物 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1125,7 +1071,6 @@
 				12E8090B1A2DBF830022C094 /* 进展 */,
 				123CB05119785B610062BB8A /* 首页 */,
 				3252850B1A10C2A200316021 /* 发现 */,
-				323CD2E71A11EEC400FFE3F4 /* 广场 */,
 				12F65C071B64F44F0051A914 /* 宠物 */,
 				12BD36901B8EABDC00B37573 /* 新广场 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
@@ -1209,19 +1154,6 @@
 				1227F0F11A615EC20088DEB1 /* LetterCell.xib */,
 			);
 			name = "私信列表";
-			sourceTree = "<group>";
-		};
-		323CD2E71A11EEC400FFE3F4 /* 广场 */ = {
-			isa = PBXGroup;
-			children = (
-				323CD2F21A11EF9300FFE3F4 /* GroupCell.swift */,
-				323CD2F31A11EF9300FFE3F4 /* GroupCell.xib */,
-				323CD2EA1A11EEF300FFE3F4 /* Group.swift */,
-				129419FF19CFA8480008B274 /* 更新广场 */,
-				12BE103919C5EBCB00370348 /* 更新广场评论 */,
-				12ECFC9719B8B56300CF1F98 /* 话题 */,
-			);
-			name = "广场";
 			sourceTree = "<group>";
 		};
 		3252850B1A10C2A200316021 /* 发现 */ = {
@@ -1516,7 +1448,6 @@
 			files = (
 				C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */,
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
-				323CD2F51A11EF9300FFE3F4 /* GroupCell.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
@@ -1524,7 +1455,6 @@
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
-				12941A0319CFA87C0008B274 /* AddBBSController.xib in Resources */,
 				C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				1226CE261B8EC5F9004E2F6C /* RedditCell.xib in Resources */,
@@ -1544,7 +1474,6 @@
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
-				12ECFC9B19B8B59C00CF1F98 /* BBSCell.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				C48ACB891B958B8C009A9C30 /* CollectionViewCell_XL.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
@@ -1558,7 +1487,6 @@
 				C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */,
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				12960F7319BF2E4500CB973E /* SignNext.xib in Resources */,
-				12ECFCA119B8B5D200CF1F98 /* BBSCellTop.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
@@ -1570,7 +1498,6 @@
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
-				12BE103D19C5EBF500370348 /* AddBBSComment.xib in Resources */,
 				12BB33471B93473500B7E03F /* TopicCellHeader.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 				12D846071A233F46005DCC08 /* AddStep.xib in Resources */,
@@ -1651,7 +1578,6 @@
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
-				12ECFC9D19B8B5AF00CF1F98 /* BBSCell.swift in Sources */,
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */,
@@ -1688,7 +1614,6 @@
 				C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
-				12ECFC9F19B8B5BF00CF1F98 /* BBSCellTop.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
@@ -1729,7 +1654,6 @@
 				C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
-				12ECFC9919B8B58B00CF1F98 /* BBS.swift in Sources */,
 				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
 				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
@@ -1749,7 +1673,6 @@
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
 				12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */,
-				12941A0119CFA8650008B274 /* AddBBSController.swift in Sources */,
 				12ABFD291B9C1DEC00E2870C /* AddReddit + UIScrollView.swift in Sources */,
 				1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */,
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
@@ -1764,13 +1687,11 @@
 				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
-				323CD2F41A11EF9300FFE3F4 /* GroupCell.swift in Sources */,
 				122A3F7C1BA13E9500C2FE67 /* Vote.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
 				C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
-				323CD2EF1A11EEF300FFE3F4 /* Group.swift in Sources */,
 				124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */,
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
@@ -1799,7 +1720,6 @@
 				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
 				12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */,
 				1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */,
-				12BE103B19C5EBEA00370348 /* AddBBSComment.swift in Sources */,
 				C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
 				121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */,
