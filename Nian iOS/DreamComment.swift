@@ -125,17 +125,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func commentFinish(replyContent:String){
         self.isKeyboardResign = 1
         self.inputKeyboard.text = ""
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as! String
-        let safeuser = Sa.objectForKey("user") as! String
-        
+        let name = Cookies.get("user") as? String
         let commentReplyRow = self.dataArray.count
-        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
         self.tableview.reloadData()
         //当提交评论后滚动到最新评论的底部
@@ -150,7 +142,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             if json != nil {
                 if let status = json!.objectForKey("status") as? NSNumber {
                     if status == 200 {
-                        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+                        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
                         self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
                         self.tableview.reloadData()
                     } else {

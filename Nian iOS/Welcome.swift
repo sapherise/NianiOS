@@ -9,7 +9,7 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-    /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。 
+    /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var shouldNavToMe = false
     
     func setupViews(){
@@ -59,7 +59,6 @@ class WelcomeViewController: UIViewController {
         des.textColor = UIColor.blackColor()
         self.view.addSubview(des)
         
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var cookieuid: String?
         
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
@@ -67,35 +66,35 @@ class WelcomeViewController: UIViewController {
         
         if (cookieuid!).characters.count > 0 && cookieuid != "" {
         } else {
-            cookieuid = Sa.objectForKey("uid") as? String
+            cookieuid = Cookies.get("uid") as? String
         }
         
-            if cookieuid != "" {      //如果登录了
-                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                    uidKey.setObject(cookieuid, forKey: kSecAttrAccount)
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
-                        let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                        mainViewController.shouldNavToMe = self.shouldNavToMe
-                        
-                        let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                        navigationViewController.navigationBar.clipsToBounds = true
-                        navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                        
-                        delay(0.3, closure: {
-                            self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
-                                self.view.hidden = false
-                            })
-                            self.view.findRootViewController()
-                        })
+        if cookieuid != "" && cookieuid != nil {      //如果登录了
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            uidKey.setObject(cookieuid!, forKey: kSecAttrAccount)
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                mainViewController.shouldNavToMe = self.shouldNavToMe
+                
+                let navigationViewController = UINavigationController(rootViewController: mainViewController)
+                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                navigationViewController.navigationBar.clipsToBounds = true
+                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                
+                delay(0.3, closure: {
+                    self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
+                        self.view.hidden = false
                     })
-            } else { // 没有登录
-                self.view.hidden = false
-            }
+                    self.view.findRootViewController()
+                })
+            })
+        } else { // 没有登录
+            self.view.hidden = false
+        }
     }
     
     func onPrivacyClick(){

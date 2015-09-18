@@ -28,7 +28,7 @@ extension TopicComment {
             let content = self.textField.text!
             if content != "" {
                 let uid = SAUid()
-                let name = Cookies.get("user")
+                let name = Cookies.get("user") as? String
                 let time = V.now()
                 let dic = NSMutableDictionary(objects: [content, "-1", "-1", uid, name!], forKeys: ["content", "created_at", "id", "user_id", "username"])
                 dataArray.insertObject(dic, atIndex: 0)

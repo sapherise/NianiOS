@@ -73,15 +73,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 let type = data.stringAttributeForKey("msgtype")
                 let time = (data.stringAttributeForKey("time") as NSString).doubleValue
                 let cid = data.stringAttributeForKey("cid")
-//                content = SADecode(SADecode(content))
                 
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//                var safeuid = Sa.objectForKey("uid") as! String
-                _ = Sa.objectForKey("user") as! String
+                let safeuid = SAUid()
                 
                 let commentReplyRow = self.dataArray.count
                 let absoluteTime = V.absoluteTime(time)
@@ -222,15 +215,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func commentFinish(replyContent:String, type: Int = 1){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
-            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//            var safeuid = Sa.objectForKey("uid") as! String
-            let safeuser = Sa.objectForKey("user") as! String
+            let name = Cookies.get("user") as? String
             let commentReplyRow = self.dataArray.count
-            let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
             self.tableview.reloadData()
             let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
@@ -242,15 +229,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func postWord(replyContent: String, type: Int = 1) {
         back {
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
-            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//            var safeuid = Sa.objectForKey("uid") as! String
-            let safeuser = Sa.objectForKey("user") as! String
+            let name = Cookies.get("user") as? String
             let commentReplyRow = self.dataArray.count
-            let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
             self.dataArray.insertObject(data, atIndex: 0)
             let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height + replyContent.stringHeightWith(15,width:208) + 60
             if offset > 0 {

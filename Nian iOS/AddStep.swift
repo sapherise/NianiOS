@@ -297,7 +297,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
             let height: AnyObject? = uploadData.objectForKey("image-height")
             self.uploadHeight = "\(height!)"
             self.uploadUrl = SAReplace(self.uploadUrl, before: "/step/", after: "") as String
-            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img: img, width: 0)
+            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img: img, width: (globalWidth - 40) * globalScale)
         })
         uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("step", png: "png") as String)
     }

@@ -92,11 +92,7 @@ class SignNextController: UIViewController, UITextFieldDelegate{
                         self.holder!.hidden = true
                         self.navigationItem.rightBarButtonItems = buttonArray()
                         let shell = (("\(password)\(sa)n*A").lowercaseString).md5
-                        let Sa: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//                        Sa.setObject(sa, forKey: "uid")
-//                        Sa.setObject(shell, forKey: "shell")
-                        Sa.setObject(self.signInfo.name!, forKey: "user")
-                        Sa.synchronize()
+                        Cookies.set(self.signInfo.name!, forKey: "user")
                         
                         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                         uidKey.setObject(sa, forKey: kSecAttrAccount)

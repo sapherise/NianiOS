@@ -139,10 +139,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let safeuid = SAUid()
         
         self.view.backgroundColor = BGColor
         self.head!.setHead(safeuid)
@@ -162,7 +159,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         //节省流量模式
         self.ImageSwitch.addTarget(self, action: "switchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.ImageSwitch.layer.cornerRadius = 16
-        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let saveMode = Cookies.get("saveMode") as? String
             if saveMode == "1" {
                 self.ImageSwitch.switchSetup(true, cacheName: "saveMode")
             }else{
@@ -172,7 +169,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         // 私密模式
         self.PrivateSwitch.addTarget(self, action: "privateSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.PrivateSwitch.layer.cornerRadius = 16
-        let privateMode: String? = Sa.objectForKey("privateMode") as? String
+        let privateMode: String? = Cookies.get("privateMode") as? String
         if privateMode == "1" {
             self.PrivateSwitch.switchSetup(true, cacheName: "privateMode")
         }else{
@@ -196,7 +193,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         //每日推送模式
         self.CareSwitch.addTarget(self, action: "pushSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.CareSwitch.layer.cornerRadius = 16
-        let pushMode: String? = Sa.objectForKey("pushMode") as? String
+        let pushMode: String? = Cookies.get("pushMode") as? String
         if pushMode == "1" {
             self.pushSwitchSetup(true)
         }else{
@@ -231,8 +228,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 }else{
                     self.switchMode.switchSetup(true, cacheName: "", isCache: false)
                 }
-                Sa.setObject(name, forKey:"user")
-                Sa.synchronize()
+                Cookies.set(name, forKey: "user")
                 dispatch_async(dispatch_get_main_queue(), {
                     self.inputName.text = name
                     self.inputEmail.text = email
@@ -504,10 +500,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 self.uploadUrl = data.objectForKey("url") as! String
                 self.uploadUrl = SAReplace(self.uploadUrl, before: "/cover/", after: "") as String
                 let userImageURL = "http://img.nian.so/cover/\(self.uploadUrl)!cover"
-                
-                let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                Sa.setObject(userImageURL, forKey: "coverUrl")
-                Sa.synchronize()
+                Cookies.set(userImageURL, forKey: "coverUrl")
                 
                 let req = NSURLRequest(URL: NSURL(string: userImageURL)!)
                 let queue = NSOperationQueue();
@@ -595,7 +588,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func pushSwitchSetup(bool:Bool){
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.CareSwitch.thumbTintColor = UIColor.whiteColor()
             self.CareSwitch.onTintColor = SeaColor
@@ -606,30 +598,10 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             self.CareSwitch.backgroundColor = IconColor
             self.CareSwitch.tintColor = IconColor
             self.CareSwitch.setOn(false, animated: true)
-            Sa.setObject("0", forKey:"pushMode")
-            Sa.synchronize()
+            Cookies.set("0", forKey: "pushMode")
             UIApplication.sharedApplication().cancelAllLocalNotifications()
         }
     }
-    
-//    func switchSetup(bool:Bool){
-//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        if bool {
-//            self.ImageSwitch.thumbTintColor = UIColor.whiteColor()
-//            self.ImageSwitch.onTintColor = SeaColor
-//            self.ImageSwitch.tintColor = SeaColor
-//            self.ImageSwitch.setOn(true, animated: true)
-//            Sa.setObject("1", forKey:"saveMode")
-//            Sa.synchronize()
-//        }else{
-//            self.ImageSwitch.thumbTintColor = BGColor
-//            self.ImageSwitch.backgroundColor = IconColor
-//            self.ImageSwitch.tintColor = IconColor
-//            self.ImageSwitch.setOn(false, animated: true)
-//            Sa.setObject("0", forKey:"saveMode")
-//            Sa.synchronize()
-//        }
-//    }
     
     func clearCache(sender:UIGestureRecognizer){
         self.cacheActivity.hidden = false
@@ -696,8 +668,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let pushMode: String? = Sa.objectForKey("pushMode") as? String
+        let pushMode = Cookies.get("pushMode") as? String
         if pushMode != "1" {
             self.pushSwitchSetup(false)
         }
@@ -710,15 +681,13 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
 
 extension UISwitch {
     func switchSetup(bool: Bool, cacheName: String, isCache: Bool = true){
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if bool {
             self.thumbTintColor = UIColor.whiteColor()
             self.onTintColor = SeaColor
             self.tintColor = SeaColor
             self.setOn(true, animated: true)
             if isCache {
-                Sa.setObject("1", forKey: cacheName)
-                Sa.synchronize()
+                Cookies.set("1", forKey: cacheName)
             }
         }else{
             self.thumbTintColor = BGColor
@@ -726,8 +695,7 @@ extension UISwitch {
             self.tintColor = IconColor
             self.setOn(false, animated: true)
             if isCache {
-                Sa.setObject("0", forKey: cacheName)
-                Sa.synchronize()
+                Cookies.set("0", forKey: cacheName)
             }
         }
     }

@@ -109,7 +109,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             self.imageDreamHead.contentMode = .ScaleToFill
             self.imageDreamHead.image = img
-            setCacheImage(url, img: img, width: 0)
+            setCacheImage(url, img: img, width: (globalWidth - 40) * globalScale)
             self.uploadWait!.stopAnimating()
         })
         uy.failBlocker = ({(error: NSError!) in

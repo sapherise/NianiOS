@@ -166,7 +166,6 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
         let data = dataArray[row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
         Api.getTopicCommentDelete(id) { json in
-            print(json)
         }
         dataArray.removeObjectAtIndex(row)
         tableView.beginUpdates()

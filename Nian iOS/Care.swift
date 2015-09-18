@@ -107,9 +107,7 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
 //        var alertBodys = ["有句话我怕说出来我们就做不了朋友了，可是，你今天更新念了嘛？", "\(self.startTime) 点了！更新时间到！", "你收到这条消息，是因为在过去你设置了每日提醒。啊，过去的你是多么的冰雪聪明。", "打赌你今天还没更念，谁赢谁今天就不用更，怎样！", "要是忘了更新念，小心我请你喝咖啡啦！", "过去的你深情款款地对你说：「更吗？」", "每天都不忘了提醒你更新念，真羡慕你有这样尽责的朋友。", "现在是 \(self.startTime) 点整。我是今天第一个跟你说话的人吗？", "又到了每天一次的骚扰环节了。真担心我这样每天提醒你更新，你会不小心爱上我。千万别爱我啦。", "再不更念就阵亡啦。"]
 //        _ = arc4random() % 10
         notification.alertBody = "记得更新念。\(self.Greetings)"
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        Sa.setObject("1", forKey:"pushMode")
-        Sa.synchronize()
+        Cookies.set("1", forKey: "pushMode")
         notification.repeatInterval = NSCalendarUnit.Day
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
         self.navigationController?.popViewControllerAnimated(true)

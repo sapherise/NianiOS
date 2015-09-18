@@ -37,8 +37,9 @@ var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
 var globalTab = [true, true, true, true]
 
-var globalWidth = UIScreen.mainScreen().bounds.width
-var globalHeight = UIScreen.mainScreen().bounds.height
+let globalWidth = UIScreen.mainScreen().bounds.width
+let globalHeight = UIScreen.mainScreen().bounds.height
+let globalScale = UIScreen.mainScreen().scale
 var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
 var globaliOS: Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
 var isiPhone6: Bool = globalWidth == 375 ? true : false
@@ -69,7 +70,7 @@ func SAPost(postString:String, urlString:String)->String{
 
 func SAGet(getString:String, urlString:String)->String{
     let request : NSMutableURLRequest? = NSMutableURLRequest()
-    request!.URL = NSURL(string: urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!)
+    request!.URL = NSURL(string: urlString.encode())
     request!.HTTPMethod = "GET"
     request!.HTTPBody = getString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion : true)
     var response : NSURLResponse?
@@ -154,6 +155,11 @@ extension String  {
         result.destroy()
 
         return String(format: hash as String)
+    }
+    
+    func encode() ->String {
+        let content = self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())
+        return content != nil ? content! : ""
     }
     
     func isValidEmail()->Bool {
@@ -308,7 +314,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
 }
 
 func getImageFromView(view: UIView)->UIImage {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 2);
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, globalScale);
     view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -435,11 +441,9 @@ extension UIImage{
     }
     
     func fixOrientation() -> UIImage {
-        
         if self.imageOrientation == UIImageOrientation.Up {
             return self
         }
-        
         var transform = CGAffineTransformIdentity
         switch (self.imageOrientation) {
         case .Down, .DownMirrored:
@@ -454,7 +458,6 @@ extension UIImage{
         default:
             break
         }
-        
         switch (self.imageOrientation) {
         case .UpMirrored, .DownMirrored:
             transform = CGAffineTransformTranslate(transform, self.size.width, 0)
@@ -465,24 +468,14 @@ extension UIImage{
         default:
             break
         }
-        
-//        var ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), CGImageGetBitmapInfo(self.CGImage))
-        
-        // todo: 不知道怎么把这个 BitmapInfo 转换为 UInt32
         let ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), 1)
-        
-        
-//        CGBitmapInfo((CGBitmapInfo.ByteOrder32Little.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue) as UInt32)
-        
         CGContextConcatCTM(ctx, transform)
-        
         switch (self.imageOrientation) {
         case .Left, .LeftMirrored, .Right, .RightMirrored:
             CGContextDrawImage(ctx, CGRectMake(0, 0, self.size.height, self.size.width), self.CGImage)
         default:
             CGContextDrawImage(ctx, CGRectMake(0, 0, self.size.width, self.size.height), self.CGImage)
         }
-        
         let cgimg = CGBitmapContextCreateImage(ctx)
         let img = UIImage(CGImage: cgimg!)
         return img

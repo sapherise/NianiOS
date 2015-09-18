@@ -101,14 +101,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func SALoadLetter(){
         if !isLoadingLetter {
             isLoadingLetter = true
-            
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//            var safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
-            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//            var safeuid = Sa.objectForKey("uid") as! String
-            let safename = Sa.objectForKey("user") as! String
+            let safeuid = SAUid()
+            let safename = Cookies.get("user") as? String
             let (resultCircle, _) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
             for row in resultCircle {
@@ -120,7 +114,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                         title = (row["name"]?.asString())!
                     }
                 }else if safeuid == id {
-                    title = safename
+                    title = safename!
                 }
                 let data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
                 self.dataArray.addObject(data)
