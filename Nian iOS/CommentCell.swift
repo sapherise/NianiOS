@@ -27,7 +27,7 @@ class CommentCell: UITableViewCell {
         self.selectionStyle = .None
         self.nickLabel!.textColor = SeaColor
         self.avatarView.layer.masksToBounds = true
-        self.avatarView.layer.cornerRadius = 20
+        self.avatarView.layer.cornerRadius = 16
     }
     
     override func layoutSubviews()
@@ -60,9 +60,7 @@ class CommentCell: UITableViewCell {
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         self.lastdate.setBottom(height + 60)
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        
+        let safeuid = SAUid()
         if uid == safeuid {
             self.imageContent.image = UIImage(named: "bubble_me")
             self.contentLabel.textColor = UIColor.blackColor()

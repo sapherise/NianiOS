@@ -265,9 +265,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func stepClick(){
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let safeuid = SAUid()
         let userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)

@@ -58,10 +58,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.viewPromo.addSubview(btnPromo)
         self.view.addSubview(self.viewPromo)
         
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let safeuid = SAUid()
         
         Api.getUserTop(Int(safeuid)!){ json in
             if json != nil {

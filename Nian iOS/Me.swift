@@ -269,10 +269,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 letterVC.circleTitle = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
                 
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
+                let safeuid = SAUid()
                 SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
                 SALoadLetter()
             }

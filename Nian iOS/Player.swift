@@ -78,8 +78,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if self.Id != safeuid {
@@ -136,7 +135,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         if actionSheet == self.userMoreSheet {
             if buttonIndex == 0 {
                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeuid = SAUid()
                 let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
                 if self.isBan == 0 {    // 拖进小黑屋
@@ -485,9 +484,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.topCell.btnLetter.addTarget(self, action: "SALetter:", forControlEvents: UIControlEvents.TouchUpInside)
                 self.topCell.btnLetter.setTitle("写信", forState: UIControlState.Normal)
                 
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let safeuid = SAUid()
                 
                 if self.Id == safeuid {
                     self.topCell.btnLetter.hidden = true

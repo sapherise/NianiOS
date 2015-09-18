@@ -97,7 +97,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func urlString()->String{
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
         let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         return "http://nian.so/api/me_next.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)&&tag=\(self.tag)"

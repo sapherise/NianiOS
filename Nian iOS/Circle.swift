@@ -274,8 +274,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     let lastdate = json!.objectForKey("lastdate") as! String
                     if success == "1" {
                         self.tableUpdate(contentAfter)
-                        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                        let safeuid = SAUid()
                         
                         Api.postName(self.ID) { result in
                             if result != nil {
@@ -516,9 +515,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
         }
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let safeuid = SAUid()
         
         self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         let uy = UpYun()

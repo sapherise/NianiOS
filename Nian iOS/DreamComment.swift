@@ -247,10 +247,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.replySheet!.cancelButtonIndex = 3
             self.replySheet!.showInView(self.view)
         }else{  //不是主人
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//            var safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
+            let safeuid = SAUid()
             if uid == safeuid {
                 self.replySheet!.addButtonWithTitle("回应@\(user)")
                 self.replySheet!.addButtonWithTitle("复制")
@@ -323,7 +320,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
         let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if actionSheet == self.replySheet {

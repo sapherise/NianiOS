@@ -224,7 +224,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func noticeDot() {
         if self.dot != nil {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            let safeuid = SAUid()
             let safeshell = uidKey.objectForKey(kSecValueData) as! String
             
             if safeuid != "" {
@@ -523,8 +523,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         isread = 1
                     }
                     
-                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                    let safeuid = SAUid()
                     
                     let (resultSet2, _) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {

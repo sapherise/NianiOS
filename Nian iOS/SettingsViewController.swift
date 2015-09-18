@@ -288,7 +288,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func textFieldDidEndEditing(textField: UITextField) {
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
         let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if textField == self.inputName {
@@ -474,7 +474,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     
     func uploadFile(img:UIImage){
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
         let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         let uy = UpYun()
@@ -483,11 +483,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
             let uy = UpYun()
             uy.successBlocker = ({(data2:AnyObject!) in
                 globalWillNianReload = 1
-                
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
+                let safeuid = SAUid()
                 self.navigationItem.rightBarButtonItems = []
                 self.head.image = img
                 
@@ -526,10 +522,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func getSaveKeyPrivate(title:NSString) -> NSString{
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
+        let safeuid = SAUid()
         let string = NSString(string: "/\(title)/\(safeuid).jpg")
         return string
     }

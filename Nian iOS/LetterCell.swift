@@ -42,11 +42,7 @@ class LetterCell: MKTableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
+        let safeuid = SAUid()
         if data != nil {
             let id = self.data!.stringAttributeForKey("id")
             let title = self.data!.stringAttributeForKey("title")
