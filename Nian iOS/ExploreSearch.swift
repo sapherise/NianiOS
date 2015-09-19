@@ -691,14 +691,13 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case 2:
             let c = self.stepTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
-            c.data = self.dataArrayStep[indexPath.row] as! NSDictionary
+            c.data = self.dataArrayStep[indexPath.row] as? NSDictionary
             c.index = indexPath.row
             if indexPath.row == self.dataArrayStep.count - 1 {
                 c.viewLine.hidden = true
             } else {
                 c.viewLine.hidden = false
             }
-            c._layoutSubviews()
             
             return c
         case 3:
@@ -753,24 +752,9 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             return 71
         } else if index == 1 {
             let index = indexPath.row
-            let data = self.dataArrayDream[index] as! NSDictionary
-            
-            return tableView.fd_heightForCellWithIdentifier("ExploreNewHotCell", cacheByIndexPath: indexPath, configuration: {
-                cell in
-                (cell as! ExploreNewHotCell).cellDataSource = self
-                (cell as! ExploreNewHotCell).fd_enforceFrameLayout = true
-                (cell as! ExploreNewHotCell).data = data
-                (cell as! ExploreNewHotCell).indexPath = indexPath
-            })
+            return getHeightCell(dataArrayDream, index: index)
         } else if index == 2 {
-            let data = self.dataArrayStep[indexPath.row] as! NSDictionary
-
-            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-                (cell as! SAStepCell).celldataSource = self
-                (cell as! SAStepCell).fd_enforceFrameLayout = true
-                (cell as! SAStepCell).data  = data
-                (cell as! SAStepCell).indexPath = indexPath
-            })
+            return getHeightCell(dataArrayStep, index: indexPath.row)
         } else if index == 3 {
             // TODO: - topic cell 高度
             let data = dataArrayTopic[indexPath.row] as! NSDictionary
@@ -787,17 +771,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         } else {
             return 0
         }
-    }
-    
-    /**
-    - returns: Bool值，代表是否要加载图片
-    */
-    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
-        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.stepTableView.rectForRowAtIndexPath(indexPath)) {
-            return false
-        }
-        
-        return true
     }
     
     // MARK: -
@@ -884,24 +857,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
 }
 
-// MARK: - SAStepCellDatasource
-extension ExploreSearch: SAStepCellDatasource {
-    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
-        if index == 2 {
-            var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayStep[indexPath.row] as! NSDictionary)
-            _tmpDict.setObject(content as NSString, forKey: "content")
-            
-            #if CGFLOAT_IS_DOUBLE
-                _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-                #else
-                _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-            #endif
-            
-            self.dataArrayStep.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-        }
-    }
-}
-
 extension ExploreSearch: RedditDelegate {
     /**
     <#Description#>
@@ -945,70 +900,6 @@ extension ExploreSearch: UIActionSheetDelegate {
     }
 }
 
-// MARK: - 实现 UIScrollView Delegate
-extension ExploreSearch {
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        if scrollView is UITableView {
-            self.targetRect = nil
-        }
-    }
-
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        if scrollView is UITableView {
-            let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
-            self.targetRect = NSValue(CGRect: targetRect)
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if scrollView is UITableView {
-            self.targetRect = nil
-            
-            if index == 2 {
-                self.loadImagesForVisibleCells()
-            }
-        } else if scrollView .isMemberOfClass(UIScrollView) {
-            let xOffset = scrollView.contentOffset.x
-            let page: Int = Int(xOffset / globalWidth)
-            
-            /* */
-            index = page
-            /* */
-            
-            setupButtonColor(page)
-            
-            UIView.animateWithDuration(0.2, animations: {
-               self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)
-            })
-            
-            if self.dataSourceArray[index].count == 0 {
-                showTableViewWithIndex(index)
-                self.tableDict[index]?.headerBeginRefreshing()
-            }
-        }
-    }
-    
-    /**
-    主要针对 Step table 优化，因为这一页的图片往往很大
-    */
-    func loadImagesForVisibleCells() {
-        let cellArray = self.stepTableView.visibleCells
-        
-        for cell in cellArray {
-            if cell is SAStepCell {
-                let indexPath = self.stepTableView.indexPathForCell(cell as! SAStepCell)
-                var _tmpShouldLoadImg = false
-                
-                _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-                
-                if _tmpShouldLoadImg {
-                    self.stepTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-                }
-            }
-        }
-    }
-}
-
 // MARK: - UIGestureRecognizerDelegate
 extension ExploreSearch {
     /**
@@ -1018,30 +909,6 @@ extension ExploreSearch {
         return false
     }
 
-}
-
-extension ExploreSearch: ENHCDataSource {
-    func enhcDataCell(indexPath: NSIndexPath, content: String, title: String) {
-        let _tmpDict = NSMutableDictionary(dictionary: self.dataArrayDream[indexPath.row] as! NSDictionary)
-        _tmpDict.setObject(content, forKey: "content")
-        _tmpDict.setObject(title, forKey: "title")
-        
-        self.dataArrayDream.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
-    
-    func enhcDataCell(indexPath: NSIndexPath, contentHeight: CGFloat, titleHeight: CGFloat) {
-        let _tmpDict = NSMutableDictionary(dictionary: self.dataArrayDream[indexPath.row] as! NSDictionary)
-        
-        #if CGFLOAT_IS_DOUBLE
-            _tmpDict.setObject(NSNumber(double: Double(titleHeight)), forKey: "titleHeight")
-            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-        #else
-            _tmpDict.setObject(NSNumber(float: Float(titleHeight)), forKey: "titleHeight")
-            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-        #endif
-        
-        self.dataArrayDream.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
 }
 
 

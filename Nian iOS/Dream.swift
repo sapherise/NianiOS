@@ -227,29 +227,15 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
-            c.data = self.dataArray[indexPath.row] as! NSDictionary
+            c.data = self.dataArray[indexPath.row] as? NSDictionary
             c.index = indexPath.row
             if indexPath.row == self.dataArray.count - 1 {
                 c.viewLine.hidden = true
             } else {
                 c.viewLine.hidden = false
             }
-            let _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
-            c._layoutSubviews(_shouldLoadImage)
-            
             return c
         }
-    }
-    
-    /**
-    - returns: Bool值，代表是否要加载图片
-    */
-    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
-        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.tableView.rectForRowAtIndexPath(indexPath)) {
-            return false
-        }
-        
-        return true
     }
     
     // MARK: - 分割线 ---------------------------------------------------------
@@ -289,13 +275,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             return 0
         }else{
-            let data = self.dataArray[indexPath.row] as! NSDictionary
-            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-                (cell as! SAStepCell).celldataSource = self
-                (cell as! SAStepCell).fd_enforceFrameLayout = true
-                (cell as! SAStepCell).data  = data
-                (cell as! SAStepCell).indexPath = indexPath
-            })
+            return getHeightCell(dataArray, index: indexPath.row)
         }
     }
     
@@ -345,13 +325,11 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     
-    func Editstep() {      //😍
+    func Editstep() {
         self.dataArray[self.editStepRow] = self.editStepData!
         let newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
         self.tableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
-    /*               */
-    
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
@@ -456,65 +434,6 @@ extension DreamViewController: NIAlertDelegate {
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self.alertCoin {
                 niAlert.dismissWithAnimation(.normal)
-        }
-    }
-}
-
-extension DreamViewController: SAStepCellDatasource {
-    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
-        
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
-        _tmpDict.setObject(content as NSString, forKey: "content")
-        
-        #if CGFLOAT_IS_DOUBLE
-            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-            #else
-            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-        #endif
-        
-        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
-}
-
-// MARK: - 实现 UIScrollView Delegate
-extension DreamViewController {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.targetRect = nil
-        
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-    }
-    
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
-        self.targetRect = NSValue(CGRect: targetRect)
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.targetRect = nil
-        
-        self.loadImagesForVisibleCells()
-    }
-    
-    func loadImagesForVisibleCells() {
-        let cellArray = self.tableView.visibleCells
-        
-        for cell in cellArray {
-            if cell is SAStepCell {
-                let indexPath = self.tableView.indexPathForCell(cell as! SAStepCell)
-                var _tmpShouldLoadImg = false
-                
-                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-                
-                if _tmpShouldLoadImg {
-                    self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-                }
-            }
         }
     }
 }

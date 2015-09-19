@@ -83,26 +83,19 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
         c.delegate = self
-        c.data = self.dataArray[indexPath.row] as! NSDictionary
+        c.data = self.dataArray[indexPath.row] as? NSDictionary
         c.index = indexPath.row
         if indexPath.row == self.dataArray.count - 1 {
             c.viewLine.hidden = true
         } else {
             c.viewLine.hidden = false
         }
-        c._layoutSubviews()
+//        c._layoutSubviews()
         return c
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let data = self.dataArray[indexPath.row] as! NSDictionary
-        
-        return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-            (cell as! SAStepCell).celldataSource = self
-            (cell as! SAStepCell).fd_enforceFrameLayout = true
-            (cell as! SAStepCell).data  = data
-            (cell as! SAStepCell).indexPath = indexPath
-        })
+        return getHeightCell(dataArray, index: indexPath.row)
     }
     
     func Editstep() {
@@ -143,23 +136,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         return self.dataArray.count
     }
     
-}
-
-extension SingleStepViewController: SAStepCellDatasource {
-    
-    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
-        
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
-        _tmpDict.setObject(content as NSString, forKey: "content")
-        
-        #if CGFLOAT_IS_DOUBLE
-            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-            #else
-            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-        #endif
-        
-        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
 }
 
 

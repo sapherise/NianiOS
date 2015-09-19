@@ -178,29 +178,33 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        let xOffset = scrollView.contentOffset.x
-        let page: Int = Int(xOffset / globalWidth)
-        
-        if current != -1 {
-            currentProvider.onHide()
+        if scrollView == self.scrollView {
+            let xOffset = scrollView.contentOffset.x
+            let page: Int = Int(xOffset / globalWidth)
+            
+            if current != -1 {
+                currentProvider.onHide()
+            }
+            current = page
+            currentProvider = self.providers[page]
+            
+            if globalTab[1] && page == 1 {
+                switchTab(page)
+            } else if globalTab[2] && page == 2 {
+                switchTab(page)
+            }
+            
+            _setupScrolltoTop(current)
         }
-        current = page
-        currentProvider = self.providers[page]
-        
-        if globalTab[1] && page == 1 {
-            switchTab(page)
-        } else if globalTab[2] && page == 2 {
-            switchTab(page)
-        }
-        
-        _setupScrolltoTop(current)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let x = scrollView.contentOffset.x
-        self.btnFollow.setTabAlpha(x, index: 0)
-        self.btnDynamic.setTabAlpha(x, index: 1)
-        self.btnHot.setTabAlpha(x, index: 2)
+        if scrollView == self.scrollView {
+            let x = scrollView.contentOffset.x
+            self.btnFollow.setTabAlpha(x, index: 0)
+            self.btnDynamic.setTabAlpha(x, index: 1)
+            self.btnHot.setTabAlpha(x, index: 2)
+        }
     }
     
     func onFriendClick() {

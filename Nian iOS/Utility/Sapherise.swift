@@ -236,9 +236,9 @@ func getSaveKey(title:NSString, png:NSString) -> NSString{
 }
 
 func checkNetworkStatus() -> Int{
-    let reachability: Reachability = Reachability.reachabilityForInternetConnection()
-    let networkStatus: NetworkStatus = reachability.currentReachabilityStatus()
-    return networkStatus.rawValue    //0 无网络，1 流量，2 WIFI
+//    let networkStatus = Reachability.reachabilityForInternetConnection().currentReachabilityStatus()
+//    return networkStatus.rawValue    //0 无网络，1 流量，2 WIFI
+    return 2
 }
 
 func buttonArray()->[UIBarButtonItem]{
@@ -957,4 +957,27 @@ public func synchronized(lock: AnyObject, closure: () -> ()) {
     objc_sync_enter(lock)
     closure()
     objc_sync_exit(lock)
+}
+
+
+func getHeightCell(dataArray: NSMutableArray, index: Int)->CGFloat {
+    let data = dataArray[index] as! NSDictionary
+    let heightCell = data.stringAttributeForKey("heightCell")
+    // 当高度
+    if heightCell == "" {
+        let arr = SAStepCell.cellHeight(data)
+        let heightCell = arr[0] as! CGFloat
+        let heightContent = arr[1] as! CGFloat
+        let d = NSMutableDictionary(dictionary: data)
+        let content = data.stringAttributeForKey("content").decode()
+        let title = data.stringAttributeForKey("title").decode()
+        d.setValue(heightCell, forKey: "heightCell")
+        d.setValue(heightContent, forKey: "heightContent")
+        d.setValue(content, forKey: "content")
+        d.setValue(title, forKey: "title")
+        dataArray.replaceObjectAtIndex(index, withObject: d)
+        return heightCell
+    } else {
+        return CGFloat((heightCell as NSString).floatValue)
+    }
 }

@@ -155,16 +155,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 2 {
             let index = indexPath.row
-            let data = self.listDataArray[index] as! NSDictionary
-            
-            return tableView.fd_heightForCellWithIdentifier("ExploreNewHotCell", cacheByIndexPath: indexPath, configuration: {
-                cell in
-                (cell as! ExploreNewHotCell).cellDataSource = self
-                (cell as! ExploreNewHotCell).fd_enforceFrameLayout = true
-                (cell as! ExploreNewHotCell).data = data
-                (cell as! ExploreNewHotCell).indexPath = indexPath
-            })
-            
+            return getHeightCell(listDataArray, index: index)
         } else if indexPath.section == 0 || indexPath.section == 1 {
             if isiPhone6 || isiPhone6P {
                 return 202
@@ -238,30 +229,6 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-}
-
-extension ExploreRecommend: ENHCDataSource {
-    func enhcDataCell(indexPath: NSIndexPath, content: String, title: String) {
-        let _tmpDict = NSMutableDictionary(dictionary: self.listDataArray[indexPath.row] as! NSDictionary)
-        _tmpDict.setObject(content, forKey: "content")
-        _tmpDict.setObject(title, forKey: "title")
-
-        self.listDataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
-    
-    func enhcDataCell(indexPath: NSIndexPath, contentHeight: CGFloat, titleHeight: CGFloat) {
-        let _tmpDict = NSMutableDictionary(dictionary: self.listDataArray[indexPath.row] as! NSDictionary)
-        
-        #if CGFLOAT_IS_DOUBLE
-        _tmpDict.setObject(NSNumber(double: Double(titleHeight)), forKey: "titleHeight")
-        _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-        #else
-        _tmpDict.setObject(NSNumber(float: Float(titleHeight)), forKey: "titleHeight")
-        _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-        #endif
-        
-        self.listDataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
 }
 
 

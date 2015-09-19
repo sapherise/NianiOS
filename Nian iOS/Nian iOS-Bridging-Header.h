@@ -4,7 +4,7 @@
 
 #import <CommonCrypto/CommonCrypto.h>
 #import "UpYun.h"
-#import "Reachability.h"
+//#import "Reachability.h"
 #import "WeiboSDK.h"
 #import "WXApi.h"
 #import "MobClick.h"
@@ -20,7 +20,7 @@
 #import "NSData+NSHash.h"
 #import "UIImage+Grayscale.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
-#import "UITableView+FDTemplateLayoutCell.h"
+//#import "UITableView+FDTemplateLayoutCell.h"
 
 /**
  *  @author Bob Wei, 15-08-08 14:08:23

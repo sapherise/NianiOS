@@ -103,7 +103,7 @@
 		12960F6F19BF230900CB973E /* Sign.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F6E19BF230900CB973E /* Sign.xib */; };
 		12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12960F7019BF2E3B00CB973E /* SignNext.swift */; };
 		12960F7319BF2E4500CB973E /* SignNext.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12960F7219BF2E4500CB973E /* SignNext.xib */; };
-		129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home+News.swift */; };
+		129A76611B8DC92E00EC5A19 /* Home + News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home + News.swift */; };
 		129B9F051BA2AFD800E5B25A /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */; settings = {ASSET_TAGS = (); }; };
 		129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 129B9F021BA2AFD800E5B25A /* WeiboSDK.bundle */; settings = {ASSET_TAGS = (); }; };
 		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
@@ -168,6 +168,8 @@
 		12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C161B654EB00051A914 /* PetTableViewGesture.swift */; };
 		12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C181B6559DB0051A914 /* PetNiAlert.swift */; };
 		12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C2D1B65703F0051A914 /* CoinCircle.swift */; };
+		12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A51BAD5533009EADC0 /* Reachability.swift */; settings = {ASSET_TAGS = (); }; };
+		12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */; settings = {ASSET_TAGS = (); }; };
 		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
 		12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F9253E1A8467F8005ECD9F /* SQL.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
@@ -195,7 +197,6 @@
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
-		C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */; };
 		C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263251B82E49900C0F011 /* EditorRecomCell.swift */; };
 		C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */; };
 		C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263301B82F1E500C0F011 /* CollectionViewCell.swift */; };
@@ -351,7 +352,7 @@
 		12960F6E19BF230900CB973E /* Sign.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Sign.xib; sourceTree = "<group>"; };
 		12960F7019BF2E3B00CB973E /* SignNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignNext.swift; sourceTree = "<group>"; };
 		12960F7219BF2E4500CB973E /* SignNext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignNext.xib; sourceTree = "<group>"; };
-		129A76601B8DC92E00EC5A19 /* Home+News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+News.swift"; sourceTree = "<group>"; };
+		129A76601B8DC92E00EC5A19 /* Home + News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home + News.swift"; sourceTree = "<group>"; };
 		129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		129B9EFA1BA2AFD800E5B25A /* WBHttpRequest+WeiboGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboGame.h"; sourceTree = "<group>"; };
 		129B9EFB1BA2AFD800E5B25A /* WBHttpRequest+WeiboShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboShare.h"; sourceTree = "<group>"; };
@@ -430,6 +431,8 @@
 		12F65C161B654EB00051A914 /* PetTableViewGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableViewGesture.swift; sourceTree = "<group>"; };
 		12F65C181B6559DB0051A914 /* PetNiAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetNiAlert.swift; sourceTree = "<group>"; };
 		12F65C2D1B65703F0051A914 /* CoinCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCircle.swift; sourceTree = "<group>"; };
+		12F678A51BAD5533009EADC0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home + Reachability.swift"; sourceTree = "<group>"; };
 		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		12F9253E1A8467F8005ECD9F /* SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQL.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -463,8 +466,6 @@
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
-		C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+FDTemplateLayoutCell.h"; sourceTree = "<group>"; };
-		C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+FDTemplateLayoutCell.m"; sourceTree = "<group>"; };
 		C40F4F4A1B788630001A8216 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
@@ -1023,6 +1024,14 @@
 			name = "宠物";
 			sourceTree = "<group>";
 		};
+		12F678A41BAD5519009EADC0 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				12F678A51BAD5533009EADC0 /* Reachability.swift */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		12F7A4E01A07405A00F16F99 /* 念币 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1063,7 +1072,8 @@
 			isa = PBXGroup;
 			children = (
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
-				129A76601B8DC92E00EC5A19 /* Home+News.swift */,
+				12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */,
+				129A76601B8DC92E00EC5A19 /* Home + News.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
 				1291D59619BE0C39009F45F6 /* 欢迎 */,
 				12EAABFA1AB2923600D20676 /* 弹出层 */,
@@ -1105,11 +1115,11 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12F678A41BAD5519009EADC0 /* Reachability */,
 				129B9EF81BA2AFD800E5B25A /* WeiboSharing */,
 				12C96DE81A6F7B3300B0E327 /* WeChatSharing */,
 				C4A350C01B6B6C3F00E8AF10 /* Keychian */,
 				C41D45D61B60EA86000450D5 /* SAEgg */,
-				C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */,
 				C4C885501B5F7E7900D9B8CA /* FDFullscreenPopGesture */,
 				C48AD9D61B5CFD4C00E25627 /* UIImageExt */,
 				C48FBCD91B4A5A7D007E0BF9 /* Crypto */,
@@ -1232,15 +1242,6 @@
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		C4024C761B68F3D80040C1E8 /* UITableView+FDTemplateLayoutCell */ = {
-			isa = PBXGroup;
-			children = (
-				C4024C771B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.h */,
-				C4024C781B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m */,
-			);
-			name = "UITableView+FDTemplateLayoutCell";
 			sourceTree = "<group>";
 		};
 		C4077BC01B04A5FB004E0D03 /* TITokenView */ = {
@@ -1620,10 +1621,11 @@
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
+				12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12ABFD2B1B9C1EAE00E2870C /* AddReddit + UIGesture.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
-				129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */,
+				129A76611B8DC92E00EC5A19 /* Home + News.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
@@ -1654,6 +1656,7 @@
 				C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
+				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,
 				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
 				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
@@ -1701,7 +1704,6 @@
 				12245DA61B95849900D831AC /* TopicComment + UITextField.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
-				C4024C791B68F3EB0040C1E8 /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,

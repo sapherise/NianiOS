@@ -123,12 +123,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         case "0":
             return 77
         case "1":
-            return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-                (cell as! SAStepCell).celldataSource = self
-                (cell as! SAStepCell).fd_enforceFrameLayout = true
-                (cell as! SAStepCell).data  = data
-                (cell as! SAStepCell).indexPath = indexPath
-            })
+            return getHeightCell(dataArray, index: indexPath.row)
         default:
             break
         }
@@ -157,15 +152,13 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
             c.delegate = self
             c.isDynamic = true
-            c.data = self.dataArray[indexPath.row] as! NSDictionary
+            c.data = self.dataArray[indexPath.row] as? NSDictionary
             c.index = indexPath.row
             if indexPath.row == self.dataArray.count - 1 {
                 c.viewLine.hidden = true
             } else {
                 c.viewLine.hidden = false
             }
-            let _shouldLoadImage = self.shouldLoadCellImage(c, withIndexPath: indexPath)
-            c._layoutSubviews(_shouldLoadImage)
             cell = c
             
             break
@@ -192,18 +185,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         }
     }
     
-    /**
-    - returns: Bool值，代表是否要加载图片
-    */
-    func shouldLoadCellImage(cell: SAStepCell, withIndexPath indexPath: NSIndexPath) -> Bool {
-        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), self.bindViewController!.dynamicTableView.rectForRowAtIndexPath(indexPath)) {
-            return false
-        }
-        
-        return true
-    }
-    
-    
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {
         SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: bindViewController!.dynamicTableView!)
@@ -222,63 +203,6 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
         SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: bindViewController!.dynamicTableView!, section: 0)
-    }
-}
-
-// MARK: - 实现 UIScrollviewDelegate
-extension ExploreDynamicProvider : UIScrollViewDelegate  {
-
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.targetRect = nil
-    }
-    
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
-        self.targetRect = NSValue(CGRect: targetRect)
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if scrollView is UITableView {
-            self.targetRect = nil
-            
-            self.loadImagesForVisibleCells()
-        }
-    }
-    
-    func loadImagesForVisibleCells() {
-        let cellArray = self.bindViewController?.dynamicTableView.visibleCells
-        
-        for cell in cellArray! {
-            if cell is SAStepCell {
-                let indexPath = self.bindViewController?.dynamicTableView.indexPathForCell(cell as! SAStepCell)
-                
-                var _tmpShouldLoadImg = false
-                    _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-                
-                if _tmpShouldLoadImg {
-                    self.bindViewController?.dynamicTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-                }
-            }
-        }
-    }
-    
-}
-
-// MARK: -
-extension ExploreDynamicProvider: SAStepCellDatasource {
-    
-    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
-        
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArray[indexPath.row] as! NSDictionary)
-        _tmpDict.setObject(content as NSString, forKey: "content")
-        
-        #if CGFLOAT_IS_DOUBLE
-        _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-        #else
-        _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-        #endif
-        
-        self.dataArray.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
     }
 }
 

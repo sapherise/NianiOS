@@ -9,16 +9,6 @@
 import UIKit
 import QuartzCore
 
-/**
-*  @author Bob Wei, 15-09-14 13:09:53
-*
-*  @brief  ExploreNewHotCell datasource
-*/
-@objc protocol ENHCDataSource {
-    optional func enhcDataCell(indexPath: NSIndexPath, contentHeight: CGFloat, titleHeight: CGFloat)
-    optional func enhcDataCell(indexPath: NSIndexPath, content: String, title: String)
-}
-
 class ExploreNewHotCell: UITableViewCell {
 
     @IBOutlet var imageHead: UIImageView!
@@ -41,8 +31,6 @@ class ExploreNewHotCell: UITableViewCell {
     var contentHeight: CGFloat?
     var title: String = ""
     var titleHeight: CGFloat?
-    
-    var cellDataSource: ENHCDataSource?
     var indexPath: NSIndexPath?
     
     override func awakeFromNib() {
@@ -115,45 +103,6 @@ class ExploreNewHotCell: UITableViewCell {
         self.viewLine.setY(self.viewLeft.bottom() + 32)
         viewLine.setHeightHalf()
     }
-    
-    class func cellHeightByData(data:NSDictionary)->CGFloat {
-        let title = data.stringAttributeForKey("title").decode()
-        let content = data.stringAttributeForKey("content").decode()
-        let titleHeight = title.stringHeightBoldWith(18, width: 240)
-        if content == "" {
-            return 204.5 + titleHeight - 8
-        }
-        
-        let heightFit = content.stringHeightWith(12, width: 248)
-//        let heightMax = "\n\n".stringHeightWith(12, width: 248)
-//        let heightContent = heightFit > heightMax ? heightMax : heightFit
-        let heightContent = heightFit > 43 ? 43 : heightFit
-        return heightContent + 204.5 + titleHeight
-    }
-    
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        title = data.stringAttributeForKey("title").decode()
-        content = data.stringAttributeForKey("content").decode()
-        
-        titleHeight = title.stringHeightBoldWith(18, width: 240)
-        
-        if content == "" {
-            return CGSizeMake(size.width, 204.5 + titleHeight! - 8)
-        }
-        
-        contentHeight = content.stringHeightWith(12, width: 248)
-        
-        // 43 = "\n\n".stringHeightWith(12, width: 248)
-        contentHeight = contentHeight > 43.0 ? 43.0 : contentHeight
-        
-        self.cellDataSource?.enhcDataCell?(indexPath!, contentHeight: contentHeight!, titleHeight: titleHeight!)
-        self.cellDataSource?.enhcDataCell?(indexPath!, content: content, title: title)
-        
-        return CGSizeMake(size.width, 204.5 + titleHeight! + contentHeight!)
-    }
-    
-    
-    
 }
 
 

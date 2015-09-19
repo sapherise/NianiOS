@@ -49,7 +49,6 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            print(data)
             let content = data.stringAttributeForKey("content").decode().toRedditReduce()
             let uid = data.stringAttributeForKey("user_id")
             let name = data.stringAttributeForKey("username")
@@ -110,9 +109,9 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
         ac.delegate = self
         let userA = data.stringAttributeForKey("user_id")
         let userMe = SAUid()
-        var arr = ["标记为不合适"]
+        var arr = ["举报"]
         if userA == userMe {
-            arr = ["删除", "标记为不合适"]
+            arr = ["删除", "举报"]
         }
         for a in arr {
             ac.addButtonWithTitle(a)

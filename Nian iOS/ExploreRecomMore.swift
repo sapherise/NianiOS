@@ -158,22 +158,6 @@ class ExploreRecomMore: UIViewController {
             self.collectionView.reloadData()
         }
     }
-    
-    
-    /**
-    - returns: Bool值，代表是否要加载图片
-    */
-    func shouldLoadCellImage(cell: ExploreMoreCell, withIndexPath indexPath: NSIndexPath) -> Bool {
-        let attr = self.collectionView.layoutAttributesForItemAtIndexPath(indexPath)
-        let cellFrame = attr?.frame
-        
-        if (self.targetRect != nil) && !CGRectIntersectsRect(self.targetRect!.CGRectValue(), cellFrame!) {
-            return false
-        }
-        
-        return true
-    }
-    
 }
 
 extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegate {
@@ -230,50 +214,6 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         }
     }
     
-}
-
-extension ExploreRecomMore: UIScrollViewDelegate {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.targetRect = nil
-        
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-    }
-    
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
-        self.targetRect = NSValue(CGRect: targetRect)
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if scrollView is UITableView {
-            self.targetRect = nil
-            
-            self.loadImagesForVisibleCells()
-        }
-    }
-    
-    func loadImagesForVisibleCells() {
-        let cellArray = self.collectionView.visibleCells
-        
-        for cell in cellArray() {
-            if cell is ExploreMoreCell {
-                let indexPath = self.collectionView.indexPathForCell(cell as! ExploreMoreCell)
-                
-                var _tmpShouldLoadImg = false
-                _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! ExploreMoreCell, withIndexPath: indexPath!)
-                
-                if _tmpShouldLoadImg {
-                    self.collectionView.reloadItemsAtIndexPaths([indexPath!])
-                }
-            }
-        }
-    }
 }
 
 

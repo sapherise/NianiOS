@@ -27,6 +27,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var timer:NSTimer?
     var ni: NIAlert?
     
+    // 网络状态初始化
+    let reachability = Reachability.reachabilityForInternetConnection()
+    
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var shouldNavToMe: Bool = false
     var tabButtonArray = NSMutableArray()
@@ -42,8 +45,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+        setupReachability()
     }
-    
+
     func gameoverCheck() {
         Api.postGameover() { json in
             if json != nil {

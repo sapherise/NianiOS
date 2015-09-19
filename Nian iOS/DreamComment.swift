@@ -258,7 +258,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             }else{
                 self.replySheet!.addButtonWithTitle("回应@\(user)")
                 self.replySheet!.addButtonWithTitle("复制")
-                self.replySheet!.addButtonWithTitle("标记为不合适")
+                self.replySheet!.addButtonWithTitle("举报")
                 self.replySheet!.addButtonWithTitle("取消")
                 self.replySheet!.cancelButtonIndex = 3
                 self.replySheet!.showInView(self.view)

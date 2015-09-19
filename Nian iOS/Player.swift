@@ -232,7 +232,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             self.guestMoreSheet!.addButtonWithTitle("赞记本")
         }
         self.guestMoreSheet!.addButtonWithTitle("分享记本")
-        self.guestMoreSheet!.addButtonWithTitle("标记为不合适")
+        self.guestMoreSheet!.addButtonWithTitle("举报")
         self.guestMoreSheet!.addButtonWithTitle("取消")
         self.guestMoreSheet!.cancelButtonIndex = 4
         self.guestMoreSheet!.showInView(self.view)
@@ -342,14 +342,14 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             }else{
                 let c = tableViewStep.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
                 c.delegate = self
-                c.data = self.dataArrayStep[indexPath.row] as! NSDictionary
+                c.data = self.dataArrayStep[indexPath.row] as? NSDictionary
                 c.index = indexPath.row
                 if indexPath.row == self.dataArrayStep.count - 1 {
                     c.viewLine.hidden = true
                 } else {
                     c.viewLine.hidden = false
                 }
-                c._layoutSubviews()
+//                c._layoutSubviews()
                 return c
             }
         }
@@ -387,14 +387,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
             if tableView == self.tableViewDream {
                 return  129
             }else{
-                let data = self.dataArrayStep[indexPath.row] as! NSDictionary
-                return tableView.fd_heightForCellWithIdentifier("SAStepCell", cacheByIndexPath: indexPath, configuration: { cell in
-                    (cell as! SAStepCell).celldataSource = self
-                    (cell as! SAStepCell).fd_enforceFrameLayout = true
-                    (cell as! SAStepCell).data  = data
-                    (cell as! SAStepCell).indexPath = indexPath
-                })
-                
+                return getHeightCell(dataArrayStep, index: indexPath.row)
             }
         }
     }
@@ -620,26 +613,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
 }
-
-
-// MARK: -
-extension PlayerViewController: SAStepCellDatasource {
-    
-    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat) {
-        
-        var _tmpDict = NSMutableDictionary(dictionary: self.dataArrayStep[indexPath.row] as! NSDictionary)      //= ["content": content, "contentHeight": contentHeight]
-        _tmpDict.setObject(content as NSString, forKey: "content")
-        
-        #if CGFLOAT_IS_DOUBLE
-            _tmpDict.setObject(NSNumber(double: Double(contentHeight)), forKey: "contentHeight")
-            #else
-            _tmpDict.setObject(NSNumber(float: Float(contentHeight)), forKey: "contentHeight")
-        #endif
-        
-        self.dataArrayStep.replaceObjectAtIndex(indexPath.row, withObject: _tmpDict)
-    }
-}
-
 
 
 

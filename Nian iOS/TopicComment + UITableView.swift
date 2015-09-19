@@ -119,9 +119,9 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
             let userMe = SAUid()
             var arr = []
             if userMe == userQ || userMe == userA {
-                arr = ["回应", "删除", "标记为不合适"]
+                arr = ["回应", "删除", "举报"]
             } else {
-                arr = ["回应", "标记为不合适"]
+                arr = ["回应", "举报"]
             }
             for a in arr {
                 ac.addButtonWithTitle(a as? String)

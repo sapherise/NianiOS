@@ -31,11 +31,10 @@ extension UIImageView {
         self.backgroundColor = placeHolder
         self.contentMode = .Center
         
-        let networkStatus = checkNetworkStatus()
+        let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        
-        if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
+        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {   //如果是开启了同时是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
             if animated {
                 self.setAnimated()
@@ -64,11 +63,11 @@ extension UIImageView {
         self.backgroundColor = placeHolder
         self.contentMode = .Center
         
-        let networkStatus = checkNetworkStatus()
+        let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
-        if (saveMode == "1") && (networkStatus != 2) && (!ignore) {    //如果是开启了同时还是在2G下
+        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {    //如果是开启了同时还是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
             if animated {
                 self.setAnimated()
@@ -92,11 +91,11 @@ extension UIImageView {
         self.image = UIImage(named: "head")
         self.contentMode = .ScaleAspectFill
         
-        let networkStatus = checkNetworkStatus()
+        let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
-        if (saveMode == "1") && (networkStatus != 2) {    //如果是开启了同时还是在2G下
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        if (saveMode == "1") && (networkStatus == 1) {
             self.loadCacheImage(req, placeholderImage: self.image!)
             self.contentMode = .ScaleAspectFill
         } else {
@@ -120,11 +119,11 @@ extension UIImageView {
         self.backgroundColor = placeHolder
         self.contentMode = .Center
         
-        let networkStatus = checkNetworkStatus()
+        let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
-        if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
+        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {   //如果是开启了同时是在2G下
             self.loadCacheImage(req, placeholderImage: self.image!)
         } else {
             self.setImageWithURLRequest(req,
@@ -166,9 +165,9 @@ extension UIImageView {
     // 设置图片渐变动画
     func setAnimated(){
         self.alpha = 0
-        UIView.animateWithDuration(1, animations: { () -> Void in
+        UIView.animateKeyframesWithDuration(0.3, delay: 0, options: UIViewKeyframeAnimationOptions.AllowUserInteraction, animations: { () -> Void in
             self.alpha = 1
-        })
+            }, completion: nil)
     }
     
     func loadCacheImage(request: NSURLRequest, placeholderImage: UIImage) {

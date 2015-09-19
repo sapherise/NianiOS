@@ -29,18 +29,6 @@ protocol delegateSAStepCell {
     func updateStep(index: Int, delete: Bool)
 }
 
-/**
-*  @author Bob Wei, 15-07-30 11:07:34
-*
-*  主要是实现 content label 的高度只计算一次， content 内容只 Decode 一次
-*  
-*  @brief: 
-*/
-protocol SAStepCellDatasource {
-    func saStepCell(indexPath: NSIndexPath, content: String, contentHeight: CGFloat)
-}
-
-
 class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     @IBOutlet var imageHead: UIImageView!
@@ -58,28 +46,17 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     @IBOutlet var viewLine: UIView!
     
     var actionSheetDelete: UIActionSheet!
-    var largeImageURL:String = ""
-    var data :NSDictionary!
-    var imgHeight:Float = 0.0
-    var content:String = ""
-    var img:String = ""
-    var img0:Float = 0.0
-    var img1:Float = 0.0
-    var ImageURL:String = ""
+    var data :NSDictionary?
     
-//    var indexSection: Int = 0
-//    var indexPathRow: Int = 0
+    //    var indexSection: Int = 0
+    //    var indexPathRow: Int = 0
     var indexPath: NSIndexPath?
     
-    var sid:Int = 0
     var index: Int = 0
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     var activityViewController: UIActivityViewController!
     var isDynamic: Bool = false
-    var contentHeight: CGFloat?
-    
-    var celldataSource: SAStepCellDatasource?
     var delegate: delegateSAStepCell?
     
     override func awakeFromNib() {
@@ -95,6 +72,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.viewLine.setWidth(globalWidth - 40)
         self.labelContent.setWidth(globalWidth - 40)
         self.imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageClick"))
+        imageHolder.backgroundColor = IconColor
         self.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCommentClick"))
         self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
@@ -108,49 +86,35 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnUnLike.backgroundColor = SeaColor
     }
     
-    func _layoutSubviews(shouldLoadImage: Bool = true) {
-        let sid = self.data.stringAttributeForKey("sid")
-        if Int(sid) != nil {
-            self.sid = Int(sid)!
-            let uid = self.data.stringAttributeForKey("uid")
-            let user = self.data.stringAttributeForKey("user")
-            var lastdate = self.data.stringAttributeForKey("lastdate")
-            let liked = self.data.stringAttributeForKey("liked")
-            content = self.data.stringAttributeForKey("content")
-            img = self.data.stringAttributeForKey("image")
-            img0 = (self.data.stringAttributeForKey("width") as NSString).floatValue
-            img1 = (self.data.stringAttributeForKey("height") as NSString).floatValue
-            var like = self.data.stringAttributeForKey("likes")
-            var comment = self.data.stringAttributeForKey("comments")
-            let title = self.data.stringAttributeForKey("title").decode()
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if data != nil {
+            let sid = self.data!.stringAttributeForKey("sid")
+            let uid = self.data!.stringAttributeForKey("uid")
+            let user = self.data!.stringAttributeForKey("user")
+            var lastdate = self.data!.stringAttributeForKey("lastdate")
+            let liked = self.data!.stringAttributeForKey("liked")
+            let content = self.data!.stringAttributeForKey("content")
+            let img = self.data!.stringAttributeForKey("image")
+            let img0 = (self.data!.stringAttributeForKey("width") as NSString).floatValue
+            let img1 = (self.data!.stringAttributeForKey("height") as NSString).floatValue
+            var like = self.data!.stringAttributeForKey("likes")
+            var comment = self.data!.stringAttributeForKey("comments")
+            var heightCell = CGFloat((data!.stringAttributeForKey("heightContent") as NSString).floatValue)
+            let title = self.data!.stringAttributeForKey("title")
             lastdate = V.relativeTime(lastdate)
             
             self.labelTime.text = lastdate
-            
-            if shouldLoadImage {
-                self.imageHead.setHead(uid)
-            } else {
-                self.imageHead.backgroundColor = IconColor
-            }
+            self.imageHead.setHead(uid)
             
             self.labelLike.tag = Int(sid)!
             
-            if let value = self.data.objectForKey("contentHeight") as? NSNumber {
-                #if CGFLOAT_IS_DOUBLE
-                contentHeight = CGFloat(value.doubleValue)    // content.stringHeightWith(16, width: globalWidth - 40)
-                #else
-                contentHeight = CGFloat(value.floatValue)
-                #endif
-            } else {
-                contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
-            }
-            
             if content == "" {
-                contentHeight = 0
+                heightCell = 0
             }
             
             // setup label content , detect name && link
-            self.labelContent.setHeight(contentHeight!)
+            self.labelContent.setHeight(heightCell)
             self.labelContent.text = content
             
             self.labelContent.userHandleLinkTapHandler = ({
@@ -226,19 +190,12 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                     self.imageHolder.setX(20)
                 } else {  // 没有图片，有文字
                     self.imageHolder.hidden = true
-                    imgHeight = 0
                     self.labelContent.setY(self.imageHead.bottom() + 20)
                 }
             } else {
-                imgHeight = img1 * Float(globalWidth - 40) / img0
-                ImageURL = "http://img.nian.so/step/\(img)!large"
-                largeImageURL = "http://img.nian.so/step/\(img)!large"
-                
-                if shouldLoadImage {
-                    self.imageHolder.setImage(ImageURL,placeHolder: IconColor)
-                } else {
-                    self.imageHolder.backgroundColor = IconColor
-                }
+                let imgHeight = img1 * Float(globalWidth - 40) / img0
+                let ImageURL = "http://img.nian.so/step/\(img)!large"
+                self.imageHolder.setImage(ImageURL, placeHolder: IconColor, bool: false, ignore: false, animated: false)
                 
                 self.imageHolder.setHeight(CGFloat(imgHeight))
                 self.imageHolder.setWidth(globalWidth - 40)
@@ -282,8 +239,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                     self.labelTime.hidden = false
                 }
             } else {
-                let uidlike = data.stringAttributeForKey("uidlike")
-                let userlike = data.stringAttributeForKey("userlike")
+                let uidlike = data!.stringAttributeForKey("uidlike")
+                let userlike = data!.stringAttributeForKey("userlike")
                 self.imageHead.setHead(uidlike)
                 self.labelName.text = userlike
                 self.labelDream.text = "赞了「\(title)」"
@@ -292,24 +249,36 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onLike() {
-        if let like = Int(data.stringAttributeForKey("likes")) {
+        if let like = Int(data!.stringAttributeForKey("likes")) {
             let num = "\(like + 1)"
             delegate?.updateStep(index, key: "likes", value: num)
             delegate?.updateStep(index, key: "liked", value: "1")
             delegate?.updateStep()
-            let sid = data.stringAttributeForKey("sid")
+            let sid = data!.stringAttributeForKey("sid")
             Api.postLike(sid, like: "1") { json in
             }
         }
     }
     
+    // 停止滚动时加载图片
+    func loadImage() {
+        if imageHolder.image == nil {
+            if data != nil {
+                print("加载！")
+                let img = data!.stringAttributeForKey("image")
+                let ImageURL = "http://img.nian.so/step/\(img)!large"
+                imageHolder.setImage(ImageURL, placeHolder: IconColor, bool: false, ignore: false, animated: true)
+            }
+        }
+    }
+    
     func onUnLike() {
-        if let like = Int(data.stringAttributeForKey("likes")) {
+        if let like = Int(data!.stringAttributeForKey("likes")) {
             let num = "\(like - 1)"
             delegate?.updateStep(index, key: "likes", value: num)
             delegate?.updateStep(index, key: "liked", value: "0")
             delegate?.updateStep()
-            let sid = data.stringAttributeForKey("sid")
+            let sid = data!.stringAttributeForKey("sid")
             Api.postLike(sid, like: "0") { json in
             }
         }
@@ -324,9 +293,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         ac.center = btnMore.center
         ac.startAnimating()
         go {
-            let sid = self.data.stringAttributeForKey("sid")
-            let content = self.data.stringAttributeForKey("content").decode()
-            let uid = self.data.stringAttributeForKey("uid")
+            let sid = self.data!.stringAttributeForKey("sid")
+            let content = self.data!.stringAttributeForKey("content").decode()
+            let uid = self.data!.stringAttributeForKey("uid")
             let url = NSURL(string: "http://nian.so/m/step/\(sid)")!
             let row = self.index
             
@@ -334,9 +303,9 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             var arr = [content, url]
             let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
             card.content = content
-            card.widthImage = self.data.stringAttributeForKey("width")
-            card.heightImage = self.data.stringAttributeForKey("height")
-            card.url = "http://img.nian.so/step/" + self.data.stringAttributeForKey("image") + "!large"
+            card.widthImage = self.data!.stringAttributeForKey("width")
+            card.heightImage = self.data!.stringAttributeForKey("height")
+            card.url = "http://img.nian.so/step/" + self.data!.stringAttributeForKey("image") + "!large"
             arr.append(card.getCard())
             
             let customActivity = SAActivity()
@@ -401,7 +370,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         if actionSheet == actionSheetDelete {
             if buttonIndex == 0 {
                 delegate?.updateStep(index, delete: true)
-                let sid = data.stringAttributeForKey("sid")
+                let sid = data!.stringAttributeForKey("sid")
                 Api.postDeleteStep(sid) { string in
                 }
             }
@@ -409,14 +378,14 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onImageClick() {
-        let img = data.stringAttributeForKey("image")
+        let img = data!.stringAttributeForKey("image")
         self.imageHolder.showImage(V.urlStepImage(img, tag: .Large))
     }
     
     func onCommentClick() {
-        let id = data.stringAttributeForKey("dream")
-        let sid = data.stringAttributeForKey("sid")
-        let uid = data.stringAttributeForKey("uid")
+        let id = data!.stringAttributeForKey("dream")
+        let sid = data!.stringAttributeForKey("sid")
+        let uid = data!.stringAttributeForKey("uid")
         let dreamCommentVC = DreamCommentViewController()
         dreamCommentVC.dreamID = Int(id)!
         dreamCommentVC.stepID = Int(sid)!
@@ -426,34 +395,34 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     func onLikeClick() {
-        let sid = data.stringAttributeForKey("sid")
+        let sid = data!.stringAttributeForKey("sid")
         let LikeVC = LikeViewController()
         LikeVC.Id = sid
         self.findRootViewController()?.navigationController?.pushViewController(LikeVC, animated: true)
     }
     
     func onUserClick() {
-        var uid = data.stringAttributeForKey("uid")
+        var uid = data!.stringAttributeForKey("uid")
         if isDynamic {
-            uid = data.stringAttributeForKey("uidlike")
+            uid = data!.stringAttributeForKey("uidlike")
         }
         let userVC = PlayerViewController()
         userVC.Id = uid
         self.findRootViewController()?.navigationController?.pushViewController(userVC, animated: true)
     }
     
-    class func cellHeightByData(data: NSDictionary)->CGFloat {
-        let content = data.stringAttributeForKey("content").decode()
+    class func cellHeight(data: NSDictionary) -> NSArray {
+        let content = data.stringAttributeForKey("content")
         let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
         let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
         let height = content.stringHeightWith(16,width:globalWidth-40)
         if (img0 == 0.0) {
             let h = content == "" ? 155 + 23 : height + 155
-            return h
+            return [h, height]
         } else {
             let heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
             let h = content == "" ? 155 + heightImage : height + 175 + heightImage
-            return h
+            return [h, height]
         }
     }
     
@@ -474,9 +443,11 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         self.imageHolder.cancelImageRequestOperation()
         self.imageHolder.image = nil
+        self.labelContent.text = nil
+        self.imageHead.image = nil
+        data = nil
     }
     
     /**
@@ -486,27 +457,22 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     
     :returns: <#return value description#>
     */
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        content = self.data.stringAttributeForKey("content").decode()
-        contentHeight = content.stringHeightWith(16, width: globalWidth - 40)
-        
-        let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
-        let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
-        var h: CGFloat = 0.0
-        
-        if (img0 == 0.0) {
-            h = content == "" ? 155 + 23 : contentHeight! + 155
-        } else {
-            let heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
-            h = content == "" ? 155 + heightImage : contentHeight! + 175 + heightImage
-        }
-        
-        //TODO: - 将 content 和 contentHeight 通过 SAStepCellDatasource delegate 出去
-        
-        self.celldataSource!.saStepCell(indexPath!, content: content, contentHeight: contentHeight!)
-        
-        return CGSizeMake(size.width, h)
-    }
+    //    override func sizeThatFits(size: CGSize) -> CGSize {
+    //        let content = self.data.stringAttributeForKey("content")
+    //        let contentHeight = CGFloat((data.stringAttributeForKey("heightCell") as NSString).floatValue)
+    //
+    //        let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
+    //        let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
+    //        var h: CGFloat = 0.0
+    //
+    //        if (img0 == 0.0) {
+    //            h = content == "" ? 155 + 23 : contentHeight + 155
+    //        } else {
+    //            let heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+    //            h = content == "" ? 155 + heightImage : contentHeight + 175 + heightImage
+    //        }
+    //        return CGSizeMake(size.width, h)
+    //    }
     
 }
 
