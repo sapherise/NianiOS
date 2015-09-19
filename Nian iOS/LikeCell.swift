@@ -36,8 +36,8 @@ class LikeCell: MKTableViewCell {
         self.viewLine.setHeight(0.5)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func _layoutSubviews() {
+
         self.uid = self.data.stringAttributeForKey("uid")
         let follow = self.data.stringAttributeForKey("follow")
         user = self.data.stringAttributeForKey("user")

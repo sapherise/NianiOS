@@ -168,7 +168,6 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 2 {
-            logVerbose("&&&&&&&&&&&&&&&&&&&& \(indexPath.row) ++++++++++++")
             return 364
         } else {
             if isiPhone6 || isiPhone6P {
@@ -182,8 +181,7 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
             cell!.data = self.listDataArray[indexPath.row] as! NSDictionary
-            
-            logInfo("========================= \(indexPath.row) ")
+            cell!.indexPath = indexPath
             
             if indexPath.row == self.listDataArray.count - 1 {
                 cell!.viewLine.hidden = true

@@ -133,6 +133,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         cell!.urlIdentify = self.urlIdentify
         cell!.circleID = self.circleID
         cell!.ownerID = self.Id
+        cell!._layoutSubviews()
         return cell!
     }
     

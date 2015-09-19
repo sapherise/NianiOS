@@ -48,6 +48,8 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     var providers: [ExploreProvider]!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         self.buttons = [
             btnFollow,
             btnDynamic,

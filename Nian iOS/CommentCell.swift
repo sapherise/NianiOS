@@ -30,9 +30,9 @@ class CommentCell: UITableViewCell {
         self.avatarView.layer.cornerRadius = 16
     }
     
-    override func layoutSubviews()
+    func _layoutSubviews()
     {
-        super.layoutSubviews()
+//        super.layoutSubviews()
         let uid = self.data.stringAttributeForKey("uid")
         let user = self.data.stringAttributeForKey("user")
         let lastdate = self.data.stringAttributeForKey("lastdate")

@@ -35,8 +35,8 @@ class MeCell: UITableViewCell {
         self.labelConfirm.setX(globalWidth/2-50)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func _layoutSubviews() {
+
         let uid = self.data.stringAttributeForKey("cuid")
         let user = self.data.stringAttributeForKey("cname")
         let lastdate = self.data.stringAttributeForKey("lastdate")

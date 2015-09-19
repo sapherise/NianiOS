@@ -899,7 +899,76 @@ extension ExploreSearch: UIActionSheetDelegate {
         }
     }
 }
-
+//
+//<<<<<<< HEAD
+//=======
+//// MARK: - 实现 UIScrollView Delegate
+//extension ExploreSearch {
+//    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+//        if scrollView is UITableView {
+//            self.targetRect = nil
+//        }
+//    }
+//
+//    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        if scrollView is UITableView {
+//            let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+//            self.targetRect = NSValue(CGRect: targetRect)
+//        }
+//    }
+//    
+//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+//        if scrollView is UITableView {
+//            self.targetRect = nil
+//            
+//            if index == 2 {
+//                self.loadImagesForVisibleCells()
+//            }
+//        } else if scrollView .isMemberOfClass(UIScrollView) {
+//            let xOffset = scrollView.contentOffset.x
+//            let page: Int = Int(xOffset / globalWidth)
+//            
+//            /* */
+//            index = page
+//            /* */
+//            
+//            setupButtonColor(page)
+//            tableScrollToTop()
+//            
+//            UIView.animateWithDuration(0.2, animations: {
+//               self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)
+//            })
+//            
+//            if self.dataSourceArray[index].count == 0 {
+//                showTableViewWithIndex(index)
+//                self.tableDict[index]?.headerBeginRefreshing()
+//            }
+//        }
+//    }
+//    
+//    /**
+//    主要针对 Step table 优化，因为这一页的图片往往很大
+//    */
+//    func loadImagesForVisibleCells() {
+//        let cellArray = self.stepTableView.visibleCells
+//        
+//        for cell in cellArray {
+//            if cell is SAStepCell {
+//                let indexPath = self.stepTableView.indexPathForCell(cell as! SAStepCell)
+//                var _tmpShouldLoadImg = false
+//                
+//                _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
+//                
+//                if _tmpShouldLoadImg {
+//                    self.stepTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//>>>>>>> da9509b8641a3f7add1aa6a15e10097156b585cd
+    // todo: 是否需要？
 // MARK: - UIGestureRecognizerDelegate
 extension ExploreSearch {
     /**

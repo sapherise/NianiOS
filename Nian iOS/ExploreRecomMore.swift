@@ -95,6 +95,8 @@ class ExploreRecomMore: UIViewController {
                         if clear {
                             self.dataArray.removeAllObjects()
                         }
+                        let count = self.dataArray.count
+                        
                         let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
@@ -104,7 +106,19 @@ class ExploreRecomMore: UIViewController {
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
                             
-                            self.collectionView.reloadData()
+                            if clear {
+                                self.collectionView.reloadData()
+                            } else {
+                                self.collectionView.performBatchUpdates({
+                                    var tmpArray = Array<NSIndexPath>()
+                                    var i = count
+                                    for i; i < self.dataArray.count; i++ {
+                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
+                                    }
+                                    
+                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
+                                }, completion: nil)
+                            }
                         }
                     }
                 }
@@ -119,11 +133,13 @@ class ExploreRecomMore: UIViewController {
                             self.dataArray.removeAllObjects()
                         }
                         let data = json!.objectForKey("data") as? NSArray
+                        let count = self.dataArray.count
+                        
                         if data != nil {
+                            /* 去掉所有封面是默认的记本 */
                             for item: AnyObject in data! {
                                 let _img = (item as! NSDictionary).objectForKey("image") as! String
                                 let _imgSplit = _img.componentsSeparatedByString(".")
-                                //_img.characters.split{$0 = "."}.map(String.init)    //split(_img.characters){$0 = "."}.map(String.init)
                                 
                                 if let _ = Int(_imgSplit[0]) {
                                 } else {
@@ -134,7 +150,19 @@ class ExploreRecomMore: UIViewController {
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
                             
-                            self.collectionView.reloadData()
+                            if clear {
+                                self.collectionView.reloadData()
+                            } else {
+                                self.collectionView.performBatchUpdates({
+                                    var tmpArray = Array<NSIndexPath>()
+                                    var i = count
+                                    for i; i < self.dataArray.count; i++ {
+                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
+                                    }
+                                    
+                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
+                                    }, completion: nil)
+                            }
                         }
                     }
                 }
@@ -169,6 +197,8 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreMoreCell", forIndexPath: indexPath) as! ExploreMoreCell
         let _tmpData = self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary
         
+        logError("\(indexPath.row)")
+        
         if let _img = _tmpData.objectForKey("image") as? String {
             
             let imgOp = NSBlockOperation(block: {
@@ -182,7 +212,6 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         
         return cell
     }
-    
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let DreamVC = DreamViewController()
@@ -215,7 +244,3 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
     }
     
 }
-
-
-
-

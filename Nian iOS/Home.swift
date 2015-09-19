@@ -26,13 +26,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var actionSheetGameOver: UIActionSheet?
     var timer:NSTimer?
     var ni: NIAlert?
-    
     // 网络状态初始化
     let reachability = Reachability.reachabilityForInternetConnection()
-    
-    /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
-    var shouldNavToMe: Bool = false
-    var tabButtonArray = NSMutableArray()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -42,9 +37,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         gameoverCheck()
         launchTimer()
         onCircleEnter()
-        
-        let notiCenter = NSNotificationCenter.defaultCenter()
-        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
         setupReachability()
     }
 
@@ -114,7 +106,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         navHide()
         self.navigationController!.interactivePopGestureRecognizer!.enabled = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive", name: "AppActive", object: nil)
@@ -127,67 +118,18 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    /**
-    主要是为了处理通知，跳转到 tab[3] 去
-    */
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if shouldNavToMe {
-            if let _ = self.viewControllers  {
-                self.selectedIndex = 3
-                
-                (self.tabButtonArray[0] as! UIButton).selected = false
-                (self.tabButtonArray[3] as! UIButton).selected = true
-                
-                self.dot!.hidden = true
-                NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
-            }
-            shouldNavToMe = false
-        }
-    }
+    //    不可以添加这个函数，会导致 NianViewController 失效
+    //    override func viewWillAppear(animated: Bool) {
+    //    }
     
     override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
         navShow()
     }
     
     override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "CircleLeave", object: nil)
-    }
-    
-    /**
-    处理在 app 打开的情况下，通过极光 TCP 推送来的消息
-    
-    :param: noti <#noti description#>
-    */
-    func handleNetworkReceiveMsg(noti: NSNotification) {
-        // 设置 [String: AnyObject] 的别名 Dict, 下面代码会略简洁
-        typealias Dict = [String: AnyObject]
-        
-        /* 只能用很差的方式来实现 */
-        if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
-            let _char = _string[_string.startIndex.advancedBy(_string.characters.count - 2)]
-            
-            switch _char {
-            case "了":
-                
-                /* 获得私信、按赞和通知 */
-                self.noticeDot()
-                
-            case "你":
-                self.loadLetter()
-                
-            default:
-                break
-            }
-        }
-        
     }
     
     func onObserveActive() {
@@ -216,6 +158,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             return
         }
         noticeDot()
+        timer = NSTimer(timeInterval: 15, target: self, selector: "noticeDot", userInfo: nil, repeats: true)
+        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
     func stopTimer() {
@@ -228,7 +172,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func noticeDot() {
         if self.dot != nil {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = SAUid()
+            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
             let safeshell = uidKey.objectForKey(kSecValueData) as! String
             
             if safeuid != "" {
@@ -236,7 +180,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
                     let a = resultSet.count
                     let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
-                    
                     if let number = Int(b) {
                         globalNoticeNumber = a + number
                         dispatch_async(dispatch_get_main_queue(), {
@@ -251,14 +194,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                                 self.dot!.text = "\(globalNoticeNumber)"
                                         })
                                 })
-                            } else {  // if globalNoticeNumber != 0 && globalTabBarSelected != 103
+                            }else{
                                 self.dot!.hidden = true
-                                if number > 0 {
-                                    NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object: nil)
-                                }
                             }
                         })
-                    } // if let number = Int(b)
+                    }
                 })
             }
         }
@@ -297,10 +237,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if index == 0 {
                 button.selected = true
             }
-            
-            tabButtonArray.insertObject(button, atIndex: index)
         }
-        
         self.dot = UILabel(frame: CGRectMake(globalWidth*0.7+4, 10, 20, 15))
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
@@ -365,7 +302,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
         let vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         let vc4 = MeViewController()
-//        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
+        //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
@@ -436,8 +373,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             Tap.delegate = self
             self.addView.addGestureRecognizer(Tap)
             
-            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil)
-            self.addStepView = nib[0] as! AddStep
+            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil) as NSArray
+            self.addStepView = nib.objectAtIndex(0) as! AddStep
             self.addStepView.delegate = self
             self.addStepView.setX(globalWidth/2-140)
             self.addStepView.setY(globalHeight/2-106)
@@ -450,7 +387,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.viewClose.userInteractionEnabled = true
             self.view.window!.addSubview(self.viewClose)
             self.view.addSubview(self.addView)
-            
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.addView.alpha = 1
             })
@@ -505,6 +441,68 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
+    func enter() {
+        if isLoadFinish == 1 {
+            go {
+                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeshell = uidKey.objectForKey(kSecValueData) as! String
+                client.setOnState(self.on_state)
+                client.enter(safeuid, shell: safeshell)
+            }
+        }
+    }
+    
+    func on_state(st: ImClient.State) {
+        logError("\(st)")
+        if st == .authed {
+            client.pollBegin(self.on_poll)
+        } else if st == .live {
+            onCircleEnter()
+        }
+    }
+    
+    func on_poll(obj: AnyObject?) {
+        go {
+            let safeuid = SAUid()
+            if obj != nil {
+                let msg: AnyObject? = obj!.objectForKey("msg")
+                if msg != nil {
+                    let json = msg!.objectForKey("msg") as? NSArray
+                    if json != nil {
+                        let count = json!.count - 1
+                        if count >= 0 {
+                            for i: Int in 0...count {
+                                let data: NSDictionary = json![i] as! NSDictionary
+                                let id = data.stringAttributeForKey("msgid")
+                                let uid = data.stringAttributeForKey("from")
+                                let name = data.stringAttributeForKey("fromname")
+                                let msgcontent = data.stringAttributeForKey("msg").decode()
+                                let type = data.stringAttributeForKey("msgtype")
+                                let time = data.stringAttributeForKey("time")
+                                let totype = data.stringAttributeForKey("totype")
+                                var isread = 0
+                                // 如果是群聊
+                                if totype == "1" {
+                                } else {
+                                    // 如果是私信
+                                    shake()
+                                    if uid == "\(globalCurrentLetter)" || uid == safeuid {
+                                        isread = 1
+                                    }
+                                    SQLLetterContent(id, uid: uid, name: name, circle: uid, content: msgcontent, type: type, time: time, isread: isread) {
+                                        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
+                                        self.noticeDot()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func loadLetter() {
         Api.postLetterInit() { json in
             if json != nil {
@@ -512,7 +510,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 self.isLoadFinish++
                 let arr = json!.objectForKey("items") as! NSArray
                 let lastid = json!.objectForKey("lastid") as! String
-                
                 for i : AnyObject  in arr {
                     let data = i as! NSDictionary
                     let id = data.stringAttributeForKey("id")
@@ -527,7 +524,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         isread = 1
                     }
                     
-                    let safeuid = SAUid()
+                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
                     
                     let (resultSet2, _) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
                     if resultSet2.count == 0 {
@@ -537,77 +535,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         }
                     }
                 }
-                
                 self.noticeDot()
-                Api.postUserLetterLastid(lastid) { _ in
+                Api.postUserLetterLastid(lastid) { json in
                 }
+                self.enter()
             }
         }
     }
-    
-    
-//    func enter() {
-//        if isLoadFinish == 1 {
-//            go {
-//                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-//                client.setOnState(self.on_state)
-//                client.enter(safeuid, shell: safeshell)
-//            }
-//        }
-//    }
-
-//    func on_state(st: ImClient.State) {
-//        if st == .authed {
-//            client.pollBegin(self.on_poll)
-//        } else if st == .live {
-//            onCircleEnter()
-//        }
-//    }
-//
-//    func on_poll(obj: AnyObject?) {
-//        go {
-//            logInfo("+++ \(obj) ===")
-//
-//            let safeuid = SAUid()
-//            if obj != nil {
-//                let msg: AnyObject? = obj!.objectForKey("msg")
-//                if msg != nil {
-//                    let json = msg!.objectForKey("msg") as? NSArray
-//                    if json != nil {
-//                        let count = json!.count - 1
-//                        if count >= 0 {
-//                            for i: Int in 0...count {
-//                                let data: NSDictionary = json![i] as! NSDictionary
-//                                let id = data.stringAttributeForKey("msgid")
-//                                let uid = data.stringAttributeForKey("from")
-//                                let name = data.stringAttributeForKey("fromname")
-//                                var content = data.stringAttributeForKey("msg").decode()
-//                                let type = data.stringAttributeForKey("msgtype")
-//                                let time = data.stringAttributeForKey("time")
-//                                var title = data.stringAttributeForKey("title").decode()
-//                                let totype = data.stringAttributeForKey("totype")
-//                                var isread = 0
-//                                // 如果是群聊
-//                                if totype == "1" {
-//                                } else {
-//                                    // 如果是私信
-//                                    shake()
-//                                    if uid == "\(globalCurrentLetter)" || uid == safeuid {
-//                                        isread = 1
-//                                    }
-//                                    SQLLetterContent(id, uid: uid, name: name, circle: uid, content: content, type: type, time: time, isread: isread) {
-//                                        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
-//                                        self.noticeDot()
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
 }
