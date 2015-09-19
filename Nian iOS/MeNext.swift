@@ -65,7 +65,11 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }
                 let arr = data.objectForKey("items") as! NSArray
                 for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
+                    if let _type = (data as! NSDictionary)["type"] as? String {
+                        if Int(_type) < 11 {
+                            self.dataArray.addObject(data)
+                        }
+                    }
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
@@ -85,7 +89,11 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 let arr = data.objectForKey("items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
+                    if let _type = (data as! NSDictionary)["type"] as? String {
+                        if Int(_type) < 11 {
+                            self.dataArray.addObject(data)
+                        }
+                    }
                 }
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()

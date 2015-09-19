@@ -109,12 +109,14 @@ class ExploreRecomMore: UIViewController {
                             if clear {
                                 self.collectionView.reloadData()
                             } else {
-                                let indexpath1 = NSIndexPath(forRow: count, inSection: 0)
-                                let indexpath2 = NSIndexPath(forRow: count + 1, inSection: 0)
-                                let indexpath3 = NSIndexPath(forRow: count + 2, inSection: 0)
-                                
                                 self.collectionView.performBatchUpdates({
-                                    self.collectionView.insertItemsAtIndexPaths([indexpath1, indexpath2, indexpath3])
+                                    var tmpArray = Array<NSIndexPath>()
+                                    var i = count
+                                    for i; i < self.dataArray.count; i++ {
+                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
+                                    }
+                                    
+                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
                                 }, completion: nil)
                             }
                         }
@@ -131,11 +133,13 @@ class ExploreRecomMore: UIViewController {
                             self.dataArray.removeAllObjects()
                         }
                         let data = json!.objectForKey("data") as? NSArray
+                        let count = self.dataArray.count
+                        
                         if data != nil {
+                            /* 去掉所有封面是默认的记本 */
                             for item: AnyObject in data! {
                                 let _img = (item as! NSDictionary).objectForKey("image") as! String
                                 let _imgSplit = _img.componentsSeparatedByString(".")
-                                //_img.characters.split{$0 = "."}.map(String.init)    //split(_img.characters){$0 = "."}.map(String.init)
                                 
                                 if let _ = Int(_imgSplit[0]) {
                                 } else {
@@ -146,7 +150,19 @@ class ExploreRecomMore: UIViewController {
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
                             
-                            self.collectionView.reloadData()
+                            if clear {
+                                self.collectionView.reloadData()
+                            } else {
+                                self.collectionView.performBatchUpdates({
+                                    var tmpArray = Array<NSIndexPath>()
+                                    var i = count
+                                    for i; i < self.dataArray.count; i++ {
+                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
+                                    }
+                                    
+                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
+                                    }, completion: nil)
+                            }
                         }
                     }
                 }
