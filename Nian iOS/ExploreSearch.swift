@@ -975,6 +975,7 @@ extension ExploreSearch {
             /* */
             
             setupButtonColor(page)
+            tableScrollToTop()
             
             UIView.animateWithDuration(0.2, animations: {
                self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)

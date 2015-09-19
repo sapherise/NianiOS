@@ -326,7 +326,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell
+
         if indexPath.section == 0 {
             let c = UITableViewCell()
             c.hidden = true
@@ -355,7 +355,8 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 }else{
                     c!.data3 = dictionary
                 }
-                cell = c!
+                c!._layoutSubviews()
+                return c!
             }else{
                 let c = tableViewStep.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
                 c.delegate = self
@@ -370,7 +371,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 return c
             }
         }
-        return cell
+
     }
     
     // 更新数据

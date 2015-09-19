@@ -45,8 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
         /* DDLog */
         let formatter = Formatter()
@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         APService.registerDeviceToken(deviceToken)
         let cc = APService.registrationID()
         logInfo("\(cc), \(NSString(data: deviceToken, encoding:NSUTF8StringEncoding)))")
-        Api.postJpushBinding(){_ in }
+        Api.postJpushBinding(){ json in  logError("\(json)") }
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

@@ -287,7 +287,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         c.imageContent.tag = dataArray.count - 1 - index
         c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
         c.View.tag = index
-//        c._layoutSubviews()
+        c._layoutSubviews()
         cell = c
         return cell
     }

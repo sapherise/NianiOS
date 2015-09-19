@@ -129,6 +129,8 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else{
             cell!.viewLine.hidden = false
         }
+        cell!._layoutSubviews()
+        
         return cell!
     }
     

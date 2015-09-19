@@ -42,9 +42,7 @@ class StepCell: UITableViewCell {
         self.viewHolder.setX(globalWidth/2 - 160)
     }
     
-    override func layoutSubviews()
-    {
-        super.layoutSubviews()
+    func _layoutSubviews() {
         let id1 = self.data1.stringAttributeForKey("id")
         let title1 = self.data1.stringAttributeForKey("title")
         let img1 = self.data1.stringAttributeForKey("img")

@@ -120,7 +120,6 @@ extension UIImageView {
         let url = NSURL(string: urlString)
         
         self.image = UIImage(named: "drop")!
-        self.backgroundColor = placeHolder
         self.contentMode = .Center
         
         let networkStatus = checkNetworkStatus()
@@ -132,7 +131,7 @@ extension UIImageView {
             self.loadCacheImage(req, placeholderImage: self.image!)
         } else {
             self.setImageWithURLRequest(req,
-                placeholderImage: nil,
+                placeholderImage: UIImage(named: "drop"),
                 success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
                     
                     /*================最佳的绘制圆角图片的方式==============*/
