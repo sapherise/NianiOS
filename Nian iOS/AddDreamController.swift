@@ -240,12 +240,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         tokenView.scrollEnabled = false
 
         if self.isEdit == 1 {
-            self.field1!.text = SADecode(self.editTitle)
-            self.field2.text = SADecode(self.editContent)
+            self.field1!.text = self.editTitle.decode()
+            self.field2.text = self.editContent.decode()
             
             if tagsArray.count > 0 {
                 for i in 0...(tagsArray.count - 1) {
-                    tokenView.tokenField.addTokenWithTitle(SADecode(SADecode(tagsArray[i])))
+                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
                     tokenView.tokenField.layoutTokensAnimated(false)
                 }
             }
@@ -496,7 +496,7 @@ extension AddDreamController: TITokenFieldDelegate {
                         
                         if data.count > 0 {
                             for i in 0...(data.count - 1) {
-                                data[i] = SADecode(SADecode(data[i]))
+                                data[i] = data[i].decode()
                             }
                         }
                     }

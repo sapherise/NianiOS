@@ -194,7 +194,7 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
             cellImageDict[indexPath] = imgOp
             currentQueue.addOperations([imgOp], waitUntilFinished: false)
         }
-        cell.titleLabel?.text = SADecode(_tmpData.objectForKey("title") as! String)
+        cell.titleLabel?.text = (_tmpData.objectForKey("title") as! String).decode()
         
         return cell
     }

@@ -128,8 +128,8 @@ class DreamCellTop: UITableViewCell {
     override func layoutSubviews(){
         super.layoutSubviews()
         if data != nil {
-            var title = SADecode(SADecode(data!.stringAttributeForKey("title")))
-            var content = SADecode(SADecode(data!.stringAttributeForKey("content")))
+            var title = data!.stringAttributeForKey("title").decode()
+            var content = data!.stringAttributeForKey("content").decode()
             let user = data!.stringAttributeForKey("user")
             let img = data!.stringAttributeForKey("image")
             let step = data!.stringAttributeForKey("step")
@@ -221,8 +221,9 @@ class DreamCellTop: UITableViewCell {
                 for var i = 0; i < tagArray.count; i++ {
                     let label = UILabel(frame: CGRectMake(0, 0, 0, 0))
                     label.userInteractionEnabled = true
-                    label.text = SADecode(SADecode(tagArray[i] as String))
-                    self.labelWidthWithItsContent(label, content: SADecode(tagArray[i]))
+                    let content = (tagArray[i] as String).decode()
+                    label.text = content
+                    self.labelWidthWithItsContent(label, content: content)
                     label.frame.origin.x = scrollView.contentSize.width + 8
                     label.frame.origin.y = 11
                     label.tag = 12000 + i
@@ -267,7 +268,7 @@ class DreamCellTop: UITableViewCell {
         let label = sender.view
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         let vc = storyboard.instantiateViewControllerWithIdentifier("ExploreSearch") as! ExploreSearch
-        vc.preSetSearch = SADecode(SADecode(tagArray[label!.tag - 12000]))
+        vc.preSetSearch = tagArray[label!.tag - 12000].decode()
         vc.shouldPerformSearch = true
         vc.index = 1
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)

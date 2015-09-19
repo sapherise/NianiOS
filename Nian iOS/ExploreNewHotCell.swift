@@ -117,8 +117,8 @@ class ExploreNewHotCell: UITableViewCell {
     }
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        let title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        let content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        let title = data.stringAttributeForKey("title").decode()
+        let content = data.stringAttributeForKey("content").decode()
         let titleHeight = title.stringHeightBoldWith(18, width: 240)
         if content == "" {
             return 204.5 + titleHeight - 8
@@ -132,8 +132,8 @@ class ExploreNewHotCell: UITableViewCell {
     }
     
     override func sizeThatFits(size: CGSize) -> CGSize {
-        title = SADecode(SADecode(data.stringAttributeForKey("title")))
-        content = SADecode(SADecode(data.stringAttributeForKey("content")))
+        title = data.stringAttributeForKey("title").decode()
+        content = data.stringAttributeForKey("content").decode()
         
         titleHeight = title.stringHeightBoldWith(18, width: 240)
         

@@ -579,13 +579,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
 //                                let id = data.stringAttributeForKey("msgid")
 //                                let uid = data.stringAttributeForKey("from")
 //                                let name = data.stringAttributeForKey("fromname")
-//                                var content = data.stringAttributeForKey("msg")
+//                                var content = data.stringAttributeForKey("msg").decode()
 //                                let type = data.stringAttributeForKey("msgtype")
 //                                let time = data.stringAttributeForKey("time")
-//                                var title = data.stringAttributeForKey("title")
+//                                var title = data.stringAttributeForKey("title").decode()
 //                                let totype = data.stringAttributeForKey("totype")
-//                                content = SADecode(SADecode(content))
-//                                title = SADecode(SADecode(title))
 //                                var isread = 0
 //                                // 如果是群聊
 //                                if totype == "1" {

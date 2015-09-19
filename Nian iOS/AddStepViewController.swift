@@ -118,7 +118,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
         
         if self.isEdit == 1 {
             self.Id = self.data!.objectForKey("sid") as! String
-            self.TextView.text =  SADecode(self.data!.stringAttributeForKey("content"))
+            self.TextView.text =  self.data!.stringAttributeForKey("content").decode()
             
             self.uploadUrl = self.data!.stringAttributeForKey("image")
             self.uploadWidth = self.data!.stringAttributeForKey("width")

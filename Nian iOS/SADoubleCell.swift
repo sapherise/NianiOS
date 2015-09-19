@@ -37,8 +37,8 @@ class SADoubleCell: MKTableViewCell {
         let uid = data.stringAttributeForKey("uid")
         let bool = data.stringAttributeForKey("follow")
         let img = data.stringAttributeForKey("image")
-        let title = SADecode(data.stringAttributeForKey("title"))
-        let des = SADecode(data.stringAttributeForKey("content"))
+        let title = data.stringAttributeForKey("title").decode()
+        let des = data.stringAttributeForKey("content").decode()
         self.labelName.text = type == 0 ? title : user
         self.labelContent.text = des == "" ? "暂无简介" : des
         viewLine.setHeightHalf()

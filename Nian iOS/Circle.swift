@@ -98,11 +98,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let uid = data.stringAttributeForKey("from")
         if uid == "\(self.ID)" {
             let name = data.stringAttributeForKey("fromname")
-            var content = data.stringAttributeForKey("msg")
+            let content = data.stringAttributeForKey("msg").decode()
             let title = data.stringAttributeForKey("title")
             let type = data.stringAttributeForKey("msgtype")
             let time = (data.stringAttributeForKey("time") as NSString).doubleValue
-            content = SADecode(SADecode(content))
             
             let commentReplyRow = self.dataArray.count
             let absoluteTime = V.absoluteTime(time)

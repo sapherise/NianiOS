@@ -89,9 +89,9 @@ extension EditorRecomCell: UICollectionViewDataSource, UICollectionViewDelegate 
         }
         
         if isiPhone6 || isiPhone6P {
-            (collectionCell as! CollectionViewCell_XL).label?.text = SADecode(_tmpData.objectForKey("title") as! String)
+            (collectionCell as! CollectionViewCell_XL).label?.text = (_tmpData.objectForKey("title") as! String).decode()
         } else {
-            (collectionCell as! CollectionViewCell).label?.text = SADecode(_tmpData.objectForKey("title") as! String)
+            (collectionCell as! CollectionViewCell).label?.text = (_tmpData.objectForKey("title") as! String).decode()
         }
         
         return collectionCell
