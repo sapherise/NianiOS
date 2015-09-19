@@ -54,10 +54,7 @@ func SQLInit() {
 
 // MARK: - 插入一条梦境
 func SQLCircleListInsert(id: String, title: String, image: String, postdate: String) {
-    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
-    
+    let safeuid = SAUid()
     let (resultSet2, err2) = SD.executeQuery("select id from circlelist where circleid = '\(id)' and owner = '\(safeuid)' limit 1")
     if err2 == nil {
         if resultSet2.count == 0 {
@@ -70,10 +67,7 @@ func SQLCircleListInsert(id: String, title: String, image: String, postdate: Str
 
 // MARK: - 插入梦境聊天内容
 func SQLCircleContent(id: String, uid: String, name: String, cid: String, cname: String, circle: String, content: String, title: String, type: String, time: String, isread: Int, callback: Void -> Void) {
-    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
-    
+    let safeuid = SAUid()
     let (result, _) = SD.executeQuery("select id from circle where msgid = '\(id)' and owner = '\(safeuid)' limit 1")
     if result.count == 0 {
         if let _ = SD.executeChange("INSERT INTO circle (id, msgid, uid, name, cid, cname, circle, content, title, type, lastdate, isread, owner) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, cid, cname, circle, content, title, type, time, isread, safeuid]) {
@@ -98,20 +92,14 @@ func SQLStepContent(sid: String, uid: String, dream: String, content: String, im
 
 // MARK: - 删除梦境
 func SQLCircleListDelete(id: String) {
-    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
-    
+    let safeuid = SAUid()
     SD.executeChange("delete from circlelist where circleid=? and owner = ?", withArgs: [id, safeuid])
     SD.executeChange("delete from circle where circle=? and owner = ?", withArgs: [id, safeuid])
 }
 
 // MARK: - 插入私信内容
 func SQLLetterContent(id: String, uid: String, name: String, circle: String, content: String, type: String, time: String, isread: Int, callback: Void -> Void) {
-    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
-    
+    let safeuid = SAUid()
     let (result, _) = SD.executeQuery("select id from letter where msgid = '\(id)' and owner = '\(safeuid)' limit 1")
     if result.count == 0 {
         if let _ = SD.executeChange("INSERT INTO letter (id, msgid, uid, name, circle, content, type, lastdate, isread, owner) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgs: [id, uid, name, circle, content, type, time, isread, safeuid]) {
@@ -123,8 +111,5 @@ func SQLLetterContent(id: String, uid: String, name: String, circle: String, con
 
 // MARK: - 删除私信内容
 func SQLLetterDelete(uid: String) {
-    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//    var safeshell = uidKey.objectForKey(kSecValueData) as! String
-    SD.executeChange("delete from letter where circle=? and owner = ?", withArgs: [uid, safeuid])
+    SD.executeChange("delete from letter where circle=? and owner = ?", withArgs: [uid, SAUid()])
 }

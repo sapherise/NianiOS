@@ -63,7 +63,7 @@ class FindCell: UITableViewCell {
             sender.setTitle("关注中", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeuid = SAUid()
                 let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
                 let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", urlString: "http://nian.so/api/fo.php")
@@ -84,7 +84,7 @@ class FindCell: UITableViewCell {
             sender.setTitle("关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeuid = SAUid()
                 let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
                 let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", urlString: "http://nian.so/api/fo.php")

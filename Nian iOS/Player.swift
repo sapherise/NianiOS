@@ -18,7 +18,6 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     var page: Int = 0
     var pageStep: Int = 1
     var Id:String = "0"
-    var deleteSheet:UIActionSheet?
     var ownerMoreSheet:UIActionSheet?
     var guestMoreSheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
@@ -79,8 +78,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.view.backgroundColor = UIColor.whiteColor()
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if self.Id != safeuid {
@@ -134,25 +132,10 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if actionSheet == self.deleteSheet {
+        if actionSheet == self.userMoreSheet {
             if buttonIndex == 0 {
                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                let newpath = NSIndexPath(forRow: self.deleteViewId, inSection: 1)
-                self.dataArrayStep.removeObjectAtIndex(newpath.row)
-                self.tableViewStep.deleteRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Fade)
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)&sid=\(self.deleteId)", urlString: "http://nian.so/api/delete_step.php")
-                    if(sa == "1"){
-                    }
-                })
-            }
-        }else if actionSheet == self.userMoreSheet {
-            if buttonIndex == 0 {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+                let safeuid = SAUid()
                 let safeshell = uidKey.objectForKey(kSecValueData) as! String
                 
                 if self.isBan == 0 {    // 拖进小黑屋
@@ -502,9 +485,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.topCell.btnLetter.addTarget(self, action: "SALetter:", forControlEvents: UIControlEvents.TouchUpInside)
                 self.topCell.btnLetter.setTitle("写信", forState: UIControlState.Normal)
                 
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                var safeshell = uidKey.objectForKey(kSecValueData) as! String
+                let safeuid = SAUid()
                 
                 if self.Id == safeuid {
                     self.topCell.btnLetter.hidden = true

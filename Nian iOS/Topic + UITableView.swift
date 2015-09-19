@@ -142,10 +142,9 @@ extension TopicViewController {
             let d = tableView == tableViewLeft ? dataArrayLeft : dataArrayRight
             let data = d[indexPath.row] as! NSDictionary
             c.data = data
-//            c.topicId = self.id // 使 Topic cell 知道自己对应哪个 topic ID
-            // todo: 什么意思？
             c.indexVote = indexPath.row
             c.delegate = self
+            c.delegateDelete = self
             return c
         }
     }
@@ -234,5 +233,16 @@ extension TopicViewController {
         tableViewLeft.reloadData()
         tableViewRight.reloadData()
         delegate?.updateTable()
+    }
+    
+    // 当删除某条回应时，进行这个操作，delegate 为 RedditDeleteDelegate
+    func onDelete(index: Int) {
+        let d = current == 0 ? dataArrayLeft : dataArrayRight
+        let t = current == 0 ? tableViewLeft : tableViewRight
+        let data = d[index] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        Api.getTopicDelete(id) { json in }
+        d.removeObjectAtIndex(index)
+        t.reloadData()
     }
 }

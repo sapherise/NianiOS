@@ -63,7 +63,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.labelTableLeft.setX(globalWidth/2 - 160 + 20)
         self.labelTableRight.setX(globalWidth/2 + 160 - 20 - 80)
         self.viewHolderHead.frame.origin.x = globalWidth/2-32
-        self.UserName.frame.origin.x = globalWidth/2-75
+        self.UserName.frame.origin.x = globalWidth/2-120
         self.UserStep.frame.origin.x = globalWidth/2-65
         self.coinButton.frame.origin.x = globalWidth/2-104
         self.levelButton.frame.origin.x = globalWidth/2-104+108
@@ -101,19 +101,15 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let nib = UINib(nibName: "NianCell", bundle: nil)
         self.collectionView.registerNib(nib, forCellWithReuseIdentifier: "NianCell")
         
-        /* 这里本来是从 NSUserDefaults 里面读出来的 */
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let safename = Cookies.get("user") as? String
+        let cacheCoverUrl = Cookies.get("coverUrl") as? String
         
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let safename = Cookies.get("user")
-        let cacheCoverUrl = Sa.objectForKey("coverUrl") as? String
+        if safename != nil {
+            self.UserName.text = "\(safename!)"
+        }
+        self.UserHead.setHead(SAUid())
         
-        self.UserName.text = "\(safename)"
-        self.UserHead.setHead(safeuid)
-        
-        if (cacheCoverUrl != nil) && (cacheCoverUrl! != "http://img.nian.so/cover/!cover") {
+        if cacheCoverUrl != nil && cacheCoverUrl != "http://img.nian.so/cover/!cover" {
             self.imageBG.setCover(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
         } else {
             self.imageBG.image = UIImage(named: "bg")
@@ -218,7 +214,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setupUserTop(){
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let safeuid = SAUid()
         if let uid = Int(safeuid) {
             Api.getUserTop(uid){ json in
@@ -233,8 +228,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     let petCount = data.stringAttributeForKey("pet_count")
                     let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                     let vip = data.stringAttributeForKey("vip")
-                    Sa.setObject(AllCoverURL, forKey: "coverUrl")
-                    Sa.synchronize()
                     let deadLine = data.stringAttributeForKey("deadline")
                     self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                     self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
@@ -254,13 +247,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                         self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                     }
-                    
-                    if let _ = Cookies.get("user") {
-                    } else {
-                        NSUserDefaults.standardUserDefaults().setObject(name, forKey: "user")
-                        NSUserDefaults.standardUserDefaults().synchronize()
-                    }
-                    
+                    Cookies.set(name, forKey: "user")
+                    Cookies.set(AllCoverURL, forKey: "coverUrl")
                 }
             }
         }
@@ -277,9 +265,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func stepClick(){
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
+        let safeuid = SAUid()
         let userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)

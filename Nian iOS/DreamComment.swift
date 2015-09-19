@@ -125,17 +125,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func commentFinish(replyContent:String){
         self.isKeyboardResign = 1
         self.inputKeyboard.text = ""
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as! String
-        let safeuser = Sa.objectForKey("user") as! String
-        
+        let name = Cookies.get("user") as? String
         let commentReplyRow = self.dataArray.count
-        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
         self.dataArray.insertObject(newinsert, atIndex: 0)
         self.tableview.reloadData()
         //当提交评论后滚动到最新评论的底部
@@ -150,7 +142,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             if json != nil {
                 if let status = json!.objectForKey("status") as? NSNumber {
                     if status == 200 {
-                        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(safeuid)", "\(safeuser)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+                        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
                         self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
                         self.tableview.reloadData()
                     } else {
@@ -255,10 +247,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.replySheet!.cancelButtonIndex = 3
             self.replySheet!.showInView(self.view)
         }else{  //不是主人
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//            var safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
+            let safeuid = SAUid()
             if uid == safeuid {
                 self.replySheet!.addButtonWithTitle("回应@\(user)")
                 self.replySheet!.addButtonWithTitle("复制")
@@ -331,7 +320,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+        let safeuid = SAUid()
         let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if actionSheet == self.replySheet {
@@ -350,31 +339,22 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                     self.deleteCommentSheet!.cancelButtonIndex = 1
                     self.deleteCommentSheet!.showInView(self.view)
                 }else{
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        let sa = SAPost("uid=\(safeuid)&shell=\(safeshell)", urlString: "http://nian.so/api/a.php")
-                        if(sa == "1"){
-                            dispatch_async(dispatch_get_main_queue(), {
-                                UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
-                            })
-                        }
-                    })
+                    UIView.showAlertView("谢谢", message: "如果这个回应不合适，我们会将其移除。")
                 }
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
                 self.isKeyboardResign = 1
-                logInfo("\(self.dataArray.count)")
-                self.dataArray.removeObjectAtIndex(self.dataArray.count - 1 - self.ReplyRow)
-                logVerbose("\(self.dataArray.count)")
-//                self.tableview.beginUpdates()
-//                self.tableview.deleteRowsAtIndexPaths([deleteCommentPath], withRowAnimation: .None)
-//                self.tableview.endUpdates()
+                let row = self.dataArray.count - 1 - self.ReplyRow
+                self.dataArray.removeObjectAtIndex(row)
+                self.tableview.beginUpdates()
+                self.tableview.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .Fade)
                 self.tableview.reloadData()
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                self.tableview.endUpdates()
+                go {
                     SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", urlString: "http://nian.so/api/delete_comment.php")
                     self.isKeyboardResign = 0
-                })
+                }
             }
         }
     }

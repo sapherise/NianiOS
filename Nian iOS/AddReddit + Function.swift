@@ -68,7 +68,6 @@ extension AddTopic {
             self.dict.setValue("\(url)", forKey: "\(attachment.image!)")
             self.adjustAll()
         })
-        // todo: 下面的宽度要改成 500
         uy.uploadImage(resizedImage(attachment.image!, newWidth: 500), savekey: getSaveKey("bbs", png: "png") as String)
     }
     

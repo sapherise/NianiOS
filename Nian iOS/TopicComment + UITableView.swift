@@ -163,7 +163,15 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
     }
     
     func onDelete() {
-        // todo: 需要接入删除回应的回应 API
+        let data = dataArray[row] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        Api.getTopicCommentDelete(id) { json in
+        }
+        dataArray.removeObjectAtIndex(row)
+        tableView.beginUpdates()
+        tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Fade)
+        tableView.reloadData()
+        tableView.endUpdates()
     }
     
     func onReport() {

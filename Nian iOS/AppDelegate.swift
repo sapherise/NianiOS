@@ -110,12 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         go {
-            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
             var newDeviceToken = SAReplace("\(deviceToken)", before: "<", after: "")
             newDeviceToken = SAReplace("\(newDeviceToken)", before: ">", after: "")
             newDeviceToken = SAReplace("\(newDeviceToken)", before: " ", after: "")
-            Sa.setObject(newDeviceToken, forKey:"DeviceToken")
-            Sa.synchronize()
+            Cookies.set(newDeviceToken, forKey: "DeviceToken")
         }
         
         /* 设置极光推送 */

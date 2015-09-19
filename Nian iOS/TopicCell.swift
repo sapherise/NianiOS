@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+protocol RedditDeleteDelegate {
+    func onDelete(index: Int)
+}
 class TopicCell: UITableViewCell, UIActionSheetDelegate {
     
     @IBOutlet var labelContent: UILabel!
@@ -25,6 +27,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     var data: NSDictionary!
     var index: Int = 0
     var delegate: RedditDelegate?
+    var delegateDelete: RedditDeleteDelegate?
     var indexVote: Int = 0
     
     var topicId: String = ""
@@ -46,13 +49,18 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
+            print(data)
             let content = data.stringAttributeForKey("content").decode().toRedditReduce()
             let uid = data.stringAttributeForKey("user_id")
             let name = data.stringAttributeForKey("username")
             let lastdate = data.stringAttributeForKey("created_at")
             let time = V.relativeTime(lastdate)
-            var comment = "12"
-            comment = "回应 \(comment)"
+            var comment = data.stringAttributeForKey("comments_count")
+            if comment == "0" {
+                comment = "回应"
+            } else {
+                comment = "回应 \(comment)"
+            }
             let numLike = Int(data.stringAttributeForKey("like_count"))
             let numDislike = Int(data.stringAttributeForKey("dislike_count"))
             let num = SAThousand("\(numLike! - numDislike!)")
@@ -135,7 +143,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     }
     
     func onDelete() {
-        // todo: 需要接入删除的 API
+        delegateDelete?.onDelete(indexVote)
     }
     
     // 投票 - 绑定事件

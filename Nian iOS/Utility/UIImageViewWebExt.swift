@@ -32,8 +32,7 @@ extension UIImageView {
         self.contentMode = .Center
         
         let networkStatus = checkNetworkStatus()
-        let Sa: NSUserDefaults = .standardUserDefaults()
-        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下
@@ -66,8 +65,7 @@ extension UIImageView {
         self.contentMode = .Center
         
         let networkStatus = checkNetworkStatus()
-        let Sa: NSUserDefaults = .standardUserDefaults()
-        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {    //如果是开启了同时还是在2G下
@@ -95,8 +93,7 @@ extension UIImageView {
         self.contentMode = .ScaleAspectFill
         
         let networkStatus = checkNetworkStatus()
-        let Sa: NSUserDefaults = .standardUserDefaults()
-        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) {    //如果是开启了同时还是在2G下
@@ -123,8 +120,7 @@ extension UIImageView {
         self.contentMode = .Center
         
         let networkStatus = checkNetworkStatus()
-        let Sa: NSUserDefaults = .standardUserDefaults()
-        let saveMode: String? = Sa.objectForKey("saveMode") as? String
+        let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus != 2) && (!ignore) {   //如果是开启了同时是在2G下

@@ -45,9 +45,7 @@ class CircleImageCell: UITableViewCell {
         self.avatarView!.tag = Int(uid)!
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        
+        let safeuid = SAUid()
         if uid == safeuid {
                 layoutImage(height, content: content, user: user, lastdate: lastdate, isMe: true)
         }else{

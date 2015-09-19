@@ -329,13 +329,8 @@ class ImClient {
     }
     
     func sendGroupMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
-        _ = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        
-        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        //        var safeuid = Sa.objectForKey("uid") as! String
-        let safename = Sa.objectForKey("user") as! String
-        
-        let json: AnyObject? = httpPost(m_landServer  + "gmsg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)", "msgid": "1"]))
+        let name = Cookies.get("user") as? String
+        let json: AnyObject? = httpPost(m_landServer  + "gmsg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": name!, "cid": "\(cid)", "msgid": "1"]))
         
         return json
     }

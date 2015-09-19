@@ -81,7 +81,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
             let height: AnyObject? = uploadData.objectForKey("image-height")
             self.uploadHeight = "\(height!)"
             self.uploadUrl = SAReplace(self.uploadUrl, before: "/step/", after: "") as String
-            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img: img, width: 0)
+            setCacheImage("http://img.nian.so/step/\(self.uploadUrl)!large", img: img, width: (globalWidth - 40) * globalScale)
         })
         uy.failBlocker = ({(error:NSError!) in
             self.uploadWait!.hidden = true
@@ -161,7 +161,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     
     func addStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
-        let content = self.TextView.text
+        let content = self.TextView.text!
 //        content = SAEncode(SAHtml(content))
         Api.postAddStep_AFN(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
@@ -193,14 +193,6 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     func editStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
         let content = self.TextView.text
-//        content = SAEncode(SAHtml(content))
-//        var Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        var safeuid = Sa.objectForKey("uid") as! String
-//        var safeshell = Sa.objectForKey("shell") as! String
-        
-//        var safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
         Api.postEditStep_AFN(self.Id, content: content, uploadUrl: self.uploadUrl, uploadWidth: self.uploadWidth, uploadHeight: self.uploadHeight) { json in 
             
             if json != nil {

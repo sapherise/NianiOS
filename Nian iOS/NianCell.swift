@@ -29,10 +29,7 @@ class NianCell: UICollectionViewCell{
             globalhasLaunched = 1
         }
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//        var safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
+        let safeuid = SAUid()
         if safeuid == "171264" {
             self.imageCover.layer.cornerRadius = 0
         }

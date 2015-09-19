@@ -254,8 +254,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             self.viewLine.setY(self.viewMenu.bottom()+25)
             viewLine.setHeightHalf()
             
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let cookieuid = uidKey.objectForKey(kSecAttrAccount) as! String
+            let cookieuid = SAUid()
             
             if cookieuid == uid {
                 self.btnLike.hidden = true
@@ -289,8 +288,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.labelName.text = userlike
                 self.labelDream.text = "赞了「\(title)」"
             }
-            
-            
         }
     }
     
@@ -423,10 +420,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         let dreamCommentVC = DreamCommentViewController()
         dreamCommentVC.dreamID = Int(id)!
         dreamCommentVC.stepID = Int(sid)!
-        
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-        
+        let safeuid = SAUid()
         dreamCommentVC.dreamowner = uid == safeuid ? 1 : 0
         self.findRootViewController()?.navigationController?.pushViewController(dreamCommentVC, animated: true)
     }

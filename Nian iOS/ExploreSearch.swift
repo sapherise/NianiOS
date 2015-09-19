@@ -454,19 +454,20 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.navigationItem.rightBarButtonItems = buttonArray()
             self.searchText.resignFirstResponder()
         
-            Api.getHasFollowTopic(self.searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!) {
+            Api.getHasFollowTopic(self.searchText.text!.encode()) {
                 [unowned self] json in
                 if json != nil {
                     self.navigationItem.rightBarButtonItems = [self.rightButton!]
                     
                     if let _data = json!.objectForKey("data") as? String {
                         self.hasFollowTag = _data == "1" ? true : false
-                        let destructiveButtonTilte = _data == "1" ? "取消关注该标签" : "关注该标签"
-                        
-                        self.tagFollowActionSheet = UIActionSheet(title: "#" + self.searchText.text!,
-                                                                delegate: self,
-                                                                cancelButtonTitle: "算了",
-                                                                destructiveButtonTitle: destructiveButtonTilte)
+                        let tag = self.searchText.text!
+                        let content = _data == "1" ? "取消关注 #\(tag)" : "关注 #\(tag)"
+                        self.tagFollowActionSheet = UIActionSheet()
+                        self.tagFollowActionSheet?.delegate = self
+                        self.tagFollowActionSheet?.addButtonWithTitle(content)
+                        self.tagFollowActionSheet?.addButtonWithTitle("取消")
+                        self.tagFollowActionSheet?.cancelButtonIndex = 1
                         self.tagFollowActionSheet?.showInView(self.view)
                     }
                 }
@@ -550,7 +551,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             userPage = 1
         }
         
-        Api.getSearchUsers(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: userPage++, callback: {
+        Api.getSearchUsers(searchText.text!.encode(), page: userPage++, callback: {
             json in
             if json != nil {
                 if clear {
@@ -576,7 +577,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             dreamPage = 1
         }
-        Api.getSearchDream(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: dreamPage++, callback: {
+        Api.getSearchDream(searchText.text!.encode(), page: dreamPage++, callback: {
             json in
             if json != nil {
                 if clear {
@@ -600,7 +601,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             stepPage = 1
         }
-        Api.getSearchSteps(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: stepPage++, callback: {
+        Api.getSearchSteps(searchText.text!.encode(), page: stepPage++, callback: {
             json in
             if json != nil {
                 if clear {
@@ -624,7 +625,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if clear {
             topicPage = 1
         }
-        Api.getSearchTopics(searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, page: topicPage++, callback: {
+        Api.getSearchTopics(searchText.text!.encode(), page: topicPage++, callback: {
             json in
             if json != nil {
                 if clear {
@@ -924,7 +925,7 @@ extension ExploreSearch: UIActionSheetDelegate {
         if buttonIndex == 0 {
             let type = self.hasFollowTag ? "unfollow" : "follow"
             
-            Api.postSearchFollow(self.searchText.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!, type: type) {
+            Api.postSearchFollow(self.searchText.text!.encode(), type: type) {
                 json in
                 
                 if json != nil {
