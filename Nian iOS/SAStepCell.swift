@@ -84,6 +84,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.btnMore.layer.borderColor = lineColor.CGColor
         self.btnUnLike.layer.borderColor = SeaColor.CGColor
         self.btnUnLike.backgroundColor = SeaColor
+        viewLine.setHeightHalf()
     }
     
     override func layoutSubviews() {
@@ -209,7 +210,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.viewMenu.setY(self.labelContent.bottom()+20)
             }
             self.viewLine.setY(self.viewMenu.bottom()+25)
-            viewLine.setHeightHalf()
             
             let cookieuid = SAUid()
             
@@ -264,7 +264,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     func loadImage() {
         if imageHolder.image == nil {
             if data != nil {
-                print("加载！")
                 let img = data!.stringAttributeForKey("image")
                 let ImageURL = "http://img.nian.so/step/\(img)!large"
                 imageHolder.setImage(ImageURL, placeHolder: IconColor, bool: false, ignore: false, animated: true)

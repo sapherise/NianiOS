@@ -40,6 +40,7 @@ var globalTab = [true, true, true, true]
 let globalWidth = UIScreen.mainScreen().bounds.width
 let globalHeight = UIScreen.mainScreen().bounds.height
 let globalScale = UIScreen.mainScreen().scale
+let globalHalf = globalScale == 0 ? 1 : 1 / globalScale
 var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
 var globaliOS: Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
 var isiPhone6: Bool = globalWidth == 375 ? true : false
@@ -901,13 +902,8 @@ extension UIView {
         self.layer.mask = maskLayer
     }
     
-    // https://developer.apple.com/library/ios/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/GraphicsDrawingOverview/GraphicsDrawingOverview.html
-    // 根据官方文档，需要一定的位移才能画出高度为 0.5 的线。
     func setHeightHalf() {
-        let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
-        let SINGLE_LINE_ADJUST_OFFSET = (1 / UIScreen.mainScreen().scale) / 2
-        self.setHeight(SINGLE_LINE_HEIGHT)
-        self.setY(self.frame.origin.y - SINGLE_LINE_ADJUST_OFFSET)
+        self.setHeight(globalHalf)
     }
     
     func addGhost(content: String) {

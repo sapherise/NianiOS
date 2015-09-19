@@ -31,7 +31,7 @@ class MeCell: UITableViewCell {
         self.lastdate!.setX(globalWidth-107)
         self.contentLabel?.setWidth(globalWidth-40)
         self.viewLine.setWidth(globalWidth - 40)
-        self.viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
         self.labelConfirm.setX(globalWidth/2-50)
     }
     
@@ -107,7 +107,6 @@ class MeCell: UITableViewCell {
             self.lastdate!.hidden = false
             self.viewLine.setY(self.contentLabel!.bottom()+25)
         }
-        viewLine.setHeightHalf()
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {

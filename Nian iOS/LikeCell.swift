@@ -33,7 +33,7 @@ class LikeCell: MKTableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnFollow.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
-        self.viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
     }
     
     func _layoutSubviews() {
@@ -45,7 +45,6 @@ class LikeCell: MKTableViewCell {
         self.avatarView.setHead(uid)
         self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         
-        viewLine.setHeightHalf()
         
         let safeuid = SAUid()
         

@@ -26,7 +26,7 @@ class SAUserCell: MKTableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnMain.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
-        self.viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
     }
     
     override func layoutSubviews() {
@@ -35,7 +35,6 @@ class SAUserCell: MKTableViewCell {
         let bool = data.stringAttributeForKey("follow")
         self.labelName.text = user
         self.imageHead.setHead(uid)
-        viewLine.setHeightHalf()
         if let tag = Int(uid) {
             self.imageHead.tag = tag
         }

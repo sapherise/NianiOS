@@ -24,8 +24,8 @@ class Card: UIView {
     
     override func awakeFromNib() {
         self.frame = CGRectMake(10, 10, widthCard, widthCard)
-        viewLine.setHeight(0.5)
-        viewLineTop.setHeight(0.5)
+        viewLine.setHeightHalf()
+        viewLineTop.setHeightHalf()
     }
     
     override func layoutSubviews() {
@@ -62,9 +62,6 @@ class Card: UIView {
         
         self.viewLine.setY(self.labelContent.bottom() + self.num)
         self.viewNian.setY(self.viewLine.bottom() + self.num)
-        
-        viewLine.setHeightHalf()
-        viewLineTop.setHeightHalf()
         
         var heightView = self.image.height() + self.num * 6 + heightContent + heightLine
         if w == 0 {

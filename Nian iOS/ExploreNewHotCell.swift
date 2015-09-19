@@ -40,8 +40,8 @@ class ExploreNewHotCell: UITableViewCell {
         self.setWidth(globalWidth)
         self.labelTag.setX(globalWidth-66)
         self.viewLine.setWidth(globalWidth - 32)
-        self.viewLine.setHeight(0.5)
         self.viewHolder.setX(globalWidth/2-160)
+        viewLine.setHeightHalf()
     }
 
     func _layoutSubviews() {
@@ -101,7 +101,6 @@ class ExploreNewHotCell: UITableViewCell {
             self.imageHead.backgroundColor = IconColor
         }
         self.viewLine.setY(self.viewLeft.bottom() + 32)
-        viewLine.setHeightHalf()
     }
 }
 
