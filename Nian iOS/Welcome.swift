@@ -75,7 +75,7 @@ class WelcomeViewController: UIViewController {
             
             dispatch_async(dispatch_get_main_queue(), {
                 let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                mainViewController.shouldNavToMe = self.shouldNavToMe
+//                mainViewController.shouldNavToMe = self.shouldNavToMe
                 
                 let navigationViewController = UINavigationController(rootViewController: mainViewController)
                 navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)

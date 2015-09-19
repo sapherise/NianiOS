@@ -37,16 +37,12 @@ func httpParams(params: [String: String]) -> String {
 func httpGet(requestURL: String, params: String) -> AnyObject? {
     let request = NSMutableURLRequest()
     request.URL = NSURL(string: requestURL + (params != "" ? "?" + params : ""))
-    
-    logError("\(request.URL)")
-    
     request.timeoutInterval = NSTimeInterval(300)
     var response: NSURLResponse?
     var data: NSData?
     do {
         data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
-    } catch let XXX as NSError {
-        logError("\(XXX)")
+    } catch _ as NSError {
         data = nil
     }
     var json: AnyObject? = nil
@@ -67,8 +63,7 @@ func httpPost(requestURL: String, params: String) -> AnyObject? {
     var data: NSData?
     do {
         data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
-    } catch let err as NSError {
-        logError("\(err)")
+    } catch _ as NSError {
         data = nil
     }
     var json: AnyObject? = nil
@@ -212,70 +207,51 @@ class ImClient {
     
     private func polling() {
         while m_polling {
-        if m_state == .unconnect {
-            enter(m_uid, shell: m_shell)
-        } else if m_state == .authed {
-            var r: AnyObject? = nil
-            if prev_nil == 0 {
-                r  = httpGet(m_landServer + "poll", params: "")
-                logInfo("++++ \(r)")
-                if r != nil {
-                    //                        m_onState?(.live)
+            if m_state == .unconnect {
+                enter(m_uid, shell: m_shell)
+            } else if m_state == .authed {
+                var r: AnyObject? = nil
+                if prev_nil == 0 {
+                    r  = httpGet(m_landServer + "poll", params: "")
+                    if r != nil {
+                        //                        m_onState?(.live)
+                        r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
+                    }
+                } else if prev_nil == 2 {
+                    r  = httpGet(m_landServer + "poll", params: "")
+                    if r != nil {
+                        m_onState?(.live)
+                        r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
+                    }
+                }else {
                     r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
-                    logInfo("++++ \(r)")
                 }
-            } else if prev_nil == 2 {
-                r  = httpGet(m_landServer + "poll", params: "")
-                logVerbose(")))) \(r)")
                 if r != nil {
-                    m_onState?(.live)
-                    r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
-                    logVerbose(")))) \(r)")
+                    prev_nil = 1
+                    m_repollDelay = 0.5
+                    let status = peekStatus(r!)
+                    switch status {
+                    case statusSuccess:
+                        m_onPull?(r)
+                        break
+                    case statusUnauthenticated:
+                        setState(.unconnect)
+                        break
+                    default:
+                        break
+                    }
+                } else {
+                    prev_nil = 2
+                    if m_repollDelay >= 60 {
+                        setState(.unconnect)
+                    }
+                    m_repollDelay = m_repollDelay + 0.5
                 }
-            }else {
-                r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
-                logWarn("&&&& \(r)")
+                logError(" ============    \(r) ")
             }
-            if r != nil {
-                prev_nil = 1
-                m_repollDelay = 0.5
-                
-                logError("#### \(r)")
-                
-                let status = peekStatus(r!)
-                switch status {
-                case statusSuccess:
-                    m_onPull?(r)
-                    break
-                case statusUnauthenticated:
-                    setState(.unconnect)
-                    break
-                default:
-                    break
-                }
-            } else {
-                prev_nil = 2
-                if m_repollDelay >= 60 {
-                    setState(.unconnect)
-                }
-                m_repollDelay = m_repollDelay + 0.5
-            }
-        }
-        logError("^^^^^^^^^^^^^^^^^^^^^^ \(prev_nil)")
-        NSThread.sleepForTimeInterval(m_repollDelay)
+            NSThread.sleepForTimeInterval(m_repollDelay)
         }
         m_polling = false
-    }
-    
-    func getLetter() {
-        
-        var r: AnyObject? = nil
-        r  = httpGet(m_landServer + "poll", params: "")
-        logInfo("++++ \(r)")
-        if r != nil {
-            r = httpGet(m_landServer + "poll", params: httpParams(["uid": m_uid, "sid": m_sid]))
-            logInfo("++++ \(r)")
-        }
     }
     
     func setOnState(handler: State -> Void) {
@@ -319,8 +295,7 @@ class ImClient {
         m_polling = true
         m_onPull = handler
         go {
-//            self.polling()
-            self.getLetter()
+            self.polling()
         }
     }
     
@@ -329,8 +304,13 @@ class ImClient {
     }
     
     func sendGroupMessage(gid: Int, msgtype: Int, msg: String, cid: Int) -> AnyObject? {
-        let name = Cookies.get("user") as? String
-        let json: AnyObject? = httpPost(m_landServer  + "gmsg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": name!, "cid": "\(cid)", "msgid": "1"]))
+        _ = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+        
+        let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        //        var safeuid = Sa.objectForKey("uid") as! String
+        let safename = Sa.objectForKey("user") as! String
+        
+        let json: AnyObject? = httpPost(m_landServer  + "gmsg", params: httpParams(["uid": m_uid, "sid": m_sid, "to": "\(gid)", "type": "\(msgtype)", "msg": msg, "uname": safename, "cid": "\(cid)", "msgid": "1"]))
         
         return json
     }
