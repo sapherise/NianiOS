@@ -41,9 +41,9 @@ class RedditCell: UITableViewCell {
         labelContent.setWidth(globalWidth - 80)
         viewBottom.setWidth(globalWidth - 80)
         viewLine.setWidth(globalWidth - 80)
-        viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
         viewBottomLine.setWidth(0.5)
-        viewVoteLine.setHeight(0.5)
+        viewVoteLine.setHeightHalf()
         labelTag.backgroundColor = SeaColor
     }
     

@@ -27,8 +27,8 @@ class TopicCommentCellHeader: UITableViewCell {
         viewUp.setVote()
         viewDown.setVote()
         viewLine.setWidth(globalWidth - 80)
-        viewLine.setHeight(0.5)
-        viewVoteLine.setHeight(0.5)
+        viewLine.setHeightHalf()
+        viewVoteLine.setHeightHalf()
     }
     
     override func layoutSubviews() {
