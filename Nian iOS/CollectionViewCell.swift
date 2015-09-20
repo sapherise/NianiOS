@@ -15,9 +15,6 @@ class CollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-         
-        self.imageView.cancelImageRequestOperation()
-        self.imageView.image = nil
     }
     
 }

@@ -30,6 +30,7 @@ class ExploreRecommend: ExploreProvider {
     func load(clear: Bool) {
         if clear {
             page = 1
+            lastID = "0"
         }
         
         if page == 1 {
@@ -46,9 +47,7 @@ class ExploreRecommend: ExploreProvider {
                                 self.editorRecommArray = _editorArray
                                 
                                 if self.editorRecommArray.count > 0 {
-                                    self.bindViewController?.recomTableView.beginUpdates()
-                                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
-                                    self.bindViewController?.recomTableView.endUpdates()
+                                    self.bindViewController?.recomTableView.reloadData()
                                 }
                             }
                             
@@ -56,10 +55,7 @@ class ExploreRecommend: ExploreProvider {
                                 self.latestDict = _latestDict
                                 
                                 if self.latestDict.count > 0 {
-                                    self.bindViewController?.recomTableView.beginUpdates()
-                                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
-                                    self.bindViewController?.recomTableView.endUpdates()
-                                    
+                                    self.bindViewController?.recomTableView.reloadData()
                                 }
                             }
                         }
@@ -81,16 +77,9 @@ class ExploreRecommend: ExploreProvider {
                     self.listDataArray.addObject(data)
                 }
                 if self.bindViewController?.current == 2 {
+                    self.bindViewController?.recomTableView.reloadData()
                     self.bindViewController?.recomTableView.headerEndRefreshing()
                     self.bindViewController?.recomTableView.footerEndRefreshing()
-                    
-                    if self.page == 1 || self.page == 2 {
-                        self.bindViewController?.recomTableView.beginUpdates()
-                        self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .None)
-                        self.bindViewController?.recomTableView.endUpdates()
-                    } else {
-                        self.bindViewController?.recomTableView.reloadData()
-                    }
                 }
                 let count = self.listDataArray.count
                 if count >= 1 {
@@ -105,7 +94,7 @@ class ExploreRecommend: ExploreProvider {
     override func onHide() {
         bindViewController!.recomTableView.headerEndRefreshing(false)
     }
-    
+
     override func onShow(loading: Bool) {
 //        bindViewController!.recomTableView.reloadData()
         
@@ -124,8 +113,6 @@ class ExploreRecommend: ExploreProvider {
     }
     
     override func onRefresh() {
-        page = 1
-        self.lastID = "0"
         load(true)
     }
     
@@ -154,8 +141,26 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 2 {
-            let index = indexPath.row
-            return getHeightCell(listDataArray, index: index)
+            let data = listDataArray[indexPath.row] as! NSDictionary
+            let heightCell = data.stringAttributeForKey("heightCell")
+            if heightCell == "" {
+                let arr = ExploreNewHotCell.cellHeight(data)
+                let heightCell = arr[0] as! CGFloat
+                let heightContent = arr[1] as! CGFloat
+                let heightTitle = arr[2] as! CGFloat
+                let content = arr[3] as! String
+                let title = arr[4] as! String
+                let d = NSMutableDictionary(dictionary: data)
+                d.setValue(heightCell, forKey: "heightCell")
+                d.setValue(heightContent, forKey: "heightContent")
+                d.setValue(heightTitle, forKey: "heightTitle")
+                d.setValue(content, forKey: "content")
+                d.setValue(title, forKey: "title")
+                listDataArray.replaceObjectAtIndex(indexPath.row, withObject: d)
+                return heightCell
+            } else {
+                return heightCell.toCGFloat()
+            }
         } else if indexPath.section == 0 || indexPath.section == 1 {
             if isiPhone6 || isiPhone6P {
                 return 202
@@ -182,7 +187,6 @@ extension ExploreRecommend: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
             cell!.data = self.listDataArray[indexPath.row] as! NSDictionary
             cell!.indexPath = indexPath
-            
             if indexPath.row == self.listDataArray.count - 1 {
                 cell!.viewLine.hidden = true
             } else {

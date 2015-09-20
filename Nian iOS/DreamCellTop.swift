@@ -56,7 +56,7 @@ class DreamCellTop: UITableViewCell {
         self.dotLeft.setX(globalWidth/2-8)
         self.dotRight.setX(globalWidth/2+2)
         self.viewLineTop.setWidth(globalWidth - 40)
-        viewLineLeft.setHeightHalf()
+        viewLineLeft.setWidth(0.5)
         viewLineTop.setHeightHalf()
         scrollView.setTag()
     }

@@ -510,6 +510,7 @@ struct Api {
     static func postAddStep_AFN(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
         loadCookies()
         let sid = client.getSid()
+        Cookies.set(dream, forKey: "DreamNewest")
         V.httpPostForJson_AFN("http://nian.so/api/addstep_query2.php",
             content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"],
             callback: callback)

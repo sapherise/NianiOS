@@ -23,14 +23,6 @@ class ExploreNewHotCell: UITableViewCell {
     @IBOutlet var viewHolder: UIView!
     
     var data :NSDictionary!
-    var largeImageURL: String = ""
-    var uid: String = ""
-    var tmpLineHeight: CGFloat = 0.0
-    
-    var content: String = ""
-    var contentHeight: CGFloat?
-    var title: String = ""
-    var titleHeight: CGFloat?
     var indexPath: NSIndexPath?
     
     override func awakeFromNib() {
@@ -51,39 +43,24 @@ class ExploreNewHotCell: UITableViewCell {
         let likes = self.data.stringAttributeForKey("likes")
         let content = self.data.stringAttributeForKey("content")
         let steps = self.data.stringAttributeForKey("steps")
-  
-        self.labelTag.text = "\(indexPath?.row)"
+
+        if let row = indexPath?.row {
+            self.labelTag.text = "#\(row + 1)"
+        }
 
         self.labelTag.setRadius(4, isTop: false)
         
-        if let value = self.data["titleHeight"] as? NSNumber {
-            #if CGFLOAT_IS_DOUBLE
-            titleHeight = CGFloat(value.doubleValue)
-            #else
-            titleHeight = CGFloat(value.floatValue)
-            #endif
-        } else {
-            titleHeight = title.stringHeightBoldWith(18, width: 248)
-        }
+        let heightTitle = data.objectForKey("heightTitle") as! CGFloat
+        let heightContent = data.objectForKey("heightContent") as! CGFloat
         
         self.labelTitle.text = title
         self.labelContent.text = content
         self.labelSupport.text = SAThousand(likes)  //点赞
         self.labelStep.text = SAThousand(steps)
         
-        if let value = self.data["contentHeight"] as? NSNumber {
-            #if CGFLOAT_IS_DOUBLE
-            contentHeight = CGFloat(value.doubleValue)
-            #else
-            contentHeight = CGFloat(value.floatValue)
-            #endif
-        } else {
-            contentHeight = content.stringHeightWith(12, width: 248)
-        }
         
-        // 43 = "\n\n".stringHeightWith(12, width: 248)
-        self.labelContent.setHeight(contentHeight! > 43 ? 43 : contentHeight!)
-        self.labelTitle.setHeight(titleHeight!)
+        self.labelContent.setHeight(heightContent)
+        self.labelTitle.setHeight(heightTitle)
         self.labelContent.setY(self.labelTitle.bottom() + 8)
         var bottom = self.labelContent.bottom()
         if content == "" {
@@ -101,6 +78,19 @@ class ExploreNewHotCell: UITableViewCell {
             self.imageHead.backgroundColor = IconColor
         }
         self.viewLine.setY(self.viewLeft.bottom() + 32)
+    }
+    
+    class func cellHeight(data: NSDictionary) -> NSArray {
+        let content = data.stringAttributeForKey("content").decode()
+        let title = data.stringAttributeForKey("title").decode()
+        let hTitle = title.stringHeightBoldWith(18, width: 248)
+        var hContent = content.stringHeightWith(12, width: 248)
+        hContent = min(hContent, 43)
+        var height = hContent + 204.5 + hTitle
+        if content == "" {
+            height = hTitle + 204.5 - 8
+        }
+        return [height, hContent, hTitle, content, title]
     }
 }
 

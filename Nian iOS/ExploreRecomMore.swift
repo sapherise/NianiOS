@@ -105,20 +105,7 @@ class ExploreRecomMore: UIViewController {
                             
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            
-                            if clear {
-                                self.collectionView.reloadData()
-                            } else {
-                                self.collectionView.performBatchUpdates({
-                                    var tmpArray = Array<NSIndexPath>()
-                                    var i = count
-                                    for i; i < self.dataArray.count; i++ {
-                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
-                                    }
-                                    
-                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
-                                }, completion: nil)
-                            }
+                            self.collectionView.reloadData()
                         }
                     }
                 }
@@ -149,20 +136,7 @@ class ExploreRecomMore: UIViewController {
                             
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            
-                            if clear {
-                                self.collectionView.reloadData()
-                            } else {
-                                self.collectionView.performBatchUpdates({
-                                    var tmpArray = Array<NSIndexPath>()
-                                    var i = count
-                                    for i; i < self.dataArray.count; i++ {
-                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
-                                    }
-                                    
-                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
-                                    }, completion: nil)
-                            }
+                            self.collectionView.reloadData()
                         }
                     }
                 }
@@ -196,25 +170,18 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreMoreCell", forIndexPath: indexPath) as! ExploreMoreCell
         let _tmpData = self.dataArray.objectAtIndex(indexPath.row) as! NSDictionary
-        
-        logError("\(indexPath.row)")
-        
         if let _img = _tmpData.objectForKey("image") as? String {
-            
             let imgOp = NSBlockOperation(block: {
-                
                 if SAUid() == "171264" {
                     cell.coverImageView.setImageWithRounded(0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                 } else {
                     cell.coverImageView.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                 }
             })
-            
             cellImageDict[indexPath] = imgOp
             currentQueue.addOperations([imgOp], waitUntilFinished: false)
         }
         cell.titleLabel?.text = (_tmpData.objectForKey("title") as! String).decode()
-        
         return cell
     }
     

@@ -12,7 +12,7 @@ class EditorRecomCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: NICollectionView!
     @IBOutlet weak var sepLine: UIView!
-    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var btn: UIButton!
     
     var data: NSMutableArray?
     
@@ -34,9 +34,13 @@ class EditorRecomCell: UITableViewCell {
         }
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        
+        btn.addTarget(self, action: "onEditor", forControlEvents: .TouchUpInside)
         _layoutSubview()
-        
+    }
+    
+    func onEditor() {
+        let vc = ExploreNext()
+        findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
 
     func _layoutSubview() {
@@ -44,10 +48,6 @@ class EditorRecomCell: UITableViewCell {
         if data?.count > 0 {
             self.collectionView.reloadData()
         }
-        
-    }
-    
-    @IBAction func onEditorMore(sender: UIButton) {
         
     }
 }

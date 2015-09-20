@@ -12,6 +12,7 @@ class LatestNoteCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: NICollectionView!
     @IBOutlet weak var sepLine: UIView!
+    @IBOutlet var btn: UIButton!
     
     var data: NSMutableDictionary?
     var promoArray: NSArray?
@@ -35,6 +36,7 @@ class LatestNoteCell: UITableViewCell {
         }
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        btn.addTarget(self, action: "onNew", forControlEvents: .TouchUpInside)
         
         _layoutSubview()
         
@@ -49,9 +51,10 @@ class LatestNoteCell: UITableViewCell {
         }
     }
     
-    @IBAction func onLatestMore(sender: UIButton) {
-        
-        
+    func onNew() {
+        let vc = ExploreNext()
+        vc.type = 1
+        findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

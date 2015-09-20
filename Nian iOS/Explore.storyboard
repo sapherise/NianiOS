@@ -64,14 +64,12 @@
                                                             <state key="normal" image="discover_more_48">
                                                                 <color key="titleColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
-                                                            <connections>
-                                                                <segue destination="6IR-P2-cBx" kind="push" identifier="toEditorMore" id="Ln6-fQ-g84"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="collectionView" destination="ond-4I-yjy" id="MiM-3n-7rV"/>
+                                                    <outlet property="btn" destination="2Nw-qv-L05" id="wOI-ls-euc"/>
+                                                    <outlet property="collectionView" destination="ond-4I-yjy" id="1Ij-8D-mYh"/>
                                                     <outlet property="sepLine" destination="VMT-1f-Wkq" id="OPp-x4-Fnf"/>
                                                 </connections>
                                             </tableViewCell>
@@ -96,9 +94,6 @@
                                                                 <color key="titleColor" red="0.70196078429999997" green="0.70196078429999997" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
-                                                            <connections>
-                                                                <segue destination="6IR-P2-cBx" kind="push" identifier="toLatestMore" id="Cu3-rJ-K44"/>
-                                                            </connections>
                                                         </button>
                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="9R4-UC-q8i" customClass="NICollectionView" customModule="Nian_iOS" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="56" width="320" height="104"/>
@@ -115,7 +110,8 @@
                                                     </subviews>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="collectionView" destination="9R4-UC-q8i" id="dH8-sy-qwT"/>
+                                                    <outlet property="btn" destination="tsF-rd-2J3" id="JJ6-w1-2FQ"/>
+                                                    <outlet property="collectionView" destination="9R4-UC-q8i" id="ewH-ce-cZF"/>
                                                     <outlet property="sepLine" destination="u7u-4b-8Vg" id="obt-Y7-IZc"/>
                                                 </connections>
                                             </tableViewCell>
@@ -342,7 +338,4 @@
         <image name="discover_more_48" width="48" height="48"/>
         <image name="search-large" width="24" height="24"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="Cu3-rJ-K44"/>
-    </inferredMetricsTieBreakers>
 </document>

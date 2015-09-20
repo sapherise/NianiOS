@@ -161,6 +161,7 @@
 		12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EAABFD1AB292AF00D20676 /* Popup.swift */; };
 		12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */; settings = {ASSET_TAGS = (); }; };
 		12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */; settings = {ASSET_TAGS = (); }; };
+		12F07B451BAF4C31008F8ADB /* ExploreNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F07B441BAF4C31008F8ADB /* ExploreNext.swift */; settings = {ASSET_TAGS = (); }; };
 		12F65C091B64F46C0051A914 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C081B64F46C0051A914 /* Pet.swift */; };
 		12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0A1B64F5AE0051A914 /* SAViewController.swift */; };
 		12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0C1B64F98D0051A914 /* PetTableView.swift */; };
@@ -425,6 +426,7 @@
 		12EAABFD1AB292AF00D20676 /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 		12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCellMe.xib; sourceTree = "<group>"; };
 		12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellMe.swift; sourceTree = "<group>"; };
+		12F07B441BAF4C31008F8ADB /* ExploreNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNext.swift; sourceTree = "<group>"; };
 		12F65C081B64F46C0051A914 /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		12F65C0A1B64F5AE0051A914 /* SAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAViewController.swift; sourceTree = "<group>"; };
 		12F65C0C1B64F98D0051A914 /* PetTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableView.swift; sourceTree = "<group>"; };
@@ -1018,6 +1020,21 @@
 			name = API;
 			sourceTree = "<group>";
 		};
+		12F07B431BAF4B1C008F8ADB /* 编辑推荐 */ = {
+			isa = PBXGroup;
+			children = (
+				C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */,
+				C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */,
+				C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */,
+				C42263301B82F1E500C0F011 /* CollectionViewCell.swift */,
+				C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */,
+				C48ACB8A1B958CF8009A9C30 /* CollectionViewCell_XL.swift */,
+				C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */,
+				12F07B441BAF4C31008F8ADB /* ExploreNext.swift */,
+			);
+			name = "编辑推荐";
+			sourceTree = "<group>";
+		};
 		12F65C071B64F44F0051A914 /* 宠物 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1183,10 +1200,6 @@
 				C42263251B82E49900C0F011 /* EditorRecomCell.swift */,
 				C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */,
 				C45158441B85C5F500A40593 /* NICollectionView.swift */,
-				C42263301B82F1E500C0F011 /* CollectionViewCell.swift */,
-				C4446D6D1B8426CA0037DC59 /* CollectionViewCell.xib */,
-				C48ACB8A1B958CF8009A9C30 /* CollectionViewCell_XL.swift */,
-				C48ACB881B958B8C009A9C30 /* CollectionViewCell_XL.xib */,
 				C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */,
 				C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */,
 				C483CF901AEB435200E1C550 /* ExploreSearch.swift */,
@@ -1196,9 +1209,7 @@
 				3274A3821A15F0DA00D2425A /* ExploreDynamic.swift */,
 				3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */,
 				3274A3801A15D5C100D2425A /* ExploreFollow.swift */,
-				C4446D6F1B847D460037DC59 /* ExploreRecomMore.swift */,
-				C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */,
-				C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */,
+				12F07B431BAF4B1C008F8ADB /* 编辑推荐 */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -1696,6 +1707,7 @@
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
+				12F07B451BAF4C31008F8ADB /* ExploreNext.swift in Sources */,
 				C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */,
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
 				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,

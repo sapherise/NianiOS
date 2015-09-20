@@ -40,6 +40,9 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var navTopView: UIView!
     @IBOutlet weak var navHolder: UIView!
     
+    @IBOutlet var btnNew: UIButton!
+    @IBOutlet var btnEditor: UIButton!
+    
     var appear = false
     var current = -1
     var currentProvider: ExploreProvider!
@@ -233,20 +236,6 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-}
-
-// MARK: - prepareForSegue
-extension ExploreViewController {
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "toEditorMore" {
-            let exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
-            exploreRecomMore.titleOn = "编辑推荐"
-        } else if segue.identifier == "toLatestMore" {
-            let exploreRecomMore = segue.destinationViewController as! ExploreRecomMore
-            exploreRecomMore.titleOn = "最新"
-        }
-    }
 }
 
 // MARK: -  Explore VC 不能同时响应多个手势
