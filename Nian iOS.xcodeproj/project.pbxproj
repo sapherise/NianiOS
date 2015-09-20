@@ -159,6 +159,8 @@
 		12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8090C1A2DBFB20022C094 /* SingleStep.swift */; };
 		12EAABFC1AB292A500D20676 /* Popup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EAABFB1AB292A500D20676 /* Popup.xib */; };
 		12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EAABFD1AB292AF00D20676 /* Popup.swift */; };
+		12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */; settings = {ASSET_TAGS = (); }; };
+		12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */; settings = {ASSET_TAGS = (); }; };
 		12F65C091B64F46C0051A914 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C081B64F46C0051A914 /* Pet.swift */; };
 		12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0A1B64F5AE0051A914 /* SAViewController.swift */; };
 		12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0C1B64F98D0051A914 /* PetTableView.swift */; };
@@ -421,6 +423,8 @@
 		12E8090C1A2DBFB20022C094 /* SingleStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStep.swift; sourceTree = "<group>"; };
 		12EAABFB1AB292A500D20676 /* Popup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Popup.xib; sourceTree = "<group>"; };
 		12EAABFD1AB292AF00D20676 /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
+		12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCellMe.xib; sourceTree = "<group>"; };
+		12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellMe.swift; sourceTree = "<group>"; };
 		12F65C081B64F46C0051A914 /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		12F65C0A1B64F5AE0051A914 /* SAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAViewController.swift; sourceTree = "<group>"; };
 		12F65C0C1B64F98D0051A914 /* PetTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableView.swift; sourceTree = "<group>"; };
@@ -444,7 +448,7 @@
 		12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewWebExt.swift; sourceTree = "<group>"; };
 		12FB48C2196AE8010026DD51 /* UIViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExt.swift; sourceTree = "<group>"; };
 		12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAHttpRequest.swift; sourceTree = "<group>"; };
-		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		322DB94B1A0C9E95005FD6AE /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Api.swift; path = Utility/Api.swift; sourceTree = "<group>"; };
 		323F783D1A105C93003C3755 /* V.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V.swift; sourceTree = "<group>"; };
 		324C2AEC1A28119E00E6A299 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicDreamCell.xib; sourceTree = "<group>"; };
@@ -979,6 +983,8 @@
 			children = (
 				12E4939A19953DCC00F8DF32 /* CommentCell.swift */,
 				12E4939819953DBB00F8DF32 /* CommentCell.xib */,
+				12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */,
+				12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */,
 				12E1E5241A0EBBFD0005B129 /* DreamComment.swift */,
 			);
 			name = "回应";
@@ -1002,6 +1008,14 @@
 				12EAABFD1AB292AF00D20676 /* Popup.swift */,
 			);
 			name = "弹出层";
+			sourceTree = "<group>";
+		};
+		12F07B361BAE9D67008F8ADB /* API */ = {
+			isa = PBXGroup;
+			children = (
+				322DB94B1A0C9E95005FD6AE /* Api.swift */,
+			);
+			name = API;
 			sourceTree = "<group>";
 		};
 		12F65C071B64F44F0051A914 /* 宠物 */ = {
@@ -1093,6 +1107,7 @@
 				12CDE5CE19AC9FB4002E793F /* 图片 */,
 				126FB4711B574EB80056221C /* 复用 */,
 				122F7F591B5E6B7B00B4EA32 /* 游戏 */,
+				12F07B361BAE9D67008F8ADB /* API */,
 				12FB489C196AE76E0026DD51 /* Supporting Files */,
 			);
 			path = "Nian iOS";
@@ -1140,7 +1155,6 @@
 				12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */,
 				12FB48C2196AE8010026DD51 /* UIViewExt.swift */,
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
-				322DB94B1A0C9E95005FD6AE /* Api.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
 				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
@@ -1476,6 +1490,7 @@
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */,
+				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
 				C4446D6E1B8426CA0037DC59 /* CollectionViewCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
@@ -1614,6 +1629,7 @@
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
+				12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,

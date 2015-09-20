@@ -211,7 +211,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.viewFind.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFindClick"))
         self.viewSex.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSexClick"))
         
-        //labelVersion.text = [NSString stringWithFormat:@"v%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
         let numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
         self.version.text = "念 \(numberVersion)"
         
@@ -644,11 +643,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     }
     
     func onStarClick(){
-        let storeProductVC = SKStoreProductViewController()
-        storeProductVC.delegate = self
-        let dict = NSDictionary(object: "929448912", forKey: SKStoreProductParameterITunesItemIdentifier)
-        self.navigationController?.presentViewController(storeProductVC, animated: true, completion: nil)
-        storeProductVC.loadProductWithParameters(dict as! [String : AnyObject], completionBlock: nil)
+        openAppStore()
     }
     
     func productViewControllerDidFinish(viewController: SKStoreProductViewController) {

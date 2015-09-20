@@ -411,7 +411,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     class func cellHeight(data: NSDictionary) -> NSArray {
-        let content = data.stringAttributeForKey("content")
+        let content = data.stringAttributeForKey("content").decode()
         let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
         let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
         let height = content.stringHeightWith(16,width:globalWidth-40)

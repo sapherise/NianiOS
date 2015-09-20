@@ -29,8 +29,7 @@ class NianCell: UICollectionViewCell{
             globalhasLaunched = 1
         }
         
-        let safeuid = SAUid()
-        if safeuid == "171264" {
+        if SAUid() == "171264" {
             self.imageCover.layer.cornerRadius = 0
         }
     }

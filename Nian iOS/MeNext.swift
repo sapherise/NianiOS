@@ -108,7 +108,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let safeuid = SAUid()
         let safeshell = uidKey.objectForKey(kSecValueData) as! String
         
-        return "http://nian.so/api/me_next.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)&&tag=\(self.tag)"
+        return "http://nian.so/api/me_next2.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)&&tag=\(self.tag)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -168,7 +168,8 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let uid = data.stringAttributeForKey("cuid")
         let dream = data.stringAttributeForKey("dream")
         let type = data.stringAttributeForKey("type")
-        let step = data.stringAttributeForKey("step") as String
+        let step = data.stringAttributeForKey("step")
+        let name = data.stringAttributeForKey("cname")
         
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()
@@ -176,6 +177,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         if type == "0" {    //在你的记本留言
             if step != "0" {
                 StepVC.Id = step
+                StepVC.name = name
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
@@ -184,6 +186,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else if type == "1" {  //在某个记本提及你
             if step != "0" {
                 StepVC.Id = step
+                StepVC.name = name
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
@@ -209,6 +212,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else if type == "8" {  //赞了你的进展
             if step != "0" {
                 StepVC.Id = step
+                StepVC.name = name
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream

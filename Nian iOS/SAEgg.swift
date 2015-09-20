@@ -65,6 +65,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 let img1 = self.setupEgg(40, named: "pet_egg1")
                 let img2 = self.setupEgg(104, named: "pet_egg2")
                 let img3 = self.setupEgg(168, named: "pet_egg3")
+                img1.tag = 1
+                img2.tag = 2
+                img3.tag = 3
                 self.confirmNiAlert._containerView?.addSubview(img1)
                 self.confirmNiAlert._containerView?.addSubview(img2)
                 self.confirmNiAlert._containerView?.addSubview(img3)
@@ -104,6 +107,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
     }
     
     func onEggTouchUp(sender: UIButton) {
+        let tag = sender.tag
         sender.backgroundColor = UIColor.clearColor()
         self.confirmNiAlert.titleLabel?.hidden = true
         self.confirmNiAlert.contentLabel?.hidden = true
@@ -122,7 +126,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
         ac.hidden = false
         ac.startAnimating()
         self.confirmNiAlert._containerView!.addSubview(ac)
-        Api.postPetLottery() { json in
+        Api.postPetLottery(tag) { json in
             if json != nil {
                 let err = json!.objectForKey("error") as! NSNumber
                 if err == 0 {

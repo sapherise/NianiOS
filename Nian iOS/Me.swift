@@ -78,17 +78,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func SALoadData() {
-        var isLoaded = 0
-        delay(3, closure: {
-            if isLoaded == 0 {
-                self.view.showTipText("念没有踩你，再试试看", delay: 2)
-                self.tableView.headerEndRefreshing()
-            }
-        })
         Api.postLetter() { json in
             self.tableView.headerEndRefreshing()
             if json != nil {
-                isLoaded = 1
                 self.numLeft = json!.objectForKey("notice_reply") as! String
                 self.numMiddel = json!.objectForKey("notice_like") as! String
                 self.numRight = json!.objectForKey("notice_news") as! String

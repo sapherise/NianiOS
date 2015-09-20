@@ -33,7 +33,7 @@ extension TopicComment {
                 let dic = NSMutableDictionary(objects: [content, "-1", "-1", uid, name!], forKeys: ["content", "created_at", "id", "user_id", "username"])
                 dataArray.insertObject(dic, atIndex: 0)
                 tableView.reloadData()
-                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Left)
+                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Fade)
                 Api.postTopicCommentComment(id, content: content) { json in
                     if json != nil {
                         dic.setValue(time, forKey: "created_at")

@@ -42,6 +42,7 @@ class NIAlert: UIView {
     
     var _containerView: UIView?
     var isLayerHidden: Bool = false
+    var shouldTapBackgroundToDismiss: Bool = true
     
     weak var delegate: NIAlertDelegate?
     
@@ -62,10 +63,6 @@ class NIAlert: UIView {
         self._containerView?.frame = CGRect.zero
         
         self.addSubview(_containerView!)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation:")
-        tapGesture.delegate = self
-        self.addGestureRecognizer(tapGesture)
     }
 
     override init(frame: CGRect) {
@@ -77,6 +74,12 @@ class NIAlert: UIView {
     }
     
     private func _commonSetup() {
+        if shouldTapBackgroundToDismiss {
+            let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation:")
+            tapGesture.delegate = self
+            self.addGestureRecognizer(tapGesture)
+        }
+        
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.mainScreen().scale
         

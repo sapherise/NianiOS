@@ -14,6 +14,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     var dataArray = NSMutableArray()
     var Id:String = "1"
     var navView:UIView!
+    var name: String?   // 从消息进入后自动@
     
     //editStepdelegate
     var editStepRow:Int = 0
@@ -85,6 +86,8 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         c.delegate = self
         c.data = self.dataArray[indexPath.row] as? NSDictionary
         c.index = indexPath.row
+        c.labelComment.tag = indexPath.row
+        c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment:"))
         if indexPath.row == self.dataArray.count - 1 {
             c.viewLine.hidden = true
         } else {
@@ -92,6 +95,21 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         }
 //        c._layoutSubviews()
         return c
+    }
+    
+    func onComment(sender: UIGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            let data = dataArray[tag] as! NSDictionary
+            let id = data.stringAttributeForKey("dream")
+            let sid = data.stringAttributeForKey("sid")
+            let uid = data.stringAttributeForKey("uid")
+            let vc = DreamCommentViewController()
+            vc.dreamID = Int(id)!
+            vc.stepID = Int(sid)!
+            vc.dreamowner = uid == SAUid() ? 1 : 0
+            vc.name = name
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

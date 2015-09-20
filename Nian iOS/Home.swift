@@ -26,6 +26,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var actionSheetGameOver: UIActionSheet?
     var timer:NSTimer?
     var ni: NIAlert?
+    var niAppStore: NIAlert?
+    var niAppStoreStar: NIAlert?
     // 网络状态初始化
     let reachability = Reachability.reachabilityForInternetConnection()
     

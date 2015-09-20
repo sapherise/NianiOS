@@ -202,7 +202,12 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         if let _img = _tmpData.objectForKey("image") as? String {
             
             let imgOp = NSBlockOperation(block: {
-                cell.coverImageView.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                
+                if SAUid() == "171264" {
+                    cell.coverImageView.setImageWithRounded(0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                } else {
+                    cell.coverImageView.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                }
             })
             
             cellImageDict[indexPath] = imgOp

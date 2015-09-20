@@ -367,7 +367,7 @@ struct Api {
     
     static func postLetter(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/letter_list.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/letter_list3.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func postLetterAddReply(id: Int, content: String, type: Int, callback: V.JsonCallback) {
@@ -712,7 +712,7 @@ struct Api {
     
     static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/me_next.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&&tag=\(tag)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&&tag=\(tag)", callback: callback)
     }
     
     
@@ -789,9 +789,9 @@ extension  Api {
     
     - parameter callback: <#callback description#>
     */
-    static func postPetLottery(callback: V.JsonCallback) {
+    static func postPetLottery(tag: Int, callback: V.JsonCallback) {
         let _sha256String = ((s_uid + s_shell) as NSString).SHA256()
-        V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)", content: ["luckcode": _sha256String], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)&tag=\(tag)", content: ["luckcode": _sha256String], callback: callback)
     }
    
     /**
@@ -919,6 +919,20 @@ extension Api {
     static func getTopicCommentDelete(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+}
+
+
+// MARK: - 新广场 API
+extension Api {
+    static func getRewardsActivity(activity: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/rewardsactivity.php?uid=\(s_uid)&shell=\(s_shell)&activity=\(activity)", callback: callback)
+    }
+    
+    static func getRewards(activity: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/rewards.php?uid=\(s_uid)&shell=\(s_shell)&activity=\(activity)", callback: callback)
     }
 }
 

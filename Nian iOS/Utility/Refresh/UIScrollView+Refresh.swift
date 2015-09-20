@@ -30,6 +30,9 @@ extension UIScrollView {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 object.beginRefreshing()
+                delay(3) { () -> () in
+                    (object as! RefreshHeaderView).endRefreshing()
+                }
             }
         }
     }
