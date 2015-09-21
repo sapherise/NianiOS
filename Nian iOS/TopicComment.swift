@@ -19,6 +19,7 @@ class TopicComment: SAViewController, UITextFieldDelegate {
     var row = 0
     var delegate: RedditDelegate?   // 投票后，影响 Topic 的结果
     var index: Int = 0  // 在评论页面投票后，Topic 中 index 为这个的 cell 进行刷新
+    var titleContent: String?   // 评论页面显示标题
     
     /* topic id */
     var topicID: String?

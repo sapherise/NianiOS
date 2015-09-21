@@ -265,7 +265,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep, dataArrayTopic]
         
         let color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
-        searchText = NITextfield(frame: CGRectMake(44, 8, globalWidth - 88, 26))
+        searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 96, 26))
         searchText.layer.cornerRadius = 13
         searchText.layer.masksToBounds = true
         searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)
@@ -566,6 +566,14 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                         self.userTableView.setFooterHidden(true)
                     }
                 }
+                
+                if self.dataArrayUser.count == 0 {
+                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    v.addGhost("没有人叫这个名字...\n所以你只搜到了这只鬼")
+                    self.userTableView.tableHeaderView = v
+                } else {
+                    self.userTableView.tableHeaderView = nil
+                }
             }
             self.userTableView.reloadData()
             self.userTableView.headerEndRefreshing()
@@ -584,11 +592,18 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     self.dataArrayDream.removeAllObjects()
                 }
                 let data: AnyObject? = json!.objectForKey("data")
-                let itemsDream = data!.objectForKey("dreams") as? NSArray
+                let itemsDream = data?.objectForKey("dreams") as? NSArray
                 if itemsDream != nil {
                     for item in itemsDream! {
                         self.dataArrayDream.addObject(item)
                     }
+                }
+                if self.dataArrayDream.count == 0 {
+                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    v.addGhost("没有记本有这个标签！\n如果你想搜索带有关键字的进展，\n可以试试旁边的进展！")
+                    self.dreamTableView.tableHeaderView = v
+                } else {
+                    self.dreamTableView.tableHeaderView = nil
                 }
             }
             self.dreamTableView.reloadData()
@@ -608,11 +623,18 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     self.dataArrayStep.removeAllObjects()
                 }
                 let data: AnyObject? = json!.objectForKey("data")
-                let itemsStep = data!.objectForKey("steps") as? NSArray
+                let itemsStep = data?.objectForKey("steps") as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
                         self.dataArrayStep.addObject(item)
                     }
+                }
+                if self.dataArrayStep.count == 0 {
+                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    v.addGhost("没有一个进展里有这个关键字！\n我还以为世界上没有人能看到这条错误提示呢...")
+                    self.stepTableView.tableHeaderView = v
+                } else {
+                    self.stepTableView.tableHeaderView = nil
                 }
             }
             self.stepTableView.reloadData()
@@ -632,14 +654,21 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     self.dataArrayTopic.removeAllObjects()
                 }
                 let data: AnyObject? = json!.objectForKey("data")
-                let itemTopic = data!.objectForKey("topics") as? NSArray
+                let itemTopic = data?.objectForKey("topics") as? NSArray
                 if itemTopic != nil {
                     for item in itemTopic! {
                         self.dataArrayTopic.addObject(item)
                     }
                 }
+                if self.dataArrayTopic.count == 0 {
+                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    v.addGhost("还没有这个标签的话题...")
+                    self.topicTableView.tableHeaderView = v
+                } else {
+                    self.topicTableView.tableHeaderView = nil
+                }
                 
-                self.hasFollowTag = (data!.objectForKey("followed") as? String) == "1" ? true : false
+                self.hasFollowTag = (data?.objectForKey("followed") as? String) == "1" ? true : false
             }
             
             self.topicTableView.reloadData()
@@ -718,10 +747,10 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if index == 0 {
-            let index = indexPath.row
-            let data = self.dataArrayStep[index] as! NSDictionary
-            let dream = data.stringAttributeForKey("dream")
-            SADream(dream)
+//            let index = indexPath.row
+//            let data = self.dataArrayStep[index] as! NSDictionary
+//            let dream = data.stringAttributeForKey("dream")
+//            SADream(dream)
         } else if index == 1 {
             let DreamVC = DreamViewController()
             DreamVC.Id = (self.dataArrayDream[indexPath.row] as! NSDictionary)["id"] as! String
@@ -751,8 +780,26 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if index == 0 {
             return 71
         } else if index == 1 {
-            let index = indexPath.row
-            return getHeightCell(dataArrayDream, index: index)
+            let data = dataArrayDream[indexPath.row] as! NSDictionary
+            let heightCell = data.stringAttributeForKey("heightCell")
+            if heightCell == "" {
+                let arr = ExploreNewHotCell.cellHeight(data)
+                let heightCell = arr[0] as! CGFloat
+                let heightContent = arr[1] as! CGFloat
+                let heightTitle = arr[2] as! CGFloat
+                let content = arr[3] as! String
+                let title = arr[4] as! String
+                let d = NSMutableDictionary(dictionary: data)
+                d.setValue(heightCell, forKey: "heightCell")
+                d.setValue(heightContent, forKey: "heightContent")
+                d.setValue(heightTitle, forKey: "heightTitle")
+                d.setValue(content, forKey: "content")
+                d.setValue(title, forKey: "title")
+                dataArrayDream.replaceObjectAtIndex(indexPath.row, withObject: d)
+                return heightCell
+            } else {
+                return heightCell.toCGFloat()
+            }
         } else if index == 2 {
             return getHeightCell(dataArrayStep, index: indexPath.row)
         } else if index == 3 {
@@ -902,53 +949,53 @@ extension ExploreSearch: UIActionSheetDelegate {
 //
 //<<<<<<< HEAD
 //=======
-//// MARK: - 实现 UIScrollView Delegate
-//extension ExploreSearch {
-//    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-//        if scrollView is UITableView {
-//            self.targetRect = nil
-//        }
-//    }
-//
-//    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        if scrollView is UITableView {
-//            let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
-//            self.targetRect = NSValue(CGRect: targetRect)
-//        }
-//    }
-//    
-//    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//        if scrollView is UITableView {
-//            self.targetRect = nil
-//            
-//            if index == 2 {
+// MARK: - 实现 UIScrollView Delegate
+extension ExploreSearch {
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        if scrollView is UITableView {
+            self.targetRect = nil
+        }
+    }
+
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if scrollView is UITableView {
+            let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
+            self.targetRect = NSValue(CGRect: targetRect)
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if scrollView is UITableView {
+            self.targetRect = nil
+            
+            if index == 2 {
 //                self.loadImagesForVisibleCells()
-//            }
-//        } else if scrollView .isMemberOfClass(UIScrollView) {
-//            let xOffset = scrollView.contentOffset.x
-//            let page: Int = Int(xOffset / globalWidth)
-//            
-//            /* */
-//            index = page
-//            /* */
-//            
-//            setupButtonColor(page)
-//            tableScrollToTop()
-//            
-//            UIView.animateWithDuration(0.2, animations: {
-//               self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)
-//            })
-//            
-//            if self.dataSourceArray[index].count == 0 {
-//                showTableViewWithIndex(index)
-//                self.tableDict[index]?.headerBeginRefreshing()
-//            }
-//        }
-//    }
-//    
-//    /**
-//    主要针对 Step table 优化，因为这一页的图片往往很大
-//    */
+            }
+        } else if scrollView .isMemberOfClass(UIScrollView) {
+            let xOffset = scrollView.contentOffset.x
+            let page: Int = Int(xOffset / globalWidth)
+            
+            /* */
+            index = page
+            /* */
+            
+            setupButtonColor(page)
+            tableScrollToTop()
+            
+            UIView.animateWithDuration(0.2, animations: {
+               self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)
+            })
+            
+            if self.dataSourceArray[index].count == 0 {
+                showTableViewWithIndex(index)
+                self.tableDict[index]?.headerBeginRefreshing()
+            }
+        }
+    }
+    
+    /**
+    主要针对 Step table 优化，因为这一页的图片往往很大
+    */
 //    func loadImagesForVisibleCells() {
 //        let cellArray = self.stepTableView.visibleCells
 //        
@@ -965,16 +1012,22 @@ extension ExploreSearch: UIActionSheetDelegate {
 //            }
 //        }
 //    }
-//}
-//
-//>>>>>>> da9509b8641a3f7add1aa6a15e10097156b585cd
-    // todo: 是否需要？
+}
 // MARK: - UIGestureRecognizerDelegate
 extension ExploreSearch {
-    /**
-    不能同时响应多个手势
-    */
+    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return true
+        }
+        return false
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // 当判断到右滑返回时，取消其他所有手势
+        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+            return true
+        }
         return false
     }
 

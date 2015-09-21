@@ -52,7 +52,6 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
     }
     
     func load(clear: Bool = true) {
-        print(page)
         if clear {
             page = 1
         }

@@ -236,12 +236,6 @@ func getSaveKey(title:NSString, png:NSString) -> NSString{
     return string
 }
 
-func checkNetworkStatus() -> Int{
-//    let networkStatus = Reachability.reachabilityForInternetConnection().currentReachabilityStatus()
-//    return networkStatus.rawValue    //0 无网络，1 流量，2 WIFI
-    return 2
-}
-
 func buttonArray()->[UIBarButtonItem]{
     let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
     spaceButton.width = -14
@@ -250,9 +244,10 @@ func buttonArray()->[UIBarButtonItem]{
     activity.startAnimating()
     activity.color = IconColor
     activity.frame = CGRectMake(14, 9, 12, 12)
+    activity.transform = CGAffineTransformMakeScale(0.8, 0.8)
     rightButtonView.addSubview(activity)
     let rightLoadButton = UIBarButtonItem(customView: rightButtonView)
-    return [ spaceButton, rightLoadButton ]
+    return [spaceButton, rightLoadButton]
 }
 
 func delay(delay:Double, closure:()->()) {
@@ -959,11 +954,14 @@ public func synchronized(lock: AnyObject, closure: () -> ()) {
 func getHeightCell(dataArray: NSMutableArray, index: Int)->CGFloat {
     let data = dataArray[index] as! NSDictionary
     let heightCell = data.stringAttributeForKey("heightCell")
+    let isEdit = data.stringAttributeForKey("isEdit")
     // 当高度
-    if heightCell == "" {
+    if heightCell == "" ||  isEdit == "1"{
         let arr = SAStepCell.cellHeight(data)
         let heightCell = arr[0] as! CGFloat
         let heightContent = arr[1] as! CGFloat
+        let widthComment = arr[2] as! CGFloat
+        let widthLike = arr[3] as! CGFloat
         let d = NSMutableDictionary(dictionary: data)
         let content = data.stringAttributeForKey("content").decode()
         let title = data.stringAttributeForKey("title").decode()
@@ -971,6 +969,8 @@ func getHeightCell(dataArray: NSMutableArray, index: Int)->CGFloat {
         d.setValue(heightContent, forKey: "heightContent")
         d.setValue(content, forKey: "content")
         d.setValue(title, forKey: "title")
+        d.setValue(widthComment, forKey: "widthComment")
+        d.setValue(widthLike, forKey: "widthLike")
         dataArray.replaceObjectAtIndex(index, withObject: d)
         return heightCell
     } else {

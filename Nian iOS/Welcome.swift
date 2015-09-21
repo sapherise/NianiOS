@@ -37,7 +37,7 @@ class WelcomeViewController: UIViewController {
         sign.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         
         let privacy = UILabel(frame: CGRectMake(globalWidth/2 - 80, globalHeight - 60, 160, 30))
-        privacy.text = "使用念，就表示你同意\n念的使用条款和隐私政策"
+        privacy.text = "隐私政策"
         privacy.font = UIFont.systemFontOfSize(9)
         privacy.textColor = UIColor.blackColor()
         privacy.textAlignment = NSTextAlignment.Center
@@ -50,7 +50,7 @@ class WelcomeViewController: UIViewController {
         self.view.addSubview(sign)
         
         let des:UILabel = UILabel(frame: CGRectMake(20, 120, globalWidth-40, 128))
-        let content:String = "在这个宇宙最残酷的\n记录应用里\n只有每天坚持更新\n才不会被停用账号"
+        let content:String = "以游戏化的方式\n连接全世界的\n目标、进展与壮举"
         des.font = UIFont.systemFontOfSize(14)
         des.setHeight(128)
         des.text = content

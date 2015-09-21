@@ -131,6 +131,9 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
         // 填充正文
         if arr == nil {
             arr = getRedditArray(content)
+            
+            labelTitle.setHeight(hTitle)
+            
             var numBottom = labelTitle.bottom() + 16
             for d in arr! {
                 let data = d as! NSDictionary
@@ -183,9 +186,7 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                     numBottom = numBottom + 64 + 16
                 }
             }
-            
             // 设定高度与宽度
-            labelTitle.setHeight(hTitle)
             labelComment.setY(numBottom)
             viewBottom.setY(labelComment.bottom() + 24)
             

@@ -13,20 +13,28 @@ var globalNianCount: Int = 0
 
 class NianCell: UICollectionViewCell{
     
-     struct inner {
-        static var counter = 0
-    }
-    
     @IBOutlet var imageCover: UIImageView!
     @IBOutlet var labelTitle: UILabel!
     var data :NSDictionary!
     var total: Int = 0
+    var index = 0
     
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
-        if inner.counter == self.total {
-            globalhasLaunched = 1
+        
+        if globaliOS >= 8.0 && globalhasLaunched == 0 {
+            self.imageCover.alpha = 0
+            let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
+            self.imageCover.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: 300)
+            delay(Double(index) * 0.2, closure: {
+                UIView.animateWithDuration(0.6, animations: {
+                    self.imageCover.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
+                })
+                UIView.animateWithDuration(0.2, animations: {
+                    self.imageCover.alpha = 1
+                })
+            })
         }
         
         if SAUid() == "171264" {
@@ -40,21 +48,6 @@ class NianCell: UICollectionViewCell{
         self.imageCover.layer.masksToBounds = true
         self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageCover.layer.borderWidth = 0.5
-        
-        if globaliOS >= 8.0 && globalhasLaunched == 0 {
-            self.imageCover.alpha = 0
-            let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
-            self.imageCover.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: 300)
-            delay(Double(inner.counter) * 0.2, closure: {
-                UIView.animateWithDuration(0.6, animations: {
-                    self.imageCover.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
-                })
-                UIView.animateWithDuration(0.2, animations: {
-                    self.imageCover.alpha = 1
-                })
-            })
-            inner.counter++
-        }
     }
 }
 

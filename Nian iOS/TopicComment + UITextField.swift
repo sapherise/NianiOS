@@ -41,6 +41,18 @@ extension TopicComment {
                         self.tableView.reloadData()
                     }
                 }
+                
+//                let regex = "@[\\u4e00-\\u9fa5a-zA-Z0-9_-]*"
+//                let exp = try! NSRegularExpression(pattern: regex, options: NSRegularExpressionOptions.CaseInsensitive)
+//                let users = exp.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, (content as NSString).length))
+//                for user in users {
+//                    let range = user.range
+//                    if range.length > 1 {
+//                        let str = (content as NSString).substringWithRange(NSMakeRange(range.location + 1, range.length))
+//                    }
+//                }
+//                Api.postMention(0, idComment: id) { json in
+//                }
                 textField.text = ""
             }
         }

@@ -18,9 +18,13 @@ class TopicCommentCellHeader: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
     @IBOutlet var labelTime: UILabel!
+    @IBOutlet var viewTitle: UIView!
+    @IBOutlet var labelTitle: UILabel!
+    @IBOutlet var viewHolder: UIView!
     var data: NSDictionary!
     var arr: NSMutableArray?
     var delegateVote: RedditDelegate?
+    var titleContent: String?
     
     override func awakeFromNib() {
         self.selectionStyle = .None
@@ -29,6 +33,9 @@ class TopicCommentCellHeader: UITableViewCell {
         viewLine.setWidth(globalWidth - 80)
         viewLine.setHeightHalf()
         viewVoteLine.setHeightHalf()
+        viewTitle.setWidth(globalWidth)
+        viewHolder.setWidth(globalWidth)
+        labelTitle.setWidth(globalWidth - 32)
     }
     
     override func layoutSubviews() {
@@ -57,6 +64,19 @@ class TopicCommentCellHeader: UITableViewCell {
         
         // 填充正文
         if arr == nil {
+            // 设定标题
+            if titleContent != nil {
+                let h = titleContent!.stringHeightWith(16, width: globalWidth - 32)
+                viewTitle.setHeight(h + 24)
+                labelTitle.text = titleContent!
+                labelTitle.setHeight(h)
+                viewTitle.hidden = false
+                viewHolder.setY(viewTitle.bottom())
+            } else {
+                viewTitle.hidden = true
+                viewHolder.setY(0)
+            }
+            
             arr = getRedditArray(content)
             var numBottom = labelTime.bottom() + 16
             for d in arr! {
@@ -71,7 +91,7 @@ class TopicCommentCellHeader: UITableViewCell {
                     label.textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
                     label.font = UIFont.systemFontOfSize(14)
                     numBottom = numBottom + h + 16
-                    self.addSubview(label)
+                    self.viewHolder.addSubview(label)
                 } else if type == "image" {
                     let w = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
                     var h = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
@@ -85,7 +105,7 @@ class TopicCommentCellHeader: UITableViewCell {
                         image.tag = Int(count)!
                         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage:"))
                         numBottom = numBottom + h + 16
-                        self.addSubview(image)
+                        self.viewHolder.addSubview(image)
                     }
                 } else if type == "dream" {
                     let id = data.stringAttributeForKey("id")
@@ -104,7 +124,7 @@ class TopicCommentCellHeader: UITableViewCell {
                             v.userInteractionEnabled = true
                             v.tag = Int(id)!
                             v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDream:"))
-                            self.addSubview(v)
+                            self.viewHolder.addSubview(v)
                         }
                     }
                     numBottom = numBottom + 64 + 16
@@ -112,7 +132,11 @@ class TopicCommentCellHeader: UITableViewCell {
             }
             
             // 设定高度与宽度
+            if titleContent != nil {
+                numBottom = numBottom + viewTitle.height()
+            }
             viewLine.setY(numBottom + 8)
+            viewHolder.setHeight(numBottom + 8)
             delegateVote?.updateData(0, key: "heightCell", value: "\(viewLine.bottom())", section: 0)
             delegateVote?.updateTable()
         }

@@ -38,46 +38,48 @@ class ExploreNewHotCell: UITableViewCell {
 
     func _layoutSubviews() {
 //        super.layoutSubviews()
-        let title = self.data.stringAttributeForKey("title")
-        let img = self.data.stringAttributeForKey("image")
-        let likes = self.data.stringAttributeForKey("likes")
-        let content = self.data.stringAttributeForKey("content")
-        let steps = self.data.stringAttributeForKey("steps")
-
-        if let row = indexPath?.row {
-            self.labelTag.text = "#\(row + 1)"
+        if data != nil {
+            let title = self.data.stringAttributeForKey("title")
+            let img = self.data.stringAttributeForKey("image")
+            let likes = self.data.stringAttributeForKey("likes")
+            let content = self.data.stringAttributeForKey("content")
+            let steps = self.data.stringAttributeForKey("steps")
+            
+            if let row = indexPath?.row {
+                self.labelTag.text = "#\(row + 1)"
+            }
+            
+            self.labelTag.setRadius(4, isTop: false)
+            
+            let heightTitle = data.objectForKey("heightTitle") as! CGFloat
+            let heightContent = data.objectForKey("heightContent") as! CGFloat
+            
+            self.labelTitle.text = title
+            self.labelContent.text = content
+            self.labelSupport.text = SAThousand(likes)  //点赞
+            self.labelStep.text = SAThousand(steps)
+            
+            
+            self.labelContent.setHeight(heightContent)
+            self.labelTitle.setHeight(heightTitle)
+            self.labelContent.setY(self.labelTitle.bottom() + 8)
+            var bottom = self.labelContent.bottom()
+            if content == "" {
+                bottom = self.labelTitle.bottom()
+            }
+            
+            self.viewLeft.setY(bottom + 16)
+            self.viewRight.setY(bottom + 16)
+            self.viewHolder.setHeight(self.viewLeft.bottom() + 33)
+            if img != "" {
+                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+            } else {
+                self.imageHead.image = UIImage(named: "drop")
+                self.imageHead.contentMode = .Center
+                self.imageHead.backgroundColor = IconColor
+            }
+            self.viewLine.setY(self.viewLeft.bottom() + 32)
         }
-
-        self.labelTag.setRadius(4, isTop: false)
-        
-        let heightTitle = data.objectForKey("heightTitle") as! CGFloat
-        let heightContent = data.objectForKey("heightContent") as! CGFloat
-        
-        self.labelTitle.text = title
-        self.labelContent.text = content
-        self.labelSupport.text = SAThousand(likes)  //点赞
-        self.labelStep.text = SAThousand(steps)
-        
-        
-        self.labelContent.setHeight(heightContent)
-        self.labelTitle.setHeight(heightTitle)
-        self.labelContent.setY(self.labelTitle.bottom() + 8)
-        var bottom = self.labelContent.bottom()
-        if content == "" {
-            bottom = self.labelTitle.bottom()
-        }
-        
-        self.viewLeft.setY(bottom + 16)
-        self.viewRight.setY(bottom + 16)
-        self.viewHolder.setHeight(self.viewLeft.bottom() + 33)
-        if img != "" {
-            self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
-        } else {
-            self.imageHead.image = UIImage(named: "drop")
-            self.imageHead.contentMode = .Center
-            self.imageHead.backgroundColor = IconColor
-        }
-        self.viewLine.setY(self.viewLeft.bottom() + 32)
     }
     
     class func cellHeight(data: NSDictionary) -> NSArray {

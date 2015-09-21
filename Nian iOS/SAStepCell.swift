@@ -173,13 +173,12 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
                 self.labelLike.hidden = false
                 like = "赞 \(like)"
                 self.labelLike.text = like
-                var likeWidth = like.stringWidthWith(13, height: 32) + 16
-                likeWidth = SACeil(likeWidth, dot: 0)
-                self.labelLike.setWidth(likeWidth)
+                let widthLike = data!.objectForKey("widthLike") as! CGFloat
+                self.labelLike.setWidth(widthLike)
             }
             
             self.labelComment.text = comment
-            let commentWidth = comment.stringWidthWith(13, height: 32) + 16
+            let commentWidth = data!.objectForKey("widthComment") as! CGFloat
             self.labelComment.setWidth(commentWidth)
             self.labelLike.setX(commentWidth+28)
             
@@ -253,6 +252,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             let num = "\(like + 1)"
             delegate?.updateStep(index, key: "likes", value: num)
             delegate?.updateStep(index, key: "liked", value: "1")
+            delegate?.updateStep(index, key: "isEdit", value: "1")
             delegate?.updateStep()
             let sid = data!.stringAttributeForKey("sid")
             Api.postLike(sid, like: "1") { json in
@@ -414,15 +414,21 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         let content = data.stringAttributeForKey("content").decode()
         let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
         let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
+        var comment = data.stringAttributeForKey("comments")
+        comment = comment == "0" ? "回应" : "回应 \(comment)"
+        var like = data.stringAttributeForKey("likes")
+        like = like == "0" ? like : "赞 \(like)"
+        let widthLike = like.stringWidthWith(13, height: 32) + 16
+        let widthComment = comment.stringWidthWith(13, height: 32) + 16
         let height = content.stringHeightWith(16,width:globalWidth-40)
+        var h: CGFloat = 0
         if (img0 == 0.0) {
-            let h = content == "" ? 155 + 23 : height + 155
-            return [h, height]
+            h = content == "" ? 155 + 23 : height + 155
         } else {
             let heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
-            let h = content == "" ? 155 + heightImage : height + 175 + heightImage
-            return [h, height]
+            h = content == "" ? 155 + heightImage : height + 175 + heightImage
         }
+        return [h, height, widthComment, widthLike]
     }
     
     func countUp(coin: String, isfirst: String){
@@ -437,6 +443,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         delegate?.updateStep(index, key: "width", value: img0!)
         delegate?.updateStep(index, key: "height", value: img1!)
         delegate?.updateStep(index, key: "content", value: content!)
+        delegate?.updateStep(index, key: "isEdit", value: "1")
         delegate?.updateStep(index)
     }
     
@@ -448,30 +455,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         self.imageHead.image = nil
         data = nil
     }
-    
-    /**
-    <#Description#>
-    
-    :param: size <#size description#>
-    
-    :returns: <#return value description#>
-    */
-    //    override func sizeThatFits(size: CGSize) -> CGSize {
-    //        let content = self.data.stringAttributeForKey("content")
-    //        let contentHeight = CGFloat((data.stringAttributeForKey("heightCell") as NSString).floatValue)
-    //
-    //        let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
-    //        let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
-    //        var h: CGFloat = 0.0
-    //
-    //        if (img0 == 0.0) {
-    //            h = content == "" ? 155 + 23 : contentHeight + 155
-    //        } else {
-    //            let heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
-    //            h = content == "" ? 155 + heightImage : contentHeight + 175 + heightImage
-    //        }
-    //        return CGSizeMake(size.width, h)
-    //    }
     
 }
 

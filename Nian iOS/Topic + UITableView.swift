@@ -187,6 +187,7 @@ extension TopicViewController {
             vc.id = id
             vc.delegate = self
             vc.index = indexPath.row
+            vc.titleContent = dataArrayTopLeft?.stringAttributeForKey("title")
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

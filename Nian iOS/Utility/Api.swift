@@ -713,7 +713,7 @@ struct Api {
     
     static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&&tag=\(tag)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
     }
     
     
@@ -921,10 +921,38 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
+    
+    // 查询通行证
+    static func getPassportStatus(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/passport?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // 购买通行证
+    static func getPassport(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/passport/exchange?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // 提及某人
+    
+//    POST /mention?uid=xx&shell=xx
+//    POST 参数：
+//    
+//    参数	类型	说明
+//    topic_id	int	回答的id
+//    comment_id	int	评论的id
+//    mentions	array	提到的用户的id
+//    注： 在回应中提到某人，只需要topic_id，在评论中提到某人，需要topic_id和comment_id.
+    
+    static func postMention(idTopic: Int, idComment: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "topic_id=\(idTopic)&comment_id=\(idComment)&mentions[]=1", callback: callback)
+    }
 }
 
 
-// MARK: - 新广场 API
+// MARK: - 活动 API
 extension Api {
     static func getRewardsActivity(activity: String, callback: V.JsonCallback) {
         loadCookies()
