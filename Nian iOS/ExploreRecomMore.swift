@@ -8,9 +8,6 @@
 
 import UIKit
 
-protocol DreamSelectedDelegate {
-    func dreamSelected(id: String, title: String, content: String, image: String)
-}
 
 class ExploreRecomMore: UIViewController {
     
@@ -95,8 +92,6 @@ class ExploreRecomMore: UIViewController {
                         if clear {
                             self.dataArray.removeAllObjects()
                         }
-                        let count = self.dataArray.count
-                        
                         let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
@@ -120,8 +115,6 @@ class ExploreRecomMore: UIViewController {
                             self.dataArray.removeAllObjects()
                         }
                         let data = json!.objectForKey("data") as? NSArray
-                        let count = self.dataArray.count
-                        
                         if data != nil {
                             /* 去掉所有封面是默认的记本 */
                             for item: AnyObject in data! {

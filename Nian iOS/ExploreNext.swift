@@ -7,12 +7,18 @@
 //
 
 import Foundation
-class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+
+protocol DreamSelectedDelegate {
+    func dreamSelected(id: String, title: String, content: String, image: String)
+}
+
+class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
     var type = 0    // 0 为
     var arrType = ["编辑推荐", "最新", "插入记本"]
     var dataArray = NSMutableArray()
     var collectionView: UICollectionView!
     var page = 1
+    var delegate: DreamSelectedDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +52,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
     }
     
     func load(clear: Bool = true) {
+        print(page)
         if clear {
             page = 1
         }
@@ -88,8 +95,22 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                     }
                 }
             }
-        } else {
-            
+        } else if type == 2 {
+            if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
+                for data in NianDream {
+                    let d = data as! NSDictionary
+                    let image = d.stringAttributeForKey("img")
+                    let _private = d.stringAttributeForKey("private")
+                    if _private == "0" {
+                        let mutableData = NSMutableDictionary(dictionary: d)
+                        mutableData.setValue(image, forKey: "image")
+                        dataArray.addObject(mutableData)
+                    }
+                }
+            }
+            self.collectionView.headerEndRefreshing()
+            self.collectionView.footerEndRefreshing()
+            self.collectionView.reloadData()
         }
     }
     
@@ -103,4 +124,32 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         return c
     }
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let DreamVC = DreamViewController()
+        let data = dataArray[indexPath.row] as! NSDictionary
+        let id = data.stringAttributeForKey("id")
+        let title = data.stringAttributeForKey("title")
+        var lastdate = data.stringAttributeForKey("lastdate")
+        let image = data.stringAttributeForKey("image")
+        lastdate = V.relativeTime(lastdate)
+        if id != "0" && id != "" {
+            DreamVC.Id = id
+            if type == 2 {
+                delegate?.dreamSelected(id, title: title, content: lastdate, image: image)
+                self.navigationController?.popViewControllerAnimated(true)
+            } else {
+                self.navigationController?.pushViewController(DreamVC, animated: true)
+            }
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == collectionView {
+            let a = scrollView.contentOffset.y + globalHeight - 64
+            let b = scrollView.contentSize.height
+            if a + 400 > b {
+                collectionView.footerBeginRefreshing()
+            }
+        }
+    }
 }

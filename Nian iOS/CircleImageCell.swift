@@ -34,22 +34,24 @@ class CircleImageCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let uid = self.data.stringAttributeForKey("uid")
-        let user = self.data.stringAttributeForKey("user")
-        let lastdate = self.data.stringAttributeForKey("lastdate")
-        let content = self.data.stringAttributeForKey("content")
-        self.nickLabel!.text = user
-        self.lastdate!.text = lastdate
-        self.avatarView.setHead(uid)
-        let height = content.stringHeightWith(15,width:208)
-        self.avatarView!.tag = Int(uid)!
-        self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
-        
-        let safeuid = SAUid()
-        if uid == safeuid {
+        if data != nil {
+            let uid = self.data.stringAttributeForKey("uid")
+            let user = self.data.stringAttributeForKey("user")
+            let lastdate = self.data.stringAttributeForKey("lastdate")
+            let content = self.data.stringAttributeForKey("content")
+            self.nickLabel!.text = user
+            self.lastdate!.text = lastdate
+            self.avatarView.setHead(uid)
+            let height = content.stringHeightWith(15,width:208)
+            self.avatarView!.tag = Int(uid)!
+            self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
+            
+            let safeuid = SAUid()
+            if uid == safeuid {
                 layoutImage(height, content: content, user: user, lastdate: lastdate, isMe: true)
-        }else{
+            }else{
                 layoutImage(height, content: content, user: user, lastdate: lastdate, isMe: false)
+            }
         }
     }
     
