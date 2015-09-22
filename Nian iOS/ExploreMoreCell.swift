@@ -11,16 +11,8 @@ import UIKit
 class ExploreMoreCell: UICollectionViewCell {
     
     @IBOutlet weak var coverImageView: UIImageView!
-    @IBOutlet weak var titleLabel: CellLabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
     var imgString: String?
     var _title: String?
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        self.coverImageView.cancelImageRequestOperation()
-        self.coverImageView.image = nil
-    }
-    
 }

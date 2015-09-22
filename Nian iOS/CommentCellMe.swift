@@ -11,10 +11,9 @@ import UIKit
 import CoreGraphics
 
 
-class CommentCell: UITableViewCell {
+class CommentCellMe: UITableViewCell {
     
     @IBOutlet var avatarView:UIImageView!
-    @IBOutlet var nickLabel:UILabel!
     @IBOutlet var contentLabel:UILabel!
     @IBOutlet var lastdate:UILabel!
     @IBOutlet var View:UIView!
@@ -25,21 +24,20 @@ class CommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.nickLabel!.textColor = SeaColor
         self.avatarView.layer.masksToBounds = true
         self.avatarView.layer.cornerRadius = 16
     }
     
     func _layoutSubviews()
     {
-//        super.layoutSubviews()
+        //        super.layoutSubviews()
         let uid = self.data.stringAttributeForKey("uid")
-        let user = self.data.stringAttributeForKey("user")
         let lastdate = self.data.stringAttributeForKey("lastdate")
         let content = self.data.stringAttributeForKey("content")
-        self.nickLabel!.text = user
         self.lastdate!.text = lastdate
         self.avatarView!.setHead(uid)
+        
+        
         let height = data.objectForKey("heightContent") as! CGFloat
         let wImage = data.objectForKey("widthImage") as! CGFloat
         let hImage = data.objectForKey("heightImage") as! CGFloat
@@ -47,22 +45,23 @@ class CommentCell: UITableViewCell {
         self.avatarView?.tag = Int(uid)!
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
+        
         self.imageContent.setWidth(wImage)
         self.imageContent.setHeight(hImage)
+        
+        if height == "".stringHeightWith(15,width:208) {      //如果是单行
+            self.contentLabelWidth = content.stringWidthWith(15, height: 24)
+        }else{      //如果是多行
+            self.contentLabelWidth = 208
+        }
         self.avatarView.setBottom(height + 55)
-        self.nickLabel.setBottom(height + 60)
-        self.nickLabel.setWidth(user.stringWidthWith(11, height: 21))
         self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
         self.lastdate.setBottom(height + 60)
         
-        self.lastdate.setX(user.stringWidthWith(11, height: 21)+83)
-        self.contentLabel.setX(80)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        avatarView.image = nil
-        nickLabel.text = nil
+        self.imageContent.setX(globalWidth - 65 - wImage)
+        self.avatarView.setX(globalWidth - 15 - 40)
+        self.lastdate.setX(globalWidth - 75 - lastdate.stringWidthWith(11, height: 21))
+        self.contentLabel.setX(globalWidth - 80 - self.contentLabelWidth)
     }
     
     class func cellHeightByData(data:NSDictionary) -> NSArray {
@@ -82,16 +81,3 @@ class CommentCell: UITableViewCell {
     }
     
 }
-
-extension String {
-    func toCGFloat() -> CGFloat {
-        return CGFloat((self as NSString).floatValue)
-    }
-}
-
-
-
-
-
-
-

@@ -23,7 +23,7 @@ class TopicCommentCell: UITableViewCell {
         self.selectionStyle = .None
         labelContent.setWidth(globalWidth - 80)
         viewLine.setWidth(globalWidth - 80)
-        viewLine.setHeight(0.5)
+        viewLine.setHeight(globalHalf)
     }
     
     override func layoutSubviews() {

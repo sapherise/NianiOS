@@ -192,7 +192,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         for item in visiblePaths {
             let indexPath = item 
             let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! NianCell
-            
             if cell.imageCover.image == nil {
             
             }
@@ -321,7 +320,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let data = self.dataArray[index] as! NSDictionary
         c.data = data
         c.total = self.dataArray.count
-        
+        c.index = index
         c.labelTitle.text = (data.stringAttributeForKey("title") as NSString).stringByDecodingHTMLEntities().stringByDecodingHTMLEntities()
         c.imageCover.setHolder()
 
@@ -366,20 +365,32 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         activity.hidden = false
         activity.startAnimating()
-            Api.getNian() { json in
-                if json != nil {
-                    self.activity.hidden = true
-                    let arr = json!.objectForKey("items") as! NSArray
-//                    self.dataArray.removeAllObjects()
-                    let mutableArray = NSMutableArray()
-                    for data : AnyObject  in arr {
-                        mutableArray.addObject(data)
-                    }
+        Api.getNian() { json in
+            if json != nil {
+                self.activity.hidden = true
+                let arr = json!.objectForKey("items") as! NSArray
+                let mutableArray = NSMutableArray()
+                for data : AnyObject  in arr {
+                    mutableArray.addObject(data)
+                }
+                let count = self.dataArray.count
+                if count > 0 && globalhasLaunched == 0 {
+                    let time = Double(count) * 0.2
+                    delay(time, closure: { () -> () in
+                        // 加载服务器数据
+                        globalhasLaunched = 1
+                        self.dataArray = mutableArray
+                        Cookies.set(self.dataArray, forKey: "NianDream")
+                        self.reloadFromDataArray()
+                    })
+                } else {
+                    // 启动后不延时
                     self.dataArray = mutableArray
                     Cookies.set(self.dataArray, forKey: "NianDream")
                     self.reloadFromDataArray()
                 }
             }
+        }
         
         Api.postDeviceToken() { string in
         }

@@ -12,6 +12,7 @@ class LatestNoteCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: NICollectionView!
     @IBOutlet weak var sepLine: UIView!
+    @IBOutlet var btn: UIButton!
     
     var data: NSMutableDictionary?
     var promoArray: NSArray?
@@ -35,6 +36,7 @@ class LatestNoteCell: UITableViewCell {
         }
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        btn.addTarget(self, action: "onNew", forControlEvents: .TouchUpInside)
         
         _layoutSubview()
         
@@ -49,9 +51,10 @@ class LatestNoteCell: UITableViewCell {
         }
     }
     
-    @IBAction func onLatestMore(sender: UIButton) {
-        
-        
+    func onNew() {
+        let vc = ExploreNext()
+        vc.type = 1
+        findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
 }
@@ -88,12 +91,13 @@ extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
         }
         
         if let _img = _tmpData!.objectForKey("image") as? String {
+            let radius: CGFloat = SAUid() == "171264" ? 0 : 6.0
             let imgOp = NSBlockOperation(block: {
                 if isiPhone6 || isiPhone6P {
-                    (collectionCell as! CollectionViewCell_XL).imageView?.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                    (collectionCell as! CollectionViewCell_XL).imageView?.setImageWithRounded(radius, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                         //setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                 } else {
-                    (collectionCell as! CollectionViewCell).imageView?.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                    (collectionCell as! CollectionViewCell).imageView?.setImageWithRounded(radius, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                         //setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                 }
             })

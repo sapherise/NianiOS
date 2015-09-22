@@ -30,11 +30,8 @@ extension AddTopic {
     }
     
     func onDream() {
-        let sb = UIStoryboard(name: "Explore", bundle: nil)
-        let vc = sb.instantiateViewControllerWithIdentifier("ExploreRecomMore") as! ExploreRecomMore
-        //        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinDetailViewController")
-        //        let vc2 = ExploreRecomMore()
-        vc.titleOn = "插入记本"
+        let vc = ExploreNext()
+        vc.type = 2
         vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }

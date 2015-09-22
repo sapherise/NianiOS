@@ -31,7 +31,7 @@ class MeCell: UITableViewCell {
         self.lastdate!.setX(globalWidth-107)
         self.contentLabel?.setWidth(globalWidth-40)
         self.viewLine.setWidth(globalWidth - 40)
-        self.viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
         self.labelConfirm.setX(globalWidth/2-50)
     }
     
@@ -66,6 +66,10 @@ class MeCell: UITableViewCell {
         case "9": word = "申请加入梦境「\(dreamtitle)」"
         case "10": word = "邀请你加入梦境"
         content = "「\(dreamtitle)」"
+        case "11": word = "回应了你的话题"
+        case "12": word = "在话题中与你互动了"
+        case "13": word = "赞了你的话题"
+        case "14": word = "赞了你的回应"
         default: word = "与你互动了"
         }
         
@@ -107,7 +111,6 @@ class MeCell: UITableViewCell {
             self.lastdate!.hidden = false
             self.viewLine.setY(self.contentLabel!.bottom()+25)
         }
-        viewLine.setHeightHalf()
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {

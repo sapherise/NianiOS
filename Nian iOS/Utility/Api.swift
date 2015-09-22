@@ -367,7 +367,7 @@ struct Api {
     
     static func postLetter(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/letter_list.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpPostForJson("http://nian.so/api/letter_list3.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func postLetterAddReply(id: Int, content: String, type: Int, callback: V.JsonCallback) {
@@ -510,6 +510,7 @@ struct Api {
     static func postAddStep_AFN(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
         loadCookies()
         let sid = client.getSid()
+        Cookies.set(dream, forKey: "DreamNewest")
         V.httpPostForJson_AFN("http://nian.so/api/addstep_query2.php",
             content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"],
             callback: callback)
@@ -712,7 +713,7 @@ struct Api {
     
     static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/me_next.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&&tag=\(tag)", callback: callback)
+        V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
     }
     
     
@@ -789,9 +790,9 @@ extension  Api {
     
     - parameter callback: <#callback description#>
     */
-    static func postPetLottery(callback: V.JsonCallback) {
+    static func postPetLottery(tag: Int, callback: V.JsonCallback) {
         let _sha256String = ((s_uid + s_shell) as NSString).SHA256()
-        V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)", content: ["luckcode": _sha256String], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)&tag=\(tag)", content: ["luckcode": _sha256String], callback: callback)
     }
    
     /**
@@ -919,6 +920,48 @@ extension Api {
     static func getTopicCommentDelete(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // 查询通行证
+    static func getPassportStatus(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/passport?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // 购买通行证
+    static func getPassport(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/passport/exchange?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    // 提及某人
+    
+//    POST /mention?uid=xx&shell=xx
+//    POST 参数：
+//    
+//    参数	类型	说明
+//    topic_id	int	回答的id
+//    comment_id	int	评论的id
+//    mentions	array	提到的用户的id
+//    注： 在回应中提到某人，只需要topic_id，在评论中提到某人，需要topic_id和comment_id.
+    
+    static func postMention(idTopic: Int, idComment: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "topic_id=\(idTopic)&comment_id=\(idComment)&mentions[]=1", callback: callback)
+    }
+}
+
+
+// MARK: - 活动 API
+extension Api {
+    static func getRewardsActivity(activity: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/rewardsactivity.php?uid=\(s_uid)&shell=\(s_shell)&activity=\(activity)", callback: callback)
+    }
+    
+    static func getRewards(activity: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://nian.so/api/rewards.php?uid=\(s_uid)&shell=\(s_shell)&activity=\(activity)", callback: callback)
     }
 }
 

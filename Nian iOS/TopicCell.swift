@@ -40,8 +40,8 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
         labelContent.setWidth(globalWidth - 80)
         viewBottom.setWidth(globalWidth - 80)
         viewLine.setWidth(globalWidth - 80)
-        viewLine.setHeight(0.5)
-        viewVoteLine.setHeight(0.5)
+        viewLine.setHeightHalf()
+        viewVoteLine.setHeightHalf()
         btnMore.setX(globalWidth - 80 - 35)
         btnMore.layer.borderColor = lineColor.CGColor
     }

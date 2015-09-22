@@ -28,7 +28,7 @@ class SADoubleCell: MKTableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnMain.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
-        self.viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
     }
     
     override func layoutSubviews() {
@@ -41,7 +41,6 @@ class SADoubleCell: MKTableViewCell {
         let des = data.stringAttributeForKey("content").decode()
         self.labelName.text = type == 0 ? title : user
         self.labelContent.text = des == "" ? "暂无简介" : des
-        viewLine.setHeightHalf()
         if type == 0 {
             self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             if let tag = Int(id) {

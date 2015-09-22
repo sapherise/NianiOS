@@ -64,19 +64,32 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                                                                 attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
                                                                 NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
         
-        Api.getDreamNewest() { json in
-            if json != nil {
-                let arr = json!.objectForKey("items") as! NSArray
-                self.dataArray.removeAllObjects()
-                
-                for data : AnyObject in arr{
-                    self.dataArray.addObject(data)
+//        DreamNewest
+        
+        if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
+            self.dataArray = NianDream
+            self.tableView!.reloadData()
+//            let data = self.dataArray[0] as! NSDictionary
+            var count = 0
+            for d in dataArray {
+                let id = (d as! NSDictionary).stringAttributeForKey("id")
+                if id == Cookies.get("DreamNewest") as? String {
+                    let data = d
+                    let title = data.objectForKey("title") as! String
+                    let image = data.objectForKey("img") as! String
+                    let userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                    self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
+                    self.dreamID = id
+                    self.labelDream.text = title
+                    self.btnOK.enabled = true
+                    count = 1
                 }
-                self.tableView!.reloadData()
-                let data = self.dataArray[0] as! NSDictionary
-                let id = data.objectForKey("id") as! String
-                let title = data.objectForKey("title") as! String
-                let image = data.objectForKey("img") as! String
+            }
+            if count == 0 {
+                let data = dataArray[0] as! NSDictionary
+                let id = data.stringAttributeForKey("id")
+                let title = data.stringAttributeForKey("title")
+                let image = data.stringAttributeForKey("img")
                 let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                 self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
                 self.dreamID = id
@@ -84,7 +97,6 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                 self.btnOK.enabled = true
             }
         }
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

@@ -470,7 +470,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.topCell.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoedClick"))
                 if isfo == "1" {
                     self.topCell.btnMain.addTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
-                    self.topCell.btnMain.setTitle("正在关注", forState: UIControlState.Normal)
+                    self.topCell.btnMain.setTitle("已关注", forState: UIControlState.Normal)
                 }else{
                     self.topCell.btnMain.addTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
                     self.topCell.btnMain.setTitle("关注", forState: UIControlState.Normal)
@@ -565,7 +565,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     func SAfo(sender:UIButton){
-        sender.setTitle("正在关注", forState: UIControlState.Normal)
+        sender.setTitle("已关注", forState: UIControlState.Normal)
         sender.removeTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
         sender.addTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
         let textFoed = SAReplace(self.topCell.UserFoed.text!, before: " 听众", after: "") as String

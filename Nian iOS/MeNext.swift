@@ -56,59 +56,72 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     
-    func loadData(){
-        let url = urlString()
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull(){
-                if ( data.objectForKey("total") as! Int ) < 30 {
-                    self.tableView!.setFooterHidden(true)
+//    func loadData(){
+//        let url = urlString()
+//        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
+//            if data as! NSObject != NSNull(){
+//                if ( data.objectForKey("total") as! Int ) < 30 {
+//                    self.tableView!.setFooterHidden(true)
+//                }
+//                let arr = data.objectForKey("items") as! NSArray
+//                for data : AnyObject  in arr{
+//                    if let _type = (data as! NSDictionary)["type"] as? String {
+//                        if Int(_type) < 11 {
+//                            self.dataArray.addObject(data)
+//                        }
+//                    }
+//                }
+//                self.tableView!.reloadData()
+//                self.tableView!.footerEndRefreshing()
+//                self.page++
+//            }
+//        })
+//    }
+    
+    func load(clear: Bool = true) {
+        if clear {
+            page = 0
+        }
+        Api.getMeNext(page, tag: tag) { json in
+            if json != nil {
+                if clear {
+                    self.dataArray.removeAllObjects()
                 }
-                let arr = data.objectForKey("items") as! NSArray
-                for data : AnyObject  in arr{
-                    if let _type = (data as! NSDictionary)["type"] as? String {
-                        if Int(_type) < 11 {
-                            self.dataArray.addObject(data)
-                        }
-                    }
+                let items = json!.objectForKey("items") as! NSArray
+                for item in items {
+                    self.dataArray.addObject(item)
                 }
-                self.tableView!.reloadData()
-                self.tableView!.footerEndRefreshing()
+                self.tableView?.reloadData()
+                self.tableView?.headerEndRefreshing()
+                self.tableView?.footerEndRefreshing()
                 self.page++
             }
-        })
+        }
     }
+    
     func SAReloadData(){
-        self.page = 0
-        let url = urlString()
-        self.tableView!.setFooterHidden(false)
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull(){
-                if ( data.objectForKey("total") as! Int ) < 30 {
-                    self.tableView!.setFooterHidden(true)
-                }
-                let arr = data.objectForKey("items") as! NSArray
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
-                    if let _type = (data as! NSDictionary)["type"] as? String {
-                        if Int(_type) < 11 {
-                            self.dataArray.addObject(data)
-                        }
-                    }
-                }
-                self.tableView!.reloadData()
-                self.tableView!.headerEndRefreshing()
-                self.page++
-            }
-        })
-    }
-    
-    
-    func urlString()->String{
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        let safeuid = SAUid()
-        let safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
-        return "http://nian.so/api/me_next.php?page=\(page)&uid=\(safeuid)&shell=\(safeshell)&&tag=\(self.tag)"
+//        self.page = 0
+//        let url = urlString()
+//        self.tableView!.setFooterHidden(false)
+//        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
+//            if data as! NSObject != NSNull(){
+//                if ( data.objectForKey("total") as! Int ) < 30 {
+//                    self.tableView!.setFooterHidden(true)
+//                }
+//                let arr = data.objectForKey("items") as! NSArray
+//                self.dataArray.removeAllObjects()
+//                for data : AnyObject  in arr{
+//                    if let _type = (data as! NSDictionary)["type"] as? String {
+//                        if Int(_type) < 11 {
+//                            self.dataArray.addObject(data)
+//                        }
+//                    }
+//                }
+//                self.tableView!.reloadData()
+//                self.tableView!.headerEndRefreshing()
+//                self.page++
+//            }
+//        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -168,14 +181,19 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let uid = data.stringAttributeForKey("cuid")
         let dream = data.stringAttributeForKey("dream")
         let type = data.stringAttributeForKey("type")
-        let step = data.stringAttributeForKey("step") as String
+        let step = data.stringAttributeForKey("step")
+        let name = data.stringAttributeForKey("cname")
+        let cid = data.stringAttributeForKey("cid")
         
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()
         let StepVC = SingleStepViewController()
+        let TopicVC = TopicViewController()
+        let TopicCommentVC = TopicComment()
         if type == "0" {    //在你的记本留言
             if step != "0" {
                 StepVC.Id = step
+                StepVC.name = name
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
@@ -184,6 +202,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else if type == "1" {  //在某个记本提及你
             if step != "0" {
                 StepVC.Id = step
+                StepVC.name = name
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
@@ -209,20 +228,35 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }else if type == "8" {  //赞了你的进展
             if step != "0" {
                 StepVC.Id = step
+                StepVC.name = name
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
                 self.navigationController!.pushViewController(DreamVC, animated: true)
             }
+        } else if type == "9" {
+        } else if type == "10" {
+        } else if type == "11" {    // 回应了话题
+            TopicVC.id = cid
+            self.navigationController?.pushViewController(TopicVC, animated: true)
+        } else if type == "12" {    // 回应了话题回应
+            TopicCommentVC.id = cid
+            self.navigationController?.pushViewController(TopicCommentVC, animated: true)
+        } else if type == "13" {    // 赞了话题
+            TopicVC.id = cid
+            self.navigationController?.pushViewController(TopicVC, animated: true)
+        } else if type == "14" {    // 赞了话题回应
+            TopicCommentVC.id = cid
+            self.navigationController?.pushViewController(TopicCommentVC, animated: true)
         }
     }
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
-            self.SAReloadData()
+            self.load()
         })
         self.tableView!.addFooterWithCallback({
-            self.loadData()
+            self.load(false)
         })
     }
     

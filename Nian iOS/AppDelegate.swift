@@ -38,12 +38,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
-        let formatter = Formatter()
-        DDTTYLogger.sharedInstance().logFormatter = formatter
-        DDLog.addLogger(DDTTYLogger.sharedInstance())
-        DDLog.logLevel = .Verbose
-        DDTTYLogger.sharedInstance().colorsEnabled = true
-        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
+//        let formatter = Formatter()
+//        DDTTYLogger.sharedInstance().logFormatter = formatter
+//        DDLog.addLogger(DDTTYLogger.sharedInstance())
+//        DDLog.logLevel = .Verbose
+//        DDTTYLogger.sharedInstance().colorsEnabled = true
+//        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
         
         application.cancelAllLocalNotifications()
         

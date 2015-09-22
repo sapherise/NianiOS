@@ -219,6 +219,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
     override func awakeFromNib() {
         imageCover.setX(globalWidth - 52)
         self.viewLine.setWidth(globalWidth - 40)
+        self.viewLine.setHeightHalf()
     }
     
     override func layoutSubviews() {
@@ -232,7 +233,6 @@ class ExploreDynamicDreamCell: UITableViewCell {
         self.labelDream.text = "赞了「\(title)」"
         self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
         self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
-        self.viewLine.setHeightHalf()
     }
     
     func onUserClick() {

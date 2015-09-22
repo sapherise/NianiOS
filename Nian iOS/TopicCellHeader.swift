@@ -51,14 +51,14 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
         viewDown.setVote()
         labelTitle.setWidth(globalWidth - 80)
         viewBottom.setWidth(globalWidth - 32)
-        viewVoteLine.setHeight(0.5)
+        viewVoteLine.setHeightHalf()
         labelComment.backgroundColor = SeaColor
         labelHot.setX(globalWidth - 32 - 48 * 2 - 1)
         labelNew.setX(globalWidth - 32 - 48)
         labelHot.layer.borderWidth = 0.5
         labelHot.layer.borderColor = lineColor.CGColor
         viewLine.setWidth(globalWidth - 32)
-        viewLine.setHeight(0.5)
+        viewLine.setHeightHalf()
         viewLine.setY(31.5)
         viewLineClick.frame = CGRectMake(labelHot.x() + 0.5, 31.5, 47, 0.5)
         labelNew.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNew"))
@@ -131,6 +131,9 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
         // 填充正文
         if arr == nil {
             arr = getRedditArray(content)
+            
+            labelTitle.setHeight(hTitle)
+            
             var numBottom = labelTitle.bottom() + 16
             for d in arr! {
                 let data = d as! NSDictionary
@@ -183,9 +186,7 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                     numBottom = numBottom + 64 + 16
                 }
             }
-            
             // 设定高度与宽度
-            labelTitle.setHeight(hTitle)
             labelComment.setY(numBottom)
             viewBottom.setY(labelComment.bottom() + 24)
             

@@ -49,21 +49,6 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
                 self.page++
             }
         }
-//        Api.getBBSComment("59288", page: page, isAsc: true) { json in
-//            if json != nil {
-//                let data = json!.objectForKey("data")
-//                if clear {
-//                    if let bbs = data!.objectForKey("bbs") as? NSDictionary {
-//                        self.dataArrayTop = bbs
-//                    }
-//                    self.dataArray.removeAllObjects()
-//                }
-//                let comments = data!.objectForKey("comments") as! NSArray
-//                for d in comments {
-//                    self.dataArray.addObject(d)
-//                }
-//            }
-//        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -71,6 +56,7 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCommentCellHeader", forIndexPath: indexPath) as! TopicCommentCellHeader
             c.data = dataArrayTop
             c.delegateVote = self
+            c.titleContent = titleContent
             return c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCommentCell", forIndexPath: indexPath) as! TopicCommentCell

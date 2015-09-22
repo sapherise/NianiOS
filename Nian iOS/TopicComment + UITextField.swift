@@ -33,7 +33,7 @@ extension TopicComment {
                 let dic = NSMutableDictionary(objects: [content, "-1", "-1", uid, name!], forKeys: ["content", "created_at", "id", "user_id", "username"])
                 dataArray.insertObject(dic, atIndex: 0)
                 tableView.reloadData()
-                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Left)
+                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Fade)
                 Api.postTopicCommentComment(id, content: content) { json in
                     if json != nil {
                         dic.setValue(time, forKey: "created_at")
@@ -41,6 +41,18 @@ extension TopicComment {
                         self.tableView.reloadData()
                     }
                 }
+                
+//                let regex = "@[\\u4e00-\\u9fa5a-zA-Z0-9_-]*"
+//                let exp = try! NSRegularExpression(pattern: regex, options: NSRegularExpressionOptions.CaseInsensitive)
+//                let users = exp.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, (content as NSString).length))
+//                for user in users {
+//                    let range = user.range
+//                    if range.length > 1 {
+//                        let str = (content as NSString).substringWithRange(NSMakeRange(range.location + 1, range.length))
+//                    }
+//                }
+//                Api.postMention(0, idComment: id) { json in
+//                }
                 textField.text = ""
             }
         }
