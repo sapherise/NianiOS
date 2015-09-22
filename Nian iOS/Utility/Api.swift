@@ -945,9 +945,9 @@ extension Api {
 //    mentions	array	提到的用户的id
 //    注： 在回应中提到某人，只需要topic_id，在评论中提到某人，需要topic_id和comment_id.
     
-    static func postMention(idTopic: Int, idComment: String, callback: V.StringCallback) {
+    static func postMention(idComment: String, mentions: String, callback: V.StringCallback) {
         loadCookies()
-        V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "topic_id=\(idTopic)&comment_id=\(idComment)&mentions[]=1", callback: callback)
+        V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "comment_id=\(idComment)\(mentions)", callback: callback)
     }
 }
 
