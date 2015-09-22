@@ -146,7 +146,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         if scrollView == collectionView {
             let a = scrollView.contentOffset.y + globalHeight - 64
             let b = scrollView.contentSize.height
-            if a + 400 > b {
+            if a + 400 > b && type != 2 {
                 collectionView.footerBeginRefreshing()
             }
         }
