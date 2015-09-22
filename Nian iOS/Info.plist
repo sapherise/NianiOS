@@ -61,5 +61,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>sinaweibohd</string>
+        <string>sinaweibo</string>
+        <string>weibosdk</string>
+        <string>weibosdk2.5</string>
+        <string>weixin</string>
+        <string>wechat</string>
+    </array>
 </dict>
 </plist>
