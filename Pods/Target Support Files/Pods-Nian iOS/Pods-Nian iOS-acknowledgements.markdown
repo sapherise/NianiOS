@@ -86,7 +86,7 @@ Francis Chong francis@ignition.hk
 
 MIT license
 
-## UMengAnalytics-NO-IDFA
+## UMengAnalytics
 
 Copyright 2011 - 2015 UMeng.com. All rights reserved.
 

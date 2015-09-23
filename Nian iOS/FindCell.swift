@@ -27,27 +27,30 @@ class FindCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.uid = self.data.stringAttributeForKey("uid") as String
-        let follow = self.data.stringAttributeForKey("follow") as String
-        self.labelNick!.text = self.data.stringAttributeForKey("user")
-        self.imageHead.tag = Int(self.uid)!
-        self.imageHead.setHead(uid)
         
-        if follow == "0" {
-            self.btnFollow.tag = 100
-            self.btnFollow.layer.borderColor = SeaColor.CGColor
-            self.btnFollow.layer.borderWidth = 1
-            self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
-            self.btnFollow.backgroundColor = UIColor.whiteColor()
-            self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
-        }else{
-            self.btnFollow.tag = 200
-            self.btnFollow.layer.borderWidth = 0
-            self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            self.btnFollow.backgroundColor = SeaColor
-            self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
+        if self.data != nil {
+            self.uid = self.data.stringAttributeForKey("uid") as String
+            let follow = self.data.stringAttributeForKey("follow") as String
+            self.labelNick!.text = self.data.stringAttributeForKey("user")
+            self.imageHead.tag = Int(self.uid)!
+            self.imageHead.setHead(uid)
+            
+            if follow == "0" {
+                self.btnFollow.tag = 100
+                self.btnFollow.layer.borderColor = SeaColor.CGColor
+                self.btnFollow.layer.borderWidth = 1
+                self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
+                self.btnFollow.backgroundColor = UIColor.whiteColor()
+                self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
+            }else{
+                self.btnFollow.tag = 200
+                self.btnFollow.layer.borderWidth = 0
+                self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+                self.btnFollow.backgroundColor = SeaColor
+                self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
+            }
+            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
         }
-        self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     func onFollowClick(sender:UIButton){

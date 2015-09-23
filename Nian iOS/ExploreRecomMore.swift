@@ -130,6 +130,7 @@ class ExploreRecomMore: UIViewController {
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
                             self.collectionView.reloadData()
+
                         }
                     }
                 }

@@ -40,11 +40,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        navHide()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navShow()
     }
     
     func setupViews() {

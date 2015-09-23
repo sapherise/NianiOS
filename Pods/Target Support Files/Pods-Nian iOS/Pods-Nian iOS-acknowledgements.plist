@@ -118,7 +118,7 @@ MIT license</string>
 			<string>Copyright 2011 - 2015 UMeng.com. All rights reserved.
 </string>
 			<key>Title</key>
-			<string>UMengAnalytics-NO-IDFA</string>
+			<string>UMengAnalytics</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

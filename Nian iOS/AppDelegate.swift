@@ -119,11 +119,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     }
     
     func didReceiveWeiboResponse(response: WBBaseResponse!) {
-        let json = response.userInfo as NSDictionary
-        let uidWeibo = json.stringAttributeForKey("uid")
-        let token = json.stringAttributeForKey("access_token")
-        if let uid = Int(uidWeibo) {
-            NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
+        if response.userInfo != nil  {
+            let json = response.userInfo as NSDictionary
+            let uidWeibo = json.stringAttributeForKey("uid")
+            let token = json.stringAttributeForKey("access_token")
+            if let uid = Int(uidWeibo) {
+                NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
+            }
         }
     }
     

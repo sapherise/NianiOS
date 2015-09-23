@@ -125,7 +125,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     //    }
     
     override func viewWillDisappear(animated: Bool) {
-        navShow()
+//        navShow()
     }
     
     override func viewDidDisappear(animated: Bool) {

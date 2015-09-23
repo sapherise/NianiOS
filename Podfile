@@ -5,7 +5,7 @@ target "Nian iOS" do
 pod "AFNetworking", "~> 2.5.4" 
 pod 'NSData+MD5Digest'
 pod 'Base64'
-pod 'UMengAnalytics-NO-IDFA'
+pod 'UMengAnalytics'
 pod 'JSONModel', "~> 1.0.2"
 
 pod "CocoaLumberjack", "~> 2.0.1"

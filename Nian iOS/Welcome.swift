@@ -83,7 +83,7 @@ class WelcomeViewController: UIViewController {
                 navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                 navigationViewController.navigationBar.clipsToBounds = true
                 navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+//                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                 
                 delay(0.3, closure: {
                     self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {

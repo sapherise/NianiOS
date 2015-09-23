@@ -4,32 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-Nian iOS-AFNetworking.xcscheme</key>
+		<key>AFNetworking.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Nian iOS-Base64.xcscheme</key>
+		<key>Base64.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Nian iOS-CocoaLumberjack.xcscheme</key>
+		<key>CocoaLumberjack.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Nian iOS-JSONModel.xcscheme</key>
+		<key>JSONModel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Nian iOS-NSData+MD5Digest.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-Nian iOS-UMengAnalytics-NO-IDFA.xcscheme</key>
+		<key>NSData+MD5Digest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -42,37 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0F697F5EA9880A53198F21FF</key>
+		<key>62CCA201251BD37EAC3D9B80F7DD2EDA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>21C15C28F0AE97C1AAADBD42</key>
+		<key>6951998A851534F1A1D08CA751F81356</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2BAB5DD93D6D3DEEC344E28A</key>
+		<key>86B4DC0943B1D845332B9C8A5BAD8B6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3AAA321F4D47131C2E2E5ED6</key>
+		<key>8A862FDBB934E0E082D836863CFB2A89</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>587875BFC707E06E174948AD</key>
+		<key>C322C94379CE1285D586428BD1E08CFB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5AFEF8D1A863BB95F6602FBF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>730DB901251B58394F69148A</key>
+		<key>D6B0873124D46645634DCA346A161C11</key>
 		<dict>
 			<key>primary</key>
 			<true/>

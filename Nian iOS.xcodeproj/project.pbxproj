@@ -1884,11 +1884,6 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
-					"-l\"MobClickLibrary\"",
-					"-l\"Pods-Nian iOS-Base64\"",
-					"-l\"Pods-Nian iOS-NSData+MD5Digest\"",
-					"-l\"Pods-Nian iOS-UMengAnalytics-NO-IDFA\"",
-					"-l\"z\"",
 					"-framework",
 					"\"CoreGraphics\"",
 					"-framework",
@@ -1935,11 +1930,6 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
-					"-l\"MobClickLibrary\"",
-					"-l\"Pods-Nian iOS-Base64\"",
-					"-l\"Pods-Nian iOS-NSData+MD5Digest\"",
-					"-l\"Pods-Nian iOS-UMengAnalytics-NO-IDFA\"",
-					"-l\"z\"",
 					"-framework",
 					"\"CoreGraphics\"",
 					"-framework",
