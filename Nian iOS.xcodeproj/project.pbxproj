@@ -239,6 +239,7 @@
 		C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */; };
 		C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */; };
 		C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D77A1B5E22880033671D /* PetCell.swift */; };
+		C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC16021BB3D4E20036A9A0 /* RegexHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
@@ -524,6 +525,7 @@
 		C4F6D7741B5DFCC30033671D /* UIImage+Grayscale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Grayscale.h"; sourceTree = "<group>"; };
 		C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Grayscale.m"; sourceTree = "<group>"; };
 		C4F6D77A1B5E22880033671D /* PetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetCell.swift; sourceTree = "<group>"; };
+		C4FC16021BB3D4E20036A9A0 /* RegexHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1099,6 +1101,7 @@
 			isa = PBXGroup;
 			children = (
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
+				C4FC16021BB3D4E20036A9A0 /* RegexHelper.swift */,
 				12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */,
 				129A76601B8DC92E00EC5A19 /* Home + News.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
@@ -1615,6 +1618,7 @@
 				12F65C111B65084A0051A914 /* PetTableViewSetup.swift in Sources */,
 				1200728E1AE7942A000D74BA /* SAStepCell.swift in Sources */,
 				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
+				C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */,
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
 				12CE15A71A3EC525006AC031 /* Circle.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,

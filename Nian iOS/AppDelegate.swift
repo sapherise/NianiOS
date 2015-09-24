@@ -24,27 +24,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
         
-        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-            if #available(iOS 8.0, *) {
-                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
-                application.registerUserNotificationSettings(settings)
-                application.registerForRemoteNotifications()
-            }
-        } else {
-            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
-        }
+//        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
+//            if #available(iOS 8.0, *) {
+//                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
+//                application.registerUserNotificationSettings(settings)
+//                application.registerForRemoteNotifications()
+//            }
+//        } else {
+//            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
+//        }
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
-//        let formatter = Formatter()
-//        DDTTYLogger.sharedInstance().logFormatter = formatter
-//        DDLog.addLogger(DDTTYLogger.sharedInstance())
-//        DDLog.logLevel = .Verbose
-//        DDTTYLogger.sharedInstance().colorsEnabled = true
-//        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
+        /* 极光推送 */
+        /**
+        * 1 << 0 : UIUserNotificationType.Sound
+        * 1 << 1 : UIUserNotificationType.Alert
+        * 1 << 2 : UIUserNotificationType.Badge
+        */
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
+        /* 设置 DDlog */
+        let formatter = Formatter()
+        DDTTYLogger.sharedInstance().logFormatter = formatter
+        DDLog.addLogger(DDTTYLogger.sharedInstance())
+        DDLog.logLevel = .Verbose
+        DDTTYLogger.sharedInstance().colorsEnabled = true
+        DDTTYLogger.sharedInstance().setForegroundColor(UIColor.magentaColor(), backgroundColor: nil, forFlag: .Info)
+        
+        application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()
         
         return true
@@ -57,10 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     
     func applicationDidEnterBackground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
+        
+        application.applicationIconBadgeNumber = 0
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
+        
+        application.applicationIconBadgeNumber = 0
+        application.cancelAllLocalNotifications()
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
@@ -79,6 +95,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
             Sa.setObject(newDeviceToken, forKey:"DeviceToken")
             Sa.synchronize()
         }
+        
+        /* 设置极光推送 */
+        APService.registerDeviceToken(deviceToken)
+        Api.postJpushBinding(){ _ in }
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -92,6 +112,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
+        fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+            let aps = userInfo["aps"] as! NSDictionary
+            
+            handleReceiveRemoteNotification(aps)
+            /*    */
+            APService.handleRemoteNotification(userInfo)
+            completionHandler(UIBackgroundFetchResult.NewData)
+            
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
@@ -127,6 +158,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
                 NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
             }
         }
+    }
+    
+    // 收到消息通知， JPush
+    func handleReceiveRemoteNotification(aps: NSDictionary) {
+        navTo_MEVC()
+    }
+    
+    /**
+    到 tab[3] 对应的 VC， 即私信界面
+    */
+    func navTo_MEVC() {
+        let navViewController = window?.rootViewController as! UINavigationController
+        let welcomeVC = navViewController.viewControllers[0] as! WelcomeViewController
+        welcomeVC.shouldNavToMe = true
     }
     
 }

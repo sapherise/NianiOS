@@ -114,7 +114,7 @@ class SignNextController: UIViewController, UITextFieldDelegate{
                         
                         Api.postDeviceToken() { string in
                         }
-//                        Api.postJpushBinding() {_ in }
+                        Api.postJpushBinding() {_ in }
                         
                     } else if error == 2 {
                         self.SAerr("邮箱或用户名已注册")
