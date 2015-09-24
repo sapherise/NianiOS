@@ -86,7 +86,7 @@ extension HomeViewController: NIAlertDelegate {
             niAppStoreStar = NIAlert()
             niAppStoreStar?.delegate = self
             niAppStoreStar?.shouldTapBackgroundToDismiss = false
-            self.niAppStoreStar?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "喜欢念吗", "要不要去应用商店给念打分？", [" 嗯！", " 不！"]], forKeys: ["img", "title", "content", "buttonArray"])
+            self.niAppStoreStar?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "喜欢念吗", "要不要去 App Store 给念打分？", [" 嗯！", " 不！"]], forKeys: ["img", "title", "content", "buttonArray"])
             niAppStore?.dismissWithAnimationSwtich(niAppStoreStar!)
         } else if niAlert == niAppStoreStar {
             if didselectAtIndex == 0 {

@@ -132,12 +132,9 @@ class TopicCommentCellHeader: UITableViewCell {
             }
             
             // 设定高度与宽度
-            if titleContent != nil {
-                numBottom = numBottom + viewTitle.height()
-            }
             viewLine.setY(numBottom + 8)
-            viewHolder.setHeight(numBottom + 8)
-            delegateVote?.updateData(0, key: "heightCell", value: "\(viewLine.bottom())", section: 0)
+            viewHolder.setHeight(numBottom + 9)
+            delegateVote?.updateData(0, key: "heightCell", value: "\(viewHolder.bottom())", section: 0)
             delegateVote?.updateTable()
         }
         setupVote()

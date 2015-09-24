@@ -248,6 +248,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "14" {    // 赞了话题回应
             TopicCommentVC.id = cid
             self.navigationController?.pushViewController(TopicCommentVC, animated: true)
+        } else if type == "16" {
+            TopicCommentVC.id = cid
+            self.navigationController?.pushViewController(TopicCommentVC, animated: true)
         }
     }
     

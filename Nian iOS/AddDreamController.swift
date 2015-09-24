@@ -298,8 +298,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let tags = self.tokenView.tokenTitles
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
-//            title = SAEncode(SAHtml(title!))
-//            content = SAEncode(SAHtml(content!))
             Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
                 json in
                 let error = json!.objectForKey("error") as! NSNumber
