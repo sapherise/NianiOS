@@ -112,9 +112,9 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
-//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 200
-//    }
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 200
+    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let data = dataArray[indexPath.row] as! NSDictionary

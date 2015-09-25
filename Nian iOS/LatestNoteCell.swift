@@ -38,7 +38,7 @@ class LatestNoteCell: UITableViewCell {
         self.collectionView.delegate = self
         btn.addTarget(self, action: "onNew", forControlEvents: .TouchUpInside)
         
-        _layoutSubview()
+//        _layoutSubview()
         
     }
 
@@ -95,10 +95,8 @@ extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
             let imgOp = NSBlockOperation(block: {
                 if isiPhone6 || isiPhone6P {
                     (collectionCell as! CollectionViewCell_XL).imageView?.setImageWithRounded(radius, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
-                        //setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                 } else {
                     (collectionCell as! CollectionViewCell).imageView?.setImageWithRounded(radius, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
-                        //setImage("http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
                 }
             })
             cellImageDict[indexPath] = imgOp

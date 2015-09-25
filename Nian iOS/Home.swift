@@ -47,8 +47,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         onCircleEnter()
         setupReachability()
         
-        /*=========================================================================================================================================*/
-        
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
