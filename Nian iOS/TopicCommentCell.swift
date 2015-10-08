@@ -48,10 +48,10 @@ class TopicCommentCell: UITableViewCell {
             labelTime.text = time
             imageHead.setHead(uid)
             labelName.text = name
-            viewLine.setY(labelContent.bottom() + 24)
             
             // 设定高度与宽度
             labelContent.setHeight(hContent)
+            viewLine.setY(labelContent.bottom() + 24)
             
             // 绑定事件
             imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
