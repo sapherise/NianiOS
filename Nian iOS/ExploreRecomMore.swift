@@ -92,6 +92,8 @@ class ExploreRecomMore: UIViewController {
                         if clear {
                             self.dataArray.removeAllObjects()
                         }
+                        let count = self.dataArray.count
+                        
                         let data = json!.objectForKey("data") as? NSArray
                         if data != nil {
                             for item: AnyObject in data! {
@@ -100,7 +102,24 @@ class ExploreRecomMore: UIViewController {
                             
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            self.collectionView.reloadData()
+                            
+                            if clear {
+                                self.collectionView.reloadData()
+                            } else {
+                                self.collectionView.performBatchUpdates({
+                                    var tmpArray = Array<NSIndexPath>()
+                                    var i = count
+                                    for i; i < self.dataArray.count; i++ {
+                                        tmpArray.insert(NSIndexPath(forRow: i, inSection: 0), atIndex: i - count)
+                                    }
+                                    
+                                    self.collectionView.insertItemsAtIndexPaths(tmpArray)
+                                    }, completion: { finished in
+                                        if finished {
+                                            self.collectionView.setContentOffset(CGPointMake(self.collectionView.contentOffset.x, self.collectionView.contentOffset.y + 120), animated: false)
+                                        }
+                                })
+                            }
                         }
                     }
                 }

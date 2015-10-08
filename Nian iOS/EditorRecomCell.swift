@@ -35,7 +35,7 @@ class EditorRecomCell: UITableViewCell {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         btn.addTarget(self, action: "onEditor", forControlEvents: .TouchUpInside)
-        _layoutSubview()
+//        _layoutSubview()
     }
     
     func onEditor() {

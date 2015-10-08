@@ -8,7 +8,11 @@
 
 import Foundation
 
-
+/**
+*  @author Bob Wei, 15-09-25 10:09:33
+*
+*  @brief  判断收到的消息的类型的一个辅助功能
+*/
 struct RegexHelper {
     let regex: NSRegularExpression
     

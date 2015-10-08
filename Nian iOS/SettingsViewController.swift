@@ -73,6 +73,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     var accountPhone: String = ""
     
     override func viewDidLoad(){
+        super.viewDidLoad()
+        
         setupViews()
     }
     
@@ -136,6 +138,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight)
         self.scrollView.contentSize = CGSizeMake(globalWidth, 1300)
+        self.scrollView.delegate = self
         self.cacheActivity.hidden = true
         self.viewCache.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearCache:"))
         
@@ -285,6 +288,12 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
+    }
+    
     func textFieldDidEndEditing(textField: UITextField) {
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         let safeuid = SAUid()
@@ -307,8 +316,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     textField.text = self.accountName
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var name = self.inputName.text
-                        name = SAEncode(SAHtml(name!))
+                        var name = self.inputName.text!
+                        name = SAEncode(SAHtml(name))
                         let sa = SAPost("newname=\(name)&&uid=\(safeuid)&&shell=\(safeshell)&&type=2", urlString: "http://nian.so/api/user_update.php")
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
@@ -323,6 +332,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                                     self.accountName = self.inputName.text!
                                     self.view.showTipText("昵称改好啦", delay: 1)
                                     globalWillNianReload = 1
+                                    self.inputName.resignFirstResponder()   
                                 })
                             }
                         }
@@ -344,8 +354,8 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                     textField.text = self.accountEmail
                 }else{
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var email = self.inputEmail.text
-                        email = SAEncode(SAHtml(email!))
+                        var email = self.inputEmail.text!
+                        email = SAEncode(SAHtml(email))
                         let sa = SAPost("newemail=\(email)&&uid=\(safeuid)&&shell=\(safeshell)&&type=3", urlString: "http://nian.so/api/user_update.php")
                         if sa != "" && sa != "err" {
                             if sa == "NO" {
@@ -665,6 +675,17 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
     override func viewWillDisappear(animated: Bool) {
         globalViewFilmExist = false
     }
+}
+
+extension SettingsViewController: UIScrollViewDelegate {
+    
+    /* 开始滚动时收起键盘 */
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.inputName.resignFirstResponder()
+        self.inputEmail.resignFirstResponder()
+        self.inputPhone.resignFirstResponder()
+    }
+
 }
 
 extension UISwitch {

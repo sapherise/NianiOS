@@ -47,7 +47,9 @@ class ExploreRecommend: ExploreProvider {
                                 self.editorRecommArray = _editorArray
                                 
                                 if self.editorRecommArray.count > 0 {
-                                    self.bindViewController?.recomTableView.reloadData()
+                                    self.bindViewController?.recomTableView.beginUpdates()
+                                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+                                    self.bindViewController?.recomTableView.endUpdates()
                                 }
                             }
                             
@@ -55,7 +57,9 @@ class ExploreRecommend: ExploreProvider {
                                 self.latestDict = _latestDict
                                 
                                 if self.latestDict.count > 0 {
-                                    self.bindViewController?.recomTableView.reloadData()
+                                    self.bindViewController?.recomTableView.beginUpdates()
+                                    self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+                                    self.bindViewController?.recomTableView.endUpdates()
                                 }
                             }
                         }
@@ -77,10 +81,18 @@ class ExploreRecommend: ExploreProvider {
                     self.listDataArray.addObject(data)
                 }
                 if self.bindViewController?.current == 2 {
-                    self.bindViewController?.recomTableView.reloadData()
                     self.bindViewController?.recomTableView.headerEndRefreshing()
                     self.bindViewController?.recomTableView.footerEndRefreshing()
+                    
+                    if self.page == 1 || self.page == 2 {
+                        self.bindViewController?.recomTableView.beginUpdates()
+                        self.bindViewController?.recomTableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: .None)
+                        self.bindViewController?.recomTableView.endUpdates()
+                    } else {
+                        self.bindViewController?.recomTableView.reloadData()
+                    }
                 }
+                
                 let count = self.listDataArray.count
                 if count >= 1 {
                     let data = self.listDataArray[count - 1] as! NSDictionary
