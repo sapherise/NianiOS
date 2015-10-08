@@ -15,4 +15,37 @@ class ExploreMoreCell: UICollectionViewCell {
     
     var imgString: String?
     var _title: String?
+    
+    var data: NSDictionary!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        coverImageView.layer.borderColor = lineColor.CGColor
+        coverImageView.layer.borderWidth = 0.5
+        if SAUid() == "171264" {
+            coverImageView.layer.cornerRadius = 0
+        } else {
+            coverImageView.layer.cornerRadius = 6.0
+        }
+        
+        coverImageView.layer.masksToBounds = true
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if data != nil {
+            let image = data.stringAttributeForKey("image")
+            let title = data.stringAttributeForKey("title").decode()
+            coverImageView.setImage("http://img.nian.so/dream/\(image)!dream", placeHolder: IconColor, bool: false, ignore: false, animated: false)
+            titleLabel.text = title
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        coverImageView.cancelImageRequestOperation()
+        coverImageView.image = nil
+    }
+    
 }

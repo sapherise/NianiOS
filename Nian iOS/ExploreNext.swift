@@ -26,7 +26,6 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         
         let flowLayout = UICollectionViewFlowLayout()
         
-        //        let Q = isiPhone6P ? 4 : 3
         let Q = 3
         let x = (globalWidth - CGFloat(80 * Q))/CGFloat(2 * (Q + 1))
         let y = x + x
@@ -41,7 +40,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
-        collectionView.registerNib(UINib(nibName: "CollectionViewCell_XL", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell_XL")
+        self.collectionView.registerNib(UINib(nibName: "ExploreMoreCell", bundle: nil), forCellWithReuseIdentifier: "ExploreMoreCell")
         collectionView.addHeaderWithCallback { () -> Void in
             self.load()
         }
@@ -118,7 +117,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell_XL", forIndexPath: indexPath) as! CollectionViewCell_XL
+        let c = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreMoreCell", forIndexPath: indexPath) as! ExploreMoreCell
         c.data = dataArray[indexPath.row] as! NSDictionary
         return c
     }
