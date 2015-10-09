@@ -293,11 +293,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     //MARK: 添加 new Dream
     
     func addDreamOK(){
-        let title = self.field1?.text
-        let content = self.field2.text
+        var title = self.field1?.text
+        var content = self.field2.text
         let tags = self.tokenView.tokenTitles
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
+            title = SAEncode(SAHtml(title!))
+            content = SAEncode(SAHtml(content!))
+            
             Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
                 json in
                 let error = json!.objectForKey("error") as! NSNumber

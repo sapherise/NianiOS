@@ -278,7 +278,6 @@
 		1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAUserCell.swift; sourceTree = "<group>"; };
 		122A3F7B1BA13E9500C2FE67 /* Vote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		122AFE021A80864800464641 /* SqliteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqliteData.swift; sourceTree = "<group>"; };
-		122AFE041A80869D00464641 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		122D93A01B932FC000968F3E /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		122D93A21B93430700968F3E /* Topic + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + UITableView.swift"; sourceTree = "<group>"; };
 		122F39201B4E794700DE8628 /* Card.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Card.xib; sourceTree = "<group>"; };
@@ -1260,7 +1259,6 @@
 				C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */,
 				C40F4F4A1B788630001A8216 /* WebKit.framework */,
 				C4A350BE1B6B6BEE00E8AF10 /* Security.framework */,
-				122AFE041A80869D00464641 /* libsqlite3.dylib */,
 				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
 				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
