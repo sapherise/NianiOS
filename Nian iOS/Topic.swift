@@ -21,6 +21,8 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
     var index: Int = -1 // 这是用来与 Reddit 建立 Delegate 的值
     var current: Int = 0 // 这是最热与最新的值，默认为最热
     
+    var actionSheetDelete: UIActionSheet!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -28,6 +30,8 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
     }
     
     override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
         viewBackFix()
     }
     
@@ -48,9 +52,79 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
             acReport.saActivityFunction = {
                 self.view.showTipText("举报好了！", delay: 2)
             }
-            let arr = [acReport]
+            
+            //删除按钮
+            let deleteActivity = SAActivity()
+            deleteActivity.saActivityTitle = "删除"
+            deleteActivity.saActivityType = "删除"
+            deleteActivity.saActivityImage = UIImage(named: "av_delete")
+            deleteActivity.saActivityFunction = {
+                self.actionSheetDelete = UIActionSheet(title: "再见了，进展", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                self.actionSheetDelete.addButtonWithTitle("确定")
+                self.actionSheetDelete.addButtonWithTitle("取消")
+                self.actionSheetDelete.cancelButtonIndex = 1
+                self.actionSheetDelete.showInView((self.view)!)
+            }
+            
+            //编辑按钮
+            let editActivity = SAActivity()
+            editActivity.saActivityTitle = "编辑"
+            editActivity.saActivityType = "编辑"
+            editActivity.saActivityImage = UIImage(named: "av_edit")
+            editActivity.saActivityFunction = {
+                let addstepVC = AddTopic(nibName: "AddTop", bundle: nil)
+                addstepVC.isEdit = 1
+                addstepVC.dict = self.dataArrayTopLeft!
+                addstepVC.editId = String(self.index)
+                addstepVC.delegate = self
+                self.navigationController?.pushViewController(addstepVC, animated: true)
+            }
+            
+            
+            var arr = [UIActivity]()
+            
+            if index == 0 {
+                arr = [acReport, deleteActivity]
+            } else {
+                arr = [acReport]
+            }
             let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/bbs/\(self.id)")!], applicationActivities: arr)
             self.presentViewController(avc, animated: true, completion: nil)
         }
     }
 }
+
+extension TopicViewController: UIActionSheetDelegate {
+    /**
+    目前主要是删除梦想，and 通过 delegate 删除并刷新 Reddit tableView
+    */
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.actionSheetDelete {
+            
+            if buttonIndex == 0 {
+                /* 删除“关注”下的 topic */
+                Api.getTopicDelete(self.id, callback: {
+                    json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        if error == 0 {
+                            self.delegate?.deleteCellInTable?(self.index)
+                            self.delegate?.updateTable()
+                            self.navigationController?.popViewControllerAnimated(true)
+                        }
+                    }
+                })
+            }
+        }
+    }
+}
+
+extension TopicViewController: editRedditDelegate {
+    func editDream(editPrivate: Int, editTitle: String, editDes: String, editImage: String, editTags: Array<String>) {
+        
+    }
+}
+
+
+
+

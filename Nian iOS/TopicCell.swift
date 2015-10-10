@@ -33,6 +33,8 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     var topicId: String = ""
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         viewUp.setVote()

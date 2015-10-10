@@ -8,9 +8,12 @@
 
 import Foundation
 
-protocol RedditDelegate {
+@objc protocol RedditDelegate {
     func updateData(index: Int, key: String, value: String, section: Int)
     func updateTable()
+    
+    /* 凑合着先用吧 */
+    optional func deleteCellInTable(index: Int)
 }
 
 class RedditCell: UITableViewCell {
@@ -33,6 +36,8 @@ class RedditCell: UITableViewCell {
     var index: Int = 0
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         viewUp.setVote()
