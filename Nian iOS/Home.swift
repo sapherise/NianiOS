@@ -172,7 +172,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         // 设置 [String: AnyObject] 的别名 Dict, 下面代码会略简洁
         typealias Dict = [String: AnyObject]
         
-        // TODO: 用正则表达式解析
+        // 用正则表达式解析
         if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
             
             let pattern1 = "(回应|提到)"

@@ -42,9 +42,13 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
         self.navigationItem.rightBarButtonItems = [btnMore]
     }
     
+    /**
+    Nav Bar 上的 navBtn 事件(right bar button)
+    */
     func more() {
         if dataArrayTopLeft != nil {
             let title = dataArrayTopLeft!.stringAttributeForKey("title")
+            
             let acReport = SAActivity()
             acReport.saActivityTitle = "举报"
             acReport.saActivityType = "举报"
@@ -72,21 +76,30 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
             editActivity.saActivityType = "编辑"
             editActivity.saActivityImage = UIImage(named: "av_edit")
             editActivity.saActivityFunction = {
-                let addstepVC = AddTopic(nibName: "AddTop", bundle: nil)
-                addstepVC.isEdit = 1
-                addstepVC.dict = self.dataArrayTopLeft!
-                addstepVC.editId = String(self.index)
-                addstepVC.delegate = self
-                self.navigationController?.pushViewController(addstepVC, animated: true)
+                let addTopicVC = AddTopic(nibName: "AddTopic", bundle: nil)
+                addTopicVC.isEdit = 1
+                addTopicVC.dict = self.dataArrayTopLeft!
+                addTopicVC.editId = String(self.index)
+                addTopicVC.delegate = self
+                self.navigationController?.pushViewController(addTopicVC, animated: true)
             }
             
             
             var arr = [UIActivity]()
+            let _user_id = self.dataArrayTopLeft!["user_id"] as! String
             
             if index == 0 {
-                arr = [acReport, deleteActivity]
+                if _user_id == SAUid() {
+                    arr = [acReport, deleteActivity, editActivity]
+                } else {
+                    arr = [acReport]
+                }
             } else {
-                arr = [acReport]
+                if _user_id == SAUid() {
+                    arr = [acReport, deleteActivity, editActivity]
+                } else {
+                    arr = [acReport]
+                }
             }
             let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/bbs/\(self.id)")!], applicationActivities: arr)
             self.presentViewController(avc, animated: true, completion: nil)

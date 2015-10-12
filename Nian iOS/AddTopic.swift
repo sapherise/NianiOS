@@ -189,9 +189,11 @@ class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerController
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton]
         
+        /* 如果传入的 dict 不为空，先提取出相关的内容 */
         if dict.allKeys.count > 0 {
             self.editTitle = self.dict["title"] as! String
             self.editContent = self.dict["content"] as! String
+            self.tagsArray = self.dict["tags"] as! Array
         }
         
         if self.isEdit == 1 {

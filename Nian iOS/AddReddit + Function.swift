@@ -111,15 +111,21 @@ extension AddTopic {
                 field2.becomeFirstResponder()
             } else {
                 navigationItem.rightBarButtonItems = buttonArray()
-                Api.postAddReddit(title, content: content, tags: tags) { json in
-                    if json != nil {
-                        self.navigationItem.rightBarButtonItems = nil
-                        if let j = json as? NSDictionary {
-                            let vc = TopicViewController()
-                            vc.id = j.stringAttributeForKey("data")
-                            self.navigationController?.pushViewController(vc, animated: true)
+                
+                if self.isEdit == 0 {
+                    Api.postAddReddit(title, content: content, tags: tags) { json in
+                        if json != nil {
+                            self.navigationItem.rightBarButtonItems = nil
+                            if let j = json as? NSDictionary {
+                                let vc = TopicViewController()
+                                vc.id = j.stringAttributeForKey("data")
+                                self.navigationController?.pushViewController(vc, animated: true)
+                            }
                         }
                     }
+                } else if self.isEdit == 1 {
+                    // TODO: 修改提交
+                    
                 }
             }
         } else if type == 1 {
