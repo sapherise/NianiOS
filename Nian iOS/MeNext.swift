@@ -17,6 +17,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     var Id:String = ""
     var tag: Int = 0
     
+    /* 更换新的网络接口后新添加的 "reply" or "like" or "notify" */
+    var msgType: String = ""
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
@@ -82,12 +85,15 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         if clear {
             page = 0
         }
-        Api.getMeNext(page, tag: tag) { json in
+        
+        /* 换新的 API  */
+//        Api.getMeNext(page, tag: tag) { json in
+        Api.getNotify(self.msgType, page: page) { json in
             if json != nil {
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
-                let items = json!.objectForKey("items") as! NSArray
+                let items = (json!.objectForKey("data") as! NSDictionary).objectForKey("items") as! NSArray
                 for item in items {
                     self.dataArray.addObject(item)
                 }

@@ -45,6 +45,8 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
     var id: String = ""
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.selectionStyle = .None
 //        self.setWidth(globalWidth)
         viewUp.setVote()

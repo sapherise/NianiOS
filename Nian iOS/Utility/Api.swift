@@ -716,6 +716,15 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
     }
     
+    /**
+    获得通知详情，替代上面的 getMeNext
+    
+    :param: type --  "reply" or "like" or "notify"
+    */
+    static func getNotify(type: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/notify?type=\(type)&&page=\(page)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+    }
     
     static func postBan(uid: String, callback: V.StringCallback) {
         loadCookies()
@@ -835,6 +844,27 @@ extension Api {
             V.httpPostForJson_AFN("http://api.nian.so/topic?uid=\(s_uid)&shell=\(s_shell)", content: ["title": "\(title)", "content": "\(content)", "type": "question"], callback: callback)
         } else {
             V.httpPostForJson_AFN("http://api.nian.so/topic?uid=\(s_uid)&shell=\(s_shell)", content: ["title": "\(title)", "content": "\(content)", "tags": tags, "type": "question"], callback: callback)
+        }
+    }
+    
+    /**
+    编辑话题之后要上传 id
+    */
+    static func postEditReddit(id: String, title: String, content: String, tags: NSArray, callback: V.JsonCallback) {
+        loadCookies()
+        if tags == "" {
+            V.httpPostForJson_AFN("http://api.nian.so/topic/\(id)/edit?uid=\(s_uid)&shell=\(s_shell)", content: ["title": "\(title)", "content": "\(content)"], callback: callback)
+        } else {
+            V.httpPostForJson_AFN("http://api.nian.so/topic/\(id)/edit?uid=\(s_uid)&shell=\(s_shell)", content: ["title": "\(title)", "content": "\(content)", "tags": tags], callback: callback)
+        }
+    }
+    
+    static func postMention(topicId: String, commentId: String, mentions: NSArray, callback: V.JsonCallback) {
+        loadCookies()
+        if commentId == "" {
+            V.httpPostForJson_AFN("http://api.nian.so/mention?uid=\(s_uid)&&shell=\(s_shell)", content: ["topic_id": "\(Int(topicId))", "mentions": mentions], callback: callback)
+        } else if topicId == "" {
+             V.httpPostForJson_AFN("http://api.nian.so/mention?uid=\(s_uid)&&shell=\(s_shell)", content: ["comment_id": "\(Int(commentId))", "mentions": mentions], callback: callback)
         }
     }
     
