@@ -36,6 +36,7 @@ var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
 var globalTab = [true, true, true, true]
+var globalReachability = ""
 
 let globalWidth = UIScreen.mainScreen().bounds.width
 let globalHeight = UIScreen.mainScreen().bounds.height

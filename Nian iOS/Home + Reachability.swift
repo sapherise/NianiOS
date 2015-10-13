@@ -13,7 +13,8 @@ extension HomeViewController {
         reachability?.startNotifier()
         if let reachability = reachability {
             let status = reachability.currentReachabilityString
-            Cookies.set(status, forKey: "reachability")
+//            Cookies.set(status, forKey: "reachability")
+            globalReachability = status
         }
     }
     
@@ -21,13 +22,14 @@ extension HomeViewController {
     func reachabilityChanged(note: NSNotification) {
         let reachability = note.object as! Reachability
         let status = reachability.currentReachabilityString
-        Cookies.set(status, forKey: "reachability")
+//        Cookies.set(status, forKey: "reachability")
+        globalReachability = status
     }
 }
 
 // 获取当前网络状态
 func getStatus() -> Int {
-    let status = Cookies.get("reachability") as? String
+    let status = globalReachability
     if status == "WiFi" {
         return 2
     } else if status == "Cellular" {

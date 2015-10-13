@@ -727,7 +727,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             } else {
                 c.viewLine.hidden = false
             }
-            
+            c.setupCell()
             return c
         case 3:
             // TODO: - 完成 topic cell

@@ -177,9 +177,17 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     
     func onTabClick(sender: UIGestureRecognizer) {
         globalNumExploreBar = sender.view!.tag - 1100
-        scrollView.setContentOffset(CGPointMake(globalWidth * CGFloat(globalNumExploreBar), 0), animated: true)
-        
-        switchTab(sender.view!.tag - 1100)
+        let x1 = scrollView.contentOffset.x
+        let x2 = globalWidth * CGFloat(globalNumExploreBar)
+        if x1 == x2 {
+            self.switchTab(sender.view!.tag - 1100)
+        } else {
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.scrollView.setContentOffset(CGPointMake(globalWidth * CGFloat(globalNumExploreBar), 0), animated: false)
+                }) { (Bool) -> Void in
+                    self.switchTab(sender.view!.tag - 1100)
+            }
+        }
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {

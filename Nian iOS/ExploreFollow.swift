@@ -117,6 +117,7 @@ class ExploreFollowProvider: ExploreProvider, UITableViewDelegate, UITableViewDa
         } else {
             c.viewLine.hidden = false
         }
+        c.setupCell()
         return c
     }
     

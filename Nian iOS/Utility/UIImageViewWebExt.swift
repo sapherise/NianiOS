@@ -22,20 +22,14 @@ extension UIImageView {
     // animated 加载完成后是否渐隐显示
     func setImage(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
         let url = NSURL(string: urlString)
-        if bool == true {
-            self.image = UIImage(named: "drop")!
-        } else {
-            self.image = UIImage()
-        }
         
         self.backgroundColor = placeHolder
-        self.contentMode = .Center
         
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "1") && (networkStatus == 1) && (!ignore) {   //如果是开启了同时是在2G下
-            self.loadCacheImage(req, placeholderImage: self.image!)
+            self.loadCacheImage(req, placeholderImage: self.image)
             if animated {
                 self.setAnimated()
             }
@@ -55,20 +49,14 @@ extension UIImageView {
     
     func setCover(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
         let url = NSURL(string: urlString)
-        if bool == true {
-            self.image = UIImage(named: "drop")!
-        } else {
-            self.image = UIImage()
-        }
         self.backgroundColor = placeHolder
-        self.contentMode = .Center
         
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus == 1) && (!ignore) {    //如果是开启了同时还是在2G下
-            self.loadCacheImage(req, placeholderImage: self.image!)
+            self.loadCacheImage(req, placeholderImage: self.image)
             if animated {
                 self.setAnimated()
             }
@@ -96,7 +84,7 @@ extension UIImageView {
         
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "1") && (networkStatus == 1) {
-            self.loadCacheImage(req, placeholderImage: self.image!)
+            self.loadCacheImage(req, placeholderImage: self.image)
             self.contentMode = .ScaleAspectFill
         } else {
             self.setImageWithURLRequest(req,
@@ -115,18 +103,15 @@ extension UIImageView {
     func setImageWithRounded(radius: CGFloat, urlString: String, placeHolder: UIColor!, ignore: Bool = false) {
         let url = NSURL(string: urlString)
         
-        self.image = UIImage(named: "drop")!
-        self.contentMode = .Center
-        
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         if (saveMode == "1") && (networkStatus == 1) && (!ignore) {   //如果是开启了同时是在2G下
-            self.loadCacheImage(req, placeholderImage: self.image!)
+            self.loadCacheImage(req, placeholderImage: self.image)
         } else {
             self.setImageWithURLRequest(req,
-                placeholderImage: UIImage(named: "drop"),
+                placeholderImage: nil,
                 success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
                     
                     /*================最佳的绘制圆角图片的方式==============*/
@@ -169,14 +154,13 @@ extension UIImageView {
             }, completion: nil)
     }
     
-    func loadCacheImage(request: NSURLRequest, placeholderImage: UIImage) {
+    func loadCacheImage(request: NSURLRequest, placeholderImage: UIImage?) {
         let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(request)
         if cachedImage != nil {
             self.image = cachedImage
             self.contentMode = .ScaleAspectFill
         } else {
             self.image = placeholderImage
-            self.contentMode = .Center
         }
     }
 
