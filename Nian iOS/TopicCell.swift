@@ -12,7 +12,7 @@ protocol RedditDeleteDelegate {
 }
 class TopicCell: UITableViewCell, UIActionSheetDelegate {
     
-    @IBOutlet var labelContent: UILabel!
+    @IBOutlet var labelContent: KILabel!
     @IBOutlet var viewUp: UIImageView!
     @IBOutlet var viewDown: UIImageView!
     @IBOutlet var viewVoteLine: UIView!
@@ -33,6 +33,8 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     var topicId: String = ""
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         viewUp.setVote()
@@ -83,6 +85,47 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
             viewBottom.setY(labelContent.bottom() + 16)
             viewLine.setY(viewBottom.bottom() + 24)
             labelComment.setWidth(hComment)
+            
+            self.labelContent.userHandleLinkTapHandler = ({
+                (label: KILabel, string: String, range: NSRange) in
+                var _string = string
+                _string.removeAtIndex(string.startIndex.advancedBy(0))
+                self.findRootViewController()?.viewLoadingShow()
+                Api.postUserNickName(_string) {
+                    json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        self.findRootViewController()?.viewLoadingHide()
+                        if error == 0 {
+                            if let uid = json!.objectForKey("data") as? String {
+                                let UserVC = PlayerViewController()
+                                UserVC.Id = uid
+                                self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                            }
+                        } else {
+                            self.showTipText("没有人叫这个名字...", delay: 2)
+                        }
+                    }
+                }
+                
+            })
+            
+            self.labelContent.urlLinkTapHandler = ({
+                (label: KILabel, string: String, range: NSRange) in
+                
+                if !string.hasPrefix("http://") && !string.hasPrefix("https://") {
+                    let urlString = "http://\(string)"
+                    let web = WebViewController()
+                    web.urlString = urlString
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
+                } else {
+                    let web = WebViewController()
+                    web.urlString = string
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
+                }
+            })
             
             // 上按钮
             viewUp.layer.borderColor = UIColor.e6().CGColor

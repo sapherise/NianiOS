@@ -39,8 +39,8 @@ class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerController
     var id: String = ""
     
     var uploadUrl: String = ""
-    
-    //    var isEdit: Int = 0
+
+    var isEdit: Int = 0
     var editId: String = ""
     var editTitle: String = ""
     var editContent: String = ""
@@ -189,17 +189,24 @@ class AddTopic: UIViewController, UIActionSheetDelegate, UIImagePickerController
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton]
         
-        //        if self.isEdit == 1 {
-        //            self.field1!.text = self.editTitle.decode()
-        //            self.field2.text = self.editContent.decode()
-        //            if tagsArray.count > 0 {
-        //                for i in 0...(tagsArray.count - 1) {
-        //                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
-        //                    tokenView.tokenField.layoutTokensAnimated(false)
-        //                }
-        //            }
-        //            self.uploadUrl = self.editImage
-        //        }
+        /* 如果传入的 dict 不为空，先提取出相关的内容 */
+        if dict.allKeys.count > 0 {
+            self.editTitle = self.dict["title"] as! String
+            self.editContent = self.dict["content"] as! String
+            self.tagsArray = self.dict["tags"] as! Array
+        }
+        
+        if self.isEdit == 1 {
+            self.field1!.text = self.editTitle.decode()
+            self.field2.text = self.editContent.decode()
+            if tagsArray.count > 0 {
+                for i in 0...(tagsArray.count - 1) {
+                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
+                    tokenView.tokenField.layoutTokensAnimated(false)
+                }
+            }
+            self.uploadUrl = self.editImage
+        }
         
         if type == 1 {
             field1.hidden = true

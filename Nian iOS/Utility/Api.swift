@@ -910,7 +910,7 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/topic/answer/\(id)/comments?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
     }
-    
+
     // 删除某个回应
     static func getTopicDelete(id: String, callback: V.JsonCallback) {
         loadCookies()
@@ -949,6 +949,7 @@ extension Api {
         loadCookies()
         V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "comment_id=\(idComment)\(mentions)", callback: callback)
     }
+    
 }
 
 

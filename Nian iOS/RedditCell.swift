@@ -8,15 +8,18 @@
 
 import Foundation
 
-protocol RedditDelegate {
+@objc protocol RedditDelegate {
     func updateData(index: Int, key: String, value: String, section: Int)
     func updateTable()
+    
+    /* 凑合着先用吧 */
+    optional func deleteCellInTable(index: Int)
 }
 
 class RedditCell: UITableViewCell {
     
     @IBOutlet var labelTitle: UILabel!
-    @IBOutlet var labelContent: UILabel!
+    @IBOutlet var labelContent: KILabel!
     @IBOutlet var viewUp: UIImageView!
     @IBOutlet var viewDown: UIImageView!
     @IBOutlet var viewVoteLine: UIView!
@@ -33,6 +36,8 @@ class RedditCell: UITableViewCell {
     var index: Int = 0
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         viewUp.setVote()
@@ -93,6 +98,47 @@ class RedditCell: UITableViewCell {
             labelComment.setWidth(wComment)
             labelTime.setWidth(wTime)
             viewLine.setY(viewBottom.bottom() + 24)
+            
+            self.labelContent.userHandleLinkTapHandler = ({
+                (label: KILabel, string: String, range: NSRange) in
+                var _string = string
+                _string.removeAtIndex(string.startIndex.advancedBy(0))
+                self.findRootViewController()?.viewLoadingShow()
+                Api.postUserNickName(_string) {
+                    json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        self.findRootViewController()?.viewLoadingHide()
+                        if error == 0 {
+                            if let uid = json!.objectForKey("data") as? String {
+                                let UserVC = PlayerViewController()
+                                UserVC.Id = uid
+                                self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                            }
+                        } else {
+                            self.showTipText("没有人叫这个名字...", delay: 2)
+                        }
+                    }
+                }
+                
+            })
+            
+            self.labelContent.urlLinkTapHandler = ({
+                (label: KILabel, string: String, range: NSRange) in
+                
+                if !string.hasPrefix("http://") && !string.hasPrefix("https://") {
+                    let urlString = "http://\(string)"
+                    let web = WebViewController()
+                    web.urlString = urlString
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
+                } else {
+                    let web = WebViewController()
+                    web.urlString = string
+                    
+                    self.findRootViewController()?.navigationController?.pushViewController(web, animated: true)
+                }
+            })
             
             // 不存在标签
             if tag == nil {

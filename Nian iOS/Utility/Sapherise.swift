@@ -121,7 +121,7 @@ func SADecode(word: String) -> String {
     content = SAReplace(content, before: "&amp;", after: "&") as String
     content = SAReplace(content, before: "&lt;", after: "<") as String
     content = SAReplace(content, before: "&gt;", after: ">") as String
-    content = SAReplace(content, before: "&quot;", after: "\\") as String
+    content = SAReplace(content, before: "&quot;", after: "\"") as String
     content = SAReplace(content, before: "&#039;", after: "'") as String
     content = SAReplace(content, before: "&nbsp;", after: " ") as String
     content = SAReplace(content, before: "<br>", after: "\n") as String

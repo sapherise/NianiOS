@@ -149,4 +149,10 @@ extension RedditViewController {
         let t = current == 0 ? tableViewLeft : tableViewRight
         t.reloadData()
     }
+    
+    func deleteCellInTable(index: Int) {
+        let d = current == 0 ? dataArrayLeft : dataArrayRight
+        
+        d.removeObjectAtIndex(index)
+    }
 }

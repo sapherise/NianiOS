@@ -19,6 +19,8 @@ class TopicCommentCell: UITableViewCell {
     var index: Int = 0
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.setWidth(globalWidth)
         self.selectionStyle = .None
         labelContent.setWidth(globalWidth - 80)
@@ -43,14 +45,14 @@ class TopicCommentCell: UITableViewCell {
             // 计算高度与宽度
             let hContent = content.stringHeightWith(14, width: globalWidth - 80)
             
+            // 设定高度与宽度
+            labelContent.setHeight(hContent)
+            
             // 填充内容
             labelContent.text = content
             labelTime.text = time
             imageHead.setHead(uid)
             labelName.text = name
-            
-            // 设定高度与宽度
-            labelContent.setHeight(hContent)
             viewLine.setY(labelContent.bottom() + 24)
             
             // 绑定事件

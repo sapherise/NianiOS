@@ -292,10 +292,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         navShow()
     }
     
     override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
         navHide()
         if globalWillNianReload == 1 {
             globalWillNianReload = 0

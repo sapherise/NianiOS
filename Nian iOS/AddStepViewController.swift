@@ -161,7 +161,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     
     func addStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
-        let content = self.TextView.text!
+        let content = self.TextView.text
 //        content = SAEncode(SAHtml(content))
         Api.postAddStep_AFN(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
