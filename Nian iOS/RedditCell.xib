@@ -9,7 +9,7 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RedditCell" id="78m-pr-JKc" customClass="RedditCell" customModule="Nian_iOS" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
-            <autoresizingMask key="autoresizingMask"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="78m-pr-JKc" id="9LH-GA-yn2">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="183"/>
                 <autoresizingMask key="autoresizingMask"/>

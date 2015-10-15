@@ -39,9 +39,10 @@ class MeCell: UITableViewCell {
 
         let uid = self.data.stringAttributeForKey("cuid")
         let user = self.data.stringAttributeForKey("cname")
-        let lastdate = self.data.stringAttributeForKey("lastdate")
+        var lastdate = self.data.stringAttributeForKey("lastdate")
+        lastdate = V.relativeTime(lastdate)
         let dreamtitle = self.data.stringAttributeForKey("dreamtitle")
-        var content = self.data.stringAttributeForKey("content")
+        var content = self.data.stringAttributeForKey("content").decode()
         let type = self.data.stringAttributeForKey("type")
         let isread = self.data.stringAttributeForKey("isread")
         let img = self.data.stringAttributeForKey("image")

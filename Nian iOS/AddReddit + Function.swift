@@ -124,7 +124,6 @@ extension AddTopic {
                         }
                     }
                 } else if self.isEdit == 1 {
-                    // TODO: 修改提交
                     Api.postEditReddit(self.id, title: title, content: content, tags: tags) { json in
                         if json != nil {
                             self.navigationItem.rightBarButtonItems = nil

@@ -88,7 +88,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     override func layoutSubviews() {
-        super.layoutSubviews()
+//        super.layoutSubviews()
         if data != nil {
             let sid = self.data!.stringAttributeForKey("sid")
             let uid = self.data!.stringAttributeForKey("uid")
@@ -107,6 +107,8 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             
             self.labelTime.text = lastdate
             self.imageHead.setHead(uid)
+            
+            logError("\(data)")
             
             self.labelLike.tag = Int(sid)!
             
