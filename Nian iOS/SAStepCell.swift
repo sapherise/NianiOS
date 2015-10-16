@@ -87,8 +87,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
         viewLine.setHeightHalf()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setupCell() {
         if data != nil {
             let sid = self.data!.stringAttributeForKey("sid")
             let uid = self.data!.stringAttributeForKey("uid")

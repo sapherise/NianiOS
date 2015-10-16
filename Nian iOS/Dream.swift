@@ -218,7 +218,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                         c.btnMain.setTitle("关注", forState: UIControlState())
                         c.btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
                     } else {
-                        c.btnMain.setTitle("关注中", forState: UIControlState())
+                        c.btnMain.setTitle("已关注", forState: UIControlState())
                         c.btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
                     }
                 }
@@ -234,6 +234,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             } else {
                 c.viewLine.hidden = false
             }
+            c.setupCell()
             return c
         }
     }
@@ -241,7 +242,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     // MARK: - 分割线 ---------------------------------------------------------
     
     func onFo() {
-        btnMain.setTitle("关注中", forState: UIControlState())
+        btnMain.setTitle("已关注", forState: UIControlState())
         btnMain.removeTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
         btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
         let id = dataArrayTop.stringAttributeForKey("id")

@@ -16,7 +16,7 @@ class SAUserCell: MKTableViewCell {
     @IBOutlet var viewLine: UIView!
     @IBOutlet var viewHolder: UIView!
     var data :NSDictionary!
-    var content = ["关注", "关注中"]
+    var content = ["关注", "已关注"]
     
     override func awakeFromNib() {
         super.awakeFromNib()

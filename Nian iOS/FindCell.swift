@@ -47,7 +47,7 @@ class FindCell: UITableViewCell {
                 self.btnFollow.layer.borderWidth = 0
                 self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
                 self.btnFollow.backgroundColor = SeaColor
-                self.btnFollow.setTitle("关注中", forState: UIControlState.Normal)
+                self.btnFollow.setTitle("已关注", forState: UIControlState.Normal)
             }
             self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
         }
@@ -63,7 +63,7 @@ class FindCell: UITableViewCell {
             sender.layer.borderWidth = 0
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             sender.backgroundColor = SeaColor
-            sender.setTitle("关注中", forState: UIControlState.Normal)
+            sender.setTitle("已关注", forState: UIControlState.Normal)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                 let safeuid = SAUid()

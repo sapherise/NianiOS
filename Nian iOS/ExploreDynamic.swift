@@ -159,6 +159,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
             } else {
                 c.viewLine.hidden = false
             }
+            c.setupCell()
             cell = c
             
             break
