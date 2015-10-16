@@ -88,7 +88,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
     }
     
     override func layoutSubviews() {
-//        super.layoutSubviews()
+        super.layoutSubviews()
         if data != nil {
             let sid = self.data!.stringAttributeForKey("sid")
             let uid = self.data!.stringAttributeForKey("uid")
