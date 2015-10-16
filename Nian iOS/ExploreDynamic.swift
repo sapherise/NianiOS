@@ -112,9 +112,9 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         bindViewController!.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 200
-    }
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 200
+//    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let data = dataArray[indexPath.row] as! NSDictionary
@@ -169,22 +169,22 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
         return cell!
     }
     
-    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if dataArray.count > indexPath.row {
-            let data = dataArray[indexPath.row] as! NSDictionary
-            let type = data.stringAttributeForKey("type")
-            
-            switch type {
-            case "0":
-                break
-            case "1":
-                (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
-                (cell as! SAStepCell).imageHolder.image = nil
-            default:
-                break
-            }
-        }
-    }
+//    func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+//        if dataArray.count > indexPath.row {
+//            let data = dataArray[indexPath.row] as! NSDictionary
+//            let type = data.stringAttributeForKey("type")
+//            
+//            switch type {
+//            case "0":
+//                break
+//            case "1":
+//                (cell as! SAStepCell).imageHolder.cancelImageRequestOperation()
+//                (cell as! SAStepCell).imageHolder.image = nil
+//            default:
+//                break
+//            }
+//        }
+//    }
     
     // 更新数据
     func updateStep(index: Int, key: String, value: String) {

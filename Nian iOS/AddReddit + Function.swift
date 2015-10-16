@@ -112,26 +112,79 @@ extension AddTopic {
             } else {
                 navigationItem.rightBarButtonItems = buttonArray()
                 
-                if self.isEdit == 0 {
-                    Api.postAddReddit(title, content: content, tags: tags) { json in
-                        if json != nil {
-                            self.navigationItem.rightBarButtonItems = nil
-                            if let j = json as? NSDictionary {
-                                let vc = TopicViewController()
-                                vc.id = j.stringAttributeForKey("data")
-                                self.navigationController?.pushViewController(vc, animated: true)
+                
+                /* 正则表达式，看看有没有提到人 */
+                /*
+                matcher: 匹配的 struct
+                matches: 匹配的结果的 Array
+                match:   单个的匹配结果
+                */
+                let pattern = "(@[A-Za-z0-9_\\-\\u4e00-\\u9fa5]{2,30})"
+                let matcher: RegexHelper?
+                do  {
+                    matcher = try RegexHelper(pattern)
+                } catch _ as NSError {
+                    matcher = nil
+                }
+                
+                if matcher!.match(content) {
+                    /* 当有 @某人 的时候， 首先调用 mention API，然后再调用 post add 数据的 API */
+                    var tmpMatchArray = [String]()
+                    for match: NSTextCheckingResult in matcher!.matches {
+                        let matchRange = NSRange(location: match.range.location+1, length: match.range.length - 1)
+                        let matchString = (content as NSString).substringWithRange(matchRange)
+                        tmpMatchArray.append(matchString)
+                    }
+                    
+                    Api.postMention(self.id, commentId: "", mentions: (tmpMatchArray as NSArray)) { json in
+                        
+                        if self.isEdit == 0 {
+                            Api.postAddReddit(title, content: content, tags: tags) { json in
+                                if json != nil {
+                                    self.navigationItem.rightBarButtonItems = nil
+                                    if let j = json as? NSDictionary {
+                                        let vc = TopicViewController()
+                                        vc.id = j.stringAttributeForKey("data")
+                                        self.navigationController?.pushViewController(vc, animated: true)
+                                    }
+                                }
+                            }
+                        } else if self.isEdit == 1 {
+                            Api.postEditReddit(self.id, title: title, content: content, tags: tags) { json in
+                                if json != nil {
+                                    self.navigationItem.rightBarButtonItems = nil
+                                    
+                                    if let _ = json as? NSDictionary {
+                                        let vc = TopicViewController()
+                                        vc.id = self.id
+                                        self.navigationController?.pushViewController(vc, animated: true)
+                                    }
+                                }
                             }
                         }
                     }
-                } else if self.isEdit == 1 {
-                    Api.postEditReddit(self.id, title: title, content: content, tags: tags) { json in
-                        if json != nil {
-                            self.navigationItem.rightBarButtonItems = nil
-                            
-                            if let _ = json as? NSDictionary {
-                                let vc = TopicViewController()
-                                vc.id = self.id
-                                self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    if self.isEdit == 0 {
+                        Api.postAddReddit(title, content: content, tags: tags) { json in
+                            if json != nil {
+                                self.navigationItem.rightBarButtonItems = nil
+                                if let j = json as? NSDictionary {
+                                    let vc = TopicViewController()
+                                    vc.id = j.stringAttributeForKey("data")
+                                    self.navigationController?.pushViewController(vc, animated: true)
+                                }
+                            }
+                        }
+                    } else if self.isEdit == 1 {
+                        Api.postEditReddit(self.id, title: title, content: content, tags: tags) { json in
+                            if json != nil {
+                                self.navigationItem.rightBarButtonItems = nil
+                                
+                                if let _ = json as? NSDictionary {
+                                    let vc = TopicViewController()
+                                    vc.id = self.id
+                                    self.navigationController?.pushViewController(vc, animated: true)
+                                }
                             }
                         }
                     }
@@ -168,7 +221,7 @@ extension AddTopic {
                         tmpMatchArray.append(matchString)
                     }
                     
-                    Api.postMention(self.id, commentId: "", mentions: tmpMatchArray) { json in
+                    Api.postMention(self.id, commentId: "", mentions: (tmpMatchArray as NSArray)) { json in
                         Api.postAddRedditComment(self.id, content: content) { json in
                             if json != nil {
                                 self.delegateComment?.getComment(content)

@@ -862,9 +862,9 @@ extension Api {
     static func postMention(topicId: String, commentId: String, mentions: NSArray, callback: V.JsonCallback) {
         loadCookies()
         if commentId == "" {
-            V.httpPostForJson_AFN("http://api.nian.so/mention?uid=\(s_uid)&&shell=\(s_shell)", content: ["topic_id": "\(Int(topicId)!)", "mentions": mentions], callback: callback)
+            V.httpPostForJson_AFN("http://api.nian.so/mention?uid=\(s_uid)&&shell=\(s_shell)", content: ["topic_id": "\(topicId)", "mentions": mentions], callback: callback)
         } else if topicId == "" {
-             V.httpPostForJson_AFN("http://api.nian.so/mention?uid=\(s_uid)&&shell=\(s_shell)", content: ["comment_id": "\(Int(commentId)!)", "mentions": mentions], callback: callback)
+             V.httpPostForJson_AFN("http://api.nian.so/mention?uid=\(s_uid)&&shell=\(s_shell)", content: ["comment_id": "\(commentId)", "mentions": mentions], callback: callback)
         }
     }
     

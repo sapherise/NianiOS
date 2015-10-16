@@ -106,9 +106,6 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             
             self.labelTime.text = lastdate
             self.imageHead.setHead(uid)
-            
-            logError("\(data)")
-            
             self.labelLike.tag = Int(sid)!
             
             if content == "" {
