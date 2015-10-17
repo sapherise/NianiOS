@@ -66,7 +66,7 @@ extension UIImageView {
             
             //var viewImage = UIImageView(frame: CGRectMake(0, -yPoint.y, CGFloat(globalWidth), heightGif))
             let viewImage = UIImageView(frame: self.frame)
-            viewImage.setImage(imageURL, placeHolder: IconColor)
+            viewImage.setImage(imageURL)
             viewHolder.addSubview(viewImage)
             viewHolder.addSubview(webView)
             viewHolder.backgroundColor = UIColor.blackColor()

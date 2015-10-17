@@ -186,9 +186,9 @@ extension ExploreRecomMore : UICollectionViewDataSource, UICollectionViewDelegat
         if let _img = _tmpData.objectForKey("image") as? String {
             let imgOp = NSBlockOperation(block: {
                 if SAUid() == "171264" {
-                    cell.coverImageView.setImageWithRounded(0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                    cell.coverImageView.setImage("http://img.nian.so/dream/\(_img)!dream", radius: 0)
                 } else {
-                    cell.coverImageView.setImageWithRounded(6.0, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                    cell.coverImageView.setImage("http://img.nian.so/dream/\(_img)!dream", radius: 6)
                 }
             })
             cellImageDict[indexPath] = imgOp

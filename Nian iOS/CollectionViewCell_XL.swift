@@ -28,7 +28,7 @@ class CollectionViewCell_XL: UICollectionViewCell {
 //        if data != nil {
 //            let image = data.stringAttributeForKey("image")
 //            let title = data.stringAttributeForKey("title").decode()
-//            imageView.setImage("http://img.nian.so/dream/\(image)!dream", placeHolder: IconColor, bool: false, ignore: false, animated: false)
+//            imageView.setImage("http://img.nian.so/dream/\(image)!dream", ignore: false, animated: false)
 //            label.text = title
 //        }
 //    }

@@ -156,7 +156,7 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                     if w > 0 {
                         h = (globalWidth - 80) * h / w
                         let image = UIImageView(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
-                        image.setImage("http://img.nian.so/bbs/\(url)!large", placeHolder: IconColor)
+                        image.setImage("http://img.nian.so/bbs/\(url)!large")
                         image.userInteractionEnabled = true
                         image.tag = Int(count)!
                         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage:"))

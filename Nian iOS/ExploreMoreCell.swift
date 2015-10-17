@@ -36,7 +36,7 @@ class ExploreMoreCell: UICollectionViewCell {
         if data != nil {
             let image = data.stringAttributeForKey("image")
             let title = data.stringAttributeForKey("title").decode()
-            coverImageView.setImage("http://img.nian.so/dream/\(image)!dream", placeHolder: IconColor, bool: false, ignore: false, animated: false)
+            coverImageView.setImage("http://img.nian.so/dream/\(image)!dream")
             titleLabel.text = title
         }
     }

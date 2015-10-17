@@ -93,7 +93,7 @@ class MeCell: UITableViewCell {
             self.imageDream.hidden = false
             self.labelConfirm.hidden = false
             self.imageDream.tag = Int(dream)!
-            self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+            self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream")
             self.lastdate!.hidden = true
             self.viewLine.setY(self.labelConfirm!.bottom()+25)
             let tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")

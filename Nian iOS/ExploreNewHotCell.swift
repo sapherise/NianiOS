@@ -72,7 +72,7 @@ class ExploreNewHotCell: UITableViewCell {
             self.viewRight.setY(bottom + 16)
             self.viewHolder.setHeight(self.viewLeft.bottom() + 33)
             if img != "" {
-                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream")
             } else {
                 self.imageHead.image = UIImage(named: "drop")
                 self.imageHead.contentMode = .Center

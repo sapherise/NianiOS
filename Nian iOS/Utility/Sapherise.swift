@@ -526,8 +526,6 @@ extension UIImageView{
     }
     
     func setHolder(){
-        self.image = UIImage(named: "drop")
-        self.backgroundColor = IconColor
         self.contentMode = UIViewContentMode.Center
     }
     
@@ -768,7 +766,7 @@ func setCacheImage(url: String, img: UIImage, width: CGFloat) {
     UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
 }
 
-func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: String, tableView: UITableView) {
+func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: AnyObject, tableView: UITableView) {
     let data = dataArray[index] as! NSDictionary
     let mutableItem = NSMutableDictionary(dictionary: data)
     mutableItem.setValue(value, forKey: key)

@@ -131,7 +131,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     // 更新数据
-    func updateStep(index: Int, key: String, value: String) {
+    func updateStep(index: Int, key: String, value: AnyObject) {
         SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: self.tableView)
     }
     

@@ -187,7 +187,7 @@ class ExploreDynamicProvider: ExploreProvider, UITableViewDelegate, UITableViewD
     }
     
     // 更新数据
-    func updateStep(index: Int, key: String, value: String) {
+    func updateStep(index: Int, key: String, value: AnyObject) {
         SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: bindViewController!.dynamicTableView!)
     }
     
@@ -224,16 +224,18 @@ class ExploreDynamicDreamCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-        let uidlike = data.stringAttributeForKey("uidlike")
-        let userlike = data.stringAttributeForKey("userlike")
-        let img = data.stringAttributeForKey("image")
-        let title = data.stringAttributeForKey("title").decode()
-        self.imageHead.setHead(uidlike)
-        self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor, bool: false)
-        self.labelName.text = userlike
-        self.labelDream.text = "赞了「\(title)」"
-        self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
-        self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+        if data != nil {
+            let uidlike = data.stringAttributeForKey("uidlike")
+            let userlike = data.stringAttributeForKey("userlike")
+            let img = data.stringAttributeForKey("image")
+            let title = data.stringAttributeForKey("title").decode()
+            self.imageHead.setHead(uidlike)
+            self.imageCover.setImage("http://img.nian.so/dream/\(img)!dream")
+            self.labelName.text = userlike
+            self.labelDream.text = "赞了「\(title)」"
+            self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+            self.labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+        }
     }
     
     func onUserClick() {

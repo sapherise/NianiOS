@@ -104,7 +104,7 @@ class NIAlert: UIView {
             imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, 80))
             imgView?.contentMode = UIViewContentMode.ScaleAspectFit
             if img != "" {
-                imgView!.setImage(img, placeHolder: UIColor.whiteColor(), ignore: true)
+                imgView?.setImageIgnore(img)
             }
             self._containerView!.addSubview(imgView!)
             setTitle(title)

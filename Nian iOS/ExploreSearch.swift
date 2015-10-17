@@ -884,7 +884,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     // 更新数据
-    func updateStep(index: Int, key: String, value: String) {
+    func updateStep(index: Int, key: String, value: AnyObject) {
         SAUpdate(self.dataArrayStep, index: index, key: key, value: value, tableView: self.dreamTableView)
     }
     

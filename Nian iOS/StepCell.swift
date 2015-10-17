@@ -56,7 +56,7 @@ class StepCell: UITableViewCell {
         
         if(id1 != ""){
             self.title1!.text = title1
-            self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios",placeHolder: IconColor)
+            self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios")
             self.img1?.tag = Int(id1)!
             self.title1?.hidden = false
             self.img1?.hidden = false
@@ -66,7 +66,7 @@ class StepCell: UITableViewCell {
         
         if(id2 != ""){
             self.title2!.text = title2
-            self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios",placeHolder: IconColor)
+            self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios")
             self.img2?.tag = Int(id2)!
             self.title2?.hidden = false
             self.img2?.hidden = false
@@ -76,7 +76,7 @@ class StepCell: UITableViewCell {
         
         if(id3 != ""){
             self.title3!.text = title3
-            self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios",placeHolder: IconColor)
+            self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios")
             self.img3?.tag = Int(id3)!
             self.title3?.hidden = false
             self.img3?.hidden = false

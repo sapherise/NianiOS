@@ -23,7 +23,7 @@
 import UIKit
 
 protocol delegateSAStepCell {
-    func updateStep(index: Int, key: String, value: String)
+    func updateStep(index: Int, key: String, value: AnyObject)
     func updateStep(index: Int)
     func updateStep()
     func updateStep(index: Int, delete: Bool)
@@ -194,7 +194,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             } else {
                 let imgHeight = img1 * Float(globalWidth - 40) / img0
                 let ImageURL = "http://img.nian.so/step/\(img)!large"
-                self.imageHolder.setImage(ImageURL, placeHolder: IconColor, bool: false, ignore: false, animated: false)
+                self.imageHolder.setImage(ImageURL)
                 
                 self.imageHolder.setHeight(CGFloat(imgHeight))
                 self.imageHolder.setWidth(globalWidth - 40)
@@ -265,7 +265,7 @@ class SAStepCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate{
             if data != nil {
                 let img = data!.stringAttributeForKey("image")
                 let ImageURL = "http://img.nian.so/step/\(img)!large"
-                imageHolder.setImage(ImageURL, placeHolder: IconColor, bool: false, ignore: false, animated: true)
+                imageHolder.setCover(ImageURL)
             }
         }
     }

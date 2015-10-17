@@ -11,6 +11,7 @@
 		120072901AE7943D000D74BA /* SAStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1200728F1AE7943D000D74BA /* SAStepCell.xib */; };
 		12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E331A3EECBD0072FBE1 /* CircleTag.swift */; };
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
+		120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6DC71BD2265500422B86 /* VVeboViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121702171BA18BDC00656AE1 /* AddTopic.swift */; settings = {ASSET_TAGS = (); }; };
 		1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121702191BA18C1B00656AE1 /* AddTopic.xib */; settings = {ASSET_TAGS = (); }; };
 		1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217A3E9198D358600959AD2 /* SettingsViewController.swift */; };
@@ -80,11 +81,17 @@
 		127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497FF1B92DFB80046B440 /* libsqlite3.tbd */; };
 		127498021B92DFC60046B440 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127498011B92DFC60046B440 /* libz.tbd */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
+		12776A0B1BCE4C5A00745811 /* SACell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0A1BCE4C5A00745811 /* SACell.swift */; settings = {ASSET_TAGS = (); }; };
+		12776A0D1BCE54EA00745811 /* SATableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0C1BCE54EA00745811 /* SATableView.swift */; settings = {ASSET_TAGS = (); }; };
+		12776A0F1BCE5F3A00745811 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0E1BCE5F3A00745811 /* File.swift */; settings = {ASSET_TAGS = (); }; };
+		12776A121BCE668500745811 /* VVeboLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12776A111BCE668500745811 /* VVeboLabel.m */; settings = {ASSET_TAGS = (); }; };
+		12776A181BCE731A00745811 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 12776A171BCE731A00745811 /* NSString+Additions.m */; settings = {ASSET_TAGS = (); }; };
 		12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12779FAA1BA71E7F00956B46 /* Topic + Function.swift */; settings = {ASSET_TAGS = (); }; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
 		1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */; };
+		1285FDC81BCFC69F00F52DB8 /* size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FDC71BCFC69F00F52DB8 /* size.swift */; settings = {ASSET_TAGS = (); }; };
 		128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */; };
 		128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */; };
 		129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129089361B5E1EA100EB73E5 /* GameScene.swift */; };
@@ -258,6 +265,7 @@
 		1200728F1AE7943D000D74BA /* SAStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAStepCell.xib; sourceTree = "<group>"; };
 		12028E331A3EECBD0072FBE1 /* CircleTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleTag.swift; sourceTree = "<group>"; };
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
+		120B6DC71BD2265500422B86 /* VVeboViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboViewController.swift; sourceTree = "<group>"; };
 		121702171BA18BDC00656AE1 /* AddTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTopic.swift; sourceTree = "<group>"; };
 		121702191BA18C1B00656AE1 /* AddTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTopic.xib; sourceTree = "<group>"; };
 		1217A3E9198D358600959AD2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -327,6 +335,13 @@
 		127497FF1B92DFB80046B440 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		127498011B92DFC60046B440 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
+		12776A0A1BCE4C5A00745811 /* SACell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SACell.swift; sourceTree = "<group>"; };
+		12776A0C1BCE54EA00745811 /* SATableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SATableView.swift; sourceTree = "<group>"; };
+		12776A0E1BCE5F3A00745811 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		12776A101BCE668500745811 /* VVeboLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVeboLabel.h; sourceTree = "<group>"; };
+		12776A111BCE668500745811 /* VVeboLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVeboLabel.m; sourceTree = "<group>"; };
+		12776A161BCE731A00745811 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
+		12776A171BCE731A00745811 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
 		12779FAA1BA71E7F00956B46 /* Topic + Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + Function.swift"; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
 		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
@@ -335,6 +350,7 @@
 		1282230C19C7E6710002937D /* NSData+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Utils.m"; sourceTree = "<group>"; };
 		1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepViewController.swift; sourceTree = "<group>"; };
 		1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepViewController.xib; sourceTree = "<group>"; };
+		1285FDC71BCFC69F00F52DB8 /* size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = size.swift; sourceTree = "<group>"; };
 		128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageCell.swift; sourceTree = "<group>"; };
 		128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleImageCell.xib; sourceTree = "<group>"; };
 		129089361B5E1EA100EB73E5 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = Utility/GameScene.swift; sourceTree = "<group>"; };
@@ -574,6 +590,14 @@
 			isa = PBXGroup;
 			children = (
 				1265282D196C6460005765D2 /* Dream.swift */,
+				120B6DC71BD2265500422B86 /* VVeboViewController.swift */,
+				12776A0A1BCE4C5A00745811 /* SACell.swift */,
+				12776A0E1BCE5F3A00745811 /* File.swift */,
+				12776A101BCE668500745811 /* VVeboLabel.h */,
+				12776A111BCE668500745811 /* VVeboLabel.m */,
+				12776A161BCE731A00745811 /* NSString+Additions.h */,
+				12776A171BCE731A00745811 /* NSString+Additions.m */,
+				12776A0C1BCE54EA00745811 /* SATableView.swift */,
 				12652835196C673A005765D2 /* DreamCellTop.swift */,
 				12652833196C671E005765D2 /* DreamCellTop.xib */,
 				12E4939C19953DD600F8DF32 /* 回应 */,
@@ -1165,6 +1189,7 @@
 				1251D6101975729100F55389 /* Refresh */,
 				12E1C81F1A146DCA00453805 /* LabelAnimation */,
 				12652837196C6755005765D2 /* Sapherise.swift */,
+				1285FDC71BCFC69F00F52DB8 /* size.swift */,
 				12F9253E1A8467F8005ECD9F /* SQL.swift */,
 				12B1BFFE1A6CB79B000D9284 /* Contacts.swift */,
 				12D846041A233B09005DCC08 /* BlurView.swift */,
@@ -1599,6 +1624,7 @@
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
 				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
+				12776A0F1BCE5F3A00745811 /* File.swift in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				3274A3811A15D5C100D2425A /* ExploreFollow.swift in Sources */,
@@ -1618,6 +1644,7 @@
 				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */,
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
+				12776A121BCE668500745811 /* VVeboLabel.m in Sources */,
 				12CE15A71A3EC525006AC031 /* Circle.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
 				12BB33451B93471F00B7E03F /* TopicCellHeader.swift in Sources */,
@@ -1639,10 +1666,13 @@
 				C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
+				12776A181BCE731A00745811 /* NSString+Additions.m in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
+				1285FDC81BCFC69F00F52DB8 /* size.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
 				12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */,
+				120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
@@ -1673,6 +1703,7 @@
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
+				12776A0B1BCE4C5A00745811 /* SACell.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
 				C4446D701B847D460037DC59 /* ExploreRecomMore.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
@@ -1751,6 +1782,7 @@
 				C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
 				121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */,
+				12776A0D1BCE54EA00745811 /* SATableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

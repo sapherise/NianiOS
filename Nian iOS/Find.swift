@@ -75,7 +75,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 if coverURL == "" {
                     self.imagePromo.image = UIImage(named: "bg")
                 }else{
-                    self.imagePromo.setImage(urlCover, placeHolder: IconColor, bool: false)
+                    self.imagePromo.setImage(urlCover)
                 }
                 let labelName = UILabel(frame: CGRectMake(0, imageHead.bottom()+10, 160, name.stringHeightWith(13, width: 160)))
                 labelName.text = name

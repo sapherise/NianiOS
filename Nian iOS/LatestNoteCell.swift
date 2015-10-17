@@ -94,9 +94,9 @@ extension LatestNoteCell: UICollectionViewDataSource, UICollectionViewDelegate {
             let radius: CGFloat = SAUid() == "171264" ? 0 : 6.0
             let imgOp = NSBlockOperation(block: {
                 if isiPhone6 || isiPhone6P {
-                    (collectionCell as! CollectionViewCell_XL).imageView?.setImageWithRounded(radius, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                    (collectionCell as! CollectionViewCell_XL).imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", radius: radius)
                 } else {
-                    (collectionCell as! CollectionViewCell).imageView?.setImageWithRounded(radius, urlString: "http://img.nian.so/dream/\(_img)!dream", placeHolder: IconColor)
+                    (collectionCell as! CollectionViewCell).imageView?.setImage("http://img.nian.so/dream/\(_img)!dream", radius: radius)
                 }
             })
             cellImageDict[indexPath] = imgOp

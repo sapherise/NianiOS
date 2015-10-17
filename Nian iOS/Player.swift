@@ -358,7 +358,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     // 更新数据
-    func updateStep(index: Int, key: String, value: String) {
+    func updateStep(index: Int, key: String, value: AnyObject) {
         SAUpdate(self.dataArrayStep, index: index, key: key, value: value, tableView: self.tableViewStep)
     }
     
@@ -464,7 +464,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.navView.image = UIImage(named: "bg")
                     self.navView.contentMode = UIViewContentMode.ScaleAspectFill
                 }else{
-                    self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                    self.navView.setCover(AllCoverURL)
                 }
                 self.topCell.UserFo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoClick"))
                 self.topCell.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoedClick"))
@@ -492,7 +492,7 @@ class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewData
                     self.topCell.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                     self.topCell.BGImage.image = UIImage(named: "bg")
                 }else{
-                    self.topCell.BGImage.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false, animated: true)
+                    self.topCell.BGImage.setCover(AllCoverURL)
                 }
             }
         }
