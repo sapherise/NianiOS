@@ -14,15 +14,14 @@ class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var data: NSDictionary! {
         didSet {
             let heightCell = data["heightCell"] as! CGFloat
-            let uid = data.stringAttributeForKey("uid")
             let widthComment = data["widthComment"] as! CGFloat
+            let uid = data.stringAttributeForKey("uid")
             let widthLike = data["widthLike"] as! CGFloat
             let liked = data.stringAttributeForKey("liked")
             let comments = data.stringAttributeForKey("comments")
             let likes = data.stringAttributeForKey("likes")
             let yButton = heightCell - SIZE_PADDING - SIZE_LABEL_HEIGHT
             viewLine?.setY(heightCell - globalHalf)
-            imageHead.setHead(uid)
             labelComment.setY(yButton)
             labelComment.setWidth(widthComment)
             labelComment.text = comments == "0" ? "回应" : "回应 \(comments)"
@@ -41,6 +40,13 @@ class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnLike.backgroundColor = SeaColor
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
+            }
+            
+            let uidlike = data.stringAttributeForKey("uidlike")
+            if type == 2 {
+                imageHead.setHead(uidlike)
+            } else {
+                imageHead.setHead(uid)
             }
             
             btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT - SIZE_LABEL_HEIGHT - 8, yButton)
@@ -66,7 +72,7 @@ class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var btnLike: UIButton!
     var num = -1
     var viewLine: UIView?
-    var type = 0 // 0 为关注，1 为记本
+    var type = 0    // 0 为关注，1 为记本，2 为动态
     var actionSheetDelete: UIActionSheet!
     var activityViewController: UIActivityViewController!
     var editStepRow:Int = -1
@@ -162,14 +168,26 @@ class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             CGContextFillRect(context, rect)
             
             // 昵称
-            (self.data.stringAttributeForKey("user") as NSString).drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING), andFont: UIFont.systemFontOfSize(14), andTextColor: SeaColor, andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
+            var name = self.data.stringAttributeForKey("user") as NSString
+            if self.type == 2 {
+                name = self.data.stringAttributeForKey("userlike") as NSString
+            }
+            name.drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING), andFont: UIFont.systemFontOfSize(14), andTextColor: SeaColor, andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
             
             // 时间或标题
             var textSubtitle = self.data.stringAttributeForKey("title") as NSString
             if self.type == 1 {
                 textSubtitle = self.data.stringAttributeForKey("lastdate") as NSString
+            } else if self.type == 2 {
+                textSubtitle = self.data.stringAttributeForKey("title")
+                textSubtitle = "赞了「\(textSubtitle)」"
             }
             textSubtitle.drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH / 2 + 4), andFont: UIFont.systemFontOfSize(12), andTextColor: UIColor.b3(), andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
+            
+            if self.type != 1 {
+                let time = self.data.stringAttributeForKey("lastdate") as NSString
+                time.drawInContext(context, withPosition: CGPointMake(globalWidth - SIZE_PADDING - 82, SIZE_PADDING), andFont: UIFont.systemFontOfSize(12), andTextColor: UIColor.b3(), andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2), andWidth: 82, andAlignment: CTTextAlignment.Right)
+            }
             
             // 签到
             let content = self.data.stringAttributeForKey("content")
@@ -200,13 +218,9 @@ class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     
     func onHead() {
         let uid = data.stringAttributeForKey("uid")
-//        if isDynamic {
-//            uid = data!.stringAttributeForKey("uidlike")
-//        }
-        // todo
-        // todo: 签到功能
+        let uidlike = data.stringAttributeForKey("uidlike")
         let vc = PlayerViewController()
-        vc.Id = uid
+        vc.Id = type == 2 ? uidlike : uid
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

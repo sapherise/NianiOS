@@ -35,7 +35,9 @@ var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
-var globalTab = [true, true, true, true]
+
+// 定义三个页面为未加载状态
+var globalTabhasLoaded = [false, false, false]
 var globalReachability = ""
 
 let globalWidth = UIScreen.mainScreen().bounds.width

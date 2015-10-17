@@ -17,16 +17,6 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ts0-AT-mHQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3gy-pV-BXd" userLabel="Dynamic Table View">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="oMf-rq-ETX" userLabel="Recommend new Table View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -174,14 +164,12 @@
                         <outlet property="btnDynamic" destination="bRx-v7-VHB" id="x5B-ni-kJ3"/>
                         <outlet property="btnFollow" destination="epf-4H-XeU" id="86z-bc-aCC"/>
                         <outlet property="btnHot" destination="Ihu-IS-EzL" id="u3L-E0-MRv"/>
-                        <outlet property="dynamicTableView" destination="3gy-pV-BXd" id="kWM-Hw-L37"/>
                         <outlet property="imageFriend" destination="jqu-kN-EO5" id="SuY-Ac-4Pu"/>
                         <outlet property="imageSearch" destination="61j-UB-Mnd" id="e4B-vV-80R"/>
                         <outlet property="navHolder" destination="3Ff-aN-0AE" id="pL3-iD-XQi"/>
                         <outlet property="navTopView" destination="Uw6-ed-oOx" id="TyI-ju-mGQ"/>
                         <outlet property="recomTableView" destination="oMf-rq-ETX" id="1zI-ql-PkY"/>
                         <outlet property="scrollView" destination="CmH-Mi-Llu" id="rmT-bo-kzx"/>
-                        <outlet property="tableView" destination="ts0-AT-mHQ" id="S12-tz-NCE"/>
                         <segue destination="Til-rz-lZK" kind="push" identifier="toSearch" id="lzX-aU-Vnp"/>
                     </connections>
                 </viewController>

@@ -72,7 +72,7 @@ class ExploreRecommend: ExploreProvider {
         Api.getExploreNewHot(page: "\(page++)", callback: {
             json in
             if json != nil {
-                globalTab[2] = false
+                globalTabhasLoaded[2] = true
                 let arr = json!.objectForKey("data") as! NSArray
                 if clear {
                     self.listDataArray.removeAllObjects()

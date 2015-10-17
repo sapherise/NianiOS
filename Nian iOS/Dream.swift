@@ -226,7 +226,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             }
             return c
         } else {
-            return getCell(indexPath, dataArray: dataArray)
+            return SATableView.getCell(indexPath, dataArray: dataArray, type: 1)
         }
     }
     

@@ -131,7 +131,7 @@
     return result;
 }
 
-- (void)drawInContext:(CGContextRef)context withPosition:(CGPoint)p andFont:(UIFont *)font andTextColor:(UIColor *)color andHeight:(float)height andWidth:(float)width{
+- (void)drawInContext:(CGContextRef)context withPosition:(CGPoint)p andFont:(UIFont *)font andTextColor:(UIColor *)color andHeight:(float)height andWidth:(float)width andAlignment:(CTTextAlignment)alignment{
     CGSize size = CGSizeMake(width, font.pointSize+10);
     CGContextSetTextMatrix(context,CGAffineTransformIdentity);
     CGContextTranslateCTM(context,0,height);
@@ -144,7 +144,7 @@
     //Apply paragraph settings
     CGFloat minimumLineHeight = font.pointSize,maximumLineHeight = minimumLineHeight+10, linespace = 5;
     CTLineBreakMode lineBreakMode = kCTLineBreakByTruncatingTail;
-    CTTextAlignment alignment = kCTLeftTextAlignment;
+//    CTTextAlignment alignment = kCTLeftTextAlignment;
     //Apply paragraph settings
     CTParagraphStyleRef style = CTParagraphStyleCreate((CTParagraphStyleSetting[6]){
         {kCTParagraphStyleSpecifierAlignment, sizeof(alignment), &alignment},
@@ -182,7 +182,8 @@
 }
 
 - (void)drawInContext:(CGContextRef)context withPosition:(CGPoint)p andFont:(UIFont *)font andTextColor:(UIColor *)color andHeight:(float)height{
-    [self drawInContext:context withPosition:p andFont:font andTextColor:color andHeight:height andWidth:CGFLOAT_MAX];
+//    [self drawInContext:context withPosition:p andFont:font andTextColor:color andHeight:height andWidth:CGFLOAT_MAX];
+    [self drawInContext:context withPosition:p andFont:font andTextColor:color andHeight:height andWidth:CGFLOAT_MAX andAlignment:kCTLeftTextAlignment];
 }
 
 @end

@@ -64,6 +64,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
 @implementation VVeboLabel {
     UIImageView *labelImageView;
     UIImageView *highlightImageView;
+    UIImage *tempCover;
     BOOL highlighting;
     BOOL btnLoaded;
 //    BOOL emojiLoaded;
@@ -142,7 +143,6 @@ static inline NSRegularExpression * AccountRegularExpression() {
             //Get the text color, if it is a custom key and no color was defined, choose black
             if(!highlightColors||!(textColor=([highlightColors objectForKey:key])))
                 textColor = self.textColor;
-            
             
             if (labelImageView.image != nil && currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
                 [coloredString addAttribute:(NSString*)kCTForegroundColorAttributeName
@@ -257,6 +257,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
                                 highlightImageView.frame = CGRectMake(highlightImageView.frame.origin.x, highlightImageView.frame.origin.y, highlightImageView.frame.size.width, screenShotimage.size.height);
                             }
                             highlightImageView.image = screenShotimage;
+                            labelImageView.image = nil;
                         }
                     } else {
                         if ([temp isEqualToString:text]) {
@@ -269,6 +270,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
                             highlightImageView.image = nil;
                             labelImageView.image = nil;
                             labelImageView.image = screenShotimage;
+                            tempCover = screenShotimage;
                         }
                     }
 //                    [self debugDraw];//绘制可触摸区域
@@ -436,6 +438,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
     highlighting = NO;
     currentRange = NSMakeRange(-1, -1);
     highlightImageView.image = nil;
+    labelImageView.image = tempCover;
 }
 
 - (BOOL)touchPoint:(CGPoint)point{
@@ -471,6 +474,9 @@ static inline NSRegularExpression * AccountRegularExpression() {
             [self highlightWord];
         }
     }
+    if (!highlighting) {
+        [super touchesBegan:touches withEvent:event];
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -482,6 +488,8 @@ static inline NSRegularExpression * AccountRegularExpression() {
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [self backToNormal];
         });
+    } else {
+        [super touchesEnded:touches withEvent:event];
     }
 }
 

@@ -64,7 +64,6 @@ class VVeboTableView: UITableView {
     func drawCell(cell: SACell, indexPath: NSIndexPath, dataArray: NSMutableArray) {
         let data = dataArray[indexPath.row] as! NSDictionary
         cell.selectionStyle = .None
-        cell.type = 1
         // 复用时，清除原有内容
         if cell.num != indexPath.row {
             cell.clear()
@@ -86,33 +85,37 @@ class VVeboTableView: UITableView {
     
     func loadIfNeed(velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let arr = NSMutableArray()
-        let rowTarget = (self.indexPathForRowAtPoint(targetContentOffset.memory)?.row)!    // 目标行
-        let rowFirst = (self.indexPathsForVisibleRows?.first?.row)!     // 可见的第一行
-        let rowLast = (self.indexPathsForVisibleRows?.last?.row)!      // 可见的最后一行
-        if let temp = self.indexPathsForRowsInRect(CGRectMake(0, targetContentOffset.memory.y, self.width(), self.height())) {
-            for i in temp {
-                let row = i.row
-                arr.addObject(row)
+        if let rowTarget = self.indexPathForRowAtPoint(targetContentOffset.memory)?.row {
+            let rowFirst = (self.indexPathsForVisibleRows?.first?.row)!     // 可见的第一行
+            let rowLast = (self.indexPathsForVisibleRows?.last?.row)!      // 可见的最后一行
+            if let temp = self.indexPathsForRowsInRect(CGRectMake(0, targetContentOffset.memory.y, self.width(), self.height())) {
+                for i in temp {
+                    let row = i.row
+                    arr.addObject(row)
+                }
+            }   // 目标行的整屏
+            
+            var shouldClear = false
+            
+            // 向上滚动时，加载目标行下几行
+            if velocity.y < 0 && rowLast - rowTarget > 8 {
+                shouldClear = true
+                arr.addObject(rowTarget + 1)
+                arr.addObject(rowTarget + 2)
+                arr.addObject(rowTarget + 3)
+                // 向下滚动时，加载目标行上几行
+            } else if rowTarget - rowFirst > 8 {
+                shouldClear = true
+                arr.addObject(rowTarget - 1)
+                arr.addObject(rowTarget - 2)
+                arr.addObject(rowTarget - 3)
             }
-        }   // 目标行的整屏
-        
-        var shouldClear = false
-        
-        // 向上滚动时，加载目标行下几行
-        if velocity.y < 0 && rowLast - rowTarget > 8 {
-            shouldClear = true
-            arr.addObject(rowTarget + 1)
-            arr.addObject(rowTarget + 2)
-            arr.addObject(rowTarget + 3)
-            // 向下滚动时，加载目标行上几行
-        } else if rowTarget - rowFirst > 8 {
-            shouldClear = true
-            arr.addObject(rowTarget - 1)
-            arr.addObject(rowTarget - 2)
-            arr.addObject(rowTarget - 3)
-        }
-        if shouldClear {
-            needLoadArr.addObjectsFromArray(arr as [AnyObject])
+            if shouldClear {
+                needLoadArr.addObjectsFromArray(arr as [AnyObject])
+            }
+        } else {
+            print("出错了！")
+            // todo: 刷新两次会闪退
         }
     }
     
@@ -124,11 +127,12 @@ class VVeboTableView: UITableView {
     }
     
     // 用于 cellfor 函数
-    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray) -> SACell {
+    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int = 0) -> SACell {
         var c = self.dequeueReusableCellWithIdentifier("SACell") as? SACell
         if c == nil {
             c = SACell.init(style: .Default, reuseIdentifier: "SACell")
         }
+        c?.type = type
         drawCell(c!, indexPath: indexPath, dataArray: dataArray)
         return c!
     }
