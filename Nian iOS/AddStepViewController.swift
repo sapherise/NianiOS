@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol AddstepDelegate {   //😍
+@objc protocol AddstepDelegate {
     func Editstep()
     optional func countUp(coin: String, isfirst: String)
     optional func countUp(coin: String, total: String, isfirst: String)
@@ -26,7 +26,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     @IBOutlet var viewHolder: UIView!
     
     var Id:String = ""
-    var delegate: AddstepDelegate?      //😍
+    var delegate: AddstepDelegate?
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""

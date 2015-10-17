@@ -25,6 +25,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     
     var alertCoin: NIAlert?
     
+    var SATableView: VVeboTableView!
+    var dataArray = NSMutableArray()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -54,7 +56,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.SATableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.SATableView.delegate = self
         self.SATableView.dataSource = self
-        self.SATableView.touchDelegate = self
         
         let nib = UINib(nibName:"DreamCell", bundle: nil)
         let nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
@@ -63,6 +64,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.SATableView.registerNib(nib2, forCellReuseIdentifier: "dreamtop")
         self.SATableView.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.SATableView)
+        currenTableView = SATableView
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
@@ -104,6 +106,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                         let data = SACell.SACellDataRecode(d as! NSDictionary)
                         self.dataArray.addObject(data)
                     }
+                    self.currentDataArray = self.dataArray
                     self.SATableView.reloadData()
                     self.SATableView.headerEndRefreshing()
                     self.SATableView.footerEndRefreshing()
@@ -223,7 +226,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             }
             return c
         } else {
-            return getCell(indexPath)
+            return getCell(indexPath, dataArray: dataArray)
         }
     }
     
@@ -264,7 +267,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             }
             return 0
         }else{
-            return getHeight(indexPath)
+            return getHeight(indexPath, dataArray: dataArray)
         }
     }
     
@@ -279,7 +282,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     func onAddStep(){
         let vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         vc.Id = self.Id
-        vc.delegate = self    //😍
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -409,5 +412,4 @@ extension DreamViewController: NIAlertDelegate {
         }
     }
 }
-
 
