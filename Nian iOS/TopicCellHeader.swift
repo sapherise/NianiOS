@@ -45,6 +45,8 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
     var id: String = ""
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.selectionStyle = .None
 //        self.setWidth(globalWidth)
         viewUp.setVote()
@@ -141,7 +143,7 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                 if type == "text" {
                     let c = data.stringAttributeForKey("content")
                     let h = c.stringHeightWith(14, width: globalWidth - 80)
-                    let label = UILabel(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
+                    let label = KILabel(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
                     label.text = c
                     label.numberOfLines = 0
                     label.textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)

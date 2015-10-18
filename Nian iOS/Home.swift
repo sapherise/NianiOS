@@ -259,12 +259,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                                 self.dot!.hidden = false
                                 UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
                                     self.dot!.frame = CGRectMake(globalWidth*0.7+4, 8, 20, 17)
-                                    }, completion: { (complete: Bool) in
-                                        UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
-                                            self.dot!.frame = CGRectMake(globalWidth*0.7+4, 10, 20, 15)
-                                            }, completion: { (complete: Bool) in
-                                                self.dot!.text = "\(globalNoticeNumber)"
-                                        })
+                                }, completion: { (complete: Bool) in
+                                    self.dot!.text = "\(globalNoticeNumber)"
+                                    globalNoticeNumber = 0
                                 })
                             } else if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
                                 self.dot!.hidden = true

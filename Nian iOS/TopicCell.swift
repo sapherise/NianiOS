@@ -24,6 +24,10 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     @IBOutlet var labelTime: UILabel!
     @IBOutlet var labelComment: UILabel!
     @IBOutlet var btnMore: UIButton!
+    
+    var ac = UIActionSheet()
+    var deleteSheet = UIActionSheet()
+    
     var data: NSDictionary!
     var index: Int = 0
     var delegate: RedditDelegate?
@@ -148,7 +152,6 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     }
     
     func onMore(sender: UIButton) {
-        let ac = UIActionSheet()
         ac.delegate = self
         let userA = data.stringAttributeForKey("user_id")
         let userMe = SAUid()
@@ -165,17 +168,27 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        let userA = data.stringAttributeForKey("user_id")
-        let userMe = SAUid()
-        if userA == userMe {
+        if actionSheet == ac {
+            let userA = data.stringAttributeForKey("user_id")
+            let userMe = SAUid()
+            if userA == userMe {
+                if buttonIndex == 0 {
+                    self.deleteSheet = UIActionSheet(title: "再见了，回复", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                    self.deleteSheet.addButtonWithTitle("确定")
+                    self.deleteSheet.addButtonWithTitle("取消")
+                    self.deleteSheet.cancelButtonIndex = 1
+                    self.deleteSheet.showInView((self.findRootViewController()?.view)!)
+                } else if buttonIndex == 1 {
+                    onReport()
+                }
+            } else {
+                if buttonIndex == 0 {
+                    onReport()
+                }
+            }
+        } else if actionSheet == deleteSheet {
             if buttonIndex == 0 {
                 onDelete()
-            } else if buttonIndex == 1 {
-                onReport()
-            }
-        } else {
-            if buttonIndex == 0 {
-                onReport()
             }
         }
     }

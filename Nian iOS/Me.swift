@@ -196,15 +196,19 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onTopClick(sender: UIGestureRecognizer) {
+        let MeNextVC = MeNextViewController()
+        
         if let tag = sender.view?.tag {
             if tag == 1 {
                 self.numLeft = "0"
+                MeNextVC.msgType = "reply"  /* 回应 */
             }else if tag == 2 {
                 self.numMiddel = "0"
+                MeNextVC.msgType = "like"  /* 按赞 */
             }else if tag == 3 {
                 self.numRight = "0"
+                MeNextVC.msgType = "notify" /* 通知 */
             }
-            let MeNextVC = MeNextViewController()
             MeNextVC.tag = tag
             self.navigationController?.pushViewController(MeNextVC, animated: true)
         }
