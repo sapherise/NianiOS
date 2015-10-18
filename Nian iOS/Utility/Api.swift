@@ -97,7 +97,7 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/discover/ranking?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
-    // MARK: - 发现-“热门” 之“编辑推荐”和“最新”
+    // MARK: - 发现-“热门” 之“推荐”和“最新”
     static func getDiscoverTop(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/discover/top?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
@@ -109,7 +109,7 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/discover/newest?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    // MARK: - 获取所有编辑推荐的结果 
+    // MARK: - 获取所有推荐的结果
     static func getDiscoverEditorRecom(page: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/discover/recommend?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)

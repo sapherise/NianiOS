@@ -113,9 +113,6 @@ class VVeboTableView: UITableView {
             if shouldClear {
                 needLoadArr.addObjectsFromArray(arr as [AnyObject])
             }
-        } else {
-            print("出错了！")
-            // todo: 刷新两次会闪退
         }
     }
     
@@ -126,8 +123,8 @@ class VVeboTableView: UITableView {
         return height
     }
     
-    // 用于 cellfor 函数
-    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int = 0) -> SACell {
+    // 不要直接用于 cellfor，因为这个函数里没有 delegate
+    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int) -> SACell {
         var c = self.dequeueReusableCellWithIdentifier("SACell") as? SACell
         if c == nil {
             c = SACell.init(style: .Default, reuseIdentifier: "SACell")
@@ -136,5 +133,15 @@ class VVeboTableView: UITableView {
         drawCell(c!, indexPath: indexPath, dataArray: dataArray)
         return c!
     }
+    
+    // 清除已显示在屏幕上的 cell，否则会文本错位
+    func clearVisibleCell() {
+        for c in self.visibleCells {
+            if let cell = c as? SACell {
+                cell.clear()
+            }
+        }
+    }
+    
     
 }

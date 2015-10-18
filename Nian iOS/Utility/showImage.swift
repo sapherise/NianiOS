@@ -131,7 +131,8 @@ extension UIImageView {
             if sender.state == UIGestureRecognizerState.Began {
                 let image = getCacheImage(imageView.imageURL)
                 if image != nil {
-                    let avc = SAActivityViewController.shareSheetInView(["喜欢念上的这张照片", image!], applicationActivities: [])
+                    let url = NSURL(string: "http://nian.so")
+                    let avc = SAActivityViewController.shareSheetInView(["喜欢念上的这张照片", image!, url!], applicationActivities: [], isStep: true)
                     self.findRootViewController()?.presentViewController(avc, animated: true, completion: nil)
                 }
             }

@@ -950,31 +950,3 @@ public func synchronized(lock: AnyObject, closure: () -> ()) {
     closure()
     objc_sync_exit(lock)
 }
-
-
-func getHeightCell(dataArray: NSMutableArray, index: Int)->CGFloat {
-    let data = dataArray[index] as! NSDictionary
-    let heightCell = data.stringAttributeForKey("heightCell")
-    let isEdit = data.stringAttributeForKey("isEdit")
-    // 当高度
-    if heightCell == "" ||  isEdit == "1"{
-        let arr = SAStepCell.cellHeight(data)
-        let heightCell = arr[0] as! CGFloat
-        let heightContent = arr[1] as! CGFloat
-        let widthComment = arr[2] as! CGFloat
-        let widthLike = arr[3] as! CGFloat
-        let d = NSMutableDictionary(dictionary: data)
-        let content = data.stringAttributeForKey("content").decode()
-        let title = data.stringAttributeForKey("title").decode()
-        d.setValue(heightCell, forKey: "heightCell")
-        d.setValue(heightContent, forKey: "heightContent")
-        d.setValue(content, forKey: "content")
-        d.setValue(title, forKey: "title")
-        d.setValue(widthComment, forKey: "widthComment")
-        d.setValue(widthLike, forKey: "widthLike")
-        dataArray.replaceObjectAtIndex(index, withObject: d)
-        return heightCell
-    } else {
-        return CGFloat((heightCell as NSString).floatValue)
-    }
-}

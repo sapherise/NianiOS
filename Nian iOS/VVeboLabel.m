@@ -147,11 +147,11 @@ static inline NSRegularExpression * AccountRegularExpression() {
             if (labelImageView.image != nil && currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
                 [coloredString addAttribute:(NSString*)kCTForegroundColorAttributeName
                                       value:(id)[UIColor colorWithRed:0.96 green:0.77 blue:0.23 alpha:1].CGColor range:match.range];
-                double delayInSeconds = 1.5;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [self backToNormal];
-                });
+//                double delayInSeconds = 1.5;
+//                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//                    [self backToNormal];
+//                });
             } else {
                 UIColor *highlightColor = highlightColors[key];
                 [coloredString addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)highlightColor.CGColor range:match.range];
@@ -479,18 +479,19 @@ static inline NSRegularExpression * AccountRegularExpression() {
     }
 }
 
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [super touchesMoved:touches withEvent:event];
+}
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    [super touchesEnded:touches withEvent:event];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    if (highlighting) {
-        [self touchesCallback];
-        double delayInSeconds = .2;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self backToNormal];
-        });
-    } else {
-        [super touchesEnded:touches withEvent:event];
-    }
+    [self touchesCallback];
+    double delayInSeconds = .2;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self backToNormal];
+    });
 }
 
 // 点击回调事件
@@ -498,7 +499,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
     NSRange range = NSMakeRange(0,[_text length]);
     NSArray* matchesURL = [[NSRegularExpression regularExpressionWithPattern:URLRegular options:NSRegularExpressionDotMatchesLineSeparators error:nil] matchesInString:_text options:0 range:range];
     for(NSTextCheckingResult* match in matchesURL) {
-        if (labelImageView.image != nil && currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
+        if (currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
             NSString *string2 = [_text substringWithRange:match.range];
             if (_URLHandler) {
                 _URLHandler(string2);
@@ -507,7 +508,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
     }
     NSArray* matchesAccount = [[NSRegularExpression regularExpressionWithPattern:AccountRegular options:NSRegularExpressionDotMatchesLineSeparators error:nil] matchesInString:_text options:0 range:range];
     for(NSTextCheckingResult* match in matchesAccount) {
-        if (labelImageView.image != nil && currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
+        if (currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
             NSString *string2 = [_text substringWithRange:match.range];
             if (_AccountHandler) {
                 _AccountHandler(string2);

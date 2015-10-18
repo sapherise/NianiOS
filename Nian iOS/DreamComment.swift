@@ -362,18 +362,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             d.setValue(hImage, forKey: "heightImage")
             dataArray.replaceObjectAtIndex(dataArray.count - 1 - index, withObject: d)
             return hCell
-//            let arr = SAStepCell.cellHeight(data)
-//            let heightCell = arr[0] as! CGFloat
-//            let heightContent = arr[1] as! CGFloat
-//            let d = NSMutableDictionary(dictionary: data)
-//            let content = data.stringAttributeForKey("content").decode()
-//            let title = data.stringAttributeForKey("title").decode()
-//            d.setValue(heightCell, forKey: "heightCell")
-//            d.setValue(heightContent, forKey: "heightContent")
-//            d.setValue(content, forKey: "content")
-//            d.setValue(title, forKey: "title")
-//            dataArray.replaceObjectAtIndex(index, withObject: d)
-//            return heightCell
         } else {
             return CGFloat((heightCell as NSString).floatValue)
         }

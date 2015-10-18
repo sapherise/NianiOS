@@ -8,70 +8,39 @@
 
 import UIKit
 
-class ExploreProvider: NSObject {
-    func onHide() {
-    }
-    
-    func onShow(loading: Bool) {
-    }
-    
-    func onRefresh() {
-    }
-    
-    func onLoad() {
-    }
-}
-
 // MARK: - explore view controller
 class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var btnFollow: UILabel!
     @IBOutlet weak var btnDynamic: UILabel!
     @IBOutlet weak var btnHot: UILabel!
-    
     @IBOutlet weak var imageSearch: UIImageView!
     @IBOutlet weak var imageFriend: UIImageView!
-    
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var recomTableView: UITableView!
-    
     @IBOutlet weak var navTopView: UIView!
     @IBOutlet weak var navHolder: UIView!
     
-    @IBOutlet var btnNew: UIButton!
-    @IBOutlet var btnEditor: UIButton!
-    
     var tableView: VVeboTableView!
     var tableViewDynamic: VVeboTableView!
+    var tableViewHot: UITableView!
+    var tableViewEditor: UITableView!
+    var tableViewNewest: UITableView!
     var dataArray = NSMutableArray()
     var dataArrayDynamic = NSMutableArray()
+    var dataArrayHot = NSMutableArray()
+    var dataArrayEditor = NSMutableArray()
+    var dataArrayNewest = NSMutableArray()
     
-    var appear = false
     var current = -1
-    var currentProvider: ExploreProvider!
-    
-    var buttons: [UILabel]!
-    var providers: [ExploreProvider]!
     var page = 1
     var pageDynamic = 1
+    var pageHot = 1
+    
+    var isLoadingHot = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.buttons = [
-            btnFollow,
-            btnDynamic,
-            btnHot,
-        ]
         setupViews()
-        
-        // brief: tableView = followTableView
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableViewDynamic.dataSource = self
-        tableViewDynamic.delegate = self
-        recomTableView.dataSource = providers[2] as? UITableViewDataSource
-        recomTableView.delegate = providers[2] as? UITableViewDelegate
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -105,24 +74,61 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                 c.data = data
                 return c
             } else {
-                return t.getCell(indexPath, dataArray: d, type: 2)
+                return getCell(indexPath, dataArray: d, type: 2)
             }
+        } else if tableView == self.tableViewHot {
+            let c = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
+            c!.data = self.dataArrayHot[indexPath.row] as! NSDictionary
+            c!.indexPath = indexPath
+            c!._layoutSubviews()
+            return c!
+        } else if tableView == self.tableViewEditor {
+            var c = tableViewEditor.dequeueReusableCellWithIdentifier("NewestCell") as? NewestCell
+            if c == nil {
+                c = NewestCell(style: .Default, reuseIdentifier: "NewestCell")
+            }
+            if dataArrayEditor.count == 0 {
+                c?.data = NSDictionary()
+            } else {
+                c?.data = dataArrayEditor[indexPath.row] as! NSDictionary
+            }
+            c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+            return c!
+        } else if tableView == self.tableViewNewest {
+            var c = tableViewNewest.dequeueReusableCellWithIdentifier("NewestCell") as? NewestCell
+            if c == nil {
+                c = NewestCell(style: .Default, reuseIdentifier: "NewestCell")
+            }
+            if dataArrayNewest.count == 0 {
+                c?.data = NSDictionary()
+            } else {
+                c?.data = dataArrayNewest[indexPath.row] as! NSDictionary
+            }
+            c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+            return c!
         }
-        return t.getCell(indexPath, dataArray: d)
+        return getCell(indexPath, dataArray: d)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("haha")
-        var t = self.tableView
         var d = dataArray
+        let vc = DreamViewController()
         if tableView == self.tableViewDynamic {
-            t = self.tableViewDynamic
             d = dataArrayDynamic
+        } else if tableView == self.tableViewHot {
+            d = dataArrayHot
+        } else if tableView == self.tableViewEditor || tableView == self.tableViewNewest {
+            if dataArrayEditor.count == 0 || dataArrayNewest.count == 0 {
+                return
+            }
+            d = tableView == self.tableViewEditor ? dataArrayEditor : dataArrayNewest
+            let data = d[indexPath.row] as! NSDictionary
+            vc.Id = data.stringAttributeForKey("id")
+            self.navigationController?.pushViewController(vc, animated: true)
+            return
         }
         let data = d[indexPath.row] as! NSDictionary
-        let id = data.stringAttributeForKey("dream")
-        let vc = DreamViewController()
-        vc.Id = id
+        vc.Id = tableView != tableViewHot ? data.stringAttributeForKey("dream") : data.stringAttributeForKey("id")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -137,6 +143,14 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             if type == "0" {
                 return 77
             }
+        } else if tableView == self.tableViewHot {
+            let data = dataArrayHot[indexPath.row] as! NSDictionary
+            let heightCell = data.objectForKey("heightCell") as! CGFloat
+            return heightCell
+        } else if tableView == self.tableViewEditor {
+            return 96
+        } else if tableView == self.tableViewNewest {
+            return 96
         }
         return t.getHeight(indexPath, dataArray: d)
     }
@@ -145,6 +159,18 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         var d = dataArray
         if tableView == self.tableViewDynamic {
             d = dataArrayDynamic
+        } else if tableView == self.tableViewHot {
+            d = dataArrayHot
+        } else if tableView == self.tableViewEditor {
+            d = dataArrayEditor
+            if dataArrayEditor.count == 0 {
+                return 6
+            }
+        } else if tableView == self.tableViewNewest {
+            d = dataArrayNewest
+            if dataArrayNewest.count == 0 {
+                return 6
+            }
         }
         return d.count
     }
@@ -161,95 +187,8 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func load(clear: Bool) {
-        if clear {
-            page = 1
-        }
-        Api.getExploreFollow("\(page++)", callback: {
-            json in
-            if json != nil {
-                globalTabhasLoaded[0] = true
-                if clear {
-                    self.dataArray.removeAllObjects()
-                }
-                let data: AnyObject? = json!.objectForKey("data")
-                let items = data!.objectForKey("items") as! NSArray
-                if items.count != 0 {
-                    for item in items {
-                        let data = SACell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArray.addObject(data)
-                    }
-                    self.currentDataArray = self.dataArray
-                    self.tableView.tableHeaderView = nil
-                } else if clear {
-                    self.tableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
-                    self.tableView.tableHeaderView?.addGhost("这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
-                }
-                if self.current == 0 {
-                    self.tableView.headerEndRefreshing()
-                    self.tableView.footerEndRefreshing()
-                    self.tableView.reloadData()
-                }
-            }
-        })
-    }
-    
-    func loadDynamic(clear: Bool) {
-        if clear {
-            pageDynamic = 1
-        }
-        Api.getExploreDynamic("\(pageDynamic++)", callback: {
-            json in
-            if json != nil {
-                globalTabhasLoaded[1] = true
-                let data: AnyObject? = json!.objectForKey("data")
-                let items = data!.objectForKey("items") as! NSArray
-                if items.count != 0 {
-                    if clear {
-                        self.dataArrayDynamic.removeAllObjects()
-                    }
-                    for item in items {
-                        let data = SACell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArrayDynamic.addObject(data)
-                    }
-                    self.currentDataArray = self.dataArrayDynamic
-                    self.tableViewDynamic.tableHeaderView = nil
-                } else if clear {
-                    self.tableViewDynamic.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
-                    self.tableViewDynamic.tableHeaderView?.addGhost("这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
-                }
-                if self.current == 1 {
-                    self.tableViewDynamic.headerEndRefreshing()
-                    self.tableViewDynamic.footerEndRefreshing()
-                    self.tableViewDynamic.reloadData()
-                }
-            }
-        })
-    }
-    
-    
     func setupViews() {
-        self.providers = [
-            ExploreRecommend(viewController: self),
-            ExploreRecommend(viewController: self),
-            ExploreRecommend(viewController: self),
-        ]
         globalNumExploreBar = 0
-        
-        tableView = VVeboTableView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 49), style: .Plain)
-        scrollView.addSubview(tableView)
-        currenTableView = tableView
-        
-        tableViewDynamic = VVeboTableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 64 - 49), style: .Plain)
-        
-        //        viewController.dynamicTableView.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
-        tableViewDynamic.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
-        scrollView.addSubview(tableViewDynamic)
-        
-        self.scrollView.scrollsToTop = false
-        self.tableView.scrollsToTop = true
-        self.tableViewDynamic.scrollsToTop = false
-        self.recomTableView.scrollsToTop = false
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.navTopView.backgroundColor = BarColor
@@ -262,60 +201,49 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         
         scrollView.setWidth(globalWidth)
         scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
-        tableView.frame.origin.x = 0
-        recomTableView.frame.origin.x = globalWidth * 2
+//        recomTableView.frame.origin.x = globalWidth * 2
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         
-        tableView.addHeaderWithCallback { () -> Void in
-            self.load(true)
-        }
-        tableView.addFooterWithCallback { () -> Void in
-            self.load(false)
-        }
-        tableViewDynamic.addHeaderWithCallback { () -> Void in
-            self.loadDynamic(true)
-        }
-        tableViewDynamic.addFooterWithCallback { () -> Void in
-            self.loadDynamic(false)
-        }
-        recomTableView.addHeaderWithCallback(onPullDown)
-        recomTableView.addFooterWithCallback(onPullUp)
-    }
-    
-    func onPullDown() {
-        self.currentProvider.onRefresh()
-    }
-    
-    func onPullUp() {
-        self.currentProvider.onLoad()
+        setupTables()
     }
     
     func switchTab(tab: Int) {
         let _current = current
         if current != -1 {
-            currentProvider.onHide()
+//            currentProvider.onHide()
+            //todo: 切换后应该不加载了
         }
         current = tab
-        currentProvider = self.providers[tab]
-        _setupScrolltoTop(current)
         if tab == 0 {
             currenTableView = tableView
             currentDataArray = dataArray
         } else if tab == 1 {
             currenTableView = tableViewDynamic
             currentDataArray = dataArrayDynamic
+        } else {
+            currenTableView = nil
+            currentDataArray = nil
         }
         
         if _current != tab {
             if !globalTabhasLoaded[tab] {
-                currenTableView?.headerBeginRefreshing()
+                if tab < 2 {
+                    currenTableView?.headerBeginRefreshing()
+                } else {
+                    tableViewHot.headerBeginRefreshing()
+                }
             }
         } else {
-            currenTableView?.headerBeginRefreshing()
+            if tab < 2 {
+                currenTableView?.headerBeginRefreshing()
+            } else {
+                tableViewHot.headerBeginRefreshing()
+            }
         }
+        _setupScrolltoTop(current)
     }
     
     func onTabClick(sender: UIGestureRecognizer) {
@@ -337,8 +265,11 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         if scrollView == self.scrollView {
             let xOffset = scrollView.contentOffset.x
             let page: Int = Int(xOffset / globalWidth)
-            currentProvider = self.providers[page]
-            switchTab(page)
+            
+            // 当页面有变化时才考虑是否加载
+            if page != current {
+                switchTab(page)
+            }
         } else {
             super.scrollViewDidEndScrollingAnimation(scrollView)
         }
@@ -350,6 +281,12 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             self.btnFollow.setTabAlpha(x, index: 0)
             self.btnDynamic.setTabAlpha(x, index: 1)
             self.btnHot.setTabAlpha(x, index: 2)
+        } else if scrollView == tableViewHot {
+            let y = tableViewHot.contentOffset.y + tableViewHot.height()
+            let height = tableViewHot.contentSize.height
+            if y + 400 > height && dataArrayHot.count > 0 {
+                tableViewHot.footerBeginRefreshing()
+            }
         }
     }
     
@@ -365,28 +302,19 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         if tab == 0 {
             tableView.scrollsToTop = true
             tableViewDynamic.scrollsToTop = false
-            recomTableView.scrollsToTop = false
+            tableViewHot.scrollsToTop = false
         } else if tab == 1 {
             tableView.scrollsToTop = false
             tableViewDynamic.scrollsToTop = true
-            recomTableView.scrollsToTop = false
+            tableViewHot.scrollsToTop = false
         } else if tab == 2 {
             tableView.scrollsToTop = false
             tableViewDynamic.scrollsToTop = false
-            recomTableView.scrollsToTop = true
+            tableViewHot.scrollsToTop = true
         }
     }
     
 }
-
-// MARK: -  Explore VC 不能同时响应多个手势
-extension ExploreViewController {
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer
-        otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-            return false
-    }
-}
-
 
 extension UILabel {
     func setTabAlpha(x: CGFloat, index: CGFloat) {

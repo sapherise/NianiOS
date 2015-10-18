@@ -8,9 +8,9 @@
 
 import UIKit
 
-class SingleStepViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, delegateSAStepCell{
+class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate {
     
-    var tableView:UITableView!
+    var tableView: VVeboTableView!
     var dataArray = NSMutableArray()
     var Id:String = "1"
     var navView:UIView!
@@ -41,12 +41,13 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
+        self.tableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableView.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.tableView)
+        
+        currenTableView = tableView
         
         //标题颜色
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -61,6 +62,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     func SAReloadData(){
         Api.getSingleStep(self.Id) { json in
             if json != nil {
+                self.tableView.clearVisibleCell()
                 self.dataArray.removeAllObjects()
                 let data = json!.objectForKey("data") as! NSDictionary
                 let hidden = data.stringAttributeForKey("hidden")
@@ -68,8 +70,10 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
                     self.tableView?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
                     self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
                 } else {
-                    self.dataArray.addObject(data)
+                    let d = SACell.SACellDataRecode(data)
+                    self.dataArray.addObject(d)
                 }
+                self.currentDataArray = self.dataArray
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
             }
@@ -82,19 +86,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
-        c.delegate = self
-        c.data = self.dataArray[indexPath.row] as? NSDictionary
-        c.index = indexPath.row
-        c.labelComment.tag = indexPath.row
-        c.labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment:"))
-        if indexPath.row == self.dataArray.count - 1 {
-            c.viewLine.hidden = true
-        } else {
-            c.viewLine.hidden = false
-        }
-        c.setupCell()
-        return c
+        return getCell(indexPath, dataArray: dataArray, type: 1)
     }
     
     func onComment(sender: UIGestureRecognizer) {
@@ -113,7 +105,7 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return getHeightCell(dataArray, index: indexPath.row)
+        return getHeight(indexPath, dataArray: dataArray)
     }
     
     func Editstep() {
@@ -128,26 +120,6 @@ class SingleStepViewController: UIViewController,UITableViewDelegate,UITableView
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
         })
-    }
-    
-    // 更新数据
-    func updateStep(index: Int, key: String, value: AnyObject) {
-        SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: self.tableView)
-    }
-    
-    // 更新某个格子
-    func updateStep(index: Int) {
-        SAUpdate(index, section: 0, tableView: self.tableView)
-    }
-    
-    // 重载表格
-    func updateStep() {
-        SAUpdate(self.tableView)
-    }
-    
-    // 删除某个格子
-    func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: self.tableView, section: 0)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

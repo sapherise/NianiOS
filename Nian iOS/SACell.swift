@@ -9,7 +9,13 @@
 import Foundation
 import UIKit
 
-// todo: 动态里的头像点击问题
+protocol delegateSAStepCell {
+    func updateStep(index: Int, key: String, value: AnyObject)
+    func updateStep(index: Int)
+    func updateStep()
+    func updateStep(index: Int, delete: Bool)
+}
+
 class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var data: NSDictionary! {
         didSet {
@@ -54,6 +60,8 @@ class SACell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             if uid == SAUid() {
                 btnLike.hidden = true
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
+            } else {
+                btnLike.hidden = false
             }
         }
     }

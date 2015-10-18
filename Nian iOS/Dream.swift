@@ -62,7 +62,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         
         self.SATableView.registerNib(nib, forCellReuseIdentifier: "dream")
         self.SATableView.registerNib(nib2, forCellReuseIdentifier: "dreamtop")
-        self.SATableView.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.view.addSubview(self.SATableView)
         currenTableView = SATableView
         
@@ -97,6 +96,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     if clear {
                         self.dataArrayTop = data!.objectForKey("dream") as! NSDictionary
                         self.dataArray.removeAllObjects()
+                        self.SATableView.clearVisibleCell()
                         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
                         btnMore.image = UIImage(named: "more")
                         self.navigationItem.rightBarButtonItems = [btnMore]
@@ -226,7 +226,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             }
             return c
         } else {
-            return SATableView.getCell(indexPath, dataArray: dataArray, type: 1)
+            return getCell(indexPath, dataArray: dataArray, type: 1)
         }
     }
     
@@ -293,11 +293,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             mutableData.setValue("\(step + 1)", forKey: "step")
             dataArrayTop = mutableData
             dataArray.insertObject(data, atIndex: 0)
-            for c in SATableView.visibleCells {
-                if let cell = c as? SACell {
-                    cell.clear()
-                }
-            }
+            SATableView.clearVisibleCell()
             SATableView.reloadData()
         }
     }

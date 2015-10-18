@@ -21,7 +21,7 @@ extension UIImageView {
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
     func setImage(urlString: String, radius: CGFloat = 0) {
-        self.backgroundColor = IconColor
+            self.backgroundColor = IconColor
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
