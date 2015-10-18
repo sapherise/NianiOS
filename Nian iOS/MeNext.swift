@@ -90,7 +90,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
 //        Api.getMeNext(page, tag: tag) { json in
         Api.getNotify(self.msgType, page: page) { json in
             if json != nil {
-                print(json)
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
@@ -191,6 +190,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let step = data.stringAttributeForKey("step")
         let name = data.stringAttributeForKey("cname")
         let cid = data.stringAttributeForKey("cid")
+        print("name = \(name)")
         
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()
@@ -210,9 +210,11 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             if step != "0" {
                 StepVC.Id = step
                 StepVC.name = name
+                print("1")
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
+                print("2")
                 self.navigationController!.pushViewController(DreamVC, animated: true)
             }
         }else if type == "2" {  //赞了你的记本

@@ -619,16 +619,14 @@ struct Api {
         V.httpPostForJson("http://api.nian.so/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: "dream_id=\(dream)&content=\(content)", callback: callback)
     }
     
+    static func postDeleteComment(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/comment/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
     
     static func getDreamStepComment(sid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/comment_step.php?page=\(page)&id=\(sid)", callback: callback)
-    }
-    
-    
-    static func postDeleteComment(cid: String, callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/delete_comment.php", content: "uid=\(s_uid)&shell=\(s_shell)&cid=\(cid)", callback: callback)
     }
     
     static func postFollow(uid: String, follow: Int, callback: V.StringCallback) {

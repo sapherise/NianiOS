@@ -404,8 +404,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 heightImage = height * (globalWidth - SIZE_PADDING * 2) / width
                 heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
             }
-            // todo: 编辑进展之后的签到高度
-            
             delegate?.updateStep(num, key: "image", value: img)
             delegate?.updateStep(num, key: "width", value: img0)
             delegate?.updateStep(num, key: "height", value: img1)

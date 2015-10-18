@@ -86,12 +86,14 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return getCell(indexPath, dataArray: dataArray, type: 1)
+        let c = getCell(indexPath, dataArray: dataArray, type: 1)
+        (c as VVeboCell).labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
+        return c
     }
     
-    func onComment(sender: UIGestureRecognizer) {
-        if let tag = sender.view?.tag {
-            let data = dataArray[tag] as! NSDictionary
+    func onComment() {
+        if dataArray.count > 0 {
+            let data = dataArray[0] as! NSDictionary
             let id = data.stringAttributeForKey("dream")
             let sid = data.stringAttributeForKey("sid")
             let uid = data.stringAttributeForKey("uid")
@@ -100,6 +102,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
             vc.stepID = Int(sid)!
             vc.dreamowner = uid == SAUid() ? 1 : 0
             vc.name = name
+            print("VSNAME: \(name)")
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

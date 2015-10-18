@@ -52,6 +52,8 @@ extension HomeViewController: NIAlertDelegate {
                             if hasGotRewards == "0" {
                                 // 未获得该版本奖励，通过网络请求获得奖励
                                 // 市场评分，查看是否还有 0920 这个活动存在
+                                // todo
+                                // todo: 3D Touch
                                 Api.getRewardsActivity("0920") { json in
                                     if json != nil {
                                         let hasActivity = json!.objectForKey("hasActivity") as? String

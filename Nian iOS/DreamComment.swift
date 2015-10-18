@@ -26,9 +26,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
     var ReplyCid:String = ""
-    var ReplyUserName:String = ""
-    
-    var ReturnReplyContent:String = ""
     
     var animating: Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
     var activityIndicatorView: UIActivityIndicatorView!
@@ -37,7 +34,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     var inputKeyboard: UITextField!
     var keyboardView: UIView!
     var viewBottom: UIView!
-    var isKeyboardResign: Int = 0 //为了解决评论会收起键盘的BUG创建的开关，当提交过程中变为1，0时才收起键盘
     var keyboardHeight: CGFloat = 0
     var lastContentOffset: CGFloat?
     var name: String?
@@ -47,6 +43,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         super.viewDidLoad()
         setupViews()
         SAReloadData()
+        print("name: \(name)")
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -120,7 +117,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func commentFinish(replyContent:String){
-        self.isKeyboardResign = 1
         self.inputKeyboard.text = ""
         let commentReplyRow = self.dataArray.count
         let name = Cookies.get("user") as? String
@@ -135,10 +131,12 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var finish = false
         Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
             if json != nil {
+                print(json)
                 if let status = json!.objectForKey("status") as? NSNumber {
                     if status == 200 {
                         success = true
                         if finish {
+                            print(json)
                             let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
                             self.tableview.beginUpdates()
                             self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
@@ -216,7 +214,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                     self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
                 }
                 self.page = 1
-                self.isKeyboardResign = 0
             }
         })
     }
@@ -287,6 +284,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 let uid = data.stringAttributeForKey("uid")
                 let content = data.stringAttributeForKey("content")
                 let cid = data.stringAttributeForKey("id")
+                print("content 为 \(content)，cid 为 \(cid)")
                 self.ReplyRow = self.dataArray.count - 1 - index
                 self.ReplyContent = content
                 self.ReplyCid = cid
@@ -402,16 +400,19 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
-                self.isKeyboardResign = 1
                 let row = self.dataArray.count - 1 - self.ReplyRow
+                let a = dataArray[row]
+                print("a: \(a), cid: \(ReplyCid)")
                 self.dataArray.removeObjectAtIndex(row)
                 self.tableview.beginUpdates()
                 self.tableview.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .Fade)
                 self.tableview.reloadData()
                 self.tableview.endUpdates()
-                go {
-                    SAPost("uid=\(safeuid)&shell=\(safeshell)&cid=\(self.ReplyCid)", urlString: "http://nian.so/api/delete_comment.php")
-                    self.isKeyboardResign = 0
+                
+                
+                
+                Api.postDeleteComment(ReplyCid) { json in
+                    print(json)
                 }
             }
         }

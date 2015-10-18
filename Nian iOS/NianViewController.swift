@@ -310,7 +310,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func headClick(){
         // todo: 把开关关掉
-        if true {
+        if false {
             SAReloadData()
             setupUserTop()
         } else {
