@@ -138,7 +138,7 @@ extension ExploreViewController {
                 let items = data!.objectForKey("items") as! NSArray
                 if items.count != 0 {
                     for item in items {
-                        let data = SACell.SACellDataRecode(item as! NSDictionary)
+                        let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
                         self.dataArray.addObject(data)
                     }
                     self.currentDataArray = self.dataArray
@@ -172,7 +172,7 @@ extension ExploreViewController {
                         self.dataArrayDynamic.removeAllObjects()
                     }
                     for item in items {
-                        let data = SACell.SACellDataRecode(item as! NSDictionary)
+                        let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
                         self.dataArrayDynamic.addObject(data)
                     }
                     self.currentDataArray = self.dataArrayDynamic

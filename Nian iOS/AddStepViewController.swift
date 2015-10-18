@@ -202,7 +202,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                     d["user"] = ""
                 }
                 self.delegate?.countUp!(coin, total: totalCoin, isfirst: isfirst)
-                self.delegate?.update!(SACell.SACellDataRecode(d as NSDictionary))
+                self.delegate?.update!(VVeboCell.SACellDataRecode(d as NSDictionary))
                 //
                 self.navigationController?.popViewControllerAnimated(true)
             }

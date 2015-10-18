@@ -54,14 +54,14 @@ class VVeboTableView: UITableView {
         }
         if self.visibleCells.count > 0 {
             for temp in self.visibleCells {
-                if let cell = temp as? SACell {
+                if let cell = temp as? VVeboCell {
                     cell.draw()
                 }
             }
         }
     }
     
-    func drawCell(cell: SACell, indexPath: NSIndexPath, dataArray: NSMutableArray) {
+    func drawCell(cell: VVeboCell, indexPath: NSIndexPath, dataArray: NSMutableArray) {
         let data = dataArray[indexPath.row] as! NSDictionary
         cell.selectionStyle = .None
         // 复用时，清除原有内容
@@ -124,10 +124,10 @@ class VVeboTableView: UITableView {
     }
     
     // 不要直接用于 cellfor，因为这个函数里没有 delegate
-    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int) -> SACell {
-        var c = self.dequeueReusableCellWithIdentifier("SACell") as? SACell
+    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int) -> VVeboCell {
+        var c = self.dequeueReusableCellWithIdentifier("VVeboCell") as? VVeboCell
         if c == nil {
-            c = SACell.init(style: .Default, reuseIdentifier: "SACell")
+            c = VVeboCell.init(style: .Default, reuseIdentifier: "VVeboCell")
         }
         c?.type = type
         drawCell(c!, indexPath: indexPath, dataArray: dataArray)
@@ -137,7 +137,7 @@ class VVeboTableView: UITableView {
     // 清除已显示在屏幕上的 cell，否则会文本错位
     func clearVisibleCell() {
         for c in self.visibleCells {
-            if let cell = c as? SACell {
+            if let cell = c as? VVeboCell {
                 cell.clear()
             }
         }

@@ -70,7 +70,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
                     self.tableView?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
                     self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
                 } else {
-                    let d = SACell.SACellDataRecode(data)
+                    let d = VVeboCell.SACellDataRecode(data)
                     self.dataArray.addObject(d)
                 }
                 self.currentDataArray = self.dataArray

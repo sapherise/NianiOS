@@ -630,7 +630,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 let itemsStep = data?.objectForKey("steps") as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
-                        let d = SACell.SACellDataRecode(item as! NSDictionary)
+                        let d = VVeboCell.SACellDataRecode(item as! NSDictionary)
                         self.dataArrayStep.addObject(d)
                     }
                 }

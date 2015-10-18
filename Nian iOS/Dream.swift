@@ -103,7 +103,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     }
                     let steps = data!.objectForKey("steps") as! NSArray
                     for d in steps {
-                        let data = SACell.SACellDataRecode(d as! NSDictionary)
+                        let data = VVeboCell.SACellDataRecode(d as! NSDictionary)
                         self.dataArray.addObject(data)
                     }
                     self.currentDataArray = self.dataArray

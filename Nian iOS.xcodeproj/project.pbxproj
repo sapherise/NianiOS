@@ -81,8 +81,8 @@
 		127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497FF1B92DFB80046B440 /* libsqlite3.tbd */; };
 		127498021B92DFC60046B440 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127498011B92DFC60046B440 /* libz.tbd */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
-		12776A0B1BCE4C5A00745811 /* SACell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0A1BCE4C5A00745811 /* SACell.swift */; settings = {ASSET_TAGS = (); }; };
-		12776A0D1BCE54EA00745811 /* SATableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0C1BCE54EA00745811 /* SATableView.swift */; settings = {ASSET_TAGS = (); }; };
+		12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0A1BCE4C5A00745811 /* VVeboCell.swift */; settings = {ASSET_TAGS = (); }; };
+		12776A0D1BCE54EA00745811 /* VVeboTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0C1BCE54EA00745811 /* VVeboTableView.swift */; settings = {ASSET_TAGS = (); }; };
 		12776A0F1BCE5F3A00745811 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0E1BCE5F3A00745811 /* File.swift */; settings = {ASSET_TAGS = (); }; };
 		12776A121BCE668500745811 /* VVeboLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12776A111BCE668500745811 /* VVeboLabel.m */; settings = {ASSET_TAGS = (); }; };
 		12776A181BCE731A00745811 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 12776A171BCE731A00745811 /* NSString+Additions.m */; settings = {ASSET_TAGS = (); }; };
@@ -325,8 +325,8 @@
 		127497FF1B92DFB80046B440 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		127498011B92DFC60046B440 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
-		12776A0A1BCE4C5A00745811 /* SACell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SACell.swift; sourceTree = "<group>"; };
-		12776A0C1BCE54EA00745811 /* SATableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SATableView.swift; sourceTree = "<group>"; };
+		12776A0A1BCE4C5A00745811 /* VVeboCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboCell.swift; sourceTree = "<group>"; };
+		12776A0C1BCE54EA00745811 /* VVeboTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboTableView.swift; sourceTree = "<group>"; };
 		12776A0E1BCE5F3A00745811 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		12776A101BCE668500745811 /* VVeboLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVeboLabel.h; sourceTree = "<group>"; };
 		12776A111BCE668500745811 /* VVeboLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVeboLabel.m; sourceTree = "<group>"; };
@@ -570,9 +570,6 @@
 			isa = PBXGroup;
 			children = (
 				1265282D196C6460005765D2 /* Dream.swift */,
-				120B6DC71BD2265500422B86 /* VVeboViewController.swift */,
-				12776A0C1BCE54EA00745811 /* SATableView.swift */,
-				12776A0A1BCE4C5A00745811 /* SACell.swift */,
 				12776A0E1BCE5F3A00745811 /* File.swift */,
 				12776A101BCE668500745811 /* VVeboLabel.h */,
 				12776A111BCE668500745811 /* VVeboLabel.m */,
@@ -776,6 +773,9 @@
 		126FB4711B574EB80056221C /* 复用 */ = {
 			isa = PBXGroup;
 			children = (
+				120B6DC71BD2265500422B86 /* VVeboViewController.swift */,
+				12776A0C1BCE54EA00745811 /* VVeboTableView.swift */,
+				12776A0A1BCE4C5A00745811 /* VVeboCell.swift */,
 				12F65C0A1B64F5AE0051A914 /* SAViewController.swift */,
 				126FB4721B574EDB0056221C /* SAActivityViewController.swift */,
 				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
@@ -1692,7 +1692,7 @@
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
-				12776A0B1BCE4C5A00745811 /* SACell.swift in Sources */,
+				12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
@@ -1766,7 +1766,7 @@
 				1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */,
 				1217A3EA198D358600959AD2 /* SettingsViewController.swift in Sources */,
 				121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */,
-				12776A0D1BCE54EA00745811 /* SATableView.swift in Sources */,
+				12776A0D1BCE54EA00745811 /* VVeboTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

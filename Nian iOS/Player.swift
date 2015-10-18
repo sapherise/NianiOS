@@ -296,7 +296,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.dataArrayStep.removeAllObjects()
                 }
                 for data: AnyObject in arr {
-                    let d = SACell.SACellDataRecode(data as! NSDictionary)
+                    let d = VVeboCell.SACellDataRecode(data as! NSDictionary)
                     self.dataArrayStep.addObject(d)
                 }
                 self.currentDataArray = self.dataArrayStep
