@@ -13,8 +13,8 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     let identifier = "me"
     var tableView:UITableView?
     var dataArray = NSMutableArray()
-    var page :Int = 0
-    var Id:String = ""
+    var page: Int = 1
+    var Id: String = ""
     var tag: Int = 0
     
     /* 更换新的网络接口后新添加的 "reply" or "like" or "notify" */
@@ -83,13 +83,14 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func load(clear: Bool = true) {
         if clear {
-            page = 0
+            page = 1
         }
         
         /* 换新的 API  */
 //        Api.getMeNext(page, tag: tag) { json in
         Api.getNotify(self.msgType, page: page) { json in
             if json != nil {
+                print(json)
                 if clear {
                     self.dataArray.removeAllObjects()
                 }

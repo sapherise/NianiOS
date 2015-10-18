@@ -41,14 +41,22 @@ class TopicCommentCellHeader: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            layout(data)
-            let time = data.stringAttributeForKey("created_at")
-            let uid = data.stringAttributeForKey("user_id")
-            labelName.text = data.stringAttributeForKey("username")
-            labelTime.text = V.relativeTime(time)
-            imageHead.setHead(uid)
-            imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
-            labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+            if let _ = Int(data.stringAttributeForKey("like_count")) {
+                layout(data)
+                let time = data.stringAttributeForKey("created_at")
+                let uid = data.stringAttributeForKey("user_id")
+                labelName.text = data.stringAttributeForKey("username")
+                labelTime.text = V.relativeTime(time)
+                imageHead.setHead(uid)
+                imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+                labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+            } else {
+                if let v = self.findRootViewController() as? TopicComment {
+                    v.tableView.hidden = true
+                    v.inputKeyboard.hidden = true
+                    v.view.addGhost("这个回应\n不见了")
+                }
+            }
         }
     }
     

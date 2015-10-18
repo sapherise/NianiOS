@@ -94,6 +94,11 @@ class ExploreNewHotCell: UITableViewCell {
         }
         return [height, hContent, hTitle, content, title]
     }
+    
+    override func prepareForReuse() {
+        imageHead.image = nil
+        imageHead.cancelImageRequestOperation()
+    }
 }
 
 

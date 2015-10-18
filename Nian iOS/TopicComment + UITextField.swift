@@ -36,8 +36,7 @@ extension TopicComment {
                 tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: UITableViewRowAnimation.Fade)
                 Api.postTopicCommentComment(id, content: content) { json in
                     if json != nil {
-                        
-                        var arr = ""
+                        var tmpMatchArray = [String]()
                         let regex = "@[\\u4e00-\\u9fa5a-zA-Z0-9_-]*"
                         let exp = try! NSRegularExpression(pattern: regex, options: NSRegularExpressionOptions.CaseInsensitive)
                         let users = exp.matchesInString(content, options: .ReportCompletion, range: NSMakeRange(0, (content as NSString).length))
@@ -45,15 +44,15 @@ extension TopicComment {
                             let range = user.range
                             if range.length > 1 {
                                 let str = (content as NSString).substringWithRange(NSMakeRange(range.location + 1, range.length - 1))
-                                arr = "\(arr)&mentions[]=\(str)"
+                                tmpMatchArray.append(str)
+                                print("str: \(str)")
                             }
                         }
-                        if arr != "" {
-                            if let data = json!.objectForKey("data") as? NSNumber {
-                                Api.postMention("\(data)", mentions: arr) { json in
-                                }
+                        if tmpMatchArray.count > 0 {
+                            Api.postMention(self.id, commentId: "", mentions: (tmpMatchArray as NSArray)) { json in
                             }
                         }
+                        
                         dic.setValue(time, forKey: "created_at")
                         self.dataArray.replaceObjectAtIndex(0, withObject: dic)
                         self.tableView.reloadData()
