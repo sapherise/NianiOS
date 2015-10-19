@@ -208,7 +208,7 @@ NSString * const KILabelLinkKey = @"link";
     // Save the new range
     _selectedRange = range;
     
-    [self setNeedsDisplay];
+//    [self setNeedsDisplay];
 }
 
 - (void)setNumberOfLines:(NSInteger)numberOfLines
@@ -702,7 +702,7 @@ NSString * const KILabelLinkKey = @"link";
     }
     else
     {
-        [super touchesBegan:touches withEvent:event];
+//        [super touchesBegan:touches withEvent:event];
     }
     
     self.selectedRange = NSMakeRange(0, 0);

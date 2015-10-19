@@ -445,8 +445,9 @@ struct Api {
     
     static func postLetterChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
         loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJsonSync("http://nian.so/api/letter_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
+//        let sid = client.getSid()
+//        V.httpPostForJsonSync("http://nian.so/api/letter_chat.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/letter/chat?uid=\(s_uid)&&shell=\(s_shell)", content: ["receiver": "\(id)", "content": "\(content)", "type": "\(type)"], callback: callback)
     }
     
     static func postLetterInit(callback: V.JsonCallback) {
