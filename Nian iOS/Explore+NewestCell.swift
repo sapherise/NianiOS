@@ -37,4 +37,9 @@ class NewestCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        imageHead.image = nil
+        imageHead.cancelImageRequestOperation()
+    }
 }

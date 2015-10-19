@@ -10,9 +10,9 @@
 
 @interface VVeboLabel : UIView
 
-@property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) UIColor *textColor;
-@property (nonatomic, strong) UIFont *font;
+@property (nonatomic, strong, nullable) NSString *text;
+@property (nonatomic, strong, nullable) UIColor *textColor;
+@property (nonatomic, strong, nullable) UIFont *font;
 @property (nonatomic) NSInteger lineSpace;
 @property (nonatomic) NSTextAlignment textAlignment;
 //==

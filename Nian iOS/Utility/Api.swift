@@ -151,8 +151,6 @@ struct Api {
         loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/topic/tag/follow?uid=\(s_uid)&&shell=\(s_shell)", content: ["tag": "\(keyword)", "type": "\(type)"], callback: callback)
     }
-    // TODO: -
-    // MARK: -
     
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()
@@ -621,7 +619,8 @@ struct Api {
     
     static func postDeleteComment(id: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/comment/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        print("http://api.nian.so/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)")
+        V.httpGetForJson("http://api.nian.so/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func getDreamStepComment(sid: String, page: Int, callback: V.JsonCallback) {
@@ -958,23 +957,6 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/passport/exchange?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
-    
-    // 提及某人
-    
-//    POST /mention?uid=xx&shell=xx
-//    POST 参数：
-//    
-//    参数	类型	说明
-//    topic_id	int	回答的id
-//    comment_id	int	评论的id
-//    mentions	array	提到的用户的id
-//    注： 在回应中提到某人，只需要topic_id，在评论中提到某人，需要topic_id和comment_id.
-    
-//    static func postMention(idComment: String, mentions: String, callback: V.StringCallback) {
-//        loadCookies()
-//        V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "comment_id=\(idComment)\(mentions)", callback: callback)
-//    }
-    
 }
 
 

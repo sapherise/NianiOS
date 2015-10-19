@@ -102,7 +102,6 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
             vc.stepID = Int(sid)!
             vc.dreamowner = uid == SAUid() ? 1 : 0
             vc.name = name
-            print("VSNAME: \(name)")
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

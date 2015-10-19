@@ -72,7 +72,6 @@ class CircleImageCell: UITableViewCell {
                     self.imageContent.image = SAColorImg(SeaColor)
                     self.addSubview(activity!)
                 }else{
-                    // todo: 原来背景颜色是蓝色的
                     self.imageContent.setImage(url)
                     self.activity?.removeFromSuperview()
                 }

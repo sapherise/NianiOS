@@ -21,7 +21,7 @@ extension UIImageView {
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
     func setImage(urlString: String, radius: CGFloat = 0) {
-            self.backgroundColor = IconColor
+        self.backgroundColor = IconColor
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
@@ -68,6 +68,7 @@ extension UIImageView {
     }
     
     func setCover(urlString: String, ignore: Bool = false, animated: Bool = false, radius: CGFloat = 0) {
+        let _image = self.image
         self.backgroundColor = UIColor.blackColor()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
@@ -75,14 +76,18 @@ extension UIImageView {
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "1") && (networkStatus == 1) && (!ignore) {
             self.loadCacheImage(req, placeholderImage: self.image)
-                self.setAnimated()
+//                self.setAnimated()
         } else {
             self.setImageWithURLRequest(req,
                 placeholderImage: nil,
                 success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
                     self.contentMode = .ScaleAspectFill
                     self.image = image
-                    self.setAnimated()
+                    
+                    // 当图片有变化时，才做淡入效果
+                    if image != _image {
+                        self.setAnimated()
+                    }
                 },
                 failure: nil)
         }

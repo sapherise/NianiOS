@@ -231,6 +231,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                     self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                     self.UserName.text = "\(name)"
+                    Cookies.set(name, forKey: "user")
                     self.UserHead.setHead(safeuid)
                     self.imageBadge.setType(vip)
                     if deadLine == "0" {
@@ -309,14 +310,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func headClick(){
-        // todo: 把开关关掉
-        if false {
-            SAReloadData()
-            setupUserTop()
-        } else {
-            let PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-            self.navigationController!.pushViewController(PlayerVC, animated: true)
-        }
+        let PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        self.navigationController!.pushViewController(PlayerVC, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

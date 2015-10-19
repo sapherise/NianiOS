@@ -51,16 +51,19 @@ extension HomeViewController: NIAlertDelegate {
                             let hasGotRewards = data?.stringAttributeForKey("hasGotRewards")
                             if hasGotRewards == "0" {
                                 // 未获得该版本奖励，通过网络请求获得奖励
-                                // 市场评分，查看是否还有 0920 这个活动存在
-                                // todo
-                                // todo: 3D Touch
-                                Api.getRewardsActivity("0920") { json in
+                                // 市场评分，查看是否还有这个活动存在
+                                let numberActivity = "0921"
+                                /*
+                                **  每次上线新版本时，修改 numberActivity 的值
+                                **  然后在数据库里插入这个值
+                                */
+                                Api.getRewardsActivity(numberActivity) { json in
                                     if json != nil {
                                         let hasActivity = json!.objectForKey("hasActivity") as? String
                                         // 如果存在
                                         if hasActivity == "1" {
                                             // 奖励 3 念币
-                                            Api.getRewards("0920") { json in
+                                            Api.getRewards(numberActivity) { json in
                                                 self.niAppStore = NIAlert()
                                                 self.niAppStore?.delegate = self
                                                 self.niAppStore?.shouldTapBackgroundToDismiss = false

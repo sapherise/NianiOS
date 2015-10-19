@@ -450,7 +450,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     
     // MARK: - 关注搜索的内容
     /* */
-    // TODO: -
     func Follow(sender: AnyObject) {
         if self.searchText.text?.characters.count > 0{
             self.navigationItem.rightBarButtonItems = buttonArray()
@@ -726,7 +725,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         case 2:
             return getCell(indexPath, dataArray: dataArrayStep)
         case 3:
-            // TODO: - 完成 topic cell
             let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  
             cell.delegate = self
             cell.data = self.dataArrayTopic[indexPath.row] as! NSDictionary
@@ -759,7 +757,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             
             self.navigationController?.pushViewController(viewController, animated: true)
         } else if index == 3 {
-            // TODO: - topic cell select 事件
             let dict = dataArrayTopic[indexPath.row] as! NSDictionary
             
             let TopicVC = TopicViewController()
@@ -799,7 +796,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         } else if index == 2 {
             return getHeight(indexPath, dataArray: dataArrayStep)
         } else if index == 3 {
-            // TODO: - topic cell 高度
             let data = dataArrayTopic[indexPath.row] as! NSDictionary
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode()

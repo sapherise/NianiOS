@@ -68,7 +68,8 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             }
                             let arr = json!.objectForKey("data") as! NSArray
                             for d in arr {
-                                self.dataArray.addObject(d)
+                                let data = self.getDataEncode(d)
+                                self.dataArray.addObject(data!)
                             }
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
@@ -88,7 +89,8 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             }
                             let arr = json!.objectForKey("data") as! NSArray
                             for d in arr {
-                                self.dataArray.addObject(d)
+                                let data = self.getDataEncode(d)
+                                self.dataArray.addObject(data!)
                             }
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
@@ -107,7 +109,8 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                         if _private == "0" {
                             let mutableData = NSMutableDictionary(dictionary: d)
                             mutableData.setValue(image, forKey: "image")
-                            dataArray.addObject(mutableData)
+                            let _mutableData = self.getDataEncode(mutableData)
+                            dataArray.addObject(_mutableData!)
                         }
                     }
                 }
@@ -156,5 +159,17 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                 collectionView.footerBeginRefreshing()
             }
         }
+    }
+    
+    func getDataEncode(d: AnyObject) -> NSMutableDictionary? {
+        if let _d = d as? NSDictionary {
+            let data = NSMutableDictionary(dictionary: _d)
+            let title = _d.stringAttributeForKey("title").decode()
+            let heightTitle = title.stringHeightWith(14, width: 80)
+            data["title"] = title
+            data["heightTitle"] = heightTitle
+            return data
+        }
+        return nil
     }
 }

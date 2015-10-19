@@ -105,31 +105,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    func SAReloadData(){
-//        self.page = 0
-//        let url = urlString()
-//        self.tableView!.setFooterHidden(false)
-//        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-//            if data as! NSObject != NSNull(){
-//                if ( data.objectForKey("total") as! Int ) < 30 {
-//                    self.tableView!.setFooterHidden(true)
-//                }
-//                let arr = data.objectForKey("items") as! NSArray
-//                self.dataArray.removeAllObjects()
-//                for data : AnyObject  in arr{
-//                    if let _type = (data as! NSDictionary)["type"] as? String {
-//                        if Int(_type) < 11 {
-//                            self.dataArray.addObject(data)
-//                        }
-//                    }
-//                }
-//                self.tableView!.reloadData()
-//                self.tableView!.headerEndRefreshing()
-//                self.page++
-//            }
-//        })
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -190,7 +165,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let step = data.stringAttributeForKey("step")
         let name = data.stringAttributeForKey("cname")
         let cid = data.stringAttributeForKey("cid")
-        print("name = \(name)")
         
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()
@@ -210,11 +184,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             if step != "0" {
                 StepVC.Id = step
                 StepVC.name = name
-                print("1")
                 self.navigationController!.pushViewController(StepVC, animated: true)
             }else{
                 DreamVC.Id = dream
-                print("2")
                 self.navigationController!.pushViewController(DreamVC, animated: true)
             }
         }else if type == "2" {  //赞了你的记本
@@ -257,9 +229,12 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "14" {    // 赞了话题回应
             TopicCommentVC.id = cid
             self.navigationController?.pushViewController(TopicCommentVC, animated: true)
-        } else if type == "16" {
+        } else if type == "16" {    // 在回应的回应中提及你
             TopicCommentVC.id = cid
             self.navigationController?.pushViewController(TopicCommentVC, animated: true)
+        } else if type == "17" {    // 在回应中提及你
+            TopicVC.id = cid
+            self.navigationController?.pushViewController(TopicVC, animated: true)
         }
     }
     

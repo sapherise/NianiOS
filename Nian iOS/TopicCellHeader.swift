@@ -253,8 +253,6 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                 }
             }
             setupVote()
-        } else {
-            print("空！")
         }
     }
     

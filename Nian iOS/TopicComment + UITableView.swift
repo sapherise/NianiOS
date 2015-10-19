@@ -33,9 +33,6 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
         Api.getTopicCommentComment(id, page: page) { json in
             if json != nil {
                 let data = json!.objectForKey("data") as! NSDictionary
-                print("==")
-                print(json)
-                print("==")
                 if self.dataArrayTop == nil {
                     self.dataArrayTop = data.objectForKey("answer") as! NSDictionary
                 }

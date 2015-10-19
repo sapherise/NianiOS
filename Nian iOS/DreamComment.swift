@@ -23,10 +23,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     var dreamowner: Int = 0 //如果是0，就不是主人，是1就是主人
     
-    var ReplyContent:String = ""
-    var ReplyRow:Int = 0
-    var ReplyCid:String = ""
-    
+//    var ReplyContent:String = ""
+//    var ReplyRow:Int = 0
+//    var ReplyCid:String = ""
+    var rowSelected = -1
     var animating: Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
     var activityIndicatorView: UIActivityIndicatorView!
     
@@ -43,7 +43,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         super.viewDidLoad()
         setupViews()
         SAReloadData()
-        print("name: \(name)")
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -118,57 +117,58 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     func commentFinish(replyContent:String){
         self.inputKeyboard.text = ""
-        let commentReplyRow = self.dataArray.count
-        let name = Cookies.get("user") as? String
-        let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-        self.dataArray.insertObject(newinsert, atIndex: 0)
-        self.tableview.reloadData()
-        //当提交评论后滚动到最新评论的底部
-        
-        //  提交到服务器
-        let content = SAEncode(SAHtml(replyContent))
-        var success = false
-        var finish = false
-        Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
-            if json != nil {
-                print(json)
-                if let status = json!.objectForKey("status") as? NSNumber {
-                    if status == 200 {
-                        success = true
-                        if finish {
-                            print(json)
-                            let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-                            self.tableview.beginUpdates()
-                            self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
-                            self.tableview.reloadData()
-                            self.tableview.endUpdates()
+        if let name = Cookies.get("user") as? String {
+            let newinsert = NSDictionary(objects: [replyContent, "" , "sending", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+            self.dataArray.insertObject(newinsert, atIndex: 0)
+            self.tableview.reloadData()
+            //当提交评论后滚动到最新评论的底部
+            
+            //  提交到服务器
+            let content = SAEncode(SAHtml(replyContent))
+            var success = false
+            var finish = false
+            var IDComment = 0
+            Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
+                if json != nil {
+                    print(json!)
+                    if let status = json!.objectForKey("status") as? NSNumber {
+                        if status == 200 {
+                            IDComment = Int((json as! NSDictionary).stringAttributeForKey("data"))!
+                            success = true
+                            if finish {
+                                let newinsert = NSDictionary(objects: [replyContent, "\(IDComment)" , "0s", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+                                self.tableview.beginUpdates()
+                                self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
+                                self.tableview.reloadData()
+                                self.tableview.endUpdates()
+                            }
+                        } else {
+                            self.view.showTipText("对方设置了不被回应...", delay: 2)
+                            self.inputKeyboard.text = replyContent
                         }
                     } else {
-                        self.view.showTipText("对方设置了不被回应...", delay: 2)
+                        self.view.showTipText("服务器坏了...", delay: 2)
                         self.inputKeyboard.text = replyContent
                     }
-                } else {
-                    self.view.showTipText("服务器坏了...", delay: 2)
-                    self.inputKeyboard.text = replyContent
                 }
             }
-        }
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-            if offset > 0 {
-                self.tableview.contentOffset.y = offset
-            }
-            }) { (Bool) -> Void in
-                if success {
-                    let newinsert = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "0s", "\(SAUid())", "\(name!)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-                    self.tableview.beginUpdates()
-                    self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
-                    self.tableview.reloadData()
-                    self.tableview.endUpdates()
-                } else {
-                    finish = true
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                if offset > 0 {
+                    self.tableview.contentOffset.y = offset
                 }
+                }) { (Bool) -> Void in
+                    if success {
+                        let newinsert = NSDictionary(objects: [replyContent, "\(IDComment)" , "0s", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+                        self.tableview.beginUpdates()
+                        self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
+                        self.tableview.reloadData()
+                        self.tableview.endUpdates()
+                    } else {
+                        finish = true
+                    }
+            }
         }
     }
     
@@ -282,12 +282,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 let data = self.dataArray[index] as! NSDictionary
                 let user = data.stringAttributeForKey("user")
                 let uid = data.stringAttributeForKey("uid")
-                let content = data.stringAttributeForKey("content")
-                let cid = data.stringAttributeForKey("id")
-                print("content 为 \(content)，cid 为 \(cid)")
-                self.ReplyRow = self.dataArray.count - 1 - index
-                self.ReplyContent = content
-                self.ReplyCid = cid
+                print(data)
+                rowSelected = index
                 self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 if self.dreamowner == 1 {   //主人
                     self.replySheet!.addButtonWithTitle("回应@\(user)")
@@ -375,18 +371,16 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         let safeuid = SAUid()
-        let safeshell = uidKey.objectForKey(kSecValueData) as! String
-        
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
                 self.commentVC()
             }else if buttonIndex == 1 { //复制
                 let pasteBoard = UIPasteboard.generalPasteboard()
-                pasteBoard.string = self.ReplyContent
+                let data = self.dataArray[rowSelected] as! NSDictionary
+                pasteBoard.string = data.stringAttributeForKey("content")
             }else if buttonIndex == 2 {
-                let data = self.dataArray[self.ReplyRow] as! NSDictionary
+                let data = self.dataArray[rowSelected] as! NSDictionary
                 let uid = data.stringAttributeForKey("uid")
                 if (( uid == safeuid ) || ( self.dreamowner == 1 )) {
                     self.deleteCommentSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -400,18 +394,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             }
         }else if actionSheet == self.deleteCommentSheet {
             if buttonIndex == 0 {
-                let row = self.dataArray.count - 1 - self.ReplyRow
-                let a = dataArray[row]
-                print("a: \(a), cid: \(ReplyCid)")
-                self.dataArray.removeObjectAtIndex(row)
+                let data = dataArray[rowSelected] as! NSDictionary
+                let cid = data.stringAttributeForKey("id")
+                self.dataArray.removeObjectAtIndex(rowSelected)
                 self.tableview.beginUpdates()
-                self.tableview.deleteRowsAtIndexPaths([NSIndexPath(forRow: row, inSection: 0)], withRowAnimation: .Fade)
+                self.tableview.deleteRowsAtIndexPaths([NSIndexPath(forRow: rowSelected, inSection: 0)], withRowAnimation: .Fade)
                 self.tableview.reloadData()
                 self.tableview.endUpdates()
-                
-                
-                
-                Api.postDeleteComment(ReplyCid) { json in
+                Api.postDeleteComment(cid) { json in
                     print(json)
                 }
             }

@@ -37,7 +37,6 @@ class ExploreNewHotCell: UITableViewCell {
     }
 
     func _layoutSubviews() {
-//        super.layoutSubviews()
         if data != nil {
             let title = self.data.stringAttributeForKey("title")
             let img = self.data.stringAttributeForKey("image")

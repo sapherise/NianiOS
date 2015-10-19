@@ -72,9 +72,9 @@ class MeCell: UITableViewCell {
         case "13": word = "赞了你的话题"
         case "14": word = "赞了你的回应"
         case "16": word = "在话题中提到你"
+        case "17": word = "在话题中提到你"
         default: word = "与你互动了"
         }
-        print(data)
         
         self.nickLabel!.text = user
         self.wordLabel!.text = word

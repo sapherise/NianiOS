@@ -92,8 +92,6 @@ class SignNextController: UIViewController, UITextFieldDelegate{
                         self.holder!.hidden = true
                         self.navigationItem.rightBarButtonItems = buttonArray()
                         let shell = (("\(password)\(sa)n*A").lowercaseString).md5
-                        Cookies.set(self.signInfo.name!, forKey: "user")
-                        
                         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                         uidKey.setObject(sa, forKey: kSecAttrAccount)
                         uidKey.setObject(shell, forKey: kSecValueData)
@@ -118,7 +116,6 @@ class SignNextController: UIViewController, UITextFieldDelegate{
                         
                     } else if error == 2 {
                         self.SAerr("邮箱或用户名已注册")
-                        
                     }
                 }
             }

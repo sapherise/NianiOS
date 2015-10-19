@@ -212,16 +212,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     
     func switchTab(tab: Int) {
         let _current = current
-        if current != -1 {
-//            tableView.headerEndRefreshing()
-//            tableViewDynamic.headerEndRefreshing()
-//            tableViewHot.headerEndRefreshing()
-//            currentProvider.onHide()
-            //todo: 切换后应该不加载了
-            // todo: 私信
-            // todo: 提及
-            // todo: 评论的删除
-        }
         current = tab
         if tab == 0 {
             currenTableView = tableView
@@ -237,14 +227,22 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         if _current != tab {
             if !globalTabhasLoaded[tab] {
                 if tab < 2 {
-                    currenTableView?.headerBeginRefreshing()
+                    if tab == 0 {
+                        tableView.headerBeginRefreshing()
+                    } else if tab == 1 {
+                        tableViewDynamic.headerBeginRefreshing()
+                    }
                 } else {
                     tableViewHot.headerBeginRefreshing()
                 }
             }
         } else {
             if tab < 2 {
-                currenTableView?.headerBeginRefreshing()
+                if tab == 0 {
+                    tableView.headerBeginRefreshing()
+                } else if tab == 1 {
+                    tableViewDynamic.headerBeginRefreshing()
+                }
             } else {
                 tableViewHot.headerBeginRefreshing()
             }

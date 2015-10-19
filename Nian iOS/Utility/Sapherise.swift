@@ -382,11 +382,8 @@ extension UIViewController {
         Sa.removeObjectForKey("user")
         Sa.synchronize()
         
-//        var _welcomeVC = WelcomeViewController()
-//        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-//            self.presentViewController(_welcomeVC, animated: false, completion: nil)
-//            
-//        })
+        // 退出后应该设置三个都为未加载状态
+        globalTabhasLoaded = [false, false, false]
         
         self.dismissViewControllerAnimated(true, completion: nil)
         client.leave()
