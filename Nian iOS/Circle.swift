@@ -268,16 +268,16 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let content = SAEncode(contentAfter)
             Api.postLetterChat(self.ID, content: content, type: type) { json in
                 if json != nil {
-                    let success = json!.objectForKey("success") as! String
-                    let msgid = json!.objectForKey("msgid") as! String
-                    let lastdate = json!.objectForKey("lastdate") as! String
-                    if success == "1" {
+                    let status = json!.objectForKey("status") as! NSNumber
+                    let msgid = (json!.objectForKey("data") as! NSDictionary)["msgid"] as! NSNumber
+                    let lastdate = (json!.objectForKey("data") as! NSDictionary)["lastdate"] as! NSNumber
+                    if status == 200 {
                         self.tableUpdate(contentAfter)
                         let safeuid = SAUid()
                         
                         Api.postName(self.ID) { result in
                             if result != nil {
-                                SQLLetterContent(msgid, uid: safeuid, name: result!, circle: "\(self.ID)", content: contentAfter, type: "\(type)", time: lastdate, isread: 1) {}
+                                SQLLetterContent(String(msgid), uid: safeuid, name: result!, circle: "\(self.ID)", content: contentAfter, type: "\(type)", time: String(lastdate), isread: 1) {}
                             }
                         }
                     }
