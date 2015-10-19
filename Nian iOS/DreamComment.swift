@@ -130,7 +130,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             var IDComment = 0
             Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
                 if json != nil {
-                    print(json!)
                     if let status = json!.objectForKey("status") as? NSNumber {
                         if status == 200 {
                             IDComment = Int((json as! NSDictionary).stringAttributeForKey("data"))!
@@ -282,7 +281,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 let data = self.dataArray[index] as! NSDictionary
                 let user = data.stringAttributeForKey("user")
                 let uid = data.stringAttributeForKey("uid")
-                print(data)
                 rowSelected = index
                 self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 if self.dreamowner == 1 {   //主人
@@ -402,7 +400,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 self.tableview.reloadData()
                 self.tableview.endUpdates()
                 Api.postDeleteComment(cid) { json in
-                    print(json)
                 }
             }
         }

@@ -620,7 +620,6 @@ struct Api {
     
     static func postDeleteComment(id: String, callback: V.JsonCallback) {
         loadCookies()
-        print("http://api.nian.so/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
