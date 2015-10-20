@@ -21,6 +21,8 @@ class WelcomeViewController: UIViewController {
         login.layer.borderWidth = 1
         login.layer.cornerRadius = 4
         login.layer.masksToBounds = true
+        @IBAction func logIn(sender: UIButton) {
+        }
         login.addTarget(self, action: "login", forControlEvents: UIControlEvents.TouchUpInside)
         login.titleLabel!.font = UIFont(name: "system", size: 17)
         login.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)

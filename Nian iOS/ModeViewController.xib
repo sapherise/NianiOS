@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ModeViewController" customModule="Nian_iOS" customModuleProvider="target">
@@ -34,6 +34,7 @@
                             <subviews>
                                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8E6-TY-Bn0">
                                     <rect key="frame" x="26" y="40" width="72" height="40"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="72" id="A8C-uY-D3c"/>
                                         <constraint firstAttribute="height" constant="40" id="Dge-WI-bhW"/>
@@ -41,6 +42,7 @@
                                 </imageView>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="困难" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02p-YM-DhH">
                                     <rect key="frame" x="22" y="104" width="80" height="25"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="80" id="Emw-n9-yy6"/>
                                         <constraint firstAttribute="height" constant="25" id="vWL-fO-msr"/>
@@ -51,6 +53,7 @@
                                 </label>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="v3i-mb-Cyk">
                                     <rect key="frame" x="22" y="145" width="80" height="30"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="T51-vr-JcI"/>
                                         <constraint firstAttribute="width" constant="80" id="cTt-sO-WyG"/>
@@ -62,6 +65,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
@@ -83,6 +87,7 @@
                             <subviews>
                                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2fi-fr-8IJ">
                                     <rect key="frame" x="26" y="40" width="72" height="40"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="IRe-vo-1Bd"/>
                                         <constraint firstAttribute="width" constant="72" id="rra-QT-M8B"/>
@@ -90,6 +95,7 @@
                                 </imageView>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="简单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ubY-zU-NW2">
                                     <rect key="frame" x="22" y="104" width="80" height="25"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="04A-8f-O57"/>
                                         <constraint firstAttribute="width" constant="80" id="XfX-Tx-7OP"/>
@@ -100,6 +106,7 @@
                                 </label>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="NKG-X2-KJn">
                                     <rect key="frame" x="22" y="145" width="80" height="30"/>
+                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="80" id="B0w-Uu-7mt"/>
                                         <constraint firstAttribute="height" constant="30" id="bB9-EN-qmW"/>
@@ -111,6 +118,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
@@ -129,6 +137,7 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xDj-i4-wBl">
                             <rect key="frame" x="150" y="50" width="1" height="160"/>
+                            <animations/>
                             <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="160" id="8EI-9t-bV1"/>
@@ -136,6 +145,7 @@
                             </constraints>
                         </view>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="300" id="5pt-MY-jAj"/>
@@ -150,6 +160,7 @@
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="选择一个模式玩念 你随时可以在设置里修改模式" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="W4k-cw-Niw">
                     <rect key="frame" x="150" y="64" width="300" height="72"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="72" id="CIZ-5g-Qm7"/>
                         <constraint firstAttribute="width" constant="300" id="vh7-f2-56O"/>
@@ -159,6 +170,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
+            <animations/>
             <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="W4k-cw-Niw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="9Dx-0N-qmb"/>
