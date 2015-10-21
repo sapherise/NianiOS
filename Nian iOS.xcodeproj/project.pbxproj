@@ -198,6 +198,8 @@
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
+		C41112A91BD74CE4005ED786 /* NianNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41112A81BD74CE4005ED786 /* NianNetworkClient.swift */; settings = {ASSET_TAGS = (); }; };
+		C41112AF1BD781C7005ED786 /* LogOrRegModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41112AE1BD781C7005ED786 /* LogOrRegModel.swift */; settings = {ASSET_TAGS = (); }; };
 		C42263261B82E49900C0F011 /* EditorRecomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263251B82E49900C0F011 /* EditorRecomCell.swift */; };
 		C42263281B82E4BD00C0F011 /* LatestNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263271B82E4BD00C0F011 /* LatestNoteCell.swift */; };
 		C42263311B82F1E500C0F011 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42263301B82F1E500C0F011 /* CollectionViewCell.swift */; };
@@ -473,6 +475,8 @@
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		C40F4F4A1B788630001A8216 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		C41112A81BD74CE4005ED786 /* NianNetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianNetworkClient.swift; sourceTree = "<group>"; };
+		C41112AE1BD781C7005ED786 /* LogOrRegModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOrRegModel.swift; sourceTree = "<group>"; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C42263251B82E49900C0F011 /* EditorRecomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorRecomCell.swift; sourceTree = "<group>"; };
@@ -812,6 +816,7 @@
 				C4D84DF61BD6361B008B90E4 /* SocialMediaButton.swift */,
 				C4D84DF01BD5F7D7008B90E4 /* WelcomeViewController.swift */,
 				C4D84DF21BD61977008B90E4 /* LogOrRegViewController.swift */,
+				C41112AE1BD781C7005ED786 /* LogOrRegModel.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
 				12960F6B19BF22EC00CB973E /* 注册 */,
 				C42B7D471B56411C008D3B36 /* 模式 */,
@@ -1190,6 +1195,7 @@
 				122AFE021A80864800464641 /* SqliteData.swift */,
 				C448F55D1B93F9F200214984 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
+				C41112A81BD74CE4005ED786 /* NianNetworkClient.swift */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";
@@ -1605,6 +1611,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */,
+				C41112A91BD74CE4005ED786 /* NianNetworkClient.swift in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				12960F6D19BF230100CB973E /* Sign.swift in Sources */,
@@ -1658,6 +1665,7 @@
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
+				C41112AF1BD781C7005ED786 /* LogOrRegModel.swift in Sources */,
 				12ABFD2B1B9C1EAE00E2870C /* AddReddit + UIGesture.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
 				129A76611B8DC92E00EC5A19 /* Home + News.swift in Sources */,

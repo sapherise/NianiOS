@@ -41,7 +41,7 @@ class WelcomeViewController: UIViewController {
             
             /*   */
             let logOrRegViewController = segue.destinationViewController as! LogOrRegViewController
-            logOrRegViewController.functionalButtonType = FunctionType.confirm
+            logOrRegViewController.functionalType = FunctionType.confirm
         }
 
         

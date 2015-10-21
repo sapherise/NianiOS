@@ -54,10 +54,10 @@ class LogOrRegViewController: UIViewController {
     
     // MARK: - Variables
     
-    /// functionalButtonType 决定了 functional button 的 text, 并决定 button 的 function
-    var functionalButtonType: FunctionType? {
+    /// functionalType 决定了 functional button 的 text, 并决定 button 的 function
+    var functionalType: FunctionType? {
         didSet {
-            switch functionalButtonType! {
+            switch functionalType! {
             case .confirm:
                 self.functionalButton.titleLabel?.text = "确定"
             case .logIn:
@@ -69,6 +69,13 @@ class LogOrRegViewController: UIViewController {
             }
         }
     }
+    
+    /// 检查邮箱是否注册的结果
+    var checkEmailResult: NetworkClosure
+    /// 请求登录的结果
+    var logInResult: NetworkClosure
+    /// 请求注册的结果
+    var registerResult: NetworkClosure
 
     // MARK: - view controller life recycle     
     
@@ -76,7 +83,7 @@ class LogOrRegViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if self.functionalButtonType == .confirm {
+        if self.functionalType == .confirm {
             self.passwordTextField.hidden = true
             self.nicknameTextField.hidden = true
             self.forgetPWDButton.hidden = true
@@ -93,8 +100,8 @@ class LogOrRegViewController: UIViewController {
         super.viewWillAppear(animated)
         
         /*   */
-        if self.functionalButtonType == .logIn {
-        } else if self.functionalButtonType == .register {
+        if self.functionalType == .logIn {
+        } else if self.functionalType == .register {
             /* 这里应该是注册的最后一步，确认昵称 */
             self.emailTextField.hidden = true
             self.nicknameTextField.hidden = false
@@ -107,11 +114,23 @@ class LogOrRegViewController: UIViewController {
     
     @IBAction func onFunctionalButton(sender: UIButton) {
         /* 分别处理 “confirm” "logIn" "register" */
-        if self.functionalButtonType == .confirm {
+        if self.functionalType == .confirm {
+            if let _text = self.emailTextField.text {
+                if self.validateEmailAddress(_text) {
+                    LogOrRegModel.checkEmailValidation(url: "ckeck/email", email: self.emailTextField.text!) {
+                        (task, responseObject, error) in
+                        
+                    }
+                } else {  //if self.validateEmailAddress == false
+                    self.view.showTipText("不是地球上的邮箱...")
+                }
+            } else { // if let _text = self.emailTextField.text == nil
+                self.view.showTipText("注册邮箱不能为空...")
+            }
             
-        } else if self.functionalButtonType == .logIn {
+        } else if self.functionalType == .logIn {
             
-        } else if self.functionalButtonType == .register {
+        } else if self.functionalType == .register {
             
         }
     }
@@ -140,6 +159,18 @@ extension LogOrRegViewController: UITextFieldDelegate {
 // MARK: - 处理事件
 extension LogOrRegViewController {
     
+    /**
+    验证邮箱是否正确
+    */
+    func validateEmailAddress(text: String) -> Bool {
+        if text == "" {
+            return false
+        } else if !text.isValidEmail() {
+            return false
+        }
+        
+        return true
+    }
 
 
 }
