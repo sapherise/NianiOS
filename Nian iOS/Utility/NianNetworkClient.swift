@@ -12,13 +12,13 @@ import UIKit
 let baseURLString = "http://api.nian.so/"
 
 /// 大概相当于 typedef
-typealias NetworkClosure = (task: NSURLSessionDataTask, responseObject: AnyObject, error: NSError?) -> Void
+typealias NetworkClosure = (task: NSURLSessionDataTask, responseObject: AnyObject?, error: NSError?) -> Void
 
 /*=========================================================================================================================================*/
 
 /*
-    为什么重新写一个 network client，since 我们已经有好几个轮子了？
-    -- 因为之前的都没有加入错误处理，如果在原来的基础上修改，涉及的东西实在太多了
+为什么重新写一个 network client，since 我们已经有好几个轮子了？
+-- 因为之前的都没有加入错误处理，如果在原来的基础上修改，涉及的东西实在太多了
 */
 
 /*=========================================================================================================================================*/
@@ -27,17 +27,17 @@ typealias NetworkClosure = (task: NSURLSessionDataTask, responseObject: AnyObjec
 class NianNetworkClient: AFHTTPSessionManager {
     /// nian network client is singleton
     static let sharedNianNetworkClient = NianNetworkClient()
-
+    
     /**
     单例的 init() 方法都是 private 的， -- 保证线程安全
     */
-    private init() {        
+    private init() {
         super.init(baseURL: NSURL(string: baseURLString)!, sessionConfiguration: nil)
         
         /* 设置解析 server 返回的 json */
         self.responseSerializer = AFJSONResponseSerializer()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -46,9 +46,9 @@ class NianNetworkClient: AFHTTPSessionManager {
     :param: string    URL 在 baseURL 的基础上的剩余部分
     :param: callback  -
     
-    :returns: 
+    :returns:
     */
-    func GET(string: String, callback: NetworkClosure) -> NSURLSessionDataTask {
+    func get(string: String, callback: NetworkClosure) -> NSURLSessionDataTask {
         return  self.GET(string,
                     parameters: nil,
                     success: { (task, id) in
@@ -66,7 +66,7 @@ class NianNetworkClient: AFHTTPSessionManager {
     
     :returns:
     */
-    func POST(string: String, content: AnyObject, callback: NetworkClosure) -> NSURLSessionDataTask {
+    func post(string: String, content: AnyObject, callback: NetworkClosure) -> NSURLSessionDataTask {
         return  self.POST(string,
                     parameters: content,
                     success: { (task, id) in

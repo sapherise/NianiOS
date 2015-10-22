@@ -71,11 +71,11 @@ class LogOrRegViewController: UIViewController {
     }
     
     /// 检查邮箱是否注册的结果
-    var checkEmailResult: NetworkClosure
+    var checkEmailResult: NetworkClosure?
     /// 请求登录的结果
-    var logInResult: NetworkClosure
+    var logInResult: NetworkClosure?
     /// 请求注册的结果
-    var registerResult: NetworkClosure
+    var registerResult: NetworkClosure?
 
     // MARK: - view controller life recycle     
     
