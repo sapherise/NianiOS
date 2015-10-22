@@ -101,7 +101,6 @@
 		129152E31A6A90ED00BB213C /* FindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E21A6A90ED00BB213C /* FindCell.xib */; };
 		129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E41A6A90F900BB213C /* FindCellTop.swift */; };
 		129152E71A6A910200BB213C /* FindCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E61A6A910200BB213C /* FindCellTop.xib */; };
-		1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291D59719BE0C55009F45F6 /* Welcome.swift */; };
 		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
 		129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492811AD9322A000E7461 /* MKTableViewCell.swift */; };
 		129492841AD9329D000E7461 /* MKLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492831AD9329D000E7461 /* MKLayer.swift */; };
@@ -230,6 +229,13 @@
 		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
 		C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */; };
+		C4CA84CE1BD8C76C0075B075 /* LogOrRegModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CA84C91BD8C76C0075B075 /* LogOrRegModel.swift */; settings = {ASSET_TAGS = (); }; };
+		C4CA84CF1BD8C76C0075B075 /* LogOrRegViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CA84CA1BD8C76C0075B075 /* LogOrRegViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C4CA84D01BD8C76C0075B075 /* SocialMediaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CA84CB1BD8C76C0075B075 /* SocialMediaButton.swift */; settings = {ASSET_TAGS = (); }; };
+		C4CA84D11BD8C76C0075B075 /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4CA84CC1BD8C76C0075B075 /* Welcome.storyboard */; settings = {ASSET_TAGS = (); }; };
+		C4CA84D21BD8C76C0075B075 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CA84CD1BD8C76C0075B075 /* WelcomeViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C4CA84D41BD8C7B00075B075 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CA84D31BD8C7B00075B075 /* SwiftyJSON.swift */; settings = {ASSET_TAGS = (); }; };
+		C4CA84D61BD8C7C50075B075 /* NianNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */; settings = {ASSET_TAGS = (); }; };
 		C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */; };
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
 		C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */; };
@@ -350,7 +356,6 @@
 		129152E21A6A90ED00BB213C /* FindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCell.xib; sourceTree = "<group>"; };
 		129152E41A6A90F900BB213C /* FindCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCellTop.swift; sourceTree = "<group>"; };
 		129152E61A6A910200BB213C /* FindCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCellTop.xib; sourceTree = "<group>"; };
-		1291D59719BE0C55009F45F6 /* Welcome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		1292ABA51A5FB45B0091CC5F /* showImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showImage.swift; sourceTree = "<group>"; };
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
 		129492811AD9322A000E7461 /* MKTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTableViewCell.swift; sourceTree = "<group>"; };
@@ -511,6 +516,13 @@
 		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
 		C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
+		C4CA84C91BD8C76C0075B075 /* LogOrRegModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOrRegModel.swift; sourceTree = "<group>"; };
+		C4CA84CA1BD8C76C0075B075 /* LogOrRegViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOrRegViewController.swift; sourceTree = "<group>"; };
+		C4CA84CB1BD8C76C0075B075 /* SocialMediaButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaButton.swift; sourceTree = "<group>"; };
+		C4CA84CC1BD8C76C0075B075 /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Welcome.storyboard; sourceTree = "<group>"; };
+		C4CA84CD1BD8C76C0075B075 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		C4CA84D31BD8C7B00075B075 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianNetworkClient.swift; sourceTree = "<group>"; };
 		C4CDB41B1AF8C79000936E03 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		C4CDB41C1AF8C79000936E03 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		C4CDB41E1AF8C79900936E03 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
@@ -831,7 +843,11 @@
 		1291D59619BE0C39009F45F6 /* 欢迎 */ = {
 			isa = PBXGroup;
 			children = (
-				1291D59719BE0C55009F45F6 /* Welcome.swift */,
+				C4CA84CC1BD8C76C0075B075 /* Welcome.storyboard */,
+				C4CA84C91BD8C76C0075B075 /* LogOrRegModel.swift */,
+				C4CA84CD1BD8C76C0075B075 /* WelcomeViewController.swift */,
+				C4CA84CA1BD8C76C0075B075 /* LogOrRegViewController.swift */,
+				C4CA84CB1BD8C76C0075B075 /* SocialMediaButton.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
 				12960F6B19BF22EC00CB973E /* 注册 */,
 				C42B7D471B56411C008D3B36 /* 模式 */,
@@ -1206,6 +1222,8 @@
 				122AFE021A80864800464641 /* SqliteData.swift */,
 				C448F55D1B93F9F200214984 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
+				C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */,
+				C4CA84D31BD8C7B00075B075 /* SwiftyJSON.swift */,
 			);
 			name = Utility;
 			path = "Nian iOS/Utility";
@@ -1510,6 +1528,7 @@
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
+				C4CA84D11BD8C76C0075B075 /* Welcome.storyboard in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
@@ -1617,8 +1636,8 @@
 				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12776A0F1BCE5F3A00745811 /* File.swift in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
-				1291D59819BE0C55009F45F6 /* Welcome.swift in Sources */,
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
+				C4CA84D01BD8C76C0075B075 /* SocialMediaButton.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */,
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
@@ -1648,6 +1667,7 @@
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
+				C4CA84CF1BD8C76C0075B075 /* LogOrRegViewController.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				129492841AD9329D000E7461 /* MKLayer.swift in Sources */,
 				C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */,
@@ -1663,6 +1683,7 @@
 				12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */,
 				120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
+				C4CA84D41BD8C7B00075B075 /* SwiftyJSON.swift in Sources */,
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */,
@@ -1705,6 +1726,7 @@
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
+				C4CA84D21BD8C76C0075B075 /* WelcomeViewController.swift in Sources */,
 				121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */,
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
 				12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */,
@@ -1736,7 +1758,9 @@
 				122A3F7C1BA13E9500C2FE67 /* Vote.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
+				C4CA84CE1BD8C76C0075B075 /* LogOrRegModel.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
+				C4CA84D61BD8C7C50075B075 /* NianNetworkClient.swift in Sources */,
 				124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */,
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,

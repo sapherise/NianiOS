@@ -32,7 +32,7 @@
                                     <constraint firstAttribute="width" constant="48" id="p2z-iX-JUH"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="以游戏化的方式 连接全世界的 目标、进展和壮举" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LB5-hm-VIt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="以游戏化的方式 连接全世界的 目标、进展和壮举" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LB5-hm-VIt">
                                 <rect key="frame" x="244" y="212" width="112" height="51"/>
                                 <animations/>
                                 <constraints>
@@ -182,7 +182,7 @@
                         <viewControllerLayoutGuide type="top" id="w2Z-ZY-yki"/>
                         <viewControllerLayoutGuide type="bottom" id="sjY-EG-EGh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="XIw-ov-MTc">
+                    <view key="view" contentMode="scaleToFill" id="XIw-ov-MTc" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -316,6 +316,9 @@
                             <constraint firstItem="zzw-fx-yPi" firstAttribute="top" secondItem="wH5-fu-1YY" secondAttribute="bottom" constant="-44" id="ufo-h2-EnY"/>
                             <constraint firstItem="Bus-T7-xRk" firstAttribute="top" secondItem="zzw-fx-yPi" secondAttribute="bottom" constant="-44" id="upq-Nl-YXf"/>
                         </constraints>
+                        <connections>
+                            <action selector="dismissKeyboard:" destination="PWr-CO-SWy" eventType="touchDown" id="IIc-89-7I2"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="cancelButton" destination="Qox-5h-ozL" id="eks-g1-ybk"/>

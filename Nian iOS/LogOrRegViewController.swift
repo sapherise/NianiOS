@@ -94,25 +94,42 @@ class LogOrRegViewController: UIViewController {
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
         self.nicknameTextField.delegate = self
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                            selector: "emailTextFieldDidChange:",
+                                            name: UITextFieldTextDidChangeNotification,
+                                            object: self.emailTextField)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
         
-        /*   */
-        if self.functionalType == .logIn {
-        } else if self.functionalType == .register {
-            /* 这里应该是注册的最后一步，确认昵称 */
-            self.emailTextField.hidden = true
-            self.nicknameTextField.hidden = false
-            self.descriptionLabel.hidden = false
-            self.descriptionLabel.text = "确认昵称"
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UITextFieldTextDidChangeNotification,
+            object: self.emailTextField)
+    }
+    
+    /**
+    当在登录或者注册时修改邮箱，将返回 “只有 emailTextField” 的状态
+    
+    :param: noti
+    */
+    func emailTextFieldDidChange(noti: NSNotification) {
+        if self.functionalType != .confirm {
+            let _textfield = noti.object as! UITextField
+            
+            if _textfield == self.emailTextField {
+                
+            }
         }
     }
     
-    //MARK: - click on functionalButton 
+    //MARK: - click on functionalButton
     
     @IBAction func onFunctionalButton(sender: UIButton) {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
         /* 分别处理 “confirm” "logIn" "register" */
         if self.functionalType == .confirm {
             if let _text = self.emailTextField.text {
@@ -120,6 +137,22 @@ class LogOrRegViewController: UIViewController {
                     LogOrRegModel.checkEmailValidation(url: "ckeck/email", email: self.emailTextField.text!) {
                         (task, responseObject, error) in
                         
+                        // TODO: 停转界面上的“菊花”
+                        
+                        
+                        if let _error = error {
+                            logError("\(_error.localizedDescription)")
+                        } else {
+                            let json = JSON(responseObject!)
+                            if json["data"] == 0 {  // email 未注册
+                                // 处理未注册
+                                self.handleUnregisterEmail()
+                            } else if json["data"] == 1 { // email 已注册
+                                // 处理登陆
+                                self.handleUnregisterEmail()
+                            }
+                            
+                        }
                     }
                 } else {  //if self.validateEmailAddress == false
                     self.view.showTipText("不是地球上的邮箱...")
@@ -130,11 +163,25 @@ class LogOrRegViewController: UIViewController {
             
         } else if self.functionalType == .logIn {
             
+            
+            
+            
+            
         } else if self.functionalType == .register {
+            
+            
+            
+            
             
         }
     }
     
+    /**
+    点击空白 dismiss keyboard
+    */
+    @IBAction func dismissKeyboard(sender: UIControl) {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+    }
 
     // MARK: - Navigation
 
@@ -171,8 +218,48 @@ extension LogOrRegViewController {
         
         return true
     }
-
-
+    
+    /**
+    email 未注册，View 进入注册的状态
+    */
+    func handleUnregisterEmail() {
+        self.passwordTextField.hidden = false
+        self.nicknameTextField.hidden = false
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animateWithDuration(0.4, animations: {
+            self.emailTextFieldToTop.constant = 48
+            self.pwdTextFieldTopToEmail.constant = 8
+            self.nicknameTextFieldTopToPwd.constant = 8
+            
+            self.view.layoutIfNeeded()
+        })
+        
+        self.privacyContainerView.hidden = false
+        
+        self.passwordTextField.becomeFirstResponder()
+    }
+    
+    /**
+    email 已注册，View 进入登陆状态
+    */
+    func handleRegisterEmail() {
+        self.passwordTextField.hidden = false
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animateWithDuration(0.4, animations: {
+            self.emailTextFieldToTop.constant = 48
+            self.pwdTextFieldTopToEmail.constant = 8
+            
+            self.view.layoutIfNeeded()
+        })
+        
+        self.forgetPWDButton.hidden = false
+        
+        self.passwordTextField.becomeFirstResponder()
+    }
 }
 
 

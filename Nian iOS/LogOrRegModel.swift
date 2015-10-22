@@ -21,7 +21,10 @@ class LogOrRegModel: NSObject {
     
     
     class func checkEmailValidation(url url: String, email: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.get(url + "?email=\(email)",
+                                                  callback: callback)
         
+
     }
     
 }
