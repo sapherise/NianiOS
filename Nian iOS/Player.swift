@@ -9,10 +9,10 @@
 import UIKit
 
 
-class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, AddstepDelegate{
+class PlayerViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, AddstepDelegate, delegateSAStepCell{
     
     var tableViewDream: UITableView!
-    var tableViewStep: VVeboTableView!
+    var tableViewStep: UITableView!
     var dataArray = NSMutableArray()
     var dataArrayStep = NSMutableArray()
     var page: Int = 0
@@ -104,11 +104,11 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         self.tableViewDream.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableViewDream.registerNib(nib3, forCellReuseIdentifier: "step")
         self.tableViewDream.showsVerticalScrollIndicator = false
-        self.tableViewStep = VVeboTableView(frame:CGRectMake(0, -64, globalWidth,globalHeight))
-        currenTableView = tableViewStep
+        self.tableViewStep = UITableView(frame:CGRectMake(0, -64, globalWidth,globalHeight))
         self.tableViewStep.delegate = self
         self.tableViewStep.dataSource = self
         self.tableViewStep.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableViewStep.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
         self.tableViewStep.showsVerticalScrollIndicator = false
         self.tableViewStep.hidden = true
         
@@ -275,7 +275,6 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     
     func SALoadDataStep(isClear: Bool = true) {
         if isClear {
-            self.tableViewStep.clearVisibleCell()
             self.tableViewStep.setFooterHidden(false)
             self.pageStep = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
@@ -296,10 +295,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.dataArrayStep.removeAllObjects()
                 }
                 for data: AnyObject in arr {
-                    let d = VVeboCell.SACellDataRecode(data as! NSDictionary)
-                    self.dataArrayStep.addObject(d)
+                    self.dataArrayStep.addObject(data)
                 }
-                self.currentDataArray = self.dataArrayStep
                 self.tableViewStep.reloadData()
                 self.tableViewStep.footerEndRefreshing()
                 self.pageStep++
@@ -344,10 +341,40 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 c!._layoutSubviews()
                 return c!
             }else{
-                return getCell(indexPath, dataArray: dataArrayStep)
+                let c = tableViewStep.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
+                c.delegate = self
+                c.data = self.dataArrayStep[indexPath.row] as? NSDictionary
+                c.index = indexPath.row
+                if indexPath.row == self.dataArrayStep.count - 1 {
+                    c.viewLine.hidden = true
+                } else {
+                    c.viewLine.hidden = false
+                }
+                c.setupCell()
+                return c
             }
         }
 
+    }
+    
+    // 更新数据
+    func updateStep(index: Int, key: String, value: String) {
+        SAUpdate(self.dataArrayStep, index: index, key: key, value: value, tableView: self.tableViewStep)
+    }
+    
+    // 更新某个格子
+    func updateStep(index: Int) {
+        SAUpdate(index, section: 1, tableView: self.tableViewStep)
+    }
+    
+    // 重载表格
+    func updateStep() {
+        SAUpdate(self.tableViewStep)
+    }
+    
+    // 删除某个格子
+    func updateStep(index: Int, delete: Bool) {
+        SAUpdate(delete, dataArray: self.dataArrayStep, index: index, tableView: self.tableViewStep, section: 1)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -361,7 +388,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             if tableView == self.tableViewDream {
                 return  129
             }else{
-                return getHeight(indexPath, dataArray: dataArrayStep)
+                return getHeightCell(dataArrayStep, index: indexPath.row)
             }
         }
     }
@@ -437,7 +464,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.navView.image = UIImage(named: "bg")
                     self.navView.contentMode = UIViewContentMode.ScaleAspectFill
                 }else{
-                    self.navView.setCover(AllCoverURL)
+                    self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
                 }
                 self.topCell.UserFo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoClick"))
                 self.topCell.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoedClick"))
@@ -465,7 +492,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.topCell.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                     self.topCell.BGImage.image = UIImage(named: "bg")
                 }else{
-                    self.topCell.BGImage.setCover(AllCoverURL)
+                    self.topCell.BGImage.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false, animated: true)
                 }
             }
         }

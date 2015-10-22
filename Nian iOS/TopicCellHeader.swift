@@ -101,24 +101,10 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                 if count == 0 {
                     Api.getTopic(id) { json in
                         if json != nil {
-                            let error = json!.objectForKey("error") as? NSNumber
-                            if error == 0 {
-                                self.data = json!.objectForKey("data") as? NSMutableDictionary
-                                self.layout(self.data)
-                                self.delegateVote?.updateTable()
-                                self.count++
-                            } else {
-                                let status = json!.objectForKey("status") as? NSNumber
-                                if status == 404 {
-                                    if let v = self.findRootViewController() as? TopicViewController {
-                                        v.tableViewLeft.hidden = true
-                                        v.tableViewRight.hidden = true
-                                        v.view.addGhost("这个回应\n不见了")
-                                    }
-                                } else {
-                                    self.showTipText("服务器坏了", delay: 2)
-                                }
-                            }
+                            self.data = json!.objectForKey("data") as? NSMutableDictionary
+                            self.layout(self.data)
+                            self.delegateVote?.updateTable()
+                            self.count++
                         }
                     }
                 }
@@ -128,132 +114,130 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
     
     // 通过 data 来设置布局
     func layout(data: NSMutableDictionary?) {
-        if data != nil {
-            let title = data!.stringAttributeForKey("title").decode()
-            let content = data!.stringAttributeForKey("content").decode()
-            let comment = data!.stringAttributeForKey("answers_count")
-            let numLike = Int(data!.stringAttributeForKey("like_count"))
-            let numDislike = Int(data!.stringAttributeForKey("dislike_count"))
-            let num = SAThousand("\(numLike! - numDislike!)")
+        let title = data!.stringAttributeForKey("title").decode()
+        let content = data!.stringAttributeForKey("content").decode()
+        let comment = data!.stringAttributeForKey("answers_count")
+        let numLike = Int(data!.stringAttributeForKey("like_count"))
+        let numDislike = Int(data!.stringAttributeForKey("dislike_count"))
+        let num = SAThousand("\(numLike! - numDislike!)")
+        
+        // 计算高度与宽度
+        let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
+        let tags = data!.objectForKey("tags") as? Array<String>
+        
+        // 填充内容
+        labelTitle.text = title
+        labelNum.text = num
+        labelTotal.text = "\(comment) 条回应"
+        
+        // 填充正文
+        if arr == nil {
+            arr = getRedditArray(content)
             
-            // 计算高度与宽度
-            let hTitle = title.stringHeightWith(16, width: globalWidth - 80)
-            let tags = data!.objectForKey("tags") as? Array<String>
+            labelTitle.setHeight(hTitle)
             
-            // 填充内容
-            labelTitle.text = title
-            labelNum.text = num
-            labelTotal.text = "\(comment) 条回应"
-            
-            // 填充正文
-            if arr == nil {
-                arr = getRedditArray(content)
-                
-                labelTitle.setHeight(hTitle)
-                
-                var numBottom = labelTitle.bottom() + 16
-                for d in arr! {
-                    let data = d as! NSDictionary
-                    let type = data.stringAttributeForKey("type")
-                    if type == "text" {
-                        let c = data.stringAttributeForKey("content")
-                        let h = c.stringHeightWith(14, width: globalWidth - 80)
-                        let label = KILabel(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
-                        label.text = c
-                        label.numberOfLines = 0
-                        label.textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
-                        label.font = UIFont.systemFontOfSize(14)
+            var numBottom = labelTitle.bottom() + 16
+            for d in arr! {
+                let data = d as! NSDictionary
+                let type = data.stringAttributeForKey("type")
+                if type == "text" {
+                    let c = data.stringAttributeForKey("content")
+                    let h = c.stringHeightWith(14, width: globalWidth - 80)
+                    let label = KILabel(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
+                    label.text = c
+                    label.numberOfLines = 0
+                    label.textColor = UIColor(red:0.4, green:0.4, blue:0.4, alpha:1)
+                    label.font = UIFont.systemFontOfSize(14)
+                    numBottom = numBottom + h + 16
+                    self.viewHolder.addSubview(label)
+                } else if type == "image" {
+                    let w = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
+                    var h = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
+                    let count = data.stringAttributeForKey("count")
+                    let url = data.stringAttributeForKey("url")
+                    if w > 0 {
+                        h = (globalWidth - 80) * h / w
+                        let image = UIImageView(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
+                        image.setImage("http://img.nian.so/bbs/\(url)!large", placeHolder: IconColor)
+                        image.userInteractionEnabled = true
+                        image.tag = Int(count)!
+                        image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage:"))
                         numBottom = numBottom + h + 16
-                        self.viewHolder.addSubview(label)
-                    } else if type == "image" {
-                        let w = CGFloat((data.stringAttributeForKey("width") as NSString).floatValue)
-                        var h = CGFloat((data.stringAttributeForKey("height") as NSString).floatValue)
-                        let count = data.stringAttributeForKey("count")
-                        let url = data.stringAttributeForKey("url")
-                        if w > 0 {
-                            h = (globalWidth - 80) * h / w
-                            let image = UIImageView(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
-                            image.setImage("http://img.nian.so/bbs/\(url)!large")
-                            image.userInteractionEnabled = true
-                            image.tag = Int(count)!
-                            image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage:"))
-                            numBottom = numBottom + h + 16
-                            self.viewHolder.addSubview(image)
-                        }
-                    } else if type == "dream" {
-                        let id = data.stringAttributeForKey("id")
-                        let b = numBottom
-                        Api.getDream(id) { json in
-                            if json != nil {
-                                let d = json!.objectForKey("data") as! NSDictionary
-                                let img = d.stringAttributeForKey("image")
-                                let numSteps = d.stringAttributeForKey("steps_count")
-                                let title = d.stringAttributeForKey("title").decode()
-                                let v = (NSBundle.mainBundle().loadNibNamed("AddRedditDream", owner: self, options: nil) as NSArray).objectAtIndex(0) as! AddRedditDream
-                                v.title = title
-                                v.content = "\(numSteps) 进展"
-                                v.image = "http://img.nian.so/dream/\(img)!dream"
-                                v.frame = CGRectMake(64, b, 232, 64)
-                                v.userInteractionEnabled = true
-                                v.tag = Int(id)!
-                                v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDream:"))
-                                self.viewHolder.addSubview(v)
-                            }
-                        }
-                        numBottom = numBottom + 64 + 16
+                        self.viewHolder.addSubview(image)
                     }
-                }
-                // 设定高度与宽度
-                labelComment.setY(numBottom)
-                viewBottom.setY(labelComment.bottom() + 24)
-                
-                // 导航菜单
-                if index == 0 {
-                    labelHot.layer.borderWidth = 0.5
-                    labelHot.layer.borderColor = lineColor.CGColor
-                    viewLineClick.setX(labelHot.x() + 0.5)
-                    labelNew.layer.borderWidth = 0
-                    labelHot.textColor = UIColor.C33()
-                    labelNew.textColor = UIColor.b3()
-                } else {
-                    labelNew.layer.borderWidth = 0.5
-                    labelNew.layer.borderColor = lineColor.CGColor
-                    viewLineClick.setX(labelNew.x() + 0.5)
-                    labelHot.layer.borderWidth = 0
-                    labelNew.textColor = UIColor.C33()
-                    labelHot.textColor = UIColor.b3()
-                }
-                
-                // 设置标签
-                var x: CGFloat = 11
-                if tags != nil {
-                    if tags?.count > 0 {
-                        for tag in tags! {
-                            let t = tag.decode()
-                            let label = UILabel()
-                            label.setTagLabel(t)
-                            label.setX(x)
-                            label.userInteractionEnabled = true
-                            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
-                            scrollView.addSubview(label)
-                            x = x + label.width() + 8
+                } else if type == "dream" {
+                    let id = data.stringAttributeForKey("id")
+                    let b = numBottom
+                    Api.getDream(id) { json in
+                        if json != nil {
+                            let d = json!.objectForKey("data") as! NSDictionary
+                            let img = d.stringAttributeForKey("image")
+                            let numSteps = d.stringAttributeForKey("steps_count")
+                            let title = d.stringAttributeForKey("title").decode()
+                            let v = (NSBundle.mainBundle().loadNibNamed("AddRedditDream", owner: self, options: nil) as NSArray).objectAtIndex(0) as! AddRedditDream
+                            v.title = title
+                            v.content = "\(numSteps) 进展"
+                            v.image = "http://img.nian.so/dream/\(img)!dream"
+                            v.frame = CGRectMake(64, b, 232, 64)
+                            v.userInteractionEnabled = true
+                            v.tag = Int(id)!
+                            v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDream:"))
+                            self.viewHolder.addSubview(v)
                         }
-                        scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
-                        scrollView.setTag()
-                        viewHolder.setHeight(viewBottom.bottom() + 52)
-                        delegateTop?.updateDic(data!)
-                        delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom() + 52)", section: 0)
-                    } else {
-                        scrollView.hidden = true
-                        viewHolder.setY(0)
-                        viewHolder.setHeight(viewBottom.bottom())
-                        delegateTop?.updateDic(data!)
-                        delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())", section: 0)
                     }
+                    numBottom = numBottom + 64 + 16
                 }
             }
-            setupVote()
+            // 设定高度与宽度
+            labelComment.setY(numBottom)
+            viewBottom.setY(labelComment.bottom() + 24)
+            
+            // 导航菜单
+            if index == 0 {
+                labelHot.layer.borderWidth = 0.5
+                labelHot.layer.borderColor = lineColor.CGColor
+                viewLineClick.setX(labelHot.x() + 0.5)
+                labelNew.layer.borderWidth = 0
+                labelHot.textColor = UIColor.C33()
+                labelNew.textColor = UIColor.b3()
+            } else {
+                labelNew.layer.borderWidth = 0.5
+                labelNew.layer.borderColor = lineColor.CGColor
+                viewLineClick.setX(labelNew.x() + 0.5)
+                labelHot.layer.borderWidth = 0
+                labelNew.textColor = UIColor.C33()
+                labelHot.textColor = UIColor.b3()
+            }
+            
+            // 设置标签
+            var x: CGFloat = 11
+            if tags != nil {
+                if tags?.count > 0 {
+                    for tag in tags! {
+                        let t = tag.decode()
+                        let label = UILabel()
+                        label.setTagLabel(t)
+                        label.setX(x)
+                        label.userInteractionEnabled = true
+                        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
+                        scrollView.addSubview(label)
+                        x = x + label.width() + 8
+                    }
+                    scrollView.contentSize = CGSizeMake(x + 3, scrollView.frame.height)
+                    scrollView.setTag()
+                    viewHolder.setHeight(viewBottom.bottom() + 52)
+                    delegateTop?.updateDic(data!)
+                    delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom() + 52)", section: 0)
+                } else {
+                    scrollView.hidden = true
+                    viewHolder.setY(0)
+                    viewHolder.setHeight(viewBottom.bottom())
+                    delegateTop?.updateDic(data!)
+                    delegate?.updateData(index, key: "heightCell", value: "\(viewBottom.bottom())", section: 0)
+                }
+            }
         }
+        setupVote()
     }
     
     // 搜索标签

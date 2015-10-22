@@ -20,97 +20,131 @@ extension UIImageView {
     // bool 是否显示图片中间的水滴
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
-    func setImage(urlString: String, radius: CGFloat = 0) {
-        self.backgroundColor = IconColor
+    func setImage(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
         let url = NSURL(string: urlString)
+        
+        self.backgroundColor = placeHolder
+        
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        if (saveMode == "1") && (networkStatus == 1) {   //如果是开启了同时是在2G下
+        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {   //如果是开启了同时是在2G下
             self.loadCacheImage(req, placeholderImage: self.image)
+            if animated {
+                self.setAnimated()
+            }
         } else {
             self.setImageWithURLRequest(req,
                 placeholderImage: nil,
                 success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                    self.contentMode = .ScaleAspectFill
-                    if radius == 0 {
-                        self.image = image
-                    } else {
-                        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, globalScale)
-                        UIColor.e6().set()
-                        let bPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: radius)
-                        bPath.addClip()
-                        image.drawInRect(self.bounds)
-                        bPath.lineWidth = globalHalf
-                        bPath.stroke()
-                        self.image = UIGraphicsGetImageFromCurrentImageContext()
-                        UIGraphicsEndImageContext()
-                    }
-                },
-                failure: nil)
-        }
-    }
-    
-    func setPet(urlString: String) {
-        let url = NSURL(string: urlString)
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        self.setImageWithURLRequest(req,
-            placeholderImage: nil,
-            success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                self.contentMode = .ScaleAspectFill
-                self.image = image
-            },
-            failure: nil)
-    }
-    
-    func setImageIgnore(urlString: String) {
-        setPet(urlString)
-    }
-    
-    func setCover(urlString: String, ignore: Bool = false, animated: Bool = false, radius: CGFloat = 0) {
-        let _image = self.image
-        self.backgroundColor = UIColor.blackColor()
-        let url = NSURL(string: urlString)
-        let networkStatus = getStatus()
-        let saveMode = Cookies.get("saveMode") as? String
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {
-            self.loadCacheImage(req, placeholderImage: self.image)
-//                self.setAnimated()
-        } else {
-            self.setImageWithURLRequest(req,
-                placeholderImage: nil,
-                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                    self.contentMode = .ScaleAspectFill
                     self.image = image
-                    
-                    // 当图片有变化时，才做淡入效果
-                    if image != _image {
+                    if animated {
                         self.setAnimated()
                     }
+                    self.contentMode = .ScaleAspectFill
                 },
                 failure: nil)
         }
     }
     
-    func setHead(uid: String) {
-        self.image = UIImage(named: "head")
-        let url = NSURL(string: "http://img.nian.so/head/\(uid).jpg!dream")
-        self.contentMode = .ScaleAspectFill
+    func setCover(urlString: String, placeHolder: UIColor!, bool: Bool = true, ignore: Bool = false, animated: Bool = false) {
+        let url = NSURL(string: urlString)
+        self.backgroundColor = placeHolder
+        
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        
+        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {    //如果是开启了同时还是在2G下
+            self.loadCacheImage(req, placeholderImage: self.image)
+            if animated {
+                self.setAnimated()
+            }
+        } else {
+            self.setImageWithURLRequest(req,
+                                        placeholderImage: nil,
+                                        success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                                            self.image = image
+                                            if animated {
+                                                self.setAnimated()
+                                            }
+                                            self.contentMode = .ScaleAspectFill
+                                        },
+                                        failure: nil)
+        }
+    }
+
+    func setHead(uid: String) {
+        let url = NSURL(string: "http://img.nian.so/head/\(uid).jpg!dream")
+        self.image = UIImage(named: "head")
+        self.contentMode = .ScaleAspectFill
+        
+        let networkStatus = getStatus()
+        let saveMode = Cookies.get("saveMode") as? String
+        
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "1") && (networkStatus == 1) {
             self.loadCacheImage(req, placeholderImage: self.image)
+            self.contentMode = .ScaleAspectFill
+        } else {
+            self.setImageWithURLRequest(req,
+                                        placeholderImage: nil,
+                                        success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+                                            self.image = image
+                                        },
+                                        failure: nil)
+        }
+    }
+    
+    /*=========================================================================================================================================*/
+    /**
+    更好的绘制圆角矩形， 性能好
+    */
+    func setImageWithRounded(radius: CGFloat, urlString: String, placeHolder: UIColor!, ignore: Bool = false) {
+        let url = NSURL(string: urlString)
+        
+        let networkStatus = getStatus()
+        let saveMode = Cookies.get("saveMode") as? String
+        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+        
+        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {   //如果是开启了同时是在2G下
+            self.loadCacheImage(req, placeholderImage: self.image)
         } else {
             self.setImageWithURLRequest(req,
                 placeholderImage: nil,
                 success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                    self.image = image
+                    
+                    /*================最佳的绘制圆角图片的方式==============*/
+                    UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+                    
+                    /* 先设置将要 stroke 的颜色 */
+                    let _color = UIColor.colorWithHex("#E6E6E6")
+                    _color.set()
+                    
+                    /* 设置 bezierPath 并切去圆角 */
+                    let bPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: radius)
+                    bPath.addClip()
+                    
+                    /* 在新的 bezierPath 里面 draw image */
+                    image.drawInRect(self.bounds)
+                    
+                    /* 在图片周围再画 0.5 的线宽，并填色 */
+                    let SINGLE_LINE_HEIGHT = 1 / UIScreen.mainScreen().scale
+                    bPath.lineWidth = SINGLE_LINE_HEIGHT
+                    bPath.stroke()
+                    
+                    /* 获得当前图片 */
+                    self.image = UIGraphicsGetImageFromCurrentImageContext()
+                    
+                    UIGraphicsEndImageContext()
+                    
+                    self.contentMode = .ScaleAspectFill
                 },
                 failure: nil)
         }
     }
+    
+    
     
     // 设置图片渐变动画
     func setAnimated(){
@@ -129,7 +163,7 @@ extension UIImageView {
             self.image = placeholderImage
         }
     }
-    
+
 }
 
 

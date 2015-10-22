@@ -34,6 +34,7 @@ let stdout = NSFileHandle.fileHandleWithStandardOutput()
 let lineCharset = NSCharacterSet.newlineCharacterSet()
 
 func readline(tip: String) -> String {
+    print(tip, terminator: "")
     let indata = stdin.availableData
     let s = NSString(data: indata, encoding: NSUTF8StringEncoding)
     if s == nil {

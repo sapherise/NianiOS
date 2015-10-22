@@ -708,8 +708,6 @@ NSString * const KILabelLinkKey = @"link";
     self.selectedRange = NSMakeRange(0, 0);
 }
 
-
-
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];

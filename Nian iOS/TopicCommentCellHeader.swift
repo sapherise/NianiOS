@@ -41,22 +41,14 @@ class TopicCommentCellHeader: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if data != nil {
-            if let _ = Int(data.stringAttributeForKey("like_count")) {
-                layout(data)
-                let time = data.stringAttributeForKey("created_at")
-                let uid = data.stringAttributeForKey("user_id")
-                labelName.text = data.stringAttributeForKey("username")
-                labelTime.text = V.relativeTime(time)
-                imageHead.setHead(uid)
-                imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
-                labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
-            } else {
-                if let v = self.findRootViewController() as? TopicComment {
-                    v.tableView.hidden = true
-                    v.inputKeyboard.hidden = true
-                    v.view.addGhost("这个回应\n不见了")
-                }
-            }
+            layout(data)
+            let time = data.stringAttributeForKey("created_at")
+            let uid = data.stringAttributeForKey("user_id")
+            labelName.text = data.stringAttributeForKey("username")
+            labelTime.text = V.relativeTime(time)
+            imageHead.setHead(uid)
+            imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
+            labelName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUser"))
         }
     }
     
@@ -108,7 +100,7 @@ class TopicCommentCellHeader: UITableViewCell {
                     if w > 0 {
                         h = (globalWidth - 80) * h / w
                         let image = UIImageView(frame: CGRectMake(64, numBottom, globalWidth - 80, h))
-                        image.setImage("http://img.nian.so/bbs/\(url)!large")
+                        image.setImage("http://img.nian.so/bbs/\(url)!large", placeHolder: IconColor)
                         image.userInteractionEnabled = true
                         image.tag = Int(count)!
                         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage:"))

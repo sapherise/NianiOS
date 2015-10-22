@@ -97,7 +97,7 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/discover/ranking?uid=\(s_uid)&&shell=\(s_shell)&&page=\(page)", callback: callback)
     }
     
-    // MARK: - 发现-“热门” 之“推荐”和“最新”
+    // MARK: - 发现-“热门” 之“编辑推荐”和“最新”
     static func getDiscoverTop(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/discover/top?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
@@ -109,7 +109,7 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/discover/newest?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    // MARK: - 获取所有推荐的结果
+    // MARK: - 获取所有编辑推荐的结果 
     static func getDiscoverEditorRecom(page: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/discover/recommend?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
@@ -151,6 +151,8 @@ struct Api {
         loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/topic/tag/follow?uid=\(s_uid)&&shell=\(s_shell)", content: ["tag": "\(keyword)", "type": "\(type)"], callback: callback)
     }
+    // TODO: -
+    // MARK: -
     
     static func getSearchUsers(callback: V.JsonCallback) {
         loadCookies()
@@ -508,8 +510,11 @@ struct Api {
     */
     static func postAddStep_AFN(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
         loadCookies()
+        let sid = client.getSid()
         Cookies.set(dream, forKey: "DreamNewest")
-        V.httpPostForJson_AFN("http://api.nian.so/step?uid=\(s_uid)&shell=\(s_shell)", content: ["dream": dream, "content": content, "image": img, "width": img0, "height": img1], callback: callback)
+        V.httpPostForJson_AFN("http://nian.so/api/addstep_query2.php",
+            content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"],
+            callback: callback)
     }
     
     // ===
@@ -618,14 +623,16 @@ struct Api {
         V.httpPostForJson("http://api.nian.so/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: "dream_id=\(dream)&content=\(content)", callback: callback)
     }
     
-    static func postDeleteComment(id: String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://api.nian.so/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
-    }
     
     static func getDreamStepComment(sid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/comment_step.php?page=\(page)&id=\(sid)", callback: callback)
+    }
+    
+    
+    static func postDeleteComment(cid: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://nian.so/api/delete_comment.php", content: "uid=\(s_uid)&shell=\(s_shell)&cid=\(cid)", callback: callback)
     }
     
     static func postFollow(uid: String, follow: Int, callback: V.StringCallback) {
@@ -957,6 +964,23 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/passport/exchange?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
+    
+    // 提及某人
+    
+//    POST /mention?uid=xx&shell=xx
+//    POST 参数：
+//    
+//    参数	类型	说明
+//    topic_id	int	回答的id
+//    comment_id	int	评论的id
+//    mentions	array	提到的用户的id
+//    注： 在回应中提到某人，只需要topic_id，在评论中提到某人，需要topic_id和comment_id.
+    
+    static func postMention(idComment: String, mentions: String, callback: V.StringCallback) {
+        loadCookies()
+        V.httpPostForString("http://api.nian.so/mention?uid=\(s_uid)&shell=\(s_shell)", content: "comment_id=\(idComment)\(mentions)", callback: callback)
+    }
+    
 }
 
 

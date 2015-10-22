@@ -13,8 +13,8 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     let identifier = "me"
     var tableView:UITableView?
     var dataArray = NSMutableArray()
-    var page: Int = 1
-    var Id: String = ""
+    var page :Int = 0
+    var Id:String = ""
     var tag: Int = 0
     
     /* 更换新的网络接口后新添加的 "reply" or "like" or "notify" */
@@ -83,7 +83,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func load(clear: Bool = true) {
         if clear {
-            page = 1
+            page = 0
         }
         
         /* 换新的 API  */
@@ -103,6 +103,31 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.page++
             }
         }
+    }
+    
+    func SAReloadData(){
+//        self.page = 0
+//        let url = urlString()
+//        self.tableView!.setFooterHidden(false)
+//        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
+//            if data as! NSObject != NSNull(){
+//                if ( data.objectForKey("total") as! Int ) < 30 {
+//                    self.tableView!.setFooterHidden(true)
+//                }
+//                let arr = data.objectForKey("items") as! NSArray
+//                self.dataArray.removeAllObjects()
+//                for data : AnyObject  in arr{
+//                    if let _type = (data as! NSDictionary)["type"] as? String {
+//                        if Int(_type) < 11 {
+//                            self.dataArray.addObject(data)
+//                        }
+//                    }
+//                }
+//                self.tableView!.reloadData()
+//                self.tableView!.headerEndRefreshing()
+//                self.page++
+//            }
+//        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -229,12 +254,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "14" {    // 赞了话题回应
             TopicCommentVC.id = cid
             self.navigationController?.pushViewController(TopicCommentVC, animated: true)
-        } else if type == "16" {    // 在回应的回应中提及你
+        } else if type == "16" {
             TopicCommentVC.id = cid
             self.navigationController?.pushViewController(TopicCommentVC, animated: true)
-        } else if type == "17" {    // 在回应中提及你
-            TopicVC.id = cid
-            self.navigationController?.pushViewController(TopicVC, animated: true)
         }
     }
     

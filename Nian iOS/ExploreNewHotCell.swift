@@ -37,6 +37,7 @@ class ExploreNewHotCell: UITableViewCell {
     }
 
     func _layoutSubviews() {
+//        super.layoutSubviews()
         if data != nil {
             let title = self.data.stringAttributeForKey("title")
             let img = self.data.stringAttributeForKey("image")
@@ -71,7 +72,7 @@ class ExploreNewHotCell: UITableViewCell {
             self.viewRight.setY(bottom + 16)
             self.viewHolder.setHeight(self.viewLeft.bottom() + 33)
             if img != "" {
-                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream")
+                self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             } else {
                 self.imageHead.image = UIImage(named: "drop")
                 self.imageHead.contentMode = .Center
@@ -92,11 +93,6 @@ class ExploreNewHotCell: UITableViewCell {
             height = hTitle + 204.5 - 8
         }
         return [height, hContent, hTitle, content, title]
-    }
-    
-    override func prepareForReuse() {
-        imageHead.image = nil
-        imageHead.cancelImageRequestOperation()
     }
 }
 

@@ -20,7 +20,7 @@ class AddRedditDream: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageHead.setImage(image)
+        imageHead.setImage(image, placeHolder: IconColor)
         labelTitle.text = title
         labelContent.text = content
     }

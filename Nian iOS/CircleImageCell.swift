@@ -72,7 +72,7 @@ class CircleImageCell: UITableViewCell {
                     self.imageContent.image = SAColorImg(SeaColor)
                     self.addSubview(activity!)
                 }else{
-                    self.imageContent.setImage(url)
+                    self.imageContent.setImage(url, placeHolder: SeaColor, bool: false)
                     self.activity?.removeFromSuperview()
                 }
                 if isMe {

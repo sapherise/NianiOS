@@ -63,7 +63,7 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
             deleteActivity.saActivityType = "删除"
             deleteActivity.saActivityImage = UIImage(named: "av_delete")
             deleteActivity.saActivityFunction = {
-                self.actionSheetDelete = UIActionSheet(title: "再见了，话题 #\(self.id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                self.actionSheetDelete = UIActionSheet(title: "再见了，话题", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                 self.actionSheetDelete.addButtonWithTitle("确定")
                 self.actionSheetDelete.addButtonWithTitle("取消")
                 self.actionSheetDelete.cancelButtonIndex = 1

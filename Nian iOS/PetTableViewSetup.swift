@@ -110,10 +110,9 @@ extension PetViewController: NIAlertDelegate {
             labelLeft.text = "礼物：\(energy)"
             labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGift"))
             if owned == "1" {
-                imageView.setPet("http://img.nian.so/pets/\(image)!d")
+                imageView.setImage("http://img.nian.so/pets/\(image)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
             } else {
-                let imageGrey = SAReplace(image, before: ".png", after: "@Grey.png")
-                imageView.setPet("http://img.nian.so/pets/\(imageGrey)!d")
+                imageView.setImageGray("http://img.nian.so/pets/\(image)!d")
             }
         }
     }

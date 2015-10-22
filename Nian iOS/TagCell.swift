@@ -34,6 +34,6 @@ class TagCell: UITableViewCell {
         self.nickLabel!.text = title
         let userImageURL = "http://img.nian.so/dream/\(img)!dream"
         self.tag = Int(self.Id)!
-        self.avatarView!.setImage(userImageURL)
+        self.avatarView!.setImage(userImageURL,placeHolder: IconColor)
     }
 }

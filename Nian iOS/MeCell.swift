@@ -71,8 +71,7 @@ class MeCell: UITableViewCell {
         case "12": word = "在话题中与你互动了"
         case "13": word = "赞了你的话题"
         case "14": word = "赞了你的回应"
-        case "16": word = "在话题中提到你"
-        case "17": word = "在话题中提到你"
+        case "16": word = "在话题中与你互动了"
         default: word = "与你互动了"
         }
         
@@ -95,7 +94,7 @@ class MeCell: UITableViewCell {
             self.imageDream.hidden = false
             self.labelConfirm.hidden = false
             self.imageDream.tag = Int(dream)!
-            self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream")
+            self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             self.lastdate!.hidden = true
             self.viewLine.setY(self.labelConfirm!.bottom()+25)
             let tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")

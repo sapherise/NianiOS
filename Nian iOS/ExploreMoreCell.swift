@@ -10,23 +10,13 @@ import UIKit
 
 class ExploreMoreCell: UICollectionViewCell {
     
-    @IBOutlet var coverImageView: UIImageView!
-    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet weak var coverImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
     
-    var data: NSDictionary! {
-        didSet {
-            let image = data.stringAttributeForKey("image")
-            let title = data.stringAttributeForKey("title")
-            coverImageView.setImage("http://img.nian.so/dream/\(image)!dream")
-            let height = data["heightTitle"] as! CGFloat
-            titleLabel.text = title
-            if height < 34 {
-                titleLabel.text = "\(title)\n"
-            } else {
-                titleLabel.text = title
-            }
-        }
-    }
+    var imgString: String?
+    var _title: String?
+    
+    var data: NSDictionary!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,8 +31,19 @@ class ExploreMoreCell: UICollectionViewCell {
         coverImageView.layer.masksToBounds = true
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if data != nil {
+            let image = data.stringAttributeForKey("image")
+            let title = data.stringAttributeForKey("title").decode()
+            coverImageView.setImage("http://img.nian.so/dream/\(image)!dream", placeHolder: IconColor, bool: false, ignore: false, animated: false)
+            titleLabel.text = title
+        }
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
+        
         coverImageView.cancelImageRequestOperation()
         coverImageView.image = nil
     }

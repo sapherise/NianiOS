@@ -214,34 +214,32 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func commentFinish(replyContent:String, type: Int = 1){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let name = Cookies.get("user") as? String {
-                let commentReplyRow = self.dataArray.count
-                let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-                self.dataArray.insertObject(data, atIndex: 0)
-                self.tableview.reloadData()
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 {
-                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-                }
+            let name = Cookies.get("user") as? String
+            let commentReplyRow = self.dataArray.count
+            let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(data, atIndex: 0)
+            self.tableview.reloadData()
+            let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0 {
+                self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
             }
         })
     }
     
     func postWord(replyContent: String, type: Int = 1) {
         back {
-            if let name = Cookies.get("user") as? String {
-                let commentReplyRow = self.dataArray.count
-                let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-                self.dataArray.insertObject(data, atIndex: 0)
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height + replyContent.stringHeightWith(15,width:208) + 60
-                if offset > 0 {
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.tableview.contentOffset.y = offset
-                    })
-                }
-                self.addReply(replyContent, type: 1)
-                self.tableview.reloadData()
+            let name = Cookies.get("user") as? String
+            let commentReplyRow = self.dataArray.count
+            let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name!)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+            self.dataArray.insertObject(data, atIndex: 0)
+            let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height + replyContent.stringHeightWith(15,width:208) + 60
+            if offset > 0 {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.tableview.contentOffset.y = offset
+                })
             }
+            self.addReply(replyContent, type: 1)
+            self.tableview.reloadData()
         }
     }
     

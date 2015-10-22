@@ -139,7 +139,7 @@ class DreamCellTop: UITableViewCell {
             let thePrivate = data!.stringAttributeForKey("private")
             let percent = data!.stringAttributeForKey("percent")
             let uid = data!.stringAttributeForKey("uid")
-            dreamhead.setImage("http://img.nian.so/dream/\(img)!dream")
+            dreamhead.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
             dreamhead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
             var h: CGFloat = title.stringHeightBoldWith(18, width: 240)
             if thePrivate == "1" {

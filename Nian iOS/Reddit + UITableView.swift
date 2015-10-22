@@ -54,11 +54,7 @@ extension RedditViewController {
                         self.dataArrayLeft.addObject(d)
                     }
                     if self.dataArrayLeft.count == 0 {
-                        let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 49))
-                        v.addGhost("关注一些标签后\n这里会出现新的东西")
-                        self.tableViewLeft.tableHeaderView = v
-                    } else {
-                        self.tableViewLeft.tableHeaderView = nil
+                        self.tableViewLeft.addGhost("关注一些标签后\n这里会出现新的东西")
                     }
                     self.tableViewLeft.reloadData()
                     self.tableViewLeft.headerEndRefreshing()

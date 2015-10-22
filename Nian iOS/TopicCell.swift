@@ -173,8 +173,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
             let userMe = SAUid()
             if userA == userMe {
                 if buttonIndex == 0 {
-                    let id = data.stringAttributeForKey("id")
-                    self.deleteSheet = UIActionSheet(title: "再见了，回复 #\(id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                    self.deleteSheet = UIActionSheet(title: "再见了，回复", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
                     self.deleteSheet.addButtonWithTitle("确定")
                     self.deleteSheet.addButtonWithTitle("取消")
                     self.deleteSheet.cancelButtonIndex = 1

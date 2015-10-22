@@ -20,8 +20,6 @@
 #import "NSData+NSHash.h"
 #import "UIImage+Grayscale.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
-#import "VVeboLabel.h"
-#import "NSString+Additions.h"
 //#import "UITableView+FDTemplateLayoutCell.h"
 
 /**
