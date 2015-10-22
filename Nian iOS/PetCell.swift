@@ -24,9 +24,10 @@ class PetCell: UITableViewCell {
         let imgF = self.info?.stringAttributeForKey("image")
         let owned = self.info?.stringAttributeForKey("owned")
         if owned == "0" {
-            self.imgView.setImageGray("http://img.nian.so/pets/\(imgF!)!d")
+            let imgGrey = SAReplace(imgF!, before: ".png", after: "@Grey.png")
+            self.imgView.setPet("http://img.nian.so/pets/\(imgGrey)!d")
         } else {
-            self.imgView.setImage("http://img.nian.so/pets/\(imgF!)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
+            self.imgView.setPet("http://img.nian.so/pets/\(imgF!)!d")
         }
     }
     

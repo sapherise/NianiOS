@@ -65,7 +65,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
         let title = data.objectForKey("title") as! String
         let img = data.objectForKey("img") as! String
         mediaCell.label.text = "\(title)"
-        mediaCell.imageView.setImage("http://img.nian.so/dream/\(img)!dream", placeHolder: IconColor)
+        mediaCell.imageView.setImage("http://img.nian.so/dream/\(img)!dream")
         return mediaCell
     }
     

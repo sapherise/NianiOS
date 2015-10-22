@@ -110,7 +110,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserHead.setHead(SAUid())
         
         if cacheCoverUrl != nil && cacheCoverUrl != "http://img.nian.so/cover/!cover" {
-            self.imageBG.setCover(cacheCoverUrl!, placeHolder: UIColor.blackColor(), bool: false)
+            self.imageBG.setCover(cacheCoverUrl!)
         } else {
             self.imageBG.image = UIImage(named: "bg")
             self.imageBG.contentMode = UIViewContentMode.ScaleAspectFill
@@ -231,6 +231,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                     self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                     self.UserName.text = "\(name)"
+                    Cookies.set(name, forKey: "user")
                     self.UserHead.setHead(safeuid)
                     self.imageBadge.setType(vip)
                     if deadLine == "0" {
@@ -243,8 +244,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         self.navView.image = UIImage(named: "bg")
                         self.navView.contentMode = UIViewContentMode.ScaleAspectFill
                     }else{
-                        self.imageBG.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
-                        self.navView.setCover(AllCoverURL, placeHolder: UIColor.blackColor(), bool: false)
+                        self.imageBG.setCover(AllCoverURL)
+                        self.navView.setCover(AllCoverURL)
                     }
                     Cookies.set(name, forKey: "user")
                     Cookies.set(AllCoverURL, forKey: "coverUrl")
@@ -331,7 +332,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         var img = data.stringAttributeForKey("img")
         if img != "" {
             img = "http://img.nian.so/dream/\(img)!dream"
-            c.imageCover.setCover(img, placeHolder: IconColor, bool: false)
+            c.imageCover.setImage(img)
         }
 
         cell = c

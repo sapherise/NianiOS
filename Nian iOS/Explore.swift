@@ -8,65 +8,39 @@
 
 import UIKit
 
-class ExploreProvider: NSObject {
-    func onHide() {
-    }
-    
-    func onShow(loading: Bool) {
-    }
-    
-    func onRefresh() {
-    }
-    
-    func onLoad() {
-    }
-}
-
 // MARK: - explore view controller
-class ExploreViewController: UIViewController, UIScrollViewDelegate {
+class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var btnFollow: UILabel!
     @IBOutlet weak var btnDynamic: UILabel!
     @IBOutlet weak var btnHot: UILabel!
-    
     @IBOutlet weak var imageSearch: UIImageView!
     @IBOutlet weak var imageFriend: UIImageView!
-    
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var dynamicTableView: UITableView!
-    @IBOutlet weak var recomTableView: UITableView!
-    
     @IBOutlet weak var navTopView: UIView!
     @IBOutlet weak var navHolder: UIView!
     
-    @IBOutlet var btnNew: UIButton!
-    @IBOutlet var btnEditor: UIButton!
+    var tableView: VVeboTableView!
+    var tableViewDynamic: VVeboTableView!
+    var tableViewHot: UITableView!
+    var tableViewEditor: UITableView!
+    var tableViewNewest: UITableView!
+    var dataArray = NSMutableArray()
+    var dataArrayDynamic = NSMutableArray()
+    var dataArrayHot = NSMutableArray()
+    var dataArrayEditor = NSMutableArray()
+    var dataArrayNewest = NSMutableArray()
     
-    var appear = false
     var current = -1
-    var currentProvider: ExploreProvider!
+    var page = 1
+    var pageDynamic = 1
+    var pageHot = 1
     
-    var buttons: [UILabel]!
-    var providers: [ExploreProvider]!
+    var isLoadingHot = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.buttons = [
-            btnFollow,
-            btnDynamic,
-            btnHot,
-        ]
         setupViews()
-        
-        // brief: tableView = followTableView
-        tableView.dataSource = providers[0] as? UITableViewDataSource
-        tableView.delegate = providers[0] as? UITableViewDelegate
-        dynamicTableView.dataSource = providers[1] as? UITableViewDataSource
-        dynamicTableView.delegate = providers[1] as? UITableViewDelegate
-        recomTableView.dataSource = providers[2] as? UITableViewDataSource
-        recomTableView.delegate = providers[2] as? UITableViewDelegate
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -87,20 +61,119 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
         navShow()
     }
     
-    /**
-    brief:  尝试减少被系统回收内存的概率
-    date:   2015-07-04
-    */
-//    override func didReceiveMemoryWarning() {
-//        (self.providers?[0] as? ExploreFollowProvider)!.dataArray.removeAllObjects()
-//        self.tableView.reloadData()
-//        
-//        (self.providers?[1] as? ExploreDynamicProvider)!.dataArray.removeAllObjects()
-//        self.dynamicTableView.reloadData()
-//        
-//        (self.providers?[2] as? ExploreNewHot)!.dataArray.removeAllObjects()
-//        self.recomTableView.reloadData()
-//    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var t = self.tableView
+        var d = dataArray
+        if tableView == self.tableViewDynamic {
+            t = self.tableViewDynamic
+            d = dataArrayDynamic
+            let data = dataArrayDynamic[indexPath.row] as! NSDictionary
+            let type = data.stringAttributeForKey("type")
+            if type == "0" {
+                let c = t.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as! ExploreDynamicDreamCell
+                c.data = data
+                return c
+            } else {
+                return getCell(indexPath, dataArray: d, type: 2)
+            }
+        } else if tableView == self.tableViewHot {
+            let c = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
+            c!.data = self.dataArrayHot[indexPath.row] as! NSDictionary
+            c!.indexPath = indexPath
+            c!._layoutSubviews()
+            return c!
+        } else if tableView == self.tableViewEditor {
+            var c = tableViewEditor.dequeueReusableCellWithIdentifier("NewestCell") as? NewestCell
+            if c == nil {
+                c = NewestCell(style: .Default, reuseIdentifier: "NewestCell")
+            }
+            if dataArrayEditor.count == 0 {
+                c?.data = NSDictionary()
+            } else {
+                c?.data = dataArrayEditor[indexPath.row] as! NSDictionary
+            }
+            c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+            return c!
+        } else if tableView == self.tableViewNewest {
+            var c = tableViewNewest.dequeueReusableCellWithIdentifier("NewestCell") as? NewestCell
+            if c == nil {
+                c = NewestCell(style: .Default, reuseIdentifier: "NewestCell")
+            }
+            if dataArrayNewest.count == 0 {
+                c?.data = NSDictionary()
+            } else {
+                c?.data = dataArrayNewest[indexPath.row] as! NSDictionary
+            }
+            c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+            return c!
+        }
+        return getCell(indexPath, dataArray: d)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var d = dataArray
+        let vc = DreamViewController()
+        if tableView == self.tableViewDynamic {
+            d = dataArrayDynamic
+        } else if tableView == self.tableViewHot {
+            d = dataArrayHot
+        } else if tableView == self.tableViewEditor || tableView == self.tableViewNewest {
+            if dataArrayEditor.count == 0 || dataArrayNewest.count == 0 {
+                return
+            }
+            d = tableView == self.tableViewEditor ? dataArrayEditor : dataArrayNewest
+            let data = d[indexPath.row] as! NSDictionary
+            vc.Id = data.stringAttributeForKey("id")
+            self.navigationController?.pushViewController(vc, animated: true)
+            return
+        }
+        let data = d[indexPath.row] as! NSDictionary
+        vc.Id = tableView != tableViewHot ? data.stringAttributeForKey("dream") : data.stringAttributeForKey("id")
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var t = self.tableView
+        var d = dataArray
+        if tableView == self.tableViewDynamic {
+            t = self.tableViewDynamic
+            d = dataArrayDynamic
+            let data = dataArrayDynamic[indexPath.row] as! NSDictionary
+            let type = data.stringAttributeForKey("type")
+            if type == "0" {
+                return 77
+            }
+        } else if tableView == self.tableViewHot {
+            let data = dataArrayHot[indexPath.row] as! NSDictionary
+            let heightCell = data.objectForKey("heightCell") as! CGFloat
+            return heightCell
+        } else if tableView == self.tableViewEditor {
+            return 96
+        } else if tableView == self.tableViewNewest {
+            return 96
+        }
+        return t.getHeight(indexPath, dataArray: d)
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var d = dataArray
+        if tableView == self.tableViewDynamic {
+            d = dataArrayDynamic
+        } else if tableView == self.tableViewHot {
+            d = dataArrayHot
+        } else if tableView == self.tableViewEditor {
+            d = dataArrayEditor
+            if dataArrayEditor.count == 0 {
+                return 6
+            }
+        } else if tableView == self.tableViewNewest {
+            d = dataArrayNewest
+            if dataArrayNewest.count == 0 {
+                return 6
+            }
+        }
+        return d.count
+    }
     
     func exploreTop(noti: NSNotification){
         if current == -1 {
@@ -115,17 +188,7 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func setupViews() {
-        self.providers = [
-            ExploreFollowProvider(viewController: self),
-            ExploreDynamicProvider(viewController: self),
-            ExploreRecommend(viewController: self),
-        ]
         globalNumExploreBar = 0
-        
-        self.scrollView.scrollsToTop = false
-        self.tableView.scrollsToTop = true
-        self.dynamicTableView.scrollsToTop = false
-        self.recomTableView.scrollsToTop = false
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.navTopView.backgroundColor = BarColor
@@ -138,41 +201,53 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
         
         scrollView.setWidth(globalWidth)
         scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
-        tableView.frame.origin.x = 0
-        dynamicTableView.frame.origin.x = globalWidth
-        recomTableView.frame.origin.x = globalWidth * 2
+//        recomTableView.frame.origin.x = globalWidth * 2
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         
-        tableView.addHeaderWithCallback(onPullDown)
-        tableView.addFooterWithCallback(onPullUp)
-        dynamicTableView.addHeaderWithCallback(onPullDown)
-        dynamicTableView.addFooterWithCallback(onPullUp)
-        recomTableView.addHeaderWithCallback(onPullDown)
-        recomTableView.addFooterWithCallback(onPullUp)
-    }
-    
-    func onPullDown() {
-        self.currentProvider.onRefresh()
-    }
-    
-    func onPullUp() {
-        self.currentProvider.onLoad()
+        setupTables()
     }
     
     func switchTab(tab: Int) {
-        if current != -1 {
-            currentProvider.onHide()
-        }
-        let loading = current == tab ? true : false
+        let _current = current
         current = tab
-        currentProvider = self.providers[tab]
+        if tab == 0 {
+            currenTableView = tableView
+            currentDataArray = dataArray
+        } else if tab == 1 {
+            currenTableView = tableViewDynamic
+            currentDataArray = dataArrayDynamic
+        } else {
+            currenTableView = nil
+            currentDataArray = nil
+        }
         
+        if _current != tab {
+            if !globalTabhasLoaded[tab] {
+                if tab < 2 {
+                    if tab == 0 {
+                        tableView.headerBeginRefreshing()
+                    } else if tab == 1 {
+                        tableViewDynamic.headerBeginRefreshing()
+                    }
+                } else {
+                    tableViewHot.headerBeginRefreshing()
+                }
+            }
+        } else {
+            if tab < 2 {
+                if tab == 0 {
+                    tableView.headerBeginRefreshing()
+                } else if tab == 1 {
+                    tableViewDynamic.headerBeginRefreshing()
+                }
+            } else {
+                tableViewHot.headerBeginRefreshing()
+            }
+        }
         _setupScrolltoTop(current)
-
-        currentProvider.onShow(loading)
     }
     
     func onTabClick(sender: UIGestureRecognizer) {
@@ -195,19 +270,12 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
             let xOffset = scrollView.contentOffset.x
             let page: Int = Int(xOffset / globalWidth)
             
-            if current != -1 {
-                currentProvider.onHide()
-            }
-            current = page
-            currentProvider = self.providers[page]
-            
-            if globalTab[1] && page == 1 {
-                switchTab(page)
-            } else if globalTab[2] && page == 2 {
+            // 当页面有变化时才考虑是否加载
+            if page != current {
                 switchTab(page)
             }
-            
-            _setupScrolltoTop(current)
+        } else {
+            super.scrollViewDidEndScrollingAnimation(scrollView)
         }
     }
     
@@ -217,6 +285,12 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
             self.btnFollow.setTabAlpha(x, index: 0)
             self.btnDynamic.setTabAlpha(x, index: 1)
             self.btnHot.setTabAlpha(x, index: 2)
+        } else if scrollView == tableViewHot {
+            let y = tableViewHot.contentOffset.y + tableViewHot.height()
+            let height = tableViewHot.contentSize.height
+            if y + 400 > height && dataArrayHot.count > 0 {
+                tableViewHot.footerBeginRefreshing()
+            }
         }
     }
     
@@ -231,30 +305,20 @@ class ExploreViewController: UIViewController, UIScrollViewDelegate {
     private func _setupScrolltoTop(tab: Int) {
         if tab == 0 {
             tableView.scrollsToTop = true
-            dynamicTableView.scrollsToTop = false
-            recomTableView.scrollsToTop = false
+            tableViewDynamic.scrollsToTop = false
+            tableViewHot.scrollsToTop = false
         } else if tab == 1 {
             tableView.scrollsToTop = false
-            dynamicTableView.scrollsToTop = true
-            recomTableView.scrollsToTop = false
+            tableViewDynamic.scrollsToTop = true
+            tableViewHot.scrollsToTop = false
         } else if tab == 2 {
             tableView.scrollsToTop = false
-            dynamicTableView.scrollsToTop = false
-            recomTableView.scrollsToTop = true
+            tableViewDynamic.scrollsToTop = false
+            tableViewHot.scrollsToTop = true
         }
     }
     
 }
-
-// MARK: -  Explore VC 不能同时响应多个手势
-extension ExploreViewController {
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer
-                                                                    otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
-    }
-    
-}
-
 
 extension UILabel {
     func setTabAlpha(x: CGFloat, index: CGFloat) {

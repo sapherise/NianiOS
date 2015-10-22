@@ -66,7 +66,7 @@ extension UIImageView {
             
             //var viewImage = UIImageView(frame: CGRectMake(0, -yPoint.y, CGFloat(globalWidth), heightGif))
             let viewImage = UIImageView(frame: self.frame)
-            viewImage.setImage(imageURL, placeHolder: IconColor)
+            viewImage.setImage(imageURL)
             viewHolder.addSubview(viewImage)
             viewHolder.addSubview(webView)
             viewHolder.backgroundColor = UIColor.blackColor()
@@ -131,7 +131,8 @@ extension UIImageView {
             if sender.state == UIGestureRecognizerState.Began {
                 let image = getCacheImage(imageView.imageURL)
                 if image != nil {
-                    let avc = SAActivityViewController.shareSheetInView(["喜欢念上的这张照片", image!], applicationActivities: [])
+                    let url = NSURL(string: "http://nian.so")
+                    let avc = SAActivityViewController.shareSheetInView(["喜欢念上的这张照片", image!, url!], applicationActivities: [], isStep: true)
                     self.findRootViewController()?.presentViewController(avc, animated: true, completion: nil)
                 }
             }
