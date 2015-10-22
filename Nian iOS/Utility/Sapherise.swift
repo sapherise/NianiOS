@@ -35,7 +35,9 @@ var globalCurrentCircle: Int = 0
 var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
-var globalTab = [true, true, true, true]
+
+// 定义三个页面为未加载状态
+var globalTabhasLoaded = [false, false, false]
 var globalReachability = ""
 
 let globalWidth = UIScreen.mainScreen().bounds.width
@@ -380,11 +382,8 @@ extension UIViewController {
         Sa.removeObjectForKey("user")
         Sa.synchronize()
         
-//        var _welcomeVC = WelcomeViewController()
-//        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-//            self.presentViewController(_welcomeVC, animated: false, completion: nil)
-//            
-//        })
+        // 退出后应该设置三个都为未加载状态
+        globalTabhasLoaded = [false, false, false]
         
         self.dismissViewControllerAnimated(true, completion: nil)
         client.leave()
@@ -526,8 +525,6 @@ extension UIImageView{
     }
     
     func setHolder(){
-        self.image = UIImage(named: "drop")
-        self.backgroundColor = IconColor
         self.contentMode = UIViewContentMode.Center
     }
     
@@ -768,7 +765,7 @@ func setCacheImage(url: String, img: UIImage, width: CGFloat) {
     UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
 }
 
-func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: String, tableView: UITableView) {
+func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: AnyObject, tableView: UITableView) {
     let data = dataArray[index] as! NSDictionary
     let mutableItem = NSMutableDictionary(dictionary: data)
     mutableItem.setValue(value, forKey: key)
@@ -949,32 +946,4 @@ public func synchronized(lock: AnyObject, closure: () -> ()) {
     objc_sync_enter(lock)
     closure()
     objc_sync_exit(lock)
-}
-
-
-func getHeightCell(dataArray: NSMutableArray, index: Int)->CGFloat {
-    let data = dataArray[index] as! NSDictionary
-    let heightCell = data.stringAttributeForKey("heightCell")
-    let isEdit = data.stringAttributeForKey("isEdit")
-    // 当高度
-    if heightCell == "" ||  isEdit == "1"{
-        let arr = SAStepCell.cellHeight(data)
-        let heightCell = arr[0] as! CGFloat
-        let heightContent = arr[1] as! CGFloat
-        let widthComment = arr[2] as! CGFloat
-        let widthLike = arr[3] as! CGFloat
-        let d = NSMutableDictionary(dictionary: data)
-        let content = data.stringAttributeForKey("content").decode()
-        let title = data.stringAttributeForKey("title").decode()
-        d.setValue(heightCell, forKey: "heightCell")
-        d.setValue(heightContent, forKey: "heightContent")
-        d.setValue(content, forKey: "content")
-        d.setValue(title, forKey: "title")
-        d.setValue(widthComment, forKey: "widthComment")
-        d.setValue(widthLike, forKey: "widthLike")
-        dataArray.replaceObjectAtIndex(index, withObject: d)
-        return heightCell
-    } else {
-        return CGFloat((heightCell as NSString).floatValue)
-    }
 }

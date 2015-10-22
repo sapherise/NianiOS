@@ -8,10 +8,11 @@
 
 import UIKit
 
-@objc protocol AddstepDelegate {   //😍
+@objc protocol AddstepDelegate {
     func Editstep()
     optional func countUp(coin: String, isfirst: String)
     optional func countUp(coin: String, total: String, isfirst: String)
+    optional func update(data: NSDictionary)
     var editStepRow:Int { get set }
     var editStepData:NSDictionary? { get set }
 }
@@ -25,7 +26,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     @IBOutlet var viewHolder: UIView!
     
     var Id:String = ""
-    var delegate: AddstepDelegate?      //😍
+    var delegate: AddstepDelegate?
     var actionSheet:UIActionSheet?
     var imagePicker:UIImagePickerController?
     var uploadUrl:String = ""
@@ -162,13 +163,14 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
     func addStep(){
         self.navigationItem.rightBarButtonItems = buttonArray()
         let content = self.TextView.text
-//        content = SAEncode(SAHtml(content))
         Api.postAddStep_AFN(self.Id, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 globalWillNianReload = 1
-                let coin = json!.objectForKey("coin") as! String
-                let isfirst = json!.objectForKey("isfirst") as! String
-                let totalCoin = json!.objectForKey("totalCoin") as! String
+                let data = json!.objectForKey("data") as! NSDictionary
+                let coin = data.stringAttributeForKey("coin")
+                let isfirst = data.stringAttributeForKey("isfirst")
+                let totalCoin = data.stringAttributeForKey("totalCoin")
+                let sid = data.stringAttributeForKey("id")
                 
                 //  创建卡片
                 let modeCard = SACookie("modeCard")
@@ -181,9 +183,26 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                     card.url = "http://img.nian.so/step/\(self.uploadUrl)!large"
                     card.onCardSave()
                 }
-                //
+                let d = NSMutableDictionary()
+                d["content"] = self.TextView.text
+                d["image"] = self.uploadUrl
+                d["width"] = self.uploadWidth
+                d["height"] = self.uploadHeight
+                d["lastdate"] = V.now()
+                d["comments"] = 0
+                d["likes"] = 0
+                d["liked"] = 0
+                d["dream"] = self.Id
+                d["sid"] = sid
+                d["title"] = ""
+                d["uid"] = SAUid()
+                if let user = Cookies.get("user") as? String {
+                    d["user"] = user
+                } else {
+                    d["user"] = ""
+                }
                 self.delegate?.countUp!(coin, total: totalCoin, isfirst: isfirst)
-                
+                self.delegate?.update!(VVeboCell.SACellDataRecode(d as NSDictionary))
                 //
                 self.navigationController?.popViewControllerAnimated(true)
             }

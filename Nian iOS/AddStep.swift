@@ -78,7 +78,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                     let title = data.objectForKey("title") as! String
                     let image = data.objectForKey("img") as! String
                     let userImageURL = "http://img.nian.so/dream/\(image)!dream"
-                    self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
+                    self.imageDream.setImage(userImageURL)
                     self.dreamID = id
                     self.labelDream.text = title
                     self.btnOK.enabled = true
@@ -91,7 +91,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
                 let title = data.stringAttributeForKey("title")
                 let image = data.stringAttributeForKey("img")
                 let userImageURL = "http://img.nian.so/dream/\(image)!dream"
-                self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
+                self.imageDream.setImage(userImageURL)
                 self.dreamID = id
                 self.labelDream.text = title
                 self.btnOK.enabled = true
@@ -123,7 +123,7 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         let title = data!.objectForKey("title") as! String
         let image = data!.objectForKey("img") as! String
         let userImageURL = "http://img.nian.so/dream/\(image)!dream"
-        self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
+        self.imageDream.setImage(userImageURL)
         self.labelDream.text = title
         self.tableView.hidden = true
         self.dreamID = id
@@ -194,9 +194,12 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         Api.postAddStep_AFN(self.dreamID, content: content, img: self.uploadUrl, img0: self.uploadWidth, img1: self.uploadHeight) { json in
             if json != nil {
                 self.textView.resignFirstResponder()
-                let coin = json!.objectForKey("coin") as! String
-                let totalCoin = json!.objectForKey("totalCoin") as! String
-                self.isfirst = json!.objectForKey("isfirst") as! String
+                let data = json!.objectForKey("data") as! NSDictionary
+                let coin = data.objectForKey("coin") as! String
+                let totalCoin = data.objectForKey("totalCoin") as! String
+                self.isfirst = data.objectForKey("isfirst") as! String
+                
+                
                 globalWillNianReload = 1
                 
                 //  创建卡片
@@ -334,7 +337,7 @@ class AddStepCell: UITableViewCell {
             let image:String = self.data!.objectForKey("img") as! String
             let userImageURL = "http://img.nian.so/dream/\(image)!dream"
             self.labelTitle.text = title
-            self.imageDream.setImage(userImageURL, placeHolder: IconColor, bool: false)
+            self.imageDream.setImage(userImageURL)
         }
     }
     override func awakeFromNib() {
@@ -384,7 +387,7 @@ extension NIAlert {
                                                                 delay(0.1, closure: {
                                                                     self.imgView!.setScale(1.35)
                                                                     self.imgView?.alpha = 0
-                                                                    self.imgView?.setImage("http://img.nian.so/pets/\(url)!d", placeHolder: UIColor.clearColor(), bool: false, ignore: true)
+                                                                    self.imgView?.setPet("http://img.nian.so/pets/\(url)!d")
                                                                     UIView.animateWithDuration(0.1, animations: {
                                                                         self.imgView?.alpha = 1
                                                                         self.imgView!.setScale(1.55)

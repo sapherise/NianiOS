@@ -8,9 +8,8 @@
 
 import UIKit
 
-class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, editDreamDelegate, delegateSAStepCell, topDelegate, ShareDelegate{
+class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, editDreamDelegate, topDelegate, ShareDelegate {
     
-    var tableView: UITableView!
     var page: Int = 1
     var Id: String = "1"
     var deleteDreamSheet:UIActionSheet?
@@ -21,21 +20,19 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     
-    var dataArray = NSMutableArray()
     var dataArrayTop: NSDictionary!
     var btnMain: UIButton!
     
     var alertCoin: NIAlert?
     
-    // 用在计算 table view 滚动时应不应该加载图片
-    var targetRect: NSValue?
+    var SATableView: VVeboTableView!
+    var dataArray = NSMutableArray()
     
     override func viewDidLoad(){
         super.viewDidLoad()
-            
         setupViews()
         setupRefresh()
-        tableView.headerBeginRefreshing()
+        SATableView.headerBeginRefreshing()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -47,6 +44,8 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.viewBackFix()
     }
     
+    //
+    
     func setupViews() {
         self.viewBack()
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
@@ -54,18 +53,17 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.view.addSubview(self.navView)
         self.view.backgroundColor = UIColor.whiteColor()
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
-        self.tableView!.delegate = self
-        self.tableView!.dataSource = self
-        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.SATableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
+        self.SATableView.delegate = self
+        self.SATableView.dataSource = self
         
         let nib = UINib(nibName:"DreamCell", bundle: nil)
         let nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         
-        self.tableView?.registerNib(nib, forCellReuseIdentifier: "dream")
-        self.tableView?.registerNib(nib2, forCellReuseIdentifier: "dreamtop")
-        self.tableView?.registerNib(UINib(nibName:"SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
-        self.view.addSubview(self.tableView!)
+        self.SATableView.registerNib(nib, forCellReuseIdentifier: "dream")
+        self.SATableView.registerNib(nib2, forCellReuseIdentifier: "dreamtop")
+        self.view.addSubview(self.SATableView)
+        currenTableView = SATableView
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
@@ -84,7 +82,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             if json != nil {
                 if json!.objectForKey("error") as! NSNumber != 0 {
                     let status = json!.objectForKey("status") as! NSNumber
-                    self.tableView?.hidden = true
+                    self.SATableView.hidden = true
                     self.navigationItem.rightBarButtonItems = []
                     if status == 404 {
                         self.view.addGhost("这个记本\n不见了")
@@ -98,17 +96,20 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                     if clear {
                         self.dataArrayTop = data!.objectForKey("dream") as! NSDictionary
                         self.dataArray.removeAllObjects()
+                        self.SATableView.clearVisibleCell()
                         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
                         btnMore.image = UIImage(named: "more")
                         self.navigationItem.rightBarButtonItems = [btnMore]
                     }
                     let steps = data!.objectForKey("steps") as! NSArray
-                    for data in steps {
+                    for d in steps {
+                        let data = VVeboCell.SACellDataRecode(d as! NSDictionary)
                         self.dataArray.addObject(data)
                     }
-                    self.tableView.reloadData()
-                    self.tableView.headerEndRefreshing()
-                    self.tableView.footerEndRefreshing()
+                    self.currentDataArray = self.dataArray
+                    self.SATableView.reloadData()
+                    self.SATableView.headerEndRefreshing()
+                    self.SATableView.footerEndRefreshing()
                     self.page++
                 }
             }
@@ -139,7 +140,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(percentNew, forKey: "percent")
             self.dataArrayTop = mutableData
-            self.tableView.reloadData()
+            self.SATableView.reloadData()
             Api.postCompleteDream(self.Id, percent: percentNew) { string in
             }
         }
@@ -165,7 +166,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(isLikedNew, forKey: "isliked")
             self.dataArrayTop = mutableData
-            self.tableView.reloadData()
+            self.SATableView.reloadData()
             Api.postLikeDream(self.Id, like: isLikedNew) { string in }
         }
         
@@ -191,7 +192,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
                 title = "\(title)（完成）"
             }
             UIView.animateWithDuration(0.3, animations: {
-                self.tableView.contentOffset.y = title.stringHeightBoldWith(18, width: 240) + 252 + 52
+                self.SATableView.contentOffset.y = title.stringHeightBoldWith(18, width: 240) + 252 + 52
             })
         }
     }
@@ -225,17 +226,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             return c
         } else {
-            let c = tableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
-            c.delegate = self
-            c.data = self.dataArray[indexPath.row] as? NSDictionary
-            c.index = indexPath.row
-            if indexPath.row == self.dataArray.count - 1 {
-                c.viewLine.hidden = true
-            } else {
-                c.viewLine.hidden = false
-            }
-            c.setupCell()
-            return c
+            return getCell(indexPath, dataArray: dataArray, type: 1)
         }
     }
     
@@ -276,7 +267,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             return 0
         }else{
-            return getHeightCell(dataArray, index: indexPath.row)
+            return getHeight(indexPath, dataArray: dataArray)
         }
     }
     
@@ -291,23 +282,22 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func onAddStep(){
         let vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
         vc.Id = self.Id
-        vc.delegate = self    //😍
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
     // MARK: - add step delegate
-    
-    func countUp(coin: String, total: String, isfirst: String) {
-        self.load()
-        
-        /* dataArrayTop 实际上是一个 Dict */
+    func update(data: NSDictionary) {
         if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
             let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue("\(step + 1)", forKey: "step")
             dataArrayTop = mutableData
-            tableView.reloadData()
+            dataArray.insertObject(data, atIndex: 0)
+            SATableView.clearVisibleCell()
+            SATableView.reloadData()
         }
-        
+    }
+    func countUp(coin: String, total: String, isfirst: String) {
         if isfirst == "1" {
             if Int(total) < 3 {
                 self.alertCoin = NIAlert()
@@ -329,14 +319,14 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
     func Editstep() {
         self.dataArray[self.editStepRow] = self.editStepData!
         let newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
-        self.tableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+        self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
     
     func setupRefresh(){
-        self.tableView!.addHeaderWithCallback({
+        self.SATableView!.addHeaderWithCallback({
             self.load()
         })
-        self.tableView!.addFooterWithCallback({
+        self.SATableView!.addFooterWithCallback({
             self.load(false)
         })
     }
@@ -381,7 +371,7 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         mutableData.setValue(editImage, forKey: "image")
         mutableData.setValue(editTags, forKey: "tags")
         dataArrayTop = mutableData
-        self.tableView.reloadData()
+        self.SATableView.reloadData()
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -408,26 +398,6 @@ class DreamViewController: UIViewController,UITableViewDelegate,UITableViewDataS
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
-    // 更新数据
-    func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArray, index: index, key: key, value: value, tableView: self.tableView)
-    }
-    
-    // 更新某个格子
-    func updateStep(index: Int) {
-        SAUpdate(index, section: 1, tableView: self.tableView)
-    }
-    
-    // 重载表格
-    func updateStep() {
-        SAUpdate(self.tableView)
-    }
-    
-    // 删除某个格子
-    func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, dataArray: self.dataArray, index: index, tableView: self.tableView, section: 1)
-    }
-    
 }
 
 // MARK: - 实现 NIAlertDelegate
@@ -438,5 +408,4 @@ extension DreamViewController: NIAlertDelegate {
         }
     }
 }
-
 

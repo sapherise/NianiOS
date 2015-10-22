@@ -14,11 +14,12 @@ protocol DreamSelectedDelegate {
 
 class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
     var type = 0    // 0 为
-    var arrType = ["编辑推荐", "最新", "插入记本"]
+    var arrType = ["推荐", "最新", "插入记本"]
     var dataArray = NSMutableArray()
     var collectionView: UICollectionView!
     var page = 1
     var delegate: DreamSelectedDelegate?
+    var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,64 +52,73 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
     }
     
     func load(clear: Bool = true) {
-        if clear {
-            page = 1
-        }
-        // 编辑推荐
-        if type == 0 {
-            Api.getDiscoverEditorRecom("\(page)") { json in
-                if json != nil {
-                    let error = json!.objectForKey("error") as! NSNumber
-                    if error == 0 {
-                        if clear {
-                            self.dataArray.removeAllObjects()
+        if !isLoading {
+            isLoading = true
+            if clear {
+                page = 1
+            }
+            // 推荐
+            if type == 0 {
+                Api.getDiscoverEditorRecom("\(page)") { json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        if error == 0 {
+                            if clear {
+                                self.dataArray.removeAllObjects()
+                            }
+                            let arr = json!.objectForKey("data") as! NSArray
+                            for d in arr {
+                                let data = self.getDataEncode(d)
+                                self.dataArray.addObject(data!)
+                            }
+                            self.collectionView.reloadData()
+                            self.collectionView.headerEndRefreshing()
+                            self.collectionView.footerEndRefreshing()
+                            self.page++
+                            self.isLoading = false
                         }
-                        let arr = json!.objectForKey("data") as! NSArray
-                        for d in arr {
-                            self.dataArray.addObject(d)
-                        }
-                        self.collectionView.reloadData()
-                        self.collectionView.headerEndRefreshing()
-                        self.collectionView.footerEndRefreshing()
-                        self.page++
                     }
                 }
-            }
-        } else if type == 1 {
-            Api.getDiscoverLatest("\(page)") { json in
-                if json != nil {
-                    let error = json!.objectForKey("error") as! NSNumber
-                    if error == 0 {
-                        if clear {
-                            self.dataArray.removeAllObjects()
+            } else if type == 1 {
+                Api.getDiscoverLatest("\(page)") { json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        if error == 0 {
+                            if clear {
+                                self.dataArray.removeAllObjects()
+                            }
+                            let arr = json!.objectForKey("data") as! NSArray
+                            for d in arr {
+                                let data = self.getDataEncode(d)
+                                self.dataArray.addObject(data!)
+                            }
+                            self.collectionView.reloadData()
+                            self.collectionView.headerEndRefreshing()
+                            self.collectionView.footerEndRefreshing()
+                            self.page++
+                            self.isLoading = false
                         }
-                        let arr = json!.objectForKey("data") as! NSArray
-                        for d in arr {
-                            self.dataArray.addObject(d)
-                        }
-                        self.collectionView.reloadData()
-                        self.collectionView.headerEndRefreshing()
-                        self.collectionView.footerEndRefreshing()
-                        self.page++
                     }
                 }
-            }
-        } else if type == 2 {
-            if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
-                for data in NianDream {
-                    let d = data as! NSDictionary
-                    let image = d.stringAttributeForKey("img")
-                    let _private = d.stringAttributeForKey("private")
-                    if _private == "0" {
-                        let mutableData = NSMutableDictionary(dictionary: d)
-                        mutableData.setValue(image, forKey: "image")
-                        dataArray.addObject(mutableData)
+            } else if type == 2 {
+                if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
+                    for data in NianDream {
+                        let d = data as! NSDictionary
+                        let image = d.stringAttributeForKey("img")
+                        let _private = d.stringAttributeForKey("private")
+                        if _private == "0" {
+                            let mutableData = NSMutableDictionary(dictionary: d)
+                            mutableData.setValue(image, forKey: "image")
+                            let _mutableData = self.getDataEncode(mutableData)
+                            dataArray.addObject(_mutableData!)
+                        }
                     }
                 }
+                self.collectionView.headerEndRefreshing()
+                self.collectionView.footerEndRefreshing()
+                self.collectionView.reloadData()
+                isLoading = false
             }
-            self.collectionView.headerEndRefreshing()
-            self.collectionView.footerEndRefreshing()
-            self.collectionView.reloadData()
         }
     }
     
@@ -149,5 +159,17 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                 collectionView.footerBeginRefreshing()
             }
         }
+    }
+    
+    func getDataEncode(d: AnyObject) -> NSMutableDictionary? {
+        if let _d = d as? NSDictionary {
+            let data = NSMutableDictionary(dictionary: _d)
+            let title = _d.stringAttributeForKey("title").decode()
+            let heightTitle = title.stringHeightWith(14, width: 80)
+            data["title"] = title
+            data["heightTitle"] = heightTitle
+            return data
+        }
+        return nil
     }
 }

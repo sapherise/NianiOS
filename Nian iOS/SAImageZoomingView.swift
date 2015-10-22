@@ -51,6 +51,7 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imageView!.setImage(self.imageURL, placeHolder: IconColor, ignore: true)
+        self.imageView!.backgroundColor = IconColor
+        self.imageView!.setImageIgnore(self.imageURL)
     }
 }

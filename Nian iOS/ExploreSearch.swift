@@ -28,7 +28,7 @@ class NITextfield: UITextField {
 *  @brief  <#Description#>
 *
 */
-class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, delegateSAStepCell{
+class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var dataArrayUser = NSMutableArray() {
         didSet {
             if dataArrayUser.count > 0 {
@@ -107,7 +107,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var rightButton: UIBarButtonItem?
     
     // 用在计算 table view 滚动时应不应该加载图片
-    var targetRect: NSValue?
+//    var targetRect: NSValue?
     
     // MARK: - all table view 都是延迟加载的
     
@@ -141,9 +141,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         return dreamTableView
     }()
    
-    lazy var stepTableView: UITableView = {
-        let stepTableView = UITableView(frame: CGRectMake(globalWidth * 2, 0, globalWidth, globalHeight - 104))
-        stepTableView.registerNib(UINib(nibName: "SAStepCell", bundle: nil), forCellReuseIdentifier: "SAStepCell")
+    lazy var stepTableView: VVeboTableView = {
+        let stepTableView = VVeboTableView(frame: CGRectMake(globalWidth * 2, 0, globalWidth, globalHeight - 104))
         stepTableView.separatorStyle = .None
         
         stepTableView.dataSource = self
@@ -323,6 +322,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     :param: index <#index description#>
     */
     func showTableViewWithIndex(index: Int) {
+        currenTableView = nil
         switch index {
         case 0:
             if let _ = self.tableDict[index] {
@@ -343,6 +343,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 self.scrollView.addSubview(dreamTableView)
             }
         case 2:
+            currenTableView = stepTableView
             if let _ = self.tableDict[index] {
             } else {
                 self.tableDict[index] = stepTableView
@@ -366,6 +367,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func load(index: Int, clear: Bool) {
+        currenTableView = nil
         for (_index, _table) in self.tableDict {
             if _index == index {
                 _table.hidden = false
@@ -448,7 +450,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - 关注搜索的内容
     /* */
-    // TODO: -
     func Follow(sender: AnyObject) {
         if self.searchText.text?.characters.count > 0{
             self.navigationItem.rightBarButtonItems = buttonArray()
@@ -613,6 +614,7 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func stepSearch(clear: Bool) {
+        currenTableView = stepTableView
         if clear {
             stepPage = 1
         }
@@ -620,15 +622,18 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             json in
             if json != nil {
                 if clear {
+                    self.stepTableView.clearVisibleCell()
                     self.dataArrayStep.removeAllObjects()
                 }
                 let data: AnyObject? = json!.objectForKey("data")
                 let itemsStep = data?.objectForKey("steps") as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
-                        self.dataArrayStep.addObject(item)
+                        let d = VVeboCell.SACellDataRecode(item as! NSDictionary)
+                        self.dataArrayStep.addObject(d)
                     }
                 }
+                self.currentDataArray = self.dataArrayStep
                 if self.dataArrayStep.count == 0 {
                     let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
                     v.addGhost("没有一个进展里有这个关键字！\n我还以为世界上没有人能看到这条错误提示呢...")
@@ -718,19 +723,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             return cell!
         case 2:
-            let c = self.stepTableView.dequeueReusableCellWithIdentifier("SAStepCell", forIndexPath: indexPath) as! SAStepCell
-            c.delegate = self
-            c.data = self.dataArrayStep[indexPath.row] as? NSDictionary
-            c.index = indexPath.row
-            if indexPath.row == self.dataArrayStep.count - 1 {
-                c.viewLine.hidden = true
-            } else {
-                c.viewLine.hidden = false
-            }
-            c.setupCell()
-            return c
+            return getCell(indexPath, dataArray: dataArrayStep)
         case 3:
-            // TODO: - 完成 topic cell
             let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  
             cell.delegate = self
             cell.data = self.dataArrayTopic[indexPath.row] as! NSDictionary
@@ -763,7 +757,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             self.navigationController?.pushViewController(viewController, animated: true)
         } else if index == 3 {
-            // TODO: - topic cell select 事件
             let dict = dataArrayTopic[indexPath.row] as! NSDictionary
             
             let TopicVC = TopicViewController()
@@ -801,9 +794,8 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 return heightCell.toCGFloat()
             }
         } else if index == 2 {
-            return getHeightCell(dataArrayStep, index: indexPath.row)
+            return getHeight(indexPath, dataArray: dataArrayStep)
         } else if index == 3 {
-            // TODO: - topic cell 高度
             let data = dataArrayTopic[indexPath.row] as! NSDictionary
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode()
@@ -882,26 +874,6 @@ class ExploreSearch: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         return true
     }
-    
-    // 更新数据
-    func updateStep(index: Int, key: String, value: String) {
-        SAUpdate(self.dataArrayStep, index: index, key: key, value: value, tableView: self.dreamTableView)
-    }
-    
-    // 更新某个格子
-    func updateStep(index: Int) {
-        SAUpdate(index, section: 1, tableView: self.dreamTableView)
-    }
-    
-    // 重载表格
-    func updateStep() {
-        SAUpdate(self.dreamTableView)
-    }
-    
-    // 删除某个格子
-    func updateStep(index: Int, delete: Bool) {
-        SAUpdate(delete, dataArray: self.dataArrayStep, index: index, tableView: self.dreamTableView, section: 1)
-    }
 }
 
 extension ExploreSearch: RedditDelegate {
@@ -951,22 +923,9 @@ extension ExploreSearch: UIActionSheetDelegate {
 //=======
 // MARK: - 实现 UIScrollView Delegate
 extension ExploreSearch {
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        if scrollView is UITableView {
-            self.targetRect = nil
-        }
-    }
-
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        if scrollView is UITableView {
-            let targetRect: CGRect = CGRectMake(targetContentOffset.memory.x, targetContentOffset.memory.y, scrollView.frame.size.width, scrollView.frame.size.height)
-            self.targetRect = NSValue(CGRect: targetRect)
-        }
-    }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView is UITableView {
-            self.targetRect = nil
             
             if index == 2 {
 //                self.loadImagesForVisibleCells()
@@ -992,26 +951,6 @@ extension ExploreSearch {
             }
         }
     }
-    
-    /**
-    主要针对 Step table 优化，因为这一页的图片往往很大
-    */
-//    func loadImagesForVisibleCells() {
-//        let cellArray = self.stepTableView.visibleCells
-//        
-//        for cell in cellArray {
-//            if cell is SAStepCell {
-//                let indexPath = self.stepTableView.indexPathForCell(cell as! SAStepCell)
-//                var _tmpShouldLoadImg = false
-//                
-//                _tmpShouldLoadImg = self.shouldLoadCellImage(cell as! SAStepCell, withIndexPath: indexPath!)
-//                
-//                if _tmpShouldLoadImg {
-//                    self.stepTableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-//                }
-//            }
-//        }
-//    }
 }
 // MARK: - UIGestureRecognizerDelegate
 extension ExploreSearch {
