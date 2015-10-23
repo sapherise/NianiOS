@@ -8,7 +8,7 @@
         <!--Welcome View Controller-->
         <scene sceneID="6sX-07-cJp">
             <objects>
-                <viewController id="6DU-gU-wTt" customClass="WelcomeViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="welcomeViewController" id="6DU-gU-wTt" customClass="WelcomeViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CBm-pb-DqJ"/>
                         <viewControllerLayoutGuide type="bottom" id="ANd-5L-1A6"/>
@@ -46,7 +46,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zit-kT-Azf" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="278" y="532" width="44" height="44"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="5u3-NV-ypy"/>
                                 </constraints>
@@ -58,7 +57,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbp-he-Xhq" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="72" y="532" width="44" height="44"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Z9c-N6-AH2"/>
                                 </constraints>
@@ -70,7 +68,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVt-bD-UmS" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="484" y="532" width="44" height="44"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="mvK-NQ-KIs"/>
                                 </constraints>
@@ -177,7 +174,7 @@
         <!--Log Or Reg View Controller-->
         <scene sceneID="Cv3-Tf-ZBs">
             <objects>
-                <viewController id="PWr-CO-SWy" customClass="LogOrRegViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="logOrRegViewController" id="PWr-CO-SWy" customClass="LogOrRegViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w2Z-ZY-yki"/>
                         <viewControllerLayoutGuide type="bottom" id="sjY-EG-EGh"/>
@@ -197,7 +194,7 @@
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wH5-fu-1YY">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wH5-fu-1YY" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="24" y="131" width="552" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
@@ -207,7 +204,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zzw-fx-yPi">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zzw-fx-yPi" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="24" y="131" width="552" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
@@ -217,7 +214,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-T7-xRk">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-T7-xRk" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="24" y="131" width="552" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
@@ -227,7 +224,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5B-GQ-h3I">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5B-GQ-h3I" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="24" y="199" width="552" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
@@ -239,7 +236,7 @@
                                     <color key="titleColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="onFunctionalButton:" destination="PWr-CO-SWy" eventType="touchUpInside" id="U6l-tl-eQE"/>
+                                    <action selector="onFunctionalButton:" destination="PWr-CO-SWy" eventType="touchUpInside" id="74b-VG-fra"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qox-5h-ozL">
@@ -250,6 +247,9 @@
                                     <constraint firstAttribute="height" constant="48" id="std-Y6-o8v"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="signin_cancel"/>
+                                <connections>
+                                    <action selector="backWelcomeViewController:" destination="PWr-CO-SWy" eventType="touchUpInside" id="JRX-aG-l6K"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aiM-V0-p1m">
                                 <rect key="frame" x="263" y="251" width="75" height="44"/>
@@ -323,14 +323,14 @@
                     <connections>
                         <outlet property="cancelButton" destination="Qox-5h-ozL" id="eks-g1-ybk"/>
                         <outlet property="descriptionLabel" destination="7Zy-4H-vO5" id="9Tg-Wz-WOf"/>
-                        <outlet property="emailTextField" destination="wH5-fu-1YY" id="5uJ-ad-xpe"/>
+                        <outlet property="emailTextField" destination="wH5-fu-1YY" id="xDQ-Fx-Q8h"/>
                         <outlet property="emailTextFieldToTop" destination="V0R-J5-lRC" id="28X-YV-rWT"/>
                         <outlet property="forgetPWDButton" destination="aiM-V0-p1m" id="XGj-b7-oNq"/>
-                        <outlet property="functionalButton" destination="P5B-GQ-h3I" id="i3D-Me-wbv"/>
+                        <outlet property="functionalButton" destination="P5B-GQ-h3I" id="dvz-5c-TRv"/>
                         <outlet property="functionalButtonTopToEmail" destination="Rwn-rb-rcD" id="FlQ-5v-PDW"/>
-                        <outlet property="nicknameTextField" destination="Bus-T7-xRk" id="2yN-b8-WYe"/>
+                        <outlet property="nicknameTextField" destination="Bus-T7-xRk" id="hTB-9C-GdL"/>
                         <outlet property="nicknameTextFieldTopToPwd" destination="upq-Nl-YXf" id="4K2-gM-nT2"/>
-                        <outlet property="passwordTextField" destination="zzw-fx-yPi" id="MuE-ap-LVz"/>
+                        <outlet property="passwordTextField" destination="zzw-fx-yPi" id="VcK-sr-an7"/>
                         <outlet property="privacyContainerView" destination="Kkc-ez-6hC" id="nZ3-YU-lPt"/>
                         <outlet property="pwdTextFieldTopToEmail" destination="ufo-h2-EnY" id="nMU-Xh-D81"/>
                         <segue destination="QFM-R0-FhJ" kind="presentation" identifier="toModeVC" id="vT0-aE-KYp"/>
@@ -340,10 +340,10 @@
             </objects>
             <point key="canvasLocation" x="77" y="513"/>
         </scene>
-        <!--View Controller-->
+        <!--Pattern View Controller-->
         <scene sceneID="srH-FW-NXF">
             <objects>
-                <viewController id="QFM-R0-FhJ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="patternViewController" id="QFM-R0-FhJ" customClass="PatternViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uUf-sE-s8k"/>
                         <viewControllerLayoutGuide type="bottom" id="yHY-SX-BJR"/>
@@ -404,6 +404,9 @@
                                             <constraint firstAttribute="width" constant="125" id="oti-uO-QOE"/>
                                             <constraint firstItem="uqU-r3-C5f" firstAttribute="top" secondItem="1lV-t5-AHz" secondAttribute="bottom" constant="24" id="xAg-II-TxB"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="XtK-lB-YQb" appends="YES" id="chh-c0-N1V"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vBJ-V7-ToN" userLabel="Right View">
                                         <rect key="frame" x="167" y="1" width="125" height="250"/>
@@ -454,6 +457,9 @@
                                             <constraint firstAttribute="centerX" secondItem="ybV-Fo-C4t" secondAttribute="centerX" id="lyK-3K-PpS"/>
                                             <constraint firstItem="as6-3o-GMJ" firstAttribute="top" secondItem="H1f-Zo-U18" secondAttribute="bottom" constant="16" id="sSX-ve-cFV"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="wYx-jV-8MS" appends="YES" id="UiA-aS-ThQ"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Dq-pI-6rr">
                                         <rect key="frame" x="150" y="50" width="1" height="160"/>
@@ -485,22 +491,64 @@
                                     <constraint firstAttribute="width" constant="300" id="75B-qk-byV"/>
                                     <constraint firstAttribute="height" constant="72" id="xky-59-Se7"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                <color key="textColor" red="0.70196078429999997" green="0.70196078429999997" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN4-5f-XRn" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
+                                <rect key="frame" x="24" y="420" width="552" height="44"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="8oM-pF-gRh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="完成">
+                                    <color key="titleColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="accompolishRegister:" destination="QFM-R0-FhJ" eventType="touchUpInside" id="Tzu-WP-xsh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="fCg-ZI-ZKA" secondAttribute="centerX" id="Bc8-I5-P0X"/>
+                            <constraint firstItem="TN4-5f-XRn" firstAttribute="top" secondItem="fCg-ZI-ZKA" secondAttribute="bottom" constant="24" id="DfZ-or-TQJ"/>
                             <constraint firstItem="IGk-sn-SLx" firstAttribute="top" secondItem="bBd-ul-IjI" secondAttribute="top" constant="64" id="Dgh-Zs-eMH"/>
                             <constraint firstItem="fCg-ZI-ZKA" firstAttribute="top" secondItem="IGk-sn-SLx" secondAttribute="bottom" id="iUs-lj-2Kd"/>
+                            <constraint firstItem="TN4-5f-XRn" firstAttribute="leading" secondItem="bBd-ul-IjI" secondAttribute="leading" constant="24" id="lAV-BP-x4s"/>
                             <constraint firstAttribute="centerX" secondItem="IGk-sn-SLx" secondAttribute="centerX" id="rFu-H3-Yk9"/>
+                            <constraint firstAttribute="trailing" secondItem="TN4-5f-XRn" secondAttribute="trailing" constant="24" id="ymA-hN-VDM"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="accompolishButton" destination="TN4-5f-XRn" id="YEF-NC-TgM"/>
+                        <outlet property="containerView" destination="fCg-ZI-ZKA" id="bI3-mO-fTX"/>
+                        <outlet property="simpleIllustate" destination="as6-3o-GMJ" id="caI-5s-FIf"/>
+                        <outlet property="simpleImageView" destination="ybV-Fo-C4t" id="D9Y-xD-Mgi"/>
+                        <outlet property="simpleLabel" destination="H1f-Zo-U18" id="8Ea-vR-tmW"/>
+                        <outlet property="simpleView" destination="vBJ-V7-ToN" id="Yut-Fq-M0E"/>
+                        <outlet property="toughIllustrate" destination="Sp9-5B-0Ge" id="LU6-B4-Ihu"/>
+                        <outlet property="toughImageView" destination="1lV-t5-AHz" id="3yA-9h-vrP"/>
+                        <outlet property="toughLabel" destination="uqU-r3-C5f" id="IHI-of-m3I"/>
+                        <outlet property="toughView" destination="DGS-3d-AiA" id="mKP-zO-Eds"/>
+                        <outlet property="viewLine" destination="0Dq-pI-6rr" id="ZxX-ug-FQq"/>
+                        <outlet property="widthLine" destination="XsW-pQ-8cW" id="RJa-He-igv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgl-Yb-Wau" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="XtK-lB-YQb">
+                    <connections>
+                        <action selector="touchOnLeftView:" destination="QFM-R0-FhJ" id="nJF-ra-wbP"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="wYx-jV-8MS">
+                    <connections>
+                        <action selector="touchOnRightView:" destination="QFM-R0-FhJ" id="noT-mA-HaH"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="889" y="512"/>
         </scene>

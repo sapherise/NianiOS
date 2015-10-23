@@ -18,12 +18,6 @@ class SocialMediaButton: UIButton {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-    }
-    
-    // 将 UIButton 本来的“左图右字”，改成“上图下字”
-    convenience init(type buttonType: UIButtonType) {
-        self.init(type: buttonType)
-        
         let imageSize = self.imageView?.frame.size
         let titleSize = self.titleLabel?.frame.size
         
@@ -32,7 +26,10 @@ class SocialMediaButton: UIButton {
         
         let totalHeight = imageSize!.height + titleSize!.height + padding
         
+        // 调整 image 的位置和大小
         self.imageEdgeInsets = UIEdgeInsetsMake(-(totalHeight - imageSize!.height), 0, 0, -titleSize!.width)
+        // 调整 title 的位置和大小
         self.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize!.width, -(totalHeight - titleSize!.height), 0.0)
     }
+
 }

@@ -25,7 +25,7 @@ class WelcomeViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.logInButton.layer.cornerRadius = 22.0
         self.logInButton.layer.borderWidth = 0.5
-        self.logInButton.layer.borderColor = UIColor.colorWithHex("0xFAFAFA").CGColor
+        self.logInButton.layer.borderColor = UIColor.colorWithHex("0x333333").CGColor
         self.logInButton.layer.masksToBounds = true
     }
 

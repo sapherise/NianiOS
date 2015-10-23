@@ -15,7 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = BGColor
-        let navigationViewController = UINavigationController(rootViewController: WelcomeViewController())
+        
+        let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
+        let welcomeViewController = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
+        
+        let navigationViewController = UINavigationController(rootViewController: welcomeViewController)
         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
         navigationViewController.navigationBar.clipsToBounds = true
@@ -23,16 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
-        
-//        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-//            if #available(iOS 8.0, *) {
-//                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
-//                application.registerUserNotificationSettings(settings)
-//                application.registerForRemoteNotifications()
-//            }
-//        } else {
-//            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
-//        }
+
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")

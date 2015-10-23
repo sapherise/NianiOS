@@ -206,6 +206,8 @@
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
+		C43680141BDA0C4E00D51516 /* PatternViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43680131BDA0C4E00D51516 /* PatternViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C43680161BDA411C00D51516 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43680151BDA411C00D51516 /* CustomButton.swift */; settings = {ASSET_TAGS = (); }; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C470B22E1B94024A00863821 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22D1B94024A00863821 /* PushConfig.plist */; settings = {ASSET_TAGS = (); }; };
@@ -485,6 +487,8 @@
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
 		C42B7D481B564137008D3B36 /* ModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
 		C42B7D491B564137008D3B36 /* ModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeViewController.xib; sourceTree = "<group>"; };
+		C43680131BDA0C4E00D51516 /* PatternViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatternViewController.swift; sourceTree = "<group>"; };
+		C43680151BDA411C00D51516 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		C448F55D1B93F9F200214984 /* APService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
@@ -844,10 +848,11 @@
 			isa = PBXGroup;
 			children = (
 				C4CA84CC1BD8C76C0075B075 /* Welcome.storyboard */,
-				C4CA84C91BD8C76C0075B075 /* LogOrRegModel.swift */,
 				C4CA84CD1BD8C76C0075B075 /* WelcomeViewController.swift */,
 				C4CA84CA1BD8C76C0075B075 /* LogOrRegViewController.swift */,
+				C43680131BDA0C4E00D51516 /* PatternViewController.swift */,
 				C4CA84CB1BD8C76C0075B075 /* SocialMediaButton.swift */,
+				C4CA84C91BD8C76C0075B075 /* LogOrRegModel.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
 				12960F6B19BF22EC00CB973E /* 注册 */,
 				C42B7D471B56411C008D3B36 /* 模式 */,
@@ -1344,6 +1349,7 @@
 			isa = PBXGroup;
 			children = (
 				C47672E81B394DC10011C9AC /* NIAlert.swift */,
+				C43680151BDA411C00D51516 /* CustomButton.swift */,
 			);
 			name = NIALertView;
 			sourceTree = "<group>";
@@ -1660,6 +1666,7 @@
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
+				C43680141BDA0C4E00D51516 /* PatternViewController.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
 				12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */,
@@ -1728,6 +1735,7 @@
 				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
 				C4CA84D21BD8C76C0075B075 /* WelcomeViewController.swift in Sources */,
 				121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */,
+				C43680161BDA411C00D51516 /* CustomButton.swift in Sources */,
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
 				12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
