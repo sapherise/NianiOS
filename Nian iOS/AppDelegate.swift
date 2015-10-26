@@ -129,6 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
             return true
         } else if s == "wb4189056912" {
             return WeiboSDK.handleOpenURL(url, delegate: self)
+        } else if s == "tencent1104358951" {
+            return TencentOAuth.HandleOpenURL(url)
         }
         return true
     }
@@ -137,6 +139,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         let s = url.scheme
         if s == "wb4189056912" {
             return WeiboSDK.handleOpenURL(url, delegate: self)
+        } else if s == "tencent1104358951" {
+            return TencentOAuth.HandleOpenURL(url)
         }
         return true
     }

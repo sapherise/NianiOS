@@ -53,6 +53,9 @@
                                 <state key="normal" title="QQ" image="signin_qq">
                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="logInViaQQ:" destination="6DU-gU-wTt" eventType="touchUpInside" id="Tmb-Rb-ioE"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbp-he-Xhq" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="72" y="532" width="44" height="44"/>
@@ -64,6 +67,9 @@
                                 <state key="normal" title="微信" image="signin_wechat">
                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="logInViaWechat:" destination="6DU-gU-wTt" eventType="touchUpInside" id="0gb-gn-IIR"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVt-bD-UmS" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="484" y="532" width="44" height="44"/>
@@ -75,6 +81,9 @@
                                 <state key="normal" title="微博" image="signin_weibo">
                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="logInViaWeibo:" destination="6DU-gU-wTt" eventType="touchUpInside" id="ZDL-pl-Apm"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-le-DgG" userLabel="Container View">
                                 <rect key="frame" x="72" y="492" width="456" height="16"/>
@@ -117,13 +126,12 @@
                                     <constraint firstItem="wna-Sd-2V2" firstAttribute="leading" secondItem="fmJ-qh-fSB" secondAttribute="trailing" constant="8" id="zmj-gM-NEW"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aK1-UP-6wZ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aK1-UP-6wZ">
                                 <rect key="frame" x="72" y="424" width="456" height="44"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="4Du-Uq-7ub"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="邮箱登录">
                                     <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -165,6 +173,7 @@
                         <outlet property="qqButton" destination="Zit-kT-Azf" id="3GL-03-yvo"/>
                         <outlet property="wechatButton" destination="cbp-he-Xhq" id="TZ2-vi-t28"/>
                         <outlet property="weiboButton" destination="VVt-bD-UmS" id="eIA-g0-mpv"/>
+                        <segue destination="uAC-Da-Fmz" kind="presentation" identifier="toConfirm3rdLogIn" id="wT9-7w-h6S"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UCx-F1-llO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -339,6 +348,87 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wuF-UB-kmM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="77" y="513"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="R8Q-KC-ywo">
+            <objects>
+                <viewController id="uAC-Da-Fmz" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="giK-YF-WyX"/>
+                        <viewControllerLayoutGuide type="bottom" id="t0d-Oi-Ovw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PAb-uG-AFW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="确认昵称" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wa7-x9-7fr">
+                                <rect key="frame" x="24" y="84" width="552" height="21"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="oZi-Q7-HES"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vSO-xV-oKF" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                                <rect key="frame" x="24" y="129" width="552" height="44"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="AMb-Xd-Yde"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiQ-bp-gha" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
+                                <rect key="frame" x="24" y="197" width="552" height="44"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Hve-c0-YRS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="确定">
+                                    <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onFunctionalButton:" destination="PWr-CO-SWy" eventType="touchUpInside" id="Ti1-Fv-51o"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HSy-jB-431">
+                                <rect key="frame" x="0.0" y="20" width="44" height="44"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="ig0-ya-9a0"/>
+                                    <constraint firstAttribute="height" constant="44" id="k1E-U9-DhI"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="signin_cancel"/>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HSy-jB-431" firstAttribute="top" secondItem="giK-YF-WyX" secondAttribute="bottom" id="5Yg-P7-Ju7"/>
+                            <constraint firstItem="CiQ-bp-gha" firstAttribute="leading" secondItem="PAb-uG-AFW" secondAttribute="leading" constant="24" id="G3c-qK-2ak"/>
+                            <constraint firstAttribute="trailing" secondItem="wa7-x9-7fr" secondAttribute="trailing" constant="24" id="JQo-gj-Z0P"/>
+                            <constraint firstItem="wa7-x9-7fr" firstAttribute="leading" secondItem="PAb-uG-AFW" secondAttribute="leading" constant="24" id="Nqi-MN-dgo"/>
+                            <constraint firstItem="wa7-x9-7fr" firstAttribute="centerX" secondItem="PAb-uG-AFW" secondAttribute="centerX" id="QFe-4c-aIJ"/>
+                            <constraint firstItem="vSO-xV-oKF" firstAttribute="centerX" secondItem="PAb-uG-AFW" secondAttribute="centerX" id="SKq-ki-62N"/>
+                            <constraint firstItem="CiQ-bp-gha" firstAttribute="centerX" secondItem="PAb-uG-AFW" secondAttribute="centerX" id="hAE-8u-LLD"/>
+                            <constraint firstItem="vSO-xV-oKF" firstAttribute="top" secondItem="wa7-x9-7fr" secondAttribute="bottom" constant="24" id="hAt-MY-qct"/>
+                            <constraint firstAttribute="trailing" secondItem="vSO-xV-oKF" secondAttribute="trailing" constant="24" id="jCu-ch-frz"/>
+                            <constraint firstItem="HSy-jB-431" firstAttribute="leading" secondItem="PAb-uG-AFW" secondAttribute="leading" id="mRO-kT-Xiy"/>
+                            <constraint firstAttribute="trailing" secondItem="CiQ-bp-gha" secondAttribute="trailing" constant="24" id="nMz-4F-1jJ"/>
+                            <constraint firstItem="vSO-xV-oKF" firstAttribute="leading" secondItem="PAb-uG-AFW" secondAttribute="leading" constant="24" id="pAa-s9-Jql"/>
+                            <constraint firstItem="wa7-x9-7fr" firstAttribute="top" secondItem="giK-YF-WyX" secondAttribute="bottom" constant="64" id="qL5-WI-7ye"/>
+                            <constraint firstItem="CiQ-bp-gha" firstAttribute="top" secondItem="vSO-xV-oKF" secondAttribute="bottom" constant="24" id="s5E-xi-OpP"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rAC-Zz-Dn2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-646" y="1312"/>
         </scene>
         <!--Pattern View Controller-->
         <scene sceneID="srH-FW-NXF">
@@ -534,7 +624,7 @@
                         <outlet property="toughImageView" destination="1lV-t5-AHz" id="3yA-9h-vrP"/>
                         <outlet property="toughLabel" destination="uqU-r3-C5f" id="IHI-of-m3I"/>
                         <outlet property="toughView" destination="DGS-3d-AiA" id="mKP-zO-Eds"/>
-                        <outlet property="viewLine" destination="0Dq-pI-6rr" id="ZxX-ug-FQq"/>
+                        <outlet property="viewLine" destination="0Dq-pI-6rr" id="IA5-LY-5ke"/>
                         <outlet property="widthLine" destination="XsW-pQ-8cW" id="RJa-He-igv"/>
                     </connections>
                 </viewController>

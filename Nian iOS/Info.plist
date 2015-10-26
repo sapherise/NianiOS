@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string>Lite Project</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -30,6 +32,7 @@
 				<string>nian</string>
 				<string>wb4189056912</string>
 				<string>wx08fea299d0177c01</string>
+				<string>tencent1104358951</string>
 			</array>
 		</dict>
 	</array>

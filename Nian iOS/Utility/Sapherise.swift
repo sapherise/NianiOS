@@ -812,7 +812,7 @@ func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
 }
 
 extension UIColor {
-    class func colorWithHex(hexString: String) -> UIColor! {
+    class func colorWithHex(hexString: String) -> UIColor {
         let regexp = try? NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
             options: .CaseInsensitive)
         let num = regexp?.numberOfMatchesInString(hexString,

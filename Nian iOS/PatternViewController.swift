@@ -37,7 +37,7 @@ class PatternViewController: UIViewController {
     ///
     @IBOutlet weak var containerView: UIView!
     /// 中间的分割线
-    @IBOutlet var viewLine: UIView!
+    @IBOutlet weak var viewLine: UIView!
     ///
     @IBOutlet weak var accompolishButton: CustomButton!
     

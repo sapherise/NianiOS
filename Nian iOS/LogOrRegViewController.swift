@@ -123,18 +123,18 @@ class LogOrRegViewController: UIViewController {
     /**
     当在登录或者注册时修改邮箱，将返回 “只有 emailTextField” 的状态
     
-    :param: noti
+    :param: noti <#noti description#>
     */
     func emailTextFieldDidChange(noti: NSNotification) {
         if self.functionalType != .confirm {
             let _textfield = noti.object as! UITextField
             
             if _textfield == self.emailTextField {
-                // TODO: 返回 “只有 emailTextField” 的状态
+                // 返回 “只有 emailTextField” 的状态
                 if self.functionalType == .logIn {
-                    
+                    self.backToOnlyEmailTextField(fromFunctionType: .logIn)
                 } else if self.functionalType == .register {
-                    
+                    self.backToOnlyEmailTextField(fromFunctionType: .register)
                 }
             }
         }
@@ -279,7 +279,9 @@ class LogOrRegViewController: UIViewController {
         if segue.identifier == "toModeVC" {
             let regInfo = RegInfo(email: self.emailTextField.text!, nickname: self.nicknameTextField.text!, password: self.passwordTextField.text!)
             
+            /// 进入选择模式的 xib
             let patternViewController = segue.destinationViewController as! PatternViewController
+            /// 传递注册时需要的数据
             patternViewController.regInfo = regInfo
         }
         
@@ -393,7 +395,51 @@ extension LogOrRegViewController {
         self.passwordTextField.becomeFirstResponder()
     }
     
+    /**
+    返回只有 email text field 的状态
     
+    :param: type: 返回之前的 functional type
+    */
+    func backToOnlyEmailTextField(fromFunctionType type: FunctionType) {
+        if type == .logIn {
+            
+            self.view.layoutIfNeeded()
+            
+            UIView.animateWithDuration(0.4, animations: {
+                self.pwdTextFieldTopToEmail.constant = -44
+                self.functionalButtonTopToEmail.constant = 24
+                
+                self.emailTextFieldToTop.constant = 111
+                
+                self.view.layoutIfNeeded()
+                }, completion: { finished in
+                    if finished {
+                        self.passwordTextField.hidden = true
+                    }
+            })
+            
+        } else if type == .register {
+            
+            self.view.layoutIfNeeded()
+            
+            UIView.animateWithDuration(0.4, animations: {
+                    self.pwdTextFieldTopToEmail.constant = -44
+                    self.nicknameTextFieldTopToPwd.constant = -44
+                    self.functionalButtonTopToEmail.constant = 24
+                
+                    self.emailTextFieldToTop.constant = 111
+                
+                    self.view.layoutIfNeeded()
+                }, completion: { finished in
+                    if finished {
+                        self.passwordTextField.hidden = true
+                        self.nicknameTextField.hidden = true
+                    }
+            })
+        }
+        
+        self.functionalType = .confirm
+    }
     
     
 }

@@ -31,19 +31,19 @@
  */
 #import "KeychainItemWrapper.h"
 
-/**
- *  @author Bob Wei, 15-08-08 14:08:23
- *
- *  导入 objc runtime, 应用在 method swizzling
- */
-#import "objc/runtime.h"
+///**
+// *  @author Bob Wei, 15-08-08 14:08:23
+// *
+// *  导入 objc runtime, 应用在 method swizzling
+// */
+//#import "objc/runtime.h"
 
 /**
  *  @author Bob Wei, 15-08-08 14:08:23
  *
  *  应用第三方库实现 “字典 <--> Model” 的解析
  */
-#import "JSONModel.h"
+//#import "JSONModel.h"
 
 
 /**
@@ -68,3 +68,15 @@
  *  极光推送 API 
  */
 #import "APService.h"
+
+/**
+ *  @author Bob Wei, 15-10-26 16:10:41
+ *
+ *  @brief  QQ API
+ */
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/TencentMessageObject.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/TencentOAuthObject.h>
+#import <TencentOpenAPI/TencentApiInterface.h>
+#import "TencentOpenAPI/sdkdef.h"
