@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
-	<string>Lite Project</string>
+	<string>念</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -32,6 +32,15 @@
 				<string>nian</string>
 				<string>wb4189056912</string>
 				<string>wx08fea299d0177c01</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>qq</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
 				<string>tencent1104358951</string>
 			</array>
 		</dict>
@@ -46,6 +55,14 @@
 		<string>weibosdk2.5</string>
 		<string>weixin</string>
 		<string>wechat</string>
+		<string>mqq</string>
+		<string>wtloginmqq2</string>
+		<string>mqqopensdkapiV3</string>
+		<string>mqqopensdkapiV2</string>
+		<string>mqqwpa</string>
+		<string>mqqapi</string>
+		<string>mqqOpensdkSSoLogin</string>
+		<string>mqzone</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
@@ -131,6 +131,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
             return WeiboSDK.handleOpenURL(url, delegate: self)
         } else if s == "tencent1104358951" {
             return TencentOAuth.HandleOpenURL(url)
+        } else if s == "wx08fea299d0177c01" {
+            return WXApi.handleOpenURL(url, delegate: self)
         }
         return true
     }
@@ -172,6 +174,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         let welcomeVC = navViewController.viewControllers[0] as! WelcomeViewController
         welcomeVC.shouldNavToMe = true
     }
+    
+    func onResp(resp: BaseResp!) {
+        
+    }
+    
     
 }
 

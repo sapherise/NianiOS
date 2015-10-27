@@ -61,8 +61,19 @@ class WelcomeViewController: UIViewController {
                     self.view.hidden = false
                 })
             })
+        } else {  // 没有登录
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWeibo:", name: "Weibo", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWechat:", name: "Wechat", object: nil)
         }
         
+    }
+    
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Weibo", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Wechat", object: nil)
     }
 
     // MARK: - Navigation
@@ -88,10 +99,15 @@ class WelcomeViewController: UIViewController {
     
     */
     @IBAction func logInViaWechat(sender: UIButton) {
+        if WXApi.isWXAppInstalled() {
+            let req = SendAuthReq()
+            req.scope = "snsapi_userinfo"
+            
+            WXApi.sendReq(req)
+        } else {
         
         
-        
-        
+        }
     }
     
     /**
@@ -100,30 +116,30 @@ class WelcomeViewController: UIViewController {
     @IBAction func logInViaQQ(sender: UIButton) {
         let permissions = [
             kOPEN_PERMISSION_GET_USER_INFO,
-            kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,
-            kOPEN_PERMISSION_ADD_ALBUM,
-            kOPEN_PERMISSION_ADD_IDOL,
-            kOPEN_PERMISSION_ADD_ONE_BLOG,
-            kOPEN_PERMISSION_ADD_PIC_T,
-            kOPEN_PERMISSION_ADD_SHARE,
-            kOPEN_PERMISSION_ADD_TOPIC,
-            kOPEN_PERMISSION_CHECK_PAGE_FANS,
-            kOPEN_PERMISSION_DEL_IDOL,
-            kOPEN_PERMISSION_DEL_T,
-            kOPEN_PERMISSION_GET_FANSLIST,
-            kOPEN_PERMISSION_GET_IDOLLIST,
-            kOPEN_PERMISSION_GET_INFO,
-            kOPEN_PERMISSION_GET_OTHER_INFO,
-            kOPEN_PERMISSION_GET_REPOST_LIST,
-            kOPEN_PERMISSION_LIST_ALBUM,
-            kOPEN_PERMISSION_UPLOAD_PIC,
-            kOPEN_PERMISSION_GET_VIP_INFO,
-            kOPEN_PERMISSION_GET_VIP_RICH_INFO,
-            kOPEN_PERMISSION_GET_INTIMATE_FRIENDS_WEIBO,
-            kOPEN_PERMISSION_MATCH_NICK_TIPS_WEIBO
+            kOPEN_PERMISSION_GET_SIMPLE_USER_INFO //,
+//            kOPEN_PERMISSION_ADD_ALBUM,
+//            kOPEN_PERMISSION_ADD_IDOL,
+//            kOPEN_PERMISSION_ADD_ONE_BLOG,
+//            kOPEN_PERMISSION_ADD_PIC_T,
+//            kOPEN_PERMISSION_ADD_SHARE,
+//            kOPEN_PERMISSION_ADD_TOPIC,
+//            kOPEN_PERMISSION_CHECK_PAGE_FANS,
+//            kOPEN_PERMISSION_DEL_IDOL,
+//            kOPEN_PERMISSION_DEL_T,
+//            kOPEN_PERMISSION_GET_FANSLIST,
+//            kOPEN_PERMISSION_GET_IDOLLIST,
+//            kOPEN_PERMISSION_GET_INFO,
+//            kOPEN_PERMISSION_GET_OTHER_INFO,
+//            kOPEN_PERMISSION_GET_REPOST_LIST,
+//            kOPEN_PERMISSION_LIST_ALBUM,
+//            kOPEN_PERMISSION_UPLOAD_PIC,
+//            kOPEN_PERMISSION_GET_VIP_INFO,
+//            kOPEN_PERMISSION_GET_VIP_RICH_INFO,
+//            kOPEN_PERMISSION_GET_INTIMATE_FRIENDS_WEIBO,
+//            kOPEN_PERMISSION_MATCH_NICK_TIPS_WEIBO
         ]
         
-        let oauth = TencentOAuth(appId: "tencent1104358951", andDelegate: self)
+        let oauth = TencentOAuth(appId: "1104358951", andDelegate: self)
         oauth.authorize(permissions, inSafari: false)
     }
     
@@ -131,7 +147,11 @@ class WelcomeViewController: UIViewController {
     
     */
     @IBAction func logInViaWeibo(sender: UIButton) {
-   
+        let request = WBAuthorizeRequest()
+        request.redirectURI = "https://api.weibo.com/oauth2/default.html"
+        request.scope = "all"
+        request.userInfo = ["SSO_From": "WelcomeViewController"]
+        WeiboSDK.sendRequest(request)
     }
     
 
@@ -143,7 +163,7 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
     * 登录成功后的回调
     */
     func tencentDidLogin() {
-        
+        logInfo("already login")
     }
 
     /**
@@ -163,7 +183,27 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
 }
 
 
+extension WelcomeViewController {
 
+    /**
+     <#Description#>
+     
+     :param: noti <#noti description#>
+     */
+    func handleLogInViaWeibo(noti: NSNotification) {
+    
+    }
+    
+    /**
+     <#Description#>
+     
+     :param: noti <#noti description#>
+     */
+    func handleLogInViaWechat(noti: NSNotification) {
+        
+    }
+    
+}
 
 
 

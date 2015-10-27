@@ -74,9 +74,19 @@
  *
  *  @brief  QQ API
  */
-#import <TencentOpenAPI/TencentOAuth.h>
-#import <TencentOpenAPI/TencentMessageObject.h>
-#import <TencentOpenAPI/TencentOAuth.h>
-#import <TencentOpenAPI/TencentOAuthObject.h>
-#import <TencentOpenAPI/TencentApiInterface.h>
+#import "TencentOpenAPI/TencentOAuth.h"
+#import "TencentOpenAPI/TencentMessageObject.h"
+#import "TencentOpenAPI/TencentOAuth.h"
+#import "TencentOpenAPI/TencentOAuthObject.h"
+#import "TencentOpenAPI/TencentApiInterface.h"
 #import "TencentOpenAPI/sdkdef.h"
+
+//#import "LogInHelper.h"
+
+
+
+
+
+
+
+
