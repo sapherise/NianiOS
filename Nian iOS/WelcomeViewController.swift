@@ -20,6 +20,11 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var wechatButton: SocialMediaButton!
     @IBOutlet weak var qqButton: SocialMediaButton!
     @IBOutlet weak var weiboButton: SocialMediaButton!
+    
+    
+    var oauth: TencentOAuth?
+    lazy var thirdPartyType = String()
+    lazy var thirdPartyID = String()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +67,17 @@ class WelcomeViewController: UIViewController {
                 })
             })
         } else {  // 没有登录
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWeibo:", name: "Weibo", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWechat:", name: "Wechat", object: nil)
+
         }
         
+    }
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWeibo:", name: "weibo", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWechat:", name: "Wechat", object: nil)
     }
     
     
@@ -89,6 +101,12 @@ class WelcomeViewController: UIViewController {
             /*   */
             let logOrRegViewController = segue.destinationViewController as! LogOrRegViewController
             logOrRegViewController.functionalType = FunctionType.confirm
+        }
+        
+        if segue.identifier == "toConfirm3rdLogIn" {
+            let nicknameViewController = segue.destinationViewController as! NicknameViewController
+            nicknameViewController.originalType = self.thirdPartyType
+            nicknameViewController.id = self.thirdPartyID
         }
 
     }
@@ -116,31 +134,31 @@ class WelcomeViewController: UIViewController {
     @IBAction func logInViaQQ(sender: UIButton) {
         let permissions = [
             kOPEN_PERMISSION_GET_USER_INFO,
-            kOPEN_PERMISSION_GET_SIMPLE_USER_INFO //,
-//            kOPEN_PERMISSION_ADD_ALBUM,
-//            kOPEN_PERMISSION_ADD_IDOL,
-//            kOPEN_PERMISSION_ADD_ONE_BLOG,
-//            kOPEN_PERMISSION_ADD_PIC_T,
-//            kOPEN_PERMISSION_ADD_SHARE,
-//            kOPEN_PERMISSION_ADD_TOPIC,
-//            kOPEN_PERMISSION_CHECK_PAGE_FANS,
-//            kOPEN_PERMISSION_DEL_IDOL,
-//            kOPEN_PERMISSION_DEL_T,
-//            kOPEN_PERMISSION_GET_FANSLIST,
-//            kOPEN_PERMISSION_GET_IDOLLIST,
-//            kOPEN_PERMISSION_GET_INFO,
-//            kOPEN_PERMISSION_GET_OTHER_INFO,
-//            kOPEN_PERMISSION_GET_REPOST_LIST,
-//            kOPEN_PERMISSION_LIST_ALBUM,
-//            kOPEN_PERMISSION_UPLOAD_PIC,
-//            kOPEN_PERMISSION_GET_VIP_INFO,
-//            kOPEN_PERMISSION_GET_VIP_RICH_INFO,
-//            kOPEN_PERMISSION_GET_INTIMATE_FRIENDS_WEIBO,
-//            kOPEN_PERMISSION_MATCH_NICK_TIPS_WEIBO
+            kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,
+            kOPEN_PERMISSION_ADD_ALBUM,
+            kOPEN_PERMISSION_ADD_IDOL,
+            kOPEN_PERMISSION_ADD_ONE_BLOG,
+            kOPEN_PERMISSION_ADD_PIC_T,
+            kOPEN_PERMISSION_ADD_SHARE,
+            kOPEN_PERMISSION_ADD_TOPIC,
+            kOPEN_PERMISSION_CHECK_PAGE_FANS,
+            kOPEN_PERMISSION_DEL_IDOL,
+            kOPEN_PERMISSION_DEL_T,
+            kOPEN_PERMISSION_GET_FANSLIST,
+            kOPEN_PERMISSION_GET_IDOLLIST,
+            kOPEN_PERMISSION_GET_INFO,
+            kOPEN_PERMISSION_GET_OTHER_INFO,
+            kOPEN_PERMISSION_GET_REPOST_LIST,
+            kOPEN_PERMISSION_LIST_ALBUM,
+            kOPEN_PERMISSION_UPLOAD_PIC,
+            kOPEN_PERMISSION_GET_VIP_INFO,
+            kOPEN_PERMISSION_GET_VIP_RICH_INFO,
+            kOPEN_PERMISSION_GET_INTIMATE_FRIENDS_WEIBO,
+            kOPEN_PERMISSION_MATCH_NICK_TIPS_WEIBO
         ]
         
-        let oauth = TencentOAuth(appId: "1104358951", andDelegate: self)
-        oauth.authorize(permissions, inSafari: false)
+        oauth = TencentOAuth(appId: "1104358951", andDelegate: self)
+        oauth!.authorize(permissions, inSafari: false)
     }
     
     /**
@@ -157,13 +175,20 @@ class WelcomeViewController: UIViewController {
 
 }
 
-
+// MARK: - 实现 QQ 登录的相关代理
 extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
     /**
     * 登录成功后的回调
     */
     func tencentDidLogin() {
-        logInfo("already login")
+        guard let openid = oauth?.openId else {
+            return
+        }
+        
+        if openid.characters.count > 0 {
+            self.logInVia3rdHelper(openid, type: "QQ")
+        }
+        
     }
 
     /**
@@ -182,16 +207,31 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
     }
 }
 
-
+// MARK: - 处理“跳转微信或微博返回的结果”的相关通知
 extension WelcomeViewController {
 
     /**
-     <#Description#>
+     接收到微博登录的结果之后， appDelegate 会发送通知，通知里包含相关的 uid 和 token
      
      :param: noti <#noti description#>
      */
     func handleLogInViaWeibo(noti: NSNotification) {
-    
+        guard let notiObject = noti.object else {
+            return
+        }
+        
+        if (notiObject as! NSArray).count > 0 {
+            let uid = (notiObject as! NSArray)[0]
+            
+            self.logInVia3rdHelper(String(uid), type: "weibo")
+            
+        } else {
+            
+            
+            
+        }
+        
+        
     }
     
     /**
@@ -200,8 +240,46 @@ extension WelcomeViewController {
      :param: noti <#noti description#>
      */
     func handleLogInViaWechat(noti: NSNotification) {
+        guard let notiObject = noti.object else {
+            return
+        }
+        
+        if let openid = (notiObject as! NSDictionary)["openid"] as? String {
+            if openid.characters.count > 0 {
+                self.logInVia3rdHelper(openid, type: "wechat")
+            }
+        } else {
+            
+        }
         
     }
+    
+    
+    func logInVia3rdHelper(id: String, type: String) {
+        LogOrRegModel.check3rdOauth(id, type: type) {
+            (task, responseObject, error) in
+            
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        self.thirdPartyID = id
+        self.thirdPartyType = type
+        self.performSegueWithIdentifier("toConfirm3rdLogIn", sender: nil)
+            
+        
+        
+        
+    }
+    
     
 }
 

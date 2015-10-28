@@ -49,7 +49,18 @@ class LogOrRegModel: NSObject {
                                                 callback: callback)
     }
     
+    class func check3rdOauth(id: String, type: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post("oauth/check",
+                                                content: ["auth_id": "\(id)", "type": "\(type)"],
+                                                callback: callback)
+    }
     
+    class func registerVia3rd(id: String, type: String, name: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post("oauth/attempt",
+                                                content: ["username": "\(name)", "auth_id": "\(id)", "type": "\(type)"],
+                                                callback: callback)
+    }
+
 }
 
 class User: NSObject {
