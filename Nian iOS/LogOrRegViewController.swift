@@ -114,8 +114,8 @@ class LogOrRegViewController: UIViewController {
         super.viewDidDisappear(animated)
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: UITextFieldTextDidChangeNotification,
-            object: self.emailTextField)
+                                            name: UITextFieldTextDidChangeNotification,
+                                            object: self.emailTextField)
     }
     
     
@@ -294,6 +294,7 @@ class LogOrRegViewController: UIViewController {
 extension LogOrRegViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil) 
         
         return true
     }

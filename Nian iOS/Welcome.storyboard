@@ -25,7 +25,7 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signin_nian" translatesAutoresizingMaskIntoConstraints="NO" id="Cnj-Jk-8No">
-                                <rect key="frame" x="276" y="140" width="48" height="48"/>
+                                <rect key="frame" x="276" y="120" width="48" height="48"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Ypj-vN-nma"/>
@@ -33,7 +33,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="以游戏化的方式 连接全世界的 目标、进展和壮举" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LB5-hm-VIt">
-                                <rect key="frame" x="244" y="212" width="112" height="51"/>
+                                <rect key="frame" x="244" y="192" width="112" height="51"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="112" id="Fxr-63-WcV"/>
@@ -151,7 +151,7 @@
                             <constraint firstItem="aGX-ea-PTl" firstAttribute="leading" secondItem="tEf-DL-zcv" secondAttribute="leading" id="CGX-XE-KoG"/>
                             <constraint firstItem="ANd-5L-1A6" firstAttribute="top" secondItem="Zit-kT-Azf" secondAttribute="bottom" constant="24" id="JeM-SU-gVI"/>
                             <constraint firstItem="ANd-5L-1A6" firstAttribute="top" secondItem="cbp-he-Xhq" secondAttribute="bottom" constant="24" id="Osm-Cy-BOb"/>
-                            <constraint firstItem="Cnj-Jk-8No" firstAttribute="top" secondItem="CBm-pb-DqJ" secondAttribute="bottom" constant="120" id="Q5E-gu-Z8n"/>
+                            <constraint firstItem="Cnj-Jk-8No" firstAttribute="top" secondItem="CBm-pb-DqJ" secondAttribute="bottom" constant="100" id="Q5E-gu-Z8n"/>
                             <constraint firstItem="Zit-kT-Azf" firstAttribute="centerX" secondItem="tEf-DL-zcv" secondAttribute="centerX" id="S5E-Oi-49E"/>
                             <constraint firstAttribute="trailing" secondItem="VVt-bD-UmS" secondAttribute="trailing" constant="72" id="UYi-7P-0eo"/>
                             <constraint firstAttribute="trailing" secondItem="aGX-ea-PTl" secondAttribute="trailing" id="W1b-hf-mmB"/>
@@ -249,7 +249,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qox-5h-ozL">
-                                <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                <rect key="frame" x="0.0" y="20" width="48" height="48"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="MKN-92-aUs"/>
@@ -309,7 +309,7 @@
                             <constraint firstItem="Kkc-ez-6hC" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="8cb-fb-5bc"/>
                             <constraint firstItem="aiM-V0-p1m" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="Aad-0C-5pg"/>
                             <constraint firstItem="aiM-V0-p1m" firstAttribute="top" secondItem="P5B-GQ-h3I" secondAttribute="bottom" constant="8" id="EXe-JU-C3v"/>
-                            <constraint firstItem="Qox-5h-ozL" firstAttribute="top" secondItem="XIw-ov-MTc" secondAttribute="top" id="HSc-y3-nsN"/>
+                            <constraint firstItem="Qox-5h-ozL" firstAttribute="top" secondItem="XIw-ov-MTc" secondAttribute="top" constant="20" id="HSc-y3-nsN"/>
                             <constraint firstAttribute="trailing" secondItem="P5B-GQ-h3I" secondAttribute="trailing" constant="24" id="KMi-7F-pSt"/>
                             <constraint firstItem="Qox-5h-ozL" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" id="LEz-yS-O1J"/>
                             <constraint firstItem="7Zy-4H-vO5" firstAttribute="top" secondItem="w2Z-ZY-yki" secondAttribute="bottom" constant="48" id="Odq-4K-Qsg"/>
@@ -357,7 +357,7 @@
                         <viewControllerLayoutGuide type="top" id="giK-YF-WyX"/>
                         <viewControllerLayoutGuide type="bottom" id="t0d-Oi-Ovw"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="PAb-uG-AFW">
+                    <view key="view" contentMode="scaleToFill" id="PAb-uG-AFW" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -405,6 +405,9 @@
                                     <constraint firstAttribute="height" constant="44" id="k1E-U9-DhI"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="signin_cancel"/>
+                                <connections>
+                                    <action selector="backWelcomeViewController:" destination="uAC-Da-Fmz" eventType="touchUpInside" id="kjT-uq-n8V"/>
+                                </connections>
                             </button>
                         </subviews>
                         <animations/>
@@ -425,6 +428,9 @@
                             <constraint firstItem="wa7-x9-7fr" firstAttribute="top" secondItem="giK-YF-WyX" secondAttribute="bottom" constant="64" id="qL5-WI-7ye"/>
                             <constraint firstItem="CiQ-bp-gha" firstAttribute="top" secondItem="vSO-xV-oKF" secondAttribute="bottom" constant="24" id="s5E-xi-OpP"/>
                         </constraints>
+                        <connections>
+                            <action selector="dismissKeyboard:" destination="uAC-Da-Fmz" eventType="touchUpInside" id="PrB-hZ-ROu"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="button" destination="CiQ-bp-gha" id="HxO-9W-OR3"/>

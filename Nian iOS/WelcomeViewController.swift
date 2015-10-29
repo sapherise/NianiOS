@@ -9,14 +9,14 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-
+    /// 传递型参数，参考 HomeViewController 里的 shouldNavToMe
     var shouldNavToMe: Bool = false
     /// 如果读取到得 User 的 uid 和 shell 来自 NSUserdefault， 那么就要更新 Keychain
     var needUpdateKeychain: Bool = false
     
     /// 进入 “LogOrRegViewController”
     @IBOutlet weak var logInButton: UIButton!
-
+    
     @IBOutlet weak var wechatButton: SocialMediaButton!
     @IBOutlet weak var qqButton: SocialMediaButton!
     @IBOutlet weak var weiboButton: SocialMediaButton!
@@ -25,7 +25,11 @@ class WelcomeViewController: UIViewController {
     var oauth: TencentOAuth?
     lazy var thirdPartyType = String()
     lazy var thirdPartyID = String()
+    lazy var thirdPartyName = String()
+    var hasRegistered = false
 
+    //MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -107,11 +111,15 @@ class WelcomeViewController: UIViewController {
             let nicknameViewController = segue.destinationViewController as! NicknameViewController
             nicknameViewController.originalType = self.thirdPartyType
             nicknameViewController.id = self.thirdPartyID
+            nicknameViewController.nameFrom3rd = self.thirdPartyName
+            nicknameViewController.hasRegistered = self.hasRegistered
         }
 
     }
 
     /*=========================================================================================================================================*/
+    
+    // MARK: - 3rd 登录 Button Action
     
     /**
     
@@ -185,15 +193,45 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
             return
         }
         
-        if openid.characters.count > 0 {
-            self.logInVia3rdHelper(openid, type: "QQ")
+        guard let appid = oauth?.appId else {
+            return
+        }
+        
+        guard let accessToken = oauth?.accessToken else {
+            return
+        }
+        
+        if openid.characters.count > 0 && appid.characters.count > 0 && accessToken.characters.count > 0 {
+            
+            LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
+                (task, responseObject, error) in
+                
+                if let _error = error {
+                    logError("\(_error.localizedDescription)")
+                } else {
+                    let json = JSON(responseObject!)
+                    
+                    if json["ret"].numberValue != 0 {
+                        logError("\(json["msg"].stringValue)")
+                    } else {
+                        let _name = json["nickname"].stringValue
+                        
+                        if _name.characters.count > 0 {
+                            self.logInVia3rdHelper(openid, nameFrom3rd: _name, type: "QQ")
+                        }
+                    }
+                }
+            }
+            
+        } else {
+            
         }
         
     }
 
     /**
     * 登录失败后的回调
-    * \param cancelled 代表用户是否主动退出登录
+    * param cancelled 代表用户是否主动退出登录
     */
     func tencentDidNotLogin(cancelled: Bool) {
         
@@ -221,9 +259,32 @@ extension WelcomeViewController {
         }
         
         if (notiObject as! NSArray).count > 0 {
-            let uid = (notiObject as! NSArray)[0]
+            let uid = ((notiObject as! NSArray)[0] as? NSNumber)?.stringValue
+            let accessToken = (notiObject as! NSArray)[1] as? String
             
-            self.logInVia3rdHelper(String(uid), type: "weibo")
+            if uid != nil && accessToken != nil {
+                LogOrRegModel.getWeiboName(accessToken!, openid: uid!) {
+                   (task, responseObject, error) in
+                    
+                    if let _error = error {
+                        logError("\(_error.localizedDescription)")
+                    } else {
+                        let json = JSON(responseObject!)
+                        
+                        if let msg = json["error"].string {
+                            logError("\(msg)")
+                        } else {
+                            let _name = json["name"].stringValue
+                            
+                            if _name.characters.count > 0 {
+                                self.logInVia3rdHelper(uid!, nameFrom3rd: _name, type: "weibo")
+                            }
+                        }
+                    }
+                }
+                
+                
+            }
             
         } else {
             
@@ -245,8 +306,27 @@ extension WelcomeViewController {
         }
         
         if let openid = (notiObject as! NSDictionary)["openid"] as? String {
-            if openid.characters.count > 0 {
-                self.logInVia3rdHelper(openid, type: "wechat")
+            if let accessToken = (notiObject as! NSDictionary)["access_token"] as? String {
+                LogOrRegModel.getWechatName(accessToken, openid: openid) {
+                    (task, responseObject, error) in
+                    
+                    if let _error = error {
+                        logError("\(_error.localizedDescription)")
+                    } else {
+                        let json = JSON(responseObject!)
+                        
+                        if let errcode = json["errcode"].number {
+                            logError("\(errcode)")
+                        } else {
+                            let _name = json["nickname"].stringValue
+                            
+                            if openid.characters.count > 0 {
+                                self.logInVia3rdHelper(openid, nameFrom3rd: _name, type: "wechat")
+                            }
+                        }
+                    }
+                    
+                }
             }
         } else {
             
@@ -255,30 +335,79 @@ extension WelcomeViewController {
     }
     
     
-    func logInVia3rdHelper(id: String, type: String) {
+    func logInVia3rdHelper(id: String, nameFrom3rd: String, type: String) {
+        // TODO: start animating
+        
         LogOrRegModel.check3rdOauth(id, type: type) {
             (task, responseObject, error) in
             
+            //TODO: stop animating
             
+            if let _error = error {
+                logError("\(_error.description)")
+            } else {
+                let json = JSON(responseObject!)
+                
+                if json["data"] == "0" {
+                    self.hasRegistered = false
+                } else if json["data"] == "1" {
+                    self.hasRegistered = true
+                }
+                
+                if self.hasRegistered == false {
+                    self.thirdPartyID = id
+                    self.thirdPartyType = type
+                    self.thirdPartyName = nameFrom3rd
+                    self.performSegueWithIdentifier("toConfirm3rdLogIn", sender: nil)
+                } else {
+                    LogOrRegModel.logInVia3rd(id, type: type) {
+                        (task, responseObject, error) in
+                        
+                        if let _error = error {
+                            logError("\(_error.localizedDescription)")
+                        } else {
+                            
+                            let json = JSON(responseObject!)
+                            
+                            if json["error"] != 0 {
+                                
+                            } else {
+                                let shell = json["data"]["shell"].stringValue
+                                let uid = json["data"]["uid"].stringValue
+                                
+                                /// uid 和 shell 保存到 keychain
+                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                                uidKey.setObject(uid, forKey: kSecAttrAccount)
+                                uidKey.setObject(shell, forKey: kSecValueData)
+                                
+//                                NSUserDefaults.standardUserDefaults().setObject(self.nameTextfield.text!, forKey: "user")
+                                
+                                Api.requestLoad()
+                                globalWillReEnter = 1
+                                let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                                let navigationViewController = UINavigationController(rootViewController: mainViewController)
+                                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                                navigationViewController.navigationBar.translucent = true
+                                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                                navigationViewController.navigationBar.clipsToBounds = true
+                                
+                                self.presentViewController(navigationViewController, animated: true, completion: nil)
+                                Api.postDeviceToken() { string in }
+                                Api.postJpushBinding(){_ in }
+                            }  // if json["error"] != 0
+                        } // if let _error = error
+                        
+                    } // LogOrRegModel.logInVia3rd(id, type: type)
+                    
+                } // if self.hasRegistered == false
+                
+            } // if let _error = error
             
-            
-            
-        }
+        } //  LogOrRegModel.check3rdOauth(id, type: type)
         
-        
-        
-        
-        
-        
-        
-        self.thirdPartyID = id
-        self.thirdPartyType = type
-        self.performSegueWithIdentifier("toConfirm3rdLogIn", sender: nil)
-            
-        
-        
-        
-    }
+    } // func logInVia3rdHelper(id: String, nameFrom3rd: String, type: String)
     
     
 }

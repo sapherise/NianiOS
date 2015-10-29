@@ -55,14 +55,105 @@ class LogOrRegModel: NSObject {
                                                 callback: callback)
     }
     
-    class func registerVia3rd(id: String, type: String, name: String, callback: NetworkClosure) {
+    class func registerVia3rd(id: String, type: String, name: String, nameFrom3rd: String, callback: NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.post("oauth/attempt",
-                                                content: ["username": "\(name)", "auth_id": "\(id)", "type": "\(type)"],
+                                                content: ["username": "\(name)", "nickname": "\(nameFrom3rd)" , "auth_id": "\(id)", "type": "\(type)"],
                                                 callback: callback)
     }
+    
+    /**
+     <#Description#>
+     
+     :param: id       <#id description#>
+     :param: type     <#type description#>
+     :param: callback <#callback description#>
+     */
+    class func logInVia3rd(id: String, type: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post("oauth/login",
+                                                content: ["auth_id": "\(id)", "type": "\(type)"],
+                                                callback: callback)
+    }
+    
+    
+    /**
+     <#Description#>
+     
+     :param: name     <#name description#>
+     :param: callback <#callback description#>
+     */
+    class func checkNameAvailability(name name: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.get("user/check" + "?username=\(name)",
+                                                  callback: callback)
+    }
 
+    /**
+    <#Description#>
+    
+    :param: accessToken <#accessToken description#>
+    :param: openid      <#openid description#>
+    :param: callback    <#callback description#>
+    */
+    class func getWechatName(accessToken: String, openid: String, callback: NetworkClosure) {
+        let manager = AFHTTPSessionManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.GET("https://api.weixin.qq.com/sns/userinfo?access_token=\(accessToken)&openid=\(openid)&lang=zh_CN",
+            parameters: nil,
+            success: { (task, id) in
+                callback(task: task, responseObject: id, error: nil)
+            },
+            failure: { (task, error) in
+                callback(task: task, responseObject: nil, error: error)
+        })
+    }
+    
+    /**
+     <#Description#>
+     
+     :param: accessToken <#accessToken description#>
+     :param: openid      <#openid description#>
+     :param: callback    <#callback description#>
+     */
+    class func getWeiboName(accessToken: String, openid: String, callback: NetworkClosure) {
+        let manager = AFHTTPSessionManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.GET("https://api.weibo.com/2/users/show.json?access_token=\(accessToken)&uid=\(openid)",
+            parameters: nil,
+            success: { (task, id) in
+                callback(task: task, responseObject: id, error: nil)
+            },
+            failure: { (task, error) in
+                callback(task: task, responseObject: nil, error: error)
+        })
+    }
+    
+    /**
+     <#Description#>
+     
+     :param: accessToken <#accessToken description#>
+     :param: openid      <#openid description#>
+     :param: appid       <#appid description#>
+     :param: callback    <#callback description#>
+     */
+    class func getQQName(accessToken: String, openid: String, appid: String, callback: NetworkClosure) {
+        let manager = AFHTTPSessionManager()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        
+        manager.GET("https://graph.qq.com/user/get_user_info?oauth_consumer_key=\(appid)&access_token=\(accessToken)&openid=\(openid)",
+            parameters: nil,
+            success: { (task, id) in
+                callback(task: task, responseObject: id, error: nil)
+            },
+            failure: { (task, error) in
+                callback(task: task, responseObject: nil, error: error)
+        })
+    }
+
+    
 }
 
+// MARK: - User
 class User: NSObject {
     var userId: String?
     var userShell: String?
@@ -81,7 +172,7 @@ class User: NSObject {
     
 }
 
-/// 注册时需要的信息
+// MARK: - 注册时需要的信息
 class RegInfo: NSObject {
     /// <#Description#>
     var email: String?
