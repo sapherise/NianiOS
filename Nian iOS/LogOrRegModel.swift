@@ -64,6 +64,19 @@ class LogOrRegModel: NSObject {
     /**
      <#Description#>
      
+     :param: email    <#email description#>
+     :param: callback <#callback description#>
+     */
+    class func resetPaeeword(email email: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post("password/reset/mail",
+                                                content: ["email": "\(email)"],
+                                                callback: callback)
+    }
+    
+    
+    /**
+     <#Description#>
+     
      :param: id       <#id description#>
      :param: type     <#type description#>
      :param: callback <#callback description#>

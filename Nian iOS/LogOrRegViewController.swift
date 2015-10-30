@@ -70,6 +70,9 @@ class LogOrRegViewController: UIViewController {
         }
     }
     
+    /// 提示用户“重置密码”邮件发送成功
+    lazy var niAlert = NIAlert()
+    
     /// 检查邮箱是否注册的结果
     var checkEmailResult: NetworkClosure?
     /// 请求登录的结果
@@ -140,6 +143,49 @@ class LogOrRegViewController: UIViewController {
         }
     }
     
+    /**
+     重置密码
+     */
+    @IBAction func resetPassword(sender: UIButton) {
+        // 收起键盘
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
+        // TODO: spinner
+        LogOrRegModel.resetPaeeword(email: self.emailTextField.text!) {
+            (task, responseObject, error) in
+            
+            //TODO: spinner
+            
+            if let _error = error {
+                logError("\(_error.localizedDescription)")
+            } else {
+                let json = JSON(responseObject!)
+                
+                if json["error"] != 0 {
+                    let msg = json["message"].stringValue
+                    
+                    if msg == "The resources is not exist." {
+                        self.view.showTipText("这个邮箱没注册过...")
+                    } else if msg == "The request is too busy." {
+                        self.view.showTipText("超出发送限制...")
+                    }
+                    
+                } else {
+                    self.niAlert.delegate = self
+                    
+                    self.niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
+                        forKeys: ["img", "title", "content", "buttonArray"])
+                    
+                    self.niAlert.showWithAnimation(showAnimationStyle.spring)
+                    
+                }
+            }
+        }
+        
+        
+    }
+    
+    
     //MARK: - click on functionalButton
     
     @IBAction func onFunctionalButton(sender: UIButton) {
@@ -181,7 +227,6 @@ class LogOrRegViewController: UIViewController {
         } else if self.functionalType == .logIn {
             /*@explain: 这里不需要再验证邮箱 */
             if self.passwordTextField.text != "" {
-                // TODO: spinner 
                 
                 let _email = self.emailTextField.text!
                 let _password = "n*A\(self.passwordTextField.text!)"
@@ -285,6 +330,11 @@ class LogOrRegViewController: UIViewController {
             patternViewController.regInfo = regInfo
         }
         
+        if segue.identifier == "toPrivacyVC" {
+            let privacyWebView = segue.destinationViewController as! PrivacyViewController
+            privacyWebView.urlString = "http://nian.so/privacy.php"
+        }
+        
     }
 
 }
@@ -366,8 +416,6 @@ extension LogOrRegViewController {
         })
         
         self.privacyContainerView.hidden = false
-        
-        self.passwordTextField.becomeFirstResponder()
     }
     
     /**
@@ -441,7 +489,18 @@ extension LogOrRegViewController {
         
         self.functionalType = .confirm
     }
+}
+
+// MARK: - NIAlert Delegate
+extension LogOrRegViewController: NIAlertDelegate {
+   
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        niAlert.dismissWithAnimation(.normal)
+    }
     
+    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        
+    }
     
 }
 

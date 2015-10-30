@@ -216,9 +216,14 @@
 		C470B2301B94029E00863821 /* LikeCount.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22F1B94029E00863821 /* LikeCount.plist */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
 		C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */; };
+		C474187E1BE35E7C002D01BD /* NewSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */; };
+		C47418801BE37602002D01BD /* EditProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C474187F1BE37602002D01BD /* EditProfileView.xib */; };
 		C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E31B394A8C0011C9AC /* ForgetPwd.swift */; };
 		C47672E61B394A8C0011C9AC /* ForgetPwd.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47672E41B394A8C0011C9AC /* ForgetPwd.xib */; };
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
+		C47674961BE31F0A00F85DFC /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47674951BE31F0A00F85DFC /* PrivacyViewController.swift */; };
+		C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47674971BE3405700F85DFC /* NewSettingView.xib */; };
+		C476749C1BE3579900F85DFC /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = C476749B1BE3579900F85DFC /* FXBlurView.m */; };
 		C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */; };
 		C47C42321BDF21F1003D934A /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */; };
 		C47C42341BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C47C42331BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle */; };
@@ -505,10 +510,16 @@
 		C470B22F1B94029E00863821 /* LikeCount.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LikeCount.plist; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
 		C472F7621AE74E2C00ECC011 /* ExploreNewHotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreNewHotCell.xib; sourceTree = "<group>"; };
+		C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSettingViewController.swift; sourceTree = "<group>"; };
+		C474187F1BE37602002D01BD /* EditProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfileView.xib; sourceTree = "<group>"; };
 		C4763B401B7CA825000D9CE8 /* DDLog Color.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "DDLog Color.markdown"; sourceTree = "<group>"; };
 		C47672E31B394A8C0011C9AC /* ForgetPwd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgetPwd.swift; sourceTree = "<group>"; };
 		C47672E41B394A8C0011C9AC /* ForgetPwd.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgetPwd.xib; sourceTree = "<group>"; };
 		C47672E81B394DC10011C9AC /* NIAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIAlert.swift; sourceTree = "<group>"; };
+		C47674951BE31F0A00F85DFC /* PrivacyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
+		C47674971BE3405700F85DFC /* NewSettingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewSettingView.xib; sourceTree = "<group>"; };
+		C476749A1BE3579900F85DFC /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		C476749B1BE3579900F85DFC /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TencentOpenAPI.framework; path = QQSharing/TencentOpenAPI.framework; sourceTree = "<group>"; };
 		C47C42331BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TencentOpenApi_IOS_Bundle.bundle; path = ../../QQSharing/TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
@@ -865,6 +876,7 @@
 				C4CA84CA1BD8C76C0075B075 /* LogOrRegViewController.swift */,
 				C43680131BDA0C4E00D51516 /* PatternViewController.swift */,
 				C49158211BE0D76E00CC4DCD /* NicknameViewController.swift */,
+				C47674951BE31F0A00F85DFC /* PrivacyViewController.swift */,
 				C4CA84CB1BD8C76C0075B075 /* SocialMediaButton.swift */,
 				C4CA84C91BD8C76C0075B075 /* LogOrRegModel.swift */,
 				12BF5FF619BB476200DE0ABE /* 登录 */,
@@ -930,10 +942,13 @@
 			isa = PBXGroup;
 			children = (
 				1217A3E9198D358600959AD2 /* SettingsViewController.swift */,
+				C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */,
 				12BE103E19C6055300370348 /* Help.swift */,
 				1255785B1A0CD434005E56D7 /* Web.swift */,
 				12DE696419D130940006B5B5 /* Care.swift */,
 				12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */,
+				C47674971BE3405700F85DFC /* NewSettingView.xib */,
+				C474187F1BE37602002D01BD /* EditProfileView.xib */,
 			);
 			name = "设置";
 			sourceTree = "<group>";
@@ -1216,6 +1231,7 @@
 				C47672E71B394D3B0011C9AC /* NIALertView */,
 				C450C5121B2FFF2D0024F4DE /* KILabel */,
 				C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */,
+				C47674991BE3579900F85DFC /* FXBlurView */,
 				C4077BC01B04A5FB004E0D03 /* TITokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
 				129492801AD93211000E7461 /* MaterialKit */,
@@ -1380,6 +1396,15 @@
 			name = NIALertView;
 			sourceTree = "<group>";
 		};
+		C47674991BE3579900F85DFC /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				C476749A1BE3579900F85DFC /* FXBlurView.h */,
+				C476749B1BE3579900F85DFC /* FXBlurView.m */,
+			);
+			path = FXBlurView;
+			sourceTree = "<group>";
+		};
 		C48AD9D61B5CFD4C00E25627 /* UIImageExt */ = {
 			isa = PBXGroup;
 			children = (
@@ -1541,6 +1566,7 @@
 				C47C42341BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */,
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
+				C47418801BE37602002D01BD /* EditProfileView.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
@@ -1567,6 +1593,7 @@
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
 				12BF5FFE19BB5E2100DE0ABE /* SettingsViewController.xib in Resources */,
+				C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */,
 				12BF5FFA19BB479A00DE0ABE /* Login.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
@@ -1670,6 +1697,7 @@
 				12776A0F1BCE5F3A00745811 /* File.swift in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
+				C474187E1BE35E7C002D01BD /* NewSettingViewController.swift in Sources */,
 				C4CA84D01BD8C76C0075B075 /* SocialMediaButton.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				12960F7119BF2E3B00CB973E /* SignNext.swift in Sources */,
@@ -1805,6 +1833,7 @@
 				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
 				12245DA61B95849900D831AC /* TopicComment + UITextField.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
+				C47674961BE31F0A00F85DFC /* PrivacyViewController.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
 				12BF5FF819BB478300DE0ABE /* Login.swift in Sources */,
 				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
@@ -1816,6 +1845,7 @@
 				12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
+				C476749C1BE3579900F85DFC /* FXBlurView.m in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,

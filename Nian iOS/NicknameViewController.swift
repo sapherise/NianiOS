@@ -49,6 +49,29 @@ class NicknameViewController: UIViewController {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
     }
     
+    
+//    @IBAction func toPrivacyView(sender: UIButton) {
+//        let web = WebViewController()
+//        web.urlString = "http://nian.so/privacy.php"
+//        web.webTitle = "隐私政策"
+//        
+//        let navigationViewController = UINavigationController(rootViewController: self)
+//        navigationViewController.pushViewController(web, animated: true)
+//    }
+//    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "toPrivacyVC" {
+            let privacyWebView = segue.destinationViewController as! PrivacyViewController
+            privacyWebView.urlString = "http://nian.so/privacy.php"
+        }
+    }
+    
 }
 
 

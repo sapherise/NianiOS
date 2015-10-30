@@ -81,8 +81,12 @@
 #import "TencentOpenAPI/TencentApiInterface.h"
 #import "TencentOpenAPI/sdkdef.h"
 
-//#import "LogInHelper.h"
-
+/**
+ *  @author Bob Wei, 15-10-30 16:10:33
+ *
+ *  @brief  iOS 7 兼容的毛玻璃效果  
+ */
+#import "FXBlurView.h"
 
 
 
