@@ -32,7 +32,7 @@ class NianNetworkClient: AFHTTPSessionManager {
     单例的 init() 方法都是 private 的， -- 保证线程安全
     */
     private init() {
-        super.init(baseURL: NSURL(string: baseURLString)!, sessionConfiguration: nil)
+        super.init(baseURL: nil, sessionConfiguration: nil)
         
         /* 设置解析 server 返回的 json */
         self.responseSerializer = AFJSONResponseSerializer()
@@ -49,7 +49,7 @@ class NianNetworkClient: AFHTTPSessionManager {
     :returns:
     */
     func get(string: String, callback: NetworkClosure) -> NSURLSessionDataTask {
-        return  self.GET(string,
+        return  self.GET(baseURLString + string,
                     parameters: nil,
                     success: { (task, id) in
                         callback(task: task, responseObject: id, error: nil)
@@ -67,7 +67,7 @@ class NianNetworkClient: AFHTTPSessionManager {
     :returns:
     */
     func post(string: String, content: AnyObject, callback: NetworkClosure) -> NSURLSessionDataTask {
-        return  self.POST(string,
+        return  self.POST(baseURLString + string,
                     parameters: content,
                     success: { (task, id) in
                         callback(task: task, responseObject: id, error: nil)

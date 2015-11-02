@@ -5,7 +5,17 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditProfileViewController" customModule="Nian_iOS" customModuleProvider="target">
+            <connections>
+                <outlet property="avatarImageView" destination="2Sn-eY-m9S" id="wBr-UT-3gJ"/>
+                <outlet property="coverImageView" destination="REz-K7-s77" id="tem-cm-zOF"/>
+                <outlet property="genderTextField" destination="ggh-Qk-Szq" id="IX0-C8-Z5s"/>
+                <outlet property="nameTextField" destination="Ede-mi-g3t" id="XIM-8y-FjI"/>
+                <outlet property="phoneTextField" destination="29r-nq-H0d" id="oqe-pB-wVo"/>
+                <outlet property="settingAvatarBlurView" destination="lBD-TA-s4o" id="TCk-qe-nhc"/>
+                <outlet property="settingCoverBlurView" destination="gsG-5d-LQY" id="kmX-BM-Lx0"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="900"/>
@@ -14,7 +24,7 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c8F-Yu-JVl">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="900"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PvK-F2-B55" userLabel="Container View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PvK-F2-B55" userLabel="Container View" customClass="UIControl">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="900"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REz-K7-s77">
@@ -51,6 +61,9 @@
                                         <constraint firstItem="Evz-YS-ApL" firstAttribute="centerX" secondItem="gsG-5d-LQY" secondAttribute="centerX" id="DKS-e7-gAI"/>
                                         <constraint firstAttribute="height" constant="64" id="g7l-IG-nyZ"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="5A1-OW-90Z" appends="YES" id="VKv-aG-3HF"/>
+                                    </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lBD-TA-s4o" customClass="FXBlurView">
                                     <rect key="frame" x="300" y="240" width="284" height="64"/>
@@ -71,6 +84,9 @@
                                         <constraint firstAttribute="height" constant="64" id="Wdo-8J-yaL"/>
                                         <constraint firstItem="xJl-N9-aGV" firstAttribute="centerY" secondItem="lBD-TA-s4o" secondAttribute="centerY" id="dtP-iJ-bKt"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="rj1-lb-bBO" appends="YES" id="ee1-nV-Os2"/>
+                                    </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uGK-ik-2XQ" userLabel="Seperate View">
                                     <rect key="frame" x="16" y="320" width="584" height="1"/>
@@ -180,7 +196,7 @@
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ggh-Qk-Szq" userLabel="gender text field">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="保密" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ggh-Qk-Szq" userLabel="gender text field">
                                             <rect key="frame" x="64" y="0.0" width="536" height="44"/>
                                             <animations/>
                                             <constraints>
@@ -245,6 +261,9 @@
                                 <constraint firstAttribute="trailing" secondItem="WL1-so-hGp" secondAttribute="trailing" id="zDv-li-sCk"/>
                                 <constraint firstItem="Ywh-yW-FuP" firstAttribute="top" secondItem="LiC-iy-plp" secondAttribute="bottom" id="zUa-LE-i17"/>
                             </constraints>
+                            <connections>
+                                <action selector="dismissKeyboard:" destination="-1" eventType="touchUpInside" id="Tug-Hz-NWo"/>
+                            </connections>
                         </view>
                     </subviews>
                     <animations/>
@@ -269,5 +288,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="621" y="708"/>
         </view>
+        <tapGestureRecognizer id="5A1-OW-90Z"/>
+        <tapGestureRecognizer id="rj1-lb-bBO"/>
     </objects>
 </document>

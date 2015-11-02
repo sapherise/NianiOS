@@ -39,21 +39,9 @@ class WelcomeViewController: UIViewController {
         self.logInButton.layer.borderColor = UIColor.colorWithHex("#333333").CGColor
         self.logInButton.layer.masksToBounds = true
         
-        /// 读取保存在 keychain 里的 uid 和 shell
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        var cookieuid = uidKey.objectForKey(kSecAttrAccount) as? String
-        
-        /**
-        *  uid 和 shell 由于以前的原因，可能还在 userdefault 里
-        */
-        if (cookieuid!).characters.count > 0 && cookieuid != "" {
-        } else {
-            cookieuid = Cookies.get("uid") as? String
-        }
-        
-        if cookieuid != "" && cookieuid != nil {      //如果登录了
+        if let _uid = CurrentUser.sharedCurrentUser.uid {      //如果登录了
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            uidKey.setObject(cookieuid!, forKey: kSecAttrAccount)
+            uidKey.setObject(_uid, forKey: kSecAttrAccount)
             
             let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
             mainViewController.shouldNavToMe = self.shouldNavToMe
@@ -375,12 +363,9 @@ extension WelcomeViewController {
                                 let shell = json["data"]["shell"].stringValue
                                 let uid = json["data"]["uid"].stringValue
                                 
-                                /// uid 和 shell 保存到 keychain
-                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                                uidKey.setObject(uid, forKey: kSecAttrAccount)
-                                uidKey.setObject(shell, forKey: kSecValueData)
-                                
-//                                NSUserDefaults.standardUserDefaults().setObject(self.nameTextfield.text!, forKey: "user")
+                                // TODO: need verify
+                                CurrentUser.sharedCurrentUser.uid = uid
+                                CurrentUser.sharedCurrentUser.shell = shell
                                 
                                 Api.requestLoad()
                                 globalWillReEnter = 1

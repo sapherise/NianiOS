@@ -8,9 +8,16 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewSettingViewController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
                 <outlet property="avatarImageView" destination="PnZ-03-aFf" id="4BZ-JZ-0eZ"/>
+                <outlet property="cacheActivityIndicator" destination="v1W-0f-wXy" id="uCn-gl-hbP"/>
                 <outlet property="coverImageView" destination="3FB-QF-eTQ" id="iFE-xB-ck2"/>
+                <outlet property="dailyModeSwitch" destination="6VK-cV-rEM" id="9Dm-km-8Nc"/>
+                <outlet property="dailyRemindSwitch" destination="NVA-Fi-gta" id="PoQ-Kc-JGq"/>
+                <outlet property="findViaNameSwitch" destination="LFH-hY-pF0" id="x5I-AK-f7t"/>
+                <outlet property="picOnCellarSwitch" destination="ZY4-Ez-7TS" id="Y1h-J1-7Mj"/>
+                <outlet property="saveCardSwitch" destination="fYa-xs-UdY" id="9tW-ns-vjT"/>
                 <outlet property="settingAvatarBlurView" destination="geH-IS-SIp" id="k16-Q1-xp3"/>
                 <outlet property="settingCoverBlurView" destination="Y0D-hc-ugl" id="Yyl-xT-VTV"/>
+                <outlet property="versionLabel" destination="fTg-MX-803" id="oTh-Z5-XH3"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -59,7 +66,7 @@
                                         <constraint firstItem="Pda-p8-0Yu" firstAttribute="centerX" secondItem="Y0D-hc-ugl" secondAttribute="centerX" id="Uy1-xr-84x"/>
                                     </constraints>
                                     <connections>
-                                        <outletCollection property="gestureRecognizers" destination="O8C-b9-o84" appends="YES" id="x8o-as-oY1"/>
+                                        <outletCollection property="gestureRecognizers" destination="JBS-B6-2yC" appends="YES" id="auo-Zu-GOJ"/>
                                     </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="geH-IS-SIp" customClass="FXBlurView">
@@ -409,6 +416,14 @@
                                                 <constraint firstAttribute="width" constant="8" id="g8h-iX-PLN"/>
                                             </constraints>
                                         </imageView>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="v1W-0f-wXy">
+                                            <rect key="frame" x="548" y="12" width="20" height="20"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="9OY-Vs-jNz"/>
+                                                <constraint firstAttribute="height" constant="20" id="Ccu-hc-cgC"/>
+                                            </constraints>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -416,7 +431,9 @@
                                     <constraints>
                                         <constraint firstItem="qeh-nh-3ot" firstAttribute="leading" secondItem="mUk-Ea-r6N" secondAttribute="leading" constant="16" id="2EU-fu-NFc"/>
                                         <constraint firstItem="dEK-EY-QRi" firstAttribute="centerY" secondItem="mUk-Ea-r6N" secondAttribute="centerY" id="ABY-0q-KZK"/>
+                                        <constraint firstItem="dEK-EY-QRi" firstAttribute="leading" secondItem="v1W-0f-wXy" secondAttribute="trailing" constant="8" id="WsP-DO-4Gu"/>
                                         <constraint firstAttribute="trailing" secondItem="dEK-EY-QRi" secondAttribute="trailing" constant="16" id="XkJ-Eb-dBF"/>
+                                        <constraint firstItem="v1W-0f-wXy" firstAttribute="centerY" secondItem="mUk-Ea-r6N" secondAttribute="centerY" id="ijK-qx-4iY"/>
                                         <constraint firstAttribute="height" constant="44" id="u0e-4b-nMP"/>
                                         <constraint firstItem="qeh-nh-3ot" firstAttribute="centerY" secondItem="mUk-Ea-r6N" secondAttribute="centerY" id="vtC-tl-RZu"/>
                                     </constraints>
@@ -681,14 +698,14 @@
                 <action selector="logout:" destination="-1" id="aZv-Wb-LcJ"/>
             </connections>
         </tapGestureRecognizer>
-        <tapGestureRecognizer id="O8C-b9-o84">
-            <connections>
-                <action selector="setCoverImage:" destination="-1" id="ZZO-Nc-ZWV"/>
-            </connections>
-        </tapGestureRecognizer>
         <tapGestureRecognizer id="Tth-Zz-bHb">
             <connections>
                 <action selector="setAvatar:" destination="-1" id="6dc-ZL-zib"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="JBS-B6-2yC">
+            <connections>
+                <action selector="setCover:" destination="-1" id="F2W-AP-Wf2"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -204,6 +204,9 @@
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
+		C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F281BE744FC007B7C6B /* SettingModel.swift */; };
+		C40F0F2B1BE74708007B7C6B /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */; };
+		C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F2E1BE7632E007B7C6B /* PSTAlertController.m */; };
 		C42B7D4A1B564137008D3B36 /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42B7D481B564137008D3B36 /* ModeViewController.swift */; };
 		C42B7D4B1B564137008D3B36 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42B7D491B564137008D3B36 /* ModeViewController.xib */; };
 		C43680141BDA0C4E00D51516 /* PatternViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43680131BDA0C4E00D51516 /* PatternViewController.swift */; };
@@ -252,6 +255,8 @@
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
 		C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */; };
 		C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */; };
+		C4E966D41BE4B67900F31EBF /* AccountBindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */; };
+		C4E966D61BE4B83300F31EBF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */; };
 		C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */; };
 		C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D77A1B5E22880033671D /* PetCell.swift */; };
 		C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC16021BB3D4E20036A9A0 /* RegexHelper.swift */; };
@@ -492,6 +497,10 @@
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
+		C40F0F281BE744FC007B7C6B /* SettingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
+		C40F0F2D1BE7632E007B7C6B /* PSTAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTAlertController.h; sourceTree = "<group>"; };
+		C40F0F2E1BE7632E007B7C6B /* PSTAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTAlertController.m; sourceTree = "<group>"; };
 		C40F4F4A1B788630001A8216 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C41634ED1B2002FC00DC9899 /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZTextView.h; sourceTree = "<group>"; };
 		C41634EE1B2002FC00DC9899 /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZTextView.m; sourceTree = "<group>"; };
@@ -554,6 +563,8 @@
 		C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMoreCell.xib; sourceTree = "<group>"; };
 		C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMoreCell.swift; sourceTree = "<group>"; };
+		C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountBindViewController.swift; sourceTree = "<group>"; };
+		C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		C4F6D7741B5DFCC30033671D /* UIImage+Grayscale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Grayscale.h"; sourceTree = "<group>"; };
 		C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Grayscale.m"; sourceTree = "<group>"; };
 		C4F6D77A1B5E22880033671D /* PetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetCell.swift; sourceTree = "<group>"; };
@@ -942,13 +953,16 @@
 			isa = PBXGroup;
 			children = (
 				1217A3E9198D358600959AD2 /* SettingsViewController.swift */,
-				C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */,
 				12BE103E19C6055300370348 /* Help.swift */,
 				1255785B1A0CD434005E56D7 /* Web.swift */,
 				12DE696419D130940006B5B5 /* Care.swift */,
 				12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */,
 				C47674971BE3405700F85DFC /* NewSettingView.xib */,
 				C474187F1BE37602002D01BD /* EditProfileView.xib */,
+				C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */,
+				C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */,
+				C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */,
+				C40F0F281BE744FC007B7C6B /* SettingModel.swift */,
 			);
 			name = "设置";
 			sourceTree = "<group>";
@@ -1231,6 +1245,7 @@
 				C47672E71B394D3B0011C9AC /* NIALertView */,
 				C450C5121B2FFF2D0024F4DE /* KILabel */,
 				C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */,
+				C40F0F2C1BE7632E007B7C6B /* PSTAlertController */,
 				C47674991BE3579900F85DFC /* FXBlurView */,
 				C4077BC01B04A5FB004E0D03 /* TITokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
@@ -1241,6 +1256,7 @@
 				1251D6101975729100F55389 /* Refresh */,
 				12E1C81F1A146DCA00453805 /* LabelAnimation */,
 				12652837196C6755005765D2 /* Sapherise.swift */,
+				C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */,
 				1285FDC71BCFC69F00F52DB8 /* size.swift */,
 				12F9253E1A8467F8005ECD9F /* SQL.swift */,
 				12B1BFFE1A6CB79B000D9284 /* Contacts.swift */,
@@ -1349,6 +1365,15 @@
 				C4AFF0441B0F2BCD00321479 /* TITokenField.m */,
 			);
 			name = TITokenView;
+			sourceTree = "<group>";
+		};
+		C40F0F2C1BE7632E007B7C6B /* PSTAlertController */ = {
+			isa = PBXGroup;
+			children = (
+				C40F0F2D1BE7632E007B7C6B /* PSTAlertController.h */,
+				C40F0F2E1BE7632E007B7C6B /* PSTAlertController.m */,
+			);
+			path = PSTAlertController;
 			sourceTree = "<group>";
 		};
 		C41D45D61B60EA86000450D5 /* SAEgg */ = {
@@ -1697,6 +1722,7 @@
 				12776A0F1BCE5F3A00745811 /* File.swift in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
+				C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */,
 				C474187E1BE35E7C002D01BD /* NewSettingViewController.swift in Sources */,
 				C4CA84D01BD8C76C0075B075 /* SocialMediaButton.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
@@ -1767,6 +1793,8 @@
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				12245DAC1B95906F00D831AC /* TopicCommentCell.swift in Sources */,
 				12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */,
+				C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */,
+				C4E966D61BE4B83300F31EBF /* EditProfileViewController.swift in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */,
 				126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */,
@@ -1777,6 +1805,7 @@
 				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */,
+				C4E966D41BE4B67900F31EBF /* AccountBindViewController.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
@@ -1824,6 +1853,7 @@
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				C4CA84CE1BD8C76C0075B075 /* LogOrRegModel.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
+				C40F0F2B1BE74708007B7C6B /* CurrentUser.swift in Sources */,
 				C4CA84D61BD8C7C50075B075 /* NianNetworkClient.swift in Sources */,
 				124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */,
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
