@@ -9,6 +9,11 @@
 import UIKit
 
 class NewSettingViewController: UIViewController {
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var contentView: UIView!
+    
     /// 封面
     @IBOutlet weak var coverImageView: UIImageView!
     /// 头像
@@ -34,11 +39,7 @@ class NewSettingViewController: UIViewController {
    
     /// 一些用户信息
     var userDict: Dictionary<String, AnyObject>?
-    var email: String?
-    var name: String?
-    var phone: String?
-    var sex: String?
-    var isMonthly: String?
+    var settingModel: SettingModel?
     
     var coverImage: UIImage?
     var avatarImage: UIImage?
@@ -52,6 +53,18 @@ class NewSettingViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.viewBack()
+        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = "设置"
+        titleLabel.textAlignment = NSTextAlignment.Center
+        self.navigationItem.titleView = titleLabel
+        
+        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = BarColor
+        self.view.addSubview(navView)
+        
+        self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
         
         self.settingAvatarBlurView.dynamic = false
         self.settingAvatarBlurView.tintColor = UIColor.blackColor()
@@ -59,11 +72,33 @@ class NewSettingViewController: UIViewController {
         self.settingCoverBlurView.dynamic = false
         self.settingCoverBlurView.tintColor = UIColor.blackColor()
         
+        self.settingModel = SettingModel()
+        
         /* 隐藏 “清理缓存” 的 spinner */
         self.cacheActivityIndicator.hidden = true
         
         //设置头像
         self.avatarImageView.setHead(CurrentUser.sharedCurrentUser.uid!)
+        
+        self.coverImageView.layer.cornerRadius = 8.0
+        self.coverImageView.layer.masksToBounds = true
+        
+        self.avatarImageView.layer.cornerRadius = 30.0
+        self.avatarImageView.layer.masksToBounds = true
+        
+        let path2 = UIBezierPath(roundedRect: settingAvatarBlurView.bounds, byRoundingCorners: .BottomRight, cornerRadii: CGSizeMake(8, 8))
+        let masklayer2 = CAShapeLayer()
+        masklayer2.frame = settingAvatarBlurView.bounds
+        masklayer2.path = path2.CGPath
+        settingAvatarBlurView.layer.mask = masklayer2
+        settingAvatarBlurView.layer.masksToBounds = true
+        
+        let path1 = UIBezierPath(roundedRect: settingCoverBlurView.bounds, byRoundingCorners: .BottomLeft, cornerRadii: CGSizeMake(8, 8))
+        let masklayer1 = CAShapeLayer()
+        masklayer1.frame = settingCoverBlurView.bounds
+        masklayer1.path = path1.CGPath
+        settingCoverBlurView.layer.mask = masklayer1
+        settingCoverBlurView.layer.masksToBounds = true
         
         // 移动网络下是否下载图片
         if let saveMode = userDefaults.objectForKey("saveMode") as? String {
@@ -115,7 +150,7 @@ class NewSettingViewController: UIViewController {
         self.versionLabel.text = "\(versionString)"
         
         SettingModel.getUserInfoAndSetting {
-            (task, responseObject, error) -> Void in
+            (task, responseObject, error) in
 
             if let _error = error { // AFNetworking 返回的错误
                 logError("\(_error.localizedDescription)")
@@ -128,8 +163,10 @@ class NewSettingViewController: UIViewController {
                     self.userDict = json["data"]["user"].dictionaryObject
                     
                     if json["data"]["user"]["isMonthly"].stringValue == "1" {
+                        self.settingModel?.dailyMode = "0"
                         self.dailyModeSwitch.setOn(false, animated: true)
                     } else {
+                        self.settingModel?.dailyMode = "1"
                         self.dailyModeSwitch.setOn(true, animated: true)
                     }
                     
@@ -139,6 +176,11 @@ class NewSettingViewController: UIViewController {
             } // if let _error = error
         }  // SettingModel.getUserInfoAndSetting
     } // view didLoad
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
     
     
     override func viewWillDisappear(animated: Bool) {
@@ -187,7 +229,7 @@ extension NewSettingViewController{
 extension NewSettingViewController {
     
     /**
-     
+    设置封面图片， --- @warning: 应该叫做 setCoverImage 的，但是和之前不知道哪里有冲突
      */
     @IBAction func setCover(sender: UITapGestureRecognizer) {
         let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
@@ -264,22 +306,31 @@ extension NewSettingViewController {
      */
     @IBAction func editMyProfile(sender: UITapGestureRecognizer) {
         let editProfileVC = EditProfileViewController(nibName: "EditProfileView", bundle: nil)
-        editProfileVC.coverImageView.image = self.coverImageView.image
-        editProfileVC.avatarImageView.image = self.avatarImageView.image
+        editProfileVC.coverImage = self.coverImageView.image
+        editProfileVC.avatarImage = self.avatarImageView.image
+        editProfileVC.profileDict = ["name": self.userDict?["name"] as! String,
+                                     "phone": self.userDict?["phone"] as! String,
+                                     "gender": self.userDict?["gender"] as! String]
+        
+        
+        editProfileVC.delegate = self
         
         self.navigationController?.pushViewController(editProfileVC, animated: true)
     }
-    
-    // 编辑个人资料有对应的 xib 文件
-    // 账户绑定和设置没有对应的 xib 文件
-    // 因此，初始化的方法不一样
     
     /**
      账号绑定和设置（进入下一页）
      */
     @IBAction func setAccountBind(sender: UITapGestureRecognizer) {
+        let accountBindVC = AccountBindViewController(nibName: "AccountBindView", bundle: nil)
         
+        if let _email = self.userDict!["email"] as? String {
+            if _email != "0" {
+                accountBindVC.userEmail = _email
+            }
+        }
         
+        self.navigationController?.pushViewController(accountBindVC, animated: true)
     }
     
     /**
@@ -388,7 +439,13 @@ extension NewSettingViewController {
 }
 
 
-
+extension NewSettingViewController: EditProfileDelegate {
+    
+    func editProfile(profileDict profileDict: Dictionary<String, String>, coverImage: UIImage, avatarImage: UIImage) {
+        
+    }
+    
+}
 
 
 

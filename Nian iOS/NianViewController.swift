@@ -310,8 +310,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func headClick(){
-        let PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-        self.navigationController!.pushViewController(PlayerVC, animated: true)
+//        let PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let playerVC = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
+        self.navigationController!.pushViewController(playerVC, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

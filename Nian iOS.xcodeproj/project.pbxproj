@@ -239,6 +239,8 @@
 		C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A350BE1B6B6BEE00E8AF10 /* Security.framework */; };
 		C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
+		C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4AD26D21BE871C800BF6242 /* AccountBindView.xib */; };
+		C4AD26D51BE887E000BF6242 /* AccountBindCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD26D41BE887E000BF6242 /* AccountBindCell.swift */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
 		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
@@ -545,6 +547,8 @@
 		C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		C4A380771B32C4A9005EC0AA /* URLRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLRegex.h; sourceTree = "<group>"; };
 		C4A380781B32C4A9005EC0AA /* URLRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLRegex.m; sourceTree = "<group>"; };
+		C4AD26D21BE871C800BF6242 /* AccountBindView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountBindView.xib; sourceTree = "<group>"; };
+		C4AD26D41BE887E000BF6242 /* AccountBindCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountBindCell.swift; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
 		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
@@ -959,9 +963,11 @@
 				12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */,
 				C47674971BE3405700F85DFC /* NewSettingView.xib */,
 				C474187F1BE37602002D01BD /* EditProfileView.xib */,
+				C4AD26D21BE871C800BF6242 /* AccountBindView.xib */,
 				C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */,
 				C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */,
 				C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */,
+				C4AD26D41BE887E000BF6242 /* AccountBindCell.swift */,
 				C40F0F281BE744FC007B7C6B /* SettingModel.swift */,
 			);
 			name = "设置";
@@ -1613,6 +1619,7 @@
 				129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				C4CA84D11BD8C76C0075B075 /* Welcome.storyboard in Resources */,
+				C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
@@ -1828,6 +1835,7 @@
 				12D846091A2340DC005DCC08 /* AddStep.swift in Sources */,
 				12ABFD2D1B9C217800E2870C /* AddReddit + Function.swift in Sources */,
 				1243C6F71B4F60A0007F741C /* Card.swift in Sources */,
+				C4AD26D51BE887E000BF6242 /* AccountBindCell.swift in Sources */,
 				C47672E51B394A8C0011C9AC /* ForgetPwd.swift in Sources */,
 				12C354531AD5126F0078693F /* Badge.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,

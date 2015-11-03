@@ -14,6 +14,7 @@
                 <outlet property="phoneTextField" destination="29r-nq-H0d" id="oqe-pB-wVo"/>
                 <outlet property="settingAvatarBlurView" destination="lBD-TA-s4o" id="TCk-qe-nhc"/>
                 <outlet property="settingCoverBlurView" destination="gsG-5d-LQY" id="kmX-BM-Lx0"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Msa-sO-q1J"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -27,7 +28,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PvK-F2-B55" userLabel="Container View" customClass="UIControl">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="900"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REz-K7-s77">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2015-10-30 at 3.57.06 PM" translatesAutoresizingMaskIntoConstraints="NO" id="REz-K7-s77">
                                     <rect key="frame" x="16" y="16" width="568" height="288"/>
                                     <animations/>
                                     <constraints>
@@ -49,7 +50,7 @@
                                             <rect key="frame" x="118" y="25" width="48" height="15"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -72,7 +73,7 @@
                                             <rect key="frame" x="118" y="25" width="48" height="15"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -110,14 +111,18 @@
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ede-mi-g3t" userLabel="name text field">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ede-mi-g3t" userLabel="name text field">
                                             <rect key="frame" x="64" y="0.0" width="536" height="44"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="av7-sw-bVZ"/>
                                             </constraints>
+                                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="Yi6-gc-nGz"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <animations/>
@@ -153,14 +158,18 @@
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="29r-nq-H0d" userLabel="phone text field">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="29r-nq-H0d" userLabel="phone text field">
                                             <rect key="frame" x="64" y="0.0" width="536" height="44"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="brh-5q-ZSK"/>
                                             </constraints>
+                                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="uyk-DH-sFn"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <animations/>
@@ -202,8 +211,12 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="lux-D6-M3g"/>
                                             </constraints>
+                                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="zEW-fy-mr9"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <animations/>
@@ -244,6 +257,7 @@
                                 <constraint firstItem="gsG-5d-LQY" firstAttribute="leading" secondItem="REz-K7-s77" secondAttribute="leading" id="TJc-ra-bIP"/>
                                 <constraint firstItem="Ywh-yW-FuP" firstAttribute="leading" secondItem="PvK-F2-B55" secondAttribute="leading" id="Uxh-cI-JGz"/>
                                 <constraint firstItem="2Sn-eY-m9S" firstAttribute="centerX" secondItem="REz-K7-s77" secondAttribute="centerX" id="VGV-AC-DFn"/>
+                                <constraint firstAttribute="height" constant="900" id="WD3-ve-NYF"/>
                                 <constraint firstItem="7Gm-6t-jiW" firstAttribute="top" secondItem="oeN-55-k5S" secondAttribute="bottom" id="a5T-mS-gYV"/>
                                 <constraint firstItem="lBD-TA-s4o" firstAttribute="trailing" secondItem="REz-K7-s77" secondAttribute="trailing" id="ab6-Zb-8jz"/>
                                 <constraint firstItem="uGK-ik-2XQ" firstAttribute="top" secondItem="REz-K7-s77" secondAttribute="bottom" constant="16" id="bxt-Cu-5tC"/>
@@ -271,8 +285,6 @@
                         <constraint firstAttribute="trailing" secondItem="PvK-F2-B55" secondAttribute="trailing" id="5CR-FP-Ddt"/>
                         <constraint firstItem="PvK-F2-B55" firstAttribute="leading" secondItem="c8F-Yu-JVl" secondAttribute="leading" id="Kta-GF-mzm"/>
                         <constraint firstAttribute="bottom" secondItem="PvK-F2-B55" secondAttribute="bottom" id="RIO-Vs-heI"/>
-                        <constraint firstItem="PvK-F2-B55" firstAttribute="centerY" secondItem="c8F-Yu-JVl" secondAttribute="centerY" id="UYN-7M-uah"/>
-                        <constraint firstItem="PvK-F2-B55" firstAttribute="centerX" secondItem="c8F-Yu-JVl" secondAttribute="centerX" id="h0i-yc-xDP"/>
                         <constraint firstItem="PvK-F2-B55" firstAttribute="top" secondItem="c8F-Yu-JVl" secondAttribute="top" id="yaT-Qn-hhg"/>
                     </constraints>
                 </scrollView>
@@ -283,12 +295,24 @@
                 <constraint firstItem="c8F-Yu-JVl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="45Q-6y-4ZX"/>
                 <constraint firstAttribute="trailing" secondItem="c8F-Yu-JVl" secondAttribute="trailing" id="7Gd-vk-06h"/>
                 <constraint firstAttribute="bottom" secondItem="c8F-Yu-JVl" secondAttribute="bottom" id="MRc-ET-BGg"/>
+                <constraint firstItem="PvK-F2-B55" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="PBn-0b-rFE"/>
                 <constraint firstItem="c8F-Yu-JVl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Vpq-yk-X6e"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="621" y="708"/>
         </view>
-        <tapGestureRecognizer id="5A1-OW-90Z"/>
-        <tapGestureRecognizer id="rj1-lb-bBO"/>
+        <tapGestureRecognizer id="5A1-OW-90Z">
+            <connections>
+                <action selector="setCover:" destination="-1" id="5ta-UH-oyz"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="rj1-lb-bBO">
+            <connections>
+                <action selector="setAvatar:" destination="-1" id="m1A-g4-CBG"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
+    <resources>
+        <image name="Screen Shot 2015-10-30 at 3.57.06 PM" width="303" height="223"/>
+    </resources>
 </document>
