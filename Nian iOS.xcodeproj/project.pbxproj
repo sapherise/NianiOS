@@ -231,6 +231,7 @@
 		C47C42321BDF21F1003D934A /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */; };
 		C47C42341BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C47C42331BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle */; };
 		C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483CF901AEB435200E1C550 /* ExploreSearch.swift */; };
+		C48A517E1BE9EA18002CA928 /* AutoKeyboardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48A517D1BE9EA18002CA928 /* AutoKeyboardScrollView.swift */; };
 		C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */; };
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
 		C49158221BE0D76E00CC4DCD /* NicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49158211BE0D76E00CC4DCD /* NicknameViewController.swift */; };
@@ -534,6 +535,7 @@
 		C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TencentOpenAPI.framework; path = QQSharing/TencentOpenAPI.framework; sourceTree = "<group>"; };
 		C47C42331BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TencentOpenApi_IOS_Bundle.bundle; path = ../../QQSharing/TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
+		C48A517D1BE9EA18002CA928 /* AutoKeyboardScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoKeyboardScrollView.swift; sourceTree = "<group>"; };
 		C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
 		C48FBCDA1B4A5B2A007E0BF9 /* NSString+NSHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSHash.h"; sourceTree = "<group>"; };
 		C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSHash.m"; sourceTree = "<group>"; };
@@ -1280,6 +1282,7 @@
 				122AFE021A80864800464641 /* SqliteData.swift */,
 				C448F55D1B93F9F200214984 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
+				C48A517D1BE9EA18002CA928 /* AutoKeyboardScrollView.swift */,
 				C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */,
 				C4CA84D31BD8C7B00075B075 /* SwiftyJSON.swift */,
 			);
@@ -1764,6 +1767,7 @@
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				C4CA84CF1BD8C76C0075B075 /* LogOrRegViewController.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
+				C48A517E1BE9EA18002CA928 /* AutoKeyboardScrollView.swift in Sources */,
 				129492841AD9329D000E7461 /* MKLayer.swift in Sources */,
 				C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,

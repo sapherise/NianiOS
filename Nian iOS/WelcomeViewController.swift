@@ -247,11 +247,11 @@ extension WelcomeViewController {
         }
         
         if (notiObject as! NSArray).count > 0 {
-            let uid = ((notiObject as! NSArray)[0] as? NSNumber)?.stringValue
+            let weiboUid = ((notiObject as! NSArray)[0] as? NSNumber)?.stringValue
             let accessToken = (notiObject as! NSArray)[1] as? String
             
-            if uid != nil && accessToken != nil {
-                LogOrRegModel.getWeiboName(accessToken!, openid: uid!) {
+            if weiboUid != nil && accessToken != nil {
+                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                    (task, responseObject, error) in
                     
                     if let _error = error {
@@ -265,7 +265,7 @@ extension WelcomeViewController {
                             let _name = json["name"].stringValue
                             
                             if _name.characters.count > 0 {
-                                self.logInVia3rdHelper(uid!, nameFrom3rd: _name, type: "weibo")
+                                self.logInVia3rdHelper(weiboUid!, nameFrom3rd: _name, type: "weibo")
                             }
                         }
                     }

@@ -14,6 +14,7 @@ class NicknameViewController: UIViewController {
     @IBOutlet weak var button: CustomButton!
     
     var originalType: String = ""
+    /// 第三方账号的 id 
     var id: String = ""
     var nameFrom3rd: String = ""
     var hasRegistered = false   

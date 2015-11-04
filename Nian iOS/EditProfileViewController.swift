@@ -15,8 +15,11 @@ import UIKit
 }
 
 
-class EditProfileViewController: UIViewController {
+class EditProfileViewController: SAViewController {
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var containerView: UIControl!
     /// 封面
     @IBOutlet weak var coverImageView: UIImageView!
     /// 头像
@@ -33,6 +36,7 @@ class EditProfileViewController: UIViewController {
     
     @IBOutlet weak var genderTextField: UITextField!
     
+    @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
     
     weak var delegate: EditProfileDelegate?
     
@@ -44,26 +48,20 @@ class EditProfileViewController: UIViewController {
     
     var profileDict: Dictionary<String, String>?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.viewBack()
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = "修改个人资料"
-        titleLabel.textAlignment = NSTextAlignment.Center
-        self.navigationItem.titleView = titleLabel
-        
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
-        self.view.addSubview(navView)
-        
-        
+
+        self._setTitle("修改个人资料")
         self.coverImageView.image = self.coverImage
         self.avatarImageView.image = self.avatarImage
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleChooseGender:", name: "tapOnGenderTextField", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                        selector: "handleChooseGender:",
+                                                        name: "tapOnGenderTextField",
+                                                        object: nil)
         
         
         self.nameTextField.text = self.profileDict!["name"]
@@ -75,15 +73,50 @@ class EditProfileViewController: UIViewController {
         self.genderTextField.text = self.profileDict!["gender"] == "2" ? "保密": self.profileDict!["gender"] == "0" ? "男" : "女"
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Listen for changes to keyboard visibility so that we can adjust the text view accordingly.
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        
+        notificationCenter.addObserver(self, selector: "handleKeyboardNotification:", name: UIKeyboardWillShowNotification, object: nil)
+        
+        notificationCenter.addObserver(self, selector: "handleKeyboardNotification:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if self.view.frame.height - 64 < 472 {
+            self.containerViewHeightConstraint.constant = 472
+            self.view.setNeedsUpdateConstraints()
+        }
+        
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         delegate?.editProfile?(profileDict: self.profileDict!, coverImage: self.coverImageView.image!, avatarImage: self.avatarImageView.image!)
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        
+        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        
+        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
     
     @IBAction func dismissKeyboard(sender: UIControl) {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
+        if self.view.frame.height - 64 < 472 {
+            self.containerViewHeightConstraint.constant = 472
+            self.view.setNeedsUpdateConstraints()
+        }
     }
 
     
@@ -173,6 +206,39 @@ class EditProfileViewController: UIViewController {
         alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
     }
     
+    
+    func handleKeyboardNotification(notification: NSNotification) {
+        let userInfo = notification.userInfo!
+        
+        // Get information about the animation.
+        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        
+        let rawAnimationCurveValue = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).unsignedLongValue
+        let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurveValue)
+        
+        // Convert the keyboard frame from screen to view coordinates.
+        let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        let keyboardViewBeginFrame = view.convertRect(keyboardScreenBeginFrame, fromView: view.window)
+        let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
+        let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
+        
+        // The text view should be adjusted, update the constant for this constraint.
+        containerViewHeightConstraint.constant += originDelta
+        
+        // Inform the view that its autolayout constraints have changed and the layout should be updated.
+        view.setNeedsUpdateConstraints()
+        
+        // Animate updating the view's layout by calling layoutIfNeeded inside a UIView animation block.
+        let animationOptions: UIViewAnimationOptions = [animationCurve, .BeginFromCurrentState]
+        UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        
+        // Scroll to the selected text once the keyboard frame changes.
+    }
+    
 }
 
 
@@ -189,6 +255,11 @@ extension EditProfileViewController: UITextFieldDelegate {
         
         return true
     }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        
+    }
+    
     
     /**
      

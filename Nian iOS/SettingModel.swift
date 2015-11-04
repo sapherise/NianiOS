@@ -43,4 +43,24 @@ class SettingModel: NSObject {
                                                 callback: callback)
     }
     
+    /**
+     绑定第三方账号
+     */
+    class func bindThirdAccount(id: String, name: String, nameFrom3rd: String, type: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post("oauth/auth/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+                                                content: ["nickname": "\(nameFrom3rd)", "auth_id": "\(id)", "type": "\(type)"],
+                                                callback: callback)
+        
+        
+        
+    }
+    
+    /**
+     解除第三方账号绑定
+     */
+    class func relieveThirdAccount(type: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.get(
+            "oauth/remove?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)&&type=\(type)",
+                                                callback: callback)
+    }
 }

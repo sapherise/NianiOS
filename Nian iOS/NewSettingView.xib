@@ -601,7 +601,7 @@
                                 <constraint firstItem="FVT-wL-wMW" firstAttribute="leading" secondItem="2V4-1R-PUT" secondAttribute="leading" id="LFs-Ul-gUR"/>
                                 <constraint firstItem="drY-0T-2kh" firstAttribute="leading" secondItem="2V4-1R-PUT" secondAttribute="leading" id="O2T-tx-pDy"/>
                                 <constraint firstItem="3gR-GC-E8e" firstAttribute="leading" secondItem="2V4-1R-PUT" secondAttribute="leading" id="OWv-9r-7L3"/>
-                                <constraint firstItem="Y0D-hc-ugl" firstAttribute="width" secondItem="geH-IS-SIp" secondAttribute="width" id="PC0-5L-vXN"/>
+                                <constraint firstItem="Y0D-hc-ugl" firstAttribute="width" secondItem="geH-IS-SIp" secondAttribute="width" priority="750" id="PC0-5L-vXN"/>
                                 <constraint firstItem="LjW-jX-Ni5" firstAttribute="top" secondItem="DZc-ny-vXm" secondAttribute="bottom" id="Qhd-5Z-Sm2"/>
                                 <constraint firstItem="drY-0T-2kh" firstAttribute="top" secondItem="Dpj-mJ-ux6" secondAttribute="bottom" id="T4M-Dz-W3o"/>
                                 <constraint firstAttribute="trailing" secondItem="drY-0T-2kh" secondAttribute="trailing" id="Tlh-80-lxd"/>

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import QuartzCore
 
-class NewSettingViewController: UIViewController {
+class NewSettingViewController: SAViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -53,16 +54,7 @@ class NewSettingViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.viewBack()
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.text = "设置"
-        titleLabel.textAlignment = NSTextAlignment.Center
-        self.navigationItem.titleView = titleLabel
-        
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
-        self.view.addSubview(navView)
+        self._setTitle("设置")
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
         
@@ -86,7 +78,7 @@ class NewSettingViewController: UIViewController {
         self.avatarImageView.layer.cornerRadius = 30.0
         self.avatarImageView.layer.masksToBounds = true
         
-        let path2 = UIBezierPath(roundedRect: settingAvatarBlurView.bounds, byRoundingCorners: .BottomRight, cornerRadii: CGSizeMake(8, 8))
+        let path2 = UIBezierPath(roundedRect: settingAvatarBlurView.bounds, byRoundingCorners: .BottomRight, cornerRadii: CGSizeMake(8.0, 8.0))
         let masklayer2 = CAShapeLayer()
         masklayer2.frame = settingAvatarBlurView.bounds
         masklayer2.path = path2.CGPath
@@ -149,9 +141,13 @@ class NewSettingViewController: UIViewController {
         let versionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
         self.versionLabel.text = "\(versionString)"
         
+        self.startAnimating()
+        
         SettingModel.getUserInfoAndSetting {
             (task, responseObject, error) in
-
+            
+            self.stopAnimating()
+            
             if let _error = error { // AFNetworking 返回的错误
                 logError("\(_error.localizedDescription)")
             } else {
@@ -323,6 +319,8 @@ extension NewSettingViewController {
      */
     @IBAction func setAccountBind(sender: UITapGestureRecognizer) {
         let accountBindVC = AccountBindViewController(nibName: "AccountBindView", bundle: nil)
+        
+        accountBindVC.userName = self.userDefaults.objectForKey("user") as! String
         
         if let _email = self.userDict!["email"] as? String {
             if _email != "0" {

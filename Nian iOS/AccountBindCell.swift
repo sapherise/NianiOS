@@ -24,12 +24,6 @@ class AccountBindCell: UITableViewCell {
         super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
         
         self.selectionStyle = .None
-        
-//        detailLabel = UILabel(frame: CGRectMake(104, 14, self.frame.width - 104, 15))
-//        detailLabel?.textColor = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
-//        detailLabel?.textAlignment = .Right
-//        
-//        self.addSubview(detailLabel!)
     }
 
     required init?(coder aDecoder: NSCoder) {
