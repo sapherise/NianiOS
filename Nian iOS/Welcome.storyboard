@@ -231,7 +231,7 @@
                                     <constraint firstAttribute="height" constant="44" id="zfF-t2-TOz"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5B-GQ-h3I" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="24" y="199" width="552" height="44"/>
@@ -311,19 +311,19 @@
                             <constraint firstItem="wH5-fu-1YY" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="0NW-Ie-K55"/>
                             <constraint firstItem="zzw-fx-yPi" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="3vW-Dl-W2j"/>
                             <constraint firstItem="zzw-fx-yPi" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="5Eo-QE-78t"/>
-                            <constraint firstItem="sjY-EG-EGh" firstAttribute="top" secondItem="Kkc-ez-6hC" secondAttribute="bottom" constant="32" id="8Gh-RC-tXZ"/>
                             <constraint firstItem="Kkc-ez-6hC" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="8cb-fb-5bc"/>
                             <constraint firstItem="aiM-V0-p1m" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="Aad-0C-5pg"/>
                             <constraint firstItem="aiM-V0-p1m" firstAttribute="top" secondItem="P5B-GQ-h3I" secondAttribute="bottom" constant="8" id="EXe-JU-C3v"/>
                             <constraint firstItem="Qox-5h-ozL" firstAttribute="top" secondItem="XIw-ov-MTc" secondAttribute="top" constant="20" id="HSc-y3-nsN"/>
+                            <constraint firstItem="sjY-EG-EGh" firstAttribute="top" secondItem="Kkc-ez-6hC" secondAttribute="bottom" constant="32" id="Ijq-uO-H1U"/>
                             <constraint firstAttribute="trailing" secondItem="P5B-GQ-h3I" secondAttribute="trailing" constant="24" id="KMi-7F-pSt"/>
                             <constraint firstItem="Qox-5h-ozL" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" id="LEz-yS-O1J"/>
-                            <constraint firstItem="7Zy-4H-vO5" firstAttribute="top" secondItem="w2Z-ZY-yki" secondAttribute="bottom" constant="48" id="Odq-4K-Qsg"/>
                             <constraint firstAttribute="trailing" secondItem="Bus-T7-xRk" secondAttribute="trailing" constant="24" id="Q4H-Cd-AyQ"/>
                             <constraint firstItem="P5B-GQ-h3I" firstAttribute="top" secondItem="wH5-fu-1YY" secondAttribute="bottom" constant="24" id="Rwn-rb-rcD"/>
-                            <constraint firstItem="wH5-fu-1YY" firstAttribute="top" secondItem="w2Z-ZY-yki" secondAttribute="bottom" constant="111" id="V0R-J5-lRC"/>
+                            <constraint firstItem="7Zy-4H-vO5" firstAttribute="top" secondItem="w2Z-ZY-yki" secondAttribute="bottom" constant="48" id="VPX-VI-sBM"/>
                             <constraint firstItem="7Zy-4H-vO5" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="Vuc-cs-2SH"/>
                             <constraint firstItem="P5B-GQ-h3I" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="YNV-Fz-OI6"/>
+                            <constraint firstItem="wH5-fu-1YY" firstAttribute="top" secondItem="w2Z-ZY-yki" secondAttribute="bottom" constant="111" id="aaz-8t-Zo9"/>
                             <constraint firstItem="Bus-T7-xRk" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="fvn-zB-RDV"/>
                             <constraint firstAttribute="trailing" secondItem="zzw-fx-yPi" secondAttribute="trailing" constant="24" id="gPx-jZ-d81"/>
                             <constraint firstItem="Bus-T7-xRk" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="ia2-fY-5uy"/>
@@ -339,7 +339,6 @@
                         <outlet property="cancelButton" destination="Qox-5h-ozL" id="eks-g1-ybk"/>
                         <outlet property="descriptionLabel" destination="7Zy-4H-vO5" id="9Tg-Wz-WOf"/>
                         <outlet property="emailTextField" destination="wH5-fu-1YY" id="xDQ-Fx-Q8h"/>
-                        <outlet property="emailTextFieldToTop" destination="V0R-J5-lRC" id="28X-YV-rWT"/>
                         <outlet property="forgetPWDButton" destination="aiM-V0-p1m" id="XGj-b7-oNq"/>
                         <outlet property="functionalButton" destination="P5B-GQ-h3I" id="dvz-5c-TRv"/>
                         <outlet property="functionalButtonTopToEmail" destination="Rwn-rb-rcD" id="FlQ-5v-PDW"/>
@@ -766,6 +765,6 @@
         <image name="signin_weibo" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="k9Y-b2-sqM"/>
+        <segue reference="2y2-qF-Yem"/>
     </inferredMetricsTieBreakers>
 </document>

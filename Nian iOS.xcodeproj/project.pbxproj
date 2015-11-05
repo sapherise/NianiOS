@@ -243,6 +243,8 @@
 		C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4AD26D21BE871C800BF6242 /* AccountBindView.xib */; };
 		C4AD26D51BE887E000BF6242 /* AccountBindCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AD26D41BE887E000BF6242 /* AccountBindCell.swift */; };
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
+		C4B6AEC81BEB9B310064486B /* BindEmailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B6AEC71BEB9B310064486B /* BindEmailView.xib */; };
+		C4B6AECA1BEB9C3D0064486B /* BindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6AEC91BEB9C3D0064486B /* BindEmailViewController.swift */; };
 		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
 		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
@@ -553,6 +555,8 @@
 		C4AD26D41BE887E000BF6242 /* AccountBindCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountBindCell.swift; sourceTree = "<group>"; };
 		C4AFF0431B0F2BCD00321479 /* TITokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TITokenField.h; sourceTree = "<group>"; };
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
+		C4B6AEC71BEB9B310064486B /* BindEmailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BindEmailView.xib; sourceTree = "<group>"; };
+		C4B6AEC91BEB9C3D0064486B /* BindEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindEmailViewController.swift; sourceTree = "<group>"; };
 		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
 		C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
@@ -964,11 +968,13 @@
 				12DE696419D130940006B5B5 /* Care.swift */,
 				12BF5FFD19BB5E2100DE0ABE /* SettingsViewController.xib */,
 				C47674971BE3405700F85DFC /* NewSettingView.xib */,
+				C4B6AEC71BEB9B310064486B /* BindEmailView.xib */,
 				C474187F1BE37602002D01BD /* EditProfileView.xib */,
 				C4AD26D21BE871C800BF6242 /* AccountBindView.xib */,
 				C474187D1BE35E7C002D01BD /* NewSettingViewController.swift */,
 				C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */,
 				C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */,
+				C4B6AEC91BEB9C3D0064486B /* BindEmailViewController.swift */,
 				C4AD26D41BE887E000BF6242 /* AccountBindCell.swift */,
 				C40F0F281BE744FC007B7C6B /* SettingModel.swift */,
 			);
@@ -1599,6 +1605,7 @@
 			files = (
 				C47C42341BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */,
+				C4B6AEC81BEB9B310064486B /* BindEmailView.xib in Resources */,
 				12D1048D19F3387600E65B54 /* Level.xib in Resources */,
 				C47418801BE37602002D01BD /* EditProfileView.xib in Resources */,
 				12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */,
@@ -1816,6 +1823,7 @@
 				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */,
+				C4B6AECA1BEB9C3D0064486B /* BindEmailViewController.swift in Sources */,
 				C4E966D41BE4B67900F31EBF /* AccountBindViewController.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,

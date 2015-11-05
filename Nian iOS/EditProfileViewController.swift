@@ -20,6 +20,8 @@ class EditProfileViewController: SAViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var containerView: UIControl!
+    
+    @IBOutlet weak var imageContainerView: UIView!
     /// 封面
     @IBOutlet weak var coverImageView: UIImageView!
     /// 头像
@@ -29,6 +31,11 @@ class EditProfileViewController: SAViewController {
     /// 模糊背景
     @IBOutlet weak var settingAvatarBlurView: FXBlurView!
     
+    @IBOutlet weak var nameView: UIView!
+    
+    @IBOutlet weak var phoneView: UIView!
+    
+    @IBOutlet weak var genderView: UIView!
     
     @IBOutlet weak var nameTextField: UITextField!
     
@@ -36,12 +43,15 @@ class EditProfileViewController: SAViewController {
     
     @IBOutlet weak var genderTextField: UITextField!
     
-    @IBOutlet weak var containerViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewToBottomConstraint: NSLayoutConstraint!
     
     weak var delegate: EditProfileDelegate?
     
     var coverImage: UIImage?
     var avatarImage: UIImage?
+    
+    var coverImageModified: Bool = false
+    var avatarImageModified: Bool = false
     
     var coverImagePicker: UIImagePickerController?
     var avatarImagePicker: UIImagePickerController?
@@ -58,11 +68,22 @@ class EditProfileViewController: SAViewController {
         self.coverImageView.image = self.coverImage
         self.avatarImageView.image = self.avatarImage
         
+        self.settingAvatarBlurView.dynamic = true
+        self.settingAvatarBlurView.tintColor = UIColor.blackColor()
+        
+        self.settingCoverBlurView.dynamic = true
+        self.settingCoverBlurView.tintColor = UIColor.blackColor()
+        
+        self.imageContainerView.layer.cornerRadius = 8.0
+        self.imageContainerView.layer.masksToBounds = true
+        
+        self.avatarImageView.layer.cornerRadius = 30.0
+        self.avatarImageView.layer.masksToBounds = true
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                         selector: "handleChooseGender:",
                                                         name: "tapOnGenderTextField",
                                                         object: nil)
-        
         
         self.nameTextField.text = self.profileDict!["name"]
         
@@ -71,6 +92,9 @@ class EditProfileViewController: SAViewController {
         }
         
         self.genderTextField.text = self.profileDict!["gender"] == "2" ? "保密": self.profileDict!["gender"] == "0" ? "男" : "女"
+        
+        self.setBarButton("保存", actionGesture: "saveProfileSetting:")
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -83,23 +107,7 @@ class EditProfileViewController: SAViewController {
         
         notificationCenter.addObserver(self, selector: "handleKeyboardNotification:", name: UIKeyboardWillHideNotification, object: nil)
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if self.view.frame.height - 64 < 472 {
-            self.containerViewHeightConstraint.constant = 472
-            self.view.setNeedsUpdateConstraints()
-        }
-        
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        delegate?.editProfile?(profileDict: self.profileDict!, coverImage: self.coverImageView.image!, avatarImage: self.avatarImageView.image!)
-    }
-    
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -113,10 +121,6 @@ class EditProfileViewController: SAViewController {
     @IBAction func dismissKeyboard(sender: UIControl) {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
         
-        if self.view.frame.height - 64 < 472 {
-            self.containerViewHeightConstraint.constant = 472
-            self.view.setNeedsUpdateConstraints()
-        }
     }
 
     
@@ -225,7 +229,7 @@ class EditProfileViewController: SAViewController {
         let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
         
         // The text view should be adjusted, update the constant for this constraint.
-        containerViewHeightConstraint.constant += originDelta
+        scrollViewToBottomConstraint.constant -= originDelta
         
         // Inform the view that its autolayout constraints have changed and the layout should be updated.
         view.setNeedsUpdateConstraints()
@@ -237,6 +241,7 @@ class EditProfileViewController: SAViewController {
             }, completion: nil)
         
         // Scroll to the selected text once the keyboard frame changes.
+
     }
     
 }
@@ -255,11 +260,6 @@ extension EditProfileViewController: UITextFieldDelegate {
         
         return true
     }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        
-    }
-    
     
     /**
      
@@ -283,23 +283,162 @@ extension EditProfileViewController: UITextFieldDelegate {
 }
 
 extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func coverImagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.dismissViewControllerAnimated(true, completion: nil)
         
         if picker == self.coverImagePicker {
             self.coverImageView.image = image
+            self.coverImageModified = true
         } else if picker == self.avatarImagePicker {
             self.avatarImageView.image = image
+            self.avatarImageModified = true
         }
-        
-    }
-    
-    
-    func coverImagePickerControllerDidCancel(picker: UIImagePickerController) {
-        
     }
 }
+
+
+extension EditProfileViewController {
+    /**
+     验证昵称是否符合要求
+     */
+    func validateNickname(name: String?) -> Bool {
+        if let _text = name {
+            if _text.characters.count >= 4 {
+                if _text.isValidName() {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+    
+    /**
+     验证手机号是否正确
+     */
+    func validatePhone(phoneNumber: String?) -> Bool {
+        
+        if let _text = phoneNumber {
+            if _text != "" {
+                if _text.isValidPhone() {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+
+}
+
+extension EditProfileViewController {
+    
+    func saveProfileSetting(sender: UITapGestureRecognizer) {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
+        if self.coverImageModified  {
+            self.uploadImage(self.coverImageView.image!, type: "cover")
+        }
+        
+        if self.avatarImageModified {
+            self.uploadImage(self.avatarImageView.image!, type: "avatar")
+        }
+        
+        if !self.validateNickname(self.nameTextField.text) {
+            self.view.showTipText("名字不符合要求...", delay: 1)
+            return
+        }
+        
+        if !self.validatePhone(self.phoneTextField.text) {
+            self.view.showTipText("手机号码不正确...", delay: 1)
+            return
+        }
+        
+        self.profileDict!["name"] = self.nameTextField.text!
+        self.profileDict!["phone"] = self.phoneTextField.text!
+        
+        delegate?.editProfile?(profileDict: self.profileDict!, coverImage: self.coverImageView.image!, avatarImage: self.avatarImageView.image!)
+        
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    
+    func uploadImage(image: UIImage, type: String) {
+        
+        if type == "cover" {
+        
+            self.startAnimating()
+            
+            let uy = UpYun()
+            uy.successBlocker = ({ (data: AnyObject!) in
+                var uploadURL = data.objectForKey("url") as! String
+                uploadURL = SAReplace(uploadURL, before: "/cover/", after: "") as String
+                
+                let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
+                let userDefaults = NSUserDefaults.standardUserDefaults()
+                userDefaults.setObject(coverImageURL, forKey: "coverUrl")
+                userDefaults.synchronize()
+                
+                SettingModel.changeCoverImage(coverURL: coverImageURL, callback: {
+                    (task, responseObject, error) in
+                    
+                    self.stopAnimating()
+                    
+                    if let _ = error {
+                        self.view.showTipText("上传不成功...", delay: 2)
+                    } else {
+                        setCacheImage(coverImageURL, img: image, width: 500)
+                    }
+                })
+            })
+            
+            
+            uy.failBlocker = ({ (error: NSError!) in
+                self.stopAnimating()
+                self.view.showTipText("上传不成功...", delay: 2)
+            })
+            
+            uy.uploadImage(resizedImage(image, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
+            
+        } else if type == "avatar" {
+            
+            self.startAnimating()
+        
+            let uy = UpYun()
+            uy.successBlocker = ({ (data: AnyObject!) in
+                self.stopAnimating()
+                
+                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream",
+                            img: image, width: 150)
+            })
+            uy.failBlocker = ({ (error: NSError!) in
+                self.stopAnimating()
+                self.view.showTipText("上传不成功...", delay: 2)
+            })
+            
+            let _tmpString = "/head/" + "\(CurrentUser.sharedCurrentUser.uid!)" + ".jpg"
+            
+            uy.uploadImage(resizedImage(image, newWidth: 250), savekey: _tmpString)
+        }
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

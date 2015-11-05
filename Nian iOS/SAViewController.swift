@@ -75,9 +75,60 @@ class SAViewController: UIViewController {
         _containView?.removeFromSuperview()
     }
     
-    func handleBaseJsonWithError(error: NSError?, id: AnyObject?) {
+    func handleBaseJsonWithError(error: NSError?, id: AnyObject?) -> JSON? {
         
+        if let _error = error {
+            #if DEBUG
+                logError("\(_error.localizedDescription)")
+            #else
+                let alertView = UIAlertView(title: "", message: "未能解析服务器数据", delegate: nil, cancelButtonTitle: "OK")
+                alertView.show()
+            #endif
+            
+            return nil
+        }
+        
+        let json = JSON(id!)
+        
+        if json["error"] != 0 {
+            #if DEBUG
+                logError("\(json["message"].string)")
+            #else
+                let alertView = UIAlertView(title: "", message: "未能提供正确数据", delegate: nil, cancelButtonTitle: "OK")
+                alertView.show()
+            #endif
+            
+            return nil
+        }
+        
+        return json
     }
     
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

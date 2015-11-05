@@ -50,6 +50,7 @@ class PatternViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.playMode = .easy
     }
 
     /**
@@ -104,7 +105,9 @@ class PatternViewController: UIViewController {
             username: self.regInfo!.nickname!,
             daily: self.playMode!.rawValue) {
                (task, responseObject, error) in
+                
                 self.accompolishButton.stopAnimating()
+                self.accompolishButton.setTitle("完成", forState: .Normal)
                 
                 if let _error = error { // 服务器返回错误
                     logError("\(_error)")
@@ -112,7 +115,9 @@ class PatternViewController: UIViewController {
                     let json = JSON(responseObject!)
                     
                     if json["error"] == 2 { // 服务器返回的数据包含“错误信息”
-                        //TODO: json["message"]
+                        self.view.showTipText("用户名被占用...", delay: 2)
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                        
                     } else if json["error"] == 0 { // 服务器返回正常，注册成功
                         let shell = json["data"]["shell"].stringValue
                         let uid = json["data"]["uid"].stringValue

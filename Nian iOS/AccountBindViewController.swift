@@ -27,6 +27,7 @@ class AccountBindViewController: SAViewController {
         self._setTitle("账户和绑定设置")
         
         self.tableview.registerClass(AccountBindCell.self, forCellReuseIdentifier: "AccountBindCell")
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 15))
         
         self.startAnimating()
         
@@ -65,7 +66,7 @@ class AccountBindViewController: SAViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Weibo", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "weibo", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "Wechat", object: nil)
     }
     
@@ -167,7 +168,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                
+                if self.userEmail == "" {
+                    let bindEmailVC = BindEmailViewController(nibName: "BindEmailView", bundle: nil)
+                    bindEmailVC.delegate = self
+                    
+                    self.navigationController?.presentViewController(bindEmailVC, animated: true, completion: nil)
+                }
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -192,7 +198,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                                     self.tableview.beginUpdates()
                                     self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
                                     self.tableview.endUpdates()
-                                    
                                     
                                     self.view.showTipText("微信解除绑定成功", delay: 1)
                                 }
@@ -323,15 +328,8 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     request.userInfo = ["SSO_From": "WelcomeViewController"]
                     WeiboSDK.sendRequest(request)
                 }
-            
-            
             }
-            
         }
-        
-        
-        
-        
     }
     
     
@@ -386,7 +384,7 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
      * param cancelled 代表用户是否主动退出登录
      */
     func tencentDidNotLogin(cancelled: Bool) {
-        
+        self.view.showTipText("绑定 QQ 失败...", delay: 2)
     }
     
     /**
@@ -407,7 +405,7 @@ extension AccountBindViewController {
         }
         
         if (notiObject as! NSArray).count > 0 {
-            let weiboUid = ((notiObject as! NSArray)[0] as? NSNumber)?.stringValue
+            let weiboUid = (notiObject as! NSArray)[0] as? String
             let accessToken = (notiObject as! NSArray)[1] as? String
             
             if weiboUid != nil && accessToken != nil {
@@ -430,8 +428,6 @@ extension AccountBindViewController {
                         }
                     }
                 }
-                
-                
             }
             
         } else {
@@ -530,7 +526,17 @@ extension AccountBindViewController {
 }
 
 
-
+extension AccountBindViewController: bindEmailDelegate {
+    
+    func bindEmail(email email: String) {
+        self.userEmail = email
+        
+        self.tableview.beginUpdates()
+        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+        self.tableview.endUpdates()
+    }
+    
+}
 
 
 

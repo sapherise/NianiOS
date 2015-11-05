@@ -63,4 +63,46 @@ class SettingModel: NSObject {
             "oauth/remove?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)&&type=\(type)",
                                                 callback: callback)
     }
+    
+    /**
+     更改封面
+     */
+    class func changeCoverImage(coverURL coverURL: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post(
+            "user/\(CurrentUser.sharedCurrentUser.uid!)/cover/edit?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+                                                content: ["cover": coverURL],
+                                                callback: callback)
+    }
+    
+    /**
+     已登录用户绑定邮箱
+     */
+    func bindEmail(email: String, password: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.post(
+            "/oauth/email/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+            content: ["email": email, "password": password],
+            callback: callback)
+        
+        
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

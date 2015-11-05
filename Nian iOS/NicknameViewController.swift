@@ -101,7 +101,7 @@ extension NicknameViewController {
                         self.button.stopAnimating()
                         self.button.setTitle("确定", forState: .Normal)
                         
-                        logError("昵称被占用")
+                        self.view.showTipText("昵称被占用...", delay: 2)
                         
                     } else {
                         /*=========================================================================================================================================*/
@@ -147,6 +147,7 @@ extension NicknameViewController {
                                     
                                     self.presentViewController(navigationViewController, animated: true, completion: {
                                         self.nameTextfield.text = ""
+                                        self.navigationController?.popViewControllerAnimated(true)
                                     })
                                     Api.postDeviceToken() { string in }
                                     Api.postJpushBinding(){_ in }

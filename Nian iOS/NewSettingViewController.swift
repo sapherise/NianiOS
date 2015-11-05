@@ -9,12 +9,19 @@
 import UIKit
 import QuartzCore
 
+@objc protocol NewSettingDelegate {
+    
+    optional func setting(name name: String?, cover: UIImage?, avatar: UIImage?)
+}
+
+
 class NewSettingViewController: SAViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var contentView: UIView!
     
+    @IBOutlet weak var ImageContainerView: UIView!
     /// 封面
     @IBOutlet weak var coverImageView: UIImageView!
     /// 头像
@@ -37,13 +44,18 @@ class NewSettingViewController: SAViewController {
     @IBOutlet weak var cacheActivityIndicator: UIActivityIndicatorView!
     /// version label
     @IBOutlet weak var versionLabel: UILabel!
-   
+    
+    weak var delegate: NewSettingDelegate?
+    
     /// 一些用户信息
     var userDict: Dictionary<String, AnyObject>?
     var settingModel: SettingModel?
     
     var coverImage: UIImage?
     var avatarImage: UIImage?
+    
+    var coverImageModified: Bool = false
+    var avatarImageModified: Bool = false
     
     var coverImagePicker: UIImagePickerController?
     var avatarImagePicker: UIImagePickerController?
@@ -58,10 +70,10 @@ class NewSettingViewController: SAViewController {
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
         
-        self.settingAvatarBlurView.dynamic = false
+        self.settingAvatarBlurView.dynamic = true
         self.settingAvatarBlurView.tintColor = UIColor.blackColor()
         
-        self.settingCoverBlurView.dynamic = false
+        self.settingCoverBlurView.dynamic = true
         self.settingCoverBlurView.tintColor = UIColor.blackColor()
         
         self.settingModel = SettingModel()
@@ -69,28 +81,16 @@ class NewSettingViewController: SAViewController {
         /* 隐藏 “清理缓存” 的 spinner */
         self.cacheActivityIndicator.hidden = true
         
+        //设置背景
+        self.coverImageView.image = self.coverImage
         //设置头像
-        self.avatarImageView.setHead(CurrentUser.sharedCurrentUser.uid!)
-        
-        self.coverImageView.layer.cornerRadius = 8.0
-        self.coverImageView.layer.masksToBounds = true
+        self.avatarImageView.image = self.avatarImage
         
         self.avatarImageView.layer.cornerRadius = 30.0
         self.avatarImageView.layer.masksToBounds = true
         
-        let path2 = UIBezierPath(roundedRect: settingAvatarBlurView.bounds, byRoundingCorners: .BottomRight, cornerRadii: CGSizeMake(8.0, 8.0))
-        let masklayer2 = CAShapeLayer()
-        masklayer2.frame = settingAvatarBlurView.bounds
-        masklayer2.path = path2.CGPath
-        settingAvatarBlurView.layer.mask = masklayer2
-        settingAvatarBlurView.layer.masksToBounds = true
-        
-        let path1 = UIBezierPath(roundedRect: settingCoverBlurView.bounds, byRoundingCorners: .BottomLeft, cornerRadii: CGSizeMake(8, 8))
-        let masklayer1 = CAShapeLayer()
-        masklayer1.frame = settingCoverBlurView.bounds
-        masklayer1.path = path1.CGPath
-        settingCoverBlurView.layer.mask = masklayer1
-        settingCoverBlurView.layer.masksToBounds = true
+        self.ImageContainerView.layer.cornerRadius = 8.0
+        self.ImageContainerView.layer.masksToBounds = true
         
         // 移动网络下是否下载图片
         if let saveMode = userDefaults.objectForKey("saveMode") as? String {
@@ -167,57 +167,109 @@ class NewSettingViewController: SAViewController {
                     }
                     
                     self.userDefaults.setObject(json["data"]["user"]["name"].stringValue, forKey: "user")
-                    
+                    self.userDefaults.synchronize()
                 } // if json["error"] != 0
             } // if let _error = error
         }  // SettingModel.getUserInfoAndSetting
     } // view didLoad
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-    }
-    
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        let _name = self.userDict!["name"] as? String
+        
+        if self.coverImageModified && self.avatarImageModified {
+            delegate?.setting?(name: _name, cover: self.coverImageView.image, avatar: self.avatarImageView.image)
+        } else if self.coverImageModified {
+            delegate?.setting?(name: _name, cover: self.coverImageView.image, avatar: nil)
+        } else if self.avatarImageModified {
+            delegate?.setting?(name: _name, cover: nil, avatar: self.avatarImageView.image)
+        }
         
     }
-
+    
+    
+    
 }
 
 // MARK: - 处理各个 Switcher
 extension NewSettingViewController{
     
     /**
-     <#Description#>
+     是否日更模式
      */
     @IBAction func dailyModeChanged(sender: UISwitch) {
+        if sender.on {
+            Api.postUserFrequency(0, callback: { _ in
+                self.userDefaults.setObject("0", forKey: "dailyMode")
+                self.userDefaults.synchronize()
+            })
+            
+        } else {
+            Api.postUserFrequency(1, callback: { _ in
+                self.userDefaults.setObject("1", forKey: "dailyMode")
+                self.userDefaults.synchronize()
+            })
+        }
     }
     
     /**
-     <#Description#>
+     移动网络是否下载图片
      */
     @IBAction func downloadPictureViaCellerOrNot(sender: UISwitch) {
+        if sender.on {
+            self.userDefaults.setObject(true, forKey: "saveMode")
+            self.userDefaults.synchronize()
+        } else {
+            self.userDefaults.setObject(false, forKey: "saveMode")
+            self.userDefaults.synchronize()
+        }
     }
     
     /**
-     <#Description#>
+     是否保存进展卡片
      */
     @IBAction func saveStepCardOrNot(sender: UISwitch) {
+        if sender.on {
+            self.userDefaults.setObject(true, forKey: "modeCard")
+            self.userDefaults.synchronize()
+        } else {
+            self.userDefaults.setObject(false, forKey: "modeCard")
+            self.userDefaults.synchronize()
+        }
+        
     }
     
     /**
-     <#Description#>
+     是否每日更新提醒
      */
     @IBAction func remindOnDailyUpdate(sender: UISwitch) {
+        if sender.on {
+            self.userDefaults.setObject("1", forKey: "pushMode")
+        } else {
+            self.userDefaults.setObject("0", forKey: "pushMode")
+            UIApplication.sharedApplication().cancelAllLocalNotifications()
+        }
+        
+        self.userDefaults.synchronize()
     }
     
     /**
-     <#Description#>
+     是否只能通过昵称找到
      */
     @IBAction func findMeOnlyViaName(sender: UISwitch) {
+        if sender.on {
+            Api.postUserPrivate("1", callback: { _ in
+                self.userDefaults.setObject(true, forKey: "privateMode")
+                self.userDefaults.synchronize()
+            })
+        } else {
+            Api.postUserPrivate("0", callback: { _ in
+                self.userDefaults.setObject(false, forKey: "privateMode")
+                self.userDefaults.synchronize()
+            })
+        }
     }
 }
 
@@ -400,11 +452,7 @@ extension NewSettingViewController {
         
         globalTabhasLoaded = [false, false, false]
         
-        self.dismissViewControllerAnimated(true, completion: {
-            // TODO: 回到欢迎页
-            
-        
-        })
+        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
 }
@@ -412,43 +460,102 @@ extension NewSettingViewController {
 
 extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func coverImagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.dismissViewControllerAnimated(true, completion: nil)
         
         if picker == self.coverImagePicker {
-            self.coverImageView.image = image
+            self.uploadImage(image, type: "cover")
+            
         } else if picker == self.avatarImagePicker {
-            self.avatarImageView.image = image
+            self.uploadImage(image, type: "avatar")
+            
         }
-        
     }
     
-    
-    func coverImagePickerControllerDidCancel(picker: UIImagePickerController) {
+    func uploadImage(image: UIImage, type: String) {
         
+        if type == "cover" {
+            
+            self.startAnimating()
+            
+            let uy = UpYun()
+            uy.successBlocker = ({ (data: AnyObject!) in
+                var uploadURL = data.objectForKey("url") as! String
+                uploadURL = SAReplace(uploadURL, before: "/cover/", after: "") as String
+                
+                let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
+                let userDefaults = NSUserDefaults.standardUserDefaults()
+                userDefaults.setObject(coverImageURL, forKey: "coverUrl")
+                userDefaults.synchronize()
+                
+                SettingModel.changeCoverImage(coverURL: coverImageURL, callback: {
+                    (task, responseObject, error) in
+                    
+                    self.stopAnimating()
+                    
+                    if let _ = error {
+                        self.view.showTipText("上传不成功...", delay: 2)
+                    } else {
+                        setCacheImage(coverImageURL, img: image, width: 500)
+                        // 上传成功后，本地显示新的封面
+                        self.coverImageView.image = image
+                        self.coverImageModified = true
+                    }
+                })
+            })
+            
+            
+            uy.failBlocker = ({ (error: NSError!) in
+                self.stopAnimating()
+                self.view.showTipText("上传不成功...", delay: 2)
+            })
+            
+            uy.uploadImage(resizedImage(image, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
+            
+        } else if type == "avatar" {
+            
+            self.startAnimating()
+            
+            let uy = UpYun()
+            uy.successBlocker = ({ (data: AnyObject!) in
+                self.stopAnimating()
+                
+                self.avatarImageView.image = image
+                self.avatarImageModified = true
+                
+                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream",
+                    img: image, width: 150)
+            })
+            uy.failBlocker = ({ (error: NSError!) in
+                self.stopAnimating()
+                self.view.showTipText("上传不成功...", delay: 2)
+            })
+            
+            let _tmpString = "/head/" + "\(CurrentUser.sharedCurrentUser.uid!)" + ".jpg"
+            
+            uy.uploadImage(resizedImage(image, newWidth: 250), savekey: _tmpString)
+        }
     }
-}
-
-
-extension NewSettingViewController {
-
-
 
 }
-
 
 extension NewSettingViewController: EditProfileDelegate {
-    
+    /**
+     更新界面和用户信息
+     */
     func editProfile(profileDict profileDict: Dictionary<String, String>, coverImage: UIImage, avatarImage: UIImage) {
+        self.coverImageView.image = coverImage
+        self.coverImageModified = true
         
+        self.avatarImageView.image = avatarImage
+        self.avatarImageModified = true
+        
+        for (key, value) in profileDict {
+            self.userDict?.updateValue(value, forKey: key)
+        }
     }
     
 }
-
-
-
-
-
 
 
 

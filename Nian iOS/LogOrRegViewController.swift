@@ -238,7 +238,6 @@ class LogOrRegViewController: UIViewController {
                     
                     self.functionalButton.stopAnimating()
                     
-                    
                     if let _error = error {
                         logError("\(_error)")
                     } else {
@@ -272,6 +271,7 @@ class LogOrRegViewController: UIViewController {
                             self.presentViewController(navigationViewController, animated: true, completion: {
                                 self.emailTextField.text = ""
                                 self.passwordTextField.text = ""
+                                self.navigationController?.popViewControllerAnimated(true)
                             })
                             Api.postDeviceToken() { string in }
                             Api.postJpushBinding(){_ in }
@@ -287,9 +287,31 @@ class LogOrRegViewController: UIViewController {
             if self.passwordTextField.text != "" {
                 if let _nickname = self.nicknameTextField.text {
                     if self.validateNickname(_nickname) {
-                        self.performSegueWithIdentifier("toModeVC", sender: nil)
+                        
+                        self.functionalButton.startAnimating()
+                        
+                        LogOrRegModel.checkNameAvailability(name: _nickname, callback: {
+                            (task, responseObject, error) in
+                            
+                            self.functionalButton.stopAnimating()
+                            self.functionalButton.setTitle("注册", forState: .Normal)
+                            
+                            if let _error = error { // 服务器返回错误
+                                logError("\(_error)")
+                            } else {
+                                let json = JSON(responseObject!)
+                                
+                                if json["error"] == 1 { // 服务器返回的数据包含“错误信息”
+                                    self.view.showTipText("昵称被占用...", delay: 2)
+                                    
+                                } else if json["error"] == 0 {
+                                    self.performSegueWithIdentifier("toModeVC", sender: nil)
+                                }
+                            }
+                        })
+                        
                     } else { // nickname 不符合要求
-                        logError("nick name 被占用")
+                        logError("昵称中有奇怪的字符...")
                     }
                 } else { // 没有输入 nickname
                 

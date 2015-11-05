@@ -95,7 +95,7 @@ class LogOrRegModel: NSObject {
      :param: callback <#callback description#>
      */
     class func checkNameAvailability(name name: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.get("user/check" + "?username=\(name)",
+        NianNetworkClient.sharedNianNetworkClient.get("user/check" + "?username=\(SAEncode(SAHtml(name)))",
                                                   callback: callback)
     }
 
