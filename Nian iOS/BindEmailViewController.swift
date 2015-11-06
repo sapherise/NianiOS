@@ -157,8 +157,8 @@ class BindEmailViewController: UIViewController {
                             
                             self.confirmButton.stopAnimating()
                             
-                            if let _error = error {
-                                logError("\(_error.localizedDescription)")
+                            if let _ = error {
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 let json = JSON(responseObject!)
                                 
@@ -194,8 +194,8 @@ class BindEmailViewController: UIViewController {
                         
                         self.confirmButton.stopAnimating()
                         
-                        if let _error = error {
-                            logError("\(_error.localizedDescription)")
+                        if let _ = error {
+                            self.view.showTipText("网络有点问题，等一会儿再试")
                         } else {
                             let json = JSON(responseObject!)
                             

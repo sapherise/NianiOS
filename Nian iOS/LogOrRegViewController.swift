@@ -412,7 +412,7 @@ extension LogOrRegViewController {
             self.view.showTipText("名字不能是空的...")
             
             return false
-        } else if name.characters.count < 4 {
+        } else if name.characters.count < 2 {
             self.view.showTipText("名字有点短...")
             
             return false

@@ -36,8 +36,8 @@ class AccountBindViewController: SAViewController {
             
             self.stopAnimating()
             
-            if let _error = error {
-                logError("\(_error.localizedDescription)")
+            if let _ = error {
+                self.view.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
@@ -189,16 +189,16 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     
                     let alertController = PSTAlertController.actionSheetWithTitle("微信账号: 昵称 " + (self.bindDict["wechat_username"] as! String))
                     
-                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Destructive, handler: { (action) in
+                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
                         SettingModel.relieveThirdAccount("wechat", callback: { (task, responseObject, error) -> Void in
-                            if let _error = error {
-                                logError("\(_error.localizedDescription)")
+                            if let _ = error {
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    
+                                    self.view.showTipText("网络有点问题，等一会儿再试")
                                 } else {
                                     
                                     self.bindDict["wechat"] = "0"
@@ -245,16 +245,16 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     
                     let alertController = PSTAlertController.actionSheetWithTitle("QQ 账号: 昵称 " + (self.bindDict["QQ_username"] as! String))
                     
-                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Destructive, handler: { (action) in
+                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
                         SettingModel.relieveThirdAccount("QQ", callback: { (task, responseObject, error) -> Void in
-                            if let _error = error {
-                                logError("\(_error.localizedDescription)")
+                            if let _ = error {
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    
+                                    self.view.showTipText("网络有点问题，等一会儿再试")
                                 } else {
                                     self.bindDict["QQ"] = 1
                                     self.bindDict["QQ_username"] = ""
@@ -319,16 +319,16 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     
                     let alertController = PSTAlertController.actionSheetWithTitle("微博账号: 昵称 " + (self.bindDict["weibo_username"] as! String))
                     
-                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Destructive, handler: { (action) in
+                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
                         SettingModel.relieveThirdAccount("weibo", callback: { (task, responseObject, error) -> Void in
-                            if let _error = error {
-                                logError("\(_error.localizedDescription)")
+                            if let _ = error {
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    
+                                    self.view.showTipText("网络有点问题，等一会儿再试")
                                 } else {
                                     self.bindDict["weibo"] = "0"
                                     self.bindDict["weibo_username"] = ""
@@ -383,13 +383,13 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
             LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
                 (task, responseObject, error) in
                 
-                if let _error = error {
-                    logError("\(_error.localizedDescription)")
+                if let _ = error {
+                    self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
                     if json["ret"].numberValue != 0 {
-                        logError("\(json["msg"].stringValue)")
+                        self.view.showTipText("QQ 授权不成功...")
                     } else {
                         let _name = json["nickname"].stringValue
                         
@@ -439,13 +439,13 @@ extension AccountBindViewController {
                 LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                     (task, responseObject, error) in
                     
-                    if let _error = error {
-                        logError("\(_error.localizedDescription)")
+                    if let _ = error {
+                        self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
-                        if let msg = json["error"].string {
-                            logError("\(msg)")
+                        if let _ = json["error"].string {
+                            self.view.showTipText("微博授权不成功...")
                         } else {
                             let _name = json["name"].stringValue
                             
@@ -479,13 +479,14 @@ extension AccountBindViewController {
                 LogOrRegModel.getWechatName(accessToken, openid: openid) {
                     (task, responseObject, error) in
                     
-                    if let _error = error {
-                        logError("\(_error.localizedDescription)")
+                    if let _ = error {
+                        self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if let errcode = json["errcode"].number {
                             logError("\(errcode)")
+                            self.view.showTipText("微信授权不成功...")
                         } else {
                             let _name = json["nickname"].stringValue
                             
@@ -509,16 +510,14 @@ extension AccountBindViewController {
         SettingModel.bindThirdAccount(id, name: name, nameFrom3rd: nameFrom3rd, type: type) {
             (task, responseObject, error) -> Void in
             
-            if let _error = error {
-                logError("\(_error.localizedDescription)")
+            if let _ = error {
+                self.view.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
                 if json["error"].numberValue != 0 {
-                    logError("\(error)")
+                    self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
-                    
-                    logInfo("\(json["data"].dictionaryValue)")
                     
                     if type == "wechat" {
                         self.bindDict["wechat"] = "1"

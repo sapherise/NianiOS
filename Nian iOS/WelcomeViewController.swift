@@ -192,15 +192,12 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
             LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
                 (task, responseObject, error) in
                 
-                if let _error = error {
-                    logError("\(_error.localizedDescription)")
-                    
+                if let _ = error {
                     self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
                     if json["ret"].numberValue != 0 {
-                        logError("\(json["msg"].stringValue)")
                         self.view.showTipText("QQ 授权不成功...")
                     } else {
                         let _name = json["nickname"].stringValue
@@ -255,14 +252,12 @@ extension WelcomeViewController {
                 LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                    (task, responseObject, error) in
                     
-                    if let _error = error {
-                        logError("\(_error.localizedDescription)")
+                    if let _ = error {
                         self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
-                        if let msg = json["error"].string {
-                            logError("\(msg)")
+                        if let _ = json["error"].string {
                             self.view.showTipText("微博授权不成功...")
                         } else {
                             let _name = json["name"].stringValue
@@ -299,8 +294,7 @@ extension WelcomeViewController {
                 LogOrRegModel.getWechatName(accessToken, openid: openid) {
                     (task, responseObject, error) in
                     
-                    if let _error = error {
-                        logError("\(_error.localizedDescription)")
+                    if let _ = error {
                         self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)

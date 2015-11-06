@@ -191,17 +191,17 @@ class EditProfileViewController: SAViewController {
     func handleChooseGender(noti: NSNotification) {
         let alertController = PSTAlertController.actionSheetWithTitle(nil)
         
-        alertController.addAction(PSTAlertAction(title: "男", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "男", style: .Default, handler: { (action) in
             self.genderTextField.text = "男"
             self.profileDict!["gender"] = "0"
         }))
         
-        alertController.addAction(PSTAlertAction(title: "女", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "女", style: .Default, handler: { (action) in
             self.genderTextField.text = "女"
             self.profileDict!["gender"] = "1"
         }))
         
-        alertController.addAction(PSTAlertAction(title: "保密", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "保密", style: .Default, handler: { (action) in
             self.genderTextField.text = "保密"
             self.profileDict!["gender"] = "2"
         }))
@@ -305,7 +305,7 @@ extension EditProfileViewController {
      */
     func validateNickname(name: String?) -> Bool {
         if let _text = name {
-            if _text.characters.count >= 4 {
+            if _text.characters.count >= 2 {
                 if _text.isValidName() {
                     return true
                 }
