@@ -25,9 +25,9 @@ class EditProfileViewController: SAViewController {
     /// 头像
     @IBOutlet weak var avatarImageView: UIImageView!
     /// 模糊背景
-    @IBOutlet weak var settingCoverBlurView: FXBlurView!
+    @IBOutlet weak var settingCoverBlurView: ILTranslucentView!
     /// 模糊背景
-    @IBOutlet weak var settingAvatarBlurView: FXBlurView!
+    @IBOutlet weak var settingAvatarBlurView: ILTranslucentView!
     
     @IBOutlet weak var nameView: UIView!
     
@@ -65,11 +65,12 @@ class EditProfileViewController: SAViewController {
         self.coverImageView.image = self.coverImage
         self.avatarImageView.image = self.avatarImage
         
-        self.settingAvatarBlurView.dynamic = true
-        self.settingAvatarBlurView.tintColor = UIColor.blackColor()
-        
-        self.settingCoverBlurView.dynamic = true
-        self.settingCoverBlurView.tintColor = UIColor.blackColor()
+        self.settingCoverBlurView.backgroundColor = UIColor.clearColor()
+        self.settingAvatarBlurView.backgroundColor = UIColor.clearColor()
+        self.settingAvatarBlurView.translucentTintColor = UIColor.clearColor()
+        self.settingCoverBlurView.translucentTintColor = UIColor.clearColor()
+        self.settingCoverBlurView.translucentStyle = .Black
+        self.settingAvatarBlurView.translucentStyle = .Black
         
         self.imageContainerView.layer.cornerRadius = 8.0
         self.imageContainerView.layer.masksToBounds = true

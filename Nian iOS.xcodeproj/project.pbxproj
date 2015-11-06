@@ -226,7 +226,6 @@
 		C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47672E81B394DC10011C9AC /* NIAlert.swift */; };
 		C47674961BE31F0A00F85DFC /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47674951BE31F0A00F85DFC /* PrivacyViewController.swift */; };
 		C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47674971BE3405700F85DFC /* NewSettingView.xib */; };
-		C476749C1BE3579900F85DFC /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = C476749B1BE3579900F85DFC /* FXBlurView.m */; };
 		C47C12E41B9C462E003BD1E8 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */; };
 		C47C42321BDF21F1003D934A /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */; };
 		C47C42341BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C47C42331BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle */; };
@@ -532,8 +531,6 @@
 		C47672E81B394DC10011C9AC /* NIAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NIAlert.swift; sourceTree = "<group>"; };
 		C47674951BE31F0A00F85DFC /* PrivacyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		C47674971BE3405700F85DFC /* NewSettingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewSettingView.xib; sourceTree = "<group>"; };
-		C476749A1BE3579900F85DFC /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
-		C476749B1BE3579900F85DFC /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TencentOpenAPI.framework; path = QQSharing/TencentOpenAPI.framework; sourceTree = "<group>"; };
 		C47C42331BDF2207003D934A /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TencentOpenApi_IOS_Bundle.bundle; path = ../../QQSharing/TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		C483CF901AEB435200E1C550 /* ExploreSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreSearch.swift; sourceTree = "<group>"; };
@@ -1260,7 +1257,6 @@
 				C450C5121B2FFF2D0024F4DE /* KILabel */,
 				C4B1901A1B1C0EEE00CE3FF8 /* SZTextView */,
 				C40F0F2C1BE7632E007B7C6B /* PSTAlertController */,
-				C47674991BE3579900F85DFC /* FXBlurView */,
 				C4077BC01B04A5FB004E0D03 /* TITokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
 				129492801AD93211000E7461 /* MaterialKit */,
@@ -1434,15 +1430,6 @@
 				C43680151BDA411C00D51516 /* CustomButton.swift */,
 			);
 			name = NIALertView;
-			sourceTree = "<group>";
-		};
-		C47674991BE3579900F85DFC /* FXBlurView */ = {
-			isa = PBXGroup;
-			children = (
-				C476749A1BE3579900F85DFC /* FXBlurView.h */,
-				C476749B1BE3579900F85DFC /* FXBlurView.m */,
-			);
-			path = FXBlurView;
 			sourceTree = "<group>";
 		};
 		C48AD9D61B5CFD4C00E25627 /* UIImageExt */ = {
@@ -1895,7 +1882,6 @@
 				12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
-				C476749C1BE3579900F85DFC /* FXBlurView.m in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,

@@ -19,8 +19,8 @@
                 <outlet property="phoneView" destination="oeN-55-k5S" id="iex-eR-l6W"/>
                 <outlet property="scrollView" destination="c8F-Yu-JVl" id="fik-e5-oEu"/>
                 <outlet property="scrollViewToBottomConstraint" destination="MRc-ET-BGg" id="yva-fe-Z3W"/>
-                <outlet property="settingAvatarBlurView" destination="lBD-TA-s4o" id="TCk-qe-nhc"/>
-                <outlet property="settingCoverBlurView" destination="gsG-5d-LQY" id="kmX-BM-Lx0"/>
+                <outlet property="settingAvatarBlurView" destination="lBD-TA-s4o" id="SST-iL-5zk"/>
+                <outlet property="settingCoverBlurView" destination="gsG-5d-LQY" id="zG7-rf-Uqs"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Msa-sO-q1J"/>
             </connections>
         </placeholder>
@@ -55,7 +55,7 @@
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="yDJ-LN-m5s"/>
                                             </constraints>
                                         </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gsG-5d-LQY" customClass="FXBlurView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gsG-5d-LQY" customClass="ILTranslucentView" customModule="Nian_iOS" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="224" width="284" height="64"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置封面" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Evz-YS-ApL">
@@ -78,7 +78,7 @@
                                                 <outletCollection property="gestureRecognizers" destination="5A1-OW-90Z" appends="YES" id="VKv-aG-3HF"/>
                                             </connections>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lBD-TA-s4o" customClass="FXBlurView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lBD-TA-s4o" customClass="ILTranslucentView" customModule="Nian_iOS" customModuleProvider="target">
                                             <rect key="frame" x="284" y="224" width="284" height="64"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置头像" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xJl-N9-aGV">

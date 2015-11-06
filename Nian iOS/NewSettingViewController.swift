@@ -27,9 +27,9 @@ class NewSettingViewController: SAViewController {
     /// 头像
     @IBOutlet weak var avatarImageView: UIImageView!
     /// 模糊背景
-    @IBOutlet weak var settingCoverBlurView: FXBlurView!
+    @IBOutlet weak var settingCoverBlurView: ILTranslucentView!
     /// 模糊背景
-    @IBOutlet weak var settingAvatarBlurView: FXBlurView!
+    @IBOutlet weak var settingAvatarBlurView: ILTranslucentView!
     /// 是否日更模式
     @IBOutlet weak var dailyModeSwitch: UISwitch!
     /// 是否移动网络下载图片
@@ -70,11 +70,12 @@ class NewSettingViewController: SAViewController {
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
         
-        self.settingAvatarBlurView.dynamic = true
-        self.settingAvatarBlurView.tintColor = UIColor.blackColor()
-        
-        self.settingCoverBlurView.dynamic = true
-        self.settingCoverBlurView.tintColor = UIColor.blackColor()
+        self.settingCoverBlurView.backgroundColor = UIColor.clearColor()
+        self.settingAvatarBlurView.backgroundColor = UIColor.clearColor()
+        self.settingAvatarBlurView.translucentTintColor = UIColor.clearColor()
+        self.settingCoverBlurView.translucentTintColor = UIColor.clearColor()
+        self.settingCoverBlurView.translucentStyle = .Black
+        self.settingAvatarBlurView.translucentStyle = .Black
         
         self.settingModel = SettingModel()
         
