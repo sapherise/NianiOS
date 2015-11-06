@@ -240,6 +240,7 @@ class BindEmailViewController: UIViewController {
                             self.passwordTextField.hidden = true
                             self.emailTextField.hidden = false
                             self.passwordTextField.text = ""
+                            self.discriptionLabel.text = "设置邮箱和密码后，你可以通过\n「邮箱+密码」直接登录念"
                             
                             self.modeType = .bind
                         }
