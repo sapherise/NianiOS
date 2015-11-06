@@ -59,7 +59,7 @@ class WelcomeViewController: UIViewController {
                 })
             })
         } else {  // 没有登录
-
+            /* 留在当前页面 */
         }
         
     }
@@ -89,7 +89,6 @@ class WelcomeViewController: UIViewController {
 
         // toLORVC : to LogOrRegViewController
         if segue.identifier == "toLORVC" {
-            
             /*   */
             let logOrRegViewController = segue.destinationViewController as! LogOrRegViewController
             logOrRegViewController.functionalType = FunctionType.confirm
@@ -119,8 +118,7 @@ class WelcomeViewController: UIViewController {
             
             WXApi.sendReq(req)
         } else {
-        
-        
+            self.view.showTipText("未安装微信...")
         }
     }
     
@@ -196,11 +194,14 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
                 
                 if let _error = error {
                     logError("\(_error.localizedDescription)")
+                    
+                    self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
                     if json["ret"].numberValue != 0 {
                         logError("\(json["msg"].stringValue)")
+                        self.view.showTipText("QQ 授权不成功...")
                     } else {
                         let _name = json["nickname"].stringValue
                         
@@ -212,7 +213,7 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
             }
             
         } else {
-            
+            self.view.showTipText("QQ 授权不成功...")
         }
         
     }
@@ -247,7 +248,7 @@ extension WelcomeViewController {
         }
         
         if (notiObject as! NSArray).count > 0 {
-            let weiboUid = ((notiObject as! NSArray)[0] as? NSNumber)?.stringValue
+            let weiboUid = (notiObject as! NSArray)[0] as? String
             let accessToken = (notiObject as! NSArray)[1] as? String
             
             if weiboUid != nil && accessToken != nil {
@@ -256,11 +257,13 @@ extension WelcomeViewController {
                     
                     if let _error = error {
                         logError("\(_error.localizedDescription)")
+                        self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if let msg = json["error"].string {
                             logError("\(msg)")
+                            self.view.showTipText("微博授权不成功...")
                         } else {
                             let _name = json["name"].stringValue
                             
@@ -275,9 +278,7 @@ extension WelcomeViewController {
             }
             
         } else {
-            
-            
-            
+            self.view.showTipText("微博授权不成功...")
         }
         
         
@@ -300,11 +301,13 @@ extension WelcomeViewController {
                     
                     if let _error = error {
                         logError("\(_error.localizedDescription)")
+                        self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if let errcode = json["errcode"].number {
                             logError("\(errcode)")
+                            self.view.showTipText("微信授权不成功...")
                         } else {
                             let _name = json["nickname"].stringValue
                             
@@ -317,7 +320,7 @@ extension WelcomeViewController {
                 }
             }
         } else {
-            
+            self.view.showTipText("微信授权不成功...")
         }
         
     }
@@ -331,8 +334,8 @@ extension WelcomeViewController {
             
             //TODO: stop animating
             
-            if let _error = error {
-                logError("\(_error.description)")
+            if let _ = error {
+                self.view.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
@@ -351,17 +354,20 @@ extension WelcomeViewController {
                     LogOrRegModel.logInVia3rd(id, type: type) {
                         (task, responseObject, error) in
                         
-                        if let _error = error {
-                            logError("\(_error.localizedDescription)")
+                        if let _ = error {
+                            self.view.showTipText("网络有点问题，等一会儿再试")
                         } else {
-                            
                             let json = JSON(responseObject!)
                             
                             if json["error"] != 0 {
-                                
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 let shell = json["data"]["shell"].stringValue
                                 let uid = json["data"]["uid"].stringValue
+                                
+                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                                uidKey.setObject(uid, forKey: kSecAttrAccount)
+                                uidKey.setObject(shell, forKey: kSecValueData)
                                 
                                 // TODO: need verify
                                 CurrentUser.sharedCurrentUser.uid = uid
@@ -379,8 +385,9 @@ extension WelcomeViewController {
                                 navigationViewController.navigationBar.clipsToBounds = true
                                 
                                 self.presentViewController(navigationViewController, animated: true, completion: nil)
-                                Api.postDeviceToken() { string in }
+                                
                                 Api.postJpushBinding(){_ in }
+                                
                             }  // if json["error"] != 0
                         } // if let _error = error
                         

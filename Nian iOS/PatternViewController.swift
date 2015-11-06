@@ -109,8 +109,8 @@ class PatternViewController: UIViewController {
                 self.accompolishButton.stopAnimating()
                 self.accompolishButton.setTitle("完成", forState: .Normal)
                 
-                if let _error = error { // 服务器返回错误
-                    logError("\(_error)")
+                if let _ = error { // 服务器返回错误
+                    self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
@@ -140,7 +140,6 @@ class PatternViewController: UIViewController {
                             self.navigationItem.rightBarButtonItems = []
                         })
                         
-                        Api.postDeviceToken() { string in }
                         Api.postJpushBinding() {_ in }
                     }
                     

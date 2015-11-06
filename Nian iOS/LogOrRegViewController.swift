@@ -150,14 +150,15 @@ class LogOrRegViewController: UIViewController {
         // 收起键盘
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
         
-        // TODO: spinner
+        self.functionalButton.startAnimating()
+        
         LogOrRegModel.resetPaeeword(email: self.emailTextField.text!) {
             (task, responseObject, error) in
             
-            //TODO: spinner
+            self.functionalButton.stopAnimating()
             
-            if let _error = error {
-                logError("\(_error.localizedDescription)")
+            if let _ = error {
+                self.view.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
@@ -201,10 +202,11 @@ class LogOrRegViewController: UIViewController {
                     LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!) {
                         (task, responseObject, error) in
                         
+                        self.functionalType = .confirm
                         self.functionalButton.stopAnimating()
                         
-                        if let _error = error {
-                            logError("\(_error.localizedDescription)")
+                        if let _ = error {
+                            self.view.showTipText("网络有点问题，等一会儿再试")
                         } else {
                             let json = JSON(responseObject!)
                             if json["data"] == "0" {  // email 未注册
@@ -221,12 +223,16 @@ class LogOrRegViewController: UIViewController {
                     self.view.showTipText("不是地球上的邮箱...")
                 }
             } else { // if let _text = self.emailTextField.text == nil
-                self.view.showTipText("注册邮箱不能为空...")
+                self.view.showTipText("邮箱不能为空...")
             }
             
         } else if self.functionalType == .logIn {
             /*@explain: 这里不需要再验证邮箱 */
-            if self.passwordTextField.text != "" {
+            if let _pwdText = self.passwordTextField.text {
+                if _pwdText.characters.count < 4 {
+                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    return
+                }
                 
                 let _email = self.emailTextField.text!
                 let _password = "n*A\(self.passwordTextField.text!)"
@@ -237,14 +243,15 @@ class LogOrRegViewController: UIViewController {
                     (task, responseObject, error) in
                     
                     self.functionalButton.stopAnimating()
+                    self.functionalType = .logIn
                     
-                    if let _error = error {
-                        logError("\(_error)")
+                    if let _ = error {
+                        self.view.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if json["error"] != 0 { // 服务器返回错误
-                            
+                            self.view.showTipText("登录出错...")
                         } else {
                             let shell = json["data"]["shell"].stringValue
                             let uid = json["data"]["uid"].stringValue
@@ -273,10 +280,8 @@ class LogOrRegViewController: UIViewController {
                                 self.passwordTextField.text = ""
                                 self.navigationController?.popViewControllerAnimated(true)
                             })
-                            Api.postDeviceToken() { string in }
+                            
                             Api.postJpushBinding(){_ in }
-                            
-                            
                             
                         } // if json["error"] != 0
                     } // if let _error = error
@@ -285,6 +290,11 @@ class LogOrRegViewController: UIViewController {
             }  // if self.passwordTextField.text != ""
         } else if self.functionalType == .register {
             if self.passwordTextField.text != "" {
+                if self.passwordTextField.text!.characters.count < 4 {
+                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    return
+                }
+                
                 if let _nickname = self.nicknameTextField.text {
                     if self.validateNickname(_nickname) {
                         
@@ -294,10 +304,10 @@ class LogOrRegViewController: UIViewController {
                             (task, responseObject, error) in
                             
                             self.functionalButton.stopAnimating()
-                            self.functionalButton.setTitle("注册", forState: .Normal)
+                            self.functionalType = .register
                             
-                            if let _error = error { // 服务器返回错误
-                                logError("\(_error)")
+                            if let _ = error { // 服务器返回错误
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 let json = JSON(responseObject!)
                                 
@@ -311,13 +321,13 @@ class LogOrRegViewController: UIViewController {
                         })
                         
                     } else { // nickname 不符合要求
-                        logError("昵称中有奇怪的字符...")
+                        
                     }
                 } else { // 没有输入 nickname
-                
+                    self.view.showTipText("名字不能是空的...")
                 }
             } else { // 没有输入 password
-                
+               self.view.showTipText("密码不能是空的...")
             }
         }
     }
@@ -399,16 +409,22 @@ extension LogOrRegViewController {
     */
     func validateNickname(name: String) -> Bool {
         if name == "" {
+            self.view.showTipText("名字不能是空的...")
+            
             return false
         } else if name.characters.count < 4 {
+            self.view.showTipText("名字有点短...")
+            
             return false
         } else if !name.isValidName() {
+            self.view.showTipText("名字里有奇怪的字符...")
+            
             return false
         }
         
         return true
     }
-    
+  
     /**
     email 未注册，View 进入注册的状态
     */

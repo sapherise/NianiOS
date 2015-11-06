@@ -36,7 +36,7 @@ class CurrentUser {
     var shell: String? {
         set {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            uidKey.setObject(uid, forKey: kSecAttrAccount)
+            uidKey.setObject(shell, forKey: kSecValueData)
         }
         
         get {

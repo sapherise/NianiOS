@@ -148,13 +148,13 @@ class NewSettingViewController: SAViewController {
             
             self.stopAnimating()
             
-            if let _error = error { // AFNetworking 返回的错误
-                logError("\(_error.localizedDescription)")
+            if let _ = error { // AFNetworking 返回的错误
+                self.view.showTipText("网络有点问题，只加载了本地设置")
             } else {
                 let json = JSON(responseObject!)
                 
                 if json["error"] != 0 {   // 服务器返回的错误代码
-                    
+                    self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     self.userDict = json["data"]["user"].dictionaryObject
                     
@@ -177,7 +177,7 @@ class NewSettingViewController: SAViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        let _name = self.userDict!["name"] as? String
+        let _name = self.userDict?["name"] as? String
         
         if self.coverImageModified && self.avatarImageModified {
             delegate?.setting?(name: _name, cover: self.coverImageView.image, avatar: self.avatarImageView.image)
@@ -200,18 +200,32 @@ extension NewSettingViewController{
      是否日更模式
      */
     @IBAction func dailyModeChanged(sender: UISwitch) {
-        if sender.on {
-            Api.postUserFrequency(0, callback: { _ in
-                self.userDefaults.setObject("0", forKey: "dailyMode")
-                self.userDefaults.synchronize()
-            })
+//        if sender.on {
+//            Api.postUserFrequency(0, callback: { _ in
+//                self.userDefaults.setObject("0", forKey: "dailyMode")
+//                self.userDefaults.synchronize()
+//            })
+//            
+//        } else {
+//            Api.postUserFrequency(1, callback: { _ in
+//                self.userDefaults.setObject("1", forKey: "dailyMode")
+//                self.userDefaults.synchronize()
+//            })
+//        }
+        
+        let _daily: String = sender.on ? "0" : "1"
+        
+        SettingModel.updateUserInfo(["daily": "\(_daily)"]) {
+            (task, responseObject, error) -> Void in
             
-        } else {
-            Api.postUserFrequency(1, callback: { _ in
-                self.userDefaults.setObject("1", forKey: "dailyMode")
+            if let _ = error {
+                
+            } else {
+                self.userDefaults.setObject(_daily, forKey: "dailyMode")
                 self.userDefaults.synchronize()
-            })
+            }
         }
+        
     }
     
     /**
@@ -247,6 +261,10 @@ extension NewSettingViewController{
     @IBAction func remindOnDailyUpdate(sender: UISwitch) {
         if sender.on {
             self.userDefaults.setObject("1", forKey: "pushMode")
+            delay(0.3, closure: {
+                let CareVC = CareViewController()
+                self.navigationController!.pushViewController(CareVC, animated: true)
+            })
         } else {
             self.userDefaults.setObject("0", forKey: "pushMode")
             UIApplication.sharedApplication().cancelAllLocalNotifications()
@@ -259,17 +277,20 @@ extension NewSettingViewController{
      是否只能通过昵称找到
      */
     @IBAction func findMeOnlyViaName(sender: UISwitch) {
-        if sender.on {
-            Api.postUserPrivate("1", callback: { _ in
-                self.userDefaults.setObject(true, forKey: "privateMode")
+     
+        let _private = sender.on ? "1" : "0"
+        
+        SettingModel.updateUserInfo(["private": "\(_private)"]) {
+            (task, responseObject, error) -> Void in
+            
+            if let _ = error {
+                
+            } else {
+                self.userDefaults.setObject(_private, forKey: "privateMode")
                 self.userDefaults.synchronize()
-            })
-        } else {
-            Api.postUserPrivate("0", callback: { _ in
-                self.userDefaults.setObject(false, forKey: "privateMode")
-                self.userDefaults.synchronize()
-            })
+            }
         }
+        
     }
 }
 
@@ -282,7 +303,7 @@ extension NewSettingViewController {
     @IBAction func setCover(sender: UITapGestureRecognizer) {
         let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
         
-        alertController.addAction(PSTAlertAction(title: "相册", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -291,7 +312,7 @@ extension NewSettingViewController {
             self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
         }))
         
-        alertController.addAction(PSTAlertAction(title: "拍照", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -301,7 +322,13 @@ extension NewSettingViewController {
             }
         }))
         
-        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Default, handler: { (action) in
+            SettingModel.changeCoverImage(coverURL: "background.png", callback: {
+                (task, responseObject, error) in
+                
+                self.coverImageView.image = UIImage(named: "bg")
+                self.coverImageModified = true
+            })
             
         }))
         
@@ -323,7 +350,7 @@ extension NewSettingViewController {
     @IBAction func setAvatar(sender: UITapGestureRecognizer) {
         let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
         
-        alertController.addAction(PSTAlertAction(title: "相册", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -332,7 +359,7 @@ extension NewSettingViewController {
             self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
         }))
         
-        alertController.addAction(PSTAlertAction(title: "拍照", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -438,17 +465,13 @@ extension NewSettingViewController {
         
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         uidKey.resetKeychainItem()
+     
+        userDefaults.removeObjectForKey("uid")
+        userDefaults.removeObjectForKey("shell")
+        userDefaults.removeObjectForKey("followData")
+        userDefaults.removeObjectForKey("user")
         
-        Api.postDeviceTokenClear() {
-            string in
-            
-            userDefaults.removeObjectForKey("uid")
-            userDefaults.removeObjectForKey("shell")
-            userDefaults.removeObjectForKey("followData")
-            userDefaults.removeObjectForKey("user")
-            
-            userDefaults.synchronize()
-        }
+        userDefaults.synchronize()
         
         globalTabhasLoaded = [false, false, false]
         
@@ -485,10 +508,10 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
                 
                 let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
                 let userDefaults = NSUserDefaults.standardUserDefaults()
-                userDefaults.setObject(coverImageURL, forKey: "coverUrl")
+                userDefaults.setObject(uploadURL, forKey: "coverUrl")
                 userDefaults.synchronize()
                 
-                SettingModel.changeCoverImage(coverURL: coverImageURL, callback: {
+                SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
                     (task, responseObject, error) in
                     
                     self.stopAnimating()

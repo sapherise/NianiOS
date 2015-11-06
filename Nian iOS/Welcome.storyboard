@@ -339,6 +339,7 @@
                         <outlet property="cancelButton" destination="Qox-5h-ozL" id="eks-g1-ybk"/>
                         <outlet property="descriptionLabel" destination="7Zy-4H-vO5" id="9Tg-Wz-WOf"/>
                         <outlet property="emailTextField" destination="wH5-fu-1YY" id="xDQ-Fx-Q8h"/>
+                        <outlet property="emailTextFieldToTop" destination="aaz-8t-Zo9" id="e6u-97-N52"/>
                         <outlet property="forgetPWDButton" destination="aiM-V0-p1m" id="XGj-b7-oNq"/>
                         <outlet property="functionalButton" destination="P5B-GQ-h3I" id="dvz-5c-TRv"/>
                         <outlet property="functionalButtonTopToEmail" destination="Rwn-rb-rcD" id="FlQ-5v-PDW"/>

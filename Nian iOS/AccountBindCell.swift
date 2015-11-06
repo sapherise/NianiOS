@@ -23,6 +23,7 @@ class AccountBindCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
         
+        self.accessoryType = .DisclosureIndicator
         self.selectionStyle = .None
     }
 

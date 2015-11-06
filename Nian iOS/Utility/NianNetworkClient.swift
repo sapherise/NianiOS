@@ -77,4 +77,29 @@ class NianNetworkClient: AFHTTPSessionManager {
                 })
     }
     
+    /**
+     <#Description#>
+     
+     :param: string   <#string description#>
+     :param: content  <#content description#>
+     :param: callback <#callback description#>
+     
+     :returns: <#return value description#>
+     */
+    func put(string: String, content: AnyObject, callback: NetworkClosure) -> NSURLSessionDataTask {
+        return self.PUT(baseURLString + string,
+                    parameters: content,
+                    success: { (task, id) -> Void in
+                        callback(task: task, responseObject: id, error: nil)
+                    }, failure: { (task, error) -> Void in
+                        callback(task: task, responseObject: nil, error: error)
+                })
+        
+        
+        
+        
+    }
+    
+    
+    
 }

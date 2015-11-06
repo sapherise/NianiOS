@@ -107,8 +107,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.detailTextLabel?.text = self.userEmail
                 }
                 cell?.textLabel?.text = "邮箱"
-                cell?.accessoryType = .DisclosureIndicator
-                    
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -120,7 +118,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.detailTextLabel?.text = ""
                 }
                 cell?.textLabel?.text = "微信"
-                cell?.accessoryType = .DisclosureIndicator
                 
             } else if indexPath.row == 1 {
                 if self.bindDict["QQ"] as? String == "1" {
@@ -131,7 +128,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.detailTextLabel?.text = ""
                 }
                 cell?.textLabel?.text = "QQ"
-                cell?.accessoryType = .DisclosureIndicator
                 
             } else if indexPath.row == 2 {
                 if self.bindDict["weibo"] as? String == "1" {
@@ -142,7 +138,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.detailTextLabel?.text = ""
                 }
                 cell?.textLabel?.text = "微博"
-                cell?.accessoryType = .DisclosureIndicator
                 
             }
         }
@@ -168,16 +163,30 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         
         if indexPath.section == 0 {
             if indexPath.row == 0 {
+                let bindEmailVC = BindEmailViewController(nibName: "BindEmailView", bundle: nil)
+                bindEmailVC.delegate = self
+                
                 if self.userEmail == "" {
-                    let bindEmailVC = BindEmailViewController(nibName: "BindEmailView", bundle: nil)
-                    bindEmailVC.delegate = self
-                    
-                    self.navigationController?.presentViewController(bindEmailVC, animated: true, completion: nil)
+                    bindEmailVC.modeType = .bind
+                } else {
+                    bindEmailVC.previousEmail = self.userEmail
+                    bindEmailVC.modeType = .modify
                 }
+                
+                self.navigationController?.presentViewController(bindEmailVC, animated: true, completion: nil)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
                 if self.bindDict["wechat"] as? String == "1" {
+                    
+                    if self.userEmail == "" {
+                        if self.bindDict["weibo_username"] as! String == "" && self.bindDict["QQ_username"] as! String == "" {
+                            self.view.showTipText("不能解除绑定微信...", delay: 1)
+
+                            return
+                        }
+                    }
+                    
                     let alertController = PSTAlertController.actionSheetWithTitle("微信账号: 昵称 " + (self.bindDict["wechat_username"] as! String))
                     
                     alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Destructive, handler: { (action) in
@@ -225,6 +234,15 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             
             } else if indexPath.row == 1 {
                 if self.bindDict["QQ"] as? String == "1" {
+                   
+                    if self.userEmail == "" {
+                        if self.bindDict["weibo_username"] as! String == "" && self.bindDict["wechat_username"] as? String == "" {
+                            self.view.showTipText("不能解除绑定 QQ...", delay: 1)
+
+                            return                       
+                        }
+                    }
+                    
                     let alertController = PSTAlertController.actionSheetWithTitle("QQ 账号: 昵称 " + (self.bindDict["QQ_username"] as! String))
                     
                     alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Destructive, handler: { (action) in
@@ -290,6 +308,15 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             
             } else if indexPath.row == 2 {
                 if self.bindDict["weibo"] as? String == "1" {
+                   
+                    if self.userEmail == "" {
+                        if self.bindDict["wechat_username"] as! String == "" && self.bindDict["QQ_username"] as! String == "" {
+                            self.view.showTipText("不能解除绑定微博...", delay: 1)
+                        
+                            return
+                        }
+                    }
+                    
                     let alertController = PSTAlertController.actionSheetWithTitle("微博账号: 昵称 " + (self.bindDict["weibo_username"] as! String))
                     
                     alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Destructive, handler: { (action) in

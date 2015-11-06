@@ -9,9 +9,7 @@
 import UIKit
 
 @objc protocol EditProfileDelegate {
-    
     optional func editProfile(profileDict profileDict: Dictionary<String, String>, coverImage: UIImage, avatarImage: UIImage)
-    
 }
 
 
@@ -57,7 +55,6 @@ class EditProfileViewController: SAViewController {
     var avatarImagePicker: UIImagePickerController?
     
     var profileDict: Dictionary<String, String>?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +124,7 @@ class EditProfileViewController: SAViewController {
     @IBAction func setCover(sender: UITapGestureRecognizer) {
         let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
         
-        alertController.addAction(PSTAlertAction(title: "相册", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -136,7 +133,7 @@ class EditProfileViewController: SAViewController {
             self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
         }))
         
-        alertController.addAction(PSTAlertAction(title: "拍照", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -146,8 +143,12 @@ class EditProfileViewController: SAViewController {
             }
         }))
         
-        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Destructive, handler: { (action) in
-            
+        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Default, handler: { (action) in
+            SettingModel.changeCoverImage(coverURL: "background.png", callback: {
+                (task, responseObject, error) in
+                
+                self.coverImageView.image = UIImage(named: "bg")
+            })
         }))
         
         alertController.addCancelActionWithHandler(nil)
@@ -159,7 +160,7 @@ class EditProfileViewController: SAViewController {
     @IBAction func setAvatar(sender: UITapGestureRecognizer) {
         let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
         
-        alertController.addAction(PSTAlertAction(title: "相册", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -168,7 +169,7 @@ class EditProfileViewController: SAViewController {
             self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
         }))
         
-        alertController.addAction(PSTAlertAction(title: "拍照", style: .Destructive, handler: { (action) in
+        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
             self.coverImagePicker = UIImagePickerController()
             self.coverImagePicker!.delegate = self
             self.coverImagePicker!.allowsEditing = true
@@ -337,6 +338,8 @@ extension EditProfileViewController {
     func saveProfileSetting(sender: UITapGestureRecognizer) {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
         
+        var shouldReturn = true
+        
         if self.coverImageModified  {
             self.uploadImage(self.coverImageView.image!, type: "cover")
         }
@@ -344,23 +347,44 @@ extension EditProfileViewController {
         if self.avatarImageModified {
             self.uploadImage(self.avatarImageView.image!, type: "avatar")
         }
-        
-        if !self.validateNickname(self.nameTextField.text) {
-            self.view.showTipText("名字不符合要求...", delay: 1)
-            return
+
+        if let _name = self.nameTextField.text {
+            if self.validateNickname(_name) {
+                self.profileDict!["name"] = self.nameTextField.text!
+            } else {
+                shouldReturn = false
+                self.view.showTipText("昵称里有奇怪的字符...", delay: 1)
+            }
         }
         
-        if !self.validatePhone(self.phoneTextField.text) {
-            self.view.showTipText("手机号码不正确...", delay: 1)
-            return
+        if let _phone = self.phoneTextField.text {
+            if self.validatePhone(_phone) {
+                self.profileDict!["phone"] = self.phoneTextField.text!
+            } else {
+                shouldReturn = false
+                self.view.showTipText("手机号码不正确...", delay: 1)
+            }
         }
         
-        self.profileDict!["name"] = self.nameTextField.text!
-        self.profileDict!["phone"] = self.phoneTextField.text!
+        if shouldReturn {
+            
+            SettingModel.updateUserInfo(self.profileDict!, callback: {
+                (task, responseObject, error) -> Void in
+                
+                if let _ = error {
+                    self.view.showTipText("网络有点问题，等一会儿再试")
+                } else {
         
-        delegate?.editProfile?(profileDict: self.profileDict!, coverImage: self.coverImageView.image!, avatarImage: self.avatarImageView.image!)
-        
-        self.navigationController?.popViewControllerAnimated(true)
+                    self.delegate?.editProfile?(profileDict: self.profileDict!,
+                        coverImage: self.coverImageView.image!,
+                        avatarImage: self.avatarImageView.image!)
+                
+                    self.navigationController?.popViewControllerAnimated(true)             
+                }
+            })
+            
+       
+        }
     }
     
     
@@ -377,10 +401,10 @@ extension EditProfileViewController {
                 
                 let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
                 let userDefaults = NSUserDefaults.standardUserDefaults()
-                userDefaults.setObject(coverImageURL, forKey: "coverUrl")
+                userDefaults.setObject(uploadURL, forKey: "coverUrl")
                 userDefaults.synchronize()
                 
-                SettingModel.changeCoverImage(coverURL: coverImageURL, callback: {
+                SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
                     (task, responseObject, error) in
                     
                     self.stopAnimating()

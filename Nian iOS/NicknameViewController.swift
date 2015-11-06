@@ -87,13 +87,17 @@ extension NicknameViewController {
     func handleConfirmRegister() {
         if nameTextfield.text?.characters.count > 0 {
             
+            if !self.validateNickname(nameTextfield.text!) {
+                return
+            }
+            
             self.button.startAnimating()
             
             LogOrRegModel.checkNameAvailability(name: self.nameTextfield.text!) {
                 (task, responseObject, error) in
                 
-                if let _error = error {
-                    logError("\(_error.localizedDescription)")
+                if let _ = error {
+                    self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
@@ -112,14 +116,14 @@ extension NicknameViewController {
                             self.button.stopAnimating()
                             self.button.setTitle("确定", forState: UIControlState.Normal)
                             
-                            if let _error = error {
-                                logError("\(_error.localizedDescription)")
+                            if let _ = error {
+                                self.view.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    
+                                    self.view.showTipText("注册不成功...")
                                 } else {
                                     let shell = json["data"]["shell"].stringValue
                                     let uid = json["data"]["uid"].stringValue
@@ -149,7 +153,7 @@ extension NicknameViewController {
                                         self.nameTextfield.text = ""
                                         self.navigationController?.popViewControllerAnimated(true)
                                     })
-                                    Api.postDeviceToken() { string in }
+                                    
                                     Api.postJpushBinding(){_ in }
                                 }
                             }
@@ -169,6 +173,27 @@ extension NicknameViewController {
         }
     }
     
+    
+    /**
+     验证昵称是否符合要求
+     */
+    func validateNickname(name: String) -> Bool {
+        if name == "" {
+            self.view.showTipText("名字不能是空的...")
+            
+            return false
+        } else if name.characters.count < 4 {
+            self.view.showTipText("名字有点短...")
+            
+            return false
+        } else if !name.isValidName() {
+            self.view.showTipText("名字里有奇怪的字符...")
+            
+            return false
+        }
+        
+        return true
+    }
     
     
 }

@@ -77,7 +77,7 @@ class SettingModel: NSObject {
     /**
      已登录用户绑定邮箱
      */
-    func bindEmail(email: String, password: String, callback: NetworkClosure) {
+    class func bindEmail(email: String, password: String, callback: NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.post(
             "/oauth/email/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
             content: ["email": email, "password": password],
@@ -86,6 +86,16 @@ class SettingModel: NSObject {
         
     }
     
+    /**
+     
+     */
+    class func updateUserInfo(settingInfo: Dictionary<String, String>, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.put(
+            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+            content: settingInfo,
+            callback: callback)
+    
+    }
 }
 
 
