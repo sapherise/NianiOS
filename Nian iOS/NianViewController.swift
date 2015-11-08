@@ -309,9 +309,16 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
+    /**
+     进入新的设置页面
+     */
     func headClick(){
-        let PlayerVC = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-        self.navigationController!.pushViewController(PlayerVC, animated: true)
+        let playerVC = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
+        playerVC.coverImage = self.imageBG.image
+        playerVC.avatarImage = self.UserHead.image
+        playerVC.delegate = self
+        
+        self.navigationController!.pushViewController(playerVC, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -416,3 +423,30 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         globalNumberDream = self.dataArray.count
     }
 }
+
+
+extension NianViewController: NewSettingDelegate {
+    func setting(name name: String?, cover: UIImage?, avatar: UIImage?) {
+        if let _name = name {
+            self.UserName.text = _name
+        }
+        
+        if let _cover = cover {
+            self.imageBG.image = _cover
+        }
+        
+        if let _avatar = avatar {
+            self.UserHead.image = _avatar
+        }
+        
+    }
+    
+    
+}
+
+
+
+
+
+
+

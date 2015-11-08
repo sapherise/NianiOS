@@ -11,12 +11,26 @@ import Foundation
 
 //MARK: - custom textfield
 class NITextfield: UITextField {
+    var radius: CGFloat = 26
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.leftViewMode = .Always
+        self.leftView  = UIView()
+        self.leftView?.contentMode = .Center
+    }
+    
     override func leftViewRectForBounds(bounds: CGRect) -> CGRect {
-        return CGRectMake(bounds.origin.x, bounds.origin.y, 26 , 26)
+        return CGRectMake(bounds.origin.x, bounds.origin.y, radius , radius)
     }
     
     override func rightViewRectForBounds(bounds: CGRect) -> CGRect {
-        return CGRectMake(bounds.size.width - 25, bounds.origin.y, 26, 26)
+        return CGRectMake(bounds.size.width - 25, bounds.origin.y, radius, radius)
     }
 }
 
@@ -101,7 +115,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     var tableDict = Dictionary<Int, UITableView>()
     
     /* 代码生成的搜索框 */
-    var searchText = NITextfield()
+    var searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 96, 26))
     
     /*  */
     var rightButton: UIBarButtonItem?
@@ -264,7 +278,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep, dataArrayTopic]
         
         let color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
-        searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 96, 26))
+//        searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 96, 26))
         searchText.layer.cornerRadius = 13
         searchText.layer.masksToBounds = true
         searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)

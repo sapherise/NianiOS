@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BindEmailViewController" customModule="Nian_iOS" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonTopToEmail" destination="1VS-fg-2fz" id="HbT-o8-B7D"/>
+                <outlet property="cancelButton" destination="4IG-Sg-Bhm" id="55Y-5w-Rq1"/>
+                <outlet property="confirmButton" destination="Apt-Tz-iHW" id="tRt-Qj-Ukw"/>
+                <outlet property="discriptionLabel" destination="ffM-Vn-fV6" id="JLy-VK-gzp"/>
+                <outlet property="emailTextField" destination="tr0-Ml-hhE" id="4K9-Gt-8Vq"/>
+                <outlet property="emailTextFieldToTop" destination="ypx-Bf-8op" id="07A-g9-etf"/>
+                <outlet property="passwordTextField" destination="bLl-6p-jNf" id="A4v-pa-MPU"/>
+                <outlet property="pwdTextFieldTopToEmail" destination="Ofi-EX-1Dd" id="gqn-cq-F04"/>
+                <outlet property="view" destination="iN0-l3-epB" id="1yU-mH-xSs"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UIControl">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4IG-Sg-Bhm">
+                    <rect key="frame" x="0.0" y="20" width="44" height="44"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="44" id="0HE-lf-Uxv"/>
+                        <constraint firstAttribute="height" constant="44" id="GBK-Si-wUC"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="signin_cancel"/>
+                    <connections>
+                        <action selector="dismissVC:" destination="-1" eventType="touchUpInside" id="pBx-SZ-e3J"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tr0-Ml-hhE" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                    <rect key="frame" x="24" y="131" width="552" height="44"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="7VZ-Ga-g19"/>
+                        <constraint firstAttribute="height" constant="44" id="JXw-iZ-5b6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bLl-6p-jNf" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                    <rect key="frame" x="24" y="131" width="552" height="44"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="6oK-YD-9A5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Apt-Tz-iHW" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
+                    <rect key="frame" x="24" y="199" width="552" height="44"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="FYR-xk-MZh"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="j7i-YK-0FF"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onConfirmButton:" destination="-1" eventType="touchUpInside" id="OKM-LE-QIy"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置邮箱和密码后，你可以通过 「邮箱+密码」直接登录念" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="ffM-Vn-fV6">
+                    <rect key="frame" x="179" y="68" width="242" height="39"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="39" id="IiP-37-OjQ"/>
+                        <constraint firstAttribute="width" constant="242" id="xKW-LY-hR0"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Apt-Tz-iHW" firstAttribute="top" secondItem="tr0-Ml-hhE" secondAttribute="bottom" constant="24" id="1VS-fg-2fz"/>
+                <constraint firstAttribute="trailing" secondItem="Apt-Tz-iHW" secondAttribute="trailing" constant="24" id="6xd-0R-7Y3"/>
+                <constraint firstItem="Apt-Tz-iHW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="8gf-se-Fzg"/>
+                <constraint firstItem="bLl-6p-jNf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="IGD-kO-aVA"/>
+                <constraint firstItem="tr0-Ml-hhE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="K8T-RJ-Msr"/>
+                <constraint firstItem="ffM-Vn-fV6" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Lh2-pe-4NS"/>
+                <constraint firstItem="bLl-6p-jNf" firstAttribute="top" secondItem="tr0-Ml-hhE" secondAttribute="bottom" constant="-44" id="Ofi-EX-1Dd"/>
+                <constraint firstItem="4IG-Sg-Bhm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="h2F-hQ-HYn"/>
+                <constraint firstAttribute="trailing" secondItem="tr0-Ml-hhE" secondAttribute="trailing" constant="24" id="hrJ-q2-LIx"/>
+                <constraint firstItem="4IG-Sg-Bhm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="qCT-nV-FEg"/>
+                <constraint firstItem="ffM-Vn-fV6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="68" id="qVF-yh-cjQ"/>
+                <constraint firstAttribute="trailing" secondItem="bLl-6p-jNf" secondAttribute="trailing" constant="24" id="ykB-Bq-147"/>
+                <constraint firstItem="tr0-Ml-hhE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="131" id="ypx-Bf-8op"/>
+            </constraints>
+            <connections>
+                <action selector="dismissKeyboard:" destination="-1" eventType="touchUpInside" id="PY2-zr-fhH"/>
+            </connections>
+            <point key="canvasLocation" x="432" y="554"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="signin_cancel" width="48" height="48"/>
+    </resources>
+</document>

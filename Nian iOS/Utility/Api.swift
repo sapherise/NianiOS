@@ -477,9 +477,12 @@ struct Api {
         V.httpPostForJson_AFN("http://nian.so/api/circle_disturb.php", content: ["circle": "\(circle)", "uid": "\(s_uid)", "shell": "\(s_shell)", "disturb": "\(disturb)" ], callback: callback)
     }
     
-    static func postGameover(callback: V.JsonCallback) {
+    /**
+     注意： 这里是 GET 方法
+     */
+    static func getGameover(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson_AFN("http://nian.so/api/gameover1.php", content: ["uid": "\(s_uid)", "shell": "\(s_shell)"], callback: callback)
+        V.httpGetForJson("http://api.nian.so/game/over?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
     static func postLogin(email: String, password: String, callback: V.StringCallback) {

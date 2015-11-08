@@ -52,21 +52,26 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
 
     func gameoverCheck() {
-        Api.postGameover() { json in
+        Api.getGameover() { json in
             if json != nil {
-                let isgameover = json!.objectForKey("isgameover") as? String
-                let willLogout = json!.objectForKey("willlogout") as? String
+//                let isgameover = json!.objectForKey("isgameover") as? String
+//                let willLogout = json!.objectForKey("willlogout") as? String
+//                
+                let json = JSON(json!)
+                
+                let willLogout = json["data"]["gameover"].stringValue
+                
                 // 账户验证不通过
-                if willLogout == "1" {
-                    delay(1, closure: { () -> () in
-                        self.SAlogout()
-                    })
-                }else{
+//                if willLogout == "1" {
+//                    delay(1, closure: { () -> () in
+//                        self.SAlogout()
+//                    })
+//                } else {
                     // 如果被封号
-                    if isgameover != "0" {
-                        let data = json!.objectForKey("dream") as! NSDictionary
-                        self.gameoverId = data.stringAttributeForKey("id")
-                        let gameoverDays = data.stringAttributeForKey("days")
+                    if willLogout == "1" {
+                        let data = json["data"].dictionaryValue
+                        self.gameoverId = data["id"]!.stringValue
+                        let gameoverDays = data["days"]!.stringValue
                         
                         self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
                         self.GameOverView.textTitle = "游戏结束"
@@ -92,7 +97,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     } else {
                         self.SANews()
                     }
-                }
+//                }
             }
         }
     }

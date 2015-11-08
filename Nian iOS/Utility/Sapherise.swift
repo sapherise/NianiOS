@@ -173,7 +173,7 @@ extension String  {
     }
     
     func isValidPhone()->Bool {
-        let regex :String = "^(1(([35][0-9])|(47)|[8][01236789]))\\d{8}$"
+        let regex :String = "(^(13\\d|14[57]|15[^4,\\D]|17[678]|18\\d)\\d{8}|170[059]\\d{7})$"
         let PhoneTest = NSPredicate(format: "SELF MATCHES %@", regex)
         return PhoneTest.evaluateWithObject(self)
     }
@@ -812,7 +812,7 @@ func SACeil(num: CGFloat, dot: Int, isCeil: Bool = true) -> CGFloat {
 }
 
 extension UIColor {
-    class func colorWithHex(hexString: String) -> UIColor! {
+    class func colorWithHex(hexString: String) -> UIColor {
         let regexp = try? NSRegularExpression(pattern: "\\A#[0-9a-f]{6}\\z",
             options: .CaseInsensitive)
         let num = regexp?.numberOfMatchesInString(hexString,

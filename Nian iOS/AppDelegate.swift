@@ -9,30 +9,27 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = BGColor
-        let navigationViewController = UINavigationController(rootViewController: WelcomeViewController())
+        
+        let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
+        let welcomeViewController = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
+        
+        let navigationViewController = UINavigationController(rootViewController: welcomeViewController)
         navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
         navigationViewController.navigationBar.clipsToBounds = true
         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         
+
+        
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
-        
-//        if application.respondsToSelector("isRegisteredForRemoteNotifications") {
-//            if #available(iOS 8.0, *) {
-//                let settings = UIUserNotificationSettings(forTypes: ([UIUserNotificationType.Sound, UIUserNotificationType.Alert, UIUserNotificationType.Badge]), categories: nil)
-//                application.registerUserNotificationSettings(settings)
-//                application.registerForRemoteNotifications()
-//            }
-//        } else {
-//            application.registerForRemoteNotificationTypes([UIRemoteNotificationType.Sound, UIRemoteNotificationType.Alert, UIRemoteNotificationType.Badge])
-//        }
+
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
@@ -134,6 +131,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
             return true
         } else if s == "wb4189056912" {
             return WeiboSDK.handleOpenURL(url, delegate: self)
+        } else if s == "tencent1104358951" {
+            return TencentOAuth.HandleOpenURL(url)
+        } else if s == "wx08fea299d0177c01" {
+            return WXApi.handleOpenURL(url, delegate: self)
         }
         return true
     }
@@ -142,6 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         let s = url.scheme
         if s == "wb4189056912" {
             return WeiboSDK.handleOpenURL(url, delegate: self)
+        } else if s == "tencent1104358951" {
+            return TencentOAuth.HandleOpenURL(url)
         }
         return true
     }
@@ -152,11 +155,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
     func didReceiveWeiboResponse(response: WBBaseResponse!) {
         if response.userInfo != nil  {
             let json = response.userInfo as NSDictionary
-            let uidWeibo = json.stringAttributeForKey("uid")
+            let uid = json.stringAttributeForKey("uid")
             let token = json.stringAttributeForKey("access_token")
-            if let uid = Int(uidWeibo) {
-                NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
-            }
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
         }
     }
     
@@ -173,6 +175,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate {
         let welcomeVC = navViewController.viewControllers[0] as! WelcomeViewController
         welcomeVC.shouldNavToMe = true
     }
+    
+    func onResp(resp: BaseResp!) {
+        if resp.isKindOfClass(SendAuthResp) {
+            let _resp = resp as! SendAuthResp
+            
+            let manager = AFHTTPSessionManager()
+            let WX_APP_ID = "wx08fea299d0177c01"
+            let WX_SECRET_ID = "64dc8c89f7310a91b29e9b636b7472cb"
+            
+            let accessUrlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=\(WX_APP_ID)&secret=\(WX_SECRET_ID)&code=\(_resp.code)&grant_type=authorization_code"
+            
+            manager.GET(accessUrlStr,
+                parameters: nil,
+                success: {
+                    (task, id) in
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName("Wechat", object: id)
+                    
+                }, failure: {
+                    (task, error) in
+                    logError("\(error.localizedDescription)")
+            })
+            
+            
+        }
+        
+    }
+    
     
 }
 

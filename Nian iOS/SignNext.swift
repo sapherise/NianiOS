@@ -78,7 +78,7 @@ class SignNextController: UIViewController, UITextFieldDelegate{
         }else if SAstrlen(self.inputPassword.text!)<4 {
             SAerr("密码太短了...")
         }else{
-            let password = ("n*A\(self.inputPassword.text)").md5
+            let password = ("n*A\(self.inputPassword.text!)").md5
             Api.postSignUp(self.signInfo.name!, password: password, email: self.inputEmail.text!, daily: self.signInfo.mode!.rawValue) {
                 json in
                 SAPush("Mua!", pushDate: NSDate().dateByAddingTimeInterval(Double(60*60*24)))
