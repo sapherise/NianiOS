@@ -100,8 +100,9 @@ class PatternViewController: UIViewController {
     @IBAction func accompolishRegister(sender: UIButton) {
         self.accompolishButton.startAnimating()
         
+        let password = ("n*A\(self.regInfo!.password!)").md5
         LogOrRegModel.register(email: self.regInfo!.email!,
-            password: self.regInfo!.password!,
+            password: password,
             username: self.regInfo!.nickname!,
             daily: self.playMode!.rawValue) {
                (task, responseObject, error) in

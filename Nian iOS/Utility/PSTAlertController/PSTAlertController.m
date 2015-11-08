@@ -553,7 +553,7 @@ static NSUInteger PSTVisibleAlertsCount = 0;
 }
 
 - (void)addCancelActionWithHandler:(void (^)(PSTAlertAction *action))handler {
-    [self addAction:[PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:PSTAlertActionStyleCancel handler:handler]];
+    [self addAction:[PSTAlertAction actionWithTitle:NSLocalizedString(@"取消", @"") style:PSTAlertActionStyleCancel handler:handler]];
 }
 
 @end

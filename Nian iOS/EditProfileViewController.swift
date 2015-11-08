@@ -359,7 +359,8 @@ extension EditProfileViewController {
         }
         
         if let _phone = self.phoneTextField.text {
-            if self.validatePhone(_phone) {
+            if self.phoneTextField.text == "" {
+            } else if self.validatePhone(_phone) {
                 self.profileDict!["phone"] = self.phoneTextField.text!
             } else {
                 shouldReturn = false
