@@ -41,7 +41,7 @@ class MeCell: UITableViewCell {
         let user = self.data.stringAttributeForKey("cname")
         var lastdate = self.data.stringAttributeForKey("lastdate")
         lastdate = V.relativeTime(lastdate)
-        let dreamtitle = self.data.stringAttributeForKey("dreamtitle")
+        let dreamtitle = self.data.stringAttributeForKey("dreamtitle").decode()
         var content = self.data.stringAttributeForKey("content").decode()
         let type = self.data.stringAttributeForKey("type")
         let isread = self.data.stringAttributeForKey("isread")
@@ -146,8 +146,8 @@ class MeCell: UITableViewCell {
     
     
     class func cellHeightByData(data:NSDictionary)->CGFloat {
-        let dreamtitle = data.stringAttributeForKey("dreamtitle")
-        var content = data.stringAttributeForKey("content")
+        let dreamtitle = data.stringAttributeForKey("dreamtitle").decode()
+        var content = data.stringAttributeForKey("content").decode()
         let type = data.stringAttributeForKey("type")
         if type == "8" {
             content = dreamtitle

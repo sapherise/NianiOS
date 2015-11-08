@@ -31,6 +31,7 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
         
         Api.getAllPets() { json in
             if json != nil {
+                print(json)
                 self.labelLeft.hidden = false
                 Cookies.set(json, forKey: "pets")
                 if let err = json!.objectForKey("error") as? NSNumber {
