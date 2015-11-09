@@ -939,3 +939,9 @@ public func synchronized(lock: AnyObject, closure: () -> ()) {
     closure()
     objc_sync_exit(lock)
 }
+
+// 前后均会包含
+// 例如 1, 4，会返回 1 2 3 4
+func getRandomNumber(from: Int, to: Int) -> Int {
+    return Int(arc4random() % UInt32(to - from + 1)) + from
+}

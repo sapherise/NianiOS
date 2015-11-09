@@ -39,6 +39,9 @@ class WelcomeViewController: UIViewController {
         self.logInButton.layer.borderColor = UIColor.colorWithHex("#333333").CGColor
         self.logInButton.layer.masksToBounds = true
         
+        // 先隐藏欢迎界面
+        self.view.hidden = true
+        
         if let _uid = CurrentUser.sharedCurrentUser.uid {      //如果登录了
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
             uidKey.setObject(_uid, forKey: kSecAttrAccount)
@@ -53,13 +56,12 @@ class WelcomeViewController: UIViewController {
             navigationViewController.navigationBar.clipsToBounds = true
             navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
             
-            delay(0.3, closure: {
-                self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
-                    self.view.hidden = false
-                })
+            self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
+                self.view.hidden = false
             })
         } else {  // 没有登录
             /* 留在当前页面 */
+            self.view.hidden = false
         }
         
     }

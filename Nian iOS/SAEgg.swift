@@ -19,6 +19,7 @@ import SpriteKit
 class SAEgg: NIAlert, NIAlertDelegate {
     var confirmNiAlert = NIAlert()
     var lotteryNiAlert = NIAlert()
+    var planktonNiAlert = NIAlert()
     var coinLessNiAlert = NIAlert()
     var petData: NSDictionary!
     var delegateShare: ShareDelegate?
@@ -49,6 +50,10 @@ class SAEgg: NIAlert, NIAlertDelegate {
         } else if niAlert == self.coinLessNiAlert {
             self.dismissWithAnimation(.normal)
             self.coinLessNiAlert.dismissWithAnimation(.normal)
+            self.confirmNiAlert.dismissWithAnimation(.normal)
+        } else if niAlert == self.planktonNiAlert {
+            self.dismissWithAnimation(.normal)
+            self.planktonNiAlert.dismissWithAnimation(.normal)
             self.confirmNiAlert.dismissWithAnimation(.normal)
         }
     }
@@ -91,6 +96,15 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 self.confirmNiAlert.dismissWithAnimation(.normal)
                 self.lotteryNiAlert.dismissWithAnimation(.normal)
             }
+        } else if niAlert == planktonNiAlert {
+            UIView.animateWithDuration(1, animations: { () -> Void in
+                self.planktonNiAlert.imgView?.setX(-150)
+                self.planktonNiAlert.imgView?.alpha = 0
+                }, completion: { (Bool) -> Void in
+                    self.dismissWithAnimation(.normal)
+                    self.confirmNiAlert.dismissWithAnimation(.normal)
+                    self.planktonNiAlert.dismissWithAnimation(.normal)
+            })
         } else if niAlert == coinLessNiAlert {
             self.dismissWithAnimation(.normal)
             self.confirmNiAlert.dismissWithAnimation(.normal)
@@ -134,32 +148,51 @@ class SAEgg: NIAlert, NIAlertDelegate {
                     self.petData = (json!.objectForKey("data") as! NSDictionary).objectForKey("pet") as! NSDictionary
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
-//                    let petId = self.petData.stringAttributeForKey("id")
-                    self.lotteryNiAlert.delegate = self
-//                    
-//                    // 从缓存里拉取宠物列表
-//                    if let tempDataArray = Cookies.get("pets") as? NSDictionary {
-//                        let tempData = tempDataArray.objectForKey("data") as! NSDictionary
-//                        let tempArr = tempData.objectForKey("pets") as! NSArray
-//                        for data in tempArr {
-//                            if let d = data as? NSDictionary {
-//                                let id = d.stringAttributeForKey("id")
-//                                let owned = d.stringAttributeForKey("owned")
-//                                if id == petId && owned == "1" {
-//                                    print("是新宠物！！！")
-//                                }
-//                            }
-//                        }
-//                    }
-                    
-                    self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)!d", petName, "你获得了一个\(petName)", ["分享", "好"]],
-                        forKeys: ["img", "title", "content", "buttonArray"])
-                    self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
-                    
-                    // 抽蛋成功扣念币 
+                    let isOwned = self.petData.stringAttributeForKey("own")
                     globalWillNianReload = 1
-                    self.delegateShare?.saEgg?(self, lotteryResult: self.petData)
-                    
+                    if isOwned == "0" {
+                        // 此前没有这个宠物，出现宠物
+                        self.lotteryNiAlert.delegate = self
+                        self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)!d", petName, "你获得了一个\(petName)", ["分享", "好"]],
+                            forKeys: ["img", "title", "content", "buttonArray"])
+                        self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
+                        self.delegateShare?.saEgg?(self, lotteryResult: self.petData)
+                    } else {
+                        // 拥有这个宠物了，本地出现浮游生物
+                        // todo: 需要修改文案
+                        let arrayContent = ["哈哈1", "哈哈2", "哈哈3", "哈哈4", "哈哈5", "哈哈6", "哈哈7", "哈哈8", "哈哈9", "哈哈10", "哈哈11", "哈哈12", "哈哈13", "哈哈14", "哈哈15", "哈哈16"]
+                        
+                        // 当前版本的浮游生物总数量
+                        let num = arrayContent.count
+                        
+                        // 我拥有浮游总数
+                        var count = 1
+                        
+                        // 当前要显示的浮游生物编号
+                        var id = 1
+                        
+                        if let _idPlankton = Cookies.get("plankton") as? String {
+                            if let _idTemp = Int(_idPlankton) {
+                                let next = _idTemp + 1
+                                
+                                if next > num {
+                                    // 如果全部获得了
+                                    count = num
+                                    id = getRandomNumber(1, to: num)
+                                } else {
+                                    // 如果还没全部获得
+                                    count = next
+                                    id = next
+                                }
+                            }
+                        }
+                        
+                        self.planktonNiAlert.delegate = self
+                        self.planktonNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pet\(id)")!, "浮游生物", "「\(arrayContent[id - 1])」", ["拜拜"]],
+                            forKeys: ["img", "title", "content", "buttonArray"])
+                        self.confirmNiAlert.dismissWithAnimationSwtich(self.planktonNiAlert)
+                        Cookies.set("\(count)", forKey: "plankton")
+                    }
                 } else if err == 2 {
                     self.coinLessNiAlert.delegate = self
                     self.coinLessNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "念币不足", "没有足够的念币...", ["哦"]],

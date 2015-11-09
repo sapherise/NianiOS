@@ -71,6 +71,29 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeCompose</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>更新</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>更新一条进展</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>quickactions.addstep</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>egg</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>里面是什么？</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>彩蛋！</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>quickactions.egg</string>
+		</dict>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

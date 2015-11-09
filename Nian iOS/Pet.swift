@@ -29,6 +29,7 @@ class PetViewController: SAViewController, ShareDelegate {
     var labelName: UILabel!
     var labelLevel: UILabel!
     var labelLeft: UILabel!
+    var labelRight: UILabel!
     var isUpgradeSuccess: Bool = false
     var energy: Int = 0
     

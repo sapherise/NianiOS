@@ -330,6 +330,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.myTabbar!.addSubview(dot!)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "QuickActions:", name: "QuickActions", object: nil)
+    }
+    
+    // 3D Touch 下的更新进展
+    func QuickActions(sender: NSNotification) {
+        let type = sender.object as! String
+        if type == "1" {
+            self.addStep()
+        }
     }
     
     func GameOverHide(){
@@ -465,7 +474,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.viewClose.contentMode = UIViewContentMode.Center
             self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
             self.viewClose.userInteractionEnabled = true
-            self.view.window!.addSubview(self.viewClose)
+            self.view.window?.addSubview(self.viewClose)
             self.view.addSubview(self.addView)
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.addView.alpha = 1

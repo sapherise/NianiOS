@@ -68,6 +68,13 @@ extension PetViewController: NIAlertDelegate {
         labelLeft.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         labelLeft.userInteractionEnabled = true
         tableView.addSubview(labelLeft)
+        
+        labelRight = UILabel(frame: CGRectMake(globalWidth - 100 - 20, 258, 100, 36))
+        labelRight.textAlignment = NSTextAlignment.Right
+        labelRight.textColor = UIColor.colorWithHex("#B3B3B3")
+        labelRight.font = UIFont(name: "HelveticaNeue-Light", size: 12)
+        labelRight.userInteractionEnabled = true
+        tableView.addSubview(labelRight)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -109,6 +116,11 @@ extension PetViewController: NIAlertDelegate {
             }
             labelLeft.text = "礼物：\(energy)"
             labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGift"))
+            
+            if let plankton = Cookies.get("plankton") as? String {
+                labelRight.text = "浮游：\(plankton)"
+                labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPlankton"))
+            }
             if owned == "1" {
                 imageView.setPet("http://img.nian.so/pets/\(image)!d")
             } else {

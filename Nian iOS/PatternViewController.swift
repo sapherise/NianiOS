@@ -129,7 +129,7 @@ class PatternViewController: UIViewController {
                         
                         Api.requestLoad()
                         
-                        // 注册后一天提供推送，帮助用户保持习惯
+                        // 注册后一天提供推送，形成第一天习惯
                         thepush("Mua!", dateSinceNow: 60 * 60 * 24, willReapt: false, id: "signup")
                         
                         let mainViewController = HomeViewController(nibName:nil,  bundle: nil)

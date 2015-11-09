@@ -11,6 +11,8 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
+    
+    var isNoti = false
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -54,6 +56,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         application.applicationIconBadgeNumber = 0
         application.cancelAllLocalNotifications()
+        
+        // check current shortcut item
+        if #available(iOS 9.0, *) {
+            if let item = launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem {
+                QuickActionsForItem(item)
+            }
+        }
         
         return true
     }
@@ -206,3 +215,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     
 }
 
+
+
+//MARK: - Handle QuickActions For ShorCut Items -> AppDelegate Extension
+typealias HandleForShorCutItem = AppDelegate
+extension HandleForShorCutItem {
+    
+    /// Define quick actions type
+    enum QuickActionsType: String {
+        case AddStep =     "quickactions.addstep"
+        case Egg =   "quickactions.egg"
+    }
+    
+    
+    /// Shortcut Item, also called a Home screen dynamic quick action, specifies a user-initiated action for app.
+    @available(iOS 9.0, *)
+    func QuickActionsForItem(shortcutItem: UIApplicationShortcutItem) {
+        if !isNoti {
+            isNoti = true
+            if let shorchutItemType = QuickActionsType.init(rawValue: shortcutItem.type) {
+                switch shorchutItemType {
+                case .AddStep:
+                    delay(1, closure: { () -> () in
+                        NSNotificationCenter.defaultCenter().postNotificationName("QuickActions", object: "1")
+                        self.isNoti = false
+                    })
+                case .Egg:
+                    delay(1, closure: { () -> () in
+                        NSNotificationCenter.defaultCenter().postNotificationName("QuickActionsEgg", object: "2")
+                        self.isNoti = false
+                    })
+                }
+            }
+        }
+    }
+    
+    /// Calls - user selects a Home screen quick action for app
+    @available(iOS 9.0, *)
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        // perform action for shortcut item selected
+        QuickActionsForItem(shortcutItem)
+    }
+}

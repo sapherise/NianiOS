@@ -126,25 +126,36 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         imageSettings.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "EggShell:"))
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "QuickActionsEgg", name: "QuickActionsEgg", object: nil)
     }
     
     func EggShell(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Began {
-            let eggShell = NIAlert()
-            eggShell.delegate = self
-            eggShell.dict = NSMutableDictionary(objects: [UserHead, " 彩蛋！", "你在念上的第一秒\n\(self.birthday)", ["太开心"]], forKeys: ["img", "title", "content", "buttonArray"])
-            eggShell.showWithAnimation(.flip)
-            if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-                let skView = SKView(frame: CGRectMake(0, 0, 272, 108))
-                if #available(iOS 8.0, *) {
-                    skView.allowsTransparency = true
-                }
-                eggShell._containerView!.addSubview(skView)
-                scene.scaleMode = SKSceneScaleMode.AspectFit
-                skView.presentScene(scene)
-                scene.setupViews()
-                eggShell._containerView?.sendSubviewToBack(skView)
+            showEgg()
+        }
+    }
+    
+    var i = 0
+    // 3D Touch 下的调用彩蛋
+    func QuickActionsEgg() {
+        showEgg()
+    }
+    
+    func showEgg() {
+        let eggShell = NIAlert()
+        eggShell.delegate = self
+        eggShell.dict = NSMutableDictionary(objects: [UserHead, " 彩蛋！", "你在念的第一瞬间\n\(self.birthday)", ["太开心"]], forKeys: ["img", "title", "content", "buttonArray"])
+        eggShell.showWithAnimation(.flip)
+        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+            let skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+            if #available(iOS 8.0, *) {
+                skView.allowsTransparency = true
             }
+            eggShell._containerView!.addSubview(skView)
+            scene.scaleMode = SKSceneScaleMode.AspectFit
+            skView.presentScene(scene)
+            scene.setupViews()
+            eggShell._containerView?.sendSubviewToBack(skView)
         }
     }
     

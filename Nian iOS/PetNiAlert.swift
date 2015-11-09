@@ -199,4 +199,9 @@ extension PetViewController {
         }
         giftView?.showWithAnimation(.flip)
     }
+    
+    func onPlankton() {
+        print("哈哈")
+        // todo: 需要跳转
+    }
 }

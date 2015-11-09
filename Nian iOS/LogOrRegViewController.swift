@@ -194,38 +194,7 @@ class LogOrRegViewController: UIViewController {
         
         /* 分别处理 “confirm” "logIn" "register" */
         if self.functionalType == .confirm {
-            if let _text = self.emailTextField.text {
-                if self.validateEmailAddress(_text) {
-                    
-                    self.functionalButton.startAnimating()
-                    
-                    LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!) {
-                        (task, responseObject, error) in
-                        
-                        self.functionalType = .confirm
-                        self.functionalButton.stopAnimating()
-                        
-                        if let _ = error {
-                            self.view.showTipText("网络有点问题，等一会儿再试")
-                        } else {
-                            let json = JSON(responseObject!)
-                            if json["data"] == "0" {  // email 未注册
-                                // 处理未注册
-                                self.handleUnregisterEmail()
-                            } else if json["data"] == "1" { // email 已注册
-                                // 处理登陆
-                                self.handleRegisterEmail()
-                            }
-                            
-                        }
-                    }
-                } else {  //if self.validateEmailAddress == false
-                    self.view.showTipText("不是地球上的邮箱...")
-                }
-            } else { // if let _text = self.emailTextField.text == nil
-                self.view.showTipText("邮箱不能为空...")
-            }
-            
+            onConfirm()
         } else if self.functionalType == .logIn {
             /*@explain: 这里不需要再验证邮箱 */
             if let _pwdText = self.passwordTextField.text {
@@ -369,6 +338,42 @@ class LogOrRegViewController: UIViewController {
         
     }
 
+    // 判断邮箱状态
+    func onConfirm() {
+        
+        if let _text = self.emailTextField.text {
+            if self.validateEmailAddress(_text) {
+                
+                self.functionalButton.startAnimating()
+                
+                LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!) {
+                    (task, responseObject, error) in
+                    
+                    self.functionalType = .confirm
+                    self.functionalButton.stopAnimating()
+                    
+                    if let _ = error {
+                        self.view.showTipText("网络有点问题，等一会儿再试")
+                    } else {
+                        let json = JSON(responseObject!)
+                        if json["data"] == "0" {  // email 未注册
+                            // 处理未注册
+                            self.handleUnregisterEmail()
+                        } else if json["data"] == "1" { // email 已注册
+                            // 处理登陆
+                            self.handleRegisterEmail()
+                        }
+                        
+                    }
+                }
+            } else {  //if self.validateEmailAddress == false
+                self.view.showTipText("不是地球上的邮箱...")
+            }
+        } else { // if let _text = self.emailTextField.text == nil
+            self.view.showTipText("邮箱不能为空...")
+        }
+
+    }
 }
 
 // MARK:
@@ -376,7 +381,12 @@ class LogOrRegViewController: UIViewController {
 extension LogOrRegViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil) 
+        if textField == emailTextField {
+            onConfirm()
+            print("键盘！")
+        } else {
+            UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        }
         
         return true
     }
