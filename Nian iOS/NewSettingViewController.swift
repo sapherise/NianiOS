@@ -178,7 +178,7 @@ class NewSettingViewController: SAViewController {
                     self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     self.userDict = json["data"]["user"].dictionaryObject!
-                    
+//                    
                     if json["data"]["user"]["isMonthly"].stringValue == "1" {
                         self.settingModel?.dailyMode = "0"
                         self.dailyModeSwitch.setOn(false, animated: true)

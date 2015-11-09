@@ -71,7 +71,7 @@ class LogOrRegViewController: UIViewController {
     }
     
     /// 提示用户“重置密码”邮件发送成功
-    lazy var niAlert = NIAlert()
+    var niAlert = NIAlert()
     
     /// 检查邮箱是否注册的结果
     var checkEmailResult: NetworkClosure?
@@ -175,12 +175,14 @@ class LogOrRegViewController: UIViewController {
                     }
                     
                 } else {
-                    self.niAlert.delegate = self
                     
-                    self.niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
+                    let niAlert = NIAlert()
+                    niAlert.delegate = self
+                    
+                    niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
                         forKeys: ["img", "title", "content", "buttonArray"])
                     
-                    self.niAlert.showWithAnimation(showAnimationStyle.spring)
+                    niAlert.showWithAnimation(showAnimationStyle.spring)
                     
                 }
             }
@@ -563,7 +565,7 @@ extension LogOrRegViewController: NIAlertDelegate {
     }
     
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
-        
+        niAlert.dismissWithAnimation(.normal)
     }
     
 }
