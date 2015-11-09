@@ -87,11 +87,17 @@ class SettingModel: NSObject {
     }
     
     /**
-     
+     更新账号信息和设置 
      */
     class func updateUserInfo(settingInfo: Dictionary<String, String>, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.put(
-            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//<<<<<<< HEAD
+//        NianNetworkClient.sharedNianNetworkClient.put(
+//            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//=======
+
+        NianNetworkClient.sharedNianNetworkClient.post(
+            "user/\(CurrentUser.sharedCurrentUser.uid!)/edit?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//>>>>>>> 72ec8c7377531596c27e76bc416a5ef32d175025
             content: settingInfo,
             callback: callback)
     

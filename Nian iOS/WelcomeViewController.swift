@@ -21,7 +21,6 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var qqButton: SocialMediaButton!
     @IBOutlet weak var weiboButton: SocialMediaButton!
     
-    
     var oauth: TencentOAuth?
     lazy var thirdPartyType = String()
     lazy var thirdPartyID = String()

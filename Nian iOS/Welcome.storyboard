@@ -211,7 +211,7 @@
                                     <constraint firstAttribute="height" constant="44" id="qfP-zP-cbv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zzw-fx-yPi" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
                                 <rect key="frame" x="24" y="131" width="552" height="44"/>

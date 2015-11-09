@@ -100,9 +100,10 @@ class PatternViewController: UIViewController {
     @IBAction func accompolishRegister(sender: UIButton) {
         self.accompolishButton.startAnimating()
         
-        let password = ("n*A\(self.regInfo!.password!)").md5
+        let _password = "n*A\(self.regInfo!.password!)"
+        
         LogOrRegModel.register(email: self.regInfo!.email!,
-            password: password,
+            password: _password.md5,
             username: self.regInfo!.nickname!,
             daily: self.playMode!.rawValue) {
                (task, responseObject, error) in
@@ -140,9 +141,7 @@ class PatternViewController: UIViewController {
                         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
                         navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
                         navigationViewController.navigationBar.clipsToBounds = true
-                        self.presentViewController(navigationViewController, animated: true, completion: {
-                            self.navigationItem.rightBarButtonItems = []
-                        })
+                        self.presentViewController(navigationViewController, animated: true, completion: nil)
                         
                         Api.postJpushBinding() {_ in }
                     }

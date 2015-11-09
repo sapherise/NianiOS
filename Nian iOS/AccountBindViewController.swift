@@ -27,7 +27,7 @@ class AccountBindViewController: SAViewController {
         self._setTitle("账户和绑定设置")
         
         self.tableview.registerClass(AccountBindCell.self, forCellReuseIdentifier: "AccountBindCell")
-        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 15))
+        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
         
         self.startAnimating()
         
@@ -142,18 +142,74 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             }
         }
         
-        
         return cell!
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0.5
+        } else if section == 1 {
+            return 24
+        }
+        
+        return 0
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 0.5))
+            _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            
+            return _view
+        } else if section == 1 {
+            let containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
+            
+            let _view1 = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 23.5))
+            let _view2 = UIView(frame: CGRectMake(0, 23.5, self.view.frame.width, 0.5))
+            _view2.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            
+            containerView.addSubview(_view1)
+            containerView.addSubview(_view2)
+            
+            return containerView
+        }
+        
+        return nil
+    }
+   
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 24
+        } else if section == 0 {
+            return 0.5
+        }
+        
+        return 0
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 1 {
-            let label = UILabel(frame: CGRectMake(0, 0, self.view.frame.width, 15))
+            let _containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
+            
+            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 0.5))
+            _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            
+            let label = UILabel(frame: CGRectMake(0, 5, self.view.frame.width, 15))
             label.text = "    你可以通过绑定第三方账号，来登录念"
             label.font = UIFont.systemFontOfSize(12)
             label.textColor = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
             
-            return label
+            _containerView.addSubview(_view)
+            _containerView.addSubview(label)
+            
+            return _containerView
+            
+        } else if section == 0 {
+            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 0.5))
+            _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            
+            return _view
         }
         
         return nil
