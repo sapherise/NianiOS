@@ -95,7 +95,7 @@ class NewSettingViewController: SAViewController {
         
         // 移动网络下是否下载图片
         if let saveMode = userDefaults.objectForKey("saveMode") as? String {
-            if saveMode == "1" {
+            if saveMode == "on" {
                 self.picOnCellarSwitch.setOn(true, animated: true)
             } else {
                 self.picOnCellarSwitch.setOn(false, animated: true)
@@ -117,10 +117,10 @@ class NewSettingViewController: SAViewController {
         
         // 是否保存进展卡片                    /* 这里是 modeCard */
         if let cardMode = userDefaults.objectForKey("modeCard") as? String {
-            if cardMode == "0" {
-                self.saveCardSwitch.setOn(false, animated: true)
-            } else {
+            if cardMode == "on" {
                 self.saveCardSwitch.setOn(true, animated: true)
+            } else {
+                self.saveCardSwitch.setOn(false, animated: true)
             }
         } else {
             self.saveCardSwitch.setOn(true, animated: true)
@@ -201,20 +201,8 @@ extension NewSettingViewController{
      是否日更模式
      */
     @IBAction func dailyModeChanged(sender: UISwitch) {
-//        if sender.on {
-//            Api.postUserFrequency(0, callback: { _ in
-//                self.userDefaults.setObject("0", forKey: "dailyMode")
-//                self.userDefaults.synchronize()
-//            })
-//            
-//        } else {
-//            Api.postUserFrequency(1, callback: { _ in
-//                self.userDefaults.setObject("1", forKey: "dailyMode")
-//                self.userDefaults.synchronize()
-//            })
-//        }
-        
-        let _daily: String = sender.on ? "0" : "1"
+      
+        let _daily: String = sender.on ? "1" : "0"
         
         SettingModel.updateUserInfo(["daily": "\(_daily)"]) {
             (task, responseObject, error) -> Void in
@@ -234,10 +222,10 @@ extension NewSettingViewController{
      */
     @IBAction func downloadPictureViaCellerOrNot(sender: UISwitch) {
         if sender.on {
-            self.userDefaults.setObject(true, forKey: "saveMode")
+            self.userDefaults.setObject("on", forKey: "saveMode")
             self.userDefaults.synchronize()
         } else {
-            self.userDefaults.setObject(false, forKey: "saveMode")
+            self.userDefaults.setObject("off", forKey: "saveMode")
             self.userDefaults.synchronize()
         }
     }
@@ -247,10 +235,10 @@ extension NewSettingViewController{
      */
     @IBAction func saveStepCardOrNot(sender: UISwitch) {
         if sender.on {
-            self.userDefaults.setObject(true, forKey: "modeCard")
+            self.userDefaults.setObject("on", forKey: "modeCard")
             self.userDefaults.synchronize()
         } else {
-            self.userDefaults.setObject(false, forKey: "modeCard")
+            self.userDefaults.setObject("off", forKey: "modeCard")
             self.userDefaults.synchronize()
         }
         
@@ -283,7 +271,7 @@ extension NewSettingViewController{
         
         SettingModel.updateUserInfo(["private": "\(_private)"]) {
             (task, responseObject, error) -> Void in
-            
+
             if let _ = error {
                 
             } else {
@@ -448,6 +436,9 @@ extension NewSettingViewController {
         
     }
     
+    /**
+     念是什么
+     */
     @IBAction func introduceNian(sender: UITapGestureRecognizer) {
         let helpViewController = HelpViewController()
         self.navigationController?.pushViewController(helpViewController, animated: true)
@@ -460,7 +451,9 @@ extension NewSettingViewController {
         UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/cn/app/id929448912")!)
     }
     
-    
+    /**
+     登出
+     */
     @IBAction func logout(sender: UITapGestureRecognizer) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         

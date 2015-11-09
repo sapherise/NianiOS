@@ -38,7 +38,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFP-2K-cQX">
                                     <rect key="frame" x="16" y="16" width="568" height="288"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2015-10-30 at 3.57.06 PM" translatesAutoresizingMaskIntoConstraints="NO" id="3FB-QF-eTQ">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3FB-QF-eTQ">
                                             <rect key="frame" x="0.0" y="0.0" width="568" height="288"/>
                                             <animations/>
                                             <constraints>
@@ -820,7 +820,6 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="Screen Shot 2015-10-30 at 3.57.06 PM" width="303" height="223"/>
         <image name="setting_cell_arrow" width="8" height="44"/>
         <image name="setting_logo" width="24" height="24"/>
     </resources>

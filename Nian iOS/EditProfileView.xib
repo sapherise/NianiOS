@@ -38,7 +38,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RSD-qy-vSt">
                                     <rect key="frame" x="16" y="16" width="568" height="288"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2015-10-30 at 3.57.06 PM" translatesAutoresizingMaskIntoConstraints="NO" id="REz-K7-s77">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REz-K7-s77">
                                             <rect key="frame" x="0.0" y="0.0" width="568" height="288"/>
                                             <animations/>
                                             <constraints>
@@ -332,7 +332,4 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
-    <resources>
-        <image name="Screen Shot 2015-10-30 at 3.57.06 PM" width="303" height="223"/>
-    </resources>
 </document>

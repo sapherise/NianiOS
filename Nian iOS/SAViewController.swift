@@ -92,7 +92,8 @@ class SAViewController: UIViewController {
         
         if json["error"] != 0 {
             #if DEBUG
-                logError("\(json["message"].string)")
+                let msg = json["message"].string
+                logError("\(msg)")
             #else
                 let alertView = UIAlertView(title: "", message: "未能提供正确数据", delegate: nil, cancelButtonTitle: "OK")
                 alertView.show()

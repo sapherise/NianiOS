@@ -70,8 +70,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     // 如果被封号
                     if willLogout == "1" {
                         let data = json["data"].dictionaryValue
-                        self.gameoverId = data["id"]!.stringValue
-                        let gameoverDays = data["days"]!.stringValue
+                        self.gameoverId = data["dream"]!["id"].stringValue
+                        let gameoverDays = data["dream"]!["days"].stringValue
                         
                         self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
                         self.GameOverView.textTitle = "游戏结束"
