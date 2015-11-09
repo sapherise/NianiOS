@@ -51,7 +51,3 @@ class PrivacyViewController: UIViewController {
     */
 
 }
-
-extension PrivacyViewController: UIWebViewDelegate {
-    
-}

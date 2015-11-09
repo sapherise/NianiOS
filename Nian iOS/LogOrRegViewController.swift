@@ -150,12 +150,15 @@ class LogOrRegViewController: UIViewController {
         // 收起键盘
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
         
+        let _tmpType = self.functionalType
+        
         self.functionalButton.startAnimating()
         
         LogOrRegModel.resetPaeeword(email: self.emailTextField.text!) {
             (task, responseObject, error) in
             
             self.functionalButton.stopAnimating()
+            self.functionalType = _tmpType
             
             if let _ = error {
                 self.view.showTipText("网络有点问题，等一会儿再试")
@@ -191,6 +194,83 @@ class LogOrRegViewController: UIViewController {
     
     @IBAction func onFunctionalButton(sender: UIButton) {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
+         self.handleEvent()
+    }
+    
+    /**
+    点击空白 dismiss keyboard
+    */
+    @IBAction func dismissKeyboard(sender: UIControl) {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+    }
+    
+    /**
+    无论何时点击左上角的 cancel button, 都将回到 welcome view controller
+    */
+    @IBAction func backWelcomeViewController(sender: UIButton) {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "toModeVC" {
+            let regInfo = RegInfo(email: self.emailTextField.text!, nickname: self.nicknameTextField.text!, password: self.passwordTextField.text!)
+            
+            /// 进入选择模式的 xib
+            let patternViewController = segue.destinationViewController as! PatternViewController
+            /// 传递注册时需要的数据
+            patternViewController.regInfo = regInfo
+        }
+        
+        if segue.identifier == "toPrivacyVC" {
+            let privacyWebView = segue.destinationViewController as! PrivacyViewController
+            privacyWebView.urlString = "http://nian.so/privacy.php"
+        }
+        
+    }
+
+}
+
+// MARK:
+// MARK: - UITextFieldDelegate
+extension LogOrRegViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
+        if self.functionalType == .confirm {
+            if textField == self.emailTextField {
+                self.handleEvent()
+            }
+        } else if self.functionalType == .logIn {
+            if textField == self.passwordTextField {
+                self.handleEvent()
+            }
+        } else if self.functionalType == .register {
+            if self.passwordTextField.text?.characters.count > 0 && self.nicknameTextField.text?.characters.count > 0 {
+                self.handleEvent()
+            }
+        }
+        
+        
+        return true
+    }
+
+}
+
+
+extension LogOrRegViewController {
+    /**
+     处理 return 键和点击 Button 的事件
+     */
+    func handleEvent() {
         
         /* 分别处理 “confirm” "logIn" "register" */
         if self.functionalType == .confirm {
@@ -278,7 +358,6 @@ class LogOrRegViewController: UIViewController {
                             self.presentViewController(navigationViewController, animated: true, completion: {
                                 self.emailTextField.text = ""
                                 self.passwordTextField.text = ""
-                                self.navigationController?.popViewControllerAnimated(true)
                             })
                             
                             Api.postJpushBinding(){_ in }
@@ -286,7 +365,7 @@ class LogOrRegViewController: UIViewController {
                         } // if json["error"] != 0
                     } // if let _error = error
                 }  // end of closure
-            
+                
             }  // if self.passwordTextField.text != ""
         } else if self.functionalType == .register {
             if self.passwordTextField.text != "" {
@@ -327,65 +406,12 @@ class LogOrRegViewController: UIViewController {
                     self.view.showTipText("名字不能是空的...")
                 }
             } else { // 没有输入 password
-               self.view.showTipText("密码不能是空的...")
+                self.view.showTipText("密码不能是空的...")
             }
         }
     }
-    
-    /**
-    点击空白 dismiss keyboard
-    */
-    @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
-    }
-    
-    /**
-    无论何时点击左上角的 cancel button, 都将回到 welcome view controller
-    */
-    @IBAction func backWelcomeViewController(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
-        if segue.identifier == "toModeVC" {
-            let regInfo = RegInfo(email: self.emailTextField.text!, nickname: self.nicknameTextField.text!, password: self.passwordTextField.text!)
-            
-            /// 进入选择模式的 xib
-            let patternViewController = segue.destinationViewController as! PatternViewController
-            /// 传递注册时需要的数据
-            patternViewController.regInfo = regInfo
-        }
-        
-        if segue.identifier == "toPrivacyVC" {
-            let privacyWebView = segue.destinationViewController as! PrivacyViewController
-            privacyWebView.urlString = "http://nian.so/privacy.php"
-        }
-        
-    }
-
 }
 
-// MARK:
-// MARK: - UITextFieldDelegate
-extension LogOrRegViewController: UITextFieldDelegate {
-
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil) 
-        
-        return true
-    }
-
-    func textFieldDidEndEditing(textField: UITextField) {
-        
-    }
-
-}
 
 // MARK: 
 // MARK: - 处理事件

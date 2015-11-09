@@ -54,19 +54,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func gameoverCheck() {
         Api.getGameover() { json in
             if json != nil {
-//                let isgameover = json!.objectForKey("isgameover") as? String
-//                let willLogout = json!.objectForKey("willlogout") as? String
-//                
                 let json = JSON(json!)
-                
                 let willLogout = json["data"]["gameover"].stringValue
-                
-                // 账户验证不通过
-//                if willLogout == "1" {
-//                    delay(1, closure: { () -> () in
-//                        self.SAlogout()
-//                    })
-//                } else {
+
                     // 如果被封号
                     if willLogout == "1" {
                         let data = json["data"].dictionaryValue

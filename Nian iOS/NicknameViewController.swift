@@ -43,6 +43,8 @@ class NicknameViewController: UIViewController {
     }
     
     @IBAction func backWelcomeViewController(sender: UIButton) {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -57,7 +59,7 @@ class NicknameViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier == "toPrivacyVC" {
+        if segue.identifier == "toPrivacy" {
             let privacyWebView = segue.destinationViewController as! PrivacyViewController
             privacyWebView.urlString = "http://nian.so/privacy.php"
         }
@@ -127,10 +129,7 @@ extension NicknameViewController {
                                 } else {
                                     let shell = json["data"]["shell"].stringValue
                                     let uid = json["data"]["uid"].stringValue
-                                    if !self.hasRegistered {
-                                        _ = json["data"]["new_user"].string
-                                    }
-                                    
+
                                     /// uid 和 shell 保存到 keychain
                                     let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                                     uidKey.setObject(uid, forKey: kSecAttrAccount)
@@ -151,7 +150,6 @@ extension NicknameViewController {
                                     
                                     self.presentViewController(navigationViewController, animated: true, completion: {
                                         self.nameTextfield.text = ""
-                                        self.navigationController?.popViewControllerAnimated(true)
                                     })
                                     
                                     Api.postJpushBinding(){_ in }
@@ -160,14 +158,8 @@ extension NicknameViewController {
                         }
                         
                     }
-                    
                 }
-                
-                
             }
-            
-
-            
         } else {
             
         }
@@ -182,7 +174,7 @@ extension NicknameViewController {
             self.view.showTipText("名字不能是空的...")
             
             return false
-        } else if name.characters.count < 4 {
+        } else if name.characters.count < 2 {
             self.view.showTipText("名字有点短...")
             
             return false

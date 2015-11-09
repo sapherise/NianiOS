@@ -91,8 +91,8 @@ class SettingModel: NSObject {
      */
     class func updateUserInfo(settingInfo: Dictionary<String, String>, callback: NetworkClosure) {
 
-        NianNetworkClient.sharedNianNetworkClient.put(
-            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+        NianNetworkClient.sharedNianNetworkClient.post(
+            "user/\(CurrentUser.sharedCurrentUser.uid!)/edit?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
             content: settingInfo,
             callback: callback)
     

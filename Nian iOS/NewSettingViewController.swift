@@ -47,6 +47,24 @@ class NewSettingViewController: SAViewController {
     
     weak var delegate: NewSettingDelegate?
     
+    /// 根据界面上下顺序，每个 “分割线 View” 的高度
+    @IBOutlet weak var sp1HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp2HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp3HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp4HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp5HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp6HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp7HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp8HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp9HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp10HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp11HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp12HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp13HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp14HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp15HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp16HeightConstraint: NSLayoutConstraint!
+    
     /// 一些用户信息
     var userDict: Dictionary<String, AnyObject>?
     var settingModel: SettingModel?
@@ -69,6 +87,8 @@ class NewSettingViewController: SAViewController {
         self._setTitle("设置")
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
+        
+        self.settingSeperateHeight()
         
         self.settingCoverBlurView.backgroundColor = UIColor.clearColor()
         self.settingAvatarBlurView.backgroundColor = UIColor.clearColor()
@@ -157,7 +177,7 @@ class NewSettingViewController: SAViewController {
                 if json["error"] != 0 {   // 服务器返回的错误代码
                     self.view.showTipText("网络有点问题，等一会儿再试")
                 } else {
-                    self.userDict = json["data"]["user"].dictionaryObject
+                    self.userDict = json["data"]["user"].dictionaryObject!
                     
                     if json["data"]["user"]["isMonthly"].stringValue == "1" {
                         self.settingModel?.dailyMode = "0"
@@ -370,8 +390,6 @@ extension NewSettingViewController {
      */
     @IBAction func editMyProfile(sender: UITapGestureRecognizer) {
         let editProfileVC = EditProfileViewController(nibName: "EditProfileView", bundle: nil)
-        editProfileVC.coverImage = self.coverImageView.image
-        editProfileVC.avatarImage = self.avatarImageView.image
         editProfileVC.profileDict = ["name": self.userDict?["name"] as! String,
                                      "phone": self.userDict?["phone"] as! String,
                                      "gender": self.userDict?["gender"] as! String]
@@ -455,22 +473,33 @@ extension NewSettingViewController {
      登出
      */
     @IBAction func logout(sender: UITapGestureRecognizer) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let alertController = PSTAlertController.actionSheetWithTitle("要退出账号吗？")
         
-        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-        uidKey.resetKeychainItem()
-     
-        userDefaults.removeObjectForKey("uid")
-        userDefaults.removeObjectForKey("shell")
-        userDefaults.removeObjectForKey("followData")
-        userDefaults.removeObjectForKey("user")
+        alertController.addAction(PSTAlertAction(title: "确定", style: .Default, handler: { (action) in
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            
+            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+            uidKey.resetKeychainItem()
+         
+            userDefaults.removeObjectForKey("uid")
+            userDefaults.removeObjectForKey("shell")
+            userDefaults.removeObjectForKey("followData")
+            userDefaults.removeObjectForKey("user")
+            
+            userDefaults.synchronize()
+            
+            globalTabhasLoaded = [false, false, false]
+            
+            let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
+            let welcomeVC = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
+            
+            self.presentViewController(welcomeVC, animated: false, completion: nil)
+            
+        }))
         
-        userDefaults.synchronize()
+        alertController.addCancelActionWithHandler(nil)
         
-        globalTabhasLoaded = [false, false, false]
-        
-        self.dismissViewControllerAnimated(true, completion: nil)
-        
+        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
     }
 }
 
@@ -560,12 +589,7 @@ extension NewSettingViewController: EditProfileDelegate {
     /**
      更新界面和用户信息
      */
-    func editProfile(profileDict profileDict: Dictionary<String, String>, coverImage: UIImage, avatarImage: UIImage) {
-        self.coverImageView.image = coverImage
-        self.coverImageModified = true
-        
-        self.avatarImageView.image = avatarImage
-        self.avatarImageModified = true
+    func editProfile(profileDict profileDict: Dictionary<String, String>) {
         
         for (key, value) in profileDict {
             self.userDict?.updateValue(value, forKey: key)
@@ -574,10 +598,27 @@ extension NewSettingViewController: EditProfileDelegate {
     
 }
 
+extension NewSettingViewController {
 
+    func settingSeperateHeight() {
+        self.sp1HeightConstraint.constant = 0.5
+        self.sp2HeightConstraint.constant = 0.5
+        self.sp3HeightConstraint.constant = 0.5
+        self.sp4HeightConstraint.constant = 0.5
+        self.sp5HeightConstraint.constant = 0.5
+        self.sp6HeightConstraint.constant = 0.5
+        self.sp7HeightConstraint.constant = 0.5
+        self.sp8HeightConstraint.constant = 0.5
+        self.sp9HeightConstraint.constant = 0.5
+        self.sp10HeightConstraint.constant = 0.5
+        self.sp11HeightConstraint.constant = 0.5
+        self.sp12HeightConstraint.constant = 0.5
+        self.sp13HeightConstraint.constant = 0.5
+        self.sp14HeightConstraint.constant = 0.5
+        self.sp15HeightConstraint.constant = 0.5
+        self.sp16HeightConstraint.constant = 0.5
+    }
 
-
-
-
+}
 
 
