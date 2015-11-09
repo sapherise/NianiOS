@@ -358,9 +358,11 @@ extension EditProfileViewController {
             }
         }
         
-        if let _phone = self.phoneTextField.text {
+        let _phone = self.phoneTextField.text!
+        
+        if _phone != "" {
             if self.validatePhone(_phone) {
-                self.profileDict!["phone"] = self.phoneTextField.text!
+                self.profileDict!["phone"] = _phone
             } else {
                 shouldReturn = false
                 self.view.showTipText("手机号码不正确...", delay: 1)
