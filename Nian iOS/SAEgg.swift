@@ -130,10 +130,28 @@ class SAEgg: NIAlert, NIAlertDelegate {
             if json != nil {
                 let err = json!.objectForKey("error") as! NSNumber
                 if err == 0 {
+                    // 抽到宠物
                     self.petData = (json!.objectForKey("data") as! NSDictionary).objectForKey("pet") as! NSDictionary
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
+//                    let petId = self.petData.stringAttributeForKey("id")
                     self.lotteryNiAlert.delegate = self
+//                    
+//                    // 从缓存里拉取宠物列表
+//                    if let tempDataArray = Cookies.get("pets") as? NSDictionary {
+//                        let tempData = tempDataArray.objectForKey("data") as! NSDictionary
+//                        let tempArr = tempData.objectForKey("pets") as! NSArray
+//                        for data in tempArr {
+//                            if let d = data as? NSDictionary {
+//                                let id = d.stringAttributeForKey("id")
+//                                let owned = d.stringAttributeForKey("owned")
+//                                if id == petId && owned == "1" {
+//                                    print("是新宠物！！！")
+//                                }
+//                            }
+//                        }
+//                    }
+                    
                     self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)!d", petName, "你获得了一个\(petName)", ["分享", "好"]],
                         forKeys: ["img", "title", "content", "buttonArray"])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)

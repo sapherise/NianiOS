@@ -283,11 +283,6 @@ extension NewSettingViewController{
         
         SettingModel.updateUserInfo(["private": "\(_private)"]) {
             (task, responseObject, error) -> Void in
-            print("==")
-            print(task)
-            print(responseObject)
-            print(error)
-            print("==")
             if let _ = error {
                 
             } else {

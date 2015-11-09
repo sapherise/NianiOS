@@ -169,7 +169,6 @@ extension PetViewController {
     
     func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
         let id = lotteryResult.stringAttributeForKey("id")
-        
         if self.dataArray.count >= 1 {
             for i: Int in 0...self.dataArray.count - 1 {
                 let d = self.dataArray[i] as! NSDictionary

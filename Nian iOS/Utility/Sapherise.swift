@@ -742,14 +742,6 @@ func shake() {
     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 }
 
-func SAPush(content: String, pushDate: NSDate) {
-    let notification = UILocalNotification()
-    notification.fireDate = pushDate
-    notification.timeZone = NSTimeZone.defaultTimeZone()
-    notification.alertBody = content
-    UIApplication.sharedApplication().scheduleLocalNotification(notification)
-}
-
 func getCacheImage(url: String) -> UIImage? {
     let urlImage = NSURL(string: url)!
     let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
