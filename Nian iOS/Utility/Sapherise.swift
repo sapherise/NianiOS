@@ -385,8 +385,12 @@ extension UIViewController {
         // 退出后应该设置三个都为未加载状态
         globalTabhasLoaded = [false, false, false]
         
+//        let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
+//        let welcomeVC = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
+        
+//        self.presentViewController(welcomeVC, animated: false, completion: nil)
+        
         self.dismissViewControllerAnimated(true, completion: nil)
-        client.leave()
     }
 }
 

@@ -390,14 +390,15 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     func setupPlayerTop(theUid:Int){
         Api.getUserTop(theUid){ json in
             if json != nil {
-                let data = json!.objectForKey("user") as! NSDictionary
+                let _data = json!.objectForKey("data") as! NSDictionary
+                let data = _data.objectForKey("user") as! NSDictionary
                 let name = data.stringAttributeForKey("name")
-                var fo = data.stringAttributeForKey("fo")
-                var foed = data.stringAttributeForKey("foed")
-                let isfo = data.stringAttributeForKey("isfo")
+                var fo = data.stringAttributeForKey("follows")
+                var foed = data.stringAttributeForKey("followed")
+                let isfo = data.stringAttributeForKey("is_followed")
                 let cover = data.stringAttributeForKey("cover")
                 let black = data.stringAttributeForKey("isban")
-                let sex = data.stringAttributeForKey("sex")
+                let sex = data.stringAttributeForKey("gender")
                 if let v = Int(black) {
                     self.isBan = v
                 }
@@ -465,15 +466,18 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.topCell.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                     self.topCell.BGImage.image = UIImage(named: "bg")
                 }else{
-                    self.topCell.BGImage.setCover(AllCoverURL)
+                    self.topCell.BGImage.setCover(AllCoverURL, ignore: false, animated: true, radius: 0)
                 }
             }
         }
     }
     
     func SASettings() {
-        let vc = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
-        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
+        vc.coverImage = self.topCell.BGImage.image
+        vc.avatarImage = self.topCell.UserHead.image
+        
+        self.navigationController!.pushViewController(vc, animated: true)
     }
     
     func onUserHeadClick(sender:UIGestureRecognizer) {

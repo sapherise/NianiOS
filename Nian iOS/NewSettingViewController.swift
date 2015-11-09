@@ -15,7 +15,7 @@ import QuartzCore
 }
 
 
-class NewSettingViewController: SAViewController {
+class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -44,6 +44,8 @@ class NewSettingViewController: SAViewController {
     @IBOutlet weak var cacheActivityIndicator: UIActivityIndicatorView!
     /// version label
     @IBOutlet weak var versionLabel: UILabel!
+    // 念
+    @IBOutlet var logo: UIImageView!
     
     weak var delegate: NewSettingDelegate?
     
@@ -148,7 +150,7 @@ class NewSettingViewController: SAViewController {
         
         // 是否每日更新提醒
         if let pushMode = userDefaults.objectForKey("pushMode") as? String {
-            if pushMode == "1" {
+            if pushMode == "on" {
                 self.dailyRemindSwitch.setOn(true, animated: true)
             } else {
                 self.dailyRemindSwitch.setOn(false, animated: true)
@@ -164,6 +166,8 @@ class NewSettingViewController: SAViewController {
         
         self.startAnimating()
         
+        dailyModeSwitch.hidden = true
+        
         SettingModel.getUserInfoAndSetting {
             (task, responseObject, error) in
             
@@ -175,25 +179,36 @@ class NewSettingViewController: SAViewController {
                 let json = JSON(responseObject!)
                 
                 if json["error"] != 0 {   // 服务器返回的错误代码
-                    self.view.showTipText("网络有点问题，等一会儿再试")
+                    self.view.showTipText("网络有点问题，等下再试")
                 } else {
                     self.userDict = json["data"]["user"].dictionaryObject!
 //                    
                     if json["data"]["user"]["isMonthly"].stringValue == "1" {
                         self.settingModel?.dailyMode = "0"
-                        self.dailyModeSwitch.setOn(false, animated: true)
+                        self.dailyModeSwitch.setOn(false, animated: false)
                     } else {
                         self.settingModel?.dailyMode = "1"
-                        self.dailyModeSwitch.setOn(true, animated: true)
+                        self.dailyModeSwitch.setOn(true, animated: false)
                     }
+                    self.dailyModeSwitch.hidden = false
                     
                     self.userDefaults.setObject(json["data"]["user"]["name"].stringValue, forKey: "user")
                     self.userDefaults.synchronize()
                 } // if json["error"] != 0
             } // if let _error = error
         }  // SettingModel.getUserInfoAndSetting
+        
+        // 设定彩蛋
+        logo.userInteractionEnabled = true
+        logo.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onEgg:"))
     } // view didLoad
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if Cookies.get("pushMode") as? String != "on" {
+            self.dailyRemindSwitch.setOn(false, animated: true)
+        }
+    }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -210,7 +225,11 @@ class NewSettingViewController: SAViewController {
         
     }
     
-    
+    func onEgg(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            self.view.showTipText("念 爱 你")
+        }
+    }
     
 }
 
@@ -269,13 +288,12 @@ extension NewSettingViewController{
      */
     @IBAction func remindOnDailyUpdate(sender: UISwitch) {
         if sender.on {
-            self.userDefaults.setObject("1", forKey: "pushMode")
             delay(0.3, closure: {
                 let CareVC = CareViewController()
                 self.navigationController!.pushViewController(CareVC, animated: true)
             })
         } else {
-            self.userDefaults.setObject("0", forKey: "pushMode")
+            self.userDefaults.setObject("off", forKey: "pushMode")
             UIApplication.sharedApplication().cancelAllLocalNotifications()
         }
         
@@ -359,21 +377,21 @@ extension NewSettingViewController {
         let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
         
         alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
-            self.coverImagePicker = UIImagePickerController()
-            self.coverImagePicker!.delegate = self
-            self.coverImagePicker!.allowsEditing = true
-            self.coverImagePicker!.sourceType = .PhotoLibrary
+            self.avatarImagePicker = UIImagePickerController()
+            self.avatarImagePicker!.delegate = self
+            self.avatarImagePicker!.allowsEditing = true
+            self.avatarImagePicker!.sourceType = .PhotoLibrary
             
-            self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+            self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
         }))
         
         alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
-            self.coverImagePicker = UIImagePickerController()
-            self.coverImagePicker!.delegate = self
-            self.coverImagePicker!.allowsEditing = true
+            self.avatarImagePicker = UIImagePickerController()
+            self.avatarImagePicker!.delegate = self
+            self.avatarImagePicker!.allowsEditing = true
             if UIImagePickerController.isSourceTypeAvailable(.Camera){
-                self.coverImagePicker!.sourceType = .Camera
-                self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+                self.avatarImagePicker!.sourceType = .Camera
+                self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
             }
         }))
 
@@ -406,14 +424,22 @@ extension NewSettingViewController {
         let accountBindVC = AccountBindViewController(nibName: "AccountBindView", bundle: nil)
         
         accountBindVC.userName = self.userDefaults.objectForKey("user") as! String
-        
+        accountBindVC.delegate = self
         if let _email = self.userDict!["email"] as? String {
             if _email != "0" {
                 accountBindVC.userEmail = _email
+                // todo: 在这里修改
             }
         }
         
         self.navigationController?.pushViewController(accountBindVC, animated: true)
+    }
+    
+    /**
+     修改邮箱后，调用该函数来修改 userDict
+     */
+    func updateUserDict(email: String) {
+        self.userDict!["email"] = email
     }
     
     /**
@@ -422,35 +448,27 @@ extension NewSettingViewController {
     @IBAction func cleanCache(sender: UITapGestureRecognizer) {
         self.cacheActivityIndicator.hidden = false
         self.cacheActivityIndicator.startAnimating()
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let searchPath = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
-            let cachePath = searchPath[0] as String
-            
-            if let files = NSFileManager.defaultManager().subpathsAtPath(cachePath) {
-                for p in files {
-                    let path = cachePath + "\(p)"
-                    
-                    if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                        if "\(p)" != "\(SAUid()).jpg!dream" {
-                            do {
-                                try NSFileManager.defaultManager().removeItemAtPath(path)
-                            } catch _ {}
+        go {
+            let searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
+            let cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
+            let files = NSFileManager.defaultManager().subpathsAtPath(cachePath as String)
+            for p in files! as NSArray {
+                let path = cachePath.stringByAppendingPathComponent("\(p)")
+                if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                    if "\(p)" != "\(SAUid()).jpg!dream" {
+                        do {
+                            try NSFileManager.defaultManager().removeItemAtPath(path)
+                        } catch _ {
                         }
                     }
-                    
                 }
             }
-            
-            dispatch_async(dispatch_get_main_queue(), {
+            back {
                 self.cacheActivityIndicator.stopAnimating()
                 self.cacheActivityIndicator.hidden = true
                 self.view.showTipText("缓存清理好了", delay: 1)
-            })
-        
-        })
-        
-        
+            }
+        }
     }
     
     /**
@@ -472,28 +490,10 @@ extension NewSettingViewController {
      登出
      */
     @IBAction func logout(sender: UITapGestureRecognizer) {
-        let alertController = PSTAlertController.actionSheetWithTitle("要退出账号吗？")
+        let alertController = PSTAlertController.actionSheetWithTitle("欢迎下次再来玩。")
         
-        alertController.addAction(PSTAlertAction(title: "确定", style: .Default, handler: { (action) in
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            uidKey.resetKeychainItem()
-         
-            userDefaults.removeObjectForKey("uid")
-            userDefaults.removeObjectForKey("shell")
-            userDefaults.removeObjectForKey("followData")
-            userDefaults.removeObjectForKey("user")
-            
-            userDefaults.synchronize()
-            
-            globalTabhasLoaded = [false, false, false]
-            
-            let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
-            let welcomeVC = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
-            
-            self.presentViewController(welcomeVC, animated: false, completion: nil)
-            
+        alertController.addAction(PSTAlertAction(title: "拜拜", style: .Default, handler: { (action) in
+            self.SAlogout()
         }))
         
         alertController.addCancelActionWithHandler(nil)
@@ -573,7 +573,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             })
             uy.failBlocker = ({ (error: NSError!) in
                 self.stopAnimating()
-                self.view.showTipText("上传不成功...", delay: 2)
+                self.view.showTipText("上传失败了...再试试", delay: 2)
             })
             
             let _tmpString = "/head/" + "\(CurrentUser.sharedCurrentUser.uid!)" + ".jpg"
@@ -600,22 +600,22 @@ extension NewSettingViewController: EditProfileDelegate {
 extension NewSettingViewController {
 
     func settingSeperateHeight() {
-        self.sp1HeightConstraint.constant = 0.5
-        self.sp2HeightConstraint.constant = 0.5
-        self.sp3HeightConstraint.constant = 0.5
-        self.sp4HeightConstraint.constant = 0.5
-        self.sp5HeightConstraint.constant = 0.5
-        self.sp6HeightConstraint.constant = 0.5
-        self.sp7HeightConstraint.constant = 0.5
-        self.sp8HeightConstraint.constant = 0.5
-        self.sp9HeightConstraint.constant = 0.5
-        self.sp10HeightConstraint.constant = 0.5
-        self.sp11HeightConstraint.constant = 0.5
-        self.sp12HeightConstraint.constant = 0.5
-        self.sp13HeightConstraint.constant = 0.5
-        self.sp14HeightConstraint.constant = 0.5
-        self.sp15HeightConstraint.constant = 0.5
-        self.sp16HeightConstraint.constant = 0.5
+        self.sp1HeightConstraint.constant = globalHalf
+        self.sp2HeightConstraint.constant = globalHalf
+        self.sp3HeightConstraint.constant = globalHalf
+        self.sp4HeightConstraint.constant = globalHalf
+        self.sp5HeightConstraint.constant = globalHalf
+        self.sp6HeightConstraint.constant = globalHalf
+        self.sp7HeightConstraint.constant = globalHalf
+        self.sp8HeightConstraint.constant = globalHalf
+        self.sp9HeightConstraint.constant = globalHalf
+        self.sp10HeightConstraint.constant = globalHalf
+        self.sp11HeightConstraint.constant = globalHalf
+        self.sp12HeightConstraint.constant = globalHalf
+        self.sp13HeightConstraint.constant = globalHalf
+        self.sp14HeightConstraint.constant = globalHalf
+        self.sp15HeightConstraint.constant = globalHalf
+        self.sp16HeightConstraint.constant = globalHalf
     }
 
 }

@@ -54,9 +54,10 @@ class WelcomeViewController: UIViewController {
             navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
             navigationViewController.navigationBar.clipsToBounds = true
             navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            
-            self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
-                self.view.hidden = false
+            delay(0.1, closure: { () -> () in
+                self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
+                    self.view.hidden = false
+                })
             })
         } else {  // 没有登录
             /* 留在当前页面 */

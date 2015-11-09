@@ -174,7 +174,7 @@ class AddStepViewController: UIViewController, UIActionSheetDelegate, UIImagePic
                 
                 //  创建卡片
                 let modeCard = SACookie("modeCard")
-                if modeCard == "0" {
+                if modeCard == "off" {
                 } else {
                     let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
                     card.content = self.TextView.text

@@ -99,7 +99,7 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             self.Greetings = "晚安。"
         }
         thepush("记得更新念。\(Greetings)", dateSinceNow: NSTimeInterval(delayTime), willReapt: true, id: "dailyPush")
-        Cookies.set("1", forKey: "pushMode")
+        Cookies.set("on", forKey: "pushMode")
         self.navigationController?.popViewControllerAnimated(true)
     }
 }

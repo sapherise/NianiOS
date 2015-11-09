@@ -48,7 +48,7 @@ class EditProfileViewController: SAViewController {
 
         // Do any additional setup after loading the view.
 
-        self._setTitle("修改个人资料")
+        self._setTitle("编辑个人资料")
         self.settingSeperateHeight()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -81,17 +81,14 @@ class EditProfileViewController: SAViewController {
         
         alertController.addAction(PSTAlertAction(title: "男", style: .Default, handler: { (action) in
             self.genderTextField.text = "男"
-            self.profileDict!["gender"] = "1"
         }))
         
         alertController.addAction(PSTAlertAction(title: "女", style: .Default, handler: { (action) in
             self.genderTextField.text = "女"
-            self.profileDict!["gender"] = "2"
         }))
         
         alertController.addAction(PSTAlertAction(title: "保密", style: .Default, handler: { (action) in
             self.genderTextField.text = "保密"
-            self.profileDict!["gender"] = "0"
         }))
         
         alertController.addCancelActionWithHandler(nil)
@@ -197,6 +194,7 @@ extension EditProfileViewController {
         let previousPhone = self.profileDict!["phone"]
         let _phone = self.phoneTextField.text!
         
+        
         if _phone != "" {
             if self.validatePhone(_phone) {
                 self.profileDict!["phone"] = _phone
@@ -208,11 +206,23 @@ extension EditProfileViewController {
             self.profileDict!["phone"] = ""
         }
         
+        let previousGender = self.profileDict!["gender"]
+        var _gender = self.genderTextField.text!
+        if _gender == "男" {
+            _gender = "1"
+        } else if _gender == "女" {
+            _gender = "2"
+        } else {
+            _gender = "0"
+        }
+        
+        self.profileDict!["gender"] = _gender
+        
         if shouldReturn {
             
             var _tmpDict: Dictionary<String, String> = Dictionary()
             
-            if previousName == _name && previousPhone == _phone  {
+            if previousName == _name && previousPhone == _phone && previousGender == _gender  {
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
                 
@@ -222,6 +232,10 @@ extension EditProfileViewController {
                 
                 if previousPhone != _phone {
                     _tmpDict["phone"] = _phone
+                }
+                
+                if previousGender != _gender {
+                    _tmpDict["gender"] = _gender
                 }
                 
                 SettingModel.updateUserInfo(_tmpDict, callback: {
@@ -252,10 +266,10 @@ extension EditProfileViewController {
 extension EditProfileViewController {
     
     func settingSeperateHeight() {
-        self.sp1HeightConstraint.constant = 0.5
-        self.sp2HeightConstraint.constant = 0.5
-        self.sp3HeightConstraint.constant = 0.5
-        self.sp4HeightConstraint.constant = 0.5
+        self.sp1HeightConstraint.constant = globalHalf
+        self.sp2HeightConstraint.constant = globalHalf
+        self.sp3HeightConstraint.constant = globalHalf
+        self.sp4HeightConstraint.constant = globalHalf
     }
 }
 

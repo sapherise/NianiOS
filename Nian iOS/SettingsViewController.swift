@@ -184,7 +184,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.switchCard.addTarget(self, action: "onCard:", forControlEvents: UIControlEvents.ValueChanged)
         self.switchCard.layer.cornerRadius = 16
         let modeCard = SACookie("modeCard")
-        if modeCard == "0" {
+        if modeCard == "off" {
             self.switchCard.switchSetup(false, cacheName: "modeCard")
         }else{
             self.switchCard.switchSetup(true, cacheName: "modeCard")
@@ -197,7 +197,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         self.CareSwitch.addTarget(self, action: "pushSwitchAction:", forControlEvents: UIControlEvents.ValueChanged)
         self.CareSwitch.layer.cornerRadius = 16
         let pushMode: String? = Cookies.get("pushMode") as? String
-        if pushMode == "1" {
+        if pushMode == "on" {
             self.pushSwitchSetup(true)
         }else{
             self.pushSwitchSetup(false)

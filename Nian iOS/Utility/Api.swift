@@ -217,7 +217,7 @@ struct Api {
     
     static func getUserTop(uid:Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/user.php?uid=\(uid)&myuid=\(s_uid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {

@@ -62,7 +62,8 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         Api.getUserTop(Int(safeuid)!){ json in
             if json != nil {
-                let data  = json!.objectForKey("user") as! NSDictionary
+                let _data  = json!.objectForKey("data") as! NSDictionary
+                let data = _data.objectForKey("user") as! NSDictionary
                 let name = data.stringAttributeForKey("name")
                 let coverURL = data.stringAttributeForKey("cover")
                 let urlCover = "http://img.nian.so/cover/\(coverURL)!cover"

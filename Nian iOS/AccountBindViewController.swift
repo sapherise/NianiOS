@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol UpdateUserDictDelegate {
+    func updateUserDict(email: String)
+}
+
 class AccountBindViewController: SAViewController {
     
     ///
@@ -17,6 +21,7 @@ class AccountBindViewController: SAViewController {
     
     var userEmail: String = ""
     var userName: String = ""
+    var delegate: UpdateUserDictDelegate?
     
     var oauth: TencentOAuth?
     
@@ -28,6 +33,7 @@ class AccountBindViewController: SAViewController {
         
         self.tableview.registerClass(AccountBindCell.self, forCellReuseIdentifier: "AccountBindCell")
         self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
+        self.tableview.separatorStyle = .None
         
         self.startAnimating()
         
@@ -147,7 +153,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 0.5
+            return globalHalf
         } else if section == 1 {
             return 24
         }
@@ -157,7 +163,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
-            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 0.5))
+            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
             _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
             
             return _view
@@ -165,7 +171,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             let containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
             
             let _view1 = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 23.5))
-            let _view2 = UIView(frame: CGRectMake(0, 23.5, self.view.frame.width, 0.5))
+            let _view2 = UIView(frame: CGRectMake(0, 23.5, self.view.frame.width, globalHalf))
             _view2.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
             
             containerView.addSubview(_view1)
@@ -182,7 +188,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         if section == 1 {
             return 24
         } else if section == 0 {
-            return 0.5
+            return globalHalf
         }
         
         return 0
@@ -192,11 +198,11 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         if section == 1 {
             let _containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
             
-            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 0.5))
+            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
             _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
             
-            let label = UILabel(frame: CGRectMake(0, 5, self.view.frame.width, 15))
-            label.text = "    你可以通过绑定第三方账号，来登录念"
+            let label = UILabel(frame: CGRectMake(16, 8, self.view.frame.width, 15))
+            label.text = "绑定社交网络账号来玩念"
             label.font = UIFont.systemFontOfSize(12)
             label.textColor = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
             
@@ -206,7 +212,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             return _containerView
             
         } else if section == 0 {
-            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 0.5))
+            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
             _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
             
             return _view
@@ -612,6 +618,9 @@ extension AccountBindViewController: bindEmailDelegate {
     
     func bindEmail(email email: String) {
         self.userEmail = email
+        
+        // 修改邮箱成功后，调用协议来修改 userDict
+        delegate?.updateUserDict(email)
         
         self.tableview.beginUpdates()
         self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)

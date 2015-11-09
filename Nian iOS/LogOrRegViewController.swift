@@ -332,7 +332,7 @@ extension LogOrRegViewController {
                         let json = JSON(responseObject!)
                         
                         if json["error"] != 0 { // 服务器返回错误
-                            self.view.showTipText("登录出错...")
+                            self.view.showTipText("邮箱或密码不对...")
                         } else {
                             let shell = json["data"]["shell"].stringValue
                             let uid = json["data"]["uid"].stringValue

@@ -54,7 +54,7 @@ class BindEmailViewController: UIViewController {
         didSet {
             switch bindFuntionType! {
             case .confirm:
-                self.confirmButton.setTitle("确认", forState: .Normal)
+                self.confirmButton.setTitle("好", forState: .Normal)
             case .finish:
                 self.confirmButton.setTitle("完成", forState: .Normal)
             }
@@ -81,7 +81,7 @@ class BindEmailViewController: UIViewController {
             self.passwordTextField.hidden = true
         } else if self.modeType == .modify {
             
-            self.discriptionLabel.text = "输入登录密码，以确认你的身份"
+            self.discriptionLabel.text = "输入密码来换一个\n登录邮箱"
             self.emailTextField.hidden = true
         }
         
@@ -185,11 +185,12 @@ class BindEmailViewController: UIViewController {
                     }
                     
                     let _email = self.emailTextField.text!
-                    let _password = "n*A\(self.passwordTextField.text!)"
+                    let _password = ("n*A\(self.passwordTextField.text!)").md5
+                    let shell = (("\(_password)\(SAUid())n*A").lowercaseString).md5
                     
                     self.confirmButton.startAnimating()
                     
-                    SettingModel.bindEmail(_email, password: _password.md5, callback: {
+                    SettingModel.bindEmail(_email, password: _password, callback: {
                         (task, responseObject, error) in
                         
                         self.confirmButton.stopAnimating()
@@ -202,8 +203,12 @@ class BindEmailViewController: UIViewController {
                             if json["error"] != 0 {
                                 
                             } else {
-                                self.view.showTipText("邮箱绑定成功", delay: 1)
+                                // 更新 shell
                                 
+                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                                uidKey.setObject(shell, forKey: kSecValueData)
+                                
+                                self.view.showTipText("邮箱绑定成功", delay: 1)
                                 self.delegate?.bindEmail?(email: self.emailTextField.text!)
                                 self.dismissViewControllerAnimated(true, completion: nil)
                             }
@@ -233,14 +238,12 @@ class BindEmailViewController: UIViewController {
                         let json = JSON(responseObject!)
                         
                         if json["error"] != 0 {
-                            self.view.showTipText("密码错误，无法解除绑定邮箱")
+                            self.view.showTipText("密码不对...")
                         } else {
-                            self.view.showTipText("解除绑定成功，请输入新的邮箱", delay: 1)
-                            
                             self.passwordTextField.hidden = true
                             self.emailTextField.hidden = false
                             self.passwordTextField.text = ""
-                            self.discriptionLabel.text = "设置邮箱和密码后，你可以通过\n「邮箱+密码」直接登录念"
+                            self.discriptionLabel.text = "设置邮箱和密码后\n你可以用新的邮箱来登录念"
                             
                             self.modeType = .bind
                         }

@@ -201,7 +201,6 @@ extension PetViewController {
     }
     
     func onPlankton() {
-        print("哈哈")
         // todo: 需要跳转
     }
 }

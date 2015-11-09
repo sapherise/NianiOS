@@ -15,6 +15,7 @@
                 <outlet property="dailyModeSwitch" destination="6VK-cV-rEM" id="9Dm-km-8Nc"/>
                 <outlet property="dailyRemindSwitch" destination="NVA-Fi-gta" id="PoQ-Kc-JGq"/>
                 <outlet property="findViaNameSwitch" destination="LFH-hY-pF0" id="x5I-AK-f7t"/>
+                <outlet property="logo" destination="gYH-te-GZz" id="WsY-px-gTV"/>
                 <outlet property="picOnCellarSwitch" destination="ZY4-Ez-7TS" id="Y1h-J1-7Mj"/>
                 <outlet property="saveCardSwitch" destination="fYa-xs-UdY" id="9tW-ns-vjT"/>
                 <outlet property="scrollView" destination="b5W-1W-ifc" id="aT0-Sr-x1H"/>
@@ -283,7 +284,7 @@
                                         <constraint firstAttribute="height" constant="1" id="clk-io-cJW"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="打开日更模式，可使你每天获得更多念币。关闭则将不再被停号 " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMs-3p-whk">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="开启日更模式来获得更多念币。关闭将不再被停号。" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMs-3p-whk">
                                     <rect key="frame" x="16" y="486" width="568" height="15"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>

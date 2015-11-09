@@ -356,35 +356,33 @@ extension UIView {
     }
     
     func showTipText(text: String, delay: Double = 2.0) {
-        let tipView = UIView()
-        tipView.layer.masksToBounds = true
-        tipView.layer.cornerRadius = 4
-        tipView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-        tipView.userInteractionEnabled = false
-        let fontSize: CGFloat = 14
-        let textWidth: CGFloat = 180
-        var h: CGFloat = fontSize
-        var w: CGFloat = text.stringWidthWith(fontSize, height: h)
-        if w > textWidth {
-            w = textWidth
-            h = text.stringHeightWith(fontSize, width: textWidth)
+        let v = UIView()
+        v.frame = CGRectMake(0, -64, globalWidth, 64)
+        v.backgroundColor = SeaColor
+        v.userInteractionEnabled = true
+        
+        let label = UILabel()
+        label.frame = CGRectMake(20, 20, globalWidth - 40, 44)
+        label.text = text
+        label.textColor = UIColor.whiteColor()
+        label.numberOfLines = 0
+        label.font = UIFont.systemFontOfSize(14)
+        label.textAlignment = NSTextAlignment.Center
+        label.alpha = 0
+        
+        v.addSubview(label)
+        window?.addSubview(v)
+        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+            v.setY(0)
+            label.alpha = 1
+            }) { (Bool) -> Void in
+                UIView.animateWithDuration(0.2, delay: delay, options: UIViewAnimationOptions(), animations: { () -> Void in
+                    v.setY(-64)
+                    label.alpha = 0
+                    }, completion: { (Bool) -> Void in
+                        v.removeFromSuperview()
+                })
         }
-        let tipLabel = UILabel(frame: CGRectMake(15, 15, w, h))
-        tipLabel.text = text
-        tipLabel.font = UIFont.systemFontOfSize(fontSize)
-        tipLabel.lineBreakMode = .ByWordWrapping
-        tipLabel.numberOfLines = 0
-        tipLabel.textAlignment = NSTextAlignment.Center
-        tipLabel.textColor = UIColor.whiteColor()
-        let size = CGSizeMake(w + 30, h + 30)
-        tipView.frame.size = size
-        tipView.frame.origin = CGPointMake((globalWidth - size.width) / 2, globalHeight * 0.5 - size.height / 2)
-        tipView.addSubview(tipLabel)
-        self.window?.addSubview(tipView)
-        UIView.animateWithDuration(0.3, delay: delay, options: UIViewAnimationOptions(), animations: { tipView.alpha = 0 }, completion: {
-            finished in
-            tipView.removeFromSuperview()
-        })
     }
     
 }

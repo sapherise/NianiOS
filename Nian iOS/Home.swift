@@ -54,9 +54,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func gameoverCheck() {
         Api.getGameover() { json in
             if json != nil {
+                let error = json!.objectForKey("error") as? NSNumber
                 let json = JSON(json!)
-                let willLogout = json["data"]["gameover"].stringValue
-
+                if error == 0 {
+                    let willLogout = json["data"]["gameover"].stringValue
+                    
                     // 如果被封号
                     if willLogout == "1" {
                         let data = json["data"].dictionaryValue
@@ -87,7 +89,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     } else {
                         self.SANews()
                     }
-//                }
+                } else {
+                    // 校验失败
+                    self.SAlogout()
+                }
             }
         }
     }

@@ -26,7 +26,7 @@ extension UIImageView {
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        if (saveMode == "1") && (networkStatus == 1) {   //如果是开启了同时是在2G下
+        if (saveMode == "on") && (networkStatus == 1) {   //如果是开启了同时是在2G下
             self.loadCacheImage(req, placeholderImage: self.image)
         } else {
             self.setImageWithURLRequest(req,
@@ -68,13 +68,12 @@ extension UIImageView {
     }
     
     func setCover(urlString: String, ignore: Bool = false, animated: Bool = false, radius: CGFloat = 0) {
-        let _image = self.image
         self.backgroundColor = UIColor.blackColor()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        if (saveMode == "1") && (networkStatus == 1) && (!ignore) {
+        if (saveMode == "on") && (networkStatus == 1) && (!ignore) {
             self.loadCacheImage(req, placeholderImage: self.image)
 //                self.setAnimated()
         } else {
@@ -83,9 +82,7 @@ extension UIImageView {
                 success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
                     self.contentMode = .ScaleAspectFill
                     self.image = image
-                    
-                    // 当图片有变化时，才做淡入效果
-                    if image != _image {
+                    if animated {
                         self.setAnimated()
                     }
                 },
@@ -100,7 +97,7 @@ extension UIImageView {
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
         let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        if (saveMode == "1") && (networkStatus == 1) {
+        if (saveMode == "on") && (networkStatus == 1) {
             self.loadCacheImage(req, placeholderImage: self.image)
         } else {
             self.setImageWithURLRequest(req,

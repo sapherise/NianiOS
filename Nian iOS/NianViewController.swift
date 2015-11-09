@@ -109,7 +109,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         self.UserHead.setHead(SAUid())
         
-        if cacheCoverUrl != nil && cacheCoverUrl != "http://img.nian.so/cover/!cover" {
+        if cacheCoverUrl != nil && cacheCoverUrl != "http://img.nian.so/cover/!cover" && cacheCoverUrl != "http://img.nian.so/cover/background.png!cover" {
             self.imageBG.setCover(cacheCoverUrl!)
         } else {
             self.imageBG.image = UIImage(named: "bg")
@@ -228,38 +228,45 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if let uid = Int(safeuid) {
             Api.getUserTop(uid){ json in
                 if json != nil {
-                    let data = json!.objectForKey("user") as! NSDictionary
-                    let name = data.stringAttributeForKey("name")
-                    let coin = data.stringAttributeForKey("coin")
-                    let dream = data.stringAttributeForKey("dream")
-                    let step = data.stringAttributeForKey("step")
-                    let coverURL = data.stringAttributeForKey("cover")
-                    self.birthday = data.stringAttributeForKey("lastdate")
-                    let petCount = data.stringAttributeForKey("pet_count")
-                    let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
-                    let vip = data.stringAttributeForKey("vip")
-                    let deadLine = data.stringAttributeForKey("deadline")
-                    self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
-                    self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
-                    self.UserName.text = "\(name)"
-                    Cookies.set(name, forKey: "user")
-                    self.UserHead.setHead(safeuid)
-                    self.imageBadge.setType(vip)
-                    if deadLine == "0" {
-                        self.UserStep.text = "\(dream) 记本，\(step) 进展"
+                    let error = json!.objectForKey("error") as? NSNumber
+                    if error == 0 {
+                        let _data = json!.objectForKey("data") as! NSDictionary
+                        let data = _data.objectForKey("user") as! NSDictionary
+                        //                    let data = json!.objectForKey("user") as! NSDictionary
+                        let name = data.stringAttributeForKey("name")
+                        let coin = data.stringAttributeForKey("coin")
+                        let dream = data.stringAttributeForKey("dream")
+                        let step = data.stringAttributeForKey("step")
+                        let coverURL = data.stringAttributeForKey("cover")
+                        self.birthday = data.stringAttributeForKey("lastdate")
+                        let petCount = data.stringAttributeForKey("pet_count")
+                        let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                        let vip = data.stringAttributeForKey("vip")
+                        let deadLine = data.stringAttributeForKey("deadline")
+                        self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
+                        self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
+                        self.UserName.text = "\(name)"
+                        Cookies.set(name, forKey: "user")
+                        self.UserHead.setHead(safeuid)
+                        self.imageBadge.setType(vip)
+                        if deadLine == "0" {
+                            self.UserStep.text = "\(dream) 记本，\(step) 进展"
+                        } else {
+                            self.UserStep.text = "倒计时 \(deadLine)"
+                        }
+                        if coverURL == "" {
+                            self.imageBG.image = UIImage(named: "bg")
+                            self.navView.image = UIImage(named: "bg")
+                            self.navView.contentMode = UIViewContentMode.ScaleAspectFill
+                        }else{
+                            self.navView.setCover(AllCoverURL)
+                            self.imageBG.setCover(AllCoverURL)
+                        }
+                        Cookies.set(name, forKey: "user")
+                        Cookies.set(AllCoverURL, forKey: "coverUrl")
                     } else {
-                        self.UserStep.text = "倒计时 \(deadLine)"
+                        self.SAlogout()
                     }
-                    if coverURL == "" {
-                        self.imageBG.image = UIImage(named: "bg")
-                        self.navView.image = UIImage(named: "bg")
-                        self.navView.contentMode = UIViewContentMode.ScaleAspectFill
-                    }else{
-                        self.imageBG.setCover(AllCoverURL)
-                        self.navView.setCover(AllCoverURL)
-                    }
-                    Cookies.set(name, forKey: "user")
-                    Cookies.set(AllCoverURL, forKey: "coverUrl")
                 }
             }
         }
@@ -324,12 +331,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
      进入新的设置页面
      */
     func headClick(){
-        let playerVC = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
-        playerVC.coverImage = self.imageBG.image
-        playerVC.avatarImage = self.UserHead.image
-        playerVC.delegate = self
+        let vc = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
+        vc.coverImage = self.imageBG.image
+        vc.avatarImage = self.UserHead.image
+        vc.delegate = self
         
-        self.navigationController!.pushViewController(playerVC, animated: true)
+        self.navigationController!.pushViewController(vc, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
