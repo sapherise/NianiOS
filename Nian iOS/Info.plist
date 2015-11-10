@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.8.0</string>
+	<string>3.9.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -46,7 +46,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>24</string>
+	<string>25</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sinaweibohd</string>
@@ -76,10 +76,10 @@
 		<dict>
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutIconTypeCompose</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>更新</string>
 			<key>UIApplicationShortcutItemSubtitle</key>
 			<string>更新一条进展</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>更新</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>quickactions.addstep</string>
 		</dict>

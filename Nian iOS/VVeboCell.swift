@@ -59,7 +59,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
-            btnLike.layer.shouldRasterize = true
+//            btnLike.layer.shouldRasterize = true
             
             let uidlike = data.stringAttributeForKey("uidlike")
             if type == 2 {
@@ -75,7 +75,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
             } else {
                 btnLike.hidden = false
-                btnLike.layer.shouldRasterize = true
+//                btnLike.layer.shouldRasterize = true
             }
         }
     }
@@ -134,6 +134,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         labelComment.textAlignment = .Center
         labelComment.textColor = UIColor.b3()
         labelComment.font = UIFont.systemFontOfSize(13)
+        labelComment.opaque = true
         contentView.addSubview(labelComment)
         
         // 赞
@@ -231,13 +232,17 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         }
         drawText()
         drawThumb()
+        
+//        cell.layer.shouldRasterize = YES;
+//        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        contentView.layer.shouldRasterize = true
+        contentView.layer.rasterizationScale = globalScale
     }
     
     // 绑定事件
     func onImage() {
         let img = data.stringAttributeForKey("image")
         imageHolder.showImage(V.urlStepImage(img, tag: .Large))
-        imageHolder.layer.shouldRasterize = true
     }
     
     func onHead() {
