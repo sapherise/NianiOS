@@ -29,7 +29,7 @@ class AccountBindViewController: SAViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self._setTitle("账户和绑定设置")
+        self._setTitle("账号和绑定设置")
         
         self.tableview.registerClass(AccountBindCell.self, forCellReuseIdentifier: "AccountBindCell")
         self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
@@ -112,6 +112,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.imageView?.image = UIImage(named: "account_mail_binding")
                     cell?.detailTextLabel?.text = self.userEmail
                 }
+                
                 cell?.textLabel?.text = "邮箱"
             }
         } else if indexPath.section == 1 {
@@ -123,6 +124,9 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.imageView?.image = UIImage(named: "account_wechat")
                     cell?.detailTextLabel?.text = ""
                 }
+                let v = UIView(frame: CGRectMake(16, cell!.height() - globalHalf, globalWidth - 16, globalHalf))
+                v.backgroundColor = UIColor.e6()
+                cell?.addSubview(v)
                 cell?.textLabel?.text = "微信"
                 
             } else if indexPath.row == 1 {
@@ -133,6 +137,9 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.imageView?.image = UIImage(named: "account_qq")
                     cell?.detailTextLabel?.text = ""
                 }
+                let v = UIView(frame: CGRectMake(16, cell!.height() - globalHalf, globalWidth - 16, globalHalf))
+                v.backgroundColor = UIColor.e6()
+                cell?.addSubview(v)
                 cell?.textLabel?.text = "QQ"
                 
             } else if indexPath.row == 2 {
@@ -157,22 +164,25 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         } else if section == 1 {
             return 24
         }
-        
-        return 0
+        return globalHalf
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
+            
+            // 邮箱的顶部分割线
             let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
             _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
             
             return _view
         } else if section == 1 {
+            
+            // QQ和微信的上下分割线
             let containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
             
             let _view1 = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 23.5))
-            let _view2 = UIView(frame: CGRectMake(0, 23.5, self.view.frame.width, globalHalf))
-            _view2.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            let _view2 = UIView(frame: CGRectMake(0, 24 - globalHalf, self.view.frame.width, globalHalf))
+            _view2.backgroundColor = UIColor.e6()
             
             containerView.addSubview(_view1)
             containerView.addSubview(_view2)
@@ -191,7 +201,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             return globalHalf
         }
         
-        return 0
+        return globalHalf
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -199,12 +209,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             let _containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
             
             let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
-            _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            _view.backgroundColor = UIColor.e6()
             
             let label = UILabel(frame: CGRectMake(16, 8, self.view.frame.width, 15))
             label.text = "绑定社交网络账号来玩念"
             label.font = UIFont.systemFontOfSize(12)
-            label.textColor = UIColor(red: 0xB3/255.0, green: 0xB3/255.0, blue: 0xB3/255.0, alpha: 1.0)
+            label.textColor = UIColor.b3()
             
             _containerView.addSubview(_view)
             _containerView.addSubview(label)
@@ -213,7 +223,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             
         } else if section == 0 {
             let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
-            _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
+            _view.backgroundColor = UIColor.e6()
             
             return _view
         }

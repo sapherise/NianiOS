@@ -35,7 +35,7 @@ class SettingModel: NSObject {
     }
     
     /**
-     获得用户第三方账户绑定情况
+     获得用户第三方账号绑定情况
      */
     class func getUserAllOauth(callback: NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.get(

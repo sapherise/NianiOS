@@ -112,6 +112,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         // 头像
         imageHead = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING, SIZE_IMAGEHEAD_WIDTH, SIZE_IMAGEHEAD_WIDTH))
         imageHead.backgroundColor = UIColor.redColor()
+        imageHead.layer.masksToBounds = true
         contentView.addSubview(imageHead)
         
         // 头像遮罩

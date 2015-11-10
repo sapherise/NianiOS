@@ -91,6 +91,9 @@
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */; };
 		1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */; };
+		128470701BF1E429007E235C /* Plankton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284706F1BF1E429007E235C /* Plankton.swift */; };
+		128470721BF1F36D007E235C /* PlanktonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128470711BF1F36D007E235C /* PlanktonCell.swift */; };
+		128470741BF1F3BC007E235C /* PlanktonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128470731BF1F3BC007E235C /* PlanktonCell.xib */; };
 		1285FDC81BCFC69F00F52DB8 /* size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FDC71BCFC69F00F52DB8 /* size.swift */; };
 		128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */; };
 		128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */; };
@@ -367,6 +370,9 @@
 		1282230C19C7E6710002937D /* NSData+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Utils.m"; sourceTree = "<group>"; };
 		1283E2BB19AB81E500A0FB1C /* AddStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepViewController.swift; sourceTree = "<group>"; };
 		1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepViewController.xib; sourceTree = "<group>"; };
+		1284706F1BF1E429007E235C /* Plankton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plankton.swift; sourceTree = "<group>"; };
+		128470711BF1F36D007E235C /* PlanktonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanktonCell.swift; sourceTree = "<group>"; };
+		128470731BF1F3BC007E235C /* PlanktonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanktonCell.xib; sourceTree = "<group>"; };
 		1285FDC71BCFC69F00F52DB8 /* size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = size.swift; sourceTree = "<group>"; };
 		128F63BC1AAFEC7400E4835E /* CircleImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageCell.swift; sourceTree = "<group>"; };
 		128F63BE1AAFEC8400E4835E /* CircleImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleImageCell.xib; sourceTree = "<group>"; };
@@ -1143,6 +1149,9 @@
 				12F65C101B65084A0051A914 /* PetTableViewSetup.swift */,
 				12F65C161B654EB00051A914 /* PetTableViewGesture.swift */,
 				12F65C181B6559DB0051A914 /* PetNiAlert.swift */,
+				1284706F1BF1E429007E235C /* Plankton.swift */,
+				128470711BF1F36D007E235C /* PlanktonCell.swift */,
+				128470731BF1F3BC007E235C /* PlanktonCell.xib */,
 				12D1048C19F3387600E65B54 /* Level.xib */,
 				12F65C121B65098F0051A914 /* Level.swift */,
 				C4F6D77A1B5E22880033671D /* PetCell.swift */,
@@ -1611,6 +1620,7 @@
 				124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */,
 				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
 				C470B22E1B94024A00863821 /* PushConfig.plist in Resources */,
+				128470741BF1F3BC007E235C /* PlanktonCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */,
@@ -1718,6 +1728,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				128470701BF1E429007E235C /* Plankton.swift in Sources */,
 				C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
@@ -1816,6 +1827,7 @@
 				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
+				128470721BF1F36D007E235C /* PlanktonCell.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,

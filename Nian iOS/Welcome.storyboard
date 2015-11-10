@@ -192,53 +192,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="输入你的邮箱地址来登录 或者创建一个账户" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="7Zy-4H-vO5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="7Zy-4H-vO5">
                                 <rect key="frame" x="212" y="68" width="176" height="39"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="39" id="g7B-CY-fpg"/>
                                     <constraint firstAttribute="width" constant="176" id="sCS-d3-b8k"/>
                                 </constraints>
+                                <string key="text">使用邮箱来登录
+或注册新账号</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wH5-fu-1YY" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="131" width="552" height="44"/>
+                                <rect key="frame" x="160" y="131" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="H8s-BO-nMW"/>
                                     <constraint firstAttribute="height" constant="44" id="qfP-zP-cbv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zzw-fx-yPi" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="131" width="552" height="44"/>
+                                <rect key="frame" x="160" y="131" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="m5f-YO-U8P"/>
                                     <constraint firstAttribute="height" constant="44" id="uUt-d1-ZCN"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-T7-xRk" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="131" width="552" height="44"/>
+                                <rect key="frame" x="160" y="131" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="zfF-t2-TOz"/>
+                                    <constraint firstAttribute="width" constant="280" id="zkr-sh-WHx"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5B-GQ-h3I" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="199" width="552" height="44"/>
+                                <rect key="frame" x="160" y="199" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Hcb-jI-pfv"/>
+                                    <constraint firstAttribute="width" constant="280" id="ejW-7g-itb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="确定">
@@ -278,15 +284,15 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kkc-ez-6hC">
                                 <rect key="frame" x="200" y="524" width="200" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账户即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfZ-gY-24m">
-                                        <rect key="frame" x="0.0" y="0.0" width="136" height="44"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账号即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfZ-gY-24m">
+                                        <rect key="frame" x="6" y="0.0" width="136" height="44"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.70196078431372544" green="0.70196078431372544" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e7O-T7-Oup">
-                                        <rect key="frame" x="136" y="0.0" width="64" height="44"/>
+                                        <rect key="frame" x="130" y="0.0" width="64" height="44"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <state key="normal" title="隐私政策">
@@ -311,6 +317,7 @@
                             <constraint firstItem="wH5-fu-1YY" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="0NW-Ie-K55"/>
                             <constraint firstItem="zzw-fx-yPi" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="3vW-Dl-W2j"/>
                             <constraint firstItem="zzw-fx-yPi" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="5Eo-QE-78t"/>
+                            <constraint firstItem="P5B-GQ-h3I" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="785-NT-ltD"/>
                             <constraint firstItem="Kkc-ez-6hC" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="8cb-fb-5bc"/>
                             <constraint firstItem="aiM-V0-p1m" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="Aad-0C-5pg"/>
                             <constraint firstItem="aiM-V0-p1m" firstAttribute="top" secondItem="P5B-GQ-h3I" secondAttribute="bottom" constant="8" id="EXe-JU-C3v"/>
@@ -326,11 +333,24 @@
                             <constraint firstItem="wH5-fu-1YY" firstAttribute="top" secondItem="w2Z-ZY-yki" secondAttribute="bottom" constant="111" id="aaz-8t-Zo9"/>
                             <constraint firstItem="Bus-T7-xRk" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="fvn-zB-RDV"/>
                             <constraint firstAttribute="trailing" secondItem="zzw-fx-yPi" secondAttribute="trailing" constant="24" id="gPx-jZ-d81"/>
+                            <constraint firstItem="wH5-fu-1YY" firstAttribute="centerX" secondItem="XIw-ov-MTc" secondAttribute="centerX" id="gdo-BK-XKN"/>
                             <constraint firstItem="Bus-T7-xRk" firstAttribute="leading" secondItem="XIw-ov-MTc" secondAttribute="leading" constant="24" id="ia2-fY-5uy"/>
                             <constraint firstAttribute="trailing" secondItem="wH5-fu-1YY" secondAttribute="trailing" constant="24" id="oWV-bq-fEV"/>
                             <constraint firstItem="zzw-fx-yPi" firstAttribute="top" secondItem="wH5-fu-1YY" secondAttribute="bottom" constant="-44" id="ufo-h2-EnY"/>
                             <constraint firstItem="Bus-T7-xRk" firstAttribute="top" secondItem="zzw-fx-yPi" secondAttribute="bottom" constant="-44" id="upq-Nl-YXf"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="0NW-Ie-K55"/>
+                                <exclude reference="oWV-bq-fEV"/>
+                                <exclude reference="Q4H-Cd-AyQ"/>
+                                <exclude reference="ia2-fY-5uy"/>
+                                <exclude reference="3vW-Dl-W2j"/>
+                                <exclude reference="gPx-jZ-d81"/>
+                                <exclude reference="KMi-7F-pSt"/>
+                                <exclude reference="YNV-Fz-OI6"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <action selector="dismissKeyboard:" destination="PWr-CO-SWy" eventType="touchDown" id="IIc-89-7I2"/>
                         </connections>
@@ -378,20 +398,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vSO-xV-oKF" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="129" width="552" height="44"/>
+                                <rect key="frame" x="160" y="129" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="AMb-Xd-Yde"/>
+                                    <constraint firstAttribute="width" constant="280" id="FmR-ec-6fW"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiQ-bp-gha" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="197" width="552" height="44"/>
+                                <rect key="frame" x="160" y="197" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="H6e-ge-pbu"/>
                                     <constraint firstAttribute="height" constant="44" id="Hve-c0-YRS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -418,7 +440,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LOE-6I-7La">
                                 <rect key="frame" x="200" y="524" width="200" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账户即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KlS-3E-Tmn">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账号即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KlS-3E-Tmn">
                                         <rect key="frame" x="0.0" y="0.0" width="136" height="44"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -451,6 +473,7 @@
                             <constraint firstItem="HSy-jB-431" firstAttribute="top" secondItem="giK-YF-WyX" secondAttribute="bottom" id="5Yg-P7-Ju7"/>
                             <constraint firstItem="CiQ-bp-gha" firstAttribute="leading" secondItem="PAb-uG-AFW" secondAttribute="leading" constant="24" id="G3c-qK-2ak"/>
                             <constraint firstAttribute="trailing" secondItem="wa7-x9-7fr" secondAttribute="trailing" constant="24" id="JQo-gj-Z0P"/>
+                            <constraint firstItem="CiQ-bp-gha" firstAttribute="centerX" secondItem="PAb-uG-AFW" secondAttribute="centerX" id="NNT-IC-Vbw"/>
                             <constraint firstItem="wa7-x9-7fr" firstAttribute="leading" secondItem="PAb-uG-AFW" secondAttribute="leading" constant="24" id="Nqi-MN-dgo"/>
                             <constraint firstItem="wa7-x9-7fr" firstAttribute="centerX" secondItem="PAb-uG-AFW" secondAttribute="centerX" id="QFe-4c-aIJ"/>
                             <constraint firstItem="vSO-xV-oKF" firstAttribute="centerX" secondItem="PAb-uG-AFW" secondAttribute="centerX" id="SKq-ki-62N"/>
@@ -465,6 +488,15 @@
                             <constraint firstItem="CiQ-bp-gha" firstAttribute="top" secondItem="vSO-xV-oKF" secondAttribute="bottom" constant="24" id="s5E-xi-OpP"/>
                             <constraint firstItem="t0d-Oi-Ovw" firstAttribute="top" secondItem="LOE-6I-7La" secondAttribute="bottom" constant="32" id="sth-sZ-mXw"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="G3c-qK-2ak"/>
+                                <exclude reference="hAE-8u-LLD"/>
+                                <exclude reference="nMz-4F-1jJ"/>
+                                <exclude reference="jCu-ch-frz"/>
+                                <exclude reference="pAa-s9-Jql"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <action selector="dismissKeyboard:" destination="uAC-Da-Fmz" eventType="touchUpInside" id="PrB-hZ-ROu"/>
                         </connections>
@@ -596,7 +628,6 @@
                                             </label>
                                         </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="centerX" secondItem="uqU-r3-C5f" secondAttribute="centerX" id="43r-Md-PDd"/>
@@ -649,7 +680,6 @@
                                             </label>
                                         </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="centerX" secondItem="H1f-Zo-U18" secondAttribute="centerX" id="14p-yv-KJg"/>
@@ -676,7 +706,6 @@
                                     </view>
                                 </subviews>
                                 <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="0Dq-pI-6rr" secondAttribute="centerX" id="4kg-83-yIf"/>
                                     <constraint firstItem="vBJ-V7-ToN" firstAttribute="top" secondItem="fCg-ZI-ZKA" secondAttribute="top" constant="1" id="7cN-Yy-9ZA"/>
@@ -700,11 +729,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN4-5f-XRn" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
-                                <rect key="frame" x="24" y="420" width="552" height="44"/>
+                                <rect key="frame" x="160" y="420" width="280" height="44"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="8oM-pF-gRh"/>
+                                    <constraint firstAttribute="width" constant="280" id="pDi-um-tYY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="完成">
@@ -723,9 +753,16 @@
                             <constraint firstItem="IGk-sn-SLx" firstAttribute="top" secondItem="bBd-ul-IjI" secondAttribute="top" constant="64" id="Dgh-Zs-eMH"/>
                             <constraint firstItem="fCg-ZI-ZKA" firstAttribute="top" secondItem="IGk-sn-SLx" secondAttribute="bottom" id="iUs-lj-2Kd"/>
                             <constraint firstItem="TN4-5f-XRn" firstAttribute="leading" secondItem="bBd-ul-IjI" secondAttribute="leading" constant="24" id="lAV-BP-x4s"/>
+                            <constraint firstItem="TN4-5f-XRn" firstAttribute="centerX" secondItem="bBd-ul-IjI" secondAttribute="centerX" id="oiJ-XK-uPp"/>
                             <constraint firstAttribute="centerX" secondItem="IGk-sn-SLx" secondAttribute="centerX" id="rFu-H3-Yk9"/>
                             <constraint firstAttribute="trailing" secondItem="TN4-5f-XRn" secondAttribute="trailing" constant="24" id="ymA-hN-VDM"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="lAV-BP-x4s"/>
+                                <exclude reference="ymA-hN-VDM"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="accompolishButton" destination="TN4-5f-XRn" id="YEF-NC-TgM"/>
@@ -766,6 +803,6 @@
         <image name="signin_weibo" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2y2-qF-Yem"/>
+        <segue reference="k9Y-b2-sqM"/>
     </inferredMetricsTieBreakers>
 </document>

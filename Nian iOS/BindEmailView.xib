@@ -36,38 +36,46 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tr0-Ml-hhE" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
-                    <rect key="frame" x="24" y="131" width="552" height="44"/>
+                    <rect key="frame" x="160" y="131" width="280" height="44"/>
                     <animations/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="7VZ-Ga-g19"/>
                         <constraint firstAttribute="height" constant="44" id="JXw-iZ-5b6"/>
+                        <constraint firstAttribute="width" constant="280" id="cQG-a4-BMP"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bLl-6p-jNf" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
-                    <rect key="frame" x="24" y="131" width="552" height="44"/>
+                    <rect key="frame" x="160" y="131" width="280" height="44"/>
                     <animations/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="6oK-YD-9A5"/>
+                        <constraint firstAttribute="width" constant="280" id="6vn-SH-aou"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Apt-Tz-iHW" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
-                    <rect key="frame" x="24" y="199" width="552" height="44"/>
+                    <rect key="frame" x="160" y="199" width="280" height="44"/>
                     <animations/>
                     <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="FYR-xk-MZh"/>
+                        <constraint firstAttribute="width" constant="280" id="QMI-Ow-VFm"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="j7i-YK-0FF"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="确定">
                         <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="j7i-YK-0FF"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <action selector="onConfirmButton:" destination="-1" eventType="touchUpInside" id="OKM-LE-QIy"/>
                     </connections>
@@ -88,8 +96,11 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Apt-Tz-iHW" firstAttribute="top" secondItem="tr0-Ml-hhE" secondAttribute="bottom" constant="24" id="1VS-fg-2fz"/>
+                <constraint firstItem="Apt-Tz-iHW" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3cl-2n-hgI"/>
                 <constraint firstAttribute="trailing" secondItem="Apt-Tz-iHW" secondAttribute="trailing" constant="24" id="6xd-0R-7Y3"/>
                 <constraint firstItem="Apt-Tz-iHW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="8gf-se-Fzg"/>
+                <constraint firstItem="tr0-Ml-hhE" firstAttribute="leading" secondItem="bLl-6p-jNf" secondAttribute="leading" id="D6B-Tx-h5m"/>
+                <constraint firstItem="bLl-6p-jNf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="HDk-2e-dS1"/>
                 <constraint firstItem="bLl-6p-jNf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="IGD-kO-aVA"/>
                 <constraint firstItem="tr0-Ml-hhE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="K8T-RJ-Msr"/>
                 <constraint firstItem="ffM-Vn-fV6" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Lh2-pe-4NS"/>
@@ -101,6 +112,16 @@
                 <constraint firstAttribute="trailing" secondItem="bLl-6p-jNf" secondAttribute="trailing" constant="24" id="ykB-Bq-147"/>
                 <constraint firstItem="tr0-Ml-hhE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="131" id="ypx-Bf-8op"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="6xd-0R-7Y3"/>
+                    <exclude reference="8gf-se-Fzg"/>
+                    <exclude reference="IGD-kO-aVA"/>
+                    <exclude reference="ykB-Bq-147"/>
+                    <exclude reference="K8T-RJ-Msr"/>
+                    <exclude reference="hrJ-q2-LIx"/>
+                </mask>
+            </variation>
             <connections>
                 <action selector="dismissKeyboard:" destination="-1" eventType="touchUpInside" id="PY2-zr-fhH"/>
             </connections>
