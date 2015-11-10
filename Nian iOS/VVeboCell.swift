@@ -59,6 +59,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
+            btnLike.layer.shouldRasterize = true
             
             let uidlike = data.stringAttributeForKey("uidlike")
             if type == 2 {
@@ -74,6 +75,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
             } else {
                 btnLike.hidden = false
+                btnLike.layer.shouldRasterize = true
             }
         }
     }
@@ -111,7 +113,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         
         // 头像
         imageHead = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING, SIZE_IMAGEHEAD_WIDTH, SIZE_IMAGEHEAD_WIDTH))
-        imageHead.backgroundColor = UIColor.redColor()
+        imageHead.backgroundColor = UIColor.whiteColor()
         imageHead.layer.masksToBounds = true
         contentView.addSubview(imageHead)
         
@@ -235,6 +237,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     func onImage() {
         let img = data.stringAttributeForKey("image")
         imageHolder.showImage(V.urlStepImage(img, tag: .Large))
+        imageHolder.layer.shouldRasterize = true
     }
     
     func onHead() {
@@ -357,6 +360,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     }
     
     func onLikeClick() {
+        globalVVeboReload = false
         let isLiked = data.stringAttributeForKey("liked")
         if isLiked == "0" {
             // 点赞
@@ -445,6 +449,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         label = nil
         let heightContent = data["heightContent"] as! CGFloat
         label = VVeboLabel(frame: CGRectMake(20, 20, globalWidth - SIZE_PADDING * 2, heightContent))
+        label?.backgroundColor = UIColor.whiteColor()
         label?.text = data.stringAttributeForKey("content")
         
         // 网页跳转

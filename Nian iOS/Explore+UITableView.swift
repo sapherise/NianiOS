@@ -36,6 +36,7 @@ extension ExploreViewController {
         labelEditor.textColor = UIColor.C33()
         labelEditor.font = UIFont(name: "HelveticaNeue-Light", size: 16)
         labelEditor.text = "推荐"
+        labelEditor.backgroundColor = UIColor.whiteColor()
         tableViewHot.addSubview(labelEditor)
         
         // 热门添加最新
@@ -43,6 +44,7 @@ extension ExploreViewController {
         labelNewest.textColor = UIColor.C33()
         labelNewest.font = UIFont(name: "HelveticaNeue-Light", size: 16)
         labelNewest.text = "最新"
+        labelNewest.backgroundColor = UIColor.whiteColor()
         tableViewHot.addSubview(labelNewest)
         
         // 热门添加分割线
@@ -58,11 +60,13 @@ extension ExploreViewController {
         imageMoreEditor.image = UIImage(named: "discover_more_48")
         imageMoreEditor.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEditor"))
         imageMoreEditor.userInteractionEnabled = true
+        imageMoreEditor.backgroundColor = UIColor.whiteColor()
         tableViewHot.addSubview(imageMoreEditor)
         let imageMoreNewest = UIImageView(frame: CGRectMake(globalWidth - 48 - 16, 8 + SIZE_EDITOR_TOTAL, 48, 48))
         imageMoreNewest.image = UIImage(named: "discover_more_48")
         imageMoreNewest.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNewest"))
         imageMoreNewest.userInteractionEnabled = true
+        imageMoreNewest.backgroundColor = UIColor.whiteColor()
         tableViewHot.addSubview(imageMoreNewest)
         
         // 推荐
