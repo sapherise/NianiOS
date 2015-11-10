@@ -54,6 +54,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     var navView: UIImageView!
     var isBan: Int = 0
     
+    var willReload = false
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
@@ -275,7 +277,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     
     func SALoadDataStep(isClear: Bool = true) {
         if isClear {
-            self.tableViewStep.clearVisibleCell()
+            willReload = true
             self.tableViewStep.setFooterHidden(false)
             self.pageStep = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
@@ -286,6 +288,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             v.addSubview(activity)
             activity.center = CGPointMake(v.center.x, v.center.y + 30)
             self.tableViewStep.tableFooterView = v
+        } else {
+            willReload = false
         }
         Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
@@ -344,7 +348,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 c!._layoutSubviews()
                 return c!
             }else{
-                return getCell(indexPath, dataArray: dataArrayStep)
+                return getCell(indexPath, dataArray: dataArrayStep, type: 0, willReload: willReload)
             }
         }
 

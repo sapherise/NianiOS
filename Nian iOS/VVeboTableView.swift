@@ -66,8 +66,8 @@ class VVeboTableView: UITableView {
         cell.selectionStyle = .None
         // 复用时，清除原有内容
         if cell.num != indexPath.row {
-            cell.clear()
             cell.num = indexPath.row
+            cell.clear()
         }
         cell.data = data
         
@@ -124,10 +124,13 @@ class VVeboTableView: UITableView {
     }
     
     // 不要直接用于 cellfor，因为这个函数里没有 delegate
-    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int) -> VVeboCell {
+    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int, willReload: Bool = false) -> VVeboCell {
         var c = self.dequeueReusableCellWithIdentifier("VVeboCell") as? VVeboCell
         if c == nil {
             c = VVeboCell.init(style: .Default, reuseIdentifier: "VVeboCell")
+        }
+        if willReload {
+            c?.num = -1
         }
         c?.type = type
         drawCell(c!, indexPath: indexPath, dataArray: dataArray)

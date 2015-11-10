@@ -183,6 +183,8 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         
         return topicTableView
     }()
+    
+    var willReload = false
 
     // MARK: - View Controller 的生命周期和 View 的颜色、位置的控制
     
@@ -636,8 +638,10 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             json in
             if json != nil {
                 if clear {
-                    self.stepTableView.clearVisibleCell()
+                    self.willReload = true
                     self.dataArrayStep.removeAllObjects()
+                } else {
+                    self.willReload = false
                 }
                 let data: AnyObject? = json!.objectForKey("data")
                 let itemsStep = data?.objectForKey("steps") as? NSArray
@@ -737,7 +741,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             
             return cell!
         case 2:
-            return getCell(indexPath, dataArray: dataArrayStep)
+            return getCell(indexPath, dataArray: dataArrayStep, type: 0, willReload: willReload)
         case 3:
             let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  
             cell.delegate = self

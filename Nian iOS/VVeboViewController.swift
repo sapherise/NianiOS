@@ -75,8 +75,8 @@ class VVeboViewController: UIViewController, delegateSAStepCell, UIScrollViewDel
     }
     
     // 获得 cell
-    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int = 0) -> VVeboCell {
-        let c = currenTableView!.getCell(indexPath, dataArray: dataArray, type: type)
+    func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int = 0, willReload: Bool = false) -> VVeboCell {
+        let c = currenTableView!.getCell(indexPath, dataArray: dataArray, type: type, willReload: willReload)
         c.delegate = self
         return c
     }

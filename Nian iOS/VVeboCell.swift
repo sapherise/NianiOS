@@ -178,8 +178,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         if drawed {
             return
         }
-        let flag = drawColorFlag
         drawed = true
+        let flag = drawColorFlag
         go {
             let heightCell = self.data["heightCell"] as! CGFloat
             let rect = CGRectMake(0, 0, globalWidth, heightCell + 1)

@@ -15,6 +15,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     var Id:String = "1"
     var navView:UIView!
     var name: String?   // 从消息进入后自动@
+    var willReload = false
     
     //editStepdelegate
     var editStepRow:Int = 0
@@ -62,7 +63,6 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func SAReloadData(){
         Api.getSingleStep(self.Id) { json in
             if json != nil {
-                self.tableView.clearVisibleCell()
                 self.dataArray.removeAllObjects()
                 let data = json!.objectForKey("data") as! NSDictionary
                 let hidden = data.stringAttributeForKey("hidden")
@@ -86,7 +86,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let c = getCell(indexPath, dataArray: dataArray, type: 1)
+        let c = getCell(indexPath, dataArray: dataArray, type: 1, willReload: willReload)
         (c as VVeboCell).labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
         return c
     }
