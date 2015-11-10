@@ -131,10 +131,10 @@ extension ExploreViewController {
             if json != nil {
                 globalTabhasLoaded[0] = true
                 if clear {
-                    self.willReload = true
+                    globalVVeboReload = true
                     self.dataArray.removeAllObjects()
                 } else {
-                    self.willReload = false
+                    globalVVeboReload = false
                 }
                 let data: AnyObject? = json!.objectForKey("data")
                 let items = data!.objectForKey("items") as! NSArray
@@ -170,10 +170,10 @@ extension ExploreViewController {
                 let items = data!.objectForKey("items") as! NSArray
                 if items.count != 0 {
                     if clear {
-                        self.willReloadDynamic = true
+                        globalVVeboReload = true
                         self.dataArrayDynamic.removeAllObjects()
                     } else {
-                        self.willReloadDynamic = false
+                        globalVVeboReload = false
                     }
                     for item in items {
                         let data = VVeboCell.SACellDataRecode(item as! NSDictionary)

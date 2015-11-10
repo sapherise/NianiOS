@@ -31,9 +31,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     var dataArrayEditor = NSMutableArray()
     var dataArrayNewest = NSMutableArray()
     
-    var willReload = false
-    var willReloadDynamic = false
-    
     var current = -1
     var page = 1
     var pageDynamic = 1
@@ -78,7 +75,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                 return c
             } else {
 //                return getCell(indexPath, dataArray: d, type: 2)
-                return getCell(indexPath, dataArray: d, type: 2, willReload: willReloadDynamic)
+                return getCell(indexPath, dataArray: d, type: 2)
             }
         } else if tableView == self.tableViewHot {
             let c = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
@@ -111,7 +108,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
             return c!
         }
-        return getCell(indexPath, dataArray: d, type: 0, willReload: willReload)
+        return getCell(indexPath, dataArray: d, type: 0)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

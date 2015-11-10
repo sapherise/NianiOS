@@ -40,6 +40,9 @@ var globalhasLaunched: Int = 0
 var globalTabhasLoaded = [false, false, false]
 var globalReachability = ""
 
+// 定义是否加载时清除已有 cell
+var globalVVeboReload = false
+
 let globalWidth = UIScreen.mainScreen().bounds.width
 let globalHeight = UIScreen.mainScreen().bounds.height
 let globalScale = UIScreen.mainScreen().scale

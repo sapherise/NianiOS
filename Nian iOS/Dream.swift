@@ -15,7 +15,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var deleteDreamSheet:UIActionSheet?
     var navView:UIView!
     var viewCoin: Popup!
-    var willReload = false
     
     //editStepdelegate
     var editStepRow:Int = 0
@@ -97,12 +96,12 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     if clear {
                         self.dataArrayTop = data!.objectForKey("dream") as! NSDictionary
                         self.dataArray.removeAllObjects()
-                        self.willReload = true
+                        globalVVeboReload = true
                         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
                         btnMore.image = UIImage(named: "more")
                         self.navigationItem.rightBarButtonItems = [btnMore]
                     } else {
-                        self.willReload = false
+                        globalVVeboReload = false
                     }
                     let steps = data!.objectForKey("steps") as! NSArray
                     for d in steps {
@@ -230,7 +229,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             return c
         } else {
 //            return getCell(indexPath, dataArray: dataArray, type: 1)
-            return getCell(indexPath, dataArray: dataArray, type: 1, willReload: willReload)
+            return getCell(indexPath, dataArray: dataArray, type: 1)
         }
     }
     
@@ -297,7 +296,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             mutableData.setValue("\(step + 1)", forKey: "step")
             dataArrayTop = mutableData
             dataArray.insertObject(data, atIndex: 0)
-            willReload = true
+            globalVVeboReload = true
             SATableView.reloadData()
         }
     }
