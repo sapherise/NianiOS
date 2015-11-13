@@ -26,7 +26,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var imageBadge: SABadgeView!
     @IBOutlet var viewHolderHead: UIView!
     @IBOutlet var imageSettings: UIImageView!
-    @IBOutlet var activity: UIActivityIndicatorView!
+//    @IBOutlet var activity: UIActivityIndicatorView!
+    @IBOutlet weak var dynamicSummary: UIButton!
+    
     var currentCell:Int = 0
     var lastPoint:CGPoint!
     var dataArray = NSMutableArray()
@@ -68,8 +70,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.coinButton.frame.origin.x = globalWidth/2-104
         self.levelButton.frame.origin.x = globalWidth/2-104+108
         
-        self.activity.setX(globalWidth - 32)
-        self.activity.hidden = true
+//        self.activity.setX(globalWidth - 32)
+//        self.activity.hidden = true
+        self.dynamicSummary.setX(globalWidth - 44)
         
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
@@ -393,11 +396,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             reloadFromDataArray()
         }
         
-        activity.hidden = false
-        activity.startAnimating()
+//        activity.hidden = false
+//        activity.startAnimating()
         Api.getNian() { json in
             if json != nil {
-                self.activity.hidden = true
+//                self.activity.hidden = true
                 let arr = json!.objectForKey("items") as! NSArray
                 let mutableArray = NSMutableArray()
                 for data : AnyObject  in arr {

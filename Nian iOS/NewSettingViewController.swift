@@ -15,7 +15,7 @@ import QuartzCore
 }
 
 
-class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
+class NewSettingViewController: AccountBaseViewController, UpdateUserDictDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -86,7 +86,8 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self._setTitle("设置")
+        self.setNavBar()
+        self.setNavTitle("设置")
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
         

@@ -58,56 +58,56 @@ struct V {
     typealias JsonCallback = AnyObject? -> Void
     
     static func httpGetForJson(requestURL: String, callback: JsonCallback) {
-        let manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.GET(requestURL,
             parameters: nil,
-            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) in
+            success: {(op, obj) in
                 callback(obj)
             },
-            failure: {(op: AFHTTPRequestOperation!, error: NSError!) in
+            failure: {(op, error) in
                 logError("AFN get error: \(error.localizedDescription)")
         })
     }
     
     static func httpPostForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
-        let manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.POST(requestURL,
             parameters: content,
-            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+            success: {(op, obj) -> Void in
                 callback(obj)
         },
-            failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: {(op, error) -> Void in
                 logError("AFN post error: \(error.localizedDescription)")
         })
     }
     
     static func httpPutForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
-        let manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.PUT(requestURL,
             parameters: content,
-            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+            success: {(op, obj) -> Void in
                 callback(obj)
             },
-            failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: {(op, error) -> Void in
         })
     }
     
     static func httpDeleteForJson_AFN(requestURL: String, content: AnyObject, callback: JsonCallback) {
-        let manager = AFHTTPRequestOperationManager()
+        let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
         manager.DELETE(requestURL,
             parameters: content,
-            success: {(op: AFHTTPRequestOperation!, obj: AnyObject!) -> Void in
+            success: {(op, obj) -> Void in
                 callback(obj)
             },
-            failure: {(op: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: {(op, error) -> Void in
         })
     }
     

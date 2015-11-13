@@ -28,7 +28,7 @@ enum ModeType: Int {
 }
 
 
-class BindEmailViewController: UIViewController {
+class BindEmailViewController: AccountBaseViewController {
 
     @IBOutlet weak var cancelButton: UIButton!
     
@@ -147,42 +147,32 @@ class BindEmailViewController: UIViewController {
         
         if self.modeType == .bind {
             if self.bindFuntionType == .confirm {
-                if let _text = self.emailTextField.text {
-                    if _text.isValidEmail() {
+                if self.validateEmailFromTextField(self.emailTextField.text) {
                         
-                        self.confirmButton.startAnimating()
+                    self.confirmButton.startAnimating()
                         
-                        LogOrRegModel.checkEmailValidation(email: _text, callback: {
-                            (task, responseObject, error) in
+                    LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!, callback: {
+                        (task, responseObject, error) in
+                        
+                        self.confirmButton.stopAnimating()
+                        
+                        if let _ = error {
+                            self.view.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            let json = JSON(responseObject!)
                             
-                            self.confirmButton.stopAnimating()
-                            
-                            if let _ = error {
-                                self.view.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                let json = JSON(responseObject!)
-                                
-                                if json["data"] == "0" {
-                                    self.handleBindEmail()
-                                } else if json["data"] == "1" {
-                                    self.view.showTipText("邮箱已被注册...", delay: 2)
-                                    self.bindFuntionType = .confirm
-                                }
+                            if json["data"] == "0" {
+                                self.handleBindEmail()
+                            } else if json["data"] == "1" {
+                                self.view.showTipText("邮箱已被注册...", delay: 2)
+                                self.bindFuntionType = .confirm
                             }
-                        })
+                        }
+                    })
 
-                    } else {
-                        self.view.showTipText("不是地球上的邮箱...")
-                    }
-                } else {
-                    self.view.showTipText("绑定邮箱不能为空...")
                 }
             } else if self.bindFuntionType == .finish {
-                if let _pwdText = self.passwordTextField.text {
-                    if _pwdText.characters.count < 4 {
-                        self.view.showTipText("密码至少 4 个字符", delay: 1)
-                        return
-                    }
+                if self.validatePasswordFromTextField(self.passwordTextField.text) {
                     
                     let _email = self.emailTextField.text!
                     let _password = ("n*A\(self.passwordTextField.text!)").md5
@@ -217,11 +207,7 @@ class BindEmailViewController: UIViewController {
                 }
             }
         } else if self.modeType == .modify {
-            if let _pwd = self.passwordTextField.text {
-                if _pwd.characters.count < 4 {
-                    self.view.showTipText("密码至少 4 个字符", delay: 1)
-                    return
-                }
+            if self.validatePasswordFromTextField(self.passwordTextField.text) {
                 
                 let _password = "n*A\(self.passwordTextField.text!)"
                 self.confirmButton.startAnimating()

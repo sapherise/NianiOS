@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WelcomeViewController: UIViewController {
+class WelcomeViewController: AccountBaseViewController {
     /// 传递型参数，参考 HomeViewController 里的 shouldNavToMe
     var shouldNavToMe: Bool = false
     /// 如果读取到得 User 的 uid 和 shell 来自 NSUserdefault， 那么就要更新 Keychain
@@ -301,8 +301,7 @@ extension WelcomeViewController {
                     } else {
                         let json = JSON(responseObject!)
                         
-                        if let errcode = json["errcode"].number {
-                            logError("\(errcode)")
+                        if let _ = json["errcode"].number {
                             self.view.showTipText("微信授权不成功...")
                         } else {
                             let _name = json["nickname"].stringValue
@@ -323,25 +322,25 @@ extension WelcomeViewController {
     
     
     func logInVia3rdHelper(id: String, nameFrom3rd: String, type: String) {
-        // TODO: start animating
+        
+        self.startAnimating()
         
         LogOrRegModel.check3rdOauth(id, type: type) {
             (task, responseObject, error) in
             
-            //TODO: stop animating
+            let (json, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
             
-            if let _ = error {
-                self.view.showTipText("网络有点问题，等一会儿再试")
+            if let _ = errorResult {
             } else {
-                let json = JSON(responseObject!)
-                
-                if json["data"] == "0" {
+                if json!["data"] == "0" {
                     self.hasRegistered = false
-                } else if json["data"] == "1" {
+                } else if json!["data"] == "1" {
                     self.hasRegistered = true
                 }
                 
                 if self.hasRegistered == false {
+                    self.stopAnimating()
+                    
                     self.thirdPartyID = id
                     self.thirdPartyType = type
                     self.thirdPartyName = nameFrom3rd
@@ -350,42 +349,40 @@ extension WelcomeViewController {
                     LogOrRegModel.logInVia3rd(id, type: type) {
                         (task, responseObject, error) in
                         
-                        if let _ = error {
+                        self.stopAnimating()
+                        
+                        let (_json, _errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
+                        
+                        if let _ = _errorResult {
                             self.view.showTipText("网络有点问题，等一会儿再试")
                         } else {
-                            let json = JSON(responseObject!)
+                            let shell = _json!["data"]["shell"].stringValue
+                            let uid = _json!["data"]["uid"].stringValue
                             
-                            if json["error"] != 0 {
-                                self.view.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                let shell = json["data"]["shell"].stringValue
-                                let uid = json["data"]["uid"].stringValue
-                                
-                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                                uidKey.setObject(uid, forKey: kSecAttrAccount)
-                                uidKey.setObject(shell, forKey: kSecValueData)
-                                
-                                // TODO: need verify
-                                CurrentUser.sharedCurrentUser.uid = uid
-                                CurrentUser.sharedCurrentUser.shell = shell
-                                
-                                Api.requestLoad()
-                                globalWillReEnter = 1
-                                let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                                let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                                navigationViewController.navigationBar.translucent = true
-                                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                navigationViewController.navigationBar.clipsToBounds = true
-                                
-                                self.presentViewController(navigationViewController, animated: true, completion: nil)
-                                
-                                Api.postJpushBinding(){_ in }
-                                
-                            }  // if json["error"] != 0
-                        } // if let _error = error
+                            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                            uidKey.setObject(uid, forKey: kSecAttrAccount)
+                            uidKey.setObject(shell, forKey: kSecValueData)
+                            
+                            // TODO: need verify
+                            CurrentUser.sharedCurrentUser.uid = uid
+                            CurrentUser.sharedCurrentUser.shell = shell
+                            
+                            Api.requestLoad()
+                            globalWillReEnter = 1
+                            let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                            let navigationViewController = UINavigationController(rootViewController: mainViewController)
+                            navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                            navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                            navigationViewController.navigationBar.translucent = true
+                            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                            navigationViewController.navigationBar.clipsToBounds = true
+                            
+                            self.presentViewController(navigationViewController, animated: true, completion: nil)
+                            
+                            Api.postJpushBinding(){_ in }
+                            
+                        } // if let _ = _errorResult
                         
                     } // LogOrRegModel.logInVia3rd(id, type: type)
                     

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PatternViewController: UIViewController {
+class PatternViewController: AccountBaseViewController {
     
     /// "模式"选中时的颜色
     let c5Color = UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1.0)
@@ -58,21 +58,17 @@ class PatternViewController: UIViewController {
     */
     func setPlayMode(mode: PlayMode) {
         if mode == PlayMode.easy {
-            //        self.toughImageView.image = UIImage(named: "xxx")
             self.simpleLabel.textColor = c5Color
             self.simpleIllustate.textColor = c5Color
             
-            //        self.simpleImageView.image = UIImage(named: "zzz")
             self.toughLabel.textColor = c7Color
             self.toughIllustrate.textColor = c7Color
             
             self.playMode = PlayMode.easy
         } else {
-            //        self.toughImageView.image = UIImage(named: "xxx")
             self.simpleLabel.textColor = c7Color
             self.simpleIllustate.textColor = c7Color
             
-            //        self.simpleImageView.image = UIImage(named: "zzz")
             self.toughLabel.textColor = c5Color
             self.toughIllustrate.textColor = c5Color
             
@@ -121,29 +117,15 @@ class PatternViewController: UIViewController {
                         self.dismissViewControllerAnimated(true, completion: nil)
                         
                     } else if json["error"] == 0 { // 服务器返回正常，注册成功
-                        let shell = json["data"]["shell"].stringValue
-                        let uid = json["data"]["uid"].stringValue
-                        
-                        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                        uidKey.setObject(uid, forKey: kSecAttrAccount)
-                        uidKey.setObject(shell, forKey: kSecValueData)
-                        
-                        Api.requestLoad()
+                        NSUserDefaults.standardUserDefaults().setObject(self.regInfo!.nickname!, forKey: "user")
+                        NSUserDefaults.standardUserDefaults().synchronize()
                         
                         // 注册后一天提供推送，形成第一天习惯
                         thepush("Mua!", dateSinceNow: 60 * 60 * 24, willReapt: false, id: "signup")
+                      
+                        self.presentViewController(self.enterHome(json), animated: true, completion: nil)
                         
-                        let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                        let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                        navigationViewController.navigationBar.translucent = true
-                        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                        navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                        navigationViewController.navigationBar.clipsToBounds = true
-                        self.presentViewController(navigationViewController, animated: true, completion: nil)
-                        
-                        Api.postJpushBinding() {_ in }
+                        globalWillReEnter = 0  // ????? <-  这是什么鬼参数
                     }
                     
                 }
@@ -151,17 +133,4 @@ class PatternViewController: UIViewController {
         }
         
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
