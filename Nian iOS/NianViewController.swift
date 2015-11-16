@@ -73,6 +73,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //        self.activity.setX(globalWidth - 32)
 //        self.activity.hidden = true
         self.dynamicSummary.setX(globalWidth - 44)
+        self.dynamicSummary.addTarget(self, action: "toActivitiesSummary:", forControlEvents: .TouchUpInside)
         
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
@@ -340,6 +341,16 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         vc.delegate = self
         
         self.navigationController!.pushViewController(vc, animated: true)
+    }
+    
+    /**
+     进入汇总页
+     */
+    func toActivitiesSummary(sender: UIButton) {
+        let storyBoard = UIStoryboard(name: "ActivitiesSummary", bundle: nil)
+        let activitiesSummaryVC = storyBoard.instantiateViewControllerWithIdentifier("ActivitiesViewController")
+        
+        self.navigationController?.pushViewController(activitiesSummaryVC, animated: true)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

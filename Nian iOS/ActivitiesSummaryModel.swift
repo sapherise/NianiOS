@@ -8,27 +8,39 @@
 
 import UIKit
 
-enum Result <T, O, E> {
-    case success(T, O)
-    case failure(T, E)
-}
 
 class ActivitiesSummaryModel: NSObject {
     
-    let manager = AFHTTPSessionManager()
     
     override init() {
         super.init()
         
-        manager.responseSerializer = AFJSONResponseSerializer()
+    }
+   
+    /**
+     <#Description#>
+     */
+    class func getMyAcitiviesSummary(callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.get(
+            "user/\(CurrentUser.sharedCurrentUser.uid!)/summary?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+            callback: callback)
     }
     
-    func getMyAcitiviesSummary<T, O, E>(callback: (task: T, responseObject: O, error: E)) {
-
-        
-        
-        
+    /**
+     <#Description#>
+     */
+    class func getMyLikeNote(page page: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.get(
+            "user/\(CurrentUser.sharedCurrentUser.uid!)/like/dreams/?page=\(page)&&uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+            callback: callback)
     }
+    
+    
+    
+    
+    
+    
+    
     
     
     

@@ -253,6 +253,8 @@
 		C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */; };
 		C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */; };
 		C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */; };
+		C4E1DCD31BF992E2008896AB /* MyLikeNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E1DCD21BF992E2008896AB /* MyLikeNoteViewController.swift */; };
+		C4E1DCD51BF9DE87008896AB /* MyActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E1DCD41BF9DE87008896AB /* MyActivitiesViewController.swift */; };
 		C4E966D41BE4B67900F31EBF /* AccountBindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */; };
 		C4E966D61BE4B83300F31EBF /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */; };
 		C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */; };
@@ -558,6 +560,8 @@
 		C4CDB41F1AF8C79900936E03 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		C4DC18DB1B86C3E100042EE4 /* ExploreMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMoreCell.xib; sourceTree = "<group>"; };
 		C4DC18DD1B86C5CD00042EE4 /* ExploreMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMoreCell.swift; sourceTree = "<group>"; };
+		C4E1DCD21BF992E2008896AB /* MyLikeNoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLikeNoteViewController.swift; sourceTree = "<group>"; };
+		C4E1DCD41BF9DE87008896AB /* MyActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyActivitiesViewController.swift; sourceTree = "<group>"; };
 		C4E966D31BE4B67900F31EBF /* AccountBindViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountBindViewController.swift; sourceTree = "<group>"; };
 		C4E966D51BE4B83300F31EBF /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		C4F6D7741B5DFCC30033671D /* UIImage+Grayscale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Grayscale.h"; sourceTree = "<group>"; };
@@ -1392,6 +1396,8 @@
 			isa = PBXGroup;
 			children = (
 				C486BDE71BF46ABD00EF1C2A /* ActivitiesSummary.storyboard */,
+				C4E1DCD21BF992E2008896AB /* MyLikeNoteViewController.swift */,
+				C4E1DCD41BF9DE87008896AB /* MyActivitiesViewController.swift */,
 				C486BDE91BF477E800EF1C2A /* ActivitiesViewController.swift */,
 				C486BDEB1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift */,
 			);
@@ -1735,6 +1741,7 @@
 				1285FDC81BCFC69F00F52DB8 /* size.swift in Sources */,
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
 				12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */,
+				C4E1DCD31BF992E2008896AB /* MyLikeNoteViewController.swift in Sources */,
 				120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				C4CA84D41BD8C7B00075B075 /* SwiftyJSON.swift in Sources */,
@@ -1769,6 +1776,7 @@
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
 				C486BDF01BF49A9200EF1C2A /* AccountBaseViewController.swift in Sources */,
 				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
+				C4E1DCD51BF9DE87008896AB /* MyActivitiesViewController.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */,
 				C4B6AECA1BEB9C3D0064486B /* BindEmailViewController.swift in Sources */,
