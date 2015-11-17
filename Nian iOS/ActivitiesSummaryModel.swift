@@ -35,9 +35,12 @@ class ActivitiesSummaryModel: NSObject {
             callback: callback)
     }
     
-    
-    
-    
+    /**
+     <#Description#>
+     */
+    class func getMyActitvity(url url: String, callback: NetworkClosure) {
+        NianNetworkClient.sharedNianNetworkClient.get(url, callback: callback)
+    }
     
     
     

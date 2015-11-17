@@ -74,7 +74,39 @@ class SAViewController: UIViewController {
     func stopAnimating() {
         _containView?.removeFromSuperview()
     }
-
+    
+    func handleBaseJsonWithError(error: NSError?, id: AnyObject?) -> JSON? {
+        
+        if let _error = error {
+            #if DEBUG
+                logError("\(_error.localizedDescription)")
+            #else
+                self.view.showTipText("网络有点问题，等一会儿再试")
+            #endif
+            
+            return nil
+        }
+        
+        let json = JSON(id!)
+        
+        if json["error"] != 0 {
+            #if DEBUG
+                let msg = json["message"].string
+                logError("\(msg)")
+            #else
+                
+            #endif
+            
+            return nil
+        }
+        
+        return json
+    }
+    
+    
+    
+    
+    
     
 }
 

@@ -238,6 +238,7 @@
 		C4AFF0451B0F2BCD00321479 /* TITokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFF0441B0F2BCD00321479 /* TITokenField.m */; };
 		C4B6AEC81BEB9B310064486B /* BindEmailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B6AEC71BEB9B310064486B /* BindEmailView.xib */; };
 		C4B6AECA1BEB9C3D0064486B /* BindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B6AEC91BEB9C3D0064486B /* BindEmailViewController.swift */; };
+		C4B879A11BFB3E85004B0C0D /* ResponsedTopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */; };
 		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
 		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
@@ -544,6 +545,7 @@
 		C4AFF0441B0F2BCD00321479 /* TITokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TITokenField.m; sourceTree = "<group>"; };
 		C4B6AEC71BEB9B310064486B /* BindEmailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BindEmailView.xib; sourceTree = "<group>"; };
 		C4B6AEC91BEB9C3D0064486B /* BindEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindEmailViewController.swift; sourceTree = "<group>"; };
+		C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsedTopicCell.swift; sourceTree = "<group>"; };
 		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
 		C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
@@ -1400,6 +1402,7 @@
 				C4E1DCD41BF9DE87008896AB /* MyActivitiesViewController.swift */,
 				C486BDE91BF477E800EF1C2A /* ActivitiesViewController.swift */,
 				C486BDEB1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift */,
+				C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */,
 			);
 			name = ActivitiesSummary;
 			sourceTree = "<group>";
@@ -1755,6 +1758,7 @@
 				129A76611B8DC92E00EC5A19 /* Home + News.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
+				C4B879A11BFB3E85004B0C0D /* ResponsedTopicCell.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,

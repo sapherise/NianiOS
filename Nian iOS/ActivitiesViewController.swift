@@ -29,12 +29,15 @@ class ActivitiesViewController: SAViewController {
     @IBOutlet weak var sp7HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sp8HeightConstraint: NSLayoutConstraint!
     
+    var tmpType: ActivityType?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self._setTitle("我的动态")
         self.setSeperateViewHeight()
+        self.view.backgroundColor = UIColor.colorWithHex("#F5F5F5")
         
         self.startAnimating()
         
@@ -78,11 +81,9 @@ class ActivitiesViewController: SAViewController {
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "toTableView" {
+            let myActivitiesVC = segue.destinationViewController as! MyActivitiesViewController
+            myActivitiesVC.tmpType = self.tmpType
             
-            
-        } else if segue.identifier == "toCollectionView" {
-        
-        
         }
     }
 
@@ -95,6 +96,7 @@ extension ActivitiesViewController {
      <#Description#>
      */
     @IBAction func tapOnMyStep(sender: UITapGestureRecognizer) {
+        self.tmpType = .myStep
         self.performSegueWithIdentifier("toTableView", sender: nil)
     }
 
@@ -102,6 +104,7 @@ extension ActivitiesViewController {
      <#Description#>
      */
     @IBAction func tapOnGoodStep(sender: UITapGestureRecognizer) {
+        self.tmpType = .myLikeStep
         self.performSegueWithIdentifier("toTableView", sender: nil)
     }
 
@@ -116,6 +119,7 @@ extension ActivitiesViewController {
      <#Description#>
      */
     @IBAction func tapOnMyTopic(sender: UITapGestureRecognizer) {
+        self.tmpType = .myTopic
         self.performSegueWithIdentifier("toTableView", sender: nil)
     }
 
@@ -123,6 +127,7 @@ extension ActivitiesViewController {
      <#Description#>
      */
     @IBAction func tapOnMyResponse(sender: UITapGestureRecognizer) {
+        self.tmpType = .myResponsedTopic
         self.performSegueWithIdentifier("toTableView", sender: nil)
     }
 
