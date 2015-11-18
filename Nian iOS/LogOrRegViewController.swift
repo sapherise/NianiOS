@@ -59,7 +59,7 @@ class LogOrRegViewController: AccountBaseViewController {
             switch functionalType! {
             case .confirm:
                 self.functionalButton?.setTitle("确定", forState: .Normal)
-                self.descriptionLabel.hidden = false
+                self.descriptionLabel?.hidden = false
             case .logIn:
                 self.functionalButton.setTitle("登录", forState: .Normal)
                 self.descriptionLabel.hidden = true

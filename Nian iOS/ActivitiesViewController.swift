@@ -137,16 +137,14 @@ extension ActivitiesViewController {
 extension ActivitiesViewController {
     
     func setSeperateViewHeight() {
-        let SINGLE_POINT_HEIGHT = 1 / UIScreen.mainScreen().scale
-    
-        sp1HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp2HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp3HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp4HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp5HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp6HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp7HeightConstraint.constant = SINGLE_POINT_HEIGHT
-        sp8HeightConstraint.constant = SINGLE_POINT_HEIGHT
+        sp1HeightConstraint.constant = globalHalf   
+        sp2HeightConstraint.constant = globalHalf
+        sp3HeightConstraint.constant = globalHalf
+        sp4HeightConstraint.constant = globalHalf
+        sp5HeightConstraint.constant = globalHalf
+        sp6HeightConstraint.constant = globalHalf
+        sp7HeightConstraint.constant = globalHalf
+        sp8HeightConstraint.constant = globalHalf
     }
 }
 

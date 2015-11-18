@@ -157,11 +157,11 @@ extension MyActivitiesViewController: UITableViewDataSource, UITableViewDelegate
             return cell!
             
         case .myResponsedTopic:
-            let cell = self.topicTableView.dequeueReusableCellWithIdentifier("responsedTopicCell") as? RedditCell
-            cell?.index = indexPath.row
+            let cell = self.topicTableView.dequeueReusableCellWithIdentifier("responsedTopicCell") as? ResponsedTopicCell
             cell?.data = self.tableDataSource[indexPath.row] as! NSDictionary
+            cell?.setUpContent(self.tableDataSource[indexPath.row] as! NSDictionary)
             cell?.delegate = self
-            
+
             return cell!
 
         }
@@ -177,8 +177,6 @@ extension MyActivitiesViewController: UITableViewDataSource, UITableViewDelegate
             
             return self.tableView.getHeight(indexPath, dataArray: self.tableDataSource)
         case .myTopic:
-            fallthrough
-        case .myResponsedTopic:
             let data = self.tableDataSource[indexPath.row] as! NSDictionary
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode().toRedditReduce()
@@ -190,32 +188,31 @@ extension MyActivitiesViewController: UITableViewDataSource, UITableViewDelegate
             hContent = min(hContent, hContentMax)
             
             return hTitle + hContent + 99
+        case .myResponsedTopic:
+            let data = self.tableDataSource[indexPath.row] as! NSDictionary
+            let title = data.stringAttributeForKey("title").decode()
+            let content = data.stringAttributeForKey("content").decode().toRedditReduce()
+            var hTitle = title.stringHeightWith(16, width: globalWidth - 80)
+            var hContent = content.stringHeightWith(14, width: globalWidth - 80)
+
+            hTitle = min(hTitle, 39)
+            hContent = min(hContent, 34)
+            
+            return hTitle < 39 ? 173 : 193
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if currentTableIndex == 0 {
-            if self.activityType! == .myTopic {
-                let data = tableDataSource[indexPath.row] as! NSDictionary
-                let id = data.stringAttributeForKey("id")
-                let vc = TopicViewController()
-                vc.id = id
-                vc.index = indexPath.row
-                vc.delegate = self
-                vc.dataArrayTopLeft = NSMutableDictionary(dictionary: data)
-                self.navigationController?.pushViewController(vc, animated: true)
-                
-            } else if self.activityType! == .myResponsedTopic {
-                let data = tableDataSource[indexPath.row] as! NSDictionary
-                let id = data.stringAttributeForKey("id")
-                let vc = TopicViewController()
-                vc.id = id
-                vc.index = indexPath.row
-                vc.delegate = self
-                vc.dataArrayTopLeft = NSMutableDictionary(dictionary: data)
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
+            let data = tableDataSource[indexPath.row] as! NSDictionary
+            let id = data.stringAttributeForKey("id")
+            let vc = TopicViewController()
+            vc.id = id
+            vc.index = indexPath.row
+            vc.delegate = self
+            vc.dataArrayTopLeft = NSMutableDictionary(dictionary: data)
             
+            self.navigationController?.pushViewController(vc, animated: true)
         } else if currentTableIndex == 1 {
             let dreamVC = DreamViewController()
             let data = self.tableDataSource[indexPath.row] as! NSDictionary
