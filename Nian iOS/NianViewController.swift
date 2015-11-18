@@ -242,7 +242,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         let dream = data.stringAttributeForKey("dream")
                         let step = data.stringAttributeForKey("step")
                         let coverURL = data.stringAttributeForKey("cover")
-                        self.birthday = data.stringAttributeForKey("lastdate")
+                        self.birthday = V.relativeTime(data.stringAttributeForKey("lastdate"))
                         let petCount = data.stringAttributeForKey("pet_count")
                         let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                         let vip = data.stringAttributeForKey("vip")

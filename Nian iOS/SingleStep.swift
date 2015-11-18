@@ -62,7 +62,6 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func SAReloadData(){
         Api.getSingleStep(self.Id) { json in
             if json != nil {
-                self.tableView.clearVisibleCell()
                 self.dataArray.removeAllObjects()
                 let data = json!.objectForKey("data") as! NSDictionary
                 let hidden = data.stringAttributeForKey("hidden")

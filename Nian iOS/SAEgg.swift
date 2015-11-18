@@ -159,8 +159,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                         self.delegateShare?.saEgg?(self, lotteryResult: self.petData)
                     } else {
                         // 拥有这个宠物了，本地出现浮游生物
-                        // todo: 需要修改文案
-                        let arrayContent = ["哈哈1", "哈哈2", "哈哈3", "哈哈4", "哈哈5", "哈哈6", "哈哈7", "哈哈8", "哈哈9", "哈哈10", "哈哈11", "哈哈12", "哈哈13", "哈哈14", "哈哈15", "哈哈16"]
+                        let arrayContent = ["虽然没有抽到宠物\n但你抽到了一个抱抱","作为一个烧麦\n不知道被吃掉\n是幸运还是不幸呀","(・ω・) -__- )・∀・)\n好挤呀","今天我从天空飘着时\n看到地上有个\n可爱的女孩子在玩念","我们还会见面的！\n吖，别摔手机啊","作为一个医生\n我每天都被自己帅晕","打劫念币啦","谢谢你的念币\n终于凑够钱买别墅了","不好意思\n跑错片场了","谢谢你喂我\n我已经快十分钟没吃过东西了","是 你 在 召 唤 我 吗","同样是独角\n为什么它是传说中的宠物\n而我只能做美男子呢","你说你原本想抽的不是我？\n我的心碎了","如果看到一只拉风的炸鸡\n接下来一辈子都会交好运","我妈说花开的时候\n就会遇到真爱","每当有人对我说 \ngive me five 的时候\n我都既快乐又困扰"]
                         
                         // 当前版本的浮游生物总数量
                         let num = arrayContent.count
@@ -188,7 +187,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                         }
                         
                         self.planktonNiAlert.delegate = self
-                        self.planktonNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pet\(id)")!, "浮游生物", "「\(arrayContent[id - 1])」", ["拜拜"]],
+                        self.planktonNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pet\(id)")!, "浮游生物", "\(arrayContent[id - 1])", ["拜拜"]],
                             forKeys: ["img", "title", "content", "buttonArray"])
                         self.confirmNiAlert.dismissWithAnimationSwtich(self.planktonNiAlert)
                         Cookies.set("\(count)", forKey: "plankton")

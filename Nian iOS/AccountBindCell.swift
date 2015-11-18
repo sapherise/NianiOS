@@ -15,10 +15,6 @@ class AccountBindCell: UITableViewCell {
         // Initialization code
         
         self.contentView.bounds = UIScreen.mainScreen().bounds
-        let viewLine = UIView()
-        viewLine.frame = CGRectMake(16, 24 - globalHalf, globalWidth, globalHalf)
-        viewLine.backgroundColor = UIColor.e6()
-        self.addSubview(viewLine)
     }
     
     /**

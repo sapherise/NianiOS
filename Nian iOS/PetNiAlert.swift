@@ -201,6 +201,7 @@ extension PetViewController {
     }
     
     func onPlankton() {
-        // todo: 需要跳转
+        let vc = Plankton()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
