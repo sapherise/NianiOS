@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NicknameViewController: AccountBaseViewController {
+class NicknameViewController: UIViewController {
     
     @IBOutlet weak var nameTextfield: NITextfield!
     @IBOutlet weak var button: CustomButton!
@@ -87,61 +87,105 @@ extension NicknameViewController {
      <#Description#>
      */
     func handleConfirmRegister() {
-        
-        if self.validateNameFromTextField(nameTextfield.text) {
-
-            self.button.startAnimating()
+        if nameTextfield.text?.characters.count > 0 {
             
-            LogOrRegModel.checkNameAvailability(name: nameTextfield.text!, callback: {
-                (task, responseObject, error) -> Void in
-                
-                let (_, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
-                
-                if let _error = errorResult {
-                    self.button.stopAnimating()
-                    self.button.setTitle("确定", forState: .Normal)
-                    
-                    switch _error {
-                    case .resultError(_, _):
-                        self.view.showTipText("昵称被占用...")
-                    default:
-                        break
-                    }
-                } else {
-                    self.registerVia3rd()
-                }
-                
-            })
-        }
-        
-    }
-    
-    func registerVia3rd() {
-        LogOrRegModel.registerVia3rd(self.id, type: self.originalType, name: self.nameTextfield.text!, nameFrom3rd: self.nameFrom3rd) {
-            (task, responseObject, error) -> Void in
-            
-            self.button.stopAnimating()
-            self.button.setTitle("确定", forState: UIControlState.Normal)
-            
-            let (_json, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
-            
-            if let _ = errorResult {
-                self.view.showTipText("注册不成功...")
-            } else {
-                NSUserDefaults.standardUserDefaults().setObject(self.nameTextfield.text!, forKey: "user")
-                NSUserDefaults.standardUserDefaults().synchronize()
-
-                self.presentViewController(self.enterHome(_json!), animated: true, completion: {
-                    self.nameTextfield.text = ""
-                })
-                
-                Api.postJpushBinding(){_ in }
-                
+            if !self.validateNickname(nameTextfield.text!) {
+                return
             }
             
+            self.button.startAnimating()
+            
+            LogOrRegModel.checkNameAvailability(name: self.nameTextfield.text!) {
+                (task, responseObject, error) in
+                
+                if let _ = error {
+                    self.view.showTipText("网络有点问题，等一会儿再试")
+                } else {
+                    let json = JSON(responseObject!)
+                    
+                    if json["error"] != 0 {
+                        self.button.stopAnimating()
+                        self.button.setTitle("确定", forState: .Normal)
+                        
+                        self.view.showTipText("昵称被占用...", delay: 2)
+                        
+                    } else {
+                        /*=========================================================================================================================================*/
+                        
+                        LogOrRegModel.registerVia3rd(self.id, type: self.originalType, name: self.nameTextfield.text!, nameFrom3rd: self.nameFrom3rd) {
+                            (task, responseObject, error) in
+                            
+                            self.button.stopAnimating()
+                            self.button.setTitle("确定", forState: UIControlState.Normal)
+                            
+                            if let _ = error {
+                                self.view.showTipText("网络有点问题，等一会儿再试")
+                            } else {
+                                
+                                let json = JSON(responseObject!)
+                                
+                                if json["error"] != 0 {
+                                    self.view.showTipText("注册不成功...")
+                                } else {
+                                    let shell = json["data"]["shell"].stringValue
+                                    let uid = json["data"]["uid"].stringValue
+
+                                    /// uid 和 shell 保存到 keychain
+                                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                                    uidKey.setObject(uid, forKey: kSecAttrAccount)
+                                    uidKey.setObject(shell, forKey: kSecValueData)
+                                    
+                                    NSUserDefaults.standardUserDefaults().setObject(self.nameTextfield.text!, forKey: "user")
+                                    
+                                    Api.requestLoad()
+                                    globalWillReEnter = 1
+                                    let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                                    let navigationViewController = UINavigationController(rootViewController: mainViewController)
+                                    navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                                    navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                                    navigationViewController.navigationBar.translucent = true
+                                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                                    navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                                    navigationViewController.navigationBar.clipsToBounds = true
+                                    
+                                    self.presentViewController(navigationViewController, animated: true, completion: {
+                                        self.nameTextfield.text = ""
+                                    })
+                                    
+                                    Api.postJpushBinding(){_ in }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        } else {
+            
         }
     }
     
+    
+    /**
+     验证昵称是否符合要求
+     */
+    func validateNickname(name: String) -> Bool {
+        if name == "" {
+            self.view.showTipText("名字不能是空的...")
+            
+            return false
+        } else if name.characters.count < 2 {
+            self.view.showTipText("名字有点短...")
+            
+            return false
+        } else if !name.isValidName() {
+            self.view.showTipText("名字里有奇怪的字符...")
+            
+            return false
+        }
+        
+        return true
+    }
     
     
 }
