@@ -92,9 +92,7 @@ extension MyLikeNoteViewController: UICollectionViewDataSource, UICollectionView
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("noteCell", forIndexPath: indexPath) as! noteCell
         
-        logInfo("\(Float(UIDevice.currentDevice().systemVersion)!)")
-        
-        if Float(UIDevice.currentDevice().systemVersion)! < 8.0 {
+        if Float(UIDevice.currentDevice().systemVersion) < 8.0 {
             let _dataSource = self.collectionDataSource[indexPath.row] as! NSDictionary
             
             cell.noteImageView.setImage("http://img.nian.so/dream/\(_dataSource["img"] as! String)!dream", radius: 8.0)
