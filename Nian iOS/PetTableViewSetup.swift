@@ -117,10 +117,11 @@ extension PetViewController: NIAlertDelegate {
             labelLeft.text = "礼物：\(energy)"
             labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGift"))
             
-            if let plankton = Cookies.get("plankton") as? String {
-                labelRight.text = "浮游：\(plankton)"
-                labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPlankton"))
-            }
+            let _plankton = Cookies.get("plankton") as? String
+            let plankton = _plankton == nil ? "0" : _plankton!
+            labelRight.text = "浮游：\(plankton)"
+            labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPlankton"))
+            
             if owned == "1" {
                 imageView.setPet("http://img.nian.so/pets/\(image)!d")
             } else {

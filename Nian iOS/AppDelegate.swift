@@ -43,9 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
-        // todo: 把上面两个开起来
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
         /* 设置 DDlog */
         let formatter = Formatter()
@@ -104,9 +103,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         }
         
         /* 设置极光推送 */
-//        APService.registerDeviceToken(deviceToken)
-//        Api.postJpushBinding(){ _ in }
-        // todo: 把上面两个开起来
+        APService.registerDeviceToken(deviceToken)
+        Api.postJpushBinding(){ _ in }
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -130,7 +128,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             /*    */
             APService.handleRemoteNotification(userInfo)
             completionHandler(UIBackgroundFetchResult.NewData)
-            
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {

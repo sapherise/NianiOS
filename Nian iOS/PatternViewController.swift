@@ -51,6 +51,7 @@ class PatternViewController: AccountBaseViewController {
 
         // Do any additional setup after loading the view.
         self.playMode = .easy
+        setPlayMode(PlayMode.easy)
     }
 
     /**

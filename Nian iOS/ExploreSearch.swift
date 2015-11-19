@@ -636,8 +636,10 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             json in
             if json != nil {
                 if clear {
-                    self.stepTableView.clearVisibleCell()
+                    globalVVeboReload = true
                     self.dataArrayStep.removeAllObjects()
+                } else {
+                    globalVVeboReload = false
                 }
                 let data: AnyObject? = json!.objectForKey("data")
                 let itemsStep = data?.objectForKey("steps") as? NSArray
@@ -737,7 +739,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             
             return cell!
         case 2:
-            return getCell(indexPath, dataArray: dataArrayStep)
+            return getCell(indexPath, dataArray: dataArrayStep, type: 0)
         case 3:
             let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell  
             cell.delegate = self

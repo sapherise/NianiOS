@@ -66,9 +66,9 @@ class VVeboTableView: UITableView {
         let data = dataArray[indexPath.row] as! NSDictionary
         cell.selectionStyle = .None
         // 复用时，清除原有内容
-        if cell.num != indexPath.row {
-            cell.clear()
+        if cell.num != indexPath.row || globalVVeboReload {
             cell.num = indexPath.row
+            cell.clear()
         }
         cell.data = data
         

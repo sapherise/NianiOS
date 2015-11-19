@@ -56,16 +56,17 @@ class EditProfileViewController: AccountBaseViewController {
                                                         selector: "handleChooseGender:",
                                                         name: "tapOnGenderTextField",
                                                         object: nil)
-        
-        self.nameTextField.text = self.profileDict!["name"]
-        
-        if self.profileDict!["phone"] != "0" {
-            self.phoneTextField.text = self.profileDict!["phone"]
+        if self.profileDict != nil {
+            self.nameTextField.text = self.profileDict!["name"]
+            
+            if self.profileDict!["phone"] != "0" {
+                self.phoneTextField.text = self.profileDict!["phone"]
+            }
+            
+            self.genderTextField.text = self.profileDict!["gender"] == "0" ? "保密": self.profileDict!["gender"] == "1" ? "男" : "女"
+            self.setBarButton("保存", actionGesture: "saveProfileSetting:")
         }
         
-        self.genderTextField.text = self.profileDict!["gender"] == "0" ? "保密": self.profileDict!["gender"] == "1" ? "男" : "女"
-        
-        self.setBarButton("保存", actionGesture: "saveProfileSetting:")
 
     }
 

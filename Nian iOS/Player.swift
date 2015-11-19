@@ -275,7 +275,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     
     func SALoadDataStep(isClear: Bool = true) {
         if isClear {
-            self.tableViewStep.clearVisibleCell()
+            globalVVeboReload = true
             self.tableViewStep.setFooterHidden(false)
             self.pageStep = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
@@ -286,6 +286,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             v.addSubview(activity)
             activity.center = CGPointMake(v.center.x, v.center.y + 30)
             self.tableViewStep.tableFooterView = v
+        } else {
+            globalVVeboReload = false
         }
         Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
@@ -344,7 +346,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 c!._layoutSubviews()
                 return c!
             }else{
-                return getCell(indexPath, dataArray: dataArrayStep)
+                return getCell(indexPath, dataArray: dataArrayStep, type: 0)
             }
         }
 

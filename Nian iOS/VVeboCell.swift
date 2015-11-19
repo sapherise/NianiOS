@@ -59,6 +59,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
+//            btnLike.layer.shouldRasterize = true
             
             let uidlike = data.stringAttributeForKey("uidlike")
             if type == 2 {
@@ -74,6 +75,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
             } else {
                 btnLike.hidden = false
+//                btnLike.layer.shouldRasterize = true
             }
         }
     }
@@ -111,7 +113,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         
         // 头像
         imageHead = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING, SIZE_IMAGEHEAD_WIDTH, SIZE_IMAGEHEAD_WIDTH))
-        imageHead.backgroundColor = UIColor.redColor()
+        imageHead.backgroundColor = UIColor.whiteColor()
+        imageHead.layer.masksToBounds = true
         contentView.addSubview(imageHead)
         
         // 头像遮罩
@@ -131,6 +134,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         labelComment.textAlignment = .Center
         labelComment.textColor = UIColor.b3()
         labelComment.font = UIFont.systemFontOfSize(13)
+        labelComment.opaque = true
         contentView.addSubview(labelComment)
         
         // 赞
@@ -177,8 +181,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         if drawed {
             return
         }
-        let flag = drawColorFlag
         drawed = true
+        let flag = drawColorFlag
         go {
             let heightCell = self.data["heightCell"] as! CGFloat
             let rect = CGRectMake(0, 0, globalWidth, heightCell + 1)
@@ -228,6 +232,11 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         }
         drawText()
         drawThumb()
+        
+//        cell.layer.shouldRasterize = YES;
+//        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        contentView.layer.shouldRasterize = true
+        contentView.layer.rasterizationScale = globalScale
     }
     
     // 绑定事件
@@ -356,6 +365,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     }
     
     func onLikeClick() {
+        globalVVeboReload = false
         let isLiked = data.stringAttributeForKey("liked")
         if isLiked == "0" {
             // 点赞
@@ -444,6 +454,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         label = nil
         let heightContent = data["heightContent"] as! CGFloat
         label = VVeboLabel(frame: CGRectMake(20, 20, globalWidth - SIZE_PADDING * 2, heightContent))
+        label?.backgroundColor = UIColor.whiteColor()
         label?.text = data.stringAttributeForKey("content")
         
         // 网页跳转

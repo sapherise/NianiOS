@@ -74,6 +74,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                 c.data = data
                 return c
             } else {
+//                return getCell(indexPath, dataArray: d, type: 2)
                 return getCell(indexPath, dataArray: d, type: 2)
             }
         } else if tableView == self.tableViewHot {
@@ -107,7 +108,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
             return c!
         }
-        return getCell(indexPath, dataArray: d)
+        return getCell(indexPath, dataArray: d, type: 0)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -165,14 +165,14 @@ class NewSettingViewController: AccountBaseViewController, UpdateUserDictDelegat
         let versionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
         self.versionLabel.text = "\(versionString)"
         
-        self.startAnimating()
+        beginLoading()
         
         dailyModeSwitch.hidden = true
         
         SettingModel.getUserInfoAndSetting {
             (task, responseObject, error) in
             
-            self.stopAnimating()
+            self.endLoading()
             
             if let _ = error { // AFNetworking 返回的错误
                 self.view.showTipText("网络有点问题，只加载了本地设置")
@@ -230,6 +230,14 @@ class NewSettingViewController: AccountBaseViewController, UpdateUserDictDelegat
         if sender.state == UIGestureRecognizerState.Began {
             self.view.showTipText("念 爱 你")
         }
+    }
+    
+    func beginLoading() {
+        self.navigationItem.rightBarButtonItems = buttonArray()
+    }
+    
+    func endLoading() {
+        self.navigationItem.rightBarButtonItems = nil
     }
     
 }
@@ -408,9 +416,11 @@ extension NewSettingViewController {
      */
     @IBAction func editMyProfile(sender: UITapGestureRecognizer) {
         let editProfileVC = EditProfileViewController(nibName: "EditProfileView", bundle: nil)
-        editProfileVC.profileDict = ["name": self.userDict?["name"] as! String,
-                                     "phone": self.userDict?["phone"] as! String,
-                                     "gender": self.userDict?["gender"] as! String]
+        if self.userDict != nil {
+            editProfileVC.profileDict = ["name": self.userDict?["name"] as! String,
+                "phone": self.userDict?["phone"] as! String,
+                "gender": self.userDict?["gender"] as! String]
+        }
         
         
         editProfileVC.delegate = self
@@ -429,7 +439,6 @@ extension NewSettingViewController {
         if let _email = self.userDict!["email"] as? String {
             if _email != "0" {
                 accountBindVC.userEmail = _email
-                // todo: 在这里修改
             }
         }
         
@@ -521,8 +530,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
     func uploadImage(image: UIImage, type: String) {
         
         if type == "cover" {
-            
-            self.startAnimating()
+            beginLoading()
             
             let uy = UpYun()
             uy.successBlocker = ({ (data: AnyObject!) in
@@ -536,8 +544,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
                 
                 SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
                     (task, responseObject, error) in
-                    
-                    self.stopAnimating()
+                    self.endLoading()
                     
                     if let _ = error {
                         self.view.showTipText("上传不成功...", delay: 2)
@@ -552,19 +559,18 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             
             
             uy.failBlocker = ({ (error: NSError!) in
-                self.stopAnimating()
+                self.endLoading()
                 self.view.showTipText("上传不成功...", delay: 2)
             })
             
             uy.uploadImage(resizedImage(image, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
             
         } else if type == "avatar" {
-            
-            self.startAnimating()
+            beginLoading()
             
             let uy = UpYun()
             uy.successBlocker = ({ (data: AnyObject!) in
-                self.stopAnimating()
+                self.endLoading()
                 
                 self.avatarImageView.image = image
                 self.avatarImageModified = true
@@ -573,7 +579,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
                     img: image, width: 150)
             })
             uy.failBlocker = ({ (error: NSError!) in
-                self.stopAnimating()
+                self.endLoading()
                 self.view.showTipText("上传失败了...再试试", delay: 2)
             })
             
