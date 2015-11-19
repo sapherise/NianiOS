@@ -13,7 +13,7 @@ import UIKit
 }
 
 
-class EditProfileViewController: AccountBaseViewController {
+class EditProfileViewController: SAViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -47,9 +47,8 @@ class EditProfileViewController: AccountBaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-        self.setNavBar()
-        self.setNavTitle("编辑个人资料")
+
+        self._setTitle("编辑个人资料")
         self.settingSeperateHeight()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -72,6 +71,7 @@ class EditProfileViewController: AccountBaseViewController {
 
     @IBAction func dismissKeyboard(sender: UIControl) {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        
     }
 
     /**
@@ -137,7 +137,21 @@ extension EditProfileViewController: UITextFieldDelegate {
 
 
 extension EditProfileViewController {
+    /**
+     验证昵称是否符合要求
+     */
+    func validateNickname(name: String?) -> Bool {
+        if let _text = name {
+            if _text.characters.count >= 2 {
+                if _text.isValidName() {
+                    return true
+                }
+            }
+        }
 
+        return false
+    }
+    
     /**
      验证手机号是否正确
      */
@@ -166,12 +180,18 @@ extension EditProfileViewController {
         let previousName = self.profileDict!["name"]
         let _name = self.nameTextField.text!
         
-        if self.validateNameFromTextField(self.nameTextField.text) {
-            self.profileDict!["name"] = _name
+        if _name != "" {
+            if self.validateNickname(_name) {
+                self.profileDict!["name"] = _name
+            } else {
+                shouldReturn = false
+                self.view.showTipText("昵称里有奇怪的字符...", delay: 1)
+            }
         } else {
             shouldReturn = false
+            self.view.showTipText("昵称不能为空...")
         }
-
+        
         let previousPhone = self.profileDict!["phone"]
         let _phone = self.phoneTextField.text!
         
