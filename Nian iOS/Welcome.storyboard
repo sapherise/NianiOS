@@ -88,7 +88,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-le-DgG" userLabel="Container View">
                                 <rect key="frame" x="72" y="492" width="456" height="16"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="社交账号登录" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fmJ-qh-fSB">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="社交账号登录" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="fmJ-qh-fSB">
                                         <rect key="frame" x="198" y="0.0" width="60" height="16"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -284,7 +284,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kkc-ez-6hC">
                                 <rect key="frame" x="200" y="524" width="200" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账号即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfZ-gY-24m">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账号即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="sfZ-gY-24m">
                                         <rect key="frame" x="6" y="0.0" width="136" height="44"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -341,10 +341,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="0NW-Ie-K55"/>
-                                <exclude reference="oWV-bq-fEV"/>
                                 <exclude reference="Q4H-Cd-AyQ"/>
                                 <exclude reference="ia2-fY-5uy"/>
+                                <exclude reference="0NW-Ie-K55"/>
+                                <exclude reference="oWV-bq-fEV"/>
                                 <exclude reference="3vW-Dl-W2j"/>
                                 <exclude reference="gPx-jZ-d81"/>
                                 <exclude reference="KMi-7F-pSt"/>
@@ -387,7 +387,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="确认昵称" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wa7-x9-7fr">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="确认昵称" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="wa7-x9-7fr">
                                 <rect key="frame" x="24" y="84" width="552" height="21"/>
                                 <animations/>
                                 <constraints>
@@ -422,7 +422,6 @@
                                 </state>
                                 <connections>
                                     <action selector="confirmRegister:" destination="uAC-Da-Fmz" eventType="touchUpInside" id="OmR-xh-NPh"/>
-                                    <action selector="onFunctionalButton:" destination="PWr-CO-SWy" eventType="touchUpInside" id="Ti1-Fv-51o"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HSy-jB-431">
@@ -440,7 +439,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LOE-6I-7La">
                                 <rect key="frame" x="200" y="524" width="200" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账号即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KlS-3E-Tmn">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="创建账号即代表你同意" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="KlS-3E-Tmn">
                                         <rect key="frame" x="0.0" y="0.0" width="136" height="44"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -490,11 +489,11 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="jCu-ch-frz"/>
+                                <exclude reference="pAa-s9-Jql"/>
                                 <exclude reference="G3c-qK-2ak"/>
                                 <exclude reference="hAE-8u-LLD"/>
                                 <exclude reference="nMz-4F-1jJ"/>
-                                <exclude reference="jCu-ch-frz"/>
-                                <exclude reference="pAa-s9-Jql"/>
                             </mask>
                         </variation>
                         <connections>
@@ -542,7 +541,7 @@
                                     <outlet property="delegate" destination="ENu-4F-Myn" id="XtB-U3-r2f"/>
                                 </connections>
                             </webView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="隐私政策" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQe-7F-Dkq">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="隐私政策" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="UQe-7F-Dkq">
                                 <rect key="frame" x="200" y="20" width="200" height="44"/>
                                 <animations/>
                                 <constraints>
@@ -602,7 +601,7 @@
                                                     <constraint firstAttribute="height" constant="40" id="kwJ-l9-BSd"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="困难" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqU-r3-C5f">
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="困难" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="uqU-r3-C5f">
                                                 <rect key="frame" x="22" y="104" width="80" height="25"/>
                                                 <animations/>
                                                 <constraints>
@@ -654,7 +653,7 @@
                                                     <constraint firstAttribute="width" constant="72" id="Ug3-Zc-s1v"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="简单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1f-Zo-U18">
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="简单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="H1f-Zo-U18">
                                                 <rect key="frame" x="22" y="104" width="80" height="25"/>
                                                 <animations/>
                                                 <constraints>

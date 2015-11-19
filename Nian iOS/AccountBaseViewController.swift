@@ -204,7 +204,7 @@ extension AccountBaseViewController {
     
     func validateNameFromTextField(text: String?) -> Bool {
         if let _text = text {
-            self.validateNickname(_text)        
+            return self.validateNickname(_text)
         } else {
             self.view.showTipText("名字不能是空的...")
         }
@@ -243,8 +243,6 @@ extension AccountBaseViewController {
         
         return navigationViewController
     }
-
-
 
 }
 

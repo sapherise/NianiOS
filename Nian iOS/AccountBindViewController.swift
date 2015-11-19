@@ -508,7 +508,7 @@ extension AccountBindViewController {
             let accessToken = (notiObject as! NSArray)[1] as? String
             
             if weiboUid != nil && accessToken != nil {
-                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
+                LogOrRegModel.getWeiboName(accessToken!, openid: "n*A\(weiboUid!)".md5) {
                     (task, responseObject, error) in
                     
                     if let _ = error {

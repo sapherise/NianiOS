@@ -80,7 +80,7 @@
                         <action selector="onConfirmButton:" destination="-1" eventType="touchUpInside" id="OKM-LE-QIy"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置邮箱和密码后，你可以通过 「邮箱+密码」直接登录念" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="ffM-Vn-fV6">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置邮箱和密码后，你可以通过 「邮箱+密码」直接登录念" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="ffM-Vn-fV6">
                     <rect key="frame" x="179" y="68" width="242" height="39"/>
                     <animations/>
                     <constraints>
@@ -114,12 +114,12 @@
             </constraints>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="6xd-0R-7Y3"/>
-                    <exclude reference="8gf-se-Fzg"/>
                     <exclude reference="IGD-kO-aVA"/>
                     <exclude reference="ykB-Bq-147"/>
                     <exclude reference="K8T-RJ-Msr"/>
                     <exclude reference="hrJ-q2-LIx"/>
+                    <exclude reference="6xd-0R-7Y3"/>
+                    <exclude reference="8gf-se-Fzg"/>
                 </mask>
             </variation>
             <connections>
