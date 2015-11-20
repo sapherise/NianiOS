@@ -96,7 +96,7 @@ extension MyLikeNoteViewController: UICollectionViewDataSource, UICollectionView
             let _dataSource = self.collectionDataSource[indexPath.row] as! NSDictionary
             
             cell.noteImageView.setImage("http://img.nian.so/dream/\(_dataSource["img"] as! String)!dream", radius: 8.0)
-            cell.noteLabel.text = _dataSource["title"] as? String
+            cell.noteLabel.text = (_dataSource["title"] as? String)?.decode()
         }
         
         return cell
@@ -106,7 +106,7 @@ extension MyLikeNoteViewController: UICollectionViewDataSource, UICollectionView
         let _dataSource = self.collectionDataSource[indexPath.row] as! NSDictionary
         
         (cell as! noteCell).noteImageView.setImage("http://img.nian.so/dream/\(_dataSource["img"] as! String)!dream", radius: 8.0)
-        (cell as! noteCell).noteLabel.text = _dataSource["title"] as? String
+        (cell as! noteCell).noteLabel.text = (_dataSource["title"] as? String)?.decode()
         
     }
     
