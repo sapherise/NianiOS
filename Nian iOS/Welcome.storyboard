@@ -341,10 +341,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="0NW-Ie-K55"/>
-                                <exclude reference="oWV-bq-fEV"/>
                                 <exclude reference="Q4H-Cd-AyQ"/>
                                 <exclude reference="ia2-fY-5uy"/>
+                                <exclude reference="0NW-Ie-K55"/>
+                                <exclude reference="oWV-bq-fEV"/>
                                 <exclude reference="3vW-Dl-W2j"/>
                                 <exclude reference="gPx-jZ-d81"/>
                                 <exclude reference="KMi-7F-pSt"/>
@@ -490,11 +490,11 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="jCu-ch-frz"/>
+                                <exclude reference="pAa-s9-Jql"/>
                                 <exclude reference="G3c-qK-2ak"/>
                                 <exclude reference="hAE-8u-LLD"/>
                                 <exclude reference="nMz-4F-1jJ"/>
-                                <exclude reference="jCu-ch-frz"/>
-                                <exclude reference="pAa-s9-Jql"/>
                             </mask>
                         </variation>
                         <connections>

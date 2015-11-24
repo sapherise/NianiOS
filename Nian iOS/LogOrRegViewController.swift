@@ -20,7 +20,7 @@ enum FunctionType: Int {
     case register
 }
 
-class LogOrRegViewController: AccountBaseViewController {
+class LogOrRegViewController: UIViewController {
     
     // MARK: - 界面上的控件
     
@@ -59,7 +59,6 @@ class LogOrRegViewController: AccountBaseViewController {
             switch functionalType! {
             case .confirm:
                 self.functionalButton?.setTitle("确定", forState: .Normal)
-                self.descriptionLabel?.hidden = false
             case .logIn:
                 self.functionalButton.setTitle("登录", forState: .Normal)
                 self.descriptionLabel.hidden = true
@@ -69,6 +68,16 @@ class LogOrRegViewController: AccountBaseViewController {
             }
         }
     }
+    
+    /// 提示用户“重置密码”邮件发送成功
+    var niAlert = NIAlert()
+    
+    /// 检查邮箱是否注册的结果
+    var checkEmailResult: NetworkClosure?
+    /// 请求登录的结果
+    var logInResult: NetworkClosure?
+    /// 请求注册的结果
+    var registerResult: NetworkClosure?
     
     // MARK: - view controller life recycle
     
@@ -150,31 +159,31 @@ class LogOrRegViewController: AccountBaseViewController {
             self.functionalButton.stopAnimating()
             self.functionalType = _tmpType
             
-            let (_, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
-            
-            if let _errorResult = errorResult {
-                switch _errorResult {
-                case .resultError(_, let _message):
-                    if _message == "The resources is not exist." {
+            if let _ = error {
+                self.view.showTipText("网络有点问题，等一会儿再试")
+            } else {
+                let json = JSON(responseObject!)
+                
+                if json["error"] != 0 {
+                    let msg = json["message"].stringValue
+                    
+                    if msg == "The resources is not exist." {
                         self.view.showTipText("这个邮箱没注册过...")
-                    } else if _message == "The request is too busy." {
+                    } else if msg == "The request is too busy." {
                         self.view.showTipText("超出发送限制...")
                     }
                     
-                default:
-                    break
+                } else {
+                    
+                    let niAlert = NIAlert()
+                    niAlert.delegate = self
+                    
+                    niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
+                        forKeys: ["img", "title", "content", "buttonArray"])
+                    
+                    niAlert.showWithAnimation(showAnimationStyle.spring)
+                    
                 }
-            
-            } else {
-                
-                let niAlert = NIAlert()
-                niAlert.delegate = self
-                
-                niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                
-                niAlert.showWithAnimation(showAnimationStyle.spring)
-                
             }
         }
         
@@ -266,113 +275,183 @@ extension LogOrRegViewController {
         
         /* 分别处理 “confirm” "logIn" "register" */
         if self.functionalType == .confirm {
-            
-            if self.validateEmailFromTextField(self.emailTextField.text) {
-                self.functionalButton.startAnimating()
-                
-                LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!, callback: {
-                    (task, responseObject, error) -> Void in
-                   
-                    self.functionalType = .confirm
-                    self.functionalButton.stopAnimating()
+            if let _text = self.emailTextField.text {
+                if self.validateEmailAddress(_text) {
                     
-                    let (_json, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
+                    self.functionalButton.startAnimating()
                     
-                    if let _ = errorResult {
-                        self.view.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        if _json!["data"] == "0" {  // email 未注册
-                            // 处理未注册
-                            self.handleUnregisterEmail()
-                        } else if _json!["data"] == "1" { // email 已注册
-                            // 处理登陆
-                            self.handleRegisterEmail()
+                    LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!) {
+                        (task, responseObject, error) in
+                        
+                        self.functionalType = .confirm
+                        self.functionalButton.stopAnimating()
+                        
+                        if let _ = error {
+                            self.view.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            let json = JSON(responseObject!)
+                            if json["data"] == "0" {  // email 未注册
+                                // 处理未注册
+                                self.handleUnregisterEmail()
+                            } else if json["data"] == "1" { // email 已注册
+                                // 处理登陆
+                                self.handleRegisterEmail()
+                            }
+                            
                         }
                     }
-                })
-                
+                } else {  //if self.validateEmailAddress == false
+                    self.view.showTipText("不是地球上的邮箱...")
+                }
+            } else { // if let _text = self.emailTextField.text == nil
+                self.view.showTipText("邮箱不能为空...")
             }
-
+            
         } else if self.functionalType == .logIn {
             /*@explain: 这里不需要再验证邮箱 */
-            
-            if self.validatePasswordFromTextField(self.passwordTextField.text!) {
+            if let _pwdText = self.passwordTextField.text {
+                if _pwdText.characters.count < 4 {
+                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    return
+                }
                 
                 let _email = self.emailTextField.text!
                 let _password = "n*A\(self.passwordTextField.text!)"
                 
                 self.functionalButton.startAnimating()
                 
-                LogOrRegModel.logIn(email: _email, password: _password.md5, callback: {
-                    (task, responseObject, error) -> Void in
+                LogOrRegModel.logIn(email: _email, password: _password.md5) {
+                    (task, responseObject, error) in
                     
                     self.functionalButton.stopAnimating()
                     self.functionalType = .logIn
                     
-                    let (_json, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
-                    
-                    if let _error = errorResult {
-                        switch _error {
-                        case .resultError(_, _):
+                    if let _ = error {
+                        self.view.showTipText("网络有点问题，等一会儿再试")
+                    } else {
+                        let json = JSON(responseObject!)
+                        
+                        if json["error"] != 0 { // 服务器返回错误
                             self.view.showTipText("邮箱或密码不对...")
-                        default:
-                            break
-                        }
-                    } else {
-                        let username = _json!["data"]["username"].stringValue
-                        NSUserDefaults.standardUserDefaults().setObject(username, forKey: "user")
-                        NSUserDefaults.standardUserDefaults().synchronize()
-                        
-                        self.presentViewController(self.enterHome(_json!), animated: true, completion: {
-                            self.emailTextField.text = ""
-                            self.passwordTextField.text = ""
-                        })
-                    }
-                    
-                    
-                })
+                        } else {
+                            let shell = json["data"]["shell"].stringValue
+                            let uid = json["data"]["uid"].stringValue
+                            let username = json["data"]["username"].stringValue
+                            
+                            NSUserDefaults.standardUserDefaults().setObject(username, forKey: "user")
+                            
+                            /// uid 和 shell 保存到 keychain
+                            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                            uidKey.setObject(uid, forKey: kSecAttrAccount)
+                            uidKey.setObject(shell, forKey: kSecValueData)
+                            
+                            Api.requestLoad()
+                            globalWillReEnter = 1
+                            let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+                            let navigationViewController = UINavigationController(rootViewController: mainViewController)
+                            navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+                            navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+                            navigationViewController.navigationBar.translucent = true
+                            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+                            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+                            navigationViewController.navigationBar.clipsToBounds = true
+                            
+                            self.presentViewController(navigationViewController, animated: true, completion: {
+                                self.emailTextField.text = ""
+                                self.passwordTextField.text = ""
+                            })
+                            
+                            Api.postJpushBinding(){_ in }
+                            
+                        } // if json["error"] != 0
+                    } // if let _error = error
+                }  // end of closure
                 
-                
-            }
-            
+            }  // if self.passwordTextField.text != ""
         } else if self.functionalType == .register {
-            
-            if self.validatePasswordFromTextField(self.passwordTextField.text) && self.validateNameFromTextField(self.nicknameTextField.text) {
-                self.functionalButton.startAnimating()
+            if self.passwordTextField.text != "" {
+                if self.passwordTextField.text!.characters.count < 4 {
+                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    return
+                }
                 
-                LogOrRegModel.checkNameAvailability(name: self.nicknameTextField.text!, callback: {
-                    (task, responseObject, error) -> Void in
-                    
-                    self.functionalButton.stopAnimating()
-                    self.functionalType = .register
-                    
-                    let (_, errorResult) = self.preProcessNetworkResult(task, object: responseObject, error: error)
-                    
-                    if let _error = errorResult {
-                        switch _error {
-                        case .resultError(let __error, _):
-                            if __error == "1" {
-                                self.view.showTipText("昵称被占用...")
-                            }
-                        default:
-                            break
-                        }
+                if let _nickname = self.nicknameTextField.text {
+                    if self.validateNickname(_nickname) {
                         
-                    } else {
-                        self.performSegueWithIdentifier("toModeVC", sender: nil)
+                        self.functionalButton.startAnimating()
+                        
+                        LogOrRegModel.checkNameAvailability(name: _nickname, callback: {
+                            (task, responseObject, error) in
+                            
+                            self.functionalButton.stopAnimating()
+                            self.functionalType = .register
+                            
+                            if let _ = error { // 服务器返回错误
+                                self.view.showTipText("网络有点问题，等一会儿再试")
+                            } else {
+                                let json = JSON(responseObject!)
+                                
+                                if json["error"] == 1 { // 服务器返回的数据包含“错误信息”
+                                    self.view.showTipText("昵称被占用...", delay: 2)
+                                    
+                                } else if json["error"] == 0 {
+                                    self.performSegueWithIdentifier("toModeVC", sender: nil)
+                                }
+                            }
+                        })
+                        
+                    } else { // nickname 不符合要求
+                        
                     }
-                })
+                } else { // 没有输入 nickname
+                    self.view.showTipText("名字不能是空的...")
+                }
+            } else { // 没有输入 password
+                self.view.showTipText("密码不能是空的...")
             }
         }
     }
-    
 }
 
 
 // MARK:
 // MARK: - 处理事件
 extension LogOrRegViewController {
-
+    
+    /**
+     验证邮箱是否正确
+     */
+    func validateEmailAddress(text: String) -> Bool {
+        if text == "" {
+            return false
+        } else if !text.isValidEmail() {
+            return false
+        }
+        
+        return true
+    }
+    
+    /**
+     验证昵称是否符合要求
+     */
+    func validateNickname(name: String) -> Bool {
+        if name == "" {
+            self.view.showTipText("名字不能是空的...")
+            
+            return false
+        } else if name.characters.count < 2 {
+            self.view.showTipText("名字有点短...")
+            
+            return false
+        } else if !name.isValidName() {
+            self.view.showTipText("名字里有奇怪的字符...")
+            
+            return false
+        }
+        
+        return true
+    }
+    
     /**
      email 未注册，View 进入注册的状态
      */

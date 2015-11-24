@@ -38,9 +38,10 @@ class ActivitiesViewController: SAViewController {
         self._setTitle("我的动态")
         self.setSeperateViewHeight()
         self.view.backgroundColor = UIColor.colorWithHex("#F5F5F5")
+        self.automaticallyAdjustsScrollViewInsets = false
         
         self.startAnimating()
-        
+
         ActivitiesSummaryModel.getMyAcitiviesSummary({[unowned self]
             (task, responseObject, error) -> Void in
             

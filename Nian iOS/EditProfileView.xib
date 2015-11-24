@@ -205,7 +205,6 @@
                                 <constraint firstItem="uyW-Sz-bMS" firstAttribute="top" secondItem="WL1-so-hGp" secondAttribute="bottom" constant="-1" id="nnp-PR-4eB"/>
                                 <constraint firstAttribute="trailing" secondItem="7Gm-6t-jiW" secondAttribute="trailing" id="oyc-04-R7Q"/>
                                 <constraint firstAttribute="trailing" secondItem="LiC-iy-plp" secondAttribute="trailing" id="soP-GV-RgA"/>
-                                <constraint firstAttribute="height" constant="600" id="xR0-oo-AP5"/>
                                 <constraint firstItem="uyW-Sz-bMS" firstAttribute="leading" secondItem="PvK-F2-B55" secondAttribute="leading" constant="16" id="ygX-FN-j98"/>
                                 <constraint firstAttribute="trailing" secondItem="WL1-so-hGp" secondAttribute="trailing" id="zDv-li-sCk"/>
                                 <constraint firstItem="Ywh-yW-FuP" firstAttribute="top" secondItem="LiC-iy-plp" secondAttribute="bottom" id="zUa-LE-i17"/>
@@ -218,6 +217,7 @@
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="PvK-F2-B55" secondAttribute="trailing" id="5CR-FP-Ddt"/>
+                        <constraint firstItem="PvK-F2-B55" firstAttribute="height" secondItem="c8F-Yu-JVl" secondAttribute="height" id="JTl-xD-9y2"/>
                         <constraint firstItem="PvK-F2-B55" firstAttribute="leading" secondItem="c8F-Yu-JVl" secondAttribute="leading" id="Kta-GF-mzm"/>
                         <constraint firstAttribute="bottom" secondItem="PvK-F2-B55" secondAttribute="bottom" priority="750" id="RIO-Vs-heI"/>
                         <constraint firstItem="PvK-F2-B55" firstAttribute="top" secondItem="c8F-Yu-JVl" secondAttribute="top" id="yaT-Qn-hhg"/>

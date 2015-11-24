@@ -24,8 +24,8 @@ class MyLikeNoteViewController: SAViewController {
         self._setTitle("我赞过的记本")
         self.setupCollectionViewLayout()
         
-        collectionView.addHeaderWithCallback { _ in self.load() }
-        collectionView.addFooterWithCallback { _ in self.load(false) }
+        collectionView.addHeaderWithCallback { self.load() }
+        collectionView.addFooterWithCallback { self.load(false) }
         
         collectionView.headerBeginRefreshing()
     }
@@ -79,9 +79,6 @@ class MyLikeNoteViewController: SAViewController {
             })
         }
     }
-    
-    
-    
 }
 
 
@@ -95,6 +92,13 @@ extension MyLikeNoteViewController: UICollectionViewDataSource, UICollectionView
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("noteCell", forIndexPath: indexPath) as! noteCell
         
+        if Float(UIDevice.currentDevice().systemVersion) < 8.0 {
+            let _dataSource = self.collectionDataSource[indexPath.row] as! NSDictionary
+            
+            cell.noteImageView.setImage("http://img.nian.so/dream/\(_dataSource["img"] as! String)!dream", radius: 8.0)
+            cell.noteLabel.text = (_dataSource["title"] as? String)?.decode()
+        }
+        
         return cell
     }
     
@@ -102,7 +106,7 @@ extension MyLikeNoteViewController: UICollectionViewDataSource, UICollectionView
         let _dataSource = self.collectionDataSource[indexPath.row] as! NSDictionary
         
         (cell as! noteCell).noteImageView.setImage("http://img.nian.so/dream/\(_dataSource["img"] as! String)!dream", radius: 8.0)
-        (cell as! noteCell).noteLabel.text = _dataSource["title"] as? String
+        (cell as! noteCell).noteLabel.text = (_dataSource["title"] as? String)?.decode()
         
     }
     
