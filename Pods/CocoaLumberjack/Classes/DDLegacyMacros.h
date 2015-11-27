@@ -18,7 +18,6 @@
  *
  * Imported by default when importing a DDLog.h directly and DD_LEGACY_MACROS is not defined and set to 0.
  **/
-#if DD_LEGACY_MACROS
 
 #warning CocoaLumberjack 1.9.x legacy macros enabled. \
 Disable legacy macros by importing CocoaLumberjack.h or DDLogMacros.h instead of DDLog.h or add `#define DD_LEGACY_MACROS 0` before importing DDLog.h.
@@ -72,4 +71,3 @@ Disable legacy macros by importing CocoaLumberjack.h or DDLogMacros.h instead of
 #define DDLogDebug(frmt, ...)   LOG_OBJC_MAYBE(LOG_ASYNC_DEBUG,   LOG_LEVEL_DEF, LOG_FLAG_DEBUG,   0, frmt, ##__VA_ARGS__)
 #define DDLogVerbose(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_VERBOSE, LOG_LEVEL_DEF, LOG_FLAG_VERBOSE, 0, frmt, ##__VA_ARGS__)
 
-#endif

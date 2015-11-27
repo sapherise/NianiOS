@@ -79,3 +79,15 @@
 #import "DDASLLogger.h"
 #import "DDFileLogger.h"
 
+/**
+ *  @author Bob Wei, 15-08-13 17:08:54
+ *
+ *  
+ */
+#import "DDContextFilterLogFormatter.h"
+#import "DDDispatchQueueLogFormatter.h"
+#import "DDMultiFormatter.h"
+
+
+
+

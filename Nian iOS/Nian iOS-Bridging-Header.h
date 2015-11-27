@@ -14,6 +14,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+HTML.h"
 #import "TITokenField.h"
+
 #import "SZTextView.h"
 #import "KILabel.h"
 #import "NSString+NSHash.h"
@@ -37,23 +38,6 @@
 // *  导入 objc runtime, 应用在 method swizzling
 // */
 //#import "objc/runtime.h"
-
-/**
- *  @author Bob Wei, 15-08-08 14:08:23
- *
- *  应用第三方库实现 “字典 <--> Model” 的解析
- */
-//#import "JSONModel.h"
-
-
-/**
- *  @author Bob Wei, 15-08-11 12:08:08
- *
- *  实现对某个 class or instance 的追踪
- *  没有办法在 __amd64__ 的 CPU 上运行
- */
-//#import "Xtrace.h"
-
 
 /**
  *  @author Bob Wei, 15-08-13 15:08:14
@@ -90,8 +74,16 @@
  */
 #import "PSTAlertController.h"
 
+/**
+ *  @author Bob Wei, 15-11-24 13:11:19
+ *
+ *  @brief  加入 SDWebImage
+ */
+#import "SDWebImage.h"
 
-
-
-
-
+/**
+ *  @author Bob Wei, 15-11-25 18:11:56
+ *
+ *  @brief
+ */
+#import "QBImagePicker.h"

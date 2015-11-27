@@ -283,9 +283,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     }
     
     func onAddStep(){
-        let vc = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+        let vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
         vc.Id = self.Id
-        vc.delegate = self
+//        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
 

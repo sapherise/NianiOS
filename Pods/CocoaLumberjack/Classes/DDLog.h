@@ -19,8 +19,9 @@
 #ifndef DD_LEGACY_MACROS
     #define DD_LEGACY_MACROS 1
 #endif
-// DD_LEGACY_MACROS is checked in the file itself
-#import "DDLegacyMacros.h"
+#if DD_LEGACY_MACROS
+    #import "DDLegacyMacros.h"
+#endif
 
 #if OS_OBJECT_USE_OBJC
     #define DISPATCH_QUEUE_REFERENCE_TYPE strong
@@ -157,7 +158,7 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
  * It is suggested you stick with the macros as they're easier to use.
  **/
 
-+ (void)log:(BOOL)asynchronous
++ (void)log:(BOOL)synchronous
       level:(DDLogLevel)level
        flag:(DDLogFlag)flag
     context:(NSInteger)context
@@ -429,15 +430,15 @@ NSString * DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
     #define NS_DESIGNATED_INITIALIZER
 #endif
 
-typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
-    DDLogMessageCopyFile     = 1 << 0,
-    DDLogMessageCopyFunction = 1 << 1
-};
-
 /**
  * The DDLogMessage class encapsulates information about the log message.
  * If you write custom loggers or formatters, you will be dealing with objects of this class.
  **/
+
+typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
+    DDLogMessageCopyFile     = 1 << 0,
+    DDLogMessageCopyFunction = 1 << 1
+};
 
 @interface DDLogMessage : NSObject <NSCopying>
 {
@@ -483,7 +484,7 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions) {
                            line:(NSUInteger)line
                             tag:(id)tag
                         options:(DDLogMessageOptions)options
-                      timestamp:(NSDate *)timestamp;
+                      timestamp:(NSDate *)timestamp NS_DESIGNATED_INITIALIZER;
 
 /**
  * Read-only properties
