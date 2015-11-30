@@ -42,7 +42,7 @@
                 <outlet property="imageView" destination="pVz-31-cPk" id="RkA-KU-kfq"/>
                 <outlet property="overlayView" destination="d2v-8q-CM7" id="iDT-HQ-p38"/>
             </connections>
-            <point key="canvasLocation" x="528.5" y="631.5"/>
+            <point key="canvasLocation" x="-417.5" y="491.5"/>
         </collectionViewCell>
     </objects>
 </document>

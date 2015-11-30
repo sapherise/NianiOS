@@ -13,13 +13,18 @@ class AddStepCollectionCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var overlayView: UIView!
     
+    var image: UIImage?
+    
+    var thumbnailImage: UIImage? 
+    
     override var selected: Bool {
         set {
-            self.overlayView.hidden = false
+            super.selected = selected
+            self.overlayView.hidden = !selected 
         }
         
         get {
-            return self.selected
+            return super.selected
         }
     }
     

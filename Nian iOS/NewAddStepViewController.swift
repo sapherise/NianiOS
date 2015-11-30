@@ -33,8 +33,6 @@ class NewAddStepViewController: SAViewController {
     
     @IBOutlet weak var sp1HeightConstraint: NSLayoutConstraint!
     
-//    @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
-    
     var data: NSDictionary?
     var Id: String = ""
     
@@ -55,7 +53,7 @@ class NewAddStepViewController: SAViewController {
         
         // Do any additional setup after loading the view.
         self._setTitle("新进展")
-        self.setBarButtonImage("newOK", actionGesture: "")
+        self.setBarButtonImage("newOK", actionGesture: "uploadStep")
         
         sp1HeightConstraint.constant = globalHalf
         
@@ -66,6 +64,7 @@ class NewAddStepViewController: SAViewController {
         self.textViewHeightConstraint.constant = TEXTVIEW_DEFAULT_HEIGHT
         self.contentTextView.delegate = self
         
+        self.collectionView.collectionViewLayout = yy_collectionViewLayout()
         self.collectionView.registerNib(UINib(nibName: "AddStepCollectionCell", bundle: nil), forCellWithReuseIdentifier: "AddStepCollectionCell")
         
         constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
@@ -88,7 +87,6 @@ class NewAddStepViewController: SAViewController {
         super.viewDidAppear(animated)
         
         self.textViewHeightConstraint.constant = self.textViewHeight()
-        
         self.scrollView.contentSize = CGSizeMake(self.scrollView.width(), max(globalHeight - 64, self.contentView.frame.height))
     }
     
@@ -131,14 +129,27 @@ class NewAddStepViewController: SAViewController {
     @IBAction func pickerImages(sender: UIButton) {
         self.dismissKeyboard()
         
+        if self.collectionView.numberOfItemsInSection(0) == 9 {
+            self.view.showTipText("请先删除几张图片")
+            
+            return
+        }
+        
         let imagePickerVC = QBImagePickerController()
-        imagePickerVC.maximumNumberOfSelection = 9
+        imagePickerVC.maximumNumberOfSelection = UInt(9 - self.collectionView.numberOfItemsInSection(0))
         imagePickerVC.delegate = self
         imagePickerVC.allowsMultipleSelection = true
         imagePickerVC.showsNumberOfSelectedAssets = true
         
         self.presentViewController(imagePickerVC, animated: true, completion: nil)
     }
+    
+    func uploadStep() {
+        
+        
+        
+    }
+    
     
 }
 
@@ -165,8 +176,6 @@ extension NewAddStepViewController {
         let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
         
         keyboardHeight -= originDelta
-        
-        logInfo("\(keyboardHeight), \(originDelta)")
         
         self.textViewHeightConstraint.constant = self.textViewHeight()
         
@@ -210,8 +219,6 @@ extension NewAddStepViewController {
         })
         
         keyboardHeight = 0
-        
-        logWarn("\(keyboardHeight), ==========")
     }
     
 }
@@ -255,6 +262,9 @@ extension NewAddStepViewController: UITextViewDelegate {
 extension NewAddStepViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        logInfo("**************, \(self.imagesDataSource.count)")
+        
         return self.imagesDataSource.count
     }
     
@@ -262,12 +272,26 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepCollectionCell", forIndexPath: indexPath) as! AddStepCollectionCell
         
-        cell.imageView.image = UIImage(CGImage: (self.imagesDataSource[indexPath.row] as! ALAsset).thumbnail().takeUnretainedValue())
+        if let _ = cell.imageView.image {
+        } else {
+            let asset = self.imagesDataSource[indexPath.row] as? ALAsset
+            
+            cell.imageView.image = UIImage(CGImage: asset!.thumbnail().takeUnretainedValue())
+
+            let rep = asset?.defaultRepresentation()
+            
+            let resolutionRef = rep?.fullResolutionImage()
+            
+            let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
+            
+            cell.image = image
+        }
+        
+        logVerbose("\(collectionView.contentSize) \(collectionView.collectionViewLayout.collectionViewContentSize())")
         
         return cell
     }
-    
-    
+
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let alertController = PSTAlertController.actionSheetWithTitle("确定删除图片？")
         
@@ -286,7 +310,6 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
 extension NewAddStepViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         if self.imagesDataSource.count % 3 == 1 {
             if indexPath.row == self.imagesDataSource.count - 1 {
                 return largestCellSize
@@ -395,7 +418,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                 
                 let __index = _tmpIndex == 0 ? _index : _index + 1
                 
-                let collectionViewHeight = CGFloat(__index) * CGFloat(self.regularCellSize.height) + CGFloat(_index * 2)
+                let collectionViewHeight = CGFloat(__index) * ceil(self.regularCellSize.height) + CGFloat(_index * 2)
                 
                 constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
                     view1.height == collectionViewHeight
@@ -412,6 +435,48 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
 }
 
 
+class yy_collectionViewLayout: UICollectionViewFlowLayout {
+    
+    override init() {
+        super.init()
+        
+        self.minimumLineSpacing = 2.0
+        self.minimumInteritemSpacing = 2.0
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.minimumInteritemSpacing = 2.0
+        self.minimumLineSpacing = 2.0
+    }
+    
+    override func collectionViewContentSize() -> CGSize {
+
+        let _count = self.collectionView?.numberOfItemsInSection(0)
+        
+        let _index = _count! / 3
+        let _tmpIndex = _count! % 3
+        let __index = _tmpIndex == 0 ? _index : _index + 1
+        
+        let collectionViewHeight = CGFloat(__index) * ceil((globalWidth - 32 - 4)/3) + CGFloat(_index * 2)
+        let size = CGSizeMake(self.collectionView!.frame.width, collectionViewHeight)
+        
+        self.collectionView?.contentSize = size
+        
+        return size
+    }
+    
+    override func prepareLayout() {
+        
+        super.prepareLayout()
+        
+        
+        
+    }
+    
+    
+}
 
 
 
