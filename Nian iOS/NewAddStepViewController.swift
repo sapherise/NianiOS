@@ -9,9 +9,13 @@
 import UIKit
 
 @objc protocol NewAddStepDelegate {
+    func newEditstep()
+    optional func newCountUp(coin: String, isfirst: String)
+    optional func newCountUp(coin: String, total: String, isfirst: String)
+    optional func newUpdate(data: NSDictionary)
     
-    
-
+    var newEditStepRow: Int { set get }
+    var newEditStepData: NSDictionary? { set get }
 }
 
 
@@ -33,12 +37,20 @@ class NewAddStepViewController: SAViewController {
     
     @IBOutlet weak var sp1HeightConstraint: NSLayoutConstraint!
     
+    weak var delegate: NewAddStepDelegate?
+    
     var data: NSDictionary?
-    var Id: String = ""
+    var dreamId: String = ""
+    var isEdit: Int = 0
+    var row: Int = 0
+    
+    var stepType = StepType(rawValue: 0)
     
     var keyboardHeight: CGFloat = 0
     
     var imagesDataSource = NSMutableArray()
+    var imagesArray = Array<UIImage>()
+    var imagesInfo = NSMutableArray()
     
     var regularCellSize = CGSizeMake((globalWidth - 32 - 4)/3, (globalWidth - 32 - 4)/3)
     var largerCellSize  = CGSizeMake((globalWidth - ((globalWidth - 32 - 4)/3) - 32 - 2), (globalWidth - 32 - 4)/3)
@@ -52,8 +64,6 @@ class NewAddStepViewController: SAViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self._setTitle("新进展")
-        self.setBarButtonImage("newOK", actionGesture: "uploadStep")
         
         sp1HeightConstraint.constant = globalHalf
         
@@ -67,8 +77,28 @@ class NewAddStepViewController: SAViewController {
         self.collectionView.collectionViewLayout = yy_collectionViewLayout()
         self.collectionView.registerNib(UINib(nibName: "AddStepCollectionCell", bundle: nil), forCellWithReuseIdentifier: "AddStepCollectionCell")
         
-        constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
-            view1.height == 0
+        if self.isEdit == 1 {
+            self._setTitle("编辑进展")
+            self.setBarButtonImage("newOK", actionGesture: "uploadEditStep")
+            self.contentTextView.text = self.data?.stringAttributeForKey("content").decode()
+            
+            self.imagesArray.appendContentsOf(self.data?.objectForKey("images") as! Array)
+            
+            let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
+            
+            constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
+                view1.height == collectionViewHeight
+            }
+            
+            self.collectionView.reloadData()
+            
+        } else {
+            self._setTitle("新进展")
+            self.setBarButtonImage("newOK", actionGesture: "uploadNewStep")
+            
+            constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
+                view1.height == 0
+            }
         }
     }
 
@@ -79,7 +109,6 @@ class NewAddStepViewController: SAViewController {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
     
@@ -96,14 +125,12 @@ class NewAddStepViewController: SAViewController {
         self.keyboardHeight = 0
     }
     
-    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
         
         notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
@@ -144,12 +171,111 @@ class NewAddStepViewController: SAViewController {
         self.presentViewController(imagePickerVC, animated: true, completion: nil)
     }
     
-    func uploadStep() {
+    func uploadNewStep() {
+        if self.imagesArray.count == 0 {
+            if self.contentTextView.text == "" {
+                self.stepType = StepType.attendance
+            } else {
+                self.stepType = StepType.text
+            }
+        } else if self.imagesArray.count >= 1 {
+            if self.contentTextView.text == "" {
+                self.stepType = StepType.multiPicWithoutText
+            } else {
+                self.stepType = StepType.multiPicWithText
+            }
+        } else if self.imagesArray.count == 1 {
+            if self.contentTextView.text == "" {
+                self.stepType = StepType.singlePicWithoutText
+            } else {
+                self.stepType = StepType.singlePicWithText
+            }
+        }
         
+        self.startAnimating()
         
-        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+            
+            if self.imagesArray.count > 0 {
+                
+                let opQueue = NSOperationQueue()
+                opQueue.maxConcurrentOperationCount = 1
+                
+                
+                let _uid = CurrentUser.sharedCurrentUser.uid!
+                
+                for _image: UIImage in self.imagesArray {
+                    
+                    let op = NSBlockOperation(block: { () -> Void in
+                        let _date = Int(NSDate().timeIntervalSince1970)
+                        let saveKey = "/step/\(_uid)_\(_date).png"
+                        
+                        self.uploadImageHelper(image: _image, saveKey: saveKey)
+                    })
+                    
+                    opQueue.addOperations([op], waitUntilFinished: true)
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType!, images: self.imagesInfo, dreamId: self.dreamId, callback: {
+                    (task, responseObject, error) -> Void in
+                    
+                    self.stopAnimating()
+                    
+                    if let _ = error {
+                        self.view.showTipText("发布进展不成功")
+                    } else {
+                        let json = JSON(responseObject!)
+                        
+                        if json["error"].numberValue.integerValue != 0 {
+                            self.view.showTipText("发布进展不成功")
+                        } else {
+                            self.addStepSuccessHelper(json: json)
+                            
+                        }
+                        
+                    }
+                    
+                }) // AddStepModel.postAddStep
+            })
+        }
     }
     
+    func uploadImageHelper(image image: UIImage, saveKey: String) {
+        
+        let uy = UpYun()
+        uy.successBlocker = ({ (data: AnyObject!) in
+            let json = JSON(data)
+            
+            var imageUrl = json["url"].stringValue
+            imageUrl = SAReplace(imageUrl, before: "/step/", after: "") as String
+            
+            let imageWidth = json["image-width"].stringValue
+            let imageHeight = json["image-height"].stringValue
+            
+            synchronized(self.imagesInfo, closure: { () -> () in
+                self.imagesInfo.addObject(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])
+            })
+            
+            SDImageCache.sharedImageCache().storeImage(image, forKey: "http://img.nian.so/step/\(imageUrl)!large")
+        })
+        
+        uy.failBlocker = ({ (error: NSError!) in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.view.showTipText("上传图片失败，请稍后再试")
+            })
+        })
+        
+        uy.uploadImage(image, savekey: saveKey)
+    }
+    
+    func addStepSuccessHelper(json json: JSON) {
+        
+        
+        
+    
+    }
     
 }
 
@@ -262,9 +388,6 @@ extension NewAddStepViewController: UITextViewDelegate {
 extension NewAddStepViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        logInfo("**************, \(self.imagesDataSource.count)")
-        
         return self.imagesDataSource.count
     }
     
@@ -275,19 +398,18 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
         if let _ = cell.imageView.image {
         } else {
             let asset = self.imagesDataSource[indexPath.row] as? ALAsset
-            
             cell.imageView.image = UIImage(CGImage: asset!.thumbnail().takeUnretainedValue())
-
-            let rep = asset?.defaultRepresentation()
             
-            let resolutionRef = rep?.fullResolutionImage()
-            
-            let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
-            
-            cell.image = image
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                let rep = asset?.defaultRepresentation()
+                let resolutionRef = rep?.fullResolutionImage()
+                let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
+                
+                synchronized(self.imagesArray, closure: { () -> () in
+                    self.imagesArray.append(image)
+                })
+            })
         }
-        
-        logVerbose("\(collectionView.contentSize) \(collectionView.collectionViewLayout.collectionViewContentSize())")
         
         return cell
     }
@@ -358,8 +480,6 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
     
     func reloadCollectionViewWithAssets(assets: [AnyObject]!, dataSource: NSArray) {
 
-        var currentDataSourceCount = 0
-        
         self.collectionView.performBatchUpdates({ () -> Void in
             var _previousCount = dataSource.count
             
@@ -374,19 +494,10 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                 _previousCount++
             }
             
-            currentDataSourceCount = self.imagesDataSource.count
-            
             self.collectionView.insertItemsAtIndexPaths(tempIndexArray)
             
             }, completion: { finished in
-                
-                let _index = currentDataSourceCount / 3
-                
-                let _tmpIndex = currentDataSourceCount % 3
-                
-                let __index = _tmpIndex == 0 ? _index : _index + 1
-                
-                let collectionViewHeight = CGFloat(__index) * CGFloat(self.regularCellSize.height) + CGFloat(_index * 2)
+                let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesDataSource)
                 
                 constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
                     view1.height == collectionViewHeight
@@ -411,14 +522,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
             self.collectionView.deleteItemsAtIndexPaths(inIndexPath)
             
             }, completion: { finished in
-                
-                let _index = self.imagesDataSource.count / 3
-                
-                let _tmpIndex = self.imagesDataSource.count % 3
-                
-                let __index = _tmpIndex == 0 ? _index : _index + 1
-                
-                let collectionViewHeight = CGFloat(__index) * ceil(self.regularCellSize.height) + CGFloat(_index * 2)
+                let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesDataSource)
                 
                 constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
                     view1.height == collectionViewHeight
@@ -427,9 +531,15 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     self.collectionView.layoutIfNeeded()
                     }, completion: nil)
-        
-        
         })
+    }
+    
+    func calculateCollectionHeightWith(dataSource dataSource: NSArray) -> CGFloat {
+        let _index = dataSource.count / 3
+        let _tmpIndex = dataSource.count % 3
+        let __index = _tmpIndex == 0 ? _index : _index + 1
+        
+        return CGFloat(__index) * ceil(self.regularCellSize.height) + CGFloat(_index * 2)
     }
     
 }

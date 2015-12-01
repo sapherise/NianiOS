@@ -1,5 +1,6 @@
 // UIImageView+AFNetworking.m
-// Copyright (c) 2011–2015 Alamofire Software Foundation (http://alamofire.org/)
+//
+// Copyright (c) 2013-2015 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +27,7 @@
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 
 #import "AFHTTPRequestOperation.h"
+#import "NSString+MD5.h"
 
 @interface AFImageCache : NSCache <AFImageCache>
 @end
@@ -185,10 +187,44 @@
 #pragma mark -
 
 static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
-    return [[request URL] absoluteString];
+	NSMutableString *fileName = [NSMutableString stringWithString:[request.URL.absoluteString MD5]];
+    [fileName appendFormat:@".%@",request.URL.pathExtension ];
+    return fileName;
+	
 }
 
 @implementation AFImageCache
+
++(NSData *)imageToData:(UIImage *)image withExt:(NSString *)extension
+{
+	extension = [extension lowercaseString];
+	if ([ extension isEqualToString:@"jpeg"] || [extension isEqualToString:@"jpg"]) {
+		return UIImageJPEGRepresentation(image,1.0);
+		
+	}
+	if([extension isEqualToString:@"png"]){
+		return UIImagePNGRepresentation(image);
+	}
+	
+	return nil;
+	
+}
+
++(NSURL *)cacheDir
+{
+	NSURL *docDir = [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory
+															inDomains:NSUserDomainMask] lastObject];
+	
+	NSURL *dir = [docDir URLByAppendingPathComponent:@"AFimageCache" isDirectory:YES];
+	NSError *error = nil;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:dir.path])
+        [[NSFileManager defaultManager] createDirectoryAtPath:dir.path
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:&error];
+	
+	return dir;
+}
 
 - (UIImage *)cachedImageForRequest:(NSURLRequest *)request {
     switch ([request cachePolicy]) {
@@ -198,8 +234,18 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
         default:
             break;
     }
-
-	return [self objectForKey:AFImageCacheKeyFromURLRequest(request)];
+	
+	UIImage *image = [self objectForKey:AFImageCacheKeyFromURLRequest(request)];
+    if (!image) {
+        //check local file storage
+        NSURL *cacheDir = [AFImageCache cacheDir];
+        cacheDir = [cacheDir URLByAppendingPathComponent:AFImageCacheKeyFromURLRequest(request)];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:cacheDir.path]) {
+            image = [UIImage imageWithContentsOfFile:cacheDir.path];
+            [self setObject:image forKey:AFImageCacheKeyFromURLRequest(request)];
+        }
+    }
+	return image;
 }
 
 - (void)cacheImage:(UIImage *)image
@@ -207,8 +253,31 @@ static inline NSString * AFImageCacheKeyFromURLRequest(NSURLRequest *request) {
 {
     if (image && request) {
         [self setObject:image forKey:AFImageCacheKeyFromURLRequest(request)];
+        NSURL *cacheDir = [AFImageCache cacheDir];
+        cacheDir = [cacheDir URLByAppendingPathComponent:AFImageCacheKeyFromURLRequest(request)];
+	
+        NSData* data = [AFImageCache imageToData:image withExt:cacheDir.pathExtension];
+		      
+        if (data) {
+            [data writeToURL:cacheDir atomically:YES];
+        }else{
+            UIGraphicsBeginImageContext(image.size);
+            [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+            UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            data = [AFImageCache imageToData:newImage withExt:cacheDir.pathExtension];
+			if(data)
+			{
+				[data writeToURL:cacheDir atomically:YES];
+			}
+            
+        }
+        
     }
+	
 }
+
 
 @end
 

@@ -84,7 +84,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
                           [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1],kRegexHighlightViewTypeURL,
 //                          [UIColor colorWithRed:106/255.0 green:140/255.0 blue:181/255.0 alpha:1],kRegexHighlightViewTypeEmoji,
 //                          [UIColor colorWithRed:106/255.0 green:140/255.0 blue:181/255.0 alpha:1],kRegexHighlightViewTypeTopic,
-//                           [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1]
+//                          [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1]
                            
 //                           let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
                            nil];

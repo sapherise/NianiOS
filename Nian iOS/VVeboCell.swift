@@ -100,6 +100,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var editStepRow:Int = -1
     var editStepData:NSDictionary?
     var delegate: delegateSAStepCell?
+    var newEditStepRow: Int = -1
+    var newEditStepData: NSDictionary?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -317,7 +319,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             editActivity.saActivityType = "编辑"
             editActivity.saActivityImage = UIImage(named: "av_edit")
             editActivity.saActivityFunction = {
-                let addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
+                let addstepVC = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
                 addstepVC.isEdit = 1
                 addstepVC.data = self.data
                 addstepVC.row = row
@@ -549,3 +551,75 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     }
     
 }
+
+
+extension VVeboCell: NewAddStepDelegate {
+    
+    func newEditstep() {
+        if newEditStepData != nil {
+            clear()
+        
+        
+        
+        
+        }
+    }
+    
+
+    func newUpdate(data: NSDictionary) {
+        
+        
+        
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

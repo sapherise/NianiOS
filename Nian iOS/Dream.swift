@@ -20,6 +20,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var editStepRow:Int = 0
     var editStepData:NSDictionary?
     
+    var newEditStepRow: Int = 0
+    var newEditStepData: NSDictionary?
+    
     var dataArrayTop: NSDictionary!
     var btnMain: UIButton!
     
@@ -284,8 +287,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     
     func onAddStep(){
         let vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
-        vc.Id = self.Id
-//        vc.delegate = self
+        vc.dreamId = self.Id
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -411,4 +414,70 @@ extension DreamViewController: NIAlertDelegate {
         }
     }
 }
+
+extension DreamViewController: NewAddStepDelegate {
+    func newEditstep() {
+        self.dataArray[self.newEditStepRow] = self.editStepData!
+        let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
+        self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+    }
+    
+    
+    func newCountUp(coin: String, isfirst: String) {
+        
+    }
+    
+    
+    func newCountUp(coin: String, total: String, isfirst: String) {
+        
+    }
+    
+    
+    func newUpdate(data: NSDictionary) {
+        if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
+            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
+            mutableData.setValue("\(step + 1)", forKey: "step")
+            dataArrayTop = mutableData
+            dataArray.insertObject(data, atIndex: 0)
+            globalVVeboReload = true
+            SATableView.reloadData()
+        }
+
+    }
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

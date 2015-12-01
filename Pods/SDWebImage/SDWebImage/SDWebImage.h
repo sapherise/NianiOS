@@ -6,10 +6,6 @@
 //
 //
 
-#ifndef SDWebImage_h
-#define SDWebImage_h
-
-
 #import "NSData+ImageContentType.h"
 #import "SDImageCache.h"
 #import "SDWebImageCompat.h"
@@ -25,4 +21,3 @@
 #import "UIImageView+WebCache.h"
 #import "UIView+WebCacheOperation.h"
 
-#endif /* SDWebImage_h */
