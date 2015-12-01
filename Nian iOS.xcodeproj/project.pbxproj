@@ -207,6 +207,8 @@
 		C43B604E1BDE11CA0022CB32 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C43B604D1BDE11CA0022CB32 /* libstdc++.tbd */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
+		C46A7AC01C088D6900D8C669 /* AddStepCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */; };
+		C46A7AC11C088D6900D8C669 /* AddStepCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46A7ABF1C088D6900D8C669 /* AddStepCollectionCell.xib */; };
 		C470B22E1B94024A00863821 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22D1B94024A00863821 /* PushConfig.plist */; };
 		C470B2301B94029E00863821 /* LikeCount.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22F1B94029E00863821 /* LikeCount.plist */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
@@ -223,6 +225,28 @@
 		C486BDEC1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486BDEB1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift */; };
 		C486BDF51BF587B800EF1C2A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486BDF31BF587B800EF1C2A /* SettingsViewController.swift */; };
 		C486BDF61BF587B800EF1C2A /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C486BDF41BF587B800EF1C2A /* SettingsViewController.xib */; };
+		C486FD2D1C044223009F1F90 /* NewAddStepView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C486FD2C1C044223009F1F90 /* NewAddStepView.xib */; };
+		C486FD451C04430A009F1F90 /* Align.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD2F1C04430A009F1F90 /* Align.swift */; };
+		C486FD461C04430A009F1F90 /* Coefficients.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD311C04430A009F1F90 /* Coefficients.swift */; };
+		C486FD471C04430A009F1F90 /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD321C04430A009F1F90 /* Compound.swift */; };
+		C486FD481C04430A009F1F90 /* Constrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD331C04430A009F1F90 /* Constrain.swift */; };
+		C486FD491C04430A009F1F90 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD341C04430A009F1F90 /* Constraint.swift */; };
+		C486FD4A1C04430A009F1F90 /* ConstraintGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD351C04430A009F1F90 /* ConstraintGroup.swift */; };
+		C486FD4B1C04430A009F1F90 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD361C04430A009F1F90 /* Context.swift */; };
+		C486FD4C1C04430A009F1F90 /* Dimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD371C04430A009F1F90 /* Dimension.swift */; };
+		C486FD4D1C04430A009F1F90 /* Distribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD381C04430A009F1F90 /* Distribute.swift */; };
+		C486FD4E1C04430A009F1F90 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD391C04430A009F1F90 /* Edge.swift */; };
+		C486FD4F1C04430A009F1F90 /* Edges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD3A1C04430A009F1F90 /* Edges.swift */; };
+		C486FD501C04430A009F1F90 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD3B1C04430A009F1F90 /* Expression.swift */; };
+		C486FD511C04430A009F1F90 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD3C1C04430A009F1F90 /* Extensions.swift */; };
+		C486FD531C04430A009F1F90 /* LayoutProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD3E1C04430A009F1F90 /* LayoutProxy.swift */; };
+		C486FD541C04430A009F1F90 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD3F1C04430A009F1F90 /* Point.swift */; };
+		C486FD551C04430A009F1F90 /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD401C04430A009F1F90 /* Priority.swift */; };
+		C486FD561C04430A009F1F90 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD411C04430A009F1F90 /* Property.swift */; };
+		C486FD571C04430A009F1F90 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD421C04430A009F1F90 /* Size.swift */; };
+		C486FD581C04430A009F1F90 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD431C04430A009F1F90 /* View.swift */; };
+		C486FD591C04430A009F1F90 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD441C04430A009F1F90 /* ViewUtils.swift */; };
+		C486FD5B1C0443E8009F1F90 /* NewAddStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C486FD5A1C0443E8009F1F90 /* NewAddStepViewController.swift */; };
 		C488B4781BFD9E8D00C735EC /* LogOrRegModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488B4701BFD9E8D00C735EC /* LogOrRegModel.swift */; };
 		C488B4791BFD9E8D00C735EC /* LogOrRegViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488B4711BFD9E8D00C735EC /* LogOrRegViewController.swift */; };
 		C488B47A1BFD9E8D00C735EC /* NicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488B4721BFD9E8D00C735EC /* NicknameViewController.swift */; };
@@ -235,10 +259,10 @@
 		C488B48B1BFDA06700C735EC /* BindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488B4871BFDA06700C735EC /* BindEmailViewController.swift */; };
 		C488B48C1BFDA06700C735EC /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488B4881BFDA06700C735EC /* EditProfileViewController.swift */; };
 		C488B48D1BFDA06700C735EC /* NewSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488B4891BFDA06700C735EC /* NewSettingViewController.swift */; };
-		C48A517E1BE9EA18002CA928 /* AutoKeyboardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48A517D1BE9EA18002CA928 /* AutoKeyboardScrollView.swift */; };
 		C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */; };
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
 		C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C492D6191B4D10E800EEA71F /* PetCell.xib */; };
+		C49A57151C0C525C008D0780 /* AddStepModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A57141C0C525C008D0780 /* AddStepModel.swift */; };
 		C49E53FD1B5247B90048CF89 /* ImModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E53FC1B5247B90048CF89 /* ImModel.swift */; };
 		C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A350BE1B6B6BEE00E8AF10 /* Security.framework */; };
 		C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -510,6 +534,8 @@
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepCollectionCell.swift; sourceTree = "<group>"; };
+		C46A7ABF1C088D6900D8C669 /* AddStepCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCollectionCell.xib; sourceTree = "<group>"; };
 		C470B22D1B94024A00863821 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		C470B22F1B94029E00863821 /* LikeCount.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LikeCount.plist; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
@@ -526,6 +552,29 @@
 		C486BDEB1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesSummaryModel.swift; sourceTree = "<group>"; };
 		C486BDF31BF587B800EF1C2A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C486BDF41BF587B800EF1C2A /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		C486FD2C1C044223009F1F90 /* NewAddStepView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAddStepView.xib; sourceTree = "<group>"; };
+		C486FD2F1C04430A009F1F90 /* Align.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Align.swift; sourceTree = "<group>"; };
+		C486FD301C04430A009F1F90 /* Cartography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cartography.h; sourceTree = "<group>"; };
+		C486FD311C04430A009F1F90 /* Coefficients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coefficients.swift; sourceTree = "<group>"; };
+		C486FD321C04430A009F1F90 /* Compound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
+		C486FD331C04430A009F1F90 /* Constrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constrain.swift; sourceTree = "<group>"; };
+		C486FD341C04430A009F1F90 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		C486FD351C04430A009F1F90 /* ConstraintGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintGroup.swift; sourceTree = "<group>"; };
+		C486FD361C04430A009F1F90 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
+		C486FD371C04430A009F1F90 /* Dimension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dimension.swift; sourceTree = "<group>"; };
+		C486FD381C04430A009F1F90 /* Distribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
+		C486FD391C04430A009F1F90 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		C486FD3A1C04430A009F1F90 /* Edges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edges.swift; sourceTree = "<group>"; };
+		C486FD3B1C04430A009F1F90 /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
+		C486FD3C1C04430A009F1F90 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C486FD3E1C04430A009F1F90 /* LayoutProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutProxy.swift; sourceTree = "<group>"; };
+		C486FD3F1C04430A009F1F90 /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		C486FD401C04430A009F1F90 /* Priority.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
+		C486FD411C04430A009F1F90 /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
+		C486FD421C04430A009F1F90 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		C486FD431C04430A009F1F90 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		C486FD441C04430A009F1F90 /* ViewUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
+		C486FD5A1C0443E8009F1F90 /* NewAddStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddStepViewController.swift; sourceTree = "<group>"; };
 		C488B4701BFD9E8D00C735EC /* LogOrRegModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOrRegModel.swift; sourceTree = "<group>"; };
 		C488B4711BFD9E8D00C735EC /* LogOrRegViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOrRegViewController.swift; sourceTree = "<group>"; };
 		C488B4721BFD9E8D00C735EC /* NicknameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicknameViewController.swift; sourceTree = "<group>"; };
@@ -538,13 +587,13 @@
 		C488B4871BFDA06700C735EC /* BindEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindEmailViewController.swift; sourceTree = "<group>"; };
 		C488B4881BFDA06700C735EC /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		C488B4891BFDA06700C735EC /* NewSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSettingViewController.swift; sourceTree = "<group>"; };
-		C48A517D1BE9EA18002CA928 /* AutoKeyboardScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoKeyboardScrollView.swift; sourceTree = "<group>"; };
 		C48ACB851B958597009A9C30 /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
 		C48FBCDA1B4A5B2A007E0BF9 /* NSString+NSHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSHash.h"; sourceTree = "<group>"; };
 		C48FBCDB1B4A5B2A007E0BF9 /* NSString+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSHash.m"; sourceTree = "<group>"; };
 		C48FBCDC1B4A5B2A007E0BF9 /* NSData+NSHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NSHash.h"; sourceTree = "<group>"; };
 		C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+NSHash.m"; sourceTree = "<group>"; };
 		C492D6191B4D10E800EEA71F /* PetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PetCell.xib; sourceTree = "<group>"; };
+		C49A57141C0C525C008D0780 /* AddStepModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepModel.swift; sourceTree = "<group>"; };
 		C49E53FC1B5247B90048CF89 /* ImModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImModel.swift; sourceTree = "<group>"; };
 		C4A350BE1B6B6BEE00E8AF10 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C4A350C11B6B6C5200E8AF10 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
@@ -1043,6 +1092,11 @@
 				12D846061A233F46005DCC08 /* AddStep.xib */,
 				12D846081A2340DC005DCC08 /* AddStep.swift */,
 				129375181A236E8B001F7442 /* AddStepCell.xib */,
+				C486FD5A1C0443E8009F1F90 /* NewAddStepViewController.swift */,
+				C486FD2C1C044223009F1F90 /* NewAddStepView.xib */,
+				C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */,
+				C46A7ABF1C088D6900D8C669 /* AddStepCollectionCell.xib */,
+				C49A57141C0C525C008D0780 /* AddStepModel.swift */,
 			);
 			name = "更新进展";
 			sourceTree = "<group>";
@@ -1221,6 +1275,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C486FD2E1C04430A009F1F90 /* Cartography */,
 				12F678A41BAD5519009EADC0 /* Reachability */,
 				129B9EF81BA2AFD800E5B25A /* WeiboSharing */,
 				12C96DE81A6F7B3300B0E327 /* WeChatSharing */,
@@ -1261,7 +1316,6 @@
 				122AFE021A80864800464641 /* SqliteData.swift */,
 				C448F55D1B93F9F200214984 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
-				C48A517D1BE9EA18002CA928 /* AutoKeyboardScrollView.swift */,
 				C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */,
 				C4CA84D31BD8C7B00075B075 /* SwiftyJSON.swift */,
 			);
@@ -1413,6 +1467,34 @@
 			name = ActivitiesSummary;
 			sourceTree = "<group>";
 		};
+		C486FD2E1C04430A009F1F90 /* Cartography */ = {
+			isa = PBXGroup;
+			children = (
+				C486FD2F1C04430A009F1F90 /* Align.swift */,
+				C486FD301C04430A009F1F90 /* Cartography.h */,
+				C486FD311C04430A009F1F90 /* Coefficients.swift */,
+				C486FD321C04430A009F1F90 /* Compound.swift */,
+				C486FD331C04430A009F1F90 /* Constrain.swift */,
+				C486FD341C04430A009F1F90 /* Constraint.swift */,
+				C486FD351C04430A009F1F90 /* ConstraintGroup.swift */,
+				C486FD361C04430A009F1F90 /* Context.swift */,
+				C486FD371C04430A009F1F90 /* Dimension.swift */,
+				C486FD381C04430A009F1F90 /* Distribute.swift */,
+				C486FD391C04430A009F1F90 /* Edge.swift */,
+				C486FD3A1C04430A009F1F90 /* Edges.swift */,
+				C486FD3B1C04430A009F1F90 /* Expression.swift */,
+				C486FD3C1C04430A009F1F90 /* Extensions.swift */,
+				C486FD3E1C04430A009F1F90 /* LayoutProxy.swift */,
+				C486FD3F1C04430A009F1F90 /* Point.swift */,
+				C486FD401C04430A009F1F90 /* Priority.swift */,
+				C486FD411C04430A009F1F90 /* Property.swift */,
+				C486FD421C04430A009F1F90 /* Size.swift */,
+				C486FD431C04430A009F1F90 /* View.swift */,
+				C486FD441C04430A009F1F90 /* ViewUtils.swift */,
+			);
+			path = Cartography;
+			sourceTree = "<group>";
+		};
 		C48AD9D61B5CFD4C00E25627 /* UIImageExt */ = {
 			isa = PBXGroup;
 			children = (
@@ -1484,6 +1566,7 @@
 				12FB4897196AE76E0026DD51 /* Resources */,
 				A03E82B98D764E7A98CDF854 /* Copy Pods Resources */,
 				C42B04BE1B213F87002B8E69 /* Swift Style Check Script */,
+				9CE91EAC6D1C1073123A00FD /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1592,6 +1675,7 @@
 				12245DAA1B95868000D831AC /* TopicCommentCellHeader.xib in Resources */,
 				124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */,
 				C486BDF61BF587B800EF1C2A /* SettingsViewController.xib in Resources */,
+				C486FD2D1C044223009F1F90 /* NewAddStepView.xib in Resources */,
 				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
 				C470B22E1B94024A00863821 /* PushConfig.plist in Resources */,
 				128470741BF1F3BC007E235C /* PlanktonCell.xib in Resources */,
@@ -1611,6 +1695,7 @@
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
+				C46A7AC11C088D6900D8C669 /* AddStepCollectionCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
 				C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */,
@@ -1660,6 +1745,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		9CE91EAC6D1C1073123A00FD /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A03E82B98D764E7A98CDF854 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1701,22 +1801,26 @@
 				C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
+				C486FD451C04430A009F1F90 /* Align.swift in Sources */,
 				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12776A0F1BCE5F3A00745811 /* File.swift in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
 				C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
+				C486FD581C04430A009F1F90 /* View.swift in Sources */,
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
+				C486FD561C04430A009F1F90 /* Property.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */,
 				C488B47C1BFD9E8D00C735EC /* PrivacyViewController.swift in Sources */,
 				12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				12F65C111B65084A0051A914 /* PetTableViewSetup.swift in Sources */,
+				C486FD4E1C04430A009F1F90 /* Edge.swift in Sources */,
 				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */,
 				C486BDF51BF587B800EF1C2A /* SettingsViewController.swift in Sources */,
@@ -1738,7 +1842,7 @@
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
-				C48A517E1BE9EA18002CA928 /* AutoKeyboardScrollView.swift in Sources */,
+				C486FD511C04430A009F1F90 /* Extensions.swift in Sources */,
 				129492841AD9329D000E7461 /* MKLayer.swift in Sources */,
 				C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
@@ -1753,6 +1857,7 @@
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
 				12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */,
 				C4E1DCD31BF992E2008896AB /* MyLikeNoteViewController.swift in Sources */,
+				C486FD471C04430A009F1F90 /* Compound.swift in Sources */,
 				120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
 				C4CA84D41BD8C7B00075B075 /* SwiftyJSON.swift in Sources */,
@@ -1760,6 +1865,7 @@
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				C488B4781BFD9E8D00C735EC /* LogOrRegModel.swift in Sources */,
 				12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */,
+				C486FD591C04430A009F1F90 /* ViewUtils.swift in Sources */,
 				C488B47A1BFD9E8D00C735EC /* NicknameViewController.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12ABFD2B1B9C1EAE00E2870C /* AddReddit + UIGesture.swift in Sources */,
@@ -1797,11 +1903,13 @@
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
 				128470721BF1F36D007E235C /* PlanktonCell.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
+				C486FD4A1C04430A009F1F90 /* ConstraintGroup.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,
 				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
 				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				C488B4791BFD9E8D00C735EC /* LogOrRegViewController.swift in Sources */,
+				C486FD501C04430A009F1F90 /* Expression.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
@@ -1819,12 +1927,14 @@
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
 				12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */,
+				C486FD4D1C04430A009F1F90 /* Distribute.swift in Sources */,
 				12ABFD291B9C1DEC00E2870C /* AddReddit + UIScrollView.swift in Sources */,
 				1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */,
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				C488B47F1BFD9E8D00C735EC /* WelcomeViewController.swift in Sources */,
 				C49E53FD1B5247B90048CF89 /* ImModel.swift in Sources */,
+				C486FD551C04430A009F1F90 /* Priority.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
 				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
@@ -1836,6 +1946,9 @@
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				122A3F7C1BA13E9500C2FE67 /* Vote.swift in Sources */,
+				C486FD5B1C0443E8009F1F90 /* NewAddStepViewController.swift in Sources */,
+				C486FD531C04430A009F1F90 /* LayoutProxy.swift in Sources */,
+				C486FD491C04430A009F1F90 /* Constraint.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
@@ -1849,22 +1962,31 @@
 				12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */,
 				C486BDEC1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift in Sources */,
 				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
+				C486FD4B1C04430A009F1F90 /* Context.swift in Sources */,
 				12245DA61B95849900D831AC /* TopicComment + UITextField.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
+				C49A57151C0C525C008D0780 /* AddStepModel.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
 				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
+				C486FD4C1C04430A009F1F90 /* Dimension.swift in Sources */,
+				C486FD4F1C04430A009F1F90 /* Edges.swift in Sources */,
 				C486BDEA1BF477E800EF1C2A /* ActivitiesViewController.swift in Sources */,
 				128F63BD1AAFEC7400E4835E /* CircleImageCell.swift in Sources */,
 				12D846011A2318A6005DCC08 /* Reachability.m in Sources */,
 				12F65C131B65098F0051A914 /* Level.swift in Sources */,
 				120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */,
 				12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */,
+				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
+				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
+				C486FD481C04430A009F1F90 /* Constrain.swift in Sources */,
+				C46A7AC01C088D6900D8C669 /* AddStepCollectionCell.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,
+				C486FD461C04430A009F1F90 /* Coefficients.swift in Sources */,
 				C488B48B1BFDA06700C735EC /* BindEmailViewController.swift in Sources */,
 				12A4910B198EB56D000B6D5E /* Me.swift in Sources */,
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,

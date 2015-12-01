@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewAddStepViewController" customModule="Nian_iOS" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="pUM-4n-Hrl" id="0OH-hi-6ho"/>
+                <outlet property="contentTextView" destination="cE1-oB-Mve" id="V3a-fh-GVq"/>
+                <outlet property="contentView" destination="LBS-nn-c8A" id="IEp-oN-uEX"/>
+                <outlet property="contentViewHeightConstraint" destination="uIO-5a-Zau" id="i9m-uf-NeA"/>
+                <outlet property="scrollView" destination="QCy-Ga-BCg" id="OMS-Rx-VYN"/>
+                <outlet property="sp1HeightConstraint" destination="ZLP-w7-Y8B" id="CL8-ot-G0r"/>
+                <outlet property="textViewHeightConstraint" destination="RbA-GZ-dhC" id="3nC-00-LHh"/>
+                <outlet property="view" destination="iN0-l3-epB" id="IGF-EY-DZp"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UIControl">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCy-Ga-BCg">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBS-nn-c8A">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <subviews>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-4n-Hrl">
+                                    <rect key="frame" x="16" y="16" width="568" height="0.0"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <collectionViewLayout key="collectionViewLayout" id="W1M-G5-FMV" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="FXj-yT-0is"/>
+                                        <outlet property="delegate" destination="-1" id="LlO-F2-6gb"/>
+                                    </connections>
+                                </collectionView>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cE1-oB-Mve" customClass="SZTextView" customModule="Nian_iOS" customModuleProvider="target">
+                                    <rect key="frame" x="16" y="32" width="568" height="508"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.99215686270000003" green="0.70980392160000005" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="508" id="RbA-GZ-dhC"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JdC-sX-3ef">
+                                    <rect key="frame" x="16" y="556" width="568" height="44"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELL-KP-j0L">
+                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                            <animations/>
+                                            <state key="normal" image="img"/>
+                                            <connections>
+                                                <action selector="pickerImages:" destination="-1" eventType="touchUpInside" id="LOq-GV-Izp"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="rw2-z4-fh3"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfv-Tg-TgG">
+                                    <rect key="frame" x="0.0" y="599" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.99215686270000003" green="0.70980392160000005" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="ZLP-w7-Y8B"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstItem="pUM-4n-Hrl" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="16" id="0Cc-ci-QPl"/>
+                                <constraint firstAttribute="trailing" secondItem="nfv-Tg-TgG" secondAttribute="trailing" id="354-By-jg8"/>
+                                <constraint firstItem="pUM-4n-Hrl" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="5wd-fk-9za"/>
+                                <constraint firstItem="cE1-oB-Mve" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="E7X-ve-Gyd"/>
+                                <constraint firstAttribute="trailing" secondItem="cE1-oB-Mve" secondAttribute="trailing" constant="16" id="F3a-Kb-xo5"/>
+                                <constraint firstItem="nfv-Tg-TgG" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" id="Rge-rA-eM0"/>
+                                <constraint firstItem="JdC-sX-3ef" firstAttribute="top" secondItem="cE1-oB-Mve" secondAttribute="bottom" constant="16" id="SiE-ns-Lpy"/>
+                                <constraint firstAttribute="trailing" secondItem="pUM-4n-Hrl" secondAttribute="trailing" constant="16" id="eaQ-aA-bbN"/>
+                                <constraint firstItem="nfv-Tg-TgG" firstAttribute="top" secondItem="JdC-sX-3ef" secondAttribute="bottom" constant="-1" id="ha6-Tf-Es5"/>
+                                <constraint firstAttribute="bottom" secondItem="nfv-Tg-TgG" secondAttribute="bottom" id="osq-8h-kyD"/>
+                                <constraint firstAttribute="trailing" secondItem="JdC-sX-3ef" secondAttribute="trailing" constant="16" id="q6I-r7-4fq"/>
+                                <constraint firstItem="cE1-oB-Mve" firstAttribute="top" secondItem="pUM-4n-Hrl" secondAttribute="bottom" constant="16" id="qOn-3K-f2u"/>
+                                <constraint firstItem="JdC-sX-3ef" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="wYA-El-5H8"/>
+                            </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="lgN-BB-0pn" appends="YES" id="gKG-xs-2RJ"/>
+                            </connections>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="LBS-nn-c8A" firstAttribute="leading" secondItem="QCy-Ga-BCg" secondAttribute="leading" id="8zZ-MQ-DZF"/>
+                        <constraint firstItem="LBS-nn-c8A" firstAttribute="top" secondItem="QCy-Ga-BCg" secondAttribute="top" id="Lnc-ca-eaL"/>
+                        <constraint firstAttribute="trailing" secondItem="LBS-nn-c8A" secondAttribute="trailing" id="VFh-UL-A9n"/>
+                        <constraint firstAttribute="bottom" secondItem="LBS-nn-c8A" secondAttribute="bottom" id="Wvo-5h-O2d"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="nNH-eo-PtG"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="QCy-Ga-BCg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="MpJ-pT-nvw"/>
+                <constraint firstItem="QCy-Ga-BCg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="SsO-s6-HBM"/>
+                <constraint firstItem="LBS-nn-c8A" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="dRr-XK-LQj"/>
+                <constraint firstAttribute="trailing" secondItem="QCy-Ga-BCg" secondAttribute="trailing" id="myJ-UF-w4c"/>
+                <constraint firstAttribute="bottom" secondItem="QCy-Ga-BCg" secondAttribute="bottom" id="qHj-Co-Thl"/>
+                <constraint firstItem="LBS-nn-c8A" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" priority="750" id="uIO-5a-Zau"/>
+            </constraints>
+            <connections>
+                <action selector="tapOnBackground:" destination="-1" eventType="valueChanged" id="YbO-Zo-Kls"/>
+            </connections>
+            <point key="canvasLocation" x="228" y="813"/>
+        </view>
+        <tapGestureRecognizer id="lgN-BB-0pn">
+            <connections>
+                <action selector="tapOnContentView:" destination="-1" id="K4x-t7-WhP"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="img" width="21" height="17"/>
+    </resources>
+</document>
