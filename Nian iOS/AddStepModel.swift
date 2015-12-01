@@ -8,8 +8,25 @@
 
 import UIKit
 
+
+enum StepType: Int {
+    case attendance = 1
+    case voiceMessage
+    case multiPicWithText
+    case multiPicWithoutText
+    case singlePicWithText
+    case singlePicWithoutText
+    case text
+}
+
+
+
 class AddStepModel: NSObject {
 
+    
+    
+    
+    
     
     
     
