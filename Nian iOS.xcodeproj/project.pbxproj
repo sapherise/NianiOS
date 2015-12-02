@@ -205,6 +205,7 @@
 		C43680161BDA411C00D51516 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43680151BDA411C00D51516 /* CustomButton.swift */; };
 		C43B604C1BDE11AA0022CB32 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C43B604B1BDE11AA0022CB32 /* libiconv.tbd */; };
 		C43B604E1BDE11CA0022CB32 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C43B604D1BDE11CA0022CB32 /* libstdc++.tbd */; };
+		C441D8D31C0F2E8A00C8828B /* VVImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C441D8D21C0F2E8A00C8828B /* VVImageView.swift */; };
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C46A7AC01C088D6900D8C669 /* AddStepCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */; };
@@ -529,6 +530,7 @@
 		C43680151BDA411C00D51516 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		C43B604B1BDE11AA0022CB32 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		C43B604D1BDE11CA0022CB32 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		C441D8D21C0F2E8A00C8828B /* VVImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVImageView.swift; sourceTree = "<group>"; };
 		C448F55D1B93F9F200214984 /* APService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 				120B6DC71BD2265500422B86 /* VVeboViewController.swift */,
 				12776A0C1BCE54EA00745811 /* VVeboTableView.swift */,
 				12776A0A1BCE4C5A00745811 /* VVeboCell.swift */,
+				C441D8D21C0F2E8A00C8828B /* VVImageView.swift */,
 				12F65C0A1B64F5AE0051A914 /* SAViewController.swift */,
 				126FB4721B574EDB0056221C /* SAActivityViewController.swift */,
 				1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */,
@@ -1906,6 +1909,7 @@
 				C486FD4A1C04430A009F1F90 /* ConstraintGroup.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,
+				C441D8D31C0F2E8A00C8828B /* VVImageView.swift in Sources */,
 				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
 				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				C488B4791BFD9E8D00C735EC /* LogOrRegViewController.swift in Sources */,

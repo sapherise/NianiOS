@@ -8,6 +8,8 @@
 
 import UIKit
 
+public let NIUploadImagesCompletionNotification: String = "NIUploadImagesCompletionNotification"
+
 @objc protocol NewAddStepDelegate {
     func newEditstep()
     optional func newCountUp(coin: String, isfirst: String)
@@ -51,6 +53,8 @@ class NewAddStepViewController: SAViewController {
     var imagesDataSource = NSMutableArray()
     var imagesArray = Array<UIImage>()
     var imagesInfo = NSMutableArray()
+    
+    private var uploadAllImagesSuccess = false
     
     var regularCellSize = CGSizeMake((globalWidth - 32 - 4)/3, (globalWidth - 32 - 4)/3)
     var largerCellSize  = CGSizeMake((globalWidth - ((globalWidth - 32 - 4)/3) - 32 - 2), (globalWidth - 32 - 4)/3)
@@ -110,6 +114,8 @@ class NewAddStepViewController: SAViewController {
         
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        
+        notificationCenter.addObserver(self, selector: "handleImagesUploadCompletion:", name: NIUploadImagesCompletionNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -132,6 +138,8 @@ class NewAddStepViewController: SAViewController {
         
         notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        
+        notificationCenter.removeObserver(self, name: NIUploadImagesCompletionNotification, object: nil)
     }
     
     func textViewHeight() -> CGFloat {
@@ -171,6 +179,15 @@ class NewAddStepViewController: SAViewController {
         self.presentViewController(imagePickerVC, animated: true, completion: nil)
     }
     
+    func uploadEditStep() {
+        
+        
+        
+        
+        
+        
+    }
+    
     func uploadNewStep() {
         if self.imagesArray.count == 0 {
             if self.contentTextView.text == "" {
@@ -192,15 +209,15 @@ class NewAddStepViewController: SAViewController {
             }
         }
         
+        self.dismissKeyboard()
+        
         self.startAnimating()
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            
             if self.imagesArray.count > 0 {
                 
                 let opQueue = NSOperationQueue()
                 opQueue.maxConcurrentOperationCount = 1
-                
                 
                 let _uid = CurrentUser.sharedCurrentUser.uid!
                 
@@ -210,37 +227,40 @@ class NewAddStepViewController: SAViewController {
                         let _date = Int(NSDate().timeIntervalSince1970)
                         let saveKey = "/step/\(_uid)_\(_date).png"
                         
+                        NSThread.sleepForTimeInterval(1)
+
                         self.uploadImageHelper(image: _image, saveKey: saveKey)
                     })
                     
                     opQueue.addOperations([op], waitUntilFinished: true)
                 }
-            }
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 
-                AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType!, images: self.imagesInfo, dreamId: self.dreamId, callback: {
-                    (task, responseObject, error) -> Void in
-                    
-                    self.stopAnimating()
-                    
-                    if let _ = error {
-                        self.view.showTipText("发布进展不成功")
-                    } else {
-                        let json = JSON(responseObject!)
-                        
-                        if json["error"].numberValue.integerValue != 0 {
-                            self.view.showTipText("发布进展不成功")
-                        } else {
-                            self.addStepSuccessHelper(json: json)
-                            
-                        }
-                        
-                    }
-                    
-                }) // AddStepModel.postAddStep
-            })
+            }
         }
+
     }
+    
+    func handleImagesUploadCompletion(noti: NSNotification) {
+        AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType!, images: self.imagesInfo, dreamId: self.dreamId, callback: {
+            (task, responseObject, error) -> Void in
+            
+            self.stopAnimating()
+            
+            if let _ = error {
+                self.view.showTipText("发布进展不成功")
+            } else {
+                let json = JSON(responseObject!)
+                
+                if json["error"].numberValue.integerValue != 0 {
+                    self.view.showTipText("发布进展不成功")
+                } else {
+                    self.addStepSuccessHelper(json: json)
+                    
+                }
+            }
+        }) // AddStepModel.postAddStep
+    }
+    
     
     func uploadImageHelper(image image: UIImage, saveKey: String) {
         
@@ -256,6 +276,13 @@ class NewAddStepViewController: SAViewController {
             
             synchronized(self.imagesInfo, closure: { () -> () in
                 self.imagesInfo.addObject(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])
+                logInfo("\(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])")
+                
+                if self.imagesInfo.count == self.imagesArray.count {
+                    self.uploadAllImagesSuccess = true
+                    NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)
+                }
+                
             })
             
             SDImageCache.sharedImageCache().storeImage(image, forKey: "http://img.nian.so/step/\(imageUrl)!large")
@@ -271,10 +298,52 @@ class NewAddStepViewController: SAViewController {
     }
     
     func addStepSuccessHelper(json json: JSON) {
+        logInfo("\(json)")
         
+        globalWillNianReload = 1
         
+        let data = json["data"].dictionaryValue
+        let coin = data["coin"]?.stringValue
+        let isfirst = data["isfirst"]?.stringValue
+        let totalCoin = data["totalCoin"]?.stringValue
+        let sid = data["id"]?.stringValue
         
-    
+        let modeCard = SACookie("modeCard")
+        
+        if modeCard != "off" {
+            let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+            card.content = self.contentTextView.text
+//            card.widthImage = self.uploadWidth
+//            card.heightImage = self.uploadHeight
+//            card.url = "http://img.nian.so/step/\(self.uploadUrl)!large"
+            card.onCardSave()
+        }
+        
+        let d = NSMutableDictionary()
+        d["content"] = self.contentTextView.text
+        d["images"] = self.imagesArray
+        d["width"] = self.collectionView.frame.width
+        d["height"] = self.collectionView.frame.height
+        d["lastdate"] = V.now()
+        d["comments"] = 0
+        d["likes"] = 0
+        d["liked"] = 0
+        d["dream"] = self.dreamId
+        d["sid"] = sid
+        d["title"] = ""
+        d["uid"] = CurrentUser.sharedCurrentUser.uid!
+        
+        if let user = Cookies.get("user") as? String {
+            d["user"] = user
+        } else {
+            d["user"] = ""
+        }
+        
+        self.delegate?.newCountUp!(coin!, total: totalCoin!, isfirst: isfirst!)
+        self.delegate?.newUpdate!(VVeboCell.SACellDataRecode(d as NSDictionary))
+        //
+        self.navigationController?.popViewControllerAnimated(true)
+        
     }
     
 }
