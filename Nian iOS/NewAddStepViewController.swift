@@ -322,8 +322,14 @@ class NewAddStepViewController: SAViewController {
         let d = NSMutableDictionary()
         d["content"] = self.contentTextView.text
         d["images"] = self.imagesArray
-        d["width"] = self.collectionView.frame.width
-        d["height"] = self.collectionView.frame.height
+        
+        if self.imagesArray.count == 1 {
+            d["width"] = self.imagesArray[0].size.width
+            d["height"] = self.imagesArray[0].size.height
+        } else {
+            d["width"] = self.collectionView.frame.width
+            d["height"] = self.collectionView.frame.height
+        }
         d["lastdate"] = V.now()
         d["comments"] = 0
         d["likes"] = 0

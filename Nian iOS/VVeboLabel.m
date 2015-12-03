@@ -452,12 +452,6 @@ static inline NSRegularExpression * AccountRegularExpression() {
                     return YES;
                 }
             }
-//            matches = [TopicRegularExpression() matchesInString:self.text options:0 range:NSMakeRange(0, self.text.length)];
-//            for(NSTextCheckingResult* match in matches) {
-//                if (range.location!=-1 && range.location>=match.range.location && range.length+range.location<=match.range.length+match.range.location) {
-//                    return YES;
-//                }
-//            }
         }
     }
     return NO;

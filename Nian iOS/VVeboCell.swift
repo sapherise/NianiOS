@@ -86,7 +86,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var postBGView: UIImageView!
     var imageHead: UIImageView!
     var imageHeadCover: UIImageView!
-    var imageHolder: UIImageView!
+    var imageHolder: VVImageView!
     var labelComment: UILabel!
     var labelLike: UILabel!
     var btnMore: UIButton!
@@ -126,7 +126,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         contentView.addSubview(imageHeadCover)
         
         // 添加配图
-        imageHolder = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
+        imageHolder = VVImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
         imageHolder.backgroundColor = IconColor
         contentView.addSubview(imageHolder)
         
@@ -430,8 +430,15 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     func drawThumb() {
         let heightImage = data["heightImage"] as! CGFloat
         let urlImage = data.stringAttributeForKey("image")
+        
+        let array = data["images"] as! NSArray
+        
         if heightImage > 0 {
             imageHolder.setHeight(heightImage)
+            
+            imageHolder.imagesDataSource = NSMutableArray(array: array)
+            imageHolder.sid = data.stringAttributeForKey("sid")
+            
             imageHolder.hidden = false
             imageHolder.setImage("http://img.nian.so/step/\(urlImage)!large")
         }
@@ -574,11 +581,13 @@ extension VVeboCell: NewAddStepDelegate {
     }
 
 
+}
 
 
+extension VVeboCell: VVImageViewDelegate {
 
 
-
+    
 
 
 
@@ -587,20 +596,6 @@ extension VVeboCell: NewAddStepDelegate {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -32,7 +32,7 @@
                                     <rect key="frame" x="16" y="16" width="568" height="0.0"/>
                                     <animations/>
                                     <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <collectionViewLayout key="collectionViewLayout" id="W1M-G5-FMV" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
+                                    <collectionViewLayout key="collectionViewLayout" id="jxK-mY-e16" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
                                     <connections>
                                         <outlet property="dataSource" destination="-1" id="FXj-yT-0is"/>
                                         <outlet property="delegate" destination="-1" id="LlO-F2-6gb"/>
