@@ -35,11 +35,14 @@ class AddStepModel: NSObject {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!
         
+        
+        let jsonString = try! NSJSONSerialization.dataWithJSONObject(images, options: NSJSONWritingOptions.PrettyPrinted)
+        let imagesString = NSString(data: jsonString, encoding: NSUTF8StringEncoding)!
+        
         NianNetworkClient.sharedNianNetworkClient.post(
             "dream/\(dreamId)/step/create?uid=\(_uid)&&shell=\(_shell)",
-            content: ["content": content, "type": "\(stepType.rawValue)", "images": "\(images)"],
+            content: ["content": content, "type": "\(stepType.rawValue)", "images": "\(imagesString)"],
             callback: callback)
-        
     }
     
     

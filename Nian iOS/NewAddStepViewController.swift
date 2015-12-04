@@ -321,7 +321,7 @@ class NewAddStepViewController: SAViewController {
         
         let d = NSMutableDictionary()
         d["content"] = self.contentTextView.text
-        d["images"] = self.imagesArray
+        d["images"] = self.imagesInfo
         
         if self.imagesArray.count == 1 {
             d["width"] = self.imagesArray[0].size.width
@@ -338,6 +338,7 @@ class NewAddStepViewController: SAViewController {
         d["sid"] = sid
         d["title"] = ""
         d["uid"] = CurrentUser.sharedCurrentUser.uid!
+        d["type"] = String(self.stepType!.rawValue)
         
         if let user = Cookies.get("user") as? String {
             d["user"] = user
@@ -528,6 +529,12 @@ extension NewAddStepViewController: UIScrollViewDelegate {
         self.dismissKeyboard()
     }
     
+}
+
+
+extension NewAddStepViewController: UINavigationControllerDelegate {
+
+
 }
 
 /*=========================================================================================================================================*/

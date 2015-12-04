@@ -428,19 +428,30 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     }
     
     func drawThumb() {
-        let heightImage = data["heightImage"] as! CGFloat
-        let urlImage = data.stringAttributeForKey("image")
-        
         let array = data["images"] as! NSArray
+        let _type = Int(data["type"] as! String)
         
-        if heightImage > 0 {
-            imageHolder.setHeight(heightImage)
+        if _type == 5 || _type == 6 {
+            let heightImage = data["height"] as! CGFloat
+            let widthImage = data["width"] as! CGFloat
             
-            imageHolder.imagesDataSource = NSMutableArray(array: array)
-            imageHolder.sid = data.stringAttributeForKey("sid")
+            imageHolder.setHeight(floor(self.frame.size.width / widthImage * heightImage))
+        } else if _type == 3 || _type == 4 {
+            if array.count > 0 {
+                imageHolder.setHeight(imageHolder.calculateViewSize(array))
+            }
+        }
+        
+        imageHolder.imagesDataSource = NSMutableArray(array: array)
+        imageHolder.sid = data.stringAttributeForKey("sid")
+
+        imageHolder.hidden = false
+        imageHolder.setImage()
+        
+        imageHolder.imageSelectedHandler = { string in
             
-            imageHolder.hidden = false
-            imageHolder.setImage("http://img.nian.so/step/\(urlImage)!large")
+        
+        
         }
     }
     
@@ -586,14 +597,14 @@ extension VVeboCell: NewAddStepDelegate {
 
 extension VVeboCell: VVImageViewDelegate {
 
-
+    func vvimageView(vvimageView: VVImageView, updateProgressively progressively: Bool) {
+        self.imageHolder.image = vvimageView.image
+    }
     
-
-
-
-
-
-
+    
+    func vvimageView(vvimageView: VVImageView, loadCompletion completion: Bool) {
+        
+    }
 
 }
 

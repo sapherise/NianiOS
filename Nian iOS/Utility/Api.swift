@@ -222,7 +222,7 @@ struct Api {
     
     static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/v2/dream/\(id)/steps?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
     //GET /dream/{dream_id}/steps?page=2&sort=desc

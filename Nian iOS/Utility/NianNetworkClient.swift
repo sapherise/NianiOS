@@ -34,8 +34,9 @@ class NianNetworkClient: AFHTTPSessionManager {
     private init() {
         super.init(baseURL: nil, sessionConfiguration: nil)
         
-        /* 设置解析 server 返回的 json */
-        self.responseSerializer = AFJSONResponseSerializer()
+//        self.requestSerializer = AFJSONRequestSerializer()
+//        /* 设置解析 server 返回的 json */
+//        self.responseSerializer = AFJSONResponseSerializer()
     }
     
     required init?(coder aDecoder: NSCoder) {
