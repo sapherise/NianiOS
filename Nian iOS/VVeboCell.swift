@@ -86,7 +86,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var postBGView: UIImageView!
     var imageHead: UIImageView!
     var imageHeadCover: UIImageView!
-    var imageHolder: VVImageView!
+    var imageHolder: VVImageCollectionView!
     var labelComment: UILabel!
     var labelLike: UILabel!
     var btnMore: UIButton!
@@ -126,7 +126,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         contentView.addSubview(imageHeadCover)
         
         // 添加配图
-        imageHolder = VVImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
+        imageHolder = VVImageCollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0), collectionViewLayout: UICollectionViewFlowLayout())
         imageHolder.backgroundColor = IconColor
         contentView.addSubview(imageHolder)
         
@@ -163,13 +163,11 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         contentView.addSubview(btnLike)
         
         // 绑定事件
-        imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         imageHeadCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
         labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
         btnMore.addTarget(self, action: "onMoreClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
-        imageHolder.userInteractionEnabled = true
         imageHeadCover.userInteractionEnabled = true
         labelComment.userInteractionEnabled = true
         labelLike.userInteractionEnabled = true
@@ -235,18 +233,10 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         drawText()
         drawThumb()
         
-//        cell.layer.shouldRasterize = YES;
-//        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
         contentView.layer.shouldRasterize = true
         contentView.layer.rasterizationScale = globalScale
     }
-    
-    // 绑定事件
-    func onImage() {
-        let img = data.stringAttributeForKey("image")
-        imageHolder.showImage(V.urlStepImage(img, tag: .Large))
-    }
-    
+
     func onHead() {
         let uid = data.stringAttributeForKey("uid")
         let uidlike = data.stringAttributeForKey("uidlike")
@@ -322,6 +312,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 let addstepVC = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
                 addstepVC.isEdit = 1
                 addstepVC.data = self.data
+                addstepVC.data?.setValue(self.imageHolder.containImages, forKey: "imageArray")
                 addstepVC.row = row
                 addstepVC.delegate = self
                 self.findRootViewController()?.navigationController?.pushViewController(addstepVC, animated: true)
@@ -438,20 +429,20 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             imageHolder.setHeight(floor(self.frame.size.width / widthImage * heightImage))
         } else if _type == 3 || _type == 4 {
             if array.count > 0 {
-                imageHolder.setHeight(imageHolder.calculateViewSize(array))
+                imageHolder.setHeight(self.calculateCollectionViewHeight(array))
             }
         }
-        
-        imageHolder.imagesDataSource = NSMutableArray(array: array)
-        imageHolder.sid = data.stringAttributeForKey("sid")
-
-        imageHolder.hidden = false
-        imageHolder.setImage()
-        
-        imageHolder.imageSelectedHandler = { string in
+       
+        if array.count > 0 {
+            imageHolder.imagesDataSource = NSMutableArray(array: array)
+            imageHolder.sid = data.stringAttributeForKey("sid")
+            imageHolder.hidden = false
+            imageHolder.collectionViewLayout = self.calculateCollectionLayout(collectionView: imageHolder)
+            imageHolder.setImage()
             
-        
-        
+            imageHolder.imageSelectedHandler = { (string, indexPath) in
+                (self.imageHolder.cellForItemAtIndexPath(indexPath) as! VVImageViewCell).imageView.showImage("http://img.nian.so/step/\(string)!large")
+            }
         }
     }
     
@@ -526,7 +517,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         label?.removeFromSuperview()
         label = nil
         imageHolder.cancelImageRequestOperation()
-        imageHolder.image = nil
         imageHolder.hidden = true
         labelLike.hidden = true
         
@@ -595,20 +585,51 @@ extension VVeboCell: NewAddStepDelegate {
 }
 
 
-extension VVeboCell: VVImageViewDelegate {
-
-    func vvimageView(vvimageView: VVImageView, updateProgressively progressively: Bool) {
-        self.imageHolder.image = vvimageView.image
-    }
+extension VVeboCell {
     
-    
-    func vvimageView(vvimageView: VVImageView, loadCompletion completion: Bool) {
+    func calculateCollectionLayout(collectionView collectionView: VVImageCollectionView) -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
         
+        layout.minimumInteritemSpacing = 2.0
+        layout.minimumLineSpacing = 2.0
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        
+        let tmpCount = collectionView.imagesDataSource.count
+        
+        if tmpCount == 1 {
+            layout.itemSize = CGSizeMake(globalWidth - 32, globalWidth - 32)
+        } else if tmpCount == 2 || tmpCount == 4 {
+            let _tmp = floor((globalWidth - 32 - 2)/2)
+            layout.itemSize = CGSizeMake(_tmp, _tmp)
+        } else {
+            let _tmp = floor((globalWidth - 32 - 4) / 3)
+            layout.itemSize = CGSizeMake(_tmp, _tmp)
+        }
+        
+        return layout
     }
-
+    
+    func calculateCollectionViewHeight(dataSource: NSArray) -> CGFloat {
+        let tmpCount = dataSource.count
+        
+        if tmpCount == 1 {
+            return globalWidth - 32
+        } else if tmpCount == 2 {
+            return (globalWidth - 32 - 2) / 2
+        } else if tmpCount == 3 {
+            return (globalWidth - 32 - 4) / 3
+        } else if tmpCount == 4 {
+            return (globalWidth - 32)
+        } else if tmpCount == 5 || tmpCount == 6 {
+            let tmp = (globalWidth - 32 - 4) / 3
+            return tmp * 2 + 2
+        } else {
+            let tmp = (globalWidth - 32 - 4) / 3
+            return tmp * 3 + 4
+        }
+    }
+    
 }
-
-
 
 
 

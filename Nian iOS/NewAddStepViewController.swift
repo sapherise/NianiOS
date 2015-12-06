@@ -86,7 +86,7 @@ class NewAddStepViewController: SAViewController {
             self.setBarButtonImage("newOK", actionGesture: "uploadEditStep")
             self.contentTextView.text = self.data?.stringAttributeForKey("content").decode()
             
-            self.imagesArray.appendContentsOf(self.data?.objectForKey("images") as! Array)
+            self.imagesArray.appendContentsOf(self.data?.objectForKey("imageArray") as! [UIImage])
             
             let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
             
