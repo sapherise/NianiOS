@@ -52,6 +52,7 @@ class NewAddStepViewController: SAViewController {
     
     var imagesDataSource = NSMutableArray()
     var imagesArray = Array<UIImage>()
+    var imagesShouldUpload = NSDictionary()
     var imagesInfo = NSMutableArray()
     
     private var uploadAllImagesSuccess = false
@@ -179,16 +180,7 @@ class NewAddStepViewController: SAViewController {
         self.presentViewController(imagePickerVC, animated: true, completion: nil)
     }
     
-    func uploadEditStep() {
-        
-        
-        
-        
-        
-        
-    }
-    
-    func uploadNewStep() {
+    func setStepType() {
         if self.imagesArray.count == 0 {
             if self.contentTextView.text == "" {
                 self.stepType = StepType.attendance
@@ -208,6 +200,48 @@ class NewAddStepViewController: SAViewController {
                 self.stepType = StepType.singlePicWithText
             }
         }
+    }
+    
+    
+    func uploadEditStep() {
+        self.setStepType()
+        
+        self.dismissKeyboard()
+        
+        self.startAnimating()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+            if self.imagesArray.count > 0 {
+                
+                let opQueue = NSOperationQueue()
+                opQueue.maxConcurrentOperationCount = 1
+                
+                let _uid = CurrentUser.sharedCurrentUser.uid!
+                let _array = self.data?.objectForKey("imageArray") as! [UIImage]
+                
+                for _image: UIImage in self.imagesArray {
+                    if !_array.contains(_image) {
+                        let op = NSBlockOperation(block: { () -> Void in
+                            let _date = Int(NSDate().timeIntervalSince1970)
+                            let saveKey = "/step/\(_uid)_\(_date).png"
+                            
+                            NSThread.sleepForTimeInterval(1)
+                            
+                            self.uploadImageHelper(image: _image, saveKey: saveKey)
+                        })
+                        
+                        opQueue.addOperations([op], waitUntilFinished: true)
+                    }
+                }
+            } else {
+                self.uploadAllImagesSuccess = true
+                NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)
+            }
+        }
+    }
+    
+    func uploadNewStep() {
+        self.setStepType()
         
         self.dismissKeyboard()
         
@@ -234,31 +268,52 @@ class NewAddStepViewController: SAViewController {
                     
                     opQueue.addOperations([op], waitUntilFinished: true)
                 }
-                
+            } else {
+                self.uploadAllImagesSuccess = true
+                NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)
             }
         }
 
     }
     
     func handleImagesUploadCompletion(noti: NSNotification) {
-        AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType!, images: self.imagesInfo, dreamId: self.dreamId, callback: {
-            (task, responseObject, error) -> Void in
-            
-            self.stopAnimating()
-            
-            if let _ = error {
-                self.view.showTipText("发布进展不成功")
-            } else {
-                let json = JSON(responseObject!)
+        if self.isEdit == 0 {
+            AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType!, images: self.imagesInfo, dreamId: self.dreamId, callback: {
+                (task, responseObject, error) -> Void in
                 
-                if json["error"].numberValue.integerValue != 0 {
+                self.stopAnimating()
+                
+                if let _ = error {
                     self.view.showTipText("发布进展不成功")
                 } else {
-                    self.addStepSuccessHelper(json: json)
+                    let json = JSON(responseObject!)
                     
+                    if json["error"].numberValue.integerValue != 0 {
+                        self.view.showTipText("发布进展不成功")
+                    } else {
+                        self.addStepSuccessHelper(json: json)
+                    }
                 }
-            }
-        }) // AddStepModel.postAddStep
+            }) // AddStepModel.postAddStep
+        } else if self.isEdit == 1 {
+            AddStepModel.postEditStep(content: self.contentTextView.text, stepType: self.stepType!,images: self.imagesInfo, sid: self.data!.stringAttributeForKey("sid"),  callback: {
+                (task, responseObject, error) -> Void in
+                
+                self.stopAnimating()
+                
+                if let _ = error {
+                    self.view.showTipText("更新进展不成功")
+                } else {
+                    let json = JSON(responseObject!)
+                    
+                    if json["error"].numberValue.integerValue != 0 {
+                        self.view.showTipText("更新进展不成功")
+                    } else {
+                        self.editStepSuccessHelper()
+                    }
+                }
+            })
+        }
     }
     
     
@@ -278,7 +333,7 @@ class NewAddStepViewController: SAViewController {
                 self.imagesInfo.addObject(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])
                 logInfo("\(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])")
                 
-                if self.imagesInfo.count == self.imagesArray.count {
+                if self.imagesInfo.count == self.imagesArray.count - (self.data?.objectForKey("imageArray") as! [UIImage]).count {
                     self.uploadAllImagesSuccess = true
                     NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)
                 }
@@ -328,7 +383,7 @@ class NewAddStepViewController: SAViewController {
             d["height"] = self.imagesArray[0].size.height
         } else {
             d["width"] = self.collectionView.frame.width
-            d["height"] = self.collectionView.frame.height
+            d["height"] = VVeboCell.calculateCollectionViewHeight(self.imagesArray)
         }
         d["lastdate"] = V.now()
         d["comments"] = 0
@@ -353,6 +408,32 @@ class NewAddStepViewController: SAViewController {
         
     }
     
+    
+    func editStepSuccessHelper() {
+        globalWillNianReload = 1
+        dispatch_async(dispatch_get_main_queue(), {
+            if self.data != nil {
+                let mutableData = NSMutableDictionary(dictionary: self.data!)
+                mutableData.setValue(self.contentTextView.text, forKey: "content")
+                
+                self.imagesInfo.addObjectsFromArray(self.data!["images"] as! NSArray as [AnyObject])
+                
+                mutableData.setValue(self.imagesInfo, forKey: "images")
+                if self.imagesArray.count == 1 {
+                    mutableData["width"] = self.imagesArray[0].size.width
+                    mutableData["height"] = self.imagesArray[0].size.height
+                } else {
+                    mutableData["width"] = self.collectionView.frame.width
+                    mutableData["height"] = VVeboCell.calculateCollectionViewHeight(self.imagesArray)
+                }
+                
+                self.delegate?.newEditStepRow = self.row
+                self.delegate?.newEditStepData = mutableData
+                self.delegate?.newEditstep()
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        })
+    }
 }
 
 /*=========================================================================================================================================*/
@@ -464,27 +545,19 @@ extension NewAddStepViewController: UITextViewDelegate {
 extension NewAddStepViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.imagesDataSource.count
+        return self.imagesArray.count
     }
     
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepCollectionCell", forIndexPath: indexPath) as! AddStepCollectionCell
         
-        if let _ = cell.imageView.image {
+        if self.imagesArray.count > indexPath.row {
+            cell.imageView.image = self.imagesArray[indexPath.row]
         } else {
             let asset = self.imagesDataSource[indexPath.row] as? ALAsset
             cell.imageView.image = UIImage(CGImage: asset!.thumbnail().takeUnretainedValue())
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                let rep = asset?.defaultRepresentation()
-                let resolutionRef = rep?.fullResolutionImage()
-                let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
-                
-                synchronized(self.imagesArray, closure: { () -> () in
-                    self.imagesArray.append(image)
-                })
-            })
         }
         
         return cell
@@ -508,12 +581,12 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
 extension NewAddStepViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if self.imagesDataSource.count % 3 == 1 {
-            if indexPath.row == self.imagesDataSource.count - 1 {
+        if self.imagesArray.count % 3 == 1 {
+            if indexPath.row == self.imagesArray.count - 1 {
                 return largestCellSize
             }
-        } else if self.imagesDataSource.count % 3 == 2 {
-            if indexPath.row == self.imagesDataSource.count - 1 {
+        } else if self.imagesArray.count % 3 == 2 {
+            if indexPath.row == self.imagesArray.count - 1 {
                 return largerCellSize
             }
         }
@@ -561,33 +634,43 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
     }
     
     func reloadCollectionViewWithAssets(assets: [AnyObject]!, dataSource: NSArray) {
-
-        self.collectionView.performBatchUpdates({ () -> Void in
-            var _previousCount = dataSource.count
+        var tempIndexArray = [NSIndexPath]()
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             
-            self.imagesDataSource.addObjectsFromArray(assets)
-            
-            var tempIndexArray = [NSIndexPath]()
-            
-            var _index = _previousCount
-            
-            for(; _index < self.imagesDataSource.count; _index++) {
-                tempIndexArray.append(NSIndexPath(forRow: _previousCount, inSection: 0))
-                _previousCount++
+            for(var _index = 0; _index < assets.count; _index++) {
+                let _asset = assets[_index]
+                let rep = _asset.defaultRepresentation()
+                let resolutionRef = rep?.fullResolutionImage()
+                var image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
+                image = image.fixOrientation()
+                
+                synchronized(self.imagesArray, closure: { () -> () in
+                    self.imagesArray.append(image)
+                })
+                
+                synchronized(tempIndexArray, closure: { () -> () in
+                    tempIndexArray.append(NSIndexPath(forRow: self.imagesArray.count - 1, inSection: 0))
+                })
             }
             
-            self.collectionView.insertItemsAtIndexPaths(tempIndexArray)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
-            }, completion: { finished in
-                let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesDataSource)
-                
-                constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
-                    view1.height == collectionViewHeight
-                }
-                
-                UIView.animateWithDuration(0.5, animations: { () -> Void in
-                    self.collectionView.layoutIfNeeded()
-                    }, completion: nil)
+                self.collectionView.performBatchUpdates({ () -> Void in
+                    self.collectionView.insertItemsAtIndexPaths(tempIndexArray)
+
+                }, completion: { finished in
+                    let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
+                    
+                    constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
+                        view1.height == collectionViewHeight
+                    }
+                    
+                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+                        self.collectionView.layoutIfNeeded()
+                        }, completion: nil)
+                })
+            })
         })
         
     }

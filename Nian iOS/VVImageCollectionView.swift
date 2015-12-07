@@ -8,6 +8,8 @@
 
 import UIKit
 
+let DEFAULT_IMAGE_WIDTH = globalWidth > 750 ? "!300xx" : "!200xx"
+
 class VVImageCollectionView: UICollectionView {
 
     typealias DownloadedSingleImage = (image: UIImage, url: NSURL?) -> Void
@@ -55,14 +57,15 @@ class VVImageCollectionView: UICollectionView {
     
     func setImage() {
         self.downloadImages(self.imagesDataSource, callback: { (image, url) -> Void in
-            self.containImages.append(image)
+            self.containImages.append(image.fixOrientation())
             
             if let _url = url {
                 let _string = _url.absoluteString
                 let _arr = _string.characters.split{ $0 == "/" }.map(String.init)
+                let __arr = _arr.last!.characters.split{ $0 == "!" }.map(String.init)
                 
                 for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
-                    if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == _arr.last! {
+                    if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
                         self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
                     }
                 }
@@ -75,7 +78,7 @@ class VVImageCollectionView: UICollectionView {
         for (var tmp = 0; tmp < urls.count; tmp++) {
             let dict = self.imagesDataSource[tmp] as! NSDictionary
             let _imageURLString = dict["path"] as! String
-            let _imageURL = NSURL(string: _imageURLString, relativeToURL: self._imagesBaseURL)!
+            let _imageURL = NSURL(string: _imageURLString + DEFAULT_IMAGE_WIDTH, relativeToURL: self._imagesBaseURL)!
             
             sd_manager.downloadImageWithURL(_imageURL,
                 options: SDWebImageOptions(rawValue: 0),
@@ -125,8 +128,6 @@ extension VVImageCollectionView: UICollectionViewDelegate, UICollectionViewDataS
     }
     
 }
-
-
 
 
 class VVImageViewCell: UICollectionViewCell {

@@ -429,7 +429,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             imageHolder.setHeight(floor(self.frame.size.width / widthImage * heightImage))
         } else if _type == 3 || _type == 4 {
             if array.count > 0 {
-                imageHolder.setHeight(self.calculateCollectionViewHeight(array))
+                imageHolder.setHeight(VVeboCell.calculateCollectionViewHeight(array))
             }
         }
        
@@ -609,7 +609,7 @@ extension VVeboCell {
         return layout
     }
     
-    func calculateCollectionViewHeight(dataSource: NSArray) -> CGFloat {
+    class func calculateCollectionViewHeight(dataSource: NSArray) -> CGFloat {
         let tmpCount = dataSource.count
         
         if tmpCount == 1 {
