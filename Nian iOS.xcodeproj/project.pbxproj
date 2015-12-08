@@ -208,7 +208,6 @@
 		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C46A7AC01C088D6900D8C669 /* AddStepCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */; };
-		C46A7AC11C088D6900D8C669 /* AddStepCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46A7ABF1C088D6900D8C669 /* AddStepCollectionCell.xib */; };
 		C470B22E1B94024A00863821 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22D1B94024A00863821 /* PushConfig.plist */; };
 		C470B2301B94029E00863821 /* LikeCount.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22F1B94029E00863821 /* LikeCount.plist */; };
 		C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */; };
@@ -536,7 +535,6 @@
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepCollectionCell.swift; sourceTree = "<group>"; };
-		C46A7ABF1C088D6900D8C669 /* AddStepCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCollectionCell.xib; sourceTree = "<group>"; };
 		C470B22D1B94024A00863821 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		C470B22F1B94029E00863821 /* LikeCount.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = LikeCount.plist; sourceTree = "<group>"; };
 		C472F7611AE74E2C00ECC011 /* ExploreNewHotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNewHotCell.swift; sourceTree = "<group>"; };
@@ -1098,7 +1096,6 @@
 				C486FD5A1C0443E8009F1F90 /* NewAddStepViewController.swift */,
 				C486FD2C1C044223009F1F90 /* NewAddStepView.xib */,
 				C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */,
-				C46A7ABF1C088D6900D8C669 /* AddStepCollectionCell.xib */,
 				C49A57141C0C525C008D0780 /* AddStepModel.swift */,
 			);
 			name = "更新进展";
@@ -1698,7 +1695,6 @@
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
-				C46A7AC11C088D6900D8C669 /* AddStepCollectionCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
 				C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */,

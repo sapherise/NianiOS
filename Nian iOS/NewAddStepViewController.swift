@@ -80,7 +80,7 @@ class NewAddStepViewController: SAViewController {
         self.contentTextView.delegate = self
         
         self.collectionView.collectionViewLayout = yy_collectionViewLayout()
-        self.collectionView.registerNib(UINib(nibName: "AddStepCollectionCell", bundle: nil), forCellWithReuseIdentifier: "AddStepCollectionCell")
+        self.collectionView.registerClass(AddStepCollectionCell.self, forCellWithReuseIdentifier: "AddStepCollectionCell")
         
         if self.isEdit == 1 {
             self._setTitle("编辑进展")
@@ -153,7 +153,7 @@ class NewAddStepViewController: SAViewController {
         self.dismissKeyboard()
     }
     
-    @IBAction func tapOnContentView(sender: UITapGestureRecognizer) {
+    @IBAction func tapOnContentView(sender: UIControl) {
         self.dismissKeyboard()
     }
     
@@ -219,6 +219,8 @@ class NewAddStepViewController: SAViewController {
                 let _uid = CurrentUser.sharedCurrentUser.uid!
                 let _array = self.data?.objectForKey("imageArray") as! [UIImage]
                 
+                var _tmpIndex = 0
+                
                 for _image: UIImage in self.imagesArray {
                     if !_array.contains(_image) {
                         let op = NSBlockOperation(block: { () -> Void in
@@ -231,8 +233,16 @@ class NewAddStepViewController: SAViewController {
                         })
                         
                         opQueue.addOperations([op], waitUntilFinished: true)
+                    } else {
+                        _tmpIndex++
                     }
                 }
+                
+                if _tmpIndex == self.imagesArray.count {
+                    self.uploadAllImagesSuccess = true
+                    NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)                   
+                }
+                
             } else {
                 self.uploadAllImagesSuccess = true
                 NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)
@@ -296,6 +306,8 @@ class NewAddStepViewController: SAViewController {
                 }
             }) // AddStepModel.postAddStep
         } else if self.isEdit == 1 {
+            self.imagesInfo.addObjectsFromArray(self.data!["images"] as! NSArray as [AnyObject])
+            
             AddStepModel.postEditStep(content: self.contentTextView.text, stepType: self.stepType!,images: self.imagesInfo, sid: self.data!.stringAttributeForKey("sid"),  callback: {
                 (task, responseObject, error) -> Void in
                 
@@ -333,7 +345,9 @@ class NewAddStepViewController: SAViewController {
                 self.imagesInfo.addObject(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])
                 logInfo("\(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])")
                 
-                if self.imagesInfo.count == self.imagesArray.count - (self.data?.objectForKey("imageArray") as! [UIImage]).count {
+                let __count = (self.data != nil) ? ((self.data?.allKeys.filter({ $0 as! String == "imageArray" }).count)! > 0 ? (self.data?.objectForKey("imageArray") as! [UIImage]).count : 0) : 0
+                
+                if self.imagesInfo.count == self.imagesArray.count - __count {
                     self.uploadAllImagesSuccess = true
                     NSNotificationCenter.defaultCenter().postNotificationName(NIUploadImagesCompletionNotification, object: nil)
                 }
@@ -415,10 +429,8 @@ class NewAddStepViewController: SAViewController {
             if self.data != nil {
                 let mutableData = NSMutableDictionary(dictionary: self.data!)
                 mutableData.setValue(self.contentTextView.text, forKey: "content")
-                
-                self.imagesInfo.addObjectsFromArray(self.data!["images"] as! NSArray as [AnyObject])
-                
                 mutableData.setValue(self.imagesInfo, forKey: "images")
+                
                 if self.imagesArray.count == 1 {
                     mutableData["width"] = self.imagesArray[0].size.width
                     mutableData["height"] = self.imagesArray[0].size.height
@@ -567,12 +579,16 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
         let alertController = PSTAlertController.actionSheetWithTitle("确定删除图片？")
         
         alertController.addAction(PSTAlertAction(title: "确定", style: .Default, handler: { action in
-            self.reloadCollectionViewWithoutAssets(inIndexPath: [indexPath], dataSource: self.imagesDataSource)
+            self.reloadCollectionViewWithoutAssets(inIndexPath: [indexPath])
         }))
         
         alertController.addCancelActionWithHandler { action -> Void in
             collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         }
+        
+        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+        
+        logError("indexPath = \(indexPath)")
     }
     
 }
@@ -616,7 +632,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
 
     func qb_imagePickerController(imagePickerController: QBImagePickerController!, didSelectAsset asset: ALAsset!) {
         
-        self.reloadCollectionViewWithAssets([asset], dataSource: self.imagesDataSource)
+        self.reloadCollectionViewWithAssets([asset])
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -624,7 +640,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
     
     func qb_imagePickerController(imagePickerController: QBImagePickerController!, didSelectAssets assets: [AnyObject]!) {
         
-        self.reloadCollectionViewWithAssets(assets, dataSource: self.imagesDataSource)
+        self.reloadCollectionViewWithAssets(assets)
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -633,8 +649,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func reloadCollectionViewWithAssets(assets: [AnyObject]!, dataSource: NSArray) {
-        var tempIndexArray = [NSIndexPath]()
+    func reloadCollectionViewWithAssets(assets: [AnyObject]!) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             
@@ -642,52 +657,53 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                 let _asset = assets[_index]
                 let rep = _asset.defaultRepresentation()
                 let resolutionRef = rep?.fullResolutionImage()
-                var image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
-                image = image.fixOrientation()
+                let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
+//                image = image.fixOrientation()
                 
                 synchronized(self.imagesArray, closure: { () -> () in
                     self.imagesArray.append(image)
                 })
+
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 
-                synchronized(tempIndexArray, closure: { () -> () in
-                    tempIndexArray.append(NSIndexPath(forRow: self.imagesArray.count - 1, inSection: 0))
+                    self.collectionView.performBatchUpdates({ () -> Void in
+                        self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.imagesArray.count - 1, inSection: 0)])
+
+                    }, completion: { finished in
+                        let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
+                        
+                        constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
+                            view1.height == collectionViewHeight
+                        }
+                        
+                        UIView.animateWithDuration(0.5, animations: { () -> Void in
+                            self.collectionView.layoutIfNeeded()
+                            }, completion: nil)
+                    })
                 })
             }
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            
-                self.collectionView.performBatchUpdates({ () -> Void in
-                    self.collectionView.insertItemsAtIndexPaths(tempIndexArray)
-
-                }, completion: { finished in
-                    let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
-                    
-                    constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
-                        view1.height == collectionViewHeight
-                    }
-                    
-                    UIView.animateWithDuration(0.5, animations: { () -> Void in
-                        self.collectionView.layoutIfNeeded()
-                        }, completion: nil)
-                })
-            })
         })
         
     }
     
     
-    func reloadCollectionViewWithoutAssets(inIndexPath inIndexPath: [NSIndexPath], dataSource: NSMutableArray) {
+    func reloadCollectionViewWithoutAssets(inIndexPath inIndexPath: [NSIndexPath]) {
         
         self.collectionView.performBatchUpdates({ () -> Void in
             
             for indexpath in inIndexPath {
-                self.imagesDataSource.removeObjectAtIndex(indexpath.row)
+                self.imagesArray.removeAtIndex(indexpath.row)
+                if self.isEdit == 1 {
+                    if (self.data?["images"] as? NSMutableArray)!.count > indexpath.row {
+                        (self.data?["images"] as? NSMutableArray)!.removeObjectAtIndex(indexpath.row)
+                    }
+                }
             }
             
             self.collectionView.deleteItemsAtIndexPaths(inIndexPath)
             
             }, completion: { finished in
-                let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesDataSource)
+                let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
                 
                 constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
                     view1.height == collectionViewHeight

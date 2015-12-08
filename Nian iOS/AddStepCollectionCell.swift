@@ -10,30 +10,26 @@ import UIKit
 
 class AddStepCollectionCell: UICollectionViewCell {
 
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var overlayView: UIView!
+    let imageView = UIImageView()
     
-    var image: UIImage?
-    
-    var thumbnailImage: UIImage? 
-    
-    override var selected: Bool {
-        set {
-            super.selected = selected
-            self.overlayView.hidden = !selected 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(imageView)
+        
+        constrain(self.imageView) { imageView in
+            imageView.top    == imageView.superview!.top
+            imageView.bottom == imageView.superview!.bottom
+            imageView.left   == imageView.superview!.left
+            imageView.right  == imageView.superview!.right
         }
         
-        get {
-            return super.selected
-        }
+        self.imageView.contentMode = .ScaleAspectFit
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        
-        self.overlayView.hidden = true
-    }
 
 }

@@ -25,7 +25,7 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCy-Ga-BCg">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBS-nn-c8A">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBS-nn-c8A" customClass="UIControl">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             <subviews>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-4n-Hrl">
@@ -94,7 +94,7 @@
                                 <constraint firstItem="JdC-sX-3ef" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="wYA-El-5H8"/>
                             </constraints>
                             <connections>
-                                <outletCollection property="gestureRecognizers" destination="lgN-BB-0pn" appends="YES" id="gKG-xs-2RJ"/>
+                                <action selector="tapOnContentView:" destination="-1" eventType="valueChanged" id="bmy-QB-K9u"/>
                             </connections>
                         </view>
                     </subviews>
@@ -126,11 +126,6 @@
             </connections>
             <point key="canvasLocation" x="228" y="813"/>
         </view>
-        <tapGestureRecognizer id="lgN-BB-0pn">
-            <connections>
-                <action selector="tapOnContentView:" destination="-1" id="K4x-t7-WhP"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="img" width="21" height="17"/>
