@@ -544,7 +544,13 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         if (img0 == 0.0) {
             heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
         } else {
-            heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+            
+            if (data.objectForKey("images") as! NSArray).count > 1 {
+                heightImage = VVeboCell.calculateCollectionViewHeight(data.objectForKey("images") as! NSArray)
+            } else {
+                heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+            }
+            
             heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
         }
         data["heightImage"] = heightImage

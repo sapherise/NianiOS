@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageIO
 
 public let NIUploadImagesCompletionNotification: String = "NIUploadImagesCompletionNotification"
 
@@ -419,7 +420,6 @@ class NewAddStepViewController: SAViewController {
         self.delegate?.newUpdate!(VVeboCell.SACellDataRecode(d as NSDictionary))
         //
         self.navigationController?.popViewControllerAnimated(true)
-        
     }
     
     
@@ -656,8 +656,8 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
             for(var _index = 0; _index < assets.count; _index++) {
                 let _asset = assets[_index]
                 let rep = _asset.defaultRepresentation()
-                let resolutionRef = rep?.fullResolutionImage()
-                let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
+                let resolutionRef = rep?.CGImageWithOptions([kCGImageSourceThumbnailMaxPixelSize : 720])
+                var image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
 //                image = image.fixOrientation()
                 
                 synchronized(self.imagesArray, closure: { () -> () in

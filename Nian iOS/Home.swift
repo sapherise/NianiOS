@@ -384,7 +384,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") 
         let vc1 = NianViewController
         let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
-        let vc3 = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let vc3 = NewSettingViewController(nibName: "NewSettingViewController", bundle: nil)
         let vc4 = MeViewController()
         //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         let vc5 = RedditViewController()

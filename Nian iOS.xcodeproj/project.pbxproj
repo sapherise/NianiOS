@@ -199,6 +199,8 @@
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
+		C40E49491C18027A0089924C /* NewAddStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40E49481C18027A0089924C /* NewAddStep.swift */; };
+		C40E494B1C1803370089924C /* NewAddStep.xib in Resources */ = {isa = PBXBuildFile; fileRef = C40E494A1C1803370089924C /* NewAddStep.xib */; };
 		C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F281BE744FC007B7C6B /* SettingModel.swift */; };
 		C40F0F2B1BE74708007B7C6B /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */; };
 		C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F2E1BE7632E007B7C6B /* PSTAlertController.m */; };
@@ -519,6 +521,8 @@
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
+		C40E49481C18027A0089924C /* NewAddStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddStep.swift; sourceTree = "<group>"; };
+		C40E494A1C1803370089924C /* NewAddStep.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAddStep.xib; sourceTree = "<group>"; };
 		C40F0F281BE744FC007B7C6B /* SettingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
 		C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		C40F0F2D1BE7632E007B7C6B /* PSTAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTAlertController.h; sourceTree = "<group>"; };
@@ -1097,6 +1101,8 @@
 				C486FD2C1C044223009F1F90 /* NewAddStepView.xib */,
 				C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */,
 				C49A57141C0C525C008D0780 /* AddStepModel.swift */,
+				C40E49481C18027A0089924C /* NewAddStep.swift */,
+				C40E494A1C1803370089924C /* NewAddStep.xib */,
 			);
 			name = "更新进展";
 			sourceTree = "<group>";
@@ -1687,6 +1693,7 @@
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
+				C40E494B1C1803370089924C /* NewAddStep.xib in Resources */,
 				C486BDE81BF46ABD00EF1C2A /* ActivitiesSummary.storyboard in Resources */,
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
 				C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */,
@@ -1831,6 +1838,7 @@
 				12BB33451B93471F00B7E03F /* TopicCellHeader.swift in Sources */,
 				12245DA81B95867500D831AC /* TopicCommentCellHeader.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
+				C40E49491C18027A0089924C /* NewAddStep.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
