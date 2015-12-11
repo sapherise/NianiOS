@@ -30,17 +30,33 @@ class NewAddStepViewController: SAViewController {
     
     @IBOutlet weak var contentView: UIView!
     
+    @IBOutlet weak var headerView: UIView!
+    
+    @IBOutlet weak var noteCoverView: UIImageView!
+    
+    @IBOutlet weak var noteTitleField: UITextField!
+    
+    @IBOutlet weak var indicateArrow: UIImageView!
+    
+    @IBOutlet weak var noteCollectionView: UICollectionView!
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBOutlet weak var contentTextView: SZTextView!
 
+    @IBOutlet weak var notesHeightConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var contentViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var collectionToTopContraint: NSLayoutConstraint!
     
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var sp1HeightConstraint: NSLayoutConstraint!
     
     weak var delegate: NewAddStepDelegate?
+    
+    var isInConvenienceWay: Bool = false
     
     var data: NSMutableDictionary?
     var dreamId: String = ""
@@ -65,6 +81,7 @@ class NewAddStepViewController: SAViewController {
     var needUpdateTextViewHeight: Bool = true
     
     let collectionConstraintGroup = ConstraintGroup()
+    let notesConstraintGroup = ConstraintGroup()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,6 +101,10 @@ class NewAddStepViewController: SAViewController {
         self.collectionView.registerClass(AddStepCollectionCell.self, forCellWithReuseIdentifier: "AddStepCollectionCell")
         
         if self.isEdit == 1 {
+            
+            self.noteCollectionView.removeFromSuperview()
+            self.headerView.removeFromSuperview()
+            
             self._setTitle("编辑进展")
             self.setBarButtonImage("newOK", actionGesture: "uploadEditStep")
             self.contentTextView.text = self.data?.stringAttributeForKey("content").decode()
@@ -102,9 +123,24 @@ class NewAddStepViewController: SAViewController {
             self._setTitle("新进展")
             self.setBarButtonImage("newOK", actionGesture: "uploadNewStep")
             
+            if !isInConvenienceWay {
+                self.noteCollectionView.removeFromSuperview()
+                self.headerView.removeFromSuperview()
+                
+                self.collectionToTopContraint.constant = 16
+                
+            } else {
+
+            }
+            
             constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
                 view1.height == 0
             }
+            
+            constrain(self.noteCollectionView, block: { (notesView) -> () in
+                notesHeightConstraint = (notesView.height == 0 ~ 1000)
+            })
+            
         }
     }
 
@@ -456,74 +492,6 @@ class NewAddStepViewController: SAViewController {
 
 /*=========================================================================================================================================*/
 
-extension NewAddStepViewController {
-    // MARK: Keyboard Event Notifications
-    
-    func handleKeyboardWillShow(noti: NSNotification) {
-        let userInfo = noti.userInfo!
-        
-        // Get information about the animation.
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
-        
-        let rawAnimationCurveValue = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).unsignedLongValue
-        let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurveValue)
-        
-        // Convert the keyboard frame from screen to view coordinates.
-        let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
-        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        let keyboardViewBeginFrame = view.convertRect(keyboardScreenBeginFrame, fromView: view.window)
-        let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
-        let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
-        
-        keyboardHeight -= originDelta
-        
-        self.textViewHeightConstraint.constant = self.textViewHeight()
-        
-        if keyboardHeight + self.textViewHeightConstraint.constant + self.collectionView.frame.size.height + 32 > globalHeight - 64 {
-            self.contentTextView.scrollEnabled = true
-            self.textViewHeightConstraint.constant = globalHeight - 64 - keyboardHeight - 32
-            
-            self.view.setNeedsUpdateConstraints()
-            
-            let animationOptions: UIViewAnimationOptions = [animationCurve, .BeginFromCurrentState]
-            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-                self.view.layoutIfNeeded()
-                }, completion: { finished in
-                    self.scrollView.setContentOffset(CGPointMake(0, 32 + self.collectionView.frame.size.height - 64), animated: true)
-            })
-        }
-        
-        self.contentTextView.scrollRangeToVisible(self.contentTextView.selectedRange)
-        
-    }
-    
-    func handleKeyboardWillHide(noti: NSNotification) {
-        let userInfo = noti.userInfo!
-        
-        // Get information about the animation.
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
-        
-        let rawAnimationCurveValue = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).unsignedLongValue
-        let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurveValue)
-        
-        self.contentTextView.scrollEnabled = false
-        self.textViewHeightConstraint.constant = self.textViewHeight()
-        
-        self.view.setNeedsUpdateConstraints()
-        
-        let animationOptions: UIViewAnimationOptions = [animationCurve, .BeginFromCurrentState]
-        UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-            self.view.layoutIfNeeded()
-            }, completion: { finished in
-                self.scrollView.setContentOffset(CGPointMake(0, -64), animated: true)
-        })
-        
-        keyboardHeight = 0
-    }
-    
-}
-
 extension NewAddStepViewController: UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
@@ -556,80 +524,6 @@ extension NewAddStepViewController: UITextViewDelegate {
         self.needUpdateTextViewHeight = true
     }
     
-}
-
-/*=========================================================================================================================================*/
-
-extension NewAddStepViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.imagesArray.count
-    }
-    
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepCollectionCell", forIndexPath: indexPath) as! AddStepCollectionCell
-        
-        if self.imagesArray.count > indexPath.row {
-            cell.imageView.image = self.imagesArray[indexPath.row]
-        } else {
-            let asset = self.imagesDataSource[indexPath.row] as? ALAsset
-            cell.imageView.image = UIImage(CGImage: asset!.thumbnail().takeUnretainedValue())
-            
-        }
-        
-        return cell
-    }
-
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let alertController = PSTAlertController.actionSheetWithTitle("确定删除图片？")
-        
-        alertController.addAction(PSTAlertAction(title: "确定", style: .Default, handler: { action in
-            self.reloadCollectionViewWithoutAssets(inIndexPath: [indexPath])
-        }))
-        
-        alertController.addCancelActionWithHandler { action -> Void in
-            collectionView.deselectItemAtIndexPath(indexPath, animated: true)
-        }
-        
-        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
-        
-        logError("indexPath = \(indexPath)")
-    }
-    
-}
-
-
-extension NewAddStepViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if self.imagesArray.count % 3 == 1 {
-            if indexPath.row == self.imagesArray.count - 1 {
-                return largestCellSize
-            }
-        } else if self.imagesArray.count % 3 == 2 {
-            if indexPath.row == self.imagesArray.count - 1 {
-                return largerCellSize
-            }
-        }
-        
-        return regularCellSize
-    }
-    
-}
-
-extension NewAddStepViewController: UIScrollViewDelegate {
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.dismissKeyboard()
-    }
-    
-}
-
-
-extension NewAddStepViewController: UINavigationControllerDelegate {
-
-
 }
 
 /*=========================================================================================================================================*/

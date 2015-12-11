@@ -38,22 +38,22 @@ class MyActivitiesViewController: SAViewController {
             switch activityType! {
             case .myStep:
                 self._setTitle("我的进展")
-                self.activityUrl = "user/\(_uid)/steps?page=\(page)&&uid=\(_uid)&&shell=\(_shell)"
+                self.activityUrl = "v2/user/\(_uid)/steps?page=\(page)&&uid=\(_uid)&&shell=\(_shell)"
                 self.topicTableView.hidden = true
                 self.tableView.registerClass(VVeboCell.self, forCellReuseIdentifier: "myStepCell")
             case .myLikeStep:
                 self._setTitle("我赞过的进展")
-                self.activityUrl = "user/\(_uid)/like/steps?page=\(page)&&uid=\(_uid)&&shell=\(_shell)"
+                self.activityUrl = "v2/user/\(_uid)/like/steps?page=\(page)&&uid=\(_uid)&&shell=\(_shell)"
                 self.topicTableView.hidden = true
                 self.tableView.registerClass(VVeboCell.self, forCellReuseIdentifier: "myLikeStepCell")
             case .myTopic:
                 self._setTitle("我发起的话题")
-                self.activityUrl = "user/\(_uid)/topics?uid=\(_uid)&&shell=\(_shell)&&type=topic&&page=\(page)"
+                self.activityUrl = "v2/user/\(_uid)/topics?uid=\(_uid)&&shell=\(_shell)&&type=topic&&page=\(page)"
                 self.tableView.hidden = true
                 self.topicTableView.registerNib(UINib(nibName: "RedditCell", bundle: nil), forCellReuseIdentifier: "RedditCell")
             case .myResponsedTopic:
                 self._setTitle("我回应的话题")
-                self.activityUrl = "user/\(_uid)/topics?uid=\(_uid)&&shell=\(_shell)&&type=reply&&page=\(page)"
+                self.activityUrl = "v2/user/\(_uid)/topics?uid=\(_uid)&&shell=\(_shell)&&type=reply&&page=\(page)"
                 self.tableView.hidden = true
             }
         }

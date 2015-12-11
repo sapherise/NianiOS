@@ -434,7 +434,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             imageHolder.imagesDataSource = NSMutableArray(array: array)
             imageHolder.sid = data.stringAttributeForKey("sid")
             imageHolder.hidden = false
-            imageHolder.collectionViewLayout.invalidateLayout()
+//            imageHolder.collectionViewLayout.invalidateLayout()
             imageHolder.setCollectionViewLayout(self.calculateCollectionLayout(collectionView: imageHolder), animated: false)
             imageHolder.setImage()
             
@@ -613,7 +613,7 @@ extension VVeboCell: NewAddStepDelegate {
 
 extension VVeboCell {
     
-    func calculateCollectionLayout(collectionView collectionView: VVImageCollectionView) -> UICollectionViewFlowLayout {
+    func calculateCollectionLayout(collectionView collectionView: VVImageCollectionView) -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumInteritemSpacing = 2.0

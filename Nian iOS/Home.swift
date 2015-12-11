@@ -384,9 +384,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") 
         let vc1 = NianViewController
         let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
-        let vc3 = NewSettingViewController(nibName: "NewSettingViewController", bundle: nil)
+        let vc3 = NewAddStepViewController(nibName: "NewAddStepViewController", bundle: nil)
         let vc4 = MeViewController()
-        //        vc5 = circleCollectionList.instantiateViewControllerWithIdentifier("CircleListCollectionController") as! CircleListCollectionController
         let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
@@ -429,7 +428,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
         }else if index == idUpdate {      // 更新
-            self.addStep()
+//            self.addStep()
         }
         if index != idExplore {
             numExplore = 0

@@ -7,10 +7,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewAddStepViewController" customModule="Nian_iOS" customModuleProvider="target">
             <connections>
+                <outlet property="collectionToTopContraint" destination="0Cc-ci-QPl" id="pan-ga-SaE"/>
                 <outlet property="collectionView" destination="pUM-4n-Hrl" id="0OH-hi-6ho"/>
                 <outlet property="contentTextView" destination="cE1-oB-Mve" id="V3a-fh-GVq"/>
                 <outlet property="contentView" destination="LBS-nn-c8A" id="IEp-oN-uEX"/>
                 <outlet property="contentViewHeightConstraint" destination="uIO-5a-Zau" id="i9m-uf-NeA"/>
+                <outlet property="headerView" destination="amr-jh-ELF" id="xaG-3R-a85"/>
+                <outlet property="indicateArrow" destination="2ch-eX-0qf" id="UtW-Hu-6fV"/>
+                <outlet property="noteCollectionView" destination="FsQ-1D-7fH" id="geo-2c-fdU"/>
+                <outlet property="noteCoverView" destination="aXz-Ye-BaI" id="zSW-rT-XNv"/>
+                <outlet property="noteTitleField" destination="BqK-aT-DQ5" id="ERy-FD-bhx"/>
+                <outlet property="notesHeightConstraint" destination="dV5-4p-ZuN" id="osW-sM-nBg"/>
                 <outlet property="scrollView" destination="QCy-Ga-BCg" id="OMS-Rx-VYN"/>
                 <outlet property="sp1HeightConstraint" destination="ZLP-w7-Y8B" id="CL8-ot-G0r"/>
                 <outlet property="textViewHeightConstraint" destination="RbA-GZ-dhC" id="3nC-00-LHh"/>
@@ -28,22 +35,72 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBS-nn-c8A" customClass="UIControl">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             <subviews>
-                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-4n-Hrl">
-                                    <rect key="frame" x="16" y="16" width="568" height="0.0"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="amr-jh-ELF">
+                                    <rect key="frame" x="0.0" y="20" width="600" height="64"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aXz-Ye-BaI">
+                                            <rect key="frame" x="16" y="16" width="32" height="32"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="cWk-1o-sdH"/>
+                                                <constraint firstAttribute="height" constant="32" id="yJD-0k-SY3"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2ch-eX-0qf">
+                                            <rect key="frame" x="560" y="20" width="24" height="24"/>
+                                            <animations/>
+                                            <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="kvI-Q0-PnO"/>
+                                                <constraint firstAttribute="height" constant="24" id="wIf-f3-wtG"/>
+                                            </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="XQM-lL-eXf" appends="YES" id="u7e-97-x7P"/>
+                                            </connections>
+                                        </imageView>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqK-aT-DQ5">
+                                            <rect key="frame" x="56" y="16" width="488" height="32"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="32" id="keM-od-3gQ"/>
+                                            </constraints>
+                                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <collectionViewLayout key="collectionViewLayout" id="jxK-mY-e16" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
-                                    <connections>
-                                        <outlet property="dataSource" destination="-1" id="FXj-yT-0is"/>
-                                        <outlet property="delegate" destination="-1" id="LlO-F2-6gb"/>
-                                    </connections>
+                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="2ch-eX-0qf" secondAttribute="trailing" constant="16" id="JsG-fT-3bg"/>
+                                        <constraint firstItem="aXz-Ye-BaI" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="top" constant="16" id="MEE-9h-HfB"/>
+                                        <constraint firstAttribute="height" constant="64" id="Qlz-HG-IT8"/>
+                                        <constraint firstItem="BqK-aT-DQ5" firstAttribute="centerY" secondItem="aXz-Ye-BaI" secondAttribute="centerY" id="eUw-st-YgN"/>
+                                        <constraint firstItem="BqK-aT-DQ5" firstAttribute="leading" secondItem="aXz-Ye-BaI" secondAttribute="trailing" constant="8" id="lc4-Mc-EL5"/>
+                                        <constraint firstItem="2ch-eX-0qf" firstAttribute="centerY" secondItem="BqK-aT-DQ5" secondAttribute="centerY" id="rAl-mv-w4w"/>
+                                        <constraint firstItem="2ch-eX-0qf" firstAttribute="leading" secondItem="BqK-aT-DQ5" secondAttribute="trailing" constant="16" id="y8Z-t9-XNY"/>
+                                        <constraint firstItem="aXz-Ye-BaI" firstAttribute="leading" secondItem="amr-jh-ELF" secondAttribute="leading" constant="16" id="z8S-N3-VRa"/>
+                                    </constraints>
+                                </view>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-1D-7fH">
+                                    <rect key="frame" x="16" y="84" width="568" height="20"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="dV5-4p-ZuN"/>
+                                    </constraints>
+                                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="arv-RE-xKK">
+                                        <size key="itemSize" width="50" height="50"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
                                 </collectionView>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cE1-oB-Mve" customClass="SZTextView" customModule="Nian_iOS" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="32" width="568" height="508"/>
+                                    <rect key="frame" x="16" y="200" width="568" height="340"/>
                                     <animations/>
                                     <color key="backgroundColor" red="0.99215686270000003" green="0.70980392160000005" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="508" id="RbA-GZ-dhC"/>
+                                        <constraint firstAttribute="height" constant="340" id="RbA-GZ-dhC"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -74,23 +131,39 @@
                                         <constraint firstAttribute="height" constant="1" id="ZLP-w7-Y8B"/>
                                     </constraints>
                                 </view>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-4n-Hrl">
+                                    <rect key="frame" x="16" y="84" width="568" height="100"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <collectionViewLayout key="collectionViewLayout" id="jxK-mY-e16" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="FXj-yT-0is"/>
+                                        <outlet property="delegate" destination="-1" id="LlO-F2-6gb"/>
+                                    </connections>
+                                </collectionView>
                             </subviews>
                             <animations/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
-                                <constraint firstItem="pUM-4n-Hrl" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="16" id="0Cc-ci-QPl"/>
+                                <constraint firstItem="pUM-4n-Hrl" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="84" id="0Cc-ci-QPl"/>
+                                <constraint firstItem="FsQ-1D-7fH" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="2Tb-IX-snk"/>
                                 <constraint firstAttribute="trailing" secondItem="nfv-Tg-TgG" secondAttribute="trailing" id="354-By-jg8"/>
                                 <constraint firstItem="pUM-4n-Hrl" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="5wd-fk-9za"/>
                                 <constraint firstItem="cE1-oB-Mve" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="E7X-ve-Gyd"/>
                                 <constraint firstAttribute="trailing" secondItem="cE1-oB-Mve" secondAttribute="trailing" constant="16" id="F3a-Kb-xo5"/>
+                                <constraint firstAttribute="trailing" secondItem="amr-jh-ELF" secondAttribute="trailing" id="GkG-cp-a5b"/>
+                                <constraint firstItem="FsQ-1D-7fH" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="bottom" id="Lfm-Pb-cXo"/>
                                 <constraint firstItem="nfv-Tg-TgG" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" id="Rge-rA-eM0"/>
                                 <constraint firstItem="JdC-sX-3ef" firstAttribute="top" secondItem="cE1-oB-Mve" secondAttribute="bottom" constant="16" id="SiE-ns-Lpy"/>
+                                <constraint firstAttribute="trailing" secondItem="FsQ-1D-7fH" secondAttribute="trailing" constant="16" id="cl6-7z-bif"/>
                                 <constraint firstAttribute="trailing" secondItem="pUM-4n-Hrl" secondAttribute="trailing" constant="16" id="eaQ-aA-bbN"/>
                                 <constraint firstItem="nfv-Tg-TgG" firstAttribute="top" secondItem="JdC-sX-3ef" secondAttribute="bottom" constant="-1" id="ha6-Tf-Es5"/>
+                                <constraint firstItem="amr-jh-ELF" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" id="ioA-QA-RNi"/>
                                 <constraint firstAttribute="bottom" secondItem="nfv-Tg-TgG" secondAttribute="bottom" id="osq-8h-kyD"/>
                                 <constraint firstAttribute="trailing" secondItem="JdC-sX-3ef" secondAttribute="trailing" constant="16" id="q6I-r7-4fq"/>
                                 <constraint firstItem="cE1-oB-Mve" firstAttribute="top" secondItem="pUM-4n-Hrl" secondAttribute="bottom" constant="16" id="qOn-3K-f2u"/>
+                                <constraint firstItem="amr-jh-ELF" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="20" id="qiJ-RM-iDm"/>
                                 <constraint firstItem="JdC-sX-3ef" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="wYA-El-5H8"/>
                             </constraints>
                             <connections>
@@ -124,8 +197,9 @@
             <connections>
                 <action selector="tapOnBackground:" destination="-1" eventType="valueChanged" id="YbO-Zo-Kls"/>
             </connections>
-            <point key="canvasLocation" x="228" y="813"/>
+            <point key="canvasLocation" x="193" y="815"/>
         </view>
+        <tapGestureRecognizer id="XQM-lL-eXf"/>
     </objects>
     <resources>
         <image name="img" width="21" height="17"/>
