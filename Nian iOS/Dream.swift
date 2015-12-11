@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate, editDreamDelegate, topDelegate, ShareDelegate {
+class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, editDreamDelegate, topDelegate, ShareDelegate {
     
     var page: Int = 1
     var Id: String = "1"
@@ -292,42 +292,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
-    // MARK: - add step delegate
-    func update(data: NSDictionary) {
-        if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
-            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
-            mutableData.setValue("\(step + 1)", forKey: "step")
-            dataArrayTop = mutableData
-            dataArray.insertObject(data, atIndex: 0)
-            globalVVeboReload = true
-            SATableView.reloadData()
-        }
-    }
-    func countUp(coin: String, total: String, isfirst: String) {
-        if isfirst == "1" {
-            if Int(total) < 3 {
-                self.alertCoin = NIAlert()
-                self.alertCoin?.delegate = self
-                self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                self.alertCoin?.showWithAnimation(.flip)
-            } else {
-                // 如果念币多于 3， 那么就出现抽宠物
-                let v = SAEgg()
-                v.delegateShare = self
-                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                v.showWithAnimation(.flip)
-            }
-        }
-    }
-    
-    func Editstep() {
-        self.dataArray[self.editStepRow] = self.editStepData!
-        let newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
-        self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
-    }
-    
     func setupRefresh(){
         self.SATableView!.addHeaderWithCallback({
             self.load()
@@ -421,17 +385,25 @@ extension DreamViewController: NewAddStepDelegate {
         let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
         self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
     }
-    
-    
-    func newCountUp(coin: String, isfirst: String) {
-        
-    }
-    
-    
+
     func newCountUp(coin: String, total: String, isfirst: String) {
-        
+        if isfirst == "1" {
+            if Int(total) < 3 {
+                self.alertCoin = NIAlert()
+                self.alertCoin?.delegate = self
+                self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                self.alertCoin?.showWithAnimation(.flip)
+            } else {
+                // 如果念币多于 3， 那么就出现抽宠物
+                let v = SAEgg()
+                v.delegateShare = self
+                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                v.showWithAnimation(.flip)
+            }
+        }
     }
-    
     
     func newUpdate(data: NSDictionary) {
         if let step = Int(dataArrayTop.stringAttributeForKey("step")) {

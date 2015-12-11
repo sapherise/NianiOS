@@ -42,7 +42,7 @@ class NewAddStepViewController: SAViewController {
     
     weak var delegate: NewAddStepDelegate?
     
-    var data: NSDictionary?
+    var data: NSMutableDictionary?
     var dreamId: String = ""
     var isEdit: Int = 0
     var row: Int = 0
@@ -343,7 +343,8 @@ class NewAddStepViewController: SAViewController {
             let imageHeight = json["image-height"].stringValue
             
             synchronized(self.imagesInfo, closure: { () -> () in
-                self.imagesInfo.addObject(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])
+                self.imagesInfo.addObject(NSDictionary(dictionary: ["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"]))
+                
                 logInfo("\(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])")
                 
                 let __count = (self.data != nil) ? ((self.data?.allKeys.filter({ $0 as! String == "imageArray" }).count)! > 0 ? (self.data?.objectForKey("imageArray") as! [UIImage]).count : 0) : 0
@@ -383,9 +384,14 @@ class NewAddStepViewController: SAViewController {
         if modeCard != "off" {
             let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
             card.content = self.contentTextView.text
-//            card.widthImage = self.uploadWidth
-//            card.heightImage = self.uploadHeight
-//            card.url = "http://img.nian.so/step/\(self.uploadUrl)!large"
+            card.widthImage = String(self.collectionView.frame.size.width)
+            card.heightImage = String(self.collectionView.frame.size.height)
+            
+            UIGraphicsBeginImageContextWithOptions(self.collectionView.frame.size, false, globalScale)
+            self.collectionView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+            card.image.image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
             card.onCardSave()
         }
         
@@ -429,11 +435,11 @@ class NewAddStepViewController: SAViewController {
             if self.data != nil {
                 let mutableData = NSMutableDictionary(dictionary: self.data!)
                 mutableData.setValue(self.contentTextView.text, forKey: "content")
-                mutableData.setValue(self.imagesInfo, forKey: "images")
+                mutableData.setValue(NSArray(array: self.imagesInfo), forKey: "images")
                 
                 if self.imagesArray.count == 1 {
-                    mutableData["width"] = self.imagesArray[0].size.width
-                    mutableData["height"] = self.imagesArray[0].size.height
+                    mutableData["width"] = self.collectionView.frame.width
+                    mutableData["height"] = self.collectionView.frame.width
                 } else {
                     mutableData["width"] = self.collectionView.frame.width
                     mutableData["height"] = VVeboCell.calculateCollectionViewHeight(self.imagesArray)
@@ -656,8 +662,8 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
             for(var _index = 0; _index < assets.count; _index++) {
                 let _asset = assets[_index]
                 let rep = _asset.defaultRepresentation()
-                let resolutionRef = rep?.CGImageWithOptions([kCGImageSourceThumbnailMaxPixelSize : 720])
-                var image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
+                let resolutionRef = rep?.CGImageWithOptions([kCGImageSourceThumbnailMaxPixelSize : 720, kCGImageSourceCreateThumbnailWithTransform : true])
+                let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
 //                image = image.fixOrientation()
                 
                 synchronized(self.imagesArray, closure: { () -> () in
@@ -694,8 +700,11 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
             for indexpath in inIndexPath {
                 self.imagesArray.removeAtIndex(indexpath.row)
                 if self.isEdit == 1 {
-                    if (self.data?["images"] as? NSMutableArray)!.count > indexpath.row {
-                        (self.data?["images"] as? NSMutableArray)!.removeObjectAtIndex(indexpath.row)
+                    if (self.data?["images"] as? NSArray)!.count > indexpath.row {
+                        let tmpArray = NSMutableArray(array: (self.data?["images"] as! NSArray))
+                        tmpArray.removeObjectAtIndex(indexpath.row)
+                        
+                        self.data?.setObject(tmpArray, forKey: "images")
                     }
                 }
             }
@@ -757,16 +766,7 @@ class yy_collectionViewLayout: UICollectionViewFlowLayout {
         
         return size
     }
-    
-    override func prepareLayout() {
-        
-        super.prepareLayout()
-        
-        
-        
-    }
-    
-    
+
 }
 
 

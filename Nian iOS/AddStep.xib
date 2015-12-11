@@ -137,7 +137,7 @@
                 <outlet property="viewHolder" destination="3wf-fD-sOg" id="jqG-wb-6xi"/>
                 <outlet property="viewTop" destination="ml5-7M-fBY" id="QET-Vn-Y68"/>
             </connections>
-            <point key="canvasLocation" x="292" y="1065"/>
+            <point key="canvasLocation" x="403" y="516"/>
         </view>
     </objects>
     <resources>

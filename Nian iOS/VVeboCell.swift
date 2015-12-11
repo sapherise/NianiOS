@@ -311,7 +311,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             editActivity.saActivityFunction = {
                 let addstepVC = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
                 addstepVC.isEdit = 1
-                addstepVC.data = self.data
+                addstepVC.data = NSMutableDictionary(dictionary: self.data)
                 addstepVC.data?.setValue(self.imageHolder.containImages, forKey: "imageArray")
                 addstepVC.row = row
                 addstepVC.delegate = self
@@ -423,10 +423,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         let _type = Int(data["type"] as! String)
         
         if _type == 5 || _type == 6 {
-            let heightImage = data["height"] as! CGFloat
-            let widthImage = data["width"] as! CGFloat
-            
-            imageHolder.setHeight(floor(self.frame.size.width / widthImage * heightImage))
+            imageHolder.setHeight(globalWidth - 32)
         } else if _type == 3 || _type == 4 {
             if array.count > 0 {
                 imageHolder.setHeight(VVeboCell.calculateCollectionViewHeight(array))
@@ -437,7 +434,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             imageHolder.imagesDataSource = NSMutableArray(array: array)
             imageHolder.sid = data.stringAttributeForKey("sid")
             imageHolder.hidden = false
-            imageHolder.collectionViewLayout = self.calculateCollectionLayout(collectionView: imageHolder)
+            imageHolder.collectionViewLayout.invalidateLayout()
+            imageHolder.setCollectionViewLayout(self.calculateCollectionLayout(collectionView: imageHolder), animated: false)
             imageHolder.setImage()
             
             imageHolder.imageSelectedHandler = { (string, indexPath) in
@@ -530,8 +528,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         let content = data.stringAttributeForKey("content").decode()
         let lastdate = data.stringAttributeForKey("lastdate")
         let title = data.stringAttributeForKey("title").decode()
-        let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
-        let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
+        
         var comment = data.stringAttributeForKey("comments")
         comment = comment == "0" ? "回应" : "回应 \(comment)"
         var like = data.stringAttributeForKey("likes")
@@ -541,14 +538,14 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         let heightContent = (content as NSString).sizeWithConstrainedToWidth(globalWidth - 40, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
         var heightCell: CGFloat = 0
         var heightImage: CGFloat = 0
-        if (img0 == 0.0) {
+        if (data.objectForKey("images") as! NSArray).count == 0 {
             heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
         } else {
             
             if (data.objectForKey("images") as! NSArray).count > 1 {
                 heightImage = VVeboCell.calculateCollectionViewHeight(data.objectForKey("images") as! NSArray)
             } else {
-                heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+                heightImage = globalWidth - 32
             }
             
             heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
@@ -572,9 +569,32 @@ extension VVeboCell: NewAddStepDelegate {
     func newEditstep() {
         if newEditStepData != nil {
             clear()
-        
-        
-        
+            
+            let content = newEditStepData!.stringAttributeForKey("content")
+            let img = newEditStepData!.objectForKey("images") as! NSArray
+            let img0 = Float(newEditStepData!.stringAttributeForKey("width"))!
+            let img1 = Float(newEditStepData!.stringAttributeForKey("height"))!
+            let heightContent = (content as NSString).sizeWithConstrainedToWidth(globalWidth - SIZE_PADDING * 2, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
+            var heightCell: CGFloat = 0
+            var heightImage: CGFloat = 0
+            if img0 == 0 {
+                heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+            } else {
+                if img.count > 1 {
+                    heightImage = VVeboCell.calculateCollectionViewHeight(img)
+                } else {
+                    heightImage = globalWidth - 32
+                }
+                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+            }
+            delegate?.updateStep(num, key: "images", value: img)
+            delegate?.updateStep(num, key: "width", value: img0)
+            delegate?.updateStep(num, key: "height", value: img1)
+            delegate?.updateStep(num, key: "content", value: content)
+            delegate?.updateStep(num, key: "heightImage", value: heightImage)
+            delegate?.updateStep(num, key: "heightContent", value: heightContent)
+            delegate?.updateStep(num, key: "heightCell", value: heightCell)
+            delegate?.updateStep(num)
         
         }
     }

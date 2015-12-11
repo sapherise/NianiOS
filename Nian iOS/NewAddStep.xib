@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NewAddStep" customModule="Nian_iOS" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -91,7 +91,7 @@
                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </collectionViewFlowLayout>
                                 </collectionView>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YME-IR-ogd">
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YME-IR-ogd" customClass="SZTextView" customModule="Nian_iOS" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="128" width="600" height="161"/>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -170,6 +170,18 @@
                 <constraint firstItem="BcC-nu-fjn" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" priority="750" id="pjR-GI-rlE"/>
                 <constraint firstItem="lhx-bS-Sqa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vv5-Uc-O6x"/>
             </constraints>
+            <connections>
+                <outlet property="collectionView" destination="fjA-rt-mjm" id="jXS-1C-wYA"/>
+                <outlet property="contentTextView" destination="YME-IR-ogd" id="use-iL-mra"/>
+                <outlet property="contentView" destination="BcC-nu-fjn" id="hiM-7Z-pv0"/>
+                <outlet property="contentViewHeightConstraint" destination="pjR-GI-rlE" id="Xwc-JA-JfT"/>
+                <outlet property="indicateArrow" destination="mmz-4a-SeI" id="FN1-OJ-4NN"/>
+                <outlet property="noteCoverImage" destination="pEW-Wz-Jh4" id="ym2-yr-jRb"/>
+                <outlet property="noteTitleField" destination="AYe-yA-bzT" id="yHv-gn-E1h"/>
+                <outlet property="scrollView" destination="lhx-bS-Sqa" id="thb-zA-Rlv"/>
+                <outlet property="sp1HeightConstraint" destination="KSR-AH-87J" id="y1c-ab-0qk"/>
+                <outlet property="textViewHeightConstraint" destination="a57-cw-buI" id="r3H-ux-KUH"/>
+            </connections>
             <point key="canvasLocation" x="499" y="596"/>
         </view>
     </objects>

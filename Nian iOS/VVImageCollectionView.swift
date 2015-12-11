@@ -57,7 +57,7 @@ class VVImageCollectionView: UICollectionView {
     
     func setImage() {
         self.downloadImages(self.imagesDataSource, callback: { (image, url) -> Void in
-            self.containImages.append(image.fixOrientation())
+            self.containImages.append(image)
             
             if let _url = url {
                 let _string = _url.absoluteString
@@ -66,6 +66,7 @@ class VVImageCollectionView: UICollectionView {
                 
                 for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
                     if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
+                        logError(" tmp = \(tmp) , __arr = \(__arr) ")
                         self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
                     }
                 }
