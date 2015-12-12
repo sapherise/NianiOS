@@ -58,6 +58,8 @@ class NewAddStepViewController: SAViewController {
     
     var isInConvenienceWay: Bool = false
     
+    var dreamArray = NSMutableArray()
+    
     var data: NSMutableDictionary?
     var dreamId: String = ""
     var isEdit: Int = 0
@@ -100,6 +102,19 @@ class NewAddStepViewController: SAViewController {
         self.collectionView.collectionViewLayout = yy_collectionViewLayout()
         self.collectionView.registerClass(AddStepCollectionCell.self, forCellWithReuseIdentifier: "AddStepCollectionCell")
         
+        
+        let x = (globalWidth - 240.0) / 8
+        let y = x + x
+        
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = x
+        flowLayout.minimumLineSpacing = y
+        flowLayout.itemSize = CGSize(width: 80, height: 120)
+        flowLayout.sectionInset = UIEdgeInsetsMake(y, y, y, y)
+        
+        self.noteCollectionView.collectionViewLayout = flowLayout
+        self.noteCollectionView.registerClass(AddStepNoteCell.self, forCellWithReuseIdentifier: "AddStepNoteCell")
+        
         if self.isEdit == 1 {
             
             self.noteCollectionView.removeFromSuperview()
@@ -130,7 +145,9 @@ class NewAddStepViewController: SAViewController {
                 self.collectionToTopContraint.constant = 16
                 
             } else {
-
+                let userDefaults = NSUserDefaults.standardUserDefaults()
+                dreamArray = NSMutableArray(array: userDefaults.arrayForKey("NianDream")!)
+                
             }
             
             constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
@@ -629,39 +646,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
 }
 
 
-class yy_collectionViewLayout: UICollectionViewFlowLayout {
-    
-    override init() {
-        super.init()
-        
-        self.minimumLineSpacing = 2.0
-        self.minimumInteritemSpacing = 2.0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        self.minimumInteritemSpacing = 2.0
-        self.minimumLineSpacing = 2.0
-    }
-    
-    override func collectionViewContentSize() -> CGSize {
 
-        let _count = self.collectionView?.numberOfItemsInSection(0)
-        
-        let _index = _count! / 3
-        let _tmpIndex = _count! % 3
-        let __index = _tmpIndex == 0 ? _index : _index + 1
-        
-        let collectionViewHeight = CGFloat(__index) * ceil((globalWidth - 32 - 4)/3) + CGFloat(_index * 2)
-        let size = CGSizeMake(self.collectionView!.frame.width, collectionViewHeight)
-        
-        self.collectionView?.contentSize = size
-        
-        return size
-    }
-
-}
 
 
 

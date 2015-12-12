@@ -14,6 +14,8 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.collectionView {
             return self.imagesArray.count
+        } else if collectionView == self.noteCollectionView {
+            return self.dreamArray.count
         } else {
             return 0
         }
@@ -30,6 +32,17 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
                 let asset = self.imagesDataSource[indexPath.row] as? ALAsset
                 cell.imageView.image = UIImage(CGImage: asset!.thumbnail().takeUnretainedValue())
                 
+            }
+            
+            return cell
+        } else if collectionView == self.noteCollectionView {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepNoteCell", forIndexPath: indexPath) as! AddStepNoteCell
+            
+            if self.dreamArray.count > indexPath.row {
+                let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["img"] as! String
+                
+                cell.imageView.setImage("http://img.nian.so/dream/\(_imgUrl)!dream")
+                cell.label.text = (self.dreamArray[indexPath.row] as! NSDictionary)["title"] as! String
             }
             
             return cell

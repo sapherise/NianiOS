@@ -270,6 +270,7 @@
 		C4B6AEC81BEB9B310064486B /* BindEmailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B6AEC71BEB9B310064486B /* BindEmailView.xib */; };
 		C4B879A11BFB3E85004B0C0D /* ResponsedTopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */; };
 		C4C2C3C81C1AFD9F00209B55 /* NewAddStepVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2C3C71C1AFD9F00209B55 /* NewAddStepVCExtension.swift */; };
+		C4C2C3CA1C1BD06000209B55 /* NewAddStepUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2C3C91C1BD06000209B55 /* NewAddStepUtils.swift */; };
 		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
 		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
@@ -603,6 +604,7 @@
 		C4B6AEC71BEB9B310064486B /* BindEmailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BindEmailView.xib; sourceTree = "<group>"; };
 		C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsedTopicCell.swift; sourceTree = "<group>"; };
 		C4C2C3C71C1AFD9F00209B55 /* NewAddStepVCExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddStepVCExtension.swift; sourceTree = "<group>"; };
+		C4C2C3C91C1BD06000209B55 /* NewAddStepUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddStepUtils.swift; sourceTree = "<group>"; };
 		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
 		C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
@@ -1094,6 +1096,7 @@
 				C486FD2C1C044223009F1F90 /* NewAddStepView.xib */,
 				C46A7ABE1C088D6900D8C669 /* AddStepCollectionCell.swift */,
 				C49A57141C0C525C008D0780 /* AddStepModel.swift */,
+				C4C2C3C91C1BD06000209B55 /* NewAddStepUtils.swift */,
 			);
 			name = "更新进展";
 			sourceTree = "<group>";
@@ -1810,6 +1813,7 @@
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				C486FD561C04430A009F1F90 /* Property.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
+				C4C2C3CA1C1BD06000209B55 /* NewAddStepUtils.swift in Sources */,
 				1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */,
 				C488B47C1BFD9E8D00C735EC /* PrivacyViewController.swift in Sources */,
 				12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */,
