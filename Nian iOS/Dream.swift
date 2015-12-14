@@ -289,7 +289,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
         vc.dreamId = self.Id
         vc.delegate = self
-        self.navigationController?.pushViewController(vc, animated: true)
+
+        self.presentViewController(vc, animated: true, completion: nil)
     }
 
     func setupRefresh(){

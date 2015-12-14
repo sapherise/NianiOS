@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
@@ -19,6 +19,7 @@
                 <outlet property="noteTitleField" destination="BqK-aT-DQ5" id="ERy-FD-bhx"/>
                 <outlet property="notesHeightConstraint" destination="dV5-4p-ZuN" id="osW-sM-nBg"/>
                 <outlet property="scrollView" destination="QCy-Ga-BCg" id="OMS-Rx-VYN"/>
+                <outlet property="scrollViewToTopConstraint" destination="SsO-s6-HBM" id="dyc-JP-HJP"/>
                 <outlet property="sp1HeightConstraint" destination="ZLP-w7-Y8B" id="CL8-ot-G0r"/>
                 <outlet property="textViewHeightConstraint" destination="RbA-GZ-dhC" id="3nC-00-LHh"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IGF-EY-DZp"/>
@@ -36,7 +37,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="amr-jh-ELF">
-                                    <rect key="frame" x="0.0" y="20" width="600" height="64"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aXz-Ye-BaI">
                                             <rect key="frame" x="16" y="16" width="32" height="32"/>
@@ -46,20 +47,20 @@
                                                 <constraint firstAttribute="height" constant="32" id="yJD-0k-SY3"/>
                                             </constraints>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2ch-eX-0qf">
-                                            <rect key="frame" x="560" y="20" width="24" height="24"/>
+                                        <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_choose" translatesAutoresizingMaskIntoConstraints="NO" id="2ch-eX-0qf">
+                                            <rect key="frame" x="552" y="16" width="32" height="32"/>
                                             <animations/>
                                             <gestureRecognizers/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="24" id="kvI-Q0-PnO"/>
-                                                <constraint firstAttribute="height" constant="24" id="wIf-f3-wtG"/>
+                                                <constraint firstAttribute="width" constant="32" id="kvI-Q0-PnO"/>
+                                                <constraint firstAttribute="height" constant="32" id="wIf-f3-wtG"/>
                                             </constraints>
                                             <connections>
                                                 <outletCollection property="gestureRecognizers" destination="XQM-lL-eXf" appends="YES" id="u7e-97-x7P"/>
                                             </connections>
                                         </imageView>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqK-aT-DQ5">
-                                            <rect key="frame" x="56" y="16" width="488" height="32"/>
+                                        <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="标题" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqK-aT-DQ5">
+                                            <rect key="frame" x="56" y="16" width="480" height="32"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="keM-od-3gQ"/>
@@ -70,7 +71,7 @@
                                         </textField>
                                     </subviews>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="2ch-eX-0qf" secondAttribute="trailing" constant="16" id="JsG-fT-3bg"/>
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="top" constant="16" id="MEE-9h-HfB"/>
@@ -83,10 +84,11 @@
                                     </constraints>
                                 </view>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-1D-7fH">
-                                    <rect key="frame" x="16" y="84" width="568" height="20"/>
+                                    <rect key="frame" x="16" y="64" width="568" height="0.0"/>
                                     <animations/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="20" id="dV5-4p-ZuN"/>
+                                        <constraint firstAttribute="height" id="dV5-4p-ZuN"/>
                                     </constraints>
                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="arv-RE-xKK">
                                         <size key="itemSize" width="50" height="50"/>
@@ -163,7 +165,7 @@
                                 <constraint firstAttribute="bottom" secondItem="nfv-Tg-TgG" secondAttribute="bottom" id="osq-8h-kyD"/>
                                 <constraint firstAttribute="trailing" secondItem="JdC-sX-3ef" secondAttribute="trailing" constant="16" id="q6I-r7-4fq"/>
                                 <constraint firstItem="cE1-oB-Mve" firstAttribute="top" secondItem="pUM-4n-Hrl" secondAttribute="bottom" constant="16" id="qOn-3K-f2u"/>
-                                <constraint firstItem="amr-jh-ELF" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="20" id="qiJ-RM-iDm"/>
+                                <constraint firstItem="amr-jh-ELF" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" id="qiJ-RM-iDm"/>
                                 <constraint firstItem="JdC-sX-3ef" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="wYA-El-5H8"/>
                             </constraints>
                             <connections>
@@ -197,11 +199,16 @@
             <connections>
                 <action selector="tapOnBackground:" destination="-1" eventType="valueChanged" id="YbO-Zo-Kls"/>
             </connections>
-            <point key="canvasLocation" x="193" y="815"/>
+            <point key="canvasLocation" x="277" y="533"/>
         </view>
-        <tapGestureRecognizer id="XQM-lL-eXf"/>
+        <tapGestureRecognizer id="XQM-lL-eXf">
+            <connections>
+                <action selector="selectNote:" destination="-1" id="5rV-pQ-CFE"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="img" width="21" height="17"/>
+        <image name="post_choose" width="24" height="24"/>
     </resources>
 </document>

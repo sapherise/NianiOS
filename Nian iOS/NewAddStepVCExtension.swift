@@ -42,7 +42,7 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
                 let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["img"] as! String
                 
                 cell.imageView.setImage("http://img.nian.so/dream/\(_imgUrl)!dream")
-                cell.label.text = (self.dreamArray[indexPath.row] as! NSDictionary)["title"] as! String
+                cell.label.text = (self.dreamArray[indexPath.row] as! NSDictionary)["title"] as? String
             }
             
             return cell
@@ -65,8 +65,25 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
             }
             
             alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+        } else if collectionView == self.noteCollectionView {
+            let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["img"] as! String
             
-            logError("indexPath = \(indexPath)")
+            self.noteCoverView.setImage("http://img.nian.so/dream/\(_imgUrl)!dream")
+            self.noteTitleField.text = (self.dreamArray[indexPath.row] as! NSDictionary)["title"] as? String
+            self.dreamId = (self.dreamArray[indexPath.row] as! NSDictionary)["id"] as! String
+            
+            self.view.layoutIfNeeded()
+            self.dreamArray.removeAllObjects()
+            
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.notesHeightConstraint.constant = 0
+                self.noteCollectionView.reloadData()
+                self.view.layoutIfNeeded()
+                self.indicateArrow.transform = CGAffineTransformMakeRotation(0)
+                }, completion: { finished in
+                    self.view.sendSubviewToBack(self.noteCollectionView)
+            })
+            
         }
     }
     
@@ -89,7 +106,7 @@ extension NewAddStepViewController: UICollectionViewDelegateFlowLayout {
             
             return regularCellSize
         } else {
-            return CGSizeMake(0, 0)
+            return CGSizeMake(80, 120)
         }
     }
     
@@ -100,12 +117,6 @@ extension NewAddStepViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.dismissKeyboard()
     }
-    
-}
-
-
-extension NewAddStepViewController: UINavigationControllerDelegate {
-    
     
 }
 

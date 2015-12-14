@@ -743,7 +743,7 @@ struct Api {
     
     static func getUserActive(uid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/user/\(uid)/steps?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/v2/user/\(uid)/steps?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     

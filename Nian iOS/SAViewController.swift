@@ -12,12 +12,13 @@ import UIKit
 class SAViewController: UIViewController {
     
     private var _containView: UIView?
+    var navView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // 添加导航栏
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         navView.userInteractionEnabled = true
         self.view.addSubview(navView)

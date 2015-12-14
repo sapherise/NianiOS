@@ -44,6 +44,8 @@ class NewAddStepViewController: SAViewController {
     
     @IBOutlet weak var contentTextView: SZTextView!
 
+    @IBOutlet weak var scrollViewToTopConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var notesHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var contentViewHeightConstraint: NSLayoutConstraint!
@@ -64,6 +66,9 @@ class NewAddStepViewController: SAViewController {
     var dreamId: String = ""
     var isEdit: Int = 0
     var row: Int = 0
+    
+    // 0 向下， 1 向上
+    var indicateArrowDirection: Int = 0
     
     var stepType = StepType(rawValue: 0)
     
@@ -102,6 +107,7 @@ class NewAddStepViewController: SAViewController {
         self.collectionView.collectionViewLayout = yy_collectionViewLayout()
         self.collectionView.registerClass(AddStepCollectionCell.self, forCellWithReuseIdentifier: "AddStepCollectionCell")
         
+        self.scrollViewToTopConstraint.constant = 64
         
         let x = (globalWidth - 240.0) / 8
         let y = x + x
@@ -110,18 +116,17 @@ class NewAddStepViewController: SAViewController {
         flowLayout.minimumInteritemSpacing = x
         flowLayout.minimumLineSpacing = y
         flowLayout.itemSize = CGSize(width: 80, height: 120)
-        flowLayout.sectionInset = UIEdgeInsetsMake(y, y, y, y)
+        flowLayout.sectionInset = UIEdgeInsetsMake(y, 0, y, 0)
         
         self.noteCollectionView.collectionViewLayout = flowLayout
         self.noteCollectionView.registerClass(AddStepNoteCell.self, forCellWithReuseIdentifier: "AddStepNoteCell")
         
         if self.isEdit == 1 {
+            self.setFakeNaviBar(isEdit: true)
             
             self.noteCollectionView.removeFromSuperview()
             self.headerView.removeFromSuperview()
             
-            self._setTitle("编辑进展")
-            self.setBarButtonImage("newOK", actionGesture: "uploadEditStep")
             self.contentTextView.text = self.data?.stringAttributeForKey("content").decode()
             
             self.imagesArray.appendContentsOf(self.data?.objectForKey("imageArray") as! [UIImage])
@@ -135,8 +140,7 @@ class NewAddStepViewController: SAViewController {
             self.collectionView.reloadData()
             
         } else {
-            self._setTitle("新进展")
-            self.setBarButtonImage("newOK", actionGesture: "uploadNewStep")
+            self.setFakeNaviBar(isEdit: false)
             
             if !isInConvenienceWay {
                 self.noteCollectionView.removeFromSuperview()
@@ -145,19 +149,17 @@ class NewAddStepViewController: SAViewController {
                 self.collectionToTopContraint.constant = 16
                 
             } else {
-                let userDefaults = NSUserDefaults.standardUserDefaults()
-                dreamArray = NSMutableArray(array: userDefaults.arrayForKey("NianDream")!)
+                
+                self.noteCollectionView.delegate = self
+                self.noteCollectionView.dataSource = self
+                
+                
                 
             }
             
             constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
                 view1.height == 0
             }
-            
-            constrain(self.noteCollectionView, block: { (notesView) -> () in
-                notesHeightConstraint = (notesView.height == 0 ~ 1000)
-            })
-            
         }
     }
 
@@ -197,6 +199,49 @@ class NewAddStepViewController: SAViewController {
         notificationCenter.removeObserver(self, name: NIUploadImagesCompletionNotification, object: nil)
     }
     
+    // 加一个假的 NavBar
+    func setFakeNaviBar(isEdit isEdit: Bool) {
+        let titleLabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = isEdit ? "编辑进展" : "新进展"
+        titleLabel.sizeToFit()
+        
+        let leftButton = UIButton(frame: CGRectMake(0, 0, 44, 44))
+        leftButton.setImage(UIImage(named: "navigationbar_cancel"), forState: .Normal)
+        leftButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
+        leftButton.highlighted = false
+        
+        let rightButton = UIButton(frame: CGRectMake(0, 0, 44, 44))
+        rightButton.setImage(UIImage(named: "newOK"), forState: .Normal)
+        if isEdit {
+            rightButton.addTarget(self, action: "uploadEditStep", forControlEvents: .TouchUpInside)
+        } else {
+            rightButton.addTarget(self, action: "uploadNewStep", forControlEvents: .TouchUpInside)
+        }
+        rightButton.highlighted = false
+        
+        self.navView.addSubview(titleLabel)
+        self.navView.addSubview(leftButton)
+        self.navView.addSubview(rightButton)
+        
+        constrain(leftButton, rightButton) { (leftButton, rightButton) -> () in
+            leftButton.top    == leftButton.superview!.top + 20
+            leftButton.left   == leftButton.superview!.left
+            leftButton.width  == 44
+            leftButton.height == 44
+            
+            rightButton.top    == rightButton.superview!.top + 20
+            rightButton.right  == rightButton.superview!.right
+            rightButton.width  == 44
+            rightButton.height == 44
+        }
+        
+        constrain(leftButton, rightButton, titleLabel) { (leftButton, rightButton, titleLabel) -> () in
+            titleLabel.centerX == titleLabel.superview!.centerX
+            align(centerY: leftButton, rightButton, titleLabel)
+        }
+    }
+    
     func textViewHeight() -> CGFloat {
         let textViewHeight = self.contentTextView.intrinsicContentSize().height
         
@@ -215,6 +260,9 @@ class NewAddStepViewController: SAViewController {
          UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
     }
     
+    func dismiss(sender: UIButton) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     @IBAction func pickerImages(sender: UIButton) {
         self.dismissKeyboard()
@@ -642,8 +690,98 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
         
         return CGFloat(__index) * ceil(self.regularCellSize.height) + CGFloat(_index * 2)
     }
-    
 }
+
+
+extension NewAddStepViewController {
+
+
+    @IBAction func selectNote(sender: UITapGestureRecognizer) {
+        
+        if self.indicateArrowDirection == 0 {
+            
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            dreamArray = NSMutableArray(array: userDefaults.arrayForKey("NianDream")!)
+            let _temp = (dreamArray.count / 3) + (dreamArray.count % 3 == 0 ? 0 : 1)
+            
+            self.view.layoutIfNeeded()
+            self.contentView.bringSubviewToFront(self.noteCollectionView)
+            
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                var extraSpacing: CGFloat = 0
+                if _temp > 1 {
+                    extraSpacing = CGFloat(_temp - 1) * (globalWidth - 240) / 8
+                }
+                
+                self.notesHeightConstraint.constant = CGFloat(_temp * 120) + extraSpacing
+                self.view.layoutIfNeeded()
+                
+                self.indicateArrow.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+                }, completion: { finished in
+                    self.noteCollectionView.reloadData()
+                    self.indicateArrowDirection = 1
+            })
+        } else if self.indicateArrowDirection == 1 {
+            
+            self.view.layoutIfNeeded()
+            self.dreamArray.removeAllObjects()
+            
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.notesHeightConstraint.constant = 0
+                self.noteCollectionView.reloadData()
+                self.view.layoutIfNeeded()
+                self.indicateArrow.transform = CGAffineTransformMakeRotation(0)
+                }, completion: { finished in
+                    self.view.sendSubviewToBack(self.noteCollectionView)
+                    self.indicateArrowDirection = 0
+            })
+            
+        }
+        
+        
+
+        
+    
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

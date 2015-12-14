@@ -31,6 +31,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     // 网络状态初始化
     let reachability = Reachability.reachabilityForInternetConnection()
     
+    
+    var newEditStepRow: Int = 0
+    var newEditStepData: NSDictionary?
+    
+    
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var shouldNavToMe: Bool = false
     var tabButtonArray = NSMutableArray()
@@ -384,7 +389,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") 
         let vc1 = NianViewController
         let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
-        let vc3 = NewAddStepViewController(nibName: "NewAddStepViewController", bundle: nil)
+        let vc3 = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
         let vc4 = MeViewController()
         let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
@@ -428,7 +433,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
         }else if index == idUpdate {      // 更新
-//            self.addStep()
+            let _vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+            _vc.delegate = self
+            _vc.isInConvenienceWay = true
+ 
+            self.selectedViewController!.presentViewController(_vc, animated: true, completion: nil)
         }
         if index != idExplore {
             numExplore = 0
@@ -565,65 +574,51 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
 }
 
-//
-//    func enter() {
-//        if isLoadFinish == 1 {
-//            go {
-//                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-//                client.setOnState(self.on_state)
-//                client.enter(safeuid, shell: safeshell)
-//            }
-//        }
-//    }
-//
-//    func on_state(st: ImClient.State) {
-//        if st == .authed {
-//            client.pollBegin(self.on_poll)
-//        } else if st == .live {
-//            onCircleEnter()
-//        }
-//    }
-//
-//    func on_poll(obj: AnyObject?) {
-//        go {
-//            let safeuid = SAUid()
-//            if obj != nil {
-//                let msg: AnyObject? = obj!.objectForKey("msg")
-//                if msg != nil {
-//                    let json = msg!.objectForKey("msg") as? NSArray
-//                    if json != nil {
-//                        let count = json!.count - 1
-//                        if count >= 0 {
-//                            for i: Int in 0...count {
-//                                let data: NSDictionary = json![i] as! NSDictionary
-//                                let id = data.stringAttributeForKey("msgid")
-//                                let uid = data.stringAttributeForKey("from")
-//                                let name = data.stringAttributeForKey("fromname")
-//                                let msgcontent = data.stringAttributeForKey("msg").decode()
-//                                let type = data.stringAttributeForKey("msgtype")
-//                                let time = data.stringAttributeForKey("time")
-//                                let totype = data.stringAttributeForKey("totype")
-//                                var isread = 0
-//                                // 如果是群聊
-//                                if totype == "1" {
-//                                } else {
-//                                    // 如果是私信
-//                                    shake()
-//                                    if uid == "\(globalCurrentLetter)" || uid == safeuid {
-//                                        isread = 1
-//                                    }
-//                                    SQLLetterContent(id, uid: uid, name: name, circle: uid, content: msgcontent, type: type, time: time, isread: isread) {
-//                                        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
-//                                        self.noticeDot()
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+extension HomeViewController: NewAddStepDelegate {
     
+    func newEditstep() {
+
+
+
+
+
+    }
+
+
+
+    func newUpdate(data: NSDictionary) {
+        
+        
+        
+        
+        
+        
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
