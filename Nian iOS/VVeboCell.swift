@@ -309,13 +309,16 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             editActivity.saActivityType = "编辑"
             editActivity.saActivityImage = UIImage(named: "av_edit")
             editActivity.saActivityFunction = {
+                // ??????
+                self.findRootViewController()?.dismissViewControllerAnimated(true, completion: nil)
+                
                 let addstepVC = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
                 addstepVC.isEdit = 1
                 addstepVC.data = NSMutableDictionary(dictionary: self.data)
                 addstepVC.data?.setValue(self.imageHolder.containImages, forKey: "imageArray")
                 addstepVC.row = row
                 addstepVC.delegate = self
-                self.findRootViewController()?.navigationController?.pushViewController(addstepVC, animated: true)
+                self.findRootViewController()?.presentViewController(addstepVC, animated: true, completion: nil)
             }
             //删除按钮
             let deleteActivity = SAActivity()

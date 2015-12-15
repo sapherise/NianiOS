@@ -123,7 +123,7 @@ extension NewAddStepViewController: UIScrollViewDelegate {
 /*=========================================================================================================================================*/
 
 extension NewAddStepViewController {
-    // MARK: Keyboard Event Notifications
+    // MARK: - Keyboard Event Notifications
     
     func handleKeyboardWillShow(noti: NSNotification) {
         let userInfo = noti.userInfo!
@@ -144,11 +144,14 @@ extension NewAddStepViewController {
         
         keyboardHeight -= originDelta
         
-        self.textViewHeightConstraint.constant = self.textViewHeight()
+        logError("keyboard height = \(keyboardHeight), origin Delta = \(originDelta)， ++= \(self.textViewHeightConstraint.constant)")
         
-        if keyboardHeight + self.textViewHeightConstraint.constant + self.collectionView.frame.size.height + 32 > globalHeight - 64 {
+        let tempHeight = keyboardHeight + self.contentTextView.frame.size.height + self.collectionView.frame.size.height + 32 + (isInConvenienceWay ? 64 : 0)
+        
+        if tempHeight > globalHeight - 64 {
             self.contentTextView.scrollEnabled = true
-            self.textViewHeightConstraint.constant = globalHeight - 64 - keyboardHeight - 32
+            self.textViewHeightConstraint.constant = globalHeight - keyboardHeight - 64
+            logWarn("*************  self.textview height constant \(self.textViewHeightConstraint.constant) ")
             
             self.view.setNeedsUpdateConstraints()
             
@@ -156,7 +159,8 @@ extension NewAddStepViewController {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 self.view.layoutIfNeeded()
                 }, completion: { finished in
-                    self.scrollView.setContentOffset(CGPointMake(0, 32 + self.collectionView.frame.size.height - 64), animated: true)
+                    let _tempHeight = self.collectionView.frame.size.height + 32 + (self.isInConvenienceWay ? 64 : 0)
+                    self.scrollView.setContentOffset(CGPointMake(0, _tempHeight), animated: false)
             })
         }
         
@@ -182,16 +186,57 @@ extension NewAddStepViewController {
         UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
             self.view.layoutIfNeeded()
             }, completion: { finished in
-                self.scrollView.setContentOffset(CGPointMake(0, -64), animated: true)
+                self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
         })
         
         keyboardHeight = 0
+        
+        logInfo("keyboard height = \(keyboardHeight) ****** +++++++")
     }
     
 }
 
 
+/*=========================================================================================================================================*/
 
+extension NewAddStepViewController: UITextViewDelegate {
+    
+    func textViewDidChange(textView: UITextView) {
+        logInfo("XXXXXX")
+        let tempHeight = keyboardHeight + self.textViewHeight() + self.collectionView.frame.size.height + 32 + (isInConvenienceWay ? 64 : 0)
+        if needUpdateTextViewHeight {
+            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, max(globalHeight - 64, self.contentView.frame.height))
+            
+            logWarn("++++++++++ \(tempHeight), ****** \(self.textViewHeight())")
+            
+            if (tempHeight > globalHeight - 64) || (self.textViewHeight() > TEXTVIEW_DEFAULT_HEIGHT) {
+                self.needUpdateTextViewHeight = false
+                
+                self.contentTextView.scrollEnabled = true
+                self.textViewHeightConstraint.constant = globalHeight - keyboardHeight - 64
+
+                self.view.setNeedsUpdateConstraints()
+                
+                UIView.animateWithDuration(0.5, animations: {
+                    self.view.layoutIfNeeded()
+                    }, completion: { finished in
+                        let _tempHeight = self.collectionView.frame.size.height + 32 + (self.isInConvenienceWay ? 64 : 0)
+                        self.scrollView.setContentOffset(CGPointMake(0, _tempHeight), animated: false)
+                })
+            }
+            
+        }
+        
+        if tempHeight > globalHeight - 64 {
+            self.contentTextView.scrollRangeToVisible(self.contentTextView.selectedRange)
+        }
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        self.needUpdateTextViewHeight = true
+    }
+    
+}
 
 
 

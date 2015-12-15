@@ -83,7 +83,7 @@
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="leading" secondItem="amr-jh-ELF" secondAttribute="leading" constant="16" id="z8S-N3-VRa"/>
                                     </constraints>
                                 </view>
-                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-1D-7fH">
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-1D-7fH">
                                     <rect key="frame" x="16" y="64" width="568" height="0.0"/>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

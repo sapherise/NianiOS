@@ -2146,6 +2146,7 @@
 					"\"SystemConfiguration\"",
 					"-fobjc-arc",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

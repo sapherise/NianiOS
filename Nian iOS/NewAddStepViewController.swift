@@ -133,6 +133,8 @@ class NewAddStepViewController: SAViewController {
             
             let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
             
+            self.collectionToTopContraint.constant = 16
+            
             constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
                 view1.height == collectionViewHeight
             }
@@ -149,12 +151,8 @@ class NewAddStepViewController: SAViewController {
                 self.collectionToTopContraint.constant = 16
                 
             } else {
-                
                 self.noteCollectionView.delegate = self
                 self.noteCollectionView.dataSource = self
-                
-                
-                
             }
             
             constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
@@ -261,6 +259,7 @@ class NewAddStepViewController: SAViewController {
     }
     
     func dismiss(sender: UIButton) {
+        self.dismissKeyboard()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -353,6 +352,12 @@ class NewAddStepViewController: SAViewController {
     }
     
     func uploadNewStep() {
+        
+        if self.dreamId == "" {
+            self.view.showTipText("请先选择记本")
+            return
+        }
+        
         self.setStepType()
         
         self.dismissKeyboard()
@@ -557,42 +562,6 @@ class NewAddStepViewController: SAViewController {
 
 /*=========================================================================================================================================*/
 
-extension NewAddStepViewController: UITextViewDelegate {
-    
-    func textViewDidChange(textView: UITextView) {
-        
-        if needUpdateTextViewHeight {
-        
-            self.textViewHeightConstraint.constant = self.textViewHeight()
-            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, max(globalHeight - 64, self.contentView.frame.height))
-            
-            if keyboardHeight + self.textViewHeightConstraint.constant + self.collectionView.frame.size.height + 32 > globalHeight - 64 {
-                self.needUpdateTextViewHeight = false
-                
-                self.contentTextView.scrollEnabled = true
-                self.textViewHeightConstraint.constant = globalHeight - 64 - keyboardHeight - 32 // - self.collectionView.frame.size.height
-                
-                self.scrollView.setContentOffset(CGPointMake(0, 32 + self.collectionView.frame.size.height - 64), animated: true)
-                
-                self.view.setNeedsUpdateConstraints()
-                
-                UIView.animateWithDuration(0.5, animations: {
-                    self.view.layoutIfNeeded()
-                    }, completion: nil)
-            }
-     
-        }
-        self.contentTextView.scrollRangeToVisible(self.contentTextView.selectedRange)
-    }
-    
-    func textViewDidEndEditing(textView: UITextView) {
-        self.needUpdateTextViewHeight = true
-    }
-    
-}
-
-/*=========================================================================================================================================*/
-
 extension NewAddStepViewController: QBImagePickerControllerDelegate {
 
     func qb_imagePickerController(imagePickerController: QBImagePickerController!, didSelectAsset asset: ALAsset!) {
@@ -713,7 +682,7 @@ extension NewAddStepViewController {
                     extraSpacing = CGFloat(_temp - 1) * (globalWidth - 240) / 8
                 }
                 
-                self.notesHeightConstraint.constant = CGFloat(_temp * 120) + extraSpacing
+                self.notesHeightConstraint.constant = CGFloat((_temp > 2 ? 2 : _temp) * 120) + extraSpacing
                 self.view.layoutIfNeeded()
                 
                 self.indicateArrow.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
@@ -738,23 +707,7 @@ extension NewAddStepViewController {
             
         }
         
-        
-
-        
-    
-        
     }
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
