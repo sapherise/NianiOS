@@ -21,6 +21,7 @@
                 <outlet property="scrollView" destination="QCy-Ga-BCg" id="OMS-Rx-VYN"/>
                 <outlet property="scrollViewToTopConstraint" destination="SsO-s6-HBM" id="dyc-JP-HJP"/>
                 <outlet property="sp1HeightConstraint" destination="ZLP-w7-Y8B" id="CL8-ot-G0r"/>
+                <outlet property="sp2HeightConstraint" destination="Pgb-Oe-lmY" id="t6r-9X-3wS"/>
                 <outlet property="textViewHeightConstraint" destination="RbA-GZ-dhC" id="3nC-00-LHh"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IGF-EY-DZp"/>
             </connections>
@@ -39,7 +40,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="amr-jh-ELF">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aXz-Ye-BaI">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_plus" translatesAutoresizingMaskIntoConstraints="NO" id="aXz-Ye-BaI">
                                             <rect key="frame" x="16" y="16" width="32" height="32"/>
                                             <animations/>
                                             <constraints>
@@ -59,7 +60,7 @@
                                                 <outletCollection property="gestureRecognizers" destination="XQM-lL-eXf" appends="YES" id="u7e-97-x7P"/>
                                             </connections>
                                         </imageView>
-                                        <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="标题" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqK-aT-DQ5">
+                                        <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqK-aT-DQ5">
                                             <rect key="frame" x="56" y="16" width="480" height="32"/>
                                             <animations/>
                                             <constraints>
@@ -69,22 +70,32 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwb-Wm-WQs">
+                                            <rect key="frame" x="0.0" y="63" width="600" height="1"/>
+                                            <animations/>
+                                            <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="Pgb-Oe-lmY"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <animations/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="2ch-eX-0qf" secondAttribute="trailing" constant="16" id="JsG-fT-3bg"/>
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="top" constant="16" id="MEE-9h-HfB"/>
                                         <constraint firstAttribute="height" constant="64" id="Qlz-HG-IT8"/>
+                                        <constraint firstAttribute="trailing" secondItem="lwb-Wm-WQs" secondAttribute="trailing" id="Qt5-2M-TJ9"/>
+                                        <constraint firstItem="lwb-Wm-WQs" firstAttribute="leading" secondItem="amr-jh-ELF" secondAttribute="leading" id="XHs-dS-hkL"/>
                                         <constraint firstItem="BqK-aT-DQ5" firstAttribute="centerY" secondItem="aXz-Ye-BaI" secondAttribute="centerY" id="eUw-st-YgN"/>
                                         <constraint firstItem="BqK-aT-DQ5" firstAttribute="leading" secondItem="aXz-Ye-BaI" secondAttribute="trailing" constant="8" id="lc4-Mc-EL5"/>
                                         <constraint firstItem="2ch-eX-0qf" firstAttribute="centerY" secondItem="BqK-aT-DQ5" secondAttribute="centerY" id="rAl-mv-w4w"/>
+                                        <constraint firstAttribute="bottom" secondItem="lwb-Wm-WQs" secondAttribute="bottom" id="w50-X0-EXd"/>
                                         <constraint firstItem="2ch-eX-0qf" firstAttribute="leading" secondItem="BqK-aT-DQ5" secondAttribute="trailing" constant="16" id="y8Z-t9-XNY"/>
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="leading" secondItem="amr-jh-ELF" secondAttribute="leading" constant="16" id="z8S-N3-VRa"/>
                                     </constraints>
                                 </view>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-1D-7fH">
-                                    <rect key="frame" x="16" y="64" width="568" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="64" width="600" height="0.0"/>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -100,7 +111,6 @@
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cE1-oB-Mve" customClass="SZTextView" customModule="Nian_iOS" customModuleProvider="target">
                                     <rect key="frame" x="16" y="200" width="568" height="340"/>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.99215686270000003" green="0.70980392160000005" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="340" id="RbA-GZ-dhC"/>
                                     </constraints>
@@ -120,7 +130,6 @@
                                         </button>
                                     </subviews>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="rw2-z4-fh3"/>
                                     </constraints>
@@ -128,7 +137,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfv-Tg-TgG">
                                     <rect key="frame" x="0.0" y="599" width="600" height="1"/>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.99215686270000003" green="0.70980392160000005" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="ZLP-w7-Y8B"/>
                                     </constraints>
@@ -136,7 +145,7 @@
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-4n-Hrl">
                                     <rect key="frame" x="16" y="84" width="568" height="100"/>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <collectionViewLayout key="collectionViewLayout" id="jxK-mY-e16" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
                                     <connections>
                                         <outlet property="dataSource" destination="-1" id="FXj-yT-0is"/>
@@ -145,11 +154,10 @@
                                 </collectionView>
                             </subviews>
                             <animations/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                             <constraints>
                                 <constraint firstItem="pUM-4n-Hrl" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="84" id="0Cc-ci-QPl"/>
-                                <constraint firstItem="FsQ-1D-7fH" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="2Tb-IX-snk"/>
+                                <constraint firstItem="FsQ-1D-7fH" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" id="2Tb-IX-snk"/>
                                 <constraint firstAttribute="trailing" secondItem="nfv-Tg-TgG" secondAttribute="trailing" id="354-By-jg8"/>
                                 <constraint firstItem="pUM-4n-Hrl" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="5wd-fk-9za"/>
                                 <constraint firstItem="cE1-oB-Mve" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" constant="16" id="E7X-ve-Gyd"/>
@@ -158,7 +166,7 @@
                                 <constraint firstItem="FsQ-1D-7fH" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="bottom" id="Lfm-Pb-cXo"/>
                                 <constraint firstItem="nfv-Tg-TgG" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" id="Rge-rA-eM0"/>
                                 <constraint firstItem="JdC-sX-3ef" firstAttribute="top" secondItem="cE1-oB-Mve" secondAttribute="bottom" constant="16" id="SiE-ns-Lpy"/>
-                                <constraint firstAttribute="trailing" secondItem="FsQ-1D-7fH" secondAttribute="trailing" constant="16" id="cl6-7z-bif"/>
+                                <constraint firstAttribute="trailing" secondItem="FsQ-1D-7fH" secondAttribute="trailing" id="cl6-7z-bif"/>
                                 <constraint firstAttribute="trailing" secondItem="pUM-4n-Hrl" secondAttribute="trailing" constant="16" id="eaQ-aA-bbN"/>
                                 <constraint firstItem="nfv-Tg-TgG" firstAttribute="top" secondItem="JdC-sX-3ef" secondAttribute="bottom" constant="-1" id="ha6-Tf-Es5"/>
                                 <constraint firstItem="amr-jh-ELF" firstAttribute="leading" secondItem="LBS-nn-c8A" secondAttribute="leading" id="ioA-QA-RNi"/>
@@ -174,7 +182,6 @@
                         </view>
                     </subviews>
                     <animations/>
-                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="LBS-nn-c8A" firstAttribute="leading" secondItem="QCy-Ga-BCg" secondAttribute="leading" id="8zZ-MQ-DZF"/>
                         <constraint firstItem="LBS-nn-c8A" firstAttribute="top" secondItem="QCy-Ga-BCg" secondAttribute="top" id="Lnc-ca-eaL"/>
@@ -208,6 +215,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="add_plus" width="40" height="40"/>
         <image name="img" width="21" height="17"/>
         <image name="post_choose" width="24" height="24"/>
     </resources>

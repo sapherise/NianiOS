@@ -104,6 +104,17 @@ extension HomeViewController: NIAlertDelegate {
                 niAppStore?.dismissWithAnimation(.normal)
                 niAppStoreStar?.dismissWithAnimation(.normal)
             }
+        } else {
+            if didselectAtIndex == 1 {
+                delay(0.5) { () -> () in
+                    if self.newEditDreamId == "" {
+                        let dreamVC = DreamViewController()
+                        dreamVC.Id = self.newEditDreamId
+                        
+                        self.selectedViewController!.navigationController?.pushViewController(dreamVC, animated: true)
+                    }
+                }
+            }
         }
     }
 }

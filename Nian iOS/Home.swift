@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, MaskDelegate{
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, MaskDelegate, ShareDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -31,10 +31,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     // 网络状态初始化
     let reachability = Reachability.reachabilityForInternetConnection()
     
-    
     var newEditStepRow: Int = 0
     var newEditStepData: NSDictionary?
-    
+    var newEditDreamId: String = ""
     
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var shouldNavToMe: Bool = false
@@ -579,35 +578,35 @@ extension HomeViewController: NewAddStepDelegate {
     
     func newEditstep() {
 
-
-
-
-
     }
-
-
 
     func newUpdate(data: NSDictionary) {
-        
-        
-        
-        
-        
-        
+        self.newEditDreamId = data["dream"] as! String
     }
 
-
-
+    func newCountUp(coin: String, total: String, isfirst: String) {
+        if isfirst == "1" {
+            globalWillNianReload = 1
+            
+            if Int(total) < 3 {
+                let niCoinLessAlert = NIAlert()
+                niCoinLessAlert.delegate = self
+                niCoinLessAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                niCoinLessAlert.showWithAnimation(.flip)
+            } else {
+                // 如果念币多于 3， 那么就出现抽宠物
+                let v = SAEgg()
+                v.delegateShare = self
+                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+                    forKeys: ["img", "title", "content", "buttonArray"])
+                v.showWithAnimation(.flip)
+            }
+        } else {
+            self.view.showTipText("发送好了")
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
 
 
 

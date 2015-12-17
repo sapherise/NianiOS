@@ -63,7 +63,8 @@ class AddStepNoteCell: UICollectionViewCell {
         }
         
         self.imageView.contentMode = .ScaleAspectFit
-        
+        self.imageView.layer.cornerRadius = 6
+        self.imageView.layer.masksToBounds = true
         
         self.addSubview(label)
         label.textColor = UIColor.colorWithHex("#333333")

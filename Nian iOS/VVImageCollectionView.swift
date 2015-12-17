@@ -48,7 +48,15 @@ class VVImageCollectionView: UICollectionView {
         self.registerClass(VVImageViewCell.self, forCellWithReuseIdentifier: "VVImageViewCell")
     }
 
-
+    convenience init(frame: CGRect) {
+        self.init(frame: frame, collectionViewLayout: UICollectionViewFlowLayout())
+        
+        self.delegate = self
+        self.dataSource = self
+        
+        self.registerClass(VVImageViewCell.self, forCellWithReuseIdentifier: "VVImageViewCell")
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -93,9 +101,7 @@ class VVImageCollectionView: UICollectionView {
                     }
             })
         }
-        
     }
-    
     
     func cancelImageRequestOperation() {
         self.sd_manager.cancelAll()
@@ -103,9 +109,7 @@ class VVImageCollectionView: UICollectionView {
         
         self.reloadData()
     }
-    
 }
-
 
 extension VVImageCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -130,6 +134,35 @@ extension VVImageCollectionView: UICollectionViewDelegate, UICollectionViewDataS
     
 }
 
+extension VVImageCollectionView: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let tmpCount = self.imagesDataSource.count
+        
+        if tmpCount == 1 {
+            return CGSizeMake(globalWidth - 32, globalWidth - 32)
+        } else if tmpCount == 2 || tmpCount == 4 {
+            let _tmp = floor((globalWidth - 32 - 2)/2)
+            return CGSizeMake(_tmp, _tmp)
+        } else if tmpCount > 0 {
+            let _tmp = floor((globalWidth - 32 - 4) / 3)
+            
+            if tmpCount == 5 || tmpCount == 8 {
+                if indexPath.row == tmpCount - 1 {
+                    return CGSizeMake(_tmp * 2 + 2, _tmp)
+                }
+            } else if tmpCount == 7 {
+                if indexPath.row == tmpCount - 1 {
+                    return CGSizeMake(globalWidth - 32, _tmp)
+                }
+            }
+            
+            return CGSizeMake(_tmp, _tmp)
+        }
+        
+        return CGSizeZero
+    }
+}
 
 class VVImageViewCell: UICollectionViewCell {
     

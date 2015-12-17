@@ -44,6 +44,8 @@ class NewAddStepViewController: SAViewController {
     
     @IBOutlet weak var contentTextView: SZTextView!
 
+    @IBOutlet weak var sp2HeightConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var scrollViewToTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var notesHeightConstraint: NSLayoutConstraint!
@@ -96,6 +98,10 @@ class NewAddStepViewController: SAViewController {
         // Do any additional setup after loading the view.
         
         sp1HeightConstraint.constant = globalHalf
+        sp2HeightConstraint.constant = globalHalf
+        
+        self.noteCoverView.layer.cornerRadius = 4.0
+        self.noteCoverView.layer.masksToBounds = true
         
         self.contentTextView.attributedPlaceholder = NSAttributedString(string: "进展正文" ,
             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
@@ -116,7 +122,7 @@ class NewAddStepViewController: SAViewController {
         flowLayout.minimumInteritemSpacing = x
         flowLayout.minimumLineSpacing = y
         flowLayout.itemSize = CGSize(width: 80, height: 120)
-        flowLayout.sectionInset = UIEdgeInsetsMake(y, 0, y, 0)
+        flowLayout.sectionInset = UIEdgeInsetsMake(y, y, y, y)
         
         self.noteCollectionView.collectionViewLayout = flowLayout
         self.noteCollectionView.registerClass(AddStepNoteCell.self, forCellWithReuseIdentifier: "AddStepNoteCell")
@@ -147,12 +153,11 @@ class NewAddStepViewController: SAViewController {
             if !isInConvenienceWay {
                 self.noteCollectionView.removeFromSuperview()
                 self.headerView.removeFromSuperview()
-                
-                self.collectionToTopContraint.constant = 16
-                
+                self.collectionToTopContraint.constant = 0
             } else {
                 self.noteCollectionView.delegate = self
                 self.noteCollectionView.dataSource = self
+                self.collectionToTopContraint.constant = 64
             }
             
             constrain(self.collectionView, replace: collectionConstraintGroup) { (view1) -> () in
@@ -475,8 +480,6 @@ class NewAddStepViewController: SAViewController {
     }
     
     func addStepSuccessHelper(json json: JSON) {
-        logInfo("\(json)")
-        
         globalWillNianReload = 1
         
         let data = json["data"].dictionaryValue
@@ -492,11 +495,13 @@ class NewAddStepViewController: SAViewController {
             card.content = self.contentTextView.text
             card.widthImage = String(self.collectionView.frame.size.width)
             card.heightImage = String(self.collectionView.frame.size.height)
-            
-            UIGraphicsBeginImageContextWithOptions(self.collectionView.frame.size, false, globalScale)
-            self.collectionView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-            card.image.image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
+           
+            if self.collectionView.frame.size.height != 0 {
+                UIGraphicsBeginImageContextWithOptions(self.collectionView.frame.size, false, globalScale)
+                self.collectionView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+                card.image.image = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+            }
             
             card.onCardSave()
         }
@@ -531,7 +536,7 @@ class NewAddStepViewController: SAViewController {
         self.delegate?.newCountUp!(coin!, total: totalCoin!, isfirst: isfirst!)
         self.delegate?.newUpdate!(VVeboCell.SACellDataRecode(d as NSDictionary))
         //
-        self.navigationController?.popViewControllerAnimated(true)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
@@ -554,7 +559,7 @@ class NewAddStepViewController: SAViewController {
                 self.delegate?.newEditStepRow = self.row
                 self.delegate?.newEditStepData = mutableData
                 self.delegate?.newEditstep()
-                self.navigationController?.popViewControllerAnimated(true)
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
         })
     }
@@ -606,6 +611,10 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                     }, completion: { finished in
                         let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
                         
+                        if collectionViewHeight > 0 {
+                            self.collectionToTopContraint.constant = 16
+                        }
+                        
                         constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
                             view1.height == collectionViewHeight
                         }
@@ -624,7 +633,6 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
     func reloadCollectionViewWithoutAssets(inIndexPath inIndexPath: [NSIndexPath]) {
         
         self.collectionView.performBatchUpdates({ () -> Void in
-            
             for indexpath in inIndexPath {
                 self.imagesArray.removeAtIndex(indexpath.row)
                 if self.isEdit == 1 {
@@ -641,6 +649,10 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
             
             }, completion: { finished in
                 let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
+                
+                if collectionViewHeight == 0 {
+                    self.collectionToTopContraint.constant = 0
+                }
                 
                 constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
                     view1.height == collectionViewHeight
