@@ -24,7 +24,7 @@ class AddStepCollectionCell: UICollectionViewCell {
             imageView.right  == imageView.superview!.right
         }
         
-        self.imageView.contentMode = .ScaleAspectFit
+        self.imageView.contentMode = .ScaleAspectFill
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -62,7 +62,7 @@ class AddStepNoteCell: UICollectionViewCell {
             imageView.right  == imageView.superview!.right
         }
         
-        self.imageView.contentMode = .ScaleAspectFit
+        self.imageView.contentMode = .ScaleAspectFill
         self.imageView.layer.cornerRadius = 6
         self.imageView.layer.masksToBounds = true
         
