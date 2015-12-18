@@ -449,6 +449,11 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 
                 logWarn("array = : \(array)")
             }
+        } else if (data.allKeys as! [String]).contains("image") {
+            if (data.objectForKey("image") as! String) != "" {
+                imageHolder.setHeight(globalWidth - 32)
+                array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
+            }
         }
         
         if array.count > 0 {
@@ -577,8 +582,15 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 } else {
                     heightImage = globalWidth - 32
                 }
+                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
             }
-            heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+        } else if (data.allKeys as! [String]).contains("image") {
+            if (data.objectForKey("image") as! String) == "" {
+                heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+            } else {
+                heightImage = globalWidth - 32
+                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+            }
         }
         
         data["heightImage"] = heightImage

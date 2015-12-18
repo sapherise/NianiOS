@@ -114,7 +114,7 @@ extension HomeViewController: NIAlertDelegate {
                         self.selectedViewController!.navigationController?.pushViewController(dreamVC, animated: true)
                     }
                 }
-            }
+            } 
         }
     }
 }
