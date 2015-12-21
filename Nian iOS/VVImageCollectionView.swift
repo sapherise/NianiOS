@@ -18,7 +18,13 @@ class VVImageCollectionView: UICollectionView {
     let placeholderImage = UIImage(named: "drop")
 
     var imageSelectedHandler: ImageSelectedHandler?
-    var imagesDataSource = NSMutableArray()
+    var imagesDataSource = NSMutableArray() {
+        didSet {
+            if imagesDataSource.count > 0 {
+                self.reloadData()
+            }
+        }
+    }
     var sid: String = ""
     
     var containImages: [UIImage] = []
@@ -29,15 +35,12 @@ class VVImageCollectionView: UICollectionView {
         set(newValue) {
             self._imagesBaseURL = newValue
         }
-        
         get {
             return self._imagesBaseURL
         }
-        
     }
 
     let sd_manager = SDWebImageManager.sharedManager()
-    
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -48,15 +51,6 @@ class VVImageCollectionView: UICollectionView {
         self.registerClass(VVImageViewCell.self, forCellWithReuseIdentifier: "VVImageViewCell")
     }
 
-    convenience init(frame: CGRect) {
-        self.init(frame: frame, collectionViewLayout: UICollectionViewFlowLayout())
-        
-        self.delegate = self
-        self.dataSource = self
-        
-        self.registerClass(VVImageViewCell.self, forCellWithReuseIdentifier: "VVImageViewCell")
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -74,8 +68,12 @@ class VVImageCollectionView: UICollectionView {
                 
                 for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
                     if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
-                        logError(" tmp = \(tmp) , __arr = \(__arr) ")
-                        self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
+                        
+                        if self.numberOfItemsInSection(0) >= tmp {
+                            self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
+                        } else {
+                            self.insertItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
+                        }
                     }
                 }
             }
@@ -87,7 +85,11 @@ class VVImageCollectionView: UICollectionView {
         for (var tmp = 0; tmp < urls.count; tmp++) {
             let dict = self.imagesDataSource[tmp] as! NSDictionary
             let _imageURLString = dict["path"] as! String
-            let _imageURL = NSURL(string: _imageURLString + DEFAULT_IMAGE_WIDTH, relativeToURL: self._imagesBaseURL)!
+            var _imageURL = NSURL(string: _imageURLString + DEFAULT_IMAGE_WIDTH, relativeToURL: self._imagesBaseURL)!
+            
+            if urls.count == 1 {
+                _imageURL = NSURL(string: _imageURLString + "!large", relativeToURL: self._imagesBaseURL)!
+            }
             
             sd_manager.downloadImageWithURL(_imageURL,
                 options: SDWebImageOptions(rawValue: 0),

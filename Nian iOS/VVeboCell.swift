@@ -103,6 +103,16 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var newEditStepRow: Int = -1
     var newEditStepData: NSDictionary?
     
+    let layout: UICollectionViewFlowLayout = {
+        let _layout = UICollectionViewFlowLayout()
+    
+        _layout.minimumInteritemSpacing = 2.0
+        _layout.minimumLineSpacing = 2.0
+        _layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        
+        return _layout
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.clipsToBounds = true
@@ -125,8 +135,10 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         imageHeadCover.center = imageHead.center
         contentView.addSubview(imageHeadCover)
         
+
+        
         // 添加配图
-        imageHolder = VVImageCollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
+        imageHolder = VVImageCollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0), collectionViewLayout: layout)
         imageHolder.backgroundColor = IconColor
         contentView.addSubview(imageHolder)
         
@@ -439,15 +451,13 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
             } else if _type == 3 || _type == 4 {
                 if array.count > 0 {
-                    imageHolder.setHeight(VVeboCell.calculateCollectionViewHeight(array))
+                    imageHolder.setHeight(ceil(VVeboCell.calculateCollectionViewHeight(array)))
                 }
             } else if _type == 0 {
                 if data["image"] as! String != "" {
                     imageHolder.setHeight(globalWidth - 32)
                     array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
                 }
-                
-                logWarn("array = : \(array)")
             }
         } else if (data.allKeys as! [String]).contains("image") {
             if (data.objectForKey("image") as! String) != "" {
@@ -460,7 +470,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             imageHolder.imagesDataSource = NSMutableArray(array: array)
             imageHolder.sid = data.stringAttributeForKey("sid")
             imageHolder.hidden = false
-            imageHolder.setCollectionViewLayout(self.calculateCollectionLayout(collectionView: self.imageHolder), animated: false)
             imageHolder.setImage()
             
             imageHolder.imageSelectedHandler = { (string, indexPath) in
@@ -578,7 +587,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 }
             } else {
                 if (data.objectForKey("images") as! NSArray).count > 1 {
-                    heightImage = VVeboCell.calculateCollectionViewHeight(data.objectForKey("images") as! NSArray)
+                    heightImage = ceil(VVeboCell.calculateCollectionViewHeight(data.objectForKey("images") as! NSArray))
                 } else {
                     heightImage = globalWidth - 32
                 }
@@ -625,7 +634,7 @@ extension VVeboCell: NewAddStepDelegate {
                 heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
             } else {
                 if img.count > 1 {
-                    heightImage = VVeboCell.calculateCollectionViewHeight(img)
+                    heightImage = ceil(VVeboCell.calculateCollectionViewHeight(img))
                 } else {
                     heightImage = globalWidth - 32
                 }
@@ -650,12 +659,24 @@ extension VVeboCell: NewAddStepDelegate {
 
 extension VVeboCell {
     
-    func calculateCollectionLayout(collectionView collectionView: VVImageCollectionView) -> UICollectionViewLayout {
+    func calculateCollectionLayout(collectionView collectionView: VVImageCollectionView) -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumInteritemSpacing = 2.0
         layout.minimumLineSpacing = 2.0
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        
+//        let tmpCount = collectionView.imagesDataSource.count
+//        
+//        if tmpCount == 1 {
+//            layout.itemSize = CGSizeMake(globalWidth - 32, globalWidth - 32)
+//        } else if tmpCount == 2 || tmpCount == 4 {
+//            let _tmp = floor((globalWidth - 32 - 2)/2)
+//            layout.itemSize = CGSizeMake(_tmp, _tmp)
+//        } else if tmpCount > 0 {
+//            let _tmp = floor((globalWidth - 32 - 4) / 3)
+//            layout.itemSize = CGSizeMake(_tmp, _tmp)
+//        }
         
         return layout
     }
