@@ -143,15 +143,11 @@ extension NewAddStepViewController {
         let originDelta = keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y
         
         keyboardHeight -= originDelta
-        
-        logError("keyboard height = \(keyboardHeight), origin Delta = \(originDelta)， ++= \(self.textViewHeightConstraint.constant)")
-        
         let tempHeight = keyboardHeight + self.contentTextView.frame.size.height + self.collectionView.frame.size.height + 32 + (isInConvenienceWay ? 64 : 0)
         
         if tempHeight > globalHeight - 64 {
             self.contentTextView.scrollEnabled = true
             self.textViewHeightConstraint.constant = globalHeight - keyboardHeight - 64
-            logWarn("*************  self.textview height constant \(self.textViewHeightConstraint.constant) ")
             
             self.view.setNeedsUpdateConstraints()
             
@@ -190,8 +186,6 @@ extension NewAddStepViewController {
         })
         
         keyboardHeight = 0
-        
-        logInfo("keyboard height = \(keyboardHeight) ****** +++++++")
     }
     
 }
@@ -202,13 +196,10 @@ extension NewAddStepViewController {
 extension NewAddStepViewController: UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
-        logInfo("XXXXXX")
         let tempHeight = keyboardHeight + self.textViewHeight() + self.collectionView.frame.size.height + 32 + (isInConvenienceWay ? 64 : 0)
         if needUpdateTextViewHeight {
             self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, max(globalHeight - 64, self.contentView.frame.height))
-            
-            logWarn("++++++++++ \(tempHeight), ****** \(self.textViewHeight())")
-            
+
             if (tempHeight > globalHeight - 64) || (self.textViewHeight() > TEXTVIEW_DEFAULT_HEIGHT) {
                 self.needUpdateTextViewHeight = false
                 

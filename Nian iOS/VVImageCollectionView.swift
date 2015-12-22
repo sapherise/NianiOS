@@ -18,13 +18,7 @@ class VVImageCollectionView: UICollectionView {
     let placeholderImage = UIImage(named: "drop")
 
     var imageSelectedHandler: ImageSelectedHandler?
-    var imagesDataSource = NSMutableArray() {
-        didSet {
-            if imagesDataSource.count > 0 {
-                self.reloadData()
-            }
-        }
-    }
+    var imagesDataSource = NSMutableArray()
     var sid: String = ""
     
     var containImages: [UIImage] = []
@@ -69,10 +63,10 @@ class VVImageCollectionView: UICollectionView {
                 for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
                     if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
                         
-                        if self.numberOfItemsInSection(0) >= tmp {
+                        if self.numberOfItemsInSection(0) > tmp {
                             self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
                         } else {
-                            self.insertItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
+                            self.reloadData()
                         }
                     }
                 }
@@ -108,6 +102,7 @@ class VVImageCollectionView: UICollectionView {
     func cancelImageRequestOperation() {
         self.sd_manager.cancelAll()
         self.containImages.removeAll(keepCapacity: false)
+        self.imagesDataSource.removeAllObjects()
         
         self.reloadData()
     }
@@ -168,21 +163,24 @@ extension VVImageCollectionView: UICollectionViewDelegateFlowLayout {
 
 class VVImageViewCell: UICollectionViewCell {
     
-    let imageView = UIImageView()
+    let imageView: UIImageView = {
+        let _imageview = UIImageView()
+        _imageview.contentMode = .ScaleAspectFill
+        return _imageview
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.addSubview(imageView)
-        
+        self.contentView.addSubview(imageView)
         constrain(self.imageView) { imageView in
             imageView.top    == imageView.superview!.top
             imageView.bottom == imageView.superview!.bottom
             imageView.left   == imageView.superview!.left
             imageView.right  == imageView.superview!.right
+            imageView.height == imageView.superview!.height
+            imageView.width  == imageView.superview!.width
         }
-        
-        self.imageView.contentMode = .ScaleAspectFill
     }
 
     required init?(coder aDecoder: NSCoder) {

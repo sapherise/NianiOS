@@ -335,7 +335,7 @@ class NewAddStepViewController: SAViewController {
                             
                             NSThread.sleepForTimeInterval(1)
                             
-                            self.uploadImageHelper(image: _image, saveKey: saveKey)
+                            self.uploadImageHelper(image: _image.fixOrientation(), saveKey: saveKey)
                         })
                         
                         opQueue.addOperations([op], waitUntilFinished: true)
@@ -385,7 +385,7 @@ class NewAddStepViewController: SAViewController {
                         
                         NSThread.sleepForTimeInterval(1)
 
-                        self.uploadImageHelper(image: _image, saveKey: saveKey)
+                        self.uploadImageHelper(image: _image.fixOrientation(), saveKey: saveKey)
                     })
                     
                     opQueue.addOperations([op], waitUntilFinished: true)
@@ -455,9 +455,6 @@ class NewAddStepViewController: SAViewController {
             
             synchronized(self.imagesInfo, closure: { () -> () in
                 self.imagesInfo.addObject(NSDictionary(dictionary: ["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"]))
-                
-                logInfo("\(["path": "\(imageUrl)", "width": "\(imageWidth)", "height": "\(imageHeight)"])")
-                
                 let __count = (self.data != nil) ? ((self.data?.allKeys.filter({ $0 as! String == "imageArray" }).count)! > 0 ? (self.data?.objectForKey("imageArray") as! [UIImage]).count : 0) : 0
                 
                 if self.imagesInfo.count == self.imagesArray.count - __count {
@@ -597,7 +594,6 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                 let rep = _asset.defaultRepresentation()
                 let resolutionRef = rep?.CGImageWithOptions([kCGImageSourceThumbnailMaxPixelSize : 720, kCGImageSourceCreateThumbnailWithTransform : true])
                 let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
-//                image = image.fixOrientation()
                 
                 synchronized(self.imagesArray, closure: { () -> () in
                     self.imagesArray.append(image)
@@ -612,7 +608,11 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
                         let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
                         
                         if collectionViewHeight > 0 {
-                            self.collectionToTopContraint.constant = 16
+                            if self.isInConvenienceWay {
+                                self.collectionToTopContraint.constant = 80 
+                            } else {
+                                self.collectionToTopContraint.constant = 16
+                            }
                         }
                         
                         constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
