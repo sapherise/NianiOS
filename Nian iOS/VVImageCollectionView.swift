@@ -96,7 +96,6 @@ class VVImageCollectionView: UICollectionView {
     func cancelImageRequestOperation() {
         self.sd_manager.cancelAll()
         self.containImages.removeAll(keepCapacity: false)
-        self.imagesDataSource.removeAllObjects()
     }
 }
 
