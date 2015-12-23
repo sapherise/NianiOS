@@ -57,7 +57,11 @@ extension UIImageView {
         self.setImageWithURLRequest(req,
             placeholderImage: nil,
             success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                self.contentMode = .ScaleAspectFill
+                if image.size.width > image.size.height {
+                    self.contentMode = .ScaleAspectFit
+                } else {
+                    self.contentMode = .ScaleAspectFill
+                }
                 self.image = image
             },
             failure: nil)
