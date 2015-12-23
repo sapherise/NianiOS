@@ -62,12 +62,7 @@ class VVImageCollectionView: UICollectionView {
                 
                 for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
                     if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
-                        
-                        if self.numberOfItemsInSection(0) > tmp {
-                            self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
-                        } else {
-                            self.reloadData()
-                        }
+                        self.reloadData()
                     }
                 }
             }
@@ -103,8 +98,6 @@ class VVImageCollectionView: UICollectionView {
         self.sd_manager.cancelAll()
         self.containImages.removeAll(keepCapacity: false)
         self.imagesDataSource.removeAllObjects()
-        
-        self.reloadData()
     }
 }
 
@@ -166,6 +159,7 @@ class VVImageViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let _imageview = UIImageView()
         _imageview.contentMode = .ScaleAspectFill
+        _imageview.clipsToBounds = true
         return _imageview
     }()
     
@@ -178,8 +172,6 @@ class VVImageViewCell: UICollectionViewCell {
             imageView.bottom == imageView.superview!.bottom
             imageView.left   == imageView.superview!.left
             imageView.right  == imageView.superview!.right
-            imageView.height == imageView.superview!.height
-            imageView.width  == imageView.superview!.width
         }
     }
 
