@@ -30,6 +30,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     
     var SATableView: VVeboTableView!
     var dataArray = NSMutableArray()
+    var delegateDelete: DeleteDreamDelegate?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -306,9 +307,10 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除记本
                 self.navigationItem.rightBarButtonItems = buttonArray()
-                globalWillNianReload = 1
+//                globalWillNianReload = 1
                 Api.getDeleteDream(self.Id, callback: { json in
                     self.navigationItem.rightBarButtonItems = []
+                    self.delegateDelete?.deleteDreamCallback(self.Id)
                     self.navigationController?.popViewControllerAnimated(true)
                 })
             }

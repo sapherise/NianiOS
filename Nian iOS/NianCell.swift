@@ -49,6 +49,11 @@ class NianCell: UICollectionViewCell{
         self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageCover.layer.borderWidth = 0.5
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageCover.image = nil
+    }
 }
 
 func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform3D {

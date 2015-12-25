@@ -14,7 +14,11 @@ protocol AddDreamDelegate {
     func addDreamCallback(id: String, img: String, title: String)
 }
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate {
+protocol DeleteDreamDelegate {
+    func deleteDreamCallback(id: String)
+}
+
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate, DeleteDreamDelegate {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -283,10 +287,27 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     /* 添加记本后，首页上相应地产生变化
     */
     func addDreamCallback(id: String, img: String, title: String) {
-        print("成功返回，id 为 \(id)，img 为 \(img)，title 为 \(title)")
-        let data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+        let data = NSDictionary(objects: [id, img, title], forKeys: ["id", "image", "title"])
         dataArray.insertObject(data, atIndex: dataArray.count)
+        Cookies.set(dataArray, forKey: "NianDreams")
         reloadFromDataArray()
+    }
+    
+    /* 删除记本后，首页上相应地产生变化
+    */
+    func deleteDreamCallback(id: String) {
+        if dataArray.count > 0 {
+            for i in 0...(dataArray.count - 1) {
+                let data = dataArray[i] as! NSDictionary
+                let _id = data.stringAttributeForKey("id")
+                if _id == id {
+                    dataArray.removeObjectAtIndex(i)
+                    reloadFromDataArray()
+                    Cookies.set(dataArray, forKey: "NianDreams")
+                    break
+                }
+            }
+        }
     }
     
     func addDreamButton(){
@@ -369,9 +390,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func onDreamClick(ID:String){
         if ID != "0" && ID != "" {
-            let DreamVC = DreamViewController()
-            DreamVC.Id = ID
-            self.navigationController!.pushViewController(DreamVC, animated: true)
+            let vc = DreamViewController()
+            vc.Id = ID
+            vc.delegateDelete = self
+            self.navigationController!.pushViewController(vc, animated: true)
         }
     }
     
