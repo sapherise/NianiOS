@@ -79,6 +79,8 @@
 		127497FE1B92DF9A0046B440 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497FD1B92DF9A0046B440 /* CoreGraphics.framework */; };
 		127498001B92DFB80046B440 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497FF1B92DFB80046B440 /* libsqlite3.tbd */; };
 		127498021B92DFC60046B440 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 127498011B92DFC60046B440 /* libz.tbd */; };
+		12758BD91C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 12758BD81C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.m */; };
+		12758BDB1C2A4E3200412A37 /* NianViewController+LXR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12758BDA1C2A4E3200412A37 /* NianViewController+LXR.swift */; };
 		1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1275E4B319A8D02600E2FC4C /* Images.xcassets */; };
 		12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0A1BCE4C5A00745811 /* VVeboCell.swift */; };
 		12776A0D1BCE54EA00745811 /* VVeboTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0C1BCE54EA00745811 /* VVeboTableView.swift */; };
@@ -106,7 +108,7 @@
 		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
 		129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492811AD9322A000E7461 /* MKTableViewCell.swift */; };
 		129492841AD9329D000E7461 /* MKLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492831AD9329D000E7461 /* MKLayer.swift */; };
-		129A76611B8DC92E00EC5A19 /* Home + News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home + News.swift */; };
+		129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home+News.swift */; };
 		129B9F051BA2AFD800E5B25A /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */; };
 		129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 129B9F021BA2AFD800E5B25A /* WeiboSDK.bundle */; };
 		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
@@ -172,7 +174,7 @@
 		12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C181B6559DB0051A914 /* PetNiAlert.swift */; };
 		12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C2D1B65703F0051A914 /* CoinCircle.swift */; };
 		12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A51BAD5533009EADC0 /* Reachability.swift */; };
-		12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */; };
+		12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */; };
 		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
 		12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F9253E1A8467F8005ECD9F /* SQL.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
@@ -373,6 +375,9 @@
 		127497FD1B92DF9A0046B440 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		127497FF1B92DFB80046B440 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		127498011B92DFC60046B440 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		12758BD71C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		12758BD81C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		12758BDA1C2A4E3200412A37 /* NianViewController+LXR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NianViewController+LXR.swift"; sourceTree = "<group>"; };
 		1275E4B319A8D02600E2FC4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Nian iOS/Images.xcassets"; sourceTree = "<group>"; };
 		12776A0A1BCE4C5A00745811 /* VVeboCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboCell.swift; sourceTree = "<group>"; };
 		12776A0C1BCE54EA00745811 /* VVeboTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboTableView.swift; sourceTree = "<group>"; };
@@ -406,7 +411,7 @@
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
 		129492811AD9322A000E7461 /* MKTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTableViewCell.swift; sourceTree = "<group>"; };
 		129492831AD9329D000E7461 /* MKLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLayer.swift; sourceTree = "<group>"; };
-		129A76601B8DC92E00EC5A19 /* Home + News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home + News.swift"; sourceTree = "<group>"; };
+		129A76601B8DC92E00EC5A19 /* Home+News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+News.swift"; sourceTree = "<group>"; };
 		129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		129B9EFA1BA2AFD800E5B25A /* WBHttpRequest+WeiboGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboGame.h"; sourceTree = "<group>"; };
 		129B9EFB1BA2AFD800E5B25A /* WBHttpRequest+WeiboShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboShare.h"; sourceTree = "<group>"; };
@@ -486,7 +491,7 @@
 		12F65C181B6559DB0051A914 /* PetNiAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetNiAlert.swift; sourceTree = "<group>"; };
 		12F65C2D1B65703F0051A914 /* CoinCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCircle.swift; sourceTree = "<group>"; };
 		12F678A51BAD5533009EADC0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
-		12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home + Reachability.swift"; sourceTree = "<group>"; };
+		12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+Reachability.swift"; sourceTree = "<group>"; };
 		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		12F9253E1A8467F8005ECD9F /* SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQL.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -804,6 +809,7 @@
 			isa = PBXGroup;
 			children = (
 				123CB05219785B780062BB8A /* NianViewController.swift */,
+				12758BDA1C2A4E3200412A37 /* NianViewController+LXR.swift */,
 				1234FDA91A1B33E900AF8A50 /* NianCell.swift */,
 				12DA48B51A1C34F7002651EF /* NianCell.xib */,
 				124F3257197B19EC0070CA4C /* NianViewController.storyboard */,
@@ -892,6 +898,15 @@
 				12E315BD1B95544F0034DD7E /* SATextField.swift */,
 			);
 			name = "复用";
+			sourceTree = "<group>";
+		};
+		12758BD61C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				12758BD71C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.h */,
+				12758BD81C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.m */,
+			);
+			path = LXReorderableCollectionViewFlowLayout;
 			sourceTree = "<group>";
 		};
 		1282230519C7E6710002937D /* upyun */ = {
@@ -1231,8 +1246,8 @@
 			children = (
 				12FB48BB196AE7A20026DD51 /* Home.swift */,
 				C4FC16021BB3D4E20036A9A0 /* RegexHelper.swift */,
-				12F678A71BAD5D40009EADC0 /* Home + Reachability.swift */,
-				129A76601B8DC92E00EC5A19 /* Home + News.swift */,
+				12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */,
+				129A76601B8DC92E00EC5A19 /* Home+News.swift */,
 				12FB489E196AE76E0026DD51 /* AppDelegate.swift */,
 				1291D59619BE0C39009F45F6 /* 欢迎 */,
 				12A6564519719BAC004F530B /* 设置 */,
@@ -1536,6 +1551,7 @@
 		C4C885501B5F7E7900D9B8CA /* FDFullscreenPopGesture */ = {
 			isa = PBXGroup;
 			children = (
+				12758BD61C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout */,
 				C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */,
 				C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */,
 			);
@@ -1855,6 +1871,7 @@
 				C4CDB4201AF8C79900936E03 /* GTMNSString+HTML.m in Sources */,
 				12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */,
 				C4E1DCD31BF992E2008896AB /* MyLikeNoteViewController.swift in Sources */,
+				12758BDB1C2A4E3200412A37 /* NianViewController+LXR.swift in Sources */,
 				C486FD471C04430A009F1F90 /* Compound.swift in Sources */,
 				120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */,
 				C4DC18DE1B86C5CD00042EE4 /* ExploreMoreCell.swift in Sources */,
@@ -1862,13 +1879,13 @@
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				C488B4781BFD9E8D00C735EC /* LogOrRegModel.swift in Sources */,
-				12F678A81BAD5D40009EADC0 /* Home + Reachability.swift in Sources */,
+				12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */,
 				C486FD591C04430A009F1F90 /* ViewUtils.swift in Sources */,
 				C488B47A1BFD9E8D00C735EC /* NicknameViewController.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
 				12ABFD2B1B9C1EAE00E2870C /* AddReddit + UIGesture.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
-				129A76611B8DC92E00EC5A19 /* Home + News.swift in Sources */,
+				129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				C4B879A11BFB3E85004B0C0D /* ResponsedTopicCell.swift in Sources */,
@@ -1876,6 +1893,7 @@
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
+				12758BD91C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
 				C4C2C3C81C1AFD9F00209B55 /* NewAddStepVCExtension.swift in Sources */,

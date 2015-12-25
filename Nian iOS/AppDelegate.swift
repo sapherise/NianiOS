@@ -43,8 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-        APService.setupWithOption(launchOptions)
+        // todo: 开启下面两行
+//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+//        APService.setupWithOption(launchOptions)
         
         /* 设置 DDlog */
         let formatter = Formatter()

@@ -87,3 +87,11 @@
  *  @brief
  */
 #import "QBImagePicker.h"
+
+/**
+ *  @author Sa, 15-12-23 11:33:56
+ *
+ *  @brief 首页记本可移动
+ */
+#import "LXReorderableCollectionViewFlowLayout.h"
+

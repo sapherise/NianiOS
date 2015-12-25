@@ -440,7 +440,7 @@ struct Api {
     
     static func getNian(callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/nian.php?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(s_uid)/dreams?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func postLetterChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {

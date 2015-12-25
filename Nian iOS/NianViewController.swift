@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 import SpriteKit
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NIAlertDelegate {
+protocol AddDreamDelegate {
+    func addDreamCallback(id: String, img: String, title: String)
+}
+
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -46,7 +50,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        SAReloadData()
+        load()
     }
     
     func setupViews(){
@@ -276,9 +280,19 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
+    /* 添加记本后，首页上相应地产生变化
+    */
+    func addDreamCallback(id: String, img: String, title: String) {
+        print("成功返回，id 为 \(id)，img 为 \(img)，title 为 \(title)")
+        let data = NSDictionary(objects: [id, img, title], forKeys: ["id", "img", "title"])
+        dataArray.insertObject(data, atIndex: dataArray.count)
+        reloadFromDataArray()
+    }
+    
     func addDreamButton(){
-        let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-        self.navigationController!.pushViewController(adddreamVC, animated: true)
+        let vc = AddDreamController(nibName: "AddDreamController", bundle: nil)
+        vc.delegateAddDream = self
+        self.navigationController!.pushViewController(vc, animated: true)
     }
     
     func onDreamLabelClick(sender:UIGestureRecognizer){
@@ -310,7 +324,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     func NianReload(sender: UIButton) {
         sender.setTitle("加载中", forState: UIControlState())
-        self.SAReloadData()
+        self.load()
         self.setupUserTop()
     }
     
@@ -326,7 +340,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         navHide()
         if globalWillNianReload == 1 {
             globalWillNianReload = 0
-            self.SAReloadData()
+            self.load()
             self.setupUserTop()
         }
     }
@@ -353,38 +367,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController?.pushViewController(activitiesSummaryVC, animated: true)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.dataArray.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell:UICollectionViewCell
-        let index = indexPath.row
-        let c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as! NianCell
-        let data = self.dataArray[index] as! NSDictionary
-        c.data = data
-        c.total = self.dataArray.count
-        c.index = index
-        c.labelTitle.text = (data.stringAttributeForKey("title") as NSString).stringByDecodingHTMLEntities().stringByDecodingHTMLEntities()
-        c.imageCover.setHolder()
-
-        var img = data.stringAttributeForKey("img")
-        if img != "" {
-            img = "http://img.nian.so/dream/\(img)!dream"
-            c.imageCover.setImage(img)
-        }
-
-        cell = c
-        return cell
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let index = indexPath.row
-        let data = self.dataArray[index] as! NSDictionary
-        let id = data.stringAttributeForKey("id")
-        self.onDreamClick(id)
-    }
-    
     func onDreamClick(ID:String){
         if ID != "0" && ID != "" {
             let DreamVC = DreamViewController()
@@ -401,37 +383,85 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
-    func SAReloadData(){
-        if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
-            self.dataArray = NianDream
+    func load(){
+        // 从本地加载记本数据
+        let NianDreams = Cookies.get("NianDreams") as? NSMutableArray
+        if NianDreams != nil {
+            let mutableArrayLocal = NSMutableArray()
+            for data: AnyObject in NianDreams! {
+                mutableArrayLocal.addObject(data)
+            }
+            self.dataArray = mutableArrayLocal
             reloadFromDataArray()
         }
-        
+        // todo: 加上网络检测动画
 //        activity.hidden = false
 //        activity.startAnimating()
+        
+        // 从服务器加载记本数据
         Api.getNian() { json in
             if json != nil {
 //                self.activity.hidden = true
-                let arr = json!.objectForKey("items") as! NSArray
-                let mutableArray = NSMutableArray()
-                for data : AnyObject  in arr {
-                    mutableArray.addObject(data)
-                }
-                let count = self.dataArray.count
-                if count > 0 && globalhasLaunched == 0 {
-                    let time = Double(count) * 0.2
-                    delay(time, closure: { () -> () in
-                        // 加载服务器数据
-                        globalhasLaunched = 1
-                        self.dataArray = mutableArray
-                        Cookies.set(self.dataArray, forKey: "NianDream")
-                        self.reloadFromDataArray()
-                    })
-                } else {
-                    // 启动后不延时
-                    self.dataArray = mutableArray
-                    Cookies.set(self.dataArray, forKey: "NianDream")
-                    self.reloadFromDataArray()
+                let error = json!.objectForKey("error") as! NSNumber
+                if error == 0 {
+                    let d = json!.objectForKey("data") as! NSDictionary
+                    let arr = d.objectForKey("dreams") as! NSArray
+                    
+                    let mutableArray = NSMutableArray()
+                    
+                    var idArrayLocal: [Int] = []
+                    var idArrayRemote: [Int] = []
+                    
+                    // 创建远程记本数组，以及记本的编号数组
+                    for data: AnyObject  in arr {
+                        mutableArray.addObject(data)
+                        let d = data as! NSDictionary
+                        if let id = Int(d.stringAttributeForKey("id")) {
+                            idArrayRemote.append(id)
+                        }
+                    }
+                    
+                    // 创建本地记本数组，以及记本的编号数组
+                    for data: AnyObject in self.dataArray {
+                        let d = data as! NSDictionary
+                        if let id = Int(d.stringAttributeForKey("id")) {
+                            idArrayLocal.append(id)
+                        }
+                    }
+                    
+                    /* 当记本在本地和服务器两边数据不相同时
+                    ** 以服务器的数据为准
+                    ** 同时服务器的数据会覆盖本地的数据
+                    */
+                    if bubble(idArrayRemote) != bubble(idArrayLocal) {
+                        let count = self.dataArray.count + 2
+                        if globalhasLaunched == 0 {
+                            let time = Double(count) * 0.2
+                            delay(time, closure: { () -> () in
+                                // 加载服务器数据
+                                globalhasLaunched = 1
+                                self.dataArray = mutableArray
+                                Cookies.set(self.dataArray, forKey: "NianDreams")
+                                self.reloadFromDataArray()
+                            })
+                        } else {
+                            // 启动后不延时
+                            self.dataArray = mutableArray
+                            Cookies.set(self.dataArray, forKey: "NianDreams")
+                            self.reloadFromDataArray()
+                        }
+                    } else {
+                        /* 本地与服务器的记本完全相同
+                        ** 在完成卡片动画后关闭动画选项
+                        */
+                        let count = self.dataArray.count + 2
+                        if globalhasLaunched == 0 {
+                            let time = Double(count) * 0.2
+                            delay(time, closure: { () -> () in
+                                globalhasLaunched = 1
+                            })
+                        }
+                    }
                 }
             }
         }
