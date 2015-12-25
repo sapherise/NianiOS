@@ -113,6 +113,18 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         return _layout
     }()
     
+    let saveMode: String = {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        var _saveMode = userDefault.stringForKey("saveMode")
+        
+        if let __mode = _saveMode {
+        } else {
+            _saveMode = "on"
+        }
+        
+        return _saveMode!
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.clipsToBounds = true
@@ -134,8 +146,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         imageHeadCover.image = UIImage(named: "cover")
         imageHeadCover.center = imageHead.center
         contentView.addSubview(imageHeadCover)
-        
-
         
         // 添加配图
         imageHolder = VVImageCollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0), collectionViewLayout: layout)
@@ -440,40 +450,42 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     }
     
     func drawThumb() {
-        var array = NSArray()
-        
-        if (data.allKeys as! [String]).contains("images") {
-            array = data["images"] as! NSArray
-            let _type = Int(data["type"] as! String)
+        if saveMode == "on" {
+            var array = NSArray()
             
-            if _type == 5 || _type == 6 {
-                imageHolder.setHeight(globalWidth - 32)
-                array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
-            } else if _type == 3 || _type == 4 {
-                if array.count > 0 {
-                    imageHolder.setHeight(ceil(VVeboCell.calculateCollectionViewHeight(array)))
+            if (data.allKeys as! [String]).contains("images") {
+                array = data["images"] as! NSArray
+                let _type = Int(data["type"] as! String)
+                
+                if _type == 5 || _type == 6 {
+                    imageHolder.setHeight(globalWidth - 32)
+                    array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
+                } else if _type == 3 || _type == 4 {
+                    if array.count > 0 {
+                        imageHolder.setHeight(ceil(VVeboCell.calculateCollectionViewHeight(array)))
+                    }
+                } else if _type == 0 {
+                    if data["image"] as! String != "" {
+                        imageHolder.setHeight(globalWidth - 32)
+                        array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
+                    }
                 }
-            } else if _type == 0 {
-                if data["image"] as! String != "" {
+            } else if (data.allKeys as! [String]).contains("image") {
+                if (data.objectForKey("image") as! String) != "" {
                     imageHolder.setHeight(globalWidth - 32)
                     array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
                 }
             }
-        } else if (data.allKeys as! [String]).contains("image") {
-            if (data.objectForKey("image") as! String) != "" {
-                imageHolder.setHeight(globalWidth - 32)
-                array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
-            }
-        }
-        
-        if array.count > 0 {
-            imageHolder.imagesDataSource = NSMutableArray(array: array)
-            imageHolder.sid = data.stringAttributeForKey("sid")
-            imageHolder.hidden = false
-            imageHolder.setImage()
             
-            imageHolder.imageSelectedHandler = { (string, indexPath) in
-                (self.imageHolder.cellForItemAtIndexPath(indexPath) as! VVImageViewCell).imageView.showImage("http://img.nian.so/step/\(string)!large")
+            if array.count > 0 {
+                imageHolder.imagesDataSource = NSMutableArray(array: array)
+                imageHolder.sid = data.stringAttributeForKey("sid")
+                imageHolder.hidden = false
+                imageHolder.setImage()
+                
+                imageHolder.imageSelectedHandler = { (string, indexPath) in
+                    (self.imageHolder.cellForItemAtIndexPath(indexPath) as! VVImageViewCell).imageView.showImage("http://img.nian.so/step/\(string)!large")
+                }
             }
         }
     }
@@ -658,28 +670,6 @@ extension VVeboCell: NewAddStepDelegate {
 }
 
 extension VVeboCell {
-    
-    func calculateCollectionLayout(collectionView collectionView: VVImageCollectionView) -> UICollectionViewFlowLayout {
-        let layout = UICollectionViewFlowLayout()
-        
-        layout.minimumInteritemSpacing = 2.0
-        layout.minimumLineSpacing = 2.0
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        
-//        let tmpCount = collectionView.imagesDataSource.count
-//        
-//        if tmpCount == 1 {
-//            layout.itemSize = CGSizeMake(globalWidth - 32, globalWidth - 32)
-//        } else if tmpCount == 2 || tmpCount == 4 {
-//            let _tmp = floor((globalWidth - 32 - 2)/2)
-//            layout.itemSize = CGSizeMake(_tmp, _tmp)
-//        } else if tmpCount > 0 {
-//            let _tmp = floor((globalWidth - 32 - 4) / 3)
-//            layout.itemSize = CGSizeMake(_tmp, _tmp)
-//        }
-        
-        return layout
-    }
     
     class func calculateCollectionViewHeight(dataSource: NSArray) -> CGFloat {
         let tmpCount = dataSource.count

@@ -21,7 +21,7 @@ class VVImageCollectionView: UICollectionView {
     var imagesDataSource = NSMutableArray()
     var sid: String = ""
     
-    var containImages: [UIImage] = []
+    var containImages = [String: UIImage]()
     
     private var _imagesBaseURL = NSURL(string: "http://img.nian.so/step/")!
     
@@ -53,21 +53,15 @@ class VVImageCollectionView: UICollectionView {
     
     func setImage() {
         self.downloadImages(self.imagesDataSource, callback: { (image, url) -> Void in
-            self.containImages.append(image)
-            
             if let _url = url {
                 let _string = _url.absoluteString
                 let _arr = _string.characters.split{ $0 == "/" }.map(String.init)
                 let __arr = _arr.last!.characters.split{ $0 == "!" }.map(String.init)
+                self.containImages[__arr.first!] = image
                 
                 for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
                     if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
-                        
-                        if self.numberOfItemsInSection(0) > tmp {
-                            self.reloadItemsAtIndexPaths([NSIndexPath(forRow: tmp, inSection: 0)])
-                        } else {
-                            self.reloadData()
-                        }
+                        self.reloadData()
                     }
                 }
             }
@@ -102,9 +96,6 @@ class VVImageCollectionView: UICollectionView {
     func cancelImageRequestOperation() {
         self.sd_manager.cancelAll()
         self.containImages.removeAll(keepCapacity: false)
-        self.imagesDataSource.removeAllObjects()
-        
-        self.reloadData()
     }
 }
 
@@ -119,14 +110,16 @@ extension VVImageCollectionView: UICollectionViewDelegate, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("VVImageViewCell", forIndexPath: indexPath) as! VVImageViewCell
         
         if indexPath.row < self.containImages.count {
-            cell.imageView.image = self.containImages[indexPath.row]
+            cell.imageView.image = self.containImages[(self.imagesDataSource[indexPath.row] as! NSDictionary)["path"] as! String]
         }
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        imageSelectedHandler!(path: (self.imagesDataSource[indexPath.row] as! NSDictionary)["path"] as! String, indexPath: indexPath)
+        if self.imagesDataSource.count > indexPath.row {
+            imageSelectedHandler!(path: (self.imagesDataSource[indexPath.row] as! NSDictionary)["path"] as! String, indexPath: indexPath)
+        }
     }
     
 }
@@ -166,6 +159,7 @@ class VVImageViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let _imageview = UIImageView()
         _imageview.contentMode = .ScaleAspectFill
+        _imageview.clipsToBounds = true
         return _imageview
     }()
     
@@ -178,8 +172,6 @@ class VVImageViewCell: UICollectionViewCell {
             imageView.bottom == imageView.superview!.bottom
             imageView.left   == imageView.superview!.left
             imageView.right  == imageView.superview!.right
-            imageView.height == imageView.superview!.height
-            imageView.width  == imageView.superview!.width
         }
     }
 
