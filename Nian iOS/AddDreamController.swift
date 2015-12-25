@@ -17,7 +17,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var uploadWait: UIActivityIndicatorView!
-    @IBOutlet weak var field1: UITextField!  //title text field
+    @IBOutlet weak var field1: UITextField!
     @IBOutlet weak var field2: SZTextView!
     @IBOutlet weak var tokenView: TITokenFieldView!
     @IBOutlet weak var setPrivate: UIImageView!
@@ -28,6 +28,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var setDreamActionSheet: UIActionSheet?
     var imagePicker: UIImagePickerController?
     var delegate: editDreamDelegate?
+    var delegateAddDream: AddDreamDelegate?
     
     var uploadUrl: String = ""
     
@@ -293,22 +294,21 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     //MARK: 添加 new Dream
     
     func addDreamOK(){
-        var title = self.field1?.text
-        var content = self.field2.text
+        let title = (self.field1.text)!
+        let content = (self.field2.text)!
         let tags = self.tokenView.tokenTitles
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            
-            Api.postAddDream(title!, content: content!, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
+            Api.postAddDream(title, content: content, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
                 json in
+                print(json)
                 let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        globalWillNianReload = 1
-                        self.navigationController?.popViewControllerAnimated(true)
-                    })
+                    let data = json!.objectForKey("data") as! NSDictionary
+                    let id = data.stringAttributeForKey("dream")
+                    let img = data.stringAttributeForKey("image")
+                    self.delegateAddDream?.addDreamCallback(id, img: img, title: (self.field1.text)!)
+                    self.navigationController?.popViewControllerAnimated(true)
                 }
             }
         } else {

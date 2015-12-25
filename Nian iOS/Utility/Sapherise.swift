@@ -952,3 +952,20 @@ public func synchronized(lock: AnyObject, closure: () -> ()) {
 func getRandomNumber(from: Int, to: Int) -> Int {
     return Int(arc4random() % UInt32(to - from + 1)) + from
 }
+
+// 冒泡排序
+func bubble(arr: [Int]) -> [Int] {
+    var _arr = arr
+    if arr.count >= 2 {
+        for _ in 0...(arr.count - 1) {
+            for j in 0...(arr.count - 2) {
+                    if  _arr[j] > _arr[j + 1] {
+                        let tmp = _arr[j]
+                        _arr[j] = _arr[j + 1]
+                        _arr[j + 1] = tmp
+                    }
+            }
+        }
+    }
+    return _arr
+}

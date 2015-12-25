@@ -699,7 +699,7 @@ extension NewAddStepViewController {
         if self.indicateArrowDirection == 0 {
             
             let userDefaults = NSUserDefaults.standardUserDefaults()
-            dreamArray = NSMutableArray(array: userDefaults.arrayForKey("NianDream")!)
+            dreamArray = NSMutableArray(array: userDefaults.arrayForKey("NianDreams")!)
             let _temp = (dreamArray.count / 3) + (dreamArray.count % 3 == 0 ? 0 : 1)
             
             self.view.layoutIfNeeded()

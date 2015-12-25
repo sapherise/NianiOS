@@ -66,8 +66,8 @@ class AddStep: UIView, UITableViewDataSource, UITableViewDelegate, UITextViewDel
         
 //        DreamNewest
         
-        if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
-            self.dataArray = NianDream
+        if let NianDreams = Cookies.get("NianDreams") as? NSMutableArray {
+            self.dataArray = NianDreams
             self.tableView!.reloadData()
 //            let data = self.dataArray[0] as! NSDictionary
             var count = 0

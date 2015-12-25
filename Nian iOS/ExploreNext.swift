@@ -101,8 +101,8 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                     }
                 }
             } else if type == 2 {
-                if let NianDream = Cookies.get("NianDream") as? NSMutableArray {
-                    for data in NianDream {
+                if let NianDreams = Cookies.get("NianDreams") as? NSMutableArray {
+                    for data in NianDreams {
                         let d = data as! NSDictionary
                         let image = d.stringAttributeForKey("img")
                         let _private = d.stringAttributeForKey("private")
