@@ -27,8 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         navigationViewController.navigationBar.clipsToBounds = true
         navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         
-
-        
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
 

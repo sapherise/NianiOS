@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewAddStepViewController" customModule="Nian_iOS" customModuleProvider="target">
@@ -42,7 +42,6 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_plus" translatesAutoresizingMaskIntoConstraints="NO" id="aXz-Ye-BaI">
                                             <rect key="frame" x="16" y="16" width="32" height="32"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="cWk-1o-sdH"/>
                                                 <constraint firstAttribute="height" constant="32" id="yJD-0k-SY3"/>
@@ -50,7 +49,6 @@
                                         </imageView>
                                         <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_choose" translatesAutoresizingMaskIntoConstraints="NO" id="2ch-eX-0qf">
                                             <rect key="frame" x="552" y="16" width="32" height="32"/>
-                                            <animations/>
                                             <gestureRecognizers/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="kvI-Q0-PnO"/>
@@ -62,7 +60,6 @@
                                         </imageView>
                                         <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="标题" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BqK-aT-DQ5">
                                             <rect key="frame" x="56" y="16" width="480" height="32"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="keM-od-3gQ"/>
                                             </constraints>
@@ -72,14 +69,12 @@
                                         </textField>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwb-Wm-WQs">
                                             <rect key="frame" x="0.0" y="63" width="600" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="Pgb-Oe-lmY"/>
                                             </constraints>
                                         </view>
                                     </subviews>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="2ch-eX-0qf" secondAttribute="trailing" constant="16" id="JsG-fT-3bg"/>
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="top" constant="16" id="MEE-9h-HfB"/>
@@ -96,7 +91,6 @@
                                 </view>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-1D-7fH">
                                     <rect key="frame" x="0.0" y="64" width="600" height="0.0"/>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" id="dV5-4p-ZuN"/>
@@ -110,7 +104,6 @@
                                 </collectionView>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cE1-oB-Mve" customClass="SZTextView" customModule="Nian_iOS" customModuleProvider="target">
                                     <rect key="frame" x="16" y="200" width="568" height="340"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="340" id="RbA-GZ-dhC"/>
                                     </constraints>
@@ -122,21 +115,18 @@
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELL-KP-j0L">
                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                            <animations/>
                                             <state key="normal" image="img"/>
                                             <connections>
                                                 <action selector="pickerImages:" destination="-1" eventType="touchUpInside" id="LOq-GV-Izp"/>
                                             </connections>
                                         </button>
                                     </subviews>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="rw2-z4-fh3"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfv-Tg-TgG">
                                     <rect key="frame" x="0.0" y="599" width="600" height="1"/>
-                                    <animations/>
                                     <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="ZLP-w7-Y8B"/>
@@ -144,7 +134,6 @@
                                 </view>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="pUM-4n-Hrl">
                                     <rect key="frame" x="16" y="84" width="568" height="100"/>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <collectionViewLayout key="collectionViewLayout" id="jxK-mY-e16" customClass="yy_collectionViewLayout" customModule="Nian_iOS" customModuleProvider="target"/>
                                     <connections>
@@ -153,7 +142,6 @@
                                     </connections>
                                 </collectionView>
                             </subviews>
-                            <animations/>
                             <gestureRecognizers/>
                             <constraints>
                                 <constraint firstItem="pUM-4n-Hrl" firstAttribute="top" secondItem="LBS-nn-c8A" secondAttribute="top" constant="84" id="0Cc-ci-QPl"/>
@@ -181,7 +169,6 @@
                             </connections>
                         </view>
                     </subviews>
-                    <animations/>
                     <constraints>
                         <constraint firstItem="LBS-nn-c8A" firstAttribute="leading" secondItem="QCy-Ga-BCg" secondAttribute="leading" id="8zZ-MQ-DZF"/>
                         <constraint firstItem="LBS-nn-c8A" firstAttribute="top" secondItem="QCy-Ga-BCg" secondAttribute="top" id="Lnc-ca-eaL"/>
@@ -193,7 +180,6 @@
                     </connections>
                 </scrollView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="QCy-Ga-BCg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="MpJ-pT-nvw"/>
