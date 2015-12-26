@@ -270,20 +270,38 @@ class NewAddStepViewController: SAViewController {
     
     @IBAction func pickerImages(sender: UIButton) {
         self.dismissKeyboard()
-        
         if self.collectionView.numberOfItemsInSection(0) == 9 {
             self.view.showTipText("请先删除几张图片")
             
             return
         }
         
-        let imagePickerVC = QBImagePickerController()
-        imagePickerVC.maximumNumberOfSelection = UInt(9 - self.collectionView.numberOfItemsInSection(0))
-        imagePickerVC.delegate = self
-        imagePickerVC.allowsMultipleSelection = true
-        imagePickerVC.showsNumberOfSelectedAssets = true
+        let alertController = PSTAlertController.actionSheetWithTitle(nil)
         
-        self.presentViewController(imagePickerVC, animated: true, completion: nil)
+        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { action in
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.allowsEditing = true
+            
+            if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+                imagePicker.sourceType = .Camera
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+        }))
+        
+        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: {action in
+            let imagePickerVC = QBImagePickerController()
+            imagePickerVC.maximumNumberOfSelection = UInt(9 - self.collectionView.numberOfItemsInSection(0))
+            imagePickerVC.delegate = self
+            imagePickerVC.allowsMultipleSelection = true
+            imagePickerVC.showsNumberOfSelectedAssets = true
+            
+            self.presentViewController(imagePickerVC, animated: true, completion: nil)
+        }))
+        
+        alertController.addCancelActionWithHandler(nil)
+        
+        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
     }
     
     func setStepType() {
@@ -592,7 +610,7 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
             for(var _index = 0; _index < assets.count; _index++) {
                 let _asset = assets[_index]
                 let rep = _asset.defaultRepresentation()
-                let resolutionRef = rep?.CGImageWithOptions([kCGImageSourceThumbnailMaxPixelSize : 720, kCGImageSourceCreateThumbnailWithTransform : true])
+                let resolutionRef = rep?.CGImageWithOptions([kCGImageSourceThumbnailMaxPixelSize : 1000, kCGImageSourceCreateThumbnailWithTransform : true])
                 let image = UIImage(CGImage: resolutionRef!.takeUnretainedValue(), scale: 1.0, orientation: UIImageOrientation(rawValue: rep!.orientation().rawValue)!)
                 
                 synchronized(self.imagesArray, closure: { () -> () in
@@ -676,7 +694,6 @@ extension NewAddStepViewController: QBImagePickerControllerDelegate {
 
 extension NewAddStepViewController {
 
-
     @IBAction func selectNote(sender: UITapGestureRecognizer) {
         
         if self.indicateArrowDirection == 0 {
@@ -723,7 +740,45 @@ extension NewAddStepViewController {
 }
 
 
-
+extension NewAddStepViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        synchronized(self.imagesArray, closure: { () -> () in
+            self.imagesArray.append(resizedImage(image, newWidth: 1000))
+        })
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            
+            self.collectionView.performBatchUpdates({ () -> Void in
+                self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.imagesArray.count - 1, inSection: 0)])
+                
+                }, completion: { finished in
+                    let collectionViewHeight = self.calculateCollectionHeightWith(dataSource: self.imagesArray)
+                    
+                    if collectionViewHeight > 0 {
+                        if self.isInConvenienceWay {
+                            self.collectionToTopContraint.constant = 80
+                        } else {
+                            self.collectionToTopContraint.constant = 16
+                        }
+                    }
+                    
+                    constrain(self.collectionView, replace: self.collectionConstraintGroup) { (view1) -> () in
+                        view1.height == collectionViewHeight
+                    }
+                    
+                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+                        self.collectionView.layoutIfNeeded()
+                        }, completion: nil)
+            })
+        })
+        
+    }
+    
+}
 
 
 
