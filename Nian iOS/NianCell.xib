@@ -23,7 +23,7 @@
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <animations/>
@@ -32,7 +32,7 @@
             <animations/>
             <connections>
                 <outlet property="imageCover" destination="mjZ-md-Q8D" id="UCW-EZ-6Ki"/>
-                <outlet property="labelTitle" destination="Zhp-hF-Hb5" id="hYQ-v3-JGM"/>
+                <outlet property="labelTitle" destination="Zhp-hF-Hb5" id="DlP-sW-Cjg"/>
             </connections>
             <point key="canvasLocation" x="21" y="419"/>
         </collectionViewCell>
