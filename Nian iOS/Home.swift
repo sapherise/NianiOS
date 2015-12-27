@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, MaskDelegate, ShareDelegate{
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate{
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -22,7 +22,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var addStepView:AddStep!
     var viewClose:UIImageView!
     let imageArray = ["home","explore","update","letter","bbs"]
-    var cancelSheet:UIActionSheet?
     var actionSheetGameOver: UIActionSheet?
     var timer:NSTimer?
     var ni: NIAlert?
@@ -336,7 +335,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func QuickActions(sender: NSNotification) {
         let type = sender.object as! String
         if type == "1" {
-            self.addStep()
+//            self.addStep()
+            // todo: 新进展的 3D Touch
         }
     }
     
@@ -359,11 +359,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if actionSheet == self.cancelSheet {
-            if buttonIndex == 0 {
-                self.onViewCloseClick()
-            }
-        }else if actionSheet == self.actionSheetGameOver {
+        if actionSheet == self.actionSheetGameOver {
             if buttonIndex == 0 {
                 GameOverHide()
             }
@@ -388,7 +384,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") 
         let vc1 = NianViewController
         let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
-        let vc3 = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+//        let vc3 = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+        let vc3 = AddStep(nibName: "AddStep", bundle: nil)
         let vc4 = MeViewController()
         let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
@@ -432,11 +429,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
         }else if index == idUpdate {      // 更新
-            let _vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
-            _vc.delegate = self
-            _vc.isInConvenienceWay = true
- 
-            self.selectedViewController!.presentViewController(_vc, animated: true, completion: nil)
+//            let _vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+//            _vc.delegate = self
+//            _vc.isInConvenienceWay = true
+            
+            let vc = AddStep(nibName: "AddStep", bundle: nil)
+            self.navigationController?.pushViewController(vc, animated: true)
+//            self.selectedViewController!.presentViewController(vc, animated: false, completion: nil)
+//            self.navigationController?.presentViewController(vc, animated: true, completion: nil)
         }
         if index != idExplore {
             numExplore = 0
@@ -448,41 +448,41 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
-    func addStep(){
-        if globalNumberDream == 0 {
-            let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-            self.navigationController!.pushViewController(adddreamVC, animated: true)
-        } else {
-            self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-            self.addView.translucentAlpha = 1
-            self.addView.translucentStyle = UIBarStyle.Default
-            self.addView.translucentTintColor = UIColor.clearColor()
-            self.addView.backgroundColor = UIColor.clearColor()
-            self.addView.alpha = 0
-            self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
-            let Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
-            Tap.delegate = self
-            self.addView.addGestureRecognizer(Tap)
-            
-            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil)
-            self.addStepView = nib[0] as! AddStep
-            self.addStepView.delegate = self
-            self.addStepView.setX(globalWidth/2-140)
-            self.addStepView.setY(globalHeight/2-106)
-            self.addView.addSubview(self.addStepView)
-            
-            self.viewClose = UIImageView(frame: CGRectMake(10, 20, 44, 44))
-            self.viewClose.image = UIImage(named: "closeBlue")
-            self.viewClose.contentMode = UIViewContentMode.Center
-            self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
-            self.viewClose.userInteractionEnabled = true
-            self.view.window?.addSubview(self.viewClose)
-            self.view.addSubview(self.addView)
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.addView.alpha = 1
-            })
-        }
-    }
+//    func addStep(){
+//        if globalNumberDream == 0 {
+//            let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
+//            self.navigationController!.pushViewController(adddreamVC, animated: true)
+//        } else {
+//            self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+//            self.addView.translucentAlpha = 1
+//            self.addView.translucentStyle = UIBarStyle.Default
+//            self.addView.translucentTintColor = UIColor.clearColor()
+//            self.addView.backgroundColor = UIColor.clearColor()
+//            self.addView.alpha = 0
+//            self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
+//            let Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
+//            Tap.delegate = self
+//            self.addView.addGestureRecognizer(Tap)
+//            
+//            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil)
+//            self.addStepView = nib[0] as! AddStep
+//            self.addStepView.delegate = self
+//            self.addStepView.setX(globalWidth/2-140)
+//            self.addStepView.setY(globalHeight/2-106)
+//            self.addView.addSubview(self.addStepView)
+//            
+//            self.viewClose = UIImageView(frame: CGRectMake(10, 20, 44, 44))
+//            self.viewClose.image = UIImage(named: "closeBlue")
+//            self.viewClose.contentMode = UIViewContentMode.Center
+//            self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
+//            self.viewClose.userInteractionEnabled = true
+//            self.view.window?.addSubview(self.viewClose)
+//            self.view.addSubview(self.addView)
+//            UIView.animateWithDuration(0.3, animations: { () -> Void in
+//                self.addView.alpha = 1
+//            })
+//        }
+//    }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if NSStringFromClass(touch.view!.classForCoder) == "UITableViewCellContentView"  {
@@ -491,46 +491,46 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         return true
     }
     
-    func onViewCloseClick(){
-        self.viewClose.removeFromSuperview()
-        self.addStepView.textView.resignFirstResponder()
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            let newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
-            self.addView.transform = newTransform
-            self.addView.alpha = 0
-            }) { (Bool) -> Void in
-                self.addView.removeFromSuperview()
-        }
-    }
+//    func onViewCloseClick(){
+//        self.viewClose.removeFromSuperview()
+//        self.addStepView.textView.resignFirstResponder()
+//        UIView.animateWithDuration(0.2, animations: { () -> Void in
+//            let newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
+//            self.addView.transform = newTransform
+//            self.addView.alpha = 0
+//            }) { (Bool) -> Void in
+//                self.addView.removeFromSuperview()
+//        }
+//    }
     
     func onShare(avc: UIActivityViewController) {
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
-    func onCloseConfirm(){
-        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
-            self.addStepView.textView.resignFirstResponder()
-            self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.cancelSheet!.addButtonWithTitle("不写了")
-            self.cancelSheet!.addButtonWithTitle("继续写")
-            self.cancelSheet!.cancelButtonIndex = 1
-            self.cancelSheet!.showInView(self.view)
-        }else{
-            self.onViewCloseClick()
-        }
-    }
+//    func onCloseConfirm(){
+//        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
+//            self.addStepView.textView.resignFirstResponder()
+//            self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+//            self.cancelSheet!.addButtonWithTitle("不写了")
+//            self.cancelSheet!.addButtonWithTitle("继续写")
+//            self.cancelSheet!.cancelButtonIndex = 1
+//            self.cancelSheet!.showInView(self.view)
+//        }else{
+//            self.onViewCloseClick()
+//        }
+//    }
     
-    func onAddViewClick(){
-        self.addStepView.textView.resignFirstResponder()
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.addStepView.setY(globalHeight/2-106)
-        })
-        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
-            self.addStepView.textView.resignFirstResponder()
-        }else{
-            self.onViewCloseClick()
-        }
-    }
+//    func onAddViewClick(){
+//        self.addStepView.textView.resignFirstResponder()
+//        UIView.animateWithDuration(0.3, animations: { () -> Void in
+//            self.addStepView.setY(globalHeight/2-106)
+//        })
+//        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
+//            self.addStepView.textView.resignFirstResponder()
+//        }else{
+//            self.onViewCloseClick()
+//        }
+//    }
 
     func loadLetter() {
         Api.postLetterInit() { json in
