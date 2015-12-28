@@ -119,5 +119,13 @@ func thepush(content: String, dateSinceNow: NSTimeInterval, willReapt: Bool, id:
     }
     noti.alertBody = content
     noti.userInfo = ["id": id]
+    
+    if #available(iOS 8.0, *) {
+        let _local = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert, categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(_local)
+    } else {
+        // Fallback on earlier versions
+    }
+    
     UIApplication.sharedApplication().scheduleLocalNotification(noti)
 }

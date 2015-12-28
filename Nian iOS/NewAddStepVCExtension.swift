@@ -39,7 +39,7 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepNoteCell", forIndexPath: indexPath) as! AddStepNoteCell
             
             if self.dreamArray.count > indexPath.row {
-                let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["img"] as! String
+                let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["image"] as! String
                 
                 cell.imageView.setImage("http://img.nian.so/dream/\(_imgUrl)!dream")
                 cell.label.text = (self.dreamArray[indexPath.row] as! NSDictionary)["title"] as? String
@@ -66,7 +66,7 @@ extension NewAddStepViewController: UICollectionViewDataSource, UICollectionView
             
             alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
         } else if collectionView == self.noteCollectionView {
-            let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["img"] as! String
+            let _imgUrl = (self.dreamArray[indexPath.row] as! NSDictionary)["image"] as! String
             
             self.noteCoverView.setImage("http://img.nian.so/dream/\(_imgUrl)!dream")
             self.noteTitleField.text = (self.dreamArray[indexPath.row] as! NSDictionary)["title"] as? String
