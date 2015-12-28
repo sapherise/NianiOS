@@ -301,7 +301,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.navigationItem.rightBarButtonItems = buttonArray()
             Api.postAddDream(title, content: content, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
                 json in
-                print(json)
                 let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
                     let data = json!.objectForKey("data") as! NSDictionary

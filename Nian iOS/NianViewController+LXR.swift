@@ -18,11 +18,13 @@ extension NianViewController {
         let index = indexPath.row
         let c = collectionView.dequeueReusableCellWithReuseIdentifier("NianCell", forIndexPath: indexPath) as! NianCell
         let data = self.dataArray[index] as! NSDictionary
+        let title = data.stringAttributeForKey("title").decode()
+        
         c.data = data
         c.total = self.dataArray.count
         c.index = index
-        c.labelTitle.text = (data.stringAttributeForKey("title") as NSString).stringByDecodingHTMLEntities().stringByDecodingHTMLEntities()
-        c.imageCover.setHolder()
+        c.labelTitle.text = title
+//        c.imageCover.setHolder()
         
         var img = data.stringAttributeForKey("image")
         if img != "" {
@@ -43,19 +45,6 @@ extension NianViewController {
     
     func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, willMoveToIndexPath toIndexPath: NSIndexPath!) {
         let object = dataArray.objectAtIndex(fromIndexPath.item)
-        
-//        print(dataArray)
-        
-        for i in 0...dataArray.count - 1 {
-            let data = dataArray[i] as! NSDictionary
-            let name = data.stringAttributeForKey("title")
-            print(name)
-        }
-        
-        print("==")
-        print(fromIndexPath.item)
-        print(toIndexPath.item)
-        
         dataArray.removeObjectAtIndex(fromIndexPath.item)
         dataArray.insertObject(object, atIndex: toIndexPath.item)
     }
@@ -71,20 +60,16 @@ extension NianViewController {
     //
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("did begin drag")
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("did end drag")
         // 将移动后的记本排序保存到缓存中
         Cookies.set(self.dataArray, forKey: "NianDreams")
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willBeginDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("will begin drag")
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAtIndexPath indexPath: NSIndexPath!) {
-        print("will end drag")
     }
 }

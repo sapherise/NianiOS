@@ -541,11 +541,11 @@ struct Api {
     static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
         loadCookies()
         if tags == "" {
-            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
+            V.httpPostForJson_AFN("http://api.nian.so/v2/dream?uid=\(s_uid)&shell=\(s_shell)",
                 content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)" ],
                 callback: callback)
         } else {
-            V.httpPostForJson_AFN("http://api.nian.so/dream?uid=\(s_uid)&shell=\(s_shell)",
+            V.httpPostForJson_AFN("http://api.nian.so/v2/dream?uid=\(s_uid)&shell=\(s_shell)",
                 content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags],
                 callback: callback)
         }
