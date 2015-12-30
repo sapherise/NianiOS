@@ -8,26 +8,25 @@
 
 import Foundation
 
-
-
-class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, NSLayoutManagerDelegate {
+class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet var scrollView: UIScrollView!
-    @IBOutlet var containerView: UIView!
-    @IBOutlet var field1: UITextField!  //title text field
-    @IBOutlet var field2: SZTextView!
+    @IBOutlet var viewDream: UIView!
+    @IBOutlet var field2: UITextView!
     @IBOutlet var seperatorView: UIView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var imageUpload: UIImageView!
     @IBOutlet var seperatorView2: UIView!
+    @IBOutlet var labelPlaceholder: UILabel!
+    @IBOutlet var imageDream: UIImageView!
+    @IBOutlet var labelDream: UILabel!
+    @IBOutlet var imageArrow: UIImageView!
+    let size_field_padding: CGFloat = 12
     
     var actionSheet: UIActionSheet?
     var imagePicker: UIImagePickerController?
-    var delegate: editRedditDelegate?
-    var delegateComment: getCommentDelegate?
     var dict = NSMutableDictionary()
-    var hImage: CGFloat = 0
     var id: String = ""
+    var idDream: String = ""
     
     var uploadUrl: String = ""
     
@@ -38,6 +37,8 @@ class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerD
     var editImage: String = ""
     var tagsArray: Array<String> = [String]()
     var keyboardHeight: CGFloat = 0.0  // 键盘的高度
+    var dataArray = NSMutableArray()
+    var tableView: UITableView!
     
     var swipeGesuture: UISwipeGestureRecognizer?
     
@@ -98,76 +99,86 @@ class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerD
         _setTitle("新进展！")
         setBarButtonImage("newOK", actionGesture: "add")
         
-        swipeGesuture = UISwipeGestureRecognizer(target: self, action: "dismissKeyboard:")
+        swipeGesuture = UISwipeGestureRecognizer(target: self, action: "dismissKeyboard")
         swipeGesuture!.direction = UISwipeGestureRecognizerDirection.Down
         swipeGesuture!.cancelsTouchesInView = true
         self.view.addGestureRecognizer(swipeGesuture!)
         
-        self.scrollView.setWidth(globalWidth)
-        self.scrollView.setHeight(globalHeight - 64)
-        self.containerView.setWidth(globalWidth)
-        self.containerView.setHeight(self.scrollView.height() - 1)
-        self.field1.setWidth(globalWidth)
-        self.field1.leftView = UIView(frame: CGRectMake(0, 0, 16, 1))
-        self.field1.rightView = UIView(frame: CGRectMake(0, 0, 16, 1))
-        self.field1.leftViewMode = .Always
-        self.field1.rightViewMode = .Always
-        self.field2.setWidth(globalWidth)
-        globalHeight > 480 ? self.field2.setHeight(120) : self.field2.setHeight(96)
-        self.field2.textContainerInset = UIEdgeInsets(top: 0, left: 12, bottom: 12, right: 12)
+        self.field2.frame = CGRectMake(size_field_padding, self.seperatorView.bottom() + size_field_padding, globalWidth - size_field_padding * 2, globalHeight - self.viewDream.height() - 64 - size_field_padding * 2 - viewHolder.height() - seperatorView2.height() * 2)
         seperatorView.setWidth(globalWidth)
         seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
-        seperatorView2.setY(self.field2.bottom())
         seperatorView2.setWidth(globalWidth)
         seperatorView2.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
         
-        field2.layoutManager.delegate = self
-        
-        viewHolder.setY(field2.bottom() + 1)
+        seperatorView2.setY(self.field2.bottom() + size_field_padding)
+        viewHolder.setY(seperatorView2.bottom())
         imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         
+        /* 初始化 UITableView*/
+        tableView = UITableView(frame: CGRectMake(0, seperatorView.bottom(), globalWidth, 0))
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.registerNib(UINib(nibName: "AddStepCell", bundle: nil), forCellReuseIdentifier: "AddStepCell")
+        tableView.hidden = true
+        tableView.separatorStyle = .None
+        self.view.addSubview(tableView)
+        
+        /* 在缓存中获得最新的记本 */
+        self.viewDream.setWidth(globalWidth)
+        self.viewDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewDream"))
+        if let NianDreams = Cookies.get("NianDreams") as? NSMutableArray {
+            self.dataArray = NianDreams
+            tableView.reloadData()
+            var count = 0
+            for d in dataArray {
+                let id = (d as! NSDictionary).stringAttributeForKey("id")
+                if id == Cookies.get("DreamNewest") as? String {
+                    let data = d
+                    let title = data.objectForKey("title") as! String
+                    let image = data.objectForKey("image") as! String
+                    let userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                    self.imageDream.setImage(userImageURL)
+                    self.idDream = id
+                    self.labelDream.text = title
+//                    self.btnOK.enabled = true
+                    count = 1
+                    break
+                }
+            }
+            if count == 0 {
+                let data = dataArray[0] as! NSDictionary
+                let id = data.stringAttributeForKey("id")
+                let title = data.stringAttributeForKey("title")
+                let image = data.stringAttributeForKey("image")
+                let userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                self.imageDream.setImage(userImageURL)
+                self.idDream = id
+                self.labelDream.text = title
+//                self.btnOK.enabled = true
+            }
+        }
+        
+        /* 设置箭头位置*/
+        imageArrow.setX(globalWidth - 10 - imageArrow.width())
         
         self.view.backgroundColor = UIColor.whiteColor()
-        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
-        self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
-        
-        self.field2.attributedPlaceholder = NSAttributedString(string: "话题正文" ,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
-                NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
-        self.field2.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         self.field2.delegate = self
         
-        self.scrollView.delegate = self
-        
         /* 如果传入的 dict 不为空，先提取出相关的内容 */
-        if dict.allKeys.count > 0 {
-            self.editTitle = self.dict["title"] as! String
-            self.editContent = self.dict["content"] as! String
-            self.tagsArray = self.dict["tags"] as! Array
-        }
-        
-        if self.isEdit == 1 {
-            self.field1!.text = self.editTitle.decode()
-            self.field2.text = self.editContent.decode()
-            self.uploadUrl = self.editImage
-        }
-    }
-    
-    func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return 8
-    }
-    
-    func dismissKeyboard(sender: UISwipeGestureRecognizer){
-        self.dismissKeyboard()
-    }
-    
-    func close() {
-        self.dismissKeyboard()
-        self.dismissViewControllerAnimated(true, completion: nil)
+//        if dict.allKeys.count > 0 {
+//            self.editTitle = self.dict["title"] as! String
+//            self.editContent = self.dict["content"] as! String
+//            self.tagsArray = self.dict["tags"] as! Array
+//        }
+//        
+//        if self.isEdit == 1 {
+//            self.field1!.text = self.editTitle.decode()
+//            self.field2.text = self.editContent.decode()
+//            self.uploadUrl = self.editImage
+//        }
     }
     
     func dismissKeyboard() {
-        self.field1!.resignFirstResponder()
         self.field2.resignFirstResponder()
     }
 }

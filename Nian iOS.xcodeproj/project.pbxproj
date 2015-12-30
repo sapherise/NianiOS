@@ -125,7 +125,8 @@
 		129F6C701C306FED008B61A5 /* AddStep.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129F6C6F1C306FED008B61A5 /* AddStep.xib */; };
 		129F6C741C30708F008B61A5 /* AddStep+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129F6C731C30708F008B61A5 /* AddStep+Scroll.swift */; };
 		129F6C761C3070B7008B61A5 /* AddStep+Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129F6C751C3070B7008B61A5 /* AddStep+Function.swift */; };
-		129F6C781C3081B1008B61A5 /* AddStep+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129F6C771C3081B1008B61A5 /* AddStep+Gesture.swift */; };
+		129F6C7A1C317749008B61A5 /* AddStep+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129F6C791C317749008B61A5 /* AddStep+Delegate.swift */; };
+		129F6C7C1C3178C3008B61A5 /* AddStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129F6C7B1C3178C3008B61A5 /* AddStepCell.swift */; };
 		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
 		129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DD1B5E2F5100BDFE03 /* star.png */; };
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
@@ -453,7 +454,8 @@
 		129F6C6F1C306FED008B61A5 /* AddStep.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStep.xib; sourceTree = "<group>"; };
 		129F6C731C30708F008B61A5 /* AddStep+Scroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddStep+Scroll.swift"; sourceTree = "<group>"; };
 		129F6C751C3070B7008B61A5 /* AddStep+Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddStep+Function.swift"; sourceTree = "<group>"; };
-		129F6C771C3081B1008B61A5 /* AddStep+Gesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddStep+Gesture.swift"; sourceTree = "<group>"; };
+		129F6C791C317749008B61A5 /* AddStep+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddStep+Delegate.swift"; sourceTree = "<group>"; };
+		129F6C7B1C3178C3008B61A5 /* AddStepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepCell.swift; sourceTree = "<group>"; };
 		129FE4DB1B5E2DA400BDFE03 /* star.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = star.sks; path = Utility/star.sks; sourceTree = "<group>"; };
 		129FE4DD1B5E2F5100BDFE03 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star.png; path = Utility/star.png; sourceTree = "<group>"; };
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
@@ -1076,8 +1078,10 @@
 				129F6C6D1C306FAD008B61A5 /* AddStep.swift */,
 				129F6C731C30708F008B61A5 /* AddStep+Scroll.swift */,
 				129F6C751C3070B7008B61A5 /* AddStep+Function.swift */,
-				129F6C771C3081B1008B61A5 /* AddStep+Gesture.swift */,
+				129F6C791C317749008B61A5 /* AddStep+Delegate.swift */,
 				129F6C6F1C306FED008B61A5 /* AddStep.xib */,
+				129375181A236E8B001F7442 /* AddStepCell.xib */,
+				129F6C7B1C3178C3008B61A5 /* AddStepCell.swift */,
 			);
 			name = "新进展";
 			sourceTree = "<group>";
@@ -1194,7 +1198,6 @@
 				1283E2BD19AB81EF00A0FB1C /* AddStepViewController.xib */,
 				12D846061A233F46005DCC08 /* AddStep2.xib */,
 				12D846081A2340DC005DCC08 /* AddStep2.swift */,
-				129375181A236E8B001F7442 /* AddStepCell.xib */,
 				C486FD5A1C0443E8009F1F90 /* NewAddStepViewController.swift */,
 				C4C2C3C71C1AFD9F00209B55 /* NewAddStepVCExtension.swift */,
 				C486FD2C1C044223009F1F90 /* NewAddStepView.xib */,
@@ -1945,6 +1948,7 @@
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
+				129F6C7C1C3178C3008B61A5 /* AddStepCell.swift in Sources */,
 				12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
@@ -1992,7 +1996,6 @@
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
 				12652838196C6755005765D2 /* Sapherise.swift in Sources */,
-				129F6C781C3081B1008B61A5 /* AddStep+Gesture.swift in Sources */,
 				12758BD91C2A4D0A00412A37 /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
@@ -2092,6 +2095,7 @@
 				12F65C091B64F46C0051A914 /* Pet.swift in Sources */,
 				12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */,
 				C486FD4C1C04430A009F1F90 /* Dimension.swift in Sources */,
+				129F6C7A1C317749008B61A5 /* AddStep+Delegate.swift in Sources */,
 				126D6E2E1C2EFD660053211C /* Gallery.swift in Sources */,
 				C486FD4F1C04430A009F1F90 /* Edges.swift in Sources */,
 				C486BDEA1BF477E800EF1C2A /* ActivitiesViewController.swift in Sources */,
