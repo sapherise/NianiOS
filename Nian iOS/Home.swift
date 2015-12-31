@@ -336,7 +336,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func QuickActions(sender: NSNotification) {
         let type = sender.object as! String
         if type == "1" {
-            self.addStep()
+            let _vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+            _vc.delegate = self
+            _vc.isInConvenienceWay = true
+            
+            self.selectedViewController!.presentViewController(_vc, animated: true, completion: nil)
         }
     }
     

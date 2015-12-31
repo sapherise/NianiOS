@@ -103,7 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         /* 设置极光推送 */
         // todo: 开启下面这一行
-//        APService.registerDeviceToken(deviceToken)
+        APService.registerDeviceToken(deviceToken)
         Api.postJpushBinding(){ _ in }
     }
 

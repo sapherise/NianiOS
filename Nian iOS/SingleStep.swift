@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate,AddstepDelegate {
+class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate {
     
     var tableView: VVeboTableView!
     var dataArray = NSMutableArray()
@@ -16,9 +16,8 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     var navView:UIView!
     var name: String?   // 从消息进入后自动@
     
-    //editStepdelegate
-    var editStepRow:Int = 0
-    var editStepData:NSDictionary?
+    var newEditStepRow: Int = 0
+    var newEditStepData: NSDictionary?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -108,15 +107,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return getHeight(indexPath, dataArray: dataArray)
     }
-    
-    func Editstep() {
-        self.SAReloadData()
-    }
-   
-    func countUp(coin: String, isfirst: String){
-        self.SAReloadData()
-    }
-    
+
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
             self.SAReloadData()
@@ -125,6 +116,18 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
+    }
+    
+}
+
+extension SingleStepViewController: NewAddStepDelegate {
+    
+    func newEditstep() {
+        self.SAReloadData()
+    }
+    
+    func newCountUp(coin: String, isfirst: String) {
+        self.SAReloadData()
     }
     
 }

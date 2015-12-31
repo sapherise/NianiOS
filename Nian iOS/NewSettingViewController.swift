@@ -221,6 +221,8 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
             delegate?.setting?(name: _name, cover: self.coverImageView.image, avatar: nil)
         } else if self.avatarImageModified {
             delegate?.setting?(name: _name, cover: nil, avatar: self.avatarImageView.image)
+        } else {
+            delegate?.setting?(name: _name, cover: nil, avatar: nil)
         }
         
     }
