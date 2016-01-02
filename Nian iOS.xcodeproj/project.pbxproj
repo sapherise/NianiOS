@@ -79,6 +79,9 @@
 		126D6E491C2F1E800053211C /* LSYAlbumCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E3E1C2F1E800053211C /* LSYAlbumCatalog.swift */; };
 		126D6E4A1C2F1E800053211C /* LSYAlbumPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E3F1C2F1E800053211C /* LSYAlbumPicker.swift */; };
 		126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FB4721B574EDB0056221C /* SAActivityViewController.swift */; };
+		126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126FDBD41C37B1BE00DECA80 /* AddStepImageCell.xib */; };
+		126FDBD71C37B1EF00DECA80 /* AddStepImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */; };
+		126FDBEC1C382DA900DECA80 /* UpyunOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FDBEB1C382DA900DECA80 /* UpyunOperation.swift */; };
 		127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497F11B92DF480046B440 /* QuartzCore.framework */; };
 		127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497F31B92DF540046B440 /* ImageIO.framework */; };
 		127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */; };
@@ -392,6 +395,9 @@
 		126D6E3E1C2F1E800053211C /* LSYAlbumCatalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumCatalog.swift; sourceTree = "<group>"; };
 		126D6E3F1C2F1E800053211C /* LSYAlbumPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumPicker.swift; sourceTree = "<group>"; };
 		126FB4721B574EDB0056221C /* SAActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAActivityViewController.swift; sourceTree = "<group>"; };
+		126FDBD41C37B1BE00DECA80 /* AddStepImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepImageCell.xib; sourceTree = "<group>"; };
+		126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepImageCell.swift; sourceTree = "<group>"; };
+		126FDBEB1C382DA900DECA80 /* UpyunOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpyunOperation.swift; sourceTree = "<group>"; };
 		12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Nian iOS-Bridging-Header.h"; path = "../Nian iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		127497F11B92DF480046B440 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		127497F31B92DF540046B440 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -1072,7 +1078,7 @@
 			path = WeiboSharing;
 			sourceTree = "<group>";
 		};
-		129F6C6C1C306F8D008B61A5 /* 新进展 */ = {
+		129F6C6C1C306F8D008B61A5 /* 新进展（使用） */ = {
 			isa = PBXGroup;
 			children = (
 				129F6C6D1C306FAD008B61A5 /* AddStep.swift */,
@@ -1082,8 +1088,11 @@
 				129F6C6F1C306FED008B61A5 /* AddStep.xib */,
 				129375181A236E8B001F7442 /* AddStepCell.xib */,
 				129F6C7B1C3178C3008B61A5 /* AddStepCell.swift */,
+				126FDBD41C37B1BE00DECA80 /* AddStepImageCell.xib */,
+				126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */,
+				126FDBEB1C382DA900DECA80 /* UpyunOperation.swift */,
 			);
-			name = "新进展";
+			name = "新进展（使用）";
 			sourceTree = "<group>";
 		};
 		12A49109198EB550000B6D5E /* 消息 */ = {
@@ -1238,7 +1247,7 @@
 				12E8090C1A2DBFB20022C094 /* SingleStep.swift */,
 				122F39201B4E794700DE8628 /* Card.xib */,
 				1243C6F61B4F60A0007F741C /* Card.swift */,
-				129F6C6C1C306F8D008B61A5 /* 新进展 */,
+				129F6C6C1C306F8D008B61A5 /* 新进展（使用） */,
 				12CE6A20196EEDA500F308FF /* 更新进展 */,
 			);
 			name = "进展";
@@ -1819,6 +1828,7 @@
 				1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
+				126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */,
 				1283E2BE19AB81EF00A0FB1C /* AddStepViewController.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
 				12BB33471B93473500B7E03F /* TopicCellHeader.xib in Resources */,
@@ -1920,6 +1930,7 @@
 				C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				C486FD581C04430A009F1F90 /* View.swift in Sources */,
+				126FDBEC1C382DA900DECA80 /* UpyunOperation.swift in Sources */,
 				1283E2BC19AB81E500A0FB1C /* AddStepViewController.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
 				12A4910D198EB577000B6D5E /* MeCell.swift in Sources */,
@@ -1982,6 +1993,7 @@
 				12D846051A233B09005DCC08 /* BlurView.swift in Sources */,
 				12DE696519D130940006B5B5 /* Care.swift in Sources */,
 				C488B4781BFD9E8D00C735EC /* LogOrRegModel.swift in Sources */,
+				126FDBD71C37B1EF00DECA80 /* AddStepImageCell.swift in Sources */,
 				12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */,
 				C486FD591C04430A009F1F90 /* ViewUtils.swift in Sources */,
 				C488B47A1BFD9E8D00C735EC /* NicknameViewController.swift in Sources */,

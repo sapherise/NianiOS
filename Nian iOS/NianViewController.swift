@@ -18,7 +18,7 @@ protocol DeleteDreamDelegate {
     func deleteDreamCallback(id: String)
 }
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate, DeleteDreamDelegate, LSYAlbumCatalogDelegate {
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate, DeleteDreamDelegate {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -370,32 +370,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
      进入新的设置页面
      */
     func headClick(){
-//        let vc = Gallery()
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
-        let vc = LSYAlbumCatalog()
+        let vc = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
+        vc.coverImage = self.imageBG.image
+        vc.avatarImage = self.UserHead.image
         vc.delegate = self
-        vc.maximumNumberOfSelectionPhoto = 9
         self.navigationController?.pushViewController(vc, animated: true)
-        
-        // todo: 注释下面 5 行
-//        let vc = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
-//        vc.coverImage = self.imageBG.image
-//        vc.avatarImage = self.UserHead.image
-//        vc.delegate = self
-//        
-//        self.navigationController!.pushViewController(vc, animated: true)
-    }
-    
-    func AlbumDidFinishPick(assets: NSArray) {
-        for asset in assets {
-            if  (asset as!ALAsset).valueForProperty("ALAssetPropertyType").isEqual("ALAssetTypePhoto") {
-//                let img = UIImage(CGImage: (asset as! ALAsset).defaultRepresentation().fullResolutionImage().takeUnretainedValue());
-            }
-            else if (asset as!ALAsset).valueForProperty("ALAssetPropertyType").isEqual("ALAssetTypeVideo") {
-//                let url = (asset as! ALAsset).defaultRepresentation().url()
-            }
-        }
     }
     
     /**

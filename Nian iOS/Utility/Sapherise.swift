@@ -750,18 +750,20 @@ func shake() {
 }
 
 func getCacheImage(url: String) -> UIImage? {
-    let urlImage = NSURL(string: url)!
-    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-    let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(req)
-    return cachedImage
+//    let urlImage = NSURL(string: url)!
+//    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+//    let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(req)
+//    return cachedImage
+    return SDImageCache.sharedImageCache().imageFromDiskCacheForKey(url)
 }
 
 func setCacheImage(url: String, img: UIImage, width: CGFloat) {
-    let urlImage = NSURL(string: url)!
-    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+//    let urlImage = NSURL(string: url)!
+//    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
+//    UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
     var imageNew = width == 0 ? img : resizedImage(img, newWidth: width)
     imageNew = imageNew.fixOrientation()
-    UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
+    SDImageCache.sharedImageCache().storeImage(imageNew, forKey: url)
 }
 
 func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: AnyObject, tableView: UITableView) {

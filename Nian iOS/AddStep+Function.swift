@@ -11,16 +11,155 @@ import SpriteKit
 
 extension AddStep {
     func onImage() {
-        print("点击了图片")
+        field2.resignFirstResponder()
+        LSYAlbum.sharedAlbum().setupAlbumGroups { (groups) -> () in
+            let albumPicker = LSYAlbumPicker()
+            albumPicker.group = groups[0] as! ALAssetsGroup
+            albumPicker.maxminumNumber = 9 - self.imageArray.count
+            albumPicker.delegate = self
+            self.navigationController?.pushViewController(albumPicker, animated: true)
+        }
     }
     
+    /* 上传队列完成后，准备提交到服务器 */
+    func upYunMulti(data: NSDictionary, count: Int) {
+        go {
+            self.uploadArray.addObject(data)
+            let num = count + 1
+            /* 按照队列进行上传 */
+            if self.imageArray.count > num {
+                let op = UpyunOperation()
+                op.num = num
+                op.asset = self.imageArray[num]
+                op.delegate = self
+                self.queue.addOperation(op)
+            } else {
+                /* 全部上传成功后，提交服务器 */
+                self.addStep()
+            }
+        }
+    }
+    
+    /* 提交服务器 */
+    func addStep() {
+        var type: Int = 5
+        if field2.text == "" {
+            if imageArray.count == 0 {
+                /* 无文字，无图片，签到 */
+                type = 1
+            } else if imageArray.count == 1 {
+                /* 无文字，单图片 */
+                type = 6
+            } else {
+                /* 无文字，多图片 */
+                type = 4
+            }
+        } else {
+            if imageArray.count == 0 {
+                /* 有文字，无图片 */
+                type = 7
+            } else if imageArray.count == 1 {
+                /* 有文字，单图片 */
+                type = 5
+            } else {
+                /* 有文字，多图片 */
+                type = 3
+            }
+        }
+        
+        AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
+//            print(data)
+            if let d = data as? NSDictionary {
+                let error = d.stringAttributeForKey("error")
+                if error == "0" {
+                    let result = d.objectForKey("data") as! NSDictionary
+                    let coin = result.stringAttributeForKey("coin")
+                    let totalCoin = result.stringAttributeForKey("totalCoin")
+                    let isfirst = result.stringAttributeForKey("isfirst")
+                    self.field2.resignFirstResponder()
+                    
+                    /* 创建进展卡片 */
+                    go {
+                        let modeCard = SACookie("modeCard")
+                        if modeCard == "off" {
+                        } else {
+                            let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                            card.content = self.field2.text
+                            if self.uploadArray.count > 0 {
+                                let image = self.uploadArray[0] as! NSDictionary
+                                card.widthImage = image.stringAttributeForKey("width")
+                                card.heightImage = image.stringAttributeForKey("height")
+                                card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
+                                print(card.url)
+                            }
+                            card.onCardSave()
+                            // todo: 测试没有图片时的进展卡片
+                        }
+                    }
+                    
+                    if isfirst == "1" {
+                        globalWillNianReload = 1
+                        
+                        /* 如果念币小于 3 */
+                        if Int(totalCoin) <  3 {
+                            self.niCoinLess.delegate = self
+                            self.niCoinLess.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]], forKeys: ["img", "title", "content", "buttonArray"])
+                            self.niCoinLess.showWithAnimation(.flip)
+                        } else {
+                            /* 如果念币多于 3，就出现宠物 */
+                            let v = SAEgg()
+                            v.delegateShare = self
+                            v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", ["嗯！", "不要"]], forKeys: ["img", "title", "content", "buttonArray"])
+                            v.showWithAnimation(.flip)
+                        }
+                    }
+                    
+                    // todo: 如果是从记本来的，要调用 delegate，否则要直接跳转到这个页面。
+                    self.navigationController?.popViewControllerAnimated(true)
+                    
+                } else {
+                    self.view.showTipText("服务器坏了", delay: 1)
+                }
+            } else {
+                self.view.showTipText("服务器坏了", delay: 1)
+            }
+        })
+    }
+    
+    /* 点击提交进展按钮 */
     func add() {
-        print("发布")
+        go {
+            if self.imageArray.count > 0 {
+                self.queue.maxConcurrentOperationCount = 1
+                if self.imageArray.count > 0 {
+                    let op = UpyunOperation()
+                    op.num = 0
+                    op.asset = self.imageArray[0]
+                    op.delegate = self
+                    self.queue.addOperation(op)
+                }
+            } else {
+                self.addStep()
+            }
+        }
+    }
+    
+    /* 筛选多图完成后调用 */
+    func AlbumPickerDidFinishPick(assets:NSArray) {
+        for asset in assets {
+            if let a = asset as? ALAsset {
+                if  a.valueForProperty("ALAssetPropertyType").isEqual("ALAssetTypePhoto") {
+                    imageArray.append(a)
+                }
+            }
+        }
+        reLayout()
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func onViewDream() {
         if tableView.hidden {
-            var hTableView = globalHeight - 64 - self.viewDream.height() - viewHolder.height() - seperatorView2.height() * 2 - keyboardHeight
+            var hTableView = globalHeight - 64 - self.viewDream.height() - viewHolder.height() - keyboardHeight
             hTableView = max(hTableView, 0)
             tableView.setHeight(hTableView)
             tableView.hidden = false
@@ -33,6 +172,17 @@ extension AddStep {
                 self.imageArrow.transform = CGAffineTransformMakeRotation(0)
             })
         }
+    }
+    
+    func reLayout() {
+        collectionView.reloadData()
+        let num = ceil(CGFloat(imageArray.count) / 3)
+        var h = (globalWidth - size_field_padding * 2 - size_collectionview_padding * 2) / 3 + size_collectionview_padding
+        h = num * h
+        collectionView.setHeight(h)
+        field2.setY(collectionView.bottom())
+        labelPlaceholder.frame.origin = CGPointMake(field2.x() + 6, field2.y() + 6)
+        setScrollContentHeight()
     }
 }
 

@@ -9,6 +9,8 @@
 import Foundation
 
 extension AddStep {
+    
+    /* tableView */
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as! AddStepCell
         let data = self.dataArray[indexPath.row] as? NSDictionary
@@ -26,7 +28,6 @@ extension AddStep {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.hidden = true
         let data = dataArray[indexPath.row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
         let title = data.stringAttributeForKey("title")
@@ -35,5 +36,57 @@ extension AddStep {
         self.imageDream.setImage(userImageURL)
         self.idDream = id
         self.labelDream.text = title
+        
+        tableView.hidden = true
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.imageArrow.transform = CGAffineTransformMakeRotation(0)
+        })
     }
+    
+    /* collectionView */
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let c: AddStepImageCell! = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepImageCell", forIndexPath: indexPath) as? AddStepImageCell
+        c.imageView.backgroundColor = IconColor
+        c.asset = imageArray[indexPath.row]
+        c.setup()
+        return c
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        field2.resignFirstResponder()
+        actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        actionSheet.addButtonWithTitle("移除")
+        actionSheet.addButtonWithTitle("取消")
+        actionSheet.cancelButtonIndex = 1
+        actionSheet.showInView(self.view)
+        rowDelete = indexPath.row
+    }
+    
+    /* ActionSheet */
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            if rowDelete >= 0 {
+                imageArray.removeAtIndex(rowDelete)
+                reLayout()
+            }
+        }
+    }
+    
+    /* niAlert*/
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        if niAlert == niCoinLess {
+            niAlert.dismissWithAnimation(.normal)
+        }
+    }
+    
+    /* shareDelegate */
+    func onShare(avc: UIActivityViewController) {
+        print("onshare")
+    }
+    
+    
 }

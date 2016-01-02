@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
+class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, LSYAlbumPickerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, upYunDelegate, NIAlertDelegate, ShareDelegate {
     
     @IBOutlet var viewDream: UIView!
     @IBOutlet var field2: UITextView!
@@ -20,54 +20,33 @@ class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerD
     @IBOutlet var imageDream: UIImageView!
     @IBOutlet var labelDream: UILabel!
     @IBOutlet var imageArrow: UIImageView!
+    @IBOutlet var scrollView: UIScrollView!
+    var collectionView: UICollectionView!
     let size_field_padding: CGFloat = 12
+    let size_collectionview_padding: CGFloat = 8
+    let size_height_contentsize: CGFloat = 100
     
-    var actionSheet: UIActionSheet?
-    var imagePicker: UIImagePickerController?
+    var actionSheet: UIActionSheet!
+    var rowDelete = -1
     var dict = NSMutableDictionary()
     var id: String = ""
     var idDream: String = ""
+    var imageArray: [ALAsset] = []
     
-    var uploadUrl: String = ""
-    
-    var isEdit: Int = 0
-    var editId: String = ""
-    var editTitle: String = ""
-    var editContent: String = ""
-    var editImage: String = ""
-    var tagsArray: Array<String> = [String]()
     var keyboardHeight: CGFloat = 0.0  // 键盘的高度
     var dataArray = NSMutableArray()
     var tableView: UITableView!
     
     var swipeGesuture: UISwipeGestureRecognizer?
     
+    /* 多图上传 */
+    let queue = NSOperationQueue()
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if actionSheet == self.actionSheet {
-            if buttonIndex == 0 {
-                self.imagePicker = UIImagePickerController()
-                self.imagePicker!.delegate = self
-                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-            } else if buttonIndex == 1 {
-                self.imagePicker = UIImagePickerController()
-                self.imagePicker!.delegate = self
-                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
-                    self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-                }
-            }
-        }
-    }
+    /* 多图上传传递给服务器的数组 */
+    var uploadArray = NSMutableArray()
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-//        self.uploadFile(image)
-        // todo:
-    }
-    
-    //MARK: view load 相关的方法
+    /* 更新念币弹窗 */
+    var niCoinLess = NIAlert()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,13 +83,35 @@ class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerD
         swipeGesuture!.cancelsTouchesInView = true
         self.view.addGestureRecognizer(swipeGesuture!)
         
-        self.field2.frame = CGRectMake(size_field_padding, self.seperatorView.bottom() + size_field_padding, globalWidth - size_field_padding * 2, globalHeight - self.viewDream.height() - 64 - size_field_padding * 2 - viewHolder.height() - seperatorView2.height() * 2)
+        /* 设置 scrollView */
+        let rect = CGRectMake(0, self.seperatorView.bottom(), globalWidth, globalHeight - self.viewDream.height() - 64 - viewHolder.height() - seperatorView2.height() * 2)
+        scrollView.frame = rect
+        scrollView.contentSize = CGSizeMake(scrollView.width(), size_height_contentsize + size_field_padding * 2)
+        
+        /* 设置 UICollectionView */
+        let w = (globalWidth - size_field_padding * 2 - size_collectionview_padding * 2) / 3
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = size_collectionview_padding
+        flowLayout.itemSize = CGSize(width: w, height: w)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionView = UICollectionView(frame: CGRectMake(size_field_padding, size_field_padding, rect.width - size_field_padding * 2, 0), collectionViewLayout: flowLayout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.registerNib(UINib(nibName: "AddStepImageCell", bundle: nil), forCellWithReuseIdentifier: "AddStepImageCell")
+        scrollView.addSubview(collectionView)
+        
+        /* 设置 field2 */
+        field2.frame = CGRectMake(size_field_padding, collectionView.bottom(), rect.width - size_field_padding * 2, scrollView.height() - size_field_padding * 2 - collectionView.height())
+        labelPlaceholder.frame.origin = CGPointMake(field2.x() + 6, field2.y() + 6)
+        
         seperatorView.setWidth(globalWidth)
         seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
         seperatorView2.setWidth(globalWidth)
         seperatorView2.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
         
-        seperatorView2.setY(self.field2.bottom() + size_field_padding)
+        seperatorView2.setY(self.scrollView.bottom())
         viewHolder.setY(seperatorView2.bottom())
         imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         
@@ -122,6 +123,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UIImagePickerControllerD
         tableView.hidden = true
         tableView.separatorStyle = .None
         self.view.addSubview(tableView)
+        
         
         /* 在缓存中获得最新的记本 */
         self.viewDream.setWidth(globalWidth)

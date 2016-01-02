@@ -14,15 +14,13 @@ protocol LSYAlbumPickerDelegate : class{
     func AlbumPickerDidFinishPick(assets:NSArray)
 }
 class LSYAlbumPicker: SAViewController {
-    let thumbnailLength :CGFloat = (UIScreen.mainScreen().bounds.size.width-5*5)/4
-    let albumPickerCellIdentifer :String = "albumPickerCellIdentifer"
-    var group:ALAssetsGroup!
-    var maxminumNumber:Int = 0
+    let albumPickerCellIdentifer: String = "albumPickerCellIdentifer"
+    var group: ALAssetsGroup!
+    var maxminumNumber: Int = 0
     weak var delegate:LSYAlbumPickerDelegate!
     let padding: CGFloat = 8
     var selectedArray: [Int] = []
-    
-    var albumAssets:NSMutableArray!
+    var albumAssets: NSMutableArray!
 
     var albumView:UICollectionView! {
         didSet{
@@ -60,6 +58,15 @@ class LSYAlbumPicker: SAViewController {
     }
     
     func onOK() {
-        print(selectedArray)
+        var arr: [ALAsset] = []
+        if selectedArray.count > 0 {
+            for i in 0...(selectedArray.count - 1) {
+                let num = selectedArray[i]
+                let obj = albumAssets[num] as! LSYAlbumModel
+                let asset = obj.asset
+                arr.append(asset)
+            }
+        }
+        delegate.AlbumPickerDidFinishPick(arr)
     }
 }

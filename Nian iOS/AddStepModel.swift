@@ -8,19 +8,6 @@
 
 import UIKit
 
-
-enum StepType: Int {
-    case attendance = 1
-    case voiceMessage
-    case multiPicWithText
-    case multiPicWithoutText
-    case singlePicWithText
-    case singlePicWithoutText
-    case text
-}
-
-
-
 class AddStepModel: NSObject {
 
     /**
@@ -31,7 +18,7 @@ class AddStepModel: NSObject {
      - parameter images:   <#images description#>
      - parameter callback: <#callback description#>
      */
-    class func postAddStep(content content: String, stepType: StepType, images: NSArray, dreamId: String, callback: NetworkClosure) {
+    class func postAddStep(content content: String, stepType: Int, images: NSArray, dreamId: String, callback: NetworkClosure) {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!
         
@@ -41,7 +28,7 @@ class AddStepModel: NSObject {
         
         NianNetworkClient.sharedNianNetworkClient.post(
             "dream/\(dreamId)/step/create?uid=\(_uid)&&shell=\(_shell)",
-            content: ["content": content, "type": "\(stepType.rawValue)", "images": "\(imagesString)"],
+            content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
             callback: callback)
     }
     
@@ -56,7 +43,7 @@ class AddStepModel: NSObject {
      - parameter dreamId:  <#dreamId description#>
      - parameter callback: <#callback description#>
      */
-    class func postEditStep(content content: String, stepType: StepType, images: NSArray, sid: String, callback: NetworkClosure) {
+    class func postEditStep(content content: String, stepType: Int, images: NSArray, sid: String, callback: NetworkClosure) {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!
     
@@ -65,7 +52,7 @@ class AddStepModel: NSObject {
     
         NianNetworkClient.sharedNianNetworkClient.post(
             "v2/step/\(sid)/edit?uid=\(_uid)&shell=\(_shell)",
-            content: ["content": content, "type": "\(stepType.rawValue)", "images": "\(imagesString)"],
+            content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
             callback: callback)
     }
     

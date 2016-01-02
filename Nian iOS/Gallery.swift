@@ -59,6 +59,5 @@ class Gallery: SAViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func onClick() {
-        print("提交")
     }
 }

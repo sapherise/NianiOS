@@ -13,6 +13,7 @@
                 <outlet property="imageUpload" destination="XPf-V0-rf2" id="UKM-53-Inn"/>
                 <outlet property="labelDream" destination="Dkx-JN-HbS" id="kAN-bR-aRK"/>
                 <outlet property="labelPlaceholder" destination="dms-ZL-qiM" id="vNR-E2-hNk"/>
+                <outlet property="scrollView" destination="XBD-2P-ihE" id="6gK-ZA-rn5"/>
                 <outlet property="seperatorView" destination="TRK-v9-bSh" id="ds4-Nm-P2L"/>
                 <outlet property="seperatorView2" destination="0w9-2D-8VS" id="GcZ-ir-OOR"/>
                 <outlet property="view" destination="BLQ-ER-oFc" id="veO-rm-UZy"/>
@@ -32,30 +33,36 @@
                     <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view contentMode="scaleToFill" id="0w9-2D-8VS" userLabel="Seperator View">
-                    <rect key="frame" x="0.0" y="223" width="320" height="1"/>
+                    <rect key="frame" x="0.0" y="353" width="320" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <animations/>
                     <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="justified" id="9uN-08-GA5">
-                    <rect key="frame" x="0.0" y="127" width="320" height="96"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="XBD-2P-ihE">
+                    <rect key="frame" x="0.0" y="114" width="320" height="240"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="16555" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="justified" id="9uN-08-GA5">
+                            <rect key="frame" x="0.0" y="136" width="320" height="96"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
+                        </textView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进展正文" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dms-ZL-qiM">
+                            <rect key="frame" x="16" y="142" width="68" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
                     <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
-                </textView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进展正文" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dms-ZL-qiM">
-                    <rect key="frame" x="16" y="133" width="68" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <animations/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                </scrollView>
                 <view contentMode="scaleToFill" id="VcJ-fp-bZx">
-                    <rect key="frame" x="0.0" y="223" width="76" height="38"/>
+                    <rect key="frame" x="0.0" y="354" width="320" height="38"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="newimg" id="XPf-V0-rf2">

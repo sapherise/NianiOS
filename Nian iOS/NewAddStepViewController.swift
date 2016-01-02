@@ -72,7 +72,7 @@ class NewAddStepViewController: SAViewController {
     // 0 向下， 1 向上
     var indicateArrowDirection: Int = 0
     
-    var stepType = StepType(rawValue: 0)
+    var stepType = 0
     
     var keyboardHeight: CGFloat = 0
     
@@ -305,25 +305,25 @@ class NewAddStepViewController: SAViewController {
     }
     
     func setStepType() {
-        if self.imagesArray.count == 0 {
-            if self.contentTextView.text == "" {
-                self.stepType = StepType.attendance
-            } else {
-                self.stepType = StepType.text
-            }
-        } else if self.imagesArray.count >= 1 {
-            if self.contentTextView.text == "" {
-                self.stepType = StepType.multiPicWithoutText
-            } else {
-                self.stepType = StepType.multiPicWithText
-            }
-        } else if self.imagesArray.count == 1 {
-            if self.contentTextView.text == "" {
-                self.stepType = StepType.singlePicWithoutText
-            } else {
-                self.stepType = StepType.singlePicWithText
-            }
-        }
+//        if self.imagesArray.count == 0 {
+//            if self.contentTextView.text == "" {
+//                self.stepType = StepType.attendance
+//            } else {
+//                self.stepType = StepType.text
+//            }
+//        } else if self.imagesArray.count >= 1 {
+//            if self.contentTextView.text == "" {
+//                self.stepType = StepType.multiPicWithoutText
+//            } else {
+//                self.stepType = StepType.multiPicWithText
+//            }
+//        } else if self.imagesArray.count == 1 {
+//            if self.contentTextView.text == "" {
+//                self.stepType = StepType.singlePicWithoutText
+//            } else {
+//                self.stepType = StepType.singlePicWithText
+//            }
+//        }
     }
     
     
@@ -344,7 +344,7 @@ class NewAddStepViewController: SAViewController {
                 let _array = self.data?.objectForKey("imageArray") as! [UIImage]
                 
                 var _tmpIndex = 0
-                
+                //todo!
                 for _image: UIImage in self.imagesArray {
                     if !_array.contains(_image) {
                         let op = NSBlockOperation(block: { () -> Void in
@@ -416,9 +416,10 @@ class NewAddStepViewController: SAViewController {
 
     }
     
+    // sapherise
     func handleImagesUploadCompletion(noti: NSNotification) {
         if self.isEdit == 0 {
-            AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType!, images: self.imagesInfo, dreamId: self.dreamId, callback: {
+            AddStepModel.postAddStep(content: self.contentTextView.text, stepType: self.stepType, images: self.imagesInfo, dreamId: self.dreamId, callback: {
                 (task, responseObject, error) -> Void in
                 
                 self.stopAnimating()
@@ -438,7 +439,7 @@ class NewAddStepViewController: SAViewController {
         } else if self.isEdit == 1 {
             self.imagesInfo.addObjectsFromArray(self.data!["images"] as! NSArray as [AnyObject])
             
-            AddStepModel.postEditStep(content: self.contentTextView.text, stepType: self.stepType!,images: self.imagesInfo, sid: self.data!.stringAttributeForKey("sid"),  callback: {
+            AddStepModel.postEditStep(content: self.contentTextView.text, stepType: self.stepType,images: self.imagesInfo, sid: self.data!.stringAttributeForKey("sid"),  callback: {
                 (task, responseObject, error) -> Void in
                 
                 self.stopAnimating()
@@ -540,7 +541,7 @@ class NewAddStepViewController: SAViewController {
         d["sid"] = sid
         d["title"] = ""
         d["uid"] = CurrentUser.sharedCurrentUser.uid!
-        d["type"] = String(self.stepType!.rawValue)
+        d["type"] = String(self.stepType)
         
         if let user = Cookies.get("user") as? String {
             d["user"] = user
