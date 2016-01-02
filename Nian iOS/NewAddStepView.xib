@@ -69,7 +69,6 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
-<<<<<<< HEAD
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwb-Wm-WQs">
                                             <rect key="frame" x="0.0" y="63" width="600" height="1"/>
                                             <animations/>
@@ -78,8 +77,6 @@
                                                 <constraint firstAttribute="height" constant="1" id="Pgb-Oe-lmY"/>
                                             </constraints>
                                         </view>
-=======
->>>>>>> 63f8504153ec4a86b28a9765e01457fbac27b499
                                     </subviews>
                                     <animations/>
                                     <constraints>
@@ -121,12 +118,7 @@
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELL-KP-j0L">
                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-<<<<<<< HEAD
-                                            <animations/>
-                                            <state key="normal" image="img"/>
-=======
                                             <state key="normal" image="newimg"/>
->>>>>>> 63f8504153ec4a86b28a9765e01457fbac27b499
                                             <connections>
                                                 <action selector="pickerImages:" destination="-1" eventType="touchUpInside" id="LOq-GV-Izp"/>
                                             </connections>
