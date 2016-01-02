@@ -68,8 +68,8 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             t = self.tableViewDynamic
             d = dataArrayDynamic
             let data = dataArrayDynamic[indexPath.row] as! NSDictionary
-            let type = data.stringAttributeForKey("type")
-            if type == "0" {
+            let type = data.stringAttributeForKey("type_of")
+            if type == "1" {
                 let c = t.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as! ExploreDynamicDreamCell
                 c.data = data
                 return c
@@ -140,8 +140,8 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             t = self.tableViewDynamic
             d = dataArrayDynamic
             let data = dataArrayDynamic[indexPath.row] as! NSDictionary
-            let type = data.stringAttributeForKey("type")
-            if type == "0" {
+            let type = data.stringAttributeForKey("type_of")
+            if type == "1" {
                 return 77
             }
         } else if tableView == self.tableViewHot {

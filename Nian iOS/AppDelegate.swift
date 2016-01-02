@@ -42,8 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 2 : UIUserNotificationType.Badge
         */
         // todo: 开启下面两行
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
         /* 设置 DDlog */
         let formatter = Formatter()
@@ -103,7 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         /* 设置极光推送 */
         // todo: 开启下面这一行
-//        APService.registerDeviceToken(deviceToken)
+        APService.registerDeviceToken(deviceToken)
         Api.postJpushBinding(){ _ in }
     }
 
@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     }
     
     @available(iOS 8.0, *)
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {       
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
@@ -204,13 +204,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
                 }, failure: {
                     (task, error) in
                     logError("\(error.localizedDescription)")
-            })
-            
-            
+            })   
         }
-        
     }
-    
     
 }
 

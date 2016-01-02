@@ -44,8 +44,6 @@ class NewAddStepViewController: SAViewController {
     
     @IBOutlet weak var contentTextView: SZTextView!
 
-    @IBOutlet weak var sp2HeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var scrollViewToTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var notesHeightConstraint: NSLayoutConstraint!
@@ -98,7 +96,6 @@ class NewAddStepViewController: SAViewController {
         // Do any additional setup after loading the view.
         
         sp1HeightConstraint.constant = globalHalf
-        sp2HeightConstraint.constant = globalHalf
         
         self.noteCoverView.layer.cornerRadius = 4.0
         self.noteCoverView.layer.masksToBounds = true

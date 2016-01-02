@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, AddstepDelegate{
+class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate {
     
     var tableViewDream: UITableView!
     var tableViewStep: VVeboTableView!
@@ -24,9 +24,9 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     var deleteDreamSheet:UIActionSheet?
     var deleteId:Int = 0        //删除按钮的tag，进展编号
     var deleteViewId:Int = 0    //删除按钮的View的tag，indexPath
-    
-    var editStepRow:Int = 0
-    var editStepData:NSDictionary?
+
+    var newEditStepRow: Int = 0
+    var newEditStepData: NSDictionary?
     
     var dreamowner:Int = 0 //如果是0，就不是主人，是1就是主人
     var userMoreSheet:UIActionSheet!
@@ -580,20 +580,23 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         DreamVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(DreamVC, animated: true)
     }
+}
+
+extension PlayerViewController: NewAddStepDelegate {
     
-    func countUp(coin: String, isfirst: String){
+    func newCountUp(coin: String, isfirst: String) {
         self.SALoadData()
     }
     
-    func Editstep() {
-        if self.editStepData != nil {
-            self.dataArrayStep[self.editStepRow] = self.editStepData!
-            let newpath = NSIndexPath(forRow: self.editStepRow, inSection: 1)
-            self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+    func newEditstep() {
+        if self.newEditStepData != nil {
+            self.dataArrayStep[self.newEditStepRow] = self.newEditStepData!
+            let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
+            self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: .Left)
         }
     }
+    
 }
-
 
 
 

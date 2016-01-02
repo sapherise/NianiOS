@@ -28,7 +28,7 @@ protocol delegateSAStepCell {
 **  8 dataArray 在添加数据时，数据应转码，完成后设定 currentDataArray
 */
 
-class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
+class VVeboCell: UITableViewCell, UIActionSheetDelegate {
     var data: NSDictionary! {
         didSet {
             let heightCell = data["heightCell"] as! CGFloat
@@ -202,7 +202,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.imageHolder.cancelImageRequestOperation()  
+        self.imageHolder.cancelImageRequestOperation()
     }
     
     func draw() {

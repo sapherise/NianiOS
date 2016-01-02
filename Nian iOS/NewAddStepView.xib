@@ -21,7 +21,6 @@
                 <outlet property="scrollView" destination="QCy-Ga-BCg" id="OMS-Rx-VYN"/>
                 <outlet property="scrollViewToTopConstraint" destination="SsO-s6-HBM" id="dyc-JP-HJP"/>
                 <outlet property="sp1HeightConstraint" destination="ZLP-w7-Y8B" id="CL8-ot-G0r"/>
-                <outlet property="sp2HeightConstraint" destination="Pgb-Oe-lmY" id="t6r-9X-3wS"/>
                 <outlet property="textViewHeightConstraint" destination="RbA-GZ-dhC" id="3nC-00-LHh"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IGF-EY-DZp"/>
             </connections>
@@ -70,6 +69,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
+<<<<<<< HEAD
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwb-Wm-WQs">
                                             <rect key="frame" x="0.0" y="63" width="600" height="1"/>
                                             <animations/>
@@ -78,18 +78,17 @@
                                                 <constraint firstAttribute="height" constant="1" id="Pgb-Oe-lmY"/>
                                             </constraints>
                                         </view>
+=======
+>>>>>>> 63f8504153ec4a86b28a9765e01457fbac27b499
                                     </subviews>
                                     <animations/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="2ch-eX-0qf" secondAttribute="trailing" constant="16" id="JsG-fT-3bg"/>
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="top" secondItem="amr-jh-ELF" secondAttribute="top" constant="16" id="MEE-9h-HfB"/>
                                         <constraint firstAttribute="height" constant="64" id="Qlz-HG-IT8"/>
-                                        <constraint firstAttribute="trailing" secondItem="lwb-Wm-WQs" secondAttribute="trailing" id="Qt5-2M-TJ9"/>
-                                        <constraint firstItem="lwb-Wm-WQs" firstAttribute="leading" secondItem="amr-jh-ELF" secondAttribute="leading" id="XHs-dS-hkL"/>
                                         <constraint firstItem="BqK-aT-DQ5" firstAttribute="centerY" secondItem="aXz-Ye-BaI" secondAttribute="centerY" id="eUw-st-YgN"/>
                                         <constraint firstItem="BqK-aT-DQ5" firstAttribute="leading" secondItem="aXz-Ye-BaI" secondAttribute="trailing" constant="8" id="lc4-Mc-EL5"/>
                                         <constraint firstItem="2ch-eX-0qf" firstAttribute="centerY" secondItem="BqK-aT-DQ5" secondAttribute="centerY" id="rAl-mv-w4w"/>
-                                        <constraint firstAttribute="bottom" secondItem="lwb-Wm-WQs" secondAttribute="bottom" id="w50-X0-EXd"/>
                                         <constraint firstItem="2ch-eX-0qf" firstAttribute="leading" secondItem="BqK-aT-DQ5" secondAttribute="trailing" constant="16" id="y8Z-t9-XNY"/>
                                         <constraint firstItem="aXz-Ye-BaI" firstAttribute="leading" secondItem="amr-jh-ELF" secondAttribute="leading" constant="16" id="z8S-N3-VRa"/>
                                     </constraints>
@@ -122,8 +121,12 @@
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELL-KP-j0L">
                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+<<<<<<< HEAD
                                             <animations/>
                                             <state key="normal" image="img"/>
+=======
+                                            <state key="normal" image="newimg"/>
+>>>>>>> 63f8504153ec4a86b28a9765e01457fbac27b499
                                             <connections>
                                                 <action selector="pickerImages:" destination="-1" eventType="touchUpInside" id="LOq-GV-Izp"/>
                                             </connections>
@@ -206,7 +209,7 @@
             <connections>
                 <action selector="tapOnBackground:" destination="-1" eventType="valueChanged" id="YbO-Zo-Kls"/>
             </connections>
-            <point key="canvasLocation" x="277" y="533"/>
+            <point key="canvasLocation" x="612" y="497"/>
         </view>
         <tapGestureRecognizer id="XQM-lL-eXf">
             <connections>
@@ -216,7 +219,7 @@
     </objects>
     <resources>
         <image name="add_plus" width="40" height="40"/>
-        <image name="img" width="21" height="17"/>
+        <image name="newimg" width="18" height="14"/>
         <image name="post_choose" width="24" height="24"/>
     </resources>
 </document>

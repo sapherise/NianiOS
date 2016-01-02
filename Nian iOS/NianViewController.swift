@@ -524,7 +524,6 @@ extension NianViewController: NewSettingDelegate {
         
     }
     
-    
 }
 
 
