@@ -120,17 +120,17 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     
 }
 
-extension SingleStepViewController: NewAddStepDelegate {
-    
-    func newEditstep() {
-        self.SAReloadData()
-    }
-    
-    func newCountUp(coin: String, isfirst: String) {
-        self.SAReloadData()
-    }
-    
-}
+//extension SingleStepViewController: NewAddStepDelegate {
+//    
+//    func newEditstep() {
+//        self.SAReloadData()
+//    }
+//    
+//    func newCountUp(coin: String, isfirst: String) {
+//        self.SAReloadData()
+//    }
+//    
+//}
 
 
 

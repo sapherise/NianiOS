@@ -56,7 +56,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
 //    dispatch_once(&onceToken, ^{
 //        _topicRegularExpression = [[NSRegularExpression alloc] initWithPattern:TopicRegular options:NSRegularExpressionCaseInsensitive error:nil];
 //    });
-//    
+//
 //    return _topicRegularExpression;
 //}
 
@@ -67,7 +67,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
     UIImage *tempCover;
     BOOL highlighting;
     BOOL btnLoaded;
-//    BOOL emojiLoaded;
+    //    BOOL emojiLoaded;
     NSRange currentRange;
     NSMutableDictionary *highlightColors;
     NSMutableDictionary *framesDict;
@@ -80,13 +80,13 @@ static inline NSRegularExpression * AccountRegularExpression() {
         drawFlag = arc4random();
         framesDict = [[NSMutableDictionary alloc] init];
         highlightColors = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                          [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1],kRegexHighlightViewTypeAccount,
-                          [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1],kRegexHighlightViewTypeURL,
-//                          [UIColor colorWithRed:106/255.0 green:140/255.0 blue:181/255.0 alpha:1],kRegexHighlightViewTypeEmoji,
-//                          [UIColor colorWithRed:106/255.0 green:140/255.0 blue:181/255.0 alpha:1],kRegexHighlightViewTypeTopic,
-//                          [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1]
+                           [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1],kRegexHighlightViewTypeAccount,
+                           [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1],kRegexHighlightViewTypeURL,
+                           //                          [UIColor colorWithRed:106/255.0 green:140/255.0 blue:181/255.0 alpha:1],kRegexHighlightViewTypeEmoji,
+                           //                          [UIColor colorWithRed:106/255.0 green:140/255.0 blue:181/255.0 alpha:1],kRegexHighlightViewTypeTopic,
+                           //                           [UIColor colorWithRed:0x6c/255.0 green:0xc5/255.0 blue:0xee/255.0 alpha:1]
                            
-//                           let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
+                           //                           let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
                            nil];
         labelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -5, frame.size.width, frame.size.height+10)];
         labelImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -131,8 +131,8 @@ static inline NSRegularExpression * AccountRegularExpression() {
     //Define the definition to use
     NSDictionary* definition = @{kRegexHighlightViewTypeAccount: AccountRegular,
                                  kRegexHighlightViewTypeURL:URLRegular,
-//                                 kRegexHighlightViewTypeTopic:TopicRegular,
-//                                 kRegexHighlightViewTypeEmoji:EmojiRegular,
+                                 //                                 kRegexHighlightViewTypeTopic:TopicRegular,
+                                 //                                 kRegexHighlightViewTypeEmoji:EmojiRegular,
                                  };
     //For each definition entry apply the highlighting to matched ranges
     for(NSString* key in definition) {
@@ -147,11 +147,11 @@ static inline NSRegularExpression * AccountRegularExpression() {
             if (labelImageView.image != nil && currentRange.location!=-1 && currentRange.location>=match.range.location && currentRange.length+currentRange.location<=match.range.length+match.range.location) {
                 [coloredString addAttribute:(NSString*)kCTForegroundColorAttributeName
                                       value:(id)[UIColor colorWithRed:0.96 green:0.77 blue:0.23 alpha:1].CGColor range:match.range];
-//                double delayInSeconds = 1.5;
-//                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//                    [self backToNormal];
-//                });
+                //                double delayInSeconds = 1.5;
+                //                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                //                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                //                    [self backToNormal];
+                //                });
             } else {
                 UIColor *highlightColor = highlightColors[key];
                 [coloredString addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)highlightColor.CGColor range:match.range];
@@ -249,11 +249,11 @@ static inline NSRegularExpression * AccountRegularExpression() {
                         if (highlighting) {
                             highlightImageView.image = nil;
                             if (highlightImageView.frame.size.width != screenShotimage.size.width) {
-//                                highlightImageView.frame.size.width = screenShotimage.size.width;
+                                //                                highlightImageView.frame.size.width = screenShotimage.size.width;
                                 highlightImageView.frame = CGRectMake(highlightImageView.frame.origin.x, highlightImageView.frame.origin.y, screenShotimage.size.width, highlightImageView.frame.size.height);
                             }
                             if (highlightImageView.frame.size.height!=screenShotimage.size.height) {
-//                                highlightImageView.height = screenShotimage.size.height;
+                                //                                highlightImageView.height = screenShotimage.size.height;
                                 highlightImageView.frame = CGRectMake(highlightImageView.frame.origin.x, highlightImageView.frame.origin.y, highlightImageView.frame.size.width, screenShotimage.size.height);
                             }
                             highlightImageView.image = screenShotimage;
@@ -273,7 +273,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
                             tempCover = screenShotimage;
                         }
                     }
-//                    [self debugDraw];//绘制可触摸区域
+                    //                    [self debugDraw];//绘制可触摸区域
                 }
             });
         }
@@ -452,6 +452,12 @@ static inline NSRegularExpression * AccountRegularExpression() {
                     return YES;
                 }
             }
+            //            matches = [TopicRegularExpression() matchesInString:self.text options:0 range:NSMakeRange(0, self.text.length)];
+            //            for(NSTextCheckingResult* match in matches) {
+            //                if (range.location!=-1 && range.location>=match.range.location && range.length+range.location<=match.range.length+match.range.location) {
+            //                    return YES;
+            //                }
+            //            }
         }
     }
     return NO;
@@ -530,7 +536,7 @@ static inline NSRegularExpression * AccountRegularExpression() {
 }
 
 - (void)dealloc{
-//    NSLog(@"dealloc %@", self);
+    //    NSLog(@"dealloc %@", self);
 }
 
 @end

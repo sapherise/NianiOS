@@ -272,6 +272,13 @@ extension UIViewController: UIGestureRecognizerDelegate {
         self.navigationItem.leftBarButtonItem = leftButton
         viewBackFix()
     }
+    
+    func backNavigationRoot() {
+        if let v = self.navigationController {
+            v.popToRootViewControllerAnimated(true)
+        }
+    }
+    
     func backNavigation(){
         if let v = self.navigationController {
             v.popViewControllerAnimated(true)

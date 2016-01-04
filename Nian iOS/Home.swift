@@ -49,6 +49,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         onCircleEnter()
         setupReachability()
         
+        let a = FileUtility.cachePath("")
+        print(a)
+        
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
@@ -571,40 +574,40 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
 }
 
 
-extension HomeViewController: NewAddStepDelegate {
-    
-    func newEditstep() {
-
-    }
-
-    func newUpdate(data: NSDictionary) {
-        self.newEditDreamId = data["dream"] as! String
-    }
-
-    // todo: 这个要删除
-    func newCountUp(coin: String, total: String, isfirst: String) {
-        if isfirst == "1" {
-            globalWillNianReload = 1
-            
-            if Int(total) < 3 {
-                let niCoinLessAlert = NIAlert()
-                niCoinLessAlert.delegate = self
-                niCoinLessAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                niCoinLessAlert.showWithAnimation(.flip)
-            } else {
-                // 如果念币多于 3， 那么就出现抽宠物
-                let v = SAEgg()
-                v.delegateShare = self
-                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                v.showWithAnimation(.flip)
-            }
-        } else {
-            self.view.showTipText("发送好了")
-        }
-    }
-}
+//extension HomeViewController: NewAddStepDelegate {
+//    
+//    func newEditstep() {
+//
+//    }
+//
+//    func newUpdate(data: NSDictionary) {
+//        self.newEditDreamId = data["dream"] as! String
+//    }
+//
+//    // todo: 这个要删除
+//    func newCountUp(coin: String, total: String, isfirst: String) {
+//        if isfirst == "1" {
+//            globalWillNianReload = 1
+//            
+//            if Int(total) < 3 {
+//                let niCoinLessAlert = NIAlert()
+//                niCoinLessAlert.delegate = self
+//                niCoinLessAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+//                    forKeys: ["img", "title", "content", "buttonArray"])
+//                niCoinLessAlert.showWithAnimation(.flip)
+//            } else {
+//                // 如果念币多于 3， 那么就出现抽宠物
+//                let v = SAEgg()
+//                v.delegateShare = self
+//                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+//                    forKeys: ["img", "title", "content", "buttonArray"])
+//                v.showWithAnimation(.flip)
+//            }
+//        } else {
+//            self.view.showTipText("发送好了")
+//        }
+//    }
+//}
 
 
 

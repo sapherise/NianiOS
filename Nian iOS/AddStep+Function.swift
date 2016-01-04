@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import AssetsLibrary
 
 extension AddStep {
     func onImage() {
@@ -66,9 +67,11 @@ extension AddStep {
                 type = 3
             }
         }
+        back {
+            self.setBarButtonLoading()
+        }
         
         AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
-//            print(data)
             if let d = data as? NSDictionary {
                 let error = d.stringAttributeForKey("error")
                 if error == "0" {
@@ -98,15 +101,15 @@ extension AddStep {
                     }
                     
                     // todo: 开启下面这个
-//                    if isfirst == "1" {
-                    if true {
-                        globalWillNianReload = 1
+                    if isfirst == "1" {
                         Nian.saegg(coin, totalCoin: totalCoin)
+                        self.navigationController?.popViewControllerAnimated(true)
+                    } else {
+                        let vc = DreamViewController()
+                        vc.willBackToRootViewController = true
+                        vc.Id = self.idDream
+                        self.navigationController?.pushViewController(vc, animated: true)
                     }
-                    
-                    // todo: 如果是从记本来的，要调用 delegate，否则要直接跳转到这个页面。
-                    self.navigationController?.popViewControllerAnimated(true)
-                    
                 } else {
                     self.view.showTipText("服务器坏了", delay: 1)
                 }

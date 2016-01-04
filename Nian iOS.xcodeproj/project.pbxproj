@@ -55,6 +55,7 @@
 		1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */; };
 		1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */; };
 		1255785C1A0CD434005E56D7 /* Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1255785B1A0CD434005E56D7 /* Web.swift */; };
+		1256DDB21C3A5050000E2085 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256DDB11C3A5050000E2085 /* File.swift */; };
 		1257833519B5F19F008A1B3B /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833419B5F19F008A1B3B /* Like.swift */; };
 		1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1257833619B5F1A8008A1B3B /* LikeCell.swift */; };
 		1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1257833819B5F1B1008A1B3B /* LikeCell.xib */; };
@@ -219,6 +220,7 @@
 		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
 		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
 		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
+		3B6630BD2F2567A3267B483A /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CC01538B73788619BF339C /* libPods-Nian iOS.a */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F281BE744FC007B7C6B /* SettingModel.swift */; };
 		C40F0F2B1BE74708007B7C6B /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */; };
@@ -307,7 +309,6 @@
 		C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D7751B5DFCC30033671D /* UIImage+Grayscale.m */; };
 		C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F6D77A1B5E22880033671D /* PetCell.swift */; };
 		C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC16021BB3D4E20036A9A0 /* RegexHelper.swift */; };
-		CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -370,6 +371,7 @@
 		1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCellTop.swift; sourceTree = "<group>"; };
 		1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerCellTop.xib; sourceTree = "<group>"; };
 		1255785B1A0CD434005E56D7 /* Web.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web.swift; sourceTree = "<group>"; };
+		1256DDB11C3A5050000E2085 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		1257833419B5F19F008A1B3B /* Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		1257833619B5F1A8008A1B3B /* LikeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeCell.swift; sourceTree = "<group>"; };
 		1257833819B5F1B1008A1B3B /* LikeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LikeCell.xib; sourceTree = "<group>"; };
@@ -557,9 +559,9 @@
 		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
 		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
 		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
-		338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		88CC01538B73788619BF339C /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C401132D1B11CD8600CA6503 /* AddDreamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamController.swift; sourceTree = "<group>"; };
 		C40F0F281BE744FC007B7C6B /* SettingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
 		C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
@@ -686,9 +688,9 @@
 				127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */,
 				127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */,
 				127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */,
-				CBCDE2AD5EB046E3A271424B /* libPods-Nian iOS.a in Frameworks */,
 				12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */,
 				324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */,
+				3B6630BD2F2567A3267B483A /* libPods-Nian iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1423,6 +1425,7 @@
 				12FB48BF196AE8010026DD51 /* NSDictionaryExt.swift */,
 				12FB48C0196AE8010026DD51 /* NSStringExt.swift */,
 				12FB48C1196AE8010026DD51 /* UIImageViewWebExt.swift */,
+				1256DDB11C3A5050000E2085 /* File.swift */,
 				12FB48C2196AE8010026DD51 /* UIViewExt.swift */,
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
@@ -1510,7 +1513,7 @@
 				C4A350BE1B6B6BEE00E8AF10 /* Security.framework */,
 				324C2AEC1A28119E00E6A299 /* StoreKit.framework */,
 				12DE699419D198C40006B5B5 /* CoreText.framework */,
-				338AD568AEBB4BDB888A882D /* libPods-Nian iOS.a */,
+				88CC01538B73788619BF339C /* libPods-Nian iOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2115,6 +2118,7 @@
 				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
 				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
+				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
 				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
 				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
@@ -2283,7 +2287,7 @@
 					"-fobjc-arc",
 				);
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian.todo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";
@@ -2336,7 +2340,7 @@
 					"\"SystemConfiguration\"",
 					"-fobjc-arc",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nian.so.nian.todo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INCLUDE_PATHS = "";

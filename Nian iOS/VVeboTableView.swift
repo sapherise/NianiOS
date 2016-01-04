@@ -17,10 +17,9 @@ class VVeboTableView: UITableView {
         super.init(frame: frame, style: style)
         self.separatorStyle = .None
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.separatorStyle = .None
+        fatalError("init(coder:) has not been implemented")
     }
     
     // 用户触摸时第一时间加载内容

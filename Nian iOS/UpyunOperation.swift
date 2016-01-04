@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AssetsLibrary
 
 protocol upYunDelegate {
     func upYunMulti(data: NSDictionary, count: Int)

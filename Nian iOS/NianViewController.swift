@@ -119,6 +119,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if safename != nil {
             self.UserName.text = "\(safename!)"
         }
+        print("本地加载头像")
         self.UserHead.setHead(SAUid())
         
         if cacheCoverUrl != nil && cacheCoverUrl != "http://img.nian.so/cover/!cover" && cacheCoverUrl != "http://img.nian.so/cover/background.png!cover" {
@@ -259,6 +260,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                         self.UserName.text = "\(name)"
                         Cookies.set(name, forKey: "user")
+                        print("网络加载头像")
                         self.UserHead.setHead(safeuid)
                         self.imageBadge.setType(vip)
                         if deadLine == "0" {
@@ -511,6 +513,15 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func saegg(coin: String, totalCoin: String) {
+        /* 更新后在首页上更新念币数量 */
+        if coinButton.currentTitle != nil {
+            if let cBefore = Int(SAReplace(coinButton.currentTitle!, before: "念币 ", after: "") as String) {
+                if let coin = Int(coin) {
+                    let cAfter = coin + cBefore
+                    coinButton.setTitle("念币 \(cAfter)", forState: UIControlState.Normal)
+                }
+            }
+        }
         /* 如果念币小于 3 */
         if Int(totalCoin) <  3 {
             let ni = NIAlert()

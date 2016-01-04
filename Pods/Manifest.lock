@@ -21,16 +21,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Base64 (1.0.1)
-  - CocoaLumberjack (2.0.3):
-    - CocoaLumberjack/Default (= 2.0.3)
-    - CocoaLumberjack/Extensions (= 2.0.3)
-  - CocoaLumberjack/Core (2.0.3)
-  - CocoaLumberjack/Default (2.0.3):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.0.3):
-    - CocoaLumberjack/Default
   - NSData+MD5Digest (1.0.0)
-  - QBImagePickerController (2.5.2)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
@@ -39,18 +30,14 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
   - Base64
-  - CocoaLumberjack (~> 2.0.1)
   - NSData+MD5Digest
-  - QBImagePickerController (~> 2.5.2)
-  - SDWebImage (~> 3.7.3)
+  - SDWebImage
   - UMengAnalytics
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Base64: 4924bf3ca6fa559a5161ef717291bd450eb7bd1a
-  CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
   NSData+MD5Digest: 0743d53874455e2bdf49f70e7f815b0b963a355f
-  QBImagePickerController: 96c2e340edb7fcac5acf21b72314fac9201ffb8e
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   UMengAnalytics: d24fb5200e13d2874f36b6337bc129b96511c54e
 

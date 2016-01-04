@@ -31,6 +31,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var SATableView: VVeboTableView!
     var dataArray = NSMutableArray()
     var delegateDelete: DeleteDreamDelegate?
+    var willBackToRootViewController = false
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -51,7 +52,17 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     //
     
     func setupViews() {
-        self.viewBack()
+        
+        /* 判断是返回上一级还是直接返回根视图 */
+        if !willBackToRootViewController {
+            self.viewBack()
+        } else {
+            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigationRoot")
+            leftButton.image = UIImage(named:"newBack")
+            self.navigationItem.leftBarButtonItem = leftButton
+            viewBackFix()
+        }
+        
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
         self.view.addSubview(self.navView)
@@ -287,11 +298,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     }
     
     func onAddStep(){
-        let vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
-        vc.dreamId = self.Id
-        vc.delegate = self
-
-        self.presentViewController(vc, animated: true, completion: nil)
+        let vc = AddStep(nibName: "AddStep", bundle: nil)
+        vc.idDream = Id
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     func setupRefresh(){
@@ -382,46 +391,46 @@ extension DreamViewController: NIAlertDelegate {
     }
 }
 
-extension DreamViewController: NewAddStepDelegate {
-    func newEditstep() {
-        self.dataArray[self.newEditStepRow] = self.editStepData!
-        let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
-        self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
-    }
-
-    func newCountUp(coin: String, total: String, isfirst: String) {
-        if isfirst == "1" {
-            if Int(total) < 3 {
-                self.alertCoin = NIAlert()
-                self.alertCoin?.delegate = self
-                self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                self.alertCoin?.showWithAnimation(.flip)
-            } else {
-                // 如果念币多于 3， 那么就出现抽宠物
-                let v = SAEgg()
-                v.delegateShare = self
-                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
-                v.showWithAnimation(.flip)
-            }
-        }
-    }
-    
-    func newUpdate(data: NSDictionary) {
-        if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
-            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
-            mutableData.setValue("\(step + 1)", forKey: "step")
-            dataArrayTop = mutableData
-            dataArray.insertObject(data, atIndex: 0)
-            globalVVeboReload = true
-            SATableView.reloadData()
-        }
-
-    }
-    
-
-}
+//extension DreamViewController: NewAddStepDelegate {
+//    func newEditstep() {
+//        self.dataArray[self.newEditStepRow] = self.editStepData!
+//        let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
+//        self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
+//    }
+//
+//    func newCountUp(coin: String, total: String, isfirst: String) {
+//        if isfirst == "1" {
+//            if Int(total) < 3 {
+//                self.alertCoin = NIAlert()
+//                self.alertCoin?.delegate = self
+//                self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
+//                    forKeys: ["img", "title", "content", "buttonArray"])
+//                self.alertCoin?.showWithAnimation(.flip)
+//            } else {
+//                // 如果念币多于 3， 那么就出现抽宠物
+//                let v = SAEgg()
+//                v.delegateShare = self
+//                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+//                    forKeys: ["img", "title", "content", "buttonArray"])
+//                v.showWithAnimation(.flip)
+//            }
+//        }
+//    }
+//    
+//    func newUpdate(data: NSDictionary) {
+//        if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
+//            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
+//            mutableData.setValue("\(step + 1)", forKey: "step")
+//            dataArrayTop = mutableData
+//            dataArray.insertObject(data, atIndex: 0)
+//            globalVVeboReload = true
+//            SATableView.reloadData()
+//        }
+//
+//    }
+//    
+//
+//}
 
 
 

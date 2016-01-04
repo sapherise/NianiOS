@@ -68,13 +68,6 @@
 #import "SDWebImage.h"
 
 /**
- *  @author Bob Wei, 15-11-25 18:11:56
- *
- *  @brief
- */
-#import "QBImagePicker.h"
-
-/**
  *  @author Sa, 15-12-23 11:33:56
  *
  *  @brief 首页记本可移动

@@ -17,17 +17,18 @@ class SAViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 添加导航栏
+        /* 添加导航栏 */
         navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
         navView.userInteractionEnabled = true
         self.view.addSubview(navView)
         self.viewBack()
         
-        // 设置背景为白色
+        /* 设置背景为白色 */
         self.view.backgroundColor = UIColor.whiteColor()
     }
     
+    /* 添加导航栏标题 */
     func _setTitle(content: String) {
         let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
         titleLabel.textColor = UIColor.whiteColor()
@@ -36,6 +37,7 @@ class SAViewController: UIViewController {
         self.navigationItem.titleView = titleLabel
     }
     
+    /* 添加导航栏按钮文案 */
     func setBarButton(content: String, actionGesture: Selector) {
         let rightLabel = UILabel(frame: CGRectMake(globalWidth - 60, 20, 60, 44))
         rightLabel.textColor = UIColor.whiteColor()
@@ -48,61 +50,38 @@ class SAViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightLabel)]
     }
     
+    /* 添加导航栏按钮图片 */
     func setBarButtonImage(image: String, actionGesture: Selector) {
         let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: actionGesture)
         rightButton.image = UIImage(named: image)
         self.navigationItem.rightBarButtonItems = [rightButton];
     }
     
+    /* 添加导航栏加载状态 */
+    func setBarButtonLoading() {
+        self.navigationItem.rightBarButtonItems = buttonArray()
+    }
     
+    /* 页面载入状态 */
     func startAnimating() {
         _containView = UIView(frame: CGRectMake((globalWidth - 50)/2, (globalHeight - 50)/2, 50, 50))
         _containView!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         _containView!.layer.cornerRadius = 4.0
         _containView!.layer.masksToBounds = true
-        
-        
         let _activity = UIActivityIndicatorView(frame: CGRectMake(10, 10, 30, 30))
         _activity.color = UIColor.whiteColor()
         _activity.transform = CGAffineTransformMakeScale(0.7, 0.7)
         _activity.startAnimating()
-        
         _containView!.addSubview(_activity)
         self.view.addSubview(_containView!)
     }
     
-    
+    /* 页面结束载入状态 */
     func stopAnimating() {
         _containView?.removeFromSuperview()
     }
     
-    func handleBaseJsonWithError(error: NSError?, id: AnyObject?) -> JSON? {
-        
-        if let _error = error {
-            #if DEBUG
-                print("\(_error.localizedDescription)")
-            #else
-                self.view.showTipText("网络有点问题，等一会儿再试")
-            #endif
-            
-            return nil
-        }
-        
-        let json = JSON(id!)
-        
-        if json["error"] != 0 {
-            #if DEBUG
-                let msg = json["message"].string
-                print("\(msg)")
-            #else
-                
-            #endif
-            
-            return nil
-        }
-        
-        return json
-    }
+    
     
     
     

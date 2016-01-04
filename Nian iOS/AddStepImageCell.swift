@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AssetsLibrary
 
 class AddStepImageCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!

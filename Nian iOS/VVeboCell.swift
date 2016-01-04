@@ -28,7 +28,7 @@ protocol delegateSAStepCell {
 **  8 dataArray 在添加数据时，数据应转码，完成后设定 currentDataArray
 */
 
-class VVeboCell: UITableViewCell, UIActionSheetDelegate {
+class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var data: NSDictionary! {
         didSet {
             let heightCell = data["heightCell"] as! CGFloat
@@ -59,7 +59,7 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
-//            btnLike.layer.shouldRasterize = true
+            //            btnLike.layer.shouldRasterize = true
             
             let uidlike = data.stringAttributeForKey("uidlike")
             if type == 2 {
@@ -75,7 +75,7 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
             } else {
                 btnLike.hidden = false
-//                btnLike.layer.shouldRasterize = true
+                //                btnLike.layer.shouldRasterize = true
             }
         }
     }
@@ -86,7 +86,7 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
     var postBGView: UIImageView!
     var imageHead: UIImageView!
     var imageHeadCover: UIImageView!
-    var imageHolder: VVImageCollectionView!
+    var imageHolder: UIImageView!
     var labelComment: UILabel!
     var labelLike: UILabel!
     var btnMore: UIButton!
@@ -100,30 +100,6 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
     var editStepRow:Int = -1
     var editStepData:NSDictionary?
     var delegate: delegateSAStepCell?
-    var newEditStepRow: Int = -1
-    var newEditStepData: NSDictionary?
-    
-    let layout: UICollectionViewFlowLayout = {
-        let _layout = UICollectionViewFlowLayout()
-    
-        _layout.minimumInteritemSpacing = 2.0
-        _layout.minimumLineSpacing = 2.0
-        _layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        
-        return _layout
-    }()
-    
-    let saveMode: String = {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        var _saveMode = userDefault.stringForKey("saveMode")
-        
-        if let __mode = _saveMode {
-        } else {
-            _saveMode = "on"
-        }
-        
-        return _saveMode!
-    }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -148,7 +124,7 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         contentView.addSubview(imageHeadCover)
         
         // 添加配图
-        imageHolder = VVImageCollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0), collectionViewLayout: layout)
+        imageHolder = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
         imageHolder.backgroundColor = IconColor
         contentView.addSubview(imageHolder)
         
@@ -185,24 +161,20 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         contentView.addSubview(btnLike)
         
         // 绑定事件
+        imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         imageHeadCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
         labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
         btnMore.addTarget(self, action: "onMoreClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+        imageHolder.userInteractionEnabled = true
         imageHeadCover.userInteractionEnabled = true
         labelComment.userInteractionEnabled = true
         labelLike.userInteractionEnabled = true
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        self.imageHolder.cancelImageRequestOperation()
     }
     
     func draw() {
@@ -261,10 +233,18 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         drawText()
         drawThumb()
         
+        //        cell.layer.shouldRasterize = YES;
+        //        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
         contentView.layer.shouldRasterize = true
         contentView.layer.rasterizationScale = globalScale
     }
-
+    
+    // 绑定事件
+    func onImage() {
+        let img = data.stringAttributeForKey("image")
+        imageHolder.showImage(V.urlStepImage(img, tag: .Large))
+    }
+    
     func onHead() {
         let uid = data.stringAttributeForKey("uid")
         let uidlike = data.stringAttributeForKey("uidlike")
@@ -337,16 +317,12 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
             editActivity.saActivityType = "编辑"
             editActivity.saActivityImage = UIImage(named: "av_edit")
             editActivity.saActivityFunction = {
-                // ??????
-                self.findRootViewController()?.dismissViewControllerAnimated(true, completion: nil)
-                
-                let addstepVC = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+                let addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
                 addstepVC.isEdit = 1
-                addstepVC.data = NSMutableDictionary(dictionary: self.data)
-                addstepVC.data?.setValue(self.imageHolder.containImages, forKey: "imageArray")
+                addstepVC.data = self.data
                 addstepVC.row = row
                 addstepVC.delegate = self
-                self.findRootViewController()?.presentViewController(addstepVC, animated: true, completion: nil)
+                self.findRootViewController()?.navigationController?.pushViewController(addstepVC, animated: true)
             }
             //删除按钮
             let deleteActivity = SAActivity()
@@ -450,43 +426,12 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
     }
     
     func drawThumb() {
-        if saveMode == "on" {
-            var array = NSArray()
-            
-            if (data.allKeys as! [String]).contains("images") {
-                array = data["images"] as! NSArray
-                let _type = Int(data["type"] as! String)
-                
-                if _type == 5 || _type == 6 {
-                    imageHolder.setHeight(globalWidth - 32)
-                    array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
-                } else if _type == 3 || _type == 4 {
-                    if array.count > 0 {
-                        imageHolder.setHeight(ceil(VVeboCell.calculateCollectionViewHeight(array)))
-                    }
-                } else if _type == 0 {
-                    if data["image"] as! String != "" {
-                        imageHolder.setHeight(globalWidth - 32)
-                        array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
-                    }
-                }
-            } else if (data.allKeys as! [String]).contains("image") {
-                if (data.objectForKey("image") as! String) != "" {
-                    imageHolder.setHeight(globalWidth - 32)
-                    array = NSArray(array: [["path": data["image"] as! String, "width": data["width"] as! String, "height": data["height"] as! String]])
-                }
-            }
-            
-            if array.count > 0 {
-                imageHolder.imagesDataSource = NSMutableArray(array: array)
-                imageHolder.sid = data.stringAttributeForKey("sid")
-                imageHolder.hidden = false
-                imageHolder.setImage()
-                
-                imageHolder.imageSelectedHandler = { (string, indexPath) in
-                    (self.imageHolder.cellForItemAtIndexPath(indexPath) as! VVImageViewCell).imageView.showImage("http://img.nian.so/step/\(string)!large")
-                }
-            }
+        let heightImage = data["heightImage"] as! CGFloat
+        let urlImage = data.stringAttributeForKey("image")
+        if heightImage > 0 {
+            imageHolder.setHeight(heightImage)
+            imageHolder.hidden = false
+            imageHolder.setImage("http://img.nian.so/step/\(urlImage)!large")
         }
     }
     
@@ -561,6 +506,7 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         label?.removeFromSuperview()
         label = nil
         imageHolder.cancelImageRequestOperation()
+        imageHolder.image = nil
         imageHolder.hidden = true
         labelLike.hidden = true
         
@@ -574,7 +520,8 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         let content = data.stringAttributeForKey("content").decode()
         let lastdate = data.stringAttributeForKey("lastdate")
         let title = data.stringAttributeForKey("title").decode()
-        
+        let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
+        let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
         var comment = data.stringAttributeForKey("comments")
         comment = comment == "0" ? "回应" : "回应 \(comment)"
         var like = data.stringAttributeForKey("likes")
@@ -584,36 +531,12 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         let heightContent = (content as NSString).sizeWithConstrainedToWidth(globalWidth - 40, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
         var heightCell: CGFloat = 0
         var heightImage: CGFloat = 0
-        
-        if (data.allKeys as! [String]).contains("images") {
-            if (data.objectForKey("images") as! NSArray).count == 0 {
-                if (data.allKeys as! [String]).contains("image") {
-                    if (data.objectForKey("image") as! String) == "" {
-                        heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                    } else {
-                        heightImage = globalWidth - 32
-                        heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                    }
-                } else {
-                    heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                }
-            } else {
-                if (data.objectForKey("images") as! NSArray).count > 1 {
-                    heightImage = ceil(VVeboCell.calculateCollectionViewHeight(data.objectForKey("images") as! NSArray))
-                } else {
-                    heightImage = globalWidth - 32
-                }
-                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            }
-        } else if (data.allKeys as! [String]).contains("image") {
-            if (data.objectForKey("image") as! String) == "" {
-                heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            } else {
-                heightImage = globalWidth - 32
-                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            }
+        if (img0 == 0.0) {
+            heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+        } else {
+            heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+            heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
         }
-        
         data["heightImage"] = heightImage
         data["heightCell"] = heightCell
         data["content"] = content
@@ -622,93 +545,7 @@ class VVeboCell: UITableViewCell, UIActionSheetDelegate {
         data["widthLike"] = widthLike
         data["lastdate"] = V.relativeTime(lastdate)
         data["title"] = title
-        
         return data
     }
     
 }
-
-
-extension VVeboCell: NewAddStepDelegate {
-    
-    func newEditstep() {
-        if newEditStepData != nil {
-            clear()
-            
-            let content = newEditStepData!.stringAttributeForKey("content")
-            let img = newEditStepData!.objectForKey("images") as! NSArray
-            let img0 = Float(newEditStepData!.stringAttributeForKey("width"))!
-            let img1 = Float(newEditStepData!.stringAttributeForKey("height"))!
-            let heightContent = (content as NSString).sizeWithConstrainedToWidth(globalWidth - SIZE_PADDING * 2, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
-            var heightCell: CGFloat = 0
-            var heightImage: CGFloat = 0
-            if img0 == 0 {
-                heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            } else {
-                if img.count > 1 {
-                    heightImage = ceil(VVeboCell.calculateCollectionViewHeight(img))
-                } else {
-                    heightImage = globalWidth - 32
-                }
-                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            }
-            delegate?.updateStep(num, key: "images", value: img)
-            delegate?.updateStep(num, key: "width", value: img0)
-            delegate?.updateStep(num, key: "height", value: img1)
-            delegate?.updateStep(num, key: "content", value: content)
-            delegate?.updateStep(num, key: "heightImage", value: heightImage)
-            delegate?.updateStep(num, key: "heightContent", value: heightContent)
-            delegate?.updateStep(num, key: "heightCell", value: heightCell)
-            delegate?.updateStep(num)
-        
-        }
-    }
-    
-    func newUpdate(data: NSDictionary) {
-    }
-
-}
-
-extension VVeboCell {
-    
-    class func calculateCollectionViewHeight(dataSource: NSArray) -> CGFloat {
-        let tmpCount = dataSource.count
-        
-        if tmpCount == 1 {
-            return globalWidth - 32
-        } else if tmpCount == 2 {
-            return (globalWidth - 32 - 2) / 2
-        } else if tmpCount == 3 {
-            return (globalWidth - 32 - 4) / 3
-        } else if tmpCount == 4 {
-            return (globalWidth - 32)
-        } else if tmpCount == 5 || tmpCount == 6 {
-            let tmp = (globalWidth - 32 - 4) / 3
-            return tmp * 2 + 2
-        } else {
-            let tmp = (globalWidth - 32 - 4) / 3
-            return tmp * 3 + 4
-        }
-    }
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

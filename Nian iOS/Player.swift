@@ -582,21 +582,21 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     }
 }
 
-extension PlayerViewController: NewAddStepDelegate {
-    
-    func newCountUp(coin: String, isfirst: String) {
-        self.SALoadData()
-    }
-    
-    func newEditstep() {
-        if self.newEditStepData != nil {
-            self.dataArrayStep[self.newEditStepRow] = self.newEditStepData!
-            let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
-            self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: .Left)
-        }
-    }
-    
-}
+//extension PlayerViewController: NewAddStepDelegate {
+//    
+//    func newCountUp(coin: String, isfirst: String) {
+//        self.SALoadData()
+//    }
+//    
+//    func newEditstep() {
+//        if self.newEditStepData != nil {
+//            self.dataArrayStep[self.newEditStepRow] = self.newEditStepData!
+//            let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
+//            self.tableViewStep.reloadRowsAtIndexPaths([newpath], withRowAnimation: .Left)
+//        }
+//    }
+//    
+//}
 
 
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AssetsLibrary
 
 class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, LSYAlbumPickerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, upYunDelegate, ShareDelegate {
     
@@ -30,7 +31,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     var rowDelete = -1
     var dict = NSMutableDictionary()
     var id: String = ""
-    var idDream: String = ""
+    var idDream: String = "-1"
     var imageArray: [ALAsset] = []
     
     var keyboardHeight: CGFloat = 0.0  // 键盘的高度
@@ -122,16 +123,21 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         self.view.addSubview(tableView)
         
         
-        /* 在缓存中获得最新的记本 */
         self.viewDream.setWidth(globalWidth)
         self.viewDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewDream"))
+        
+        
+        /* 先判断是否有记本 id 传入
+        ** 如果有的话，显示该记本
+        ** 否则从缓存中拉取
+        */
         if let NianDreams = Cookies.get("NianDreams") as? NSMutableArray {
             self.dataArray = NianDreams
             tableView.reloadData()
             var count = 0
             for d in dataArray {
                 let id = (d as! NSDictionary).stringAttributeForKey("id")
-                if id == Cookies.get("DreamNewest") as? String {
+                if idDream != "-1" && idDream == id {
                     let data = d
                     let title = data.objectForKey("title") as! String
                     let image = data.objectForKey("image") as! String
@@ -139,7 +145,16 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                     self.imageDream.setImage(userImageURL)
                     self.idDream = id
                     self.labelDream.text = title
-//                    self.btnOK.enabled = true
+                    count = 1
+                    break
+                } else if id == Cookies.get("DreamNewest") as? String {
+                    let data = d
+                    let title = data.objectForKey("title") as! String
+                    let image = data.objectForKey("image") as! String
+                    let userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                    self.imageDream.setImage(userImageURL)
+                    self.idDream = id
+                    self.labelDream.text = title
                     count = 1
                     break
                 }
@@ -153,7 +168,6 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                 self.imageDream.setImage(userImageURL)
                 self.idDream = id
                 self.labelDream.text = title
-//                self.btnOK.enabled = true
             }
         }
         

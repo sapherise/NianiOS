@@ -8,10 +8,7 @@
 
 import UIKit
 import Foundation
-
-var _image_lock = NSLock()
-var _image_task = [String: UIImageView]()
-var _image_view = [UIImageView: String]()
+//import WebImage
 
 extension UIImageView {
     
@@ -25,13 +22,11 @@ extension UIImageView {
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "on") && (networkStatus == 1) {   //如果是开启了同时是在2G下
-            self.loadCacheImage(req, placeholderImage: self.image)
+            self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
-            self.setImageWithURLRequest(req,
-                placeholderImage: nil,
-                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+            self.sd_setImageWithURL(url, completed: { (image, err, type, url) -> Void in
+                if image != nil {
                     self.contentMode = .ScaleAspectFill
                     if radius == 0 {
                         self.image = image
@@ -46,25 +41,19 @@ extension UIImageView {
                         self.image = UIGraphicsGetImageFromCurrentImageContext()
                         UIGraphicsEndImageContext()
                     }
-                },
-                failure: nil)
+                }
+            })
         }
     }
     
     func setPet(urlString: String) {
         let url = NSURL(string: urlString)
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-        self.setImageWithURLRequest(req,
-            placeholderImage: nil,
-            success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
-                if image.size.width > image.size.height {
-                    self.contentMode = .ScaleAspectFit
-                } else {
-                    self.contentMode = .ScaleAspectFill
-                }
+        self.sd_setImageWithURL(url) { (image, err, type, url) -> Void in
+            if image != nil {
+                self.contentMode = .ScaleAspectFill
                 self.image = image
-            },
-            failure: nil)
+            }
+        }
     }
     
     func setImageIgnore(urlString: String) {
@@ -76,40 +65,38 @@ extension UIImageView {
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "on") && (networkStatus == 1) && (!ignore) {
-            self.loadCacheImage(req, placeholderImage: self.image)
-//                self.setAnimated()
+            self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
-            self.setImageWithURLRequest(req,
-                placeholderImage: nil,
-                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+            self.sd_setImageWithURL(url, completed: { (image, err, type, url) -> Void in
+                if image != nil {
                     self.contentMode = .ScaleAspectFill
                     self.image = image
                     if animated {
                         self.setAnimated()
                     }
-                },
-                failure: nil)
+                }
+            })
         }
     }
     
     func setHead(uid: String) {
         self.image = UIImage(named: "head")
-        let url = NSURL(string: "http://img.nian.so/head/\(uid).jpg!dream")
+        let urlString = "http://img.nian.so/head/\(uid).jpg!dream"
+        let url = NSURL(string: urlString)
         self.contentMode = .ScaleAspectFill
         let networkStatus = getStatus()
+        print(urlString)
         let saveMode = Cookies.get("saveMode") as? String
-        let req = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
         if (saveMode == "on") && (networkStatus == 1) {
-            self.loadCacheImage(req, placeholderImage: self.image)
+            print("2")
+            self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
-            self.setImageWithURLRequest(req,
-                placeholderImage: nil,
-                success: { [unowned self] (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) in
+            self.sd_setImageWithURL(url, placeholderImage: UIImage(named: "head"), completed: { (image, err, type, url) -> Void in
+                if image != nil {
                     self.image = image
-                },
-                failure: nil)
+                }
+            })
         }
     }
     
@@ -121,8 +108,8 @@ extension UIImageView {
             }, completion: nil)
     }
     
-    func loadCacheImage(request: NSURLRequest, placeholderImage: UIImage?) {
-        let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(request)
+    func loadCacheImage(urlString: String, placeholderImage: UIImage?) {
+        let cachedImage: UIImage? = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlString)
         if cachedImage != nil {
             self.image = cachedImage
             self.contentMode = .ScaleAspectFill
@@ -132,5 +119,3 @@ extension UIImageView {
     }
     
 }
-
-
