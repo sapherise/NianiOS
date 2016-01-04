@@ -247,7 +247,7 @@ class ImClient {
                     }
                     m_repollDelay = m_repollDelay + 0.5
                 }
-                logError(" ============    \(r) ")
+                print(" ============    \(r) ")
             }
             NSThread.sleepForTimeInterval(m_repollDelay)
         }

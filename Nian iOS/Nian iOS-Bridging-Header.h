@@ -32,20 +32,6 @@
  */
 #import "KeychainItemWrapper.h"
 
-///**
-// *  @author Bob Wei, 15-08-08 14:08:23
-// *
-// *  导入 objc runtime, 应用在 method swizzling
-// */
-//#import "objc/runtime.h"
-
-/**
- *  @author Bob Wei, 15-08-13 15:08:14
- *
- *  引入 DDLog
- */
-#import "CocoaLumberjack.h"
-
 /**
  *  @author Bob Wei, 15-08-25 18:08:46
  *

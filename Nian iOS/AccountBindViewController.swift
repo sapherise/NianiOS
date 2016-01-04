@@ -551,7 +551,7 @@ extension AccountBindViewController {
                         let json = JSON(responseObject!)
                         
                         if let errcode = json["errcode"].number {
-                            logError("\(errcode)")
+                            print("\(errcode)")
                             self.view.showTipText("微信授权不成功...")
                         } else {
                             let _name = json["nickname"].stringValue

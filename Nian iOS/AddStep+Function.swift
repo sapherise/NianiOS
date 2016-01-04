@@ -97,21 +97,11 @@ extension AddStep {
                         }
                     }
                     
-                    if isfirst == "1" {
+                    // todo: 开启下面这个
+//                    if isfirst == "1" {
+                    if true {
                         globalWillNianReload = 1
-                        
-                        /* 如果念币小于 3 */
-                        if Int(totalCoin) <  3 {
-                            self.niCoinLess.delegate = self
-                            self.niCoinLess.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]], forKeys: ["img", "title", "content", "buttonArray"])
-                            self.niCoinLess.showWithAnimation(.flip)
-                        } else {
-                            /* 如果念币多于 3，就出现宠物 */
-                            let v = SAEgg()
-                            v.delegateShare = self
-                            v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", ["嗯！", "不要"]], forKeys: ["img", "title", "content", "buttonArray"])
-                            v.showWithAnimation(.flip)
-                        }
+                        Nian.saegg(coin, totalCoin: totalCoin)
                     }
                     
                     // todo: 如果是从记本来的，要调用 delegate，否则要直接跳转到这个页面。

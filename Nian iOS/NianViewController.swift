@@ -18,7 +18,7 @@ protocol DeleteDreamDelegate {
     func deleteDreamCallback(id: String)
 }
 
-class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate, DeleteDreamDelegate {
+class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate, DeleteDreamDelegate, ShareDelegate {
     @IBOutlet var coinButton:UIButton!
     @IBOutlet var levelButton:UIButton!
     @IBOutlet var UserHead:UIImageView!
@@ -504,6 +504,27 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.viewHeader.hidden = true
         }
         globalNumberDream = self.dataArray.count
+    }
+    
+    func onShare(avc: UIActivityViewController) {
+        self.presentViewController(avc, animated: true, completion: nil)
+    }
+    
+    func saegg(coin: String, totalCoin: String) {
+        /* 如果念币小于 3 */
+        if Int(totalCoin) <  3 {
+            let ni = NIAlert()
+            ni.delegate = self
+            ni.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]], forKeys: ["img", "title", "content", "buttonArray"])
+            ni.showWithAnimation(.flip)
+        } else {
+            /* 如果念币多于 3，就出现宠物 */
+            let v = SAEgg()
+            v.delegateShare = self
+            v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", ["嗯！", "不要"]], forKeys: ["img", "title", "content", "buttonArray"])
+            v.showWithAnimation(.flip)
+        }
+        
     }
 }
 

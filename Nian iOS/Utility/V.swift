@@ -67,7 +67,7 @@ struct V {
                 callback(obj)
             },
             failure: {(op, error) in
-                logError("AFN get error: \(error.localizedDescription)")
+                print("AFN get error: \(error.localizedDescription)")
         })
     }
     
@@ -81,7 +81,7 @@ struct V {
                 callback(obj)
         },
             failure: {(op, error) -> Void in
-                logError("AFN post error: \(error.localizedDescription)")
+                print("AFN post error: \(error.localizedDescription)")
         })
     }
     

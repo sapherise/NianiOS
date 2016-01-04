@@ -10,8 +10,8 @@ import Foundation
 import SpriteKit
 
 @objc protocol ShareDelegate {
+    /* 当抽到新宠物时，点击分享弹出调用 onShare */
     func onShare(avc: UIActivityViewController)
-    
     optional func saEgg(saEgg: SAEgg, tapBackground: Bool)
     optional func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary)
 }

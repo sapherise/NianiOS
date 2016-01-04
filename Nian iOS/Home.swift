@@ -8,7 +8,8 @@
 
 import UIKit
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate{
+var Nian: NianViewController!
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate {
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -37,8 +38,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var shouldNavToMe: Bool = false
     var tabButtonArray = NSMutableArray()
-    
-    /*=========================================================================================================================================*/
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -381,10 +380,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func initViewControllers() {
         let storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         let NianStoryBoard: UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-        let NianViewController: UIViewController = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") 
-        let vc1 = NianViewController
-        let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController") 
-//        let vc3 = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
+        Nian = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! NianViewController
+        let vc1 = Nian
+        let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController")
         let vc3 = AddStep(nibName: "AddStep", bundle: nil)
         let vc4 = MeViewController()
         let vc5 = RedditViewController()
@@ -429,23 +427,22 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             self.dot!.hidden = true
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
         }else if index == idUpdate {      // 更新
-//            let _vc = NewAddStepViewController(nibName: "NewAddStepView", bundle: nil)
-//            _vc.delegate = self
-//            _vc.isInConvenienceWay = true
-            
-            let vc = AddStep(nibName: "AddStep", bundle: nil)
-            self.navigationController?.pushViewController(vc, animated: true)
-//            self.selectedViewController!.presentViewController(vc, animated: false, completion: nil)
-//            self.navigationController?.presentViewController(vc, animated: true, completion: nil)
+            /* 当缓存中没有记本时，点击第三栏跳转到添加记本 */
+            if let NianDreams = Cookies.get("NianDreams") as? NSMutableArray {
+                if NianDreams.count == 0 {
+                    Nian.addDreamButton()
+                } else {
+                    let vc = AddStep(nibName: "AddStep", bundle: nil)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            } else {
+                let vc = AddStep(nibName: "AddStep", bundle: nil)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
         if index != idExplore {
             numExplore = 0
         }
-    }
-    
-    func addDreamButton(){
-        let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-        self.navigationController!.pushViewController(adddreamVC, animated: true)
     }
     
 //    func addStep(){
@@ -584,6 +581,7 @@ extension HomeViewController: NewAddStepDelegate {
         self.newEditDreamId = data["dream"] as! String
     }
 
+    // todo: 这个要删除
     func newCountUp(coin: String, total: String, isfirst: String) {
         if isfirst == "1" {
             globalWillNianReload = 1

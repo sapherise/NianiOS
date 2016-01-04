@@ -76,16 +76,9 @@ extension AddStep {
         }
     }
     
-    /* niAlert*/
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
-        if niAlert == niCoinLess {
-            niAlert.dismissWithAnimation(.normal)
-        }
-    }
-    
     /* shareDelegate */
     func onShare(avc: UIActivityViewController) {
-        print("onshare")
+        self.presentViewController(avc, animated: true, completion: nil)
     }
     
     

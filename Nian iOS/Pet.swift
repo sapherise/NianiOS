@@ -45,7 +45,6 @@ class PetViewController: SAViewController, ShareDelegate {
         setupTable()
     }
     
-    
     func onShare(avc: UIActivityViewController) {
         self.presentViewController(avc, animated: true, completion: nil)
     }

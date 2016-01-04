@@ -80,7 +80,7 @@ class SAViewController: UIViewController {
         
         if let _error = error {
             #if DEBUG
-                logError("\(_error.localizedDescription)")
+                print("\(_error.localizedDescription)")
             #else
                 self.view.showTipText("网络有点问题，等一会儿再试")
             #endif
@@ -93,7 +93,7 @@ class SAViewController: UIViewController {
         if json["error"] != 0 {
             #if DEBUG
                 let msg = json["message"].string
-                logError("\(msg)")
+                print("\(msg)")
             #else
                 
             #endif

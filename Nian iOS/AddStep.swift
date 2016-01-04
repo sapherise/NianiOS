@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, LSYAlbumPickerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, upYunDelegate, NIAlertDelegate, ShareDelegate {
+class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, LSYAlbumPickerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, upYunDelegate, ShareDelegate {
     
     @IBOutlet var viewDream: UIView!
     @IBOutlet var field2: UITextView!
@@ -44,9 +44,6 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     
     /* 多图上传传递给服务器的数组 */
     var uploadArray = NSMutableArray()
-    
-    /* 更新念币弹窗 */
-    var niCoinLess = NIAlert()
     
     override func viewDidLoad() {
         super.viewDidLoad()

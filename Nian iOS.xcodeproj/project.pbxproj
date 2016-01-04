@@ -292,7 +292,6 @@
 		C4B879A11BFB3E85004B0C0D /* ResponsedTopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */; };
 		C4C2C3C81C1AFD9F00209B55 /* NewAddStepVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2C3C71C1AFD9F00209B55 /* NewAddStepVCExtension.swift */; };
 		C4C2C3CA1C1BD06000209B55 /* NewAddStepUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2C3C91C1BD06000209B55 /* NewAddStepUtils.swift */; };
-		C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C510EF1B7C952600865AD4 /* DDLogExt.swift */; };
 		C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41634EE1B2002FC00DC9899 /* SZTextView.m */; };
 		C4C694DB1BA16FF40003437B /* AddStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129375181A236E8B001F7442 /* AddStepCell.xib */; };
 		C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */; };
@@ -647,7 +646,6 @@
 		C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponsedTopicCell.swift; sourceTree = "<group>"; };
 		C4C2C3C71C1AFD9F00209B55 /* NewAddStepVCExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddStepVCExtension.swift; sourceTree = "<group>"; };
 		C4C2C3C91C1BD06000209B55 /* NewAddStepUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddStepUtils.swift; sourceTree = "<group>"; };
-		C4C510EF1B7C952600865AD4 /* DDLogExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLogExt.swift; sourceTree = "<group>"; };
 		C4C885511B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		C4C885521B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
 		C4C9AB0C1C13FACB00B99B8C /* VVImageCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVImageCollectionView.swift; sourceTree = "<group>"; };
@@ -1430,7 +1428,6 @@
 				323F783D1A105C93003C3755 /* V.swift */,
 				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
-				C4C510EF1B7C952600865AD4 /* DDLogExt.swift */,
 				122AFE021A80864800464641 /* SqliteData.swift */,
 				C448F55D1B93F9F200214984 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
@@ -1972,7 +1969,6 @@
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
 				126D6E461C2F1E800053211C /* LSYAlbumCatalogView.swift in Sources */,
 				129F6C761C3070B7008B61A5 /* AddStep+Function.swift in Sources */,
-				C4C510F01B7C952600865AD4 /* DDLogExt.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				12776A181BCE731A00745811 /* NSString+Additions.m in Sources */,
