@@ -40,6 +40,9 @@
 		1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */; };
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
+		123FD9421C3A7DF800A92188 /* VVeboCell+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123FD9411C3A7DF800A92188 /* VVeboCell+Delegate.swift */; };
+		123FD9441C3A802600A92188 /* VVeboCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123FD9431C3A802600A92188 /* VVeboCollectionViewCell.swift */; };
+		123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 123FD9451C3A803200A92188 /* VVeboCollectionViewCell.xib */; };
 		1243C6F71B4F60A0007F741C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C6F61B4F60A0007F741C /* Card.swift */; };
 		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
 		12497C371A7102C4001DBD0F /* mainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12497C361A7102C4001DBD0F /* mainClient.swift */; };
@@ -355,6 +358,9 @@
 		1232ADC81A53AA6700C4182A /* CircleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircleBubbleCell.xib; sourceTree = "<group>"; };
 		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
+		123FD9411C3A7DF800A92188 /* VVeboCell+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VVeboCell+Delegate.swift"; sourceTree = "<group>"; };
+		123FD9431C3A802600A92188 /* VVeboCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboCollectionViewCell.swift; sourceTree = "<group>"; };
+		123FD9451C3A803200A92188 /* VVeboCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VVeboCollectionViewCell.xib; sourceTree = "<group>"; };
 		1243C6F61B4F60A0007F741C /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		1248FB9E1A91B46100110EEF /* NSObject+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swift.h"; sourceTree = "<group>"; };
 		1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swift.m"; sourceTree = "<group>"; };
@@ -973,6 +979,9 @@
 				120B6DC71BD2265500422B86 /* VVeboViewController.swift */,
 				12776A0C1BCE54EA00745811 /* VVeboTableView.swift */,
 				12776A0A1BCE4C5A00745811 /* VVeboCell.swift */,
+				123FD9411C3A7DF800A92188 /* VVeboCell+Delegate.swift */,
+				123FD9431C3A802600A92188 /* VVeboCollectionViewCell.swift */,
+				123FD9451C3A803200A92188 /* VVeboCollectionViewCell.xib */,
 				C4C9AB0C1C13FACB00B99B8C /* VVImageCollectionView.swift */,
 				12F65C0A1B64F5AE0051A914 /* SAViewController.swift */,
 				126FB4721B574EDB0056221C /* SAActivityViewController.swift */,
@@ -1812,6 +1821,7 @@
 				C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */,
 				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
+				123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
@@ -1927,6 +1937,7 @@
 				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
+				123FD9421C3A7DF800A92188 /* VVeboCell+Delegate.swift in Sources */,
 				C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */,
 				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				C486FD581C04430A009F1F90 /* View.swift in Sources */,
@@ -1972,6 +1983,7 @@
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
 				126D6E461C2F1E800053211C /* LSYAlbumCatalogView.swift in Sources */,
 				129F6C761C3070B7008B61A5 /* AddStep+Function.swift in Sources */,
+				123FD9441C3A802600A92188 /* VVeboCollectionViewCell.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				12776A181BCE731A00745811 /* NSString+Additions.m in Sources */,

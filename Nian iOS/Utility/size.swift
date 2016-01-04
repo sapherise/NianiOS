@@ -12,6 +12,7 @@ let SIZE_PADDING: CGFloat = 20
 let SIZE_IMAGEHEAD_WIDTH: CGFloat = 32
 let SIZE_LABEL_WIDTH: CGFloat = 56
 let SIZE_LABEL_HEIGHT: CGFloat = 32
+let SIZE_COLLECTION_PADDING: CGFloat = 8
 
 // 推荐与最新的板块高度
 let SIZE_EDITOR: CGFloat = 104

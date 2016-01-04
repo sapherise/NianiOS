@@ -28,7 +28,7 @@ protocol delegateSAStepCell {
 **  8 dataArray 在添加数据时，数据应转码，完成后设定 currentDataArray
 */
 
-class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
+class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     var data: NSDictionary! {
         didSet {
             let heightCell = data["heightCell"] as! CGFloat
@@ -38,6 +38,16 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
             let liked = data.stringAttributeForKey("liked")
             let comments = data.stringAttributeForKey("comments")
             let likes = data.stringAttributeForKey("likes")
+            let typeimages = data.stringAttributeForKey("type")
+            let heightImage = data["heightImage"] as! CGFloat
+            // 多图
+            if typeimages == "3" || typeimages == "4" {
+                if let _ = data.objectForKey("images") as? NSArray {
+                    collectionView.setHeight(heightImage + SIZE_COLLECTION_PADDING)
+                                        collectionView.reloadData()
+                }
+            }
+            
             let yButton = heightCell - SIZE_PADDING - SIZE_LABEL_HEIGHT
             viewLine?.setY(heightCell - globalHalf)
             labelComment.setY(yButton)
@@ -59,7 +69,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
-            //            btnLike.layer.shouldRasterize = true
             
             let uidlike = data.stringAttributeForKey("uidlike")
             if type == 2 {
@@ -75,7 +84,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
             } else {
                 btnLike.hidden = false
-                //                btnLike.layer.shouldRasterize = true
             }
         }
     }
@@ -100,6 +108,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     var editStepRow:Int = -1
     var editStepData:NSDictionary?
     var delegate: delegateSAStepCell?
+    var collectionView: UICollectionView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -127,6 +136,20 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         imageHolder = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
         imageHolder.backgroundColor = IconColor
         contentView.addSubview(imageHolder)
+        
+        // 添加多图
+        let w = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = SIZE_COLLECTION_PADDING
+        flowLayout.itemSize = CGSize(width: w, height: w)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionView = UICollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0), collectionViewLayout: flowLayout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.registerNib(UINib(nibName: "VVeboCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "VVeboCollectionViewCell")
+        contentView.addSubview(collectionView)
         
         // 回应
         labelComment = UILabel(frame: CGRectMake(SIZE_PADDING, 0, 0, SIZE_LABEL_HEIGHT))
@@ -428,10 +451,15 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
     func drawThumb() {
         let heightImage = data["heightImage"] as! CGFloat
         let urlImage = data.stringAttributeForKey("image")
-        if heightImage > 0 {
-            imageHolder.setHeight(heightImage)
-            imageHolder.hidden = false
-            imageHolder.setImage("http://img.nian.so/step/\(urlImage)!large")
+        let typeImages = data.stringAttributeForKey("type")
+        if typeImages != "3" && typeImages != "4" {
+            if heightImage > 0 {
+                imageHolder.setHeight(heightImage)
+                imageHolder.hidden = false
+                imageHolder.setImage("http://img.nian.so/step/\(urlImage)!large")
+            }
+        } else {
+            collectionView.hidden = false
         }
     }
     
@@ -509,6 +537,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         imageHolder.image = nil
         imageHolder.hidden = true
         labelLike.hidden = true
+        collectionView.hidden = true
         
         drawColorFlag = arc4random()
         drawed = false
@@ -522,6 +551,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         let title = data.stringAttributeForKey("title").decode()
         let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
         let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
+        let typeImages = data.stringAttributeForKey("type")
         var comment = data.stringAttributeForKey("comments")
         comment = comment == "0" ? "回应" : "回应 \(comment)"
         var like = data.stringAttributeForKey("likes")
@@ -531,11 +561,31 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         let heightContent = (content as NSString).sizeWithConstrainedToWidth(globalWidth - 40, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
         var heightCell: CGFloat = 0
         var heightImage: CGFloat = 0
+        
+        /* 文本 */
         if (img0 == 0.0) {
             heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
         } else {
-            heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
-            heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+            /* 多图带文字 */
+            if typeImages == "3" {
+                if let images = data.objectForKey("images") as? NSArray {
+                    let count = ceil(CGFloat(images.count) / 3)
+                    var h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                    heightImage = h * count - SIZE_COLLECTION_PADDING
+                    heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                }
+            } else if typeImages == "4" {
+                /* 多图不带文字 */
+                if let images = data.objectForKey("images") as? NSArray {
+                    let count = ceil(CGFloat(images.count) / 3)
+                    var h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                    heightImage = h * count - SIZE_COLLECTION_PADDING
+                    heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                }
+            } else {
+                heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+            }
         }
         data["heightImage"] = heightImage
         data["heightCell"] = heightCell
@@ -546,6 +596,22 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate {
         data["lastdate"] = V.relativeTime(lastdate)
         data["title"] = title
         return data
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let c: VVeboCollectionViewCell!  = collectionView.dequeueReusableCellWithReuseIdentifier("VVeboCollectionViewCell", forIndexPath: indexPath) as? VVeboCollectionViewCell
+        if let images = data.objectForKey("images") as? NSArray {
+            c.image = images[indexPath.row] as? NSDictionary
+            c.setup()
+        }
+        return c
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let images = data.objectForKey("images") as? NSArray {
+            return images.count
+        }
+        return 0
     }
     
 }

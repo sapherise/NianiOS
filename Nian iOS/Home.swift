@@ -39,6 +39,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var shouldNavToMe: Bool = false
     var tabButtonArray = NSMutableArray()
     
+    // todo: 修改 bundle
+    // todo: 所有上传图片的地方都修改为多图样式
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         SQLInit()
@@ -50,7 +53,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         setupReachability()
         
         let a = FileUtility.cachePath("")
-        print(a)
         
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
