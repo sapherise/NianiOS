@@ -93,7 +93,6 @@ extension AddStep {
                                 card.widthImage = image.stringAttributeForKey("width")
                                 card.heightImage = image.stringAttributeForKey("height")
                                 card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
-                                print(card.url)
                             }
                             card.onCardSave()
                             // todo: 测试没有图片时的进展卡片

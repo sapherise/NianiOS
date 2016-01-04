@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 class ExploreNewHotCell: UITableViewCell {
-
+    
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var labelContent: UILabel!
@@ -35,7 +35,7 @@ class ExploreNewHotCell: UITableViewCell {
         self.viewHolder.setX(globalWidth/2-160)
         viewLine.setHeightHalf()
     }
-
+    
     func _layoutSubviews() {
         if data != nil {
             let title = self.data.stringAttributeForKey("title")
@@ -99,11 +99,6 @@ class ExploreNewHotCell: UITableViewCell {
         imageHead.cancelImageRequestOperation()
     }
 }
-
-
-
-
-
 
 
 

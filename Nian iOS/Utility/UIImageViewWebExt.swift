@@ -86,10 +86,8 @@ extension UIImageView {
         let url = NSURL(string: urlString)
         self.contentMode = .ScaleAspectFill
         let networkStatus = getStatus()
-        print(urlString)
         let saveMode = Cookies.get("saveMode") as? String
         if (saveMode == "on") && (networkStatus == 1) {
-            print("2")
             self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
             self.sd_setImageWithURL(url, placeholderImage: UIImage(named: "head"), completed: { (image, err, type, url) -> Void in

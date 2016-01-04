@@ -301,8 +301,7 @@ extension WelcomeViewController {
                     } else {
                         let json = JSON(responseObject!)
                         
-                        if let errcode = json["errcode"].number {
-                            print("\(errcode)")
+                        if let _ = json["errcode"].number {
                             self.view.showTipText("微信授权不成功...")
                         } else {
                             let _name = json["nickname"].stringValue

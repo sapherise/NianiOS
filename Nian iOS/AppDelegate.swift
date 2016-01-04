@@ -194,7 +194,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
                     
                 }, failure: {
                     (task, error) in
-                    print("\(error.localizedDescription)")
             })   
         }
     }

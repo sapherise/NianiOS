@@ -121,30 +121,14 @@ class MyActivitiesViewController: SAViewController {
     
     
     func handleBaseJsonWithError(error: NSError?, id: AnyObject?) -> JSON? {
-        
-        if let _error = error {
-            #if DEBUG
-                print("\(_error.localizedDescription)")
-            #else
-                self.view.showTipText("网络有点问题，等一会儿再试")
-            #endif
-            
+        if let _ = error {
+            self.view.showTipText("网络有点问题，等一会儿再试")
             return nil
         }
-        
         let json = JSON(id!)
-        
         if json["error"] != 0 {
-            #if DEBUG
-                let msg = json["message"].string
-                print("\(msg)")
-            #else
-                
-            #endif
-            
             return nil
         }
-        
         return json
     }
 

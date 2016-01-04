@@ -119,7 +119,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if safename != nil {
             self.UserName.text = "\(safename!)"
         }
-        print("本地加载头像")
         self.UserHead.setHead(SAUid())
         
         if cacheCoverUrl != nil && cacheCoverUrl != "http://img.nian.so/cover/!cover" && cacheCoverUrl != "http://img.nian.so/cover/background.png!cover" {
@@ -260,7 +259,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                         self.UserName.text = "\(name)"
                         Cookies.set(name, forKey: "user")
-                        print("网络加载头像")
                         self.UserHead.setHead(safeuid)
                         self.imageBadge.setType(vip)
                         if deadLine == "0" {

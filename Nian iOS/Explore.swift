@@ -74,7 +74,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                 c.data = data
                 return c
             } else {
-//                return getCell(indexPath, dataArray: d, type: 2)
+                //                return getCell(indexPath, dataArray: d, type: 2)
                 return getCell(indexPath, dataArray: d, type: 2)
             }
         } else if tableView == self.tableViewHot {
@@ -202,7 +202,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         
         scrollView.setWidth(globalWidth)
         scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
-//        recomTableView.frame.origin.x = globalWidth * 2
+        //        recomTableView.frame.origin.x = globalWidth * 2
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
