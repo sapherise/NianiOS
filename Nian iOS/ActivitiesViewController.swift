@@ -24,6 +24,8 @@ class ActivitiesViewController: SAViewController {
         self.setSeperateViewHeight()
         self.view.backgroundColor = UIColor.C96()
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        // todo: 图片的缓存还是有问题，我在 iOS 截图上传的图片，返回的图片质量非常差
     }
 }
 
