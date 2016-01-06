@@ -14,8 +14,12 @@ import QuartzCore
     optional func setting(name name: String?, cover: UIImage?, avatar: UIImage?)
 }
 
+protocol LockDelegate {
+    func setLockState(isOn: Bool)
+}
 
-class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
+
+class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -40,6 +44,8 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
     @IBOutlet weak var dailyRemindSwitch: UISwitch!
     /// 是否只能通过昵称找到我
     @IBOutlet weak var findViaNameSwitch: UISwitch!
+    /// 是否开启密码保护
+    @IBOutlet weak var lockSwitch: UISwitch!
     /// 清理缓存时用的 indicator
     @IBOutlet weak var cacheActivityIndicator: UIActivityIndicatorView!
     /// version label
@@ -66,6 +72,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
     @IBOutlet weak var sp14HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sp15HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sp16HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp17HeightConstraint: NSLayoutConstraint!
     
     /// 一些用户信息
     var userDict: Dictionary<String, AnyObject>?
@@ -159,6 +166,11 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate {
         } else {
             self.dailyRemindSwitch.setOn(false, animated: true)
         }
+        
+        // 是否开启了应用密码
+        let lock = Cookies.get("Lock") as? String
+        let lockState = lock == nil ? false : true
+        setLockState(lockState)
         
         // 获得并显示版本号
         let versionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
@@ -327,6 +339,26 @@ extension NewSettingViewController{
             }
         }
         
+    }
+    
+    @IBAction func lockNian(sender: UISwitch) {
+        if sender.on {
+            let vc = Lock()
+            vc.type = lockType.on
+            vc.delegate = self
+            self.navigationController?.pushViewController(vc, animated: true)
+            setLockState(false)
+        } else {
+            let vc = Lock()
+            vc.type = lockType.off
+            vc.delegate = self
+            self.navigationController?.pushViewController(vc, animated: true)
+            setLockState(true)
+        }
+    }
+    
+    func setLockState(isOn: Bool) {
+        lockSwitch.setOn(isOn, animated: true)
     }
 }
 
@@ -624,6 +656,7 @@ extension NewSettingViewController {
         self.sp14HeightConstraint.constant = globalHalf
         self.sp15HeightConstraint.constant = globalHalf
         self.sp16HeightConstraint.constant = globalHalf
+        self.sp17HeightConstraint.constant = globalHalf
     }
 
 }

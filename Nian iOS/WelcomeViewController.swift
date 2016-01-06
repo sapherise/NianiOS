@@ -57,6 +57,7 @@ class WelcomeViewController: UIViewController {
             delay(0.1, closure: { () -> () in
                 self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
                     self.view.hidden = false
+                    NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
                 })
             })
         } else {  // 没有登录

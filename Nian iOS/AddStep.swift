@@ -199,7 +199,6 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         /* 如果传入的 dataEdit 不为空，先提取出相关的内容 */
         if dataEdit != nil {
             let content = dataEdit!.stringAttributeForKey("content")
-            print(dataEdit!)
             if let images = dataEdit!.objectForKey("images") as? NSArray {
                 if images.count > 0 {
                     for i in 0...(images.count - 1) {

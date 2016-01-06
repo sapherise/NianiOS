@@ -48,20 +48,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.setupViews()
         self.initViewControllers()
         gameoverCheck()
-        launchTimer()
-        onCircleEnter()
         setupReachability()
-        
-        let a = FileUtility.cachePath("")
-//        print(a)
-        
-        delay(1) { () -> () in
-            let vc = Lock()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
-        let notiCenter = NSNotificationCenter.defaultCenter()
-        notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
 
     func gameoverCheck() {
@@ -132,14 +119,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         super.viewDidAppear(animated)
         navHide()
         self.navigationController!.interactivePopGestureRecognizer!.enabled = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveActive", name: "AppActive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive:", name: "AppDeactive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
         // 当前账户退出，载入其他账户时使用
         if globalWillReEnter == 1 {
             globalWillReEnter = 0
             onCircleEnter()
         }
+    }
+    
+    func onAppActive() {
+        onAppEnterForeground()
     }
     
     /**
@@ -170,10 +158,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppActive", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "AppDeactive", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "CircleLeave", object: nil)
     }
     
     /**
@@ -212,14 +196,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                 self.loadLetter()
             }
         }
-        
     }
     
-/*=========================================================================================================================================*/
-    
-    func onObserveActive() {
+    /* App 从后台进入前台，或者在登录状态下启动 */
+    func onAppEnterForeground() {
         launchTimer()
         onCircleEnter()
+        onLock(lockType.verify)
     }
     
     // 连接数据库
@@ -234,7 +217,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         client.leave()
     }
     
-    func onObserveDeactive(sender: NSNotification) {
+    func onObserveDeactive() {
         stopTimer()
     }
     
@@ -339,6 +322,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "QuickActions:", name: "QuickActions", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppEnterForeground", name: "AppEnterForeground", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     // 3D Touch 下的更新进展
@@ -580,53 +568,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
 }
-
-
-//extension HomeViewController: NewAddStepDelegate {
-//    
-//    func newEditstep() {
-//
-//    }
-//
-//    func newUpdate(data: NSDictionary) {
-//        self.newEditDreamId = data["dream"] as! String
-//    }
-//
-//    // todo: 这个要删除
-//    func newCountUp(coin: String, total: String, isfirst: String) {
-//        if isfirst == "1" {
-//            globalWillNianReload = 1
-//            
-//            if Int(total) < 3 {
-//                let niCoinLessAlert = NIAlert()
-//                niCoinLessAlert.delegate = self
-//                niCoinLessAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-//                    forKeys: ["img", "title", "content", "buttonArray"])
-//                niCoinLessAlert.showWithAnimation(.flip)
-//            } else {
-//                // 如果念币多于 3， 那么就出现抽宠物
-//                let v = SAEgg()
-//                v.delegateShare = self
-//                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-//                    forKeys: ["img", "title", "content", "buttonArray"])
-//                v.showWithAnimation(.flip)
-//            }
-//        } else {
-//            self.view.showTipText("发送好了")
-//        }
-//    }
-//}
-
-
-
-
-
-
-
-
-
-
-
 
 
 

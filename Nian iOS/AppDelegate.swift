@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
+        
+        // todo: 封号的时候能否进入密码界面
 
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
@@ -69,14 +71,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("AppEnterForeground", object: nil)
         
-        application.applicationIconBadgeNumber = 0
-        application.cancelAllLocalNotifications()
+//        application.applicationIconBadgeNumber = 0
+////        application.cancelAllLocalNotifications()
+//        UIApplication* application = [UIApplication sharedApplication];
+//        
+//        NSArray* scheduledNotifications = [NSArray arrayWithArray:application.scheduledLocalNotifications];
+//        
+//        application.scheduledLocalNotifications = scheduledNotifications;
+        // todo: 删除进入 App 后的通知中心的所有内容
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-//        NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
     }
 
     func applicationWillTerminate(application: UIApplication) {

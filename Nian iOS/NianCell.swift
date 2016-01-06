@@ -22,8 +22,8 @@ class NianCell: UICollectionViewCell{
     override func layoutSubviews() {
         super.layoutSubviews()
         self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
-        
-        if globaliOS >= 8.0 && globalhasLaunched == 0 {
+        let lock = Cookies.get("Lock") as? String
+        if globaliOS >= 8.0 && globalhasLaunched == 0 && lock == nil {
             self.imageCover.alpha = 0
             let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
             self.imageCover.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: 300)

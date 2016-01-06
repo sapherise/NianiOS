@@ -630,6 +630,15 @@ extension UIViewController {
             }
         }
     }
+    
+    /* 进入应用锁密码界面 */
+    func onLock(type: lockType) {
+        if let _ = Cookies.get("Lock") as? String {
+            let vc = Lock()
+            vc.type = type
+            self.navigationController?.pushViewController(vc, animated: false)
+        }
+    }
 }
 
 extension UIButton {
@@ -941,6 +950,10 @@ class Cookies {
     class func get(key: String) -> AnyObject? {
         let Cookie = NSUserDefaults.standardUserDefaults()
         return Cookie.objectForKey(key)
+    }
+    class func remove(key: String) {
+        let Cookie = NSUserDefaults.standardUserDefaults()
+        Cookie.removeObjectForKey(key)
     }
 }
 
