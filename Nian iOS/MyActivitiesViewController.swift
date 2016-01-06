@@ -147,7 +147,7 @@ extension MyActivitiesViewController: UITableViewDataSource, UITableViewDelegate
             let cell = self.tableView.dequeueReusableCellWithIdentifier("myStepCell") as? VVeboCell
             cell?.type = 1
             self.tableView.drawCell(cell!, indexPath: indexPath, dataArray: self.tableDataSource)
-            cell?.delegate = self
+//            cell?.delegate = self
             
             return cell!
             
@@ -155,7 +155,7 @@ extension MyActivitiesViewController: UITableViewDataSource, UITableViewDelegate
             let cell = self.tableView.dequeueReusableCellWithIdentifier("myLikeStepCell") as? VVeboCell
             cell?.type = 0
             self.tableView.drawCell(cell!, indexPath: indexPath, dataArray: self.tableDataSource)
-            cell?.delegate = self
+//            cell?.delegate = self
             
             return cell!
             
@@ -236,24 +236,24 @@ extension MyActivitiesViewController: UITableViewDataSource, UITableViewDelegate
 }
 
 
-extension MyActivitiesViewController: delegateSAStepCell {
-
-    func updateStep(index: Int, key: String, value: AnyObject) {
-        
-    }
-    
-    func updateStep(index: Int) {
-        
-    }
-    
-    func updateStep() {
-        
-    }
-    
-    func updateStep(index: Int, delete: Bool) {
-
-    }
-}
+//extension MyActivitiesViewController: delegateSAStepCell {
+//
+//    func updateStep(index: Int, key: String, value: AnyObject) {
+//        
+//    }
+//    
+//    func updateStep(index: Int) {
+//        
+//    }
+//    
+//    func updateStep() {
+//        
+//    }
+//    
+//    func updateStep(index: Int, delete: Bool) {
+//
+//    }
+//}
 
 extension MyActivitiesViewController: RedditDelegate {
     

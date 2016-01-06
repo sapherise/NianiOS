@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 protocol delegateSAStepCell {
+    func updateData(index: Int, data: NSDictionary)
     func updateStep(index: Int, key: String, value: AnyObject)
     func updateStep(index: Int)
     func updateStep()
@@ -340,12 +341,13 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             editActivity.saActivityType = "编辑"
             editActivity.saActivityImage = UIImage(named: "av_edit")
             editActivity.saActivityFunction = {
-                let addstepVC = AddStepViewController(nibName: "AddStepViewController", bundle: nil)
-                addstepVC.isEdit = 1
-                addstepVC.data = self.data
-                addstepVC.row = row
-                addstepVC.delegate = self
-                self.findRootViewController()?.navigationController?.pushViewController(addstepVC, animated: true)
+                let vc = AddStep(nibName: "AddStep", bundle: nil)
+                vc.willEdit = true
+                vc.dataEdit = self.data
+                vc.rowEdit = row
+                vc.idDream = self.data.stringAttributeForKey("dream")
+                vc.delegate = self
+                self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
             }
             //删除按钮
             let deleteActivity = SAActivity()
@@ -422,28 +424,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     func Editstep() {
         if editStepData != nil {
             clear()
-            let content = editStepData!.stringAttributeForKey("content")
-            let img = editStepData!.stringAttributeForKey("image")
-            let img0 = editStepData!.stringAttributeForKey("width")
-            let img1 = editStepData!.stringAttributeForKey("height")
-            let width = CGFloat((editStepData!.stringAttributeForKey("width") as NSString).floatValue)
-            let height = CGFloat((editStepData!.stringAttributeForKey("height") as NSString).floatValue)
-            let heightContent = (content as NSString).sizeWithConstrainedToWidth(globalWidth - SIZE_PADDING * 2, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
-            var heightCell: CGFloat = 0
-            var heightImage: CGFloat = 0
-            if width == 0 {
-                heightCell = content == "" ? 155 + 23 : heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            } else {
-                heightImage = height * (globalWidth - SIZE_PADDING * 2) / width
-                heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-            }
-            delegate?.updateStep(num, key: "image", value: img)
-            delegate?.updateStep(num, key: "width", value: img0)
-            delegate?.updateStep(num, key: "height", value: img1)
-            delegate?.updateStep(num, key: "content", value: content)
-            delegate?.updateStep(num, key: "heightImage", value: heightImage)
-            delegate?.updateStep(num, key: "heightContent", value: heightContent)
-            delegate?.updateStep(num, key: "heightCell", value: heightCell)
+            delegate?.updateData(num, data: editStepData!)
             delegate?.updateStep(num)
         }
     }
@@ -596,22 +577,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         data["lastdate"] = V.relativeTime(lastdate)
         data["title"] = title
         return data
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c: VVeboCollectionViewCell!  = collectionView.dequeueReusableCellWithReuseIdentifier("VVeboCollectionViewCell", forIndexPath: indexPath) as? VVeboCollectionViewCell
-        if let images = data.objectForKey("images") as? NSArray {
-            c.image = images[indexPath.row] as? NSDictionary
-            c.setup()
-        }
-        return c
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let images = data.objectForKey("images") as? NSArray {
-            return images.count
-        }
-        return 0
     }
     
 }

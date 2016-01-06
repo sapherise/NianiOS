@@ -74,3 +74,7 @@
  */
 #import "LXReorderableCollectionViewFlowLayout.h"
 
+/* 图片加载进度
+ */
+#import "UIImageView+ProgressView.h"
+

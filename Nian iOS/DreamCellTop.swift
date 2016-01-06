@@ -254,7 +254,7 @@ class DreamCellTop: UITableViewCell {
     
     func onImage() {
         let img = data!.stringAttributeForKey("image")
-        dreamhead.showImage("http://img.nian.so/dream/\(img)!large")
+        dreamhead.showImage("http://img.nian.so/dream/\(img)!dream")
     }
     
     func onLike() {

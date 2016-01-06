@@ -16,6 +16,7 @@ struct V {
         case Head = "head"
         case Dream = "dream"
         case Large = "large"
+        case Empty = ""
     }
     
     static let Tags = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]

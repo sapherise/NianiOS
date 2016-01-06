@@ -32,7 +32,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     var dict = NSMutableDictionary()
     var id: String = ""
     var idDream: String = "-1"
-    var imageArray: [ALAsset] = []
+    var imageArray: [UIImage] = []
     
     var keyboardHeight: CGFloat = 0.0  // 键盘的高度
     var dataArray = NSMutableArray()
@@ -45,6 +45,17 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     
     /* 多图上传传递给服务器的数组 */
     var uploadArray = NSMutableArray()
+    
+    /* 是否编辑 */
+    var willEdit = false
+    
+    /* 编辑的数据 */
+    var dataEdit: NSDictionary?
+    var rowEdit = -1
+    var delegate: AddstepDelegate?
+    
+    /* 如果是编辑的图片，就跳过上传 */
+    var hasUploadedArray: [Int] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,7 +135,9 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         
         
         self.viewDream.setWidth(globalWidth)
-        self.viewDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewDream"))
+        if !willEdit {
+            self.viewDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewDream"))
+        }
         
         
         /* 先判断是否有记本 id 传入
@@ -173,22 +186,40 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         
         /* 设置箭头位置*/
         imageArrow.setX(globalWidth - 10 - imageArrow.width())
+        if willEdit {
+            imageArrow.hidden = true
+        }
+        
+        // todo: 本地提醒功能
+        // todo: 新手引导
         
         self.view.backgroundColor = UIColor.whiteColor()
         self.field2.delegate = self
         
-        /* 如果传入的 dict 不为空，先提取出相关的内容 */
-//        if dict.allKeys.count > 0 {
-//            self.editTitle = self.dict["title"] as! String
-//            self.editContent = self.dict["content"] as! String
-//            self.tagsArray = self.dict["tags"] as! Array
-//        }
-//        
-//        if self.isEdit == 1 {
-//            self.field1!.text = self.editTitle.decode()
-//            self.field2.text = self.editContent.decode()
-//            self.uploadUrl = self.editImage
-//        }
+        /* 如果传入的 dataEdit 不为空，先提取出相关的内容 */
+        if dataEdit != nil {
+            let content = dataEdit!.stringAttributeForKey("content")
+            print(dataEdit!)
+            if let images = dataEdit!.objectForKey("images") as? NSArray {
+                if images.count > 0 {
+                    for i in 0...(images.count - 1) {
+                        let image = images[i] as! NSDictionary
+                        let path = image.stringAttributeForKey("path")
+                        var imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey("http://img.nian.so/step/\(path)!large")
+                        if imageCache == nil {
+                            imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey("http://img.nian.so/step/\(path)!200x")
+                        }
+                        imageArray.append(imageCache)
+                        hasUploadedArray.append(i)
+                    }
+                }
+            }
+            field2.text = content
+            if content != "" {
+                labelPlaceholder.hidden = true
+            }
+            reLayout()
+        }
     }
     
     func dismissKeyboard() {

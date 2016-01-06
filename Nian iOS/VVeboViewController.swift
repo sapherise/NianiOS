@@ -60,13 +60,17 @@ class VVeboViewController: UIViewController, delegateSAStepCell, UIScrollViewDel
     
     // 重载表格
     func updateStep() {
-        SAUpdate(self.currenTableView!)
+        self.currenTableView?.reloadData()
     }
     
     // 删除某个格子
     func updateStep(index: Int, delete: Bool) {
         let numSection = max(currenTableView!.numberOfSections - 1, 0)
         SAUpdate(delete, dataArray: self.currentDataArray!, index: index, tableView: self.currenTableView!, section: numSection)
+    }
+    
+    func updateData(index: Int, data: NSDictionary) {
+        SAUpdate(self.currentDataArray!, index: index, data: data, tableView: self.currenTableView!)
     }
     
     // 获得高度

@@ -37,7 +37,6 @@ class Card: UIView {
         if self.content == "" {
             self.content = V.enTime()
         }
-//        self.image.setImage(self.url)
         var heightNew: CGFloat = 0
         let w = CGFloat((self.widthImage as NSString).floatValue)
         let h = SACeil(CGFloat((self.heightImage as NSString).floatValue), dot: 0, isCeil: false)
@@ -45,6 +44,8 @@ class Card: UIView {
             heightNew = h * (self.widthCard - self.num * 2) / w
             self.image.frame = CGRectMake(self.num, self.num * 2 + 1, self.widthCard - self.num * 2, heightNew)
             self.labelContent.setY(self.image.bottom() + self.num)
+            let imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(self.url)
+            self.image.image = imageCache
         } else {
             self.image.hidden = true
             self.labelContent.setY(self.num * 2)

@@ -407,7 +407,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             let img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
             if img0 != 0 {
                 if let v = sender.view as? UIImageView {
-                    let url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!large"
+                    let url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!a"
                     v.showImage(url)
                 }
             }

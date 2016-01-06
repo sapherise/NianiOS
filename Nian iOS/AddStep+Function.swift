@@ -23,15 +23,23 @@ extension AddStep {
     }
     
     /* 上传队列完成后，准备提交到服务器 */
-    func upYunMulti(data: NSDictionary, count: Int) {
+    func upYunMulti(data: NSDictionary?, count: Int) {
         go {
-            self.uploadArray.addObject(data)
+            if data != nil {
+                self.uploadArray.addObject(data!)
+            } else {
+                let n = self.hasUploadedArray[count]
+                let images = self.dataEdit!.objectForKey("images") as! NSArray
+                let image = images[n] as! NSDictionary
+                self.uploadArray.addObject(image)
+            }
             let num = count + 1
             /* 按照队列进行上传 */
             if self.imageArray.count > num {
                 let op = UpyunOperation()
                 op.num = num
-                op.asset = self.imageArray[num]
+                op.hasUploaded = self.hasUploadedArray[num] >= 0
+                op.image = self.imageArray[num]
                 op.delegate = self
                 self.queue.addOperation(op)
             } else {
@@ -67,66 +75,141 @@ extension AddStep {
                 type = 3
             }
         }
-        back {
-            self.setBarButtonLoading()
-        }
         
-        AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
-            if let d = data as? NSDictionary {
-                let error = d.stringAttributeForKey("error")
-                if error == "0" {
-                    let result = d.objectForKey("data") as! NSDictionary
-                    let coin = result.stringAttributeForKey("coin")
-                    let totalCoin = result.stringAttributeForKey("totalCoin")
-                    let isfirst = result.stringAttributeForKey("isfirst")
-                    self.field2.resignFirstResponder()
-                    
-                    /* 创建进展卡片 */
-                    go {
-                        let modeCard = SACookie("modeCard")
-                        if modeCard == "off" {
-                        } else {
-                            let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
-                            card.content = self.field2.text
-                            if self.uploadArray.count > 0 {
-                                let image = self.uploadArray[0] as! NSDictionary
-                                card.widthImage = image.stringAttributeForKey("width")
-                                card.heightImage = image.stringAttributeForKey("height")
-                                card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
+        /* 不管编辑或新增，都把当前的记本 id 加入缓存 */
+        Cookies.set(idDream, forKey: "DreamNewest")
+        
+        if willEdit {
+            let sid = dataEdit!.stringAttributeForKey("sid")
+            AddStepModel.postEditStep(content: field2.text, stepType: type, images: uploadArray, sid: sid, callback: { (task, data, error) -> Void in
+                if let d = data as? NSDictionary {
+                    let error = d.stringAttributeForKey("error")
+                    if error == "0" {
+                        let mutableData = NSMutableDictionary(dictionary: self.dataEdit!)
+                        mutableData.setValue(self.field2.text, forKey: "content")
+                        mutableData.setValue(self.uploadArray, forKey: "images")
+                        mutableData.setValue(type, forKey: "type")
+                        if self.uploadArray.count > 0 {
+                            if let image = self.uploadArray[0] as? NSDictionary {
+                                mutableData.setValue(image.stringAttributeForKey("path"), forKey: "image")
+                                mutableData.setValue(image.stringAttributeForKey("width"), forKey: "width")
+                                mutableData.setValue(image.stringAttributeForKey("height"), forKey: "height")
                             }
-                            card.onCardSave()
-                            // todo: 测试没有图片时的进展卡片
+                        } else {
+                            mutableData.setValue("", forKey: "image")
+                            mutableData.setValue("0", forKey: "width")
+                            mutableData.setValue("0", forKey: "height")
                         }
-                    }
-                    
-                    // todo: 开启下面这个
-                    if isfirst == "1" {
-                        Nian.saegg(coin, totalCoin: totalCoin)
+                        
+                        let heightContent = (self.field2.text as NSString).sizeWithConstrainedToWidth(globalWidth - 40, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
+                        var heightCell: CGFloat = 0
+                        var heightImage: CGFloat = 0
+                        
+                        if type == 7 {
+                            /* 无图，有文字 */
+                            heightCell = heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                        } else if type == 1 {
+                            /* 无图，无文字 */
+                            heightCell = 155 + 23
+                        } else {
+                            /* 多图带文字 */
+                            if type == 3 {
+                                let count = ceil(CGFloat(self.uploadArray.count) / 3)
+                                let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                                heightImage = h * count - SIZE_COLLECTION_PADDING
+                                heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                            } else if type == 4 {
+                                /* 多图不带文字 */
+                                let count = ceil(CGFloat(self.uploadArray.count) / 3)
+                                let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                                heightImage = h * count - SIZE_COLLECTION_PADDING
+                                heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                            } else {
+                                /* 单图 */
+                                if let image = self.uploadArray[0] as? NSDictionary {
+                                    let w = (image.stringAttributeForKey("width") as NSString).floatValue
+                                    let h = (image.stringAttributeForKey("height") as NSString).floatValue
+                                    heightImage = CGFloat(h * Float(globalWidth - 40) / w)
+                                    if type == 6 {
+                                        /* 有文字，单图片 */
+                                        heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                    } else if type == 5 {
+                                        /* 无文字，单图片 */
+                                        heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                    }
+                                }
+                            }
+                        }
+                        mutableData["heightImage"] = heightImage
+                        mutableData["heightCell"] = heightCell
+                        mutableData["heightContent"] = heightContent
+                        
+                        self.delegate?.editStepRow = self.rowEdit
+                        self.delegate?.editStepData = mutableData
+                        self.delegate?.Editstep()
                         self.navigationController?.popViewControllerAnimated(true)
+                    }
+                }
+            })
+        } else {
+            AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
+                if let d = data as? NSDictionary {
+                    let error = d.stringAttributeForKey("error")
+                    if error == "0" {
+                        let result = d.objectForKey("data") as! NSDictionary
+                        let coin = result.stringAttributeForKey("coin")
+                        let totalCoin = result.stringAttributeForKey("totalCoin")
+                        let isfirst = result.stringAttributeForKey("isfirst")
+                        self.field2.resignFirstResponder()
+                        
+                        /* 创建进展卡片 */
+                        go {
+                            let modeCard = SACookie("modeCard")
+                            if modeCard == "off" {
+                            } else {
+                                let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                                card.content = self.field2.text
+                                if self.uploadArray.count > 0 {
+                                    let image = self.uploadArray[0] as! NSDictionary
+                                    card.widthImage = image.stringAttributeForKey("width")
+                                    card.heightImage = image.stringAttributeForKey("height")
+                                    card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
+                                }
+                                card.onCardSave()
+                            }
+                        }
+                        
+                        if isfirst == "1" {
+                            Nian.saegg(coin, totalCoin: totalCoin)
+                            self.navigationController?.popViewControllerAnimated(true)
+                        } else {
+                            let vc = DreamViewController()
+                            vc.willBackToRootViewController = true
+                            vc.Id = self.idDream
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
                     } else {
-                        let vc = DreamViewController()
-                        vc.willBackToRootViewController = true
-                        vc.Id = self.idDream
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        self.view.showTipText("服务器坏了", delay: 1)
                     }
                 } else {
                     self.view.showTipText("服务器坏了", delay: 1)
                 }
-            } else {
-                self.view.showTipText("服务器坏了", delay: 1)
-            }
-        })
+            })
+        }
     }
     
     /* 点击提交进展按钮 */
     func add() {
+        self.setBarButtonLoading()
         go {
             if self.imageArray.count > 0 {
                 self.queue.maxConcurrentOperationCount = 1
                 if self.imageArray.count > 0 {
                     let op = UpyunOperation()
                     op.num = 0
-                    op.asset = self.imageArray[0]
+                    /* 编辑图片为正，上传图片为负，如果大于等于零，就已上传 */
+                    op.hasUploaded = self.hasUploadedArray[0] >= 0
+                    op.image = self.imageArray[0]
                     op.delegate = self
                     self.queue.addOperation(op)
                 }
@@ -135,13 +218,16 @@ extension AddStep {
             }
         }
     }
+    // todo: 编辑的图片不要再次上传
     
     /* 筛选多图完成后调用 */
     func AlbumPickerDidFinishPick(assets:NSArray) {
         for asset in assets {
             if let a = asset as? ALAsset {
                 if  a.valueForProperty("ALAssetPropertyType").isEqual("ALAssetTypePhoto") {
-                    imageArray.append(a)
+                    let img = UIImage(CGImage: a.aspectRatioThumbnail().takeUnretainedValue())
+                    imageArray.append(img)
+                    hasUploadedArray.append(-1)
                 }
             }
         }

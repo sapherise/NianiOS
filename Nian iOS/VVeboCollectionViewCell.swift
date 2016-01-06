@@ -15,8 +15,6 @@ class VVeboCollectionViewCell: UICollectionViewCell {
     func setup() {
         if image != nil {
             let path = image?.stringAttributeForKey("path")
-            let w = image?.stringAttributeForKey("width")
-            let h = image?.stringAttributeForKey("height")
             imageView.setImage("http://img.nian.so/step/\(path!)!200x")
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         }
@@ -24,7 +22,9 @@ class VVeboCollectionViewCell: UICollectionViewCell {
     
     func onImage() {
         let path = image?.stringAttributeForKey("path")
-        imageView.showImage(V.urlStepImage(path!, tag: .Large))
+        let w = CGFloat((image!.stringAttributeForKey("width") as NSString).floatValue)
+        let h = CGFloat((image!.stringAttributeForKey("height") as NSString).floatValue)
+        imageView.showImage("http://img.nian.so/step/\(path!)!200x", newWidth: w, newHeight: h)
     }
 }
 

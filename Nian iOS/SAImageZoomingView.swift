@@ -9,23 +9,20 @@
 import UIKit
 
 class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
-    
-    var imageView:UIImageView?
-    var imageURL:String!
+    var imageView: UIImageView!
+    var imageURL: String!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.delegate = self
-        
-        //     self.imageView = UIImageView(frame: CGRectMake(0, 0, w, h))
-        //     self.contentInset = UIEdgeInsetsMake(y, x, y, x)
         self.imageView = UIImageView()
-        self.addSubview(self.imageView!)
-        self.imageView!.contentMode = .ScaleAspectFit
+        self.imageView.contentMode = .ScaleAspectFit
+        self.imageView.backgroundColor = UIColor.blackColor()
+        self.addSubview(self.imageView)
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
-        self.minimumZoomScale = 0.9;
-        self.maximumZoomScale = 3;
+        self.minimumZoomScale = 0.9
+        self.maximumZoomScale = 3
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,7 +30,7 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView)->UIView? {
-        return self.imageView!
+        return self.imageView
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
@@ -45,13 +42,50 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
         if (self.contentSize.height < self.bounds.size.height) {
             y = (self.bounds.size.height - self.contentSize.height) * 0.5
         }
-        self.imageView?.setX(x)
-        self.imageView?.setY(y)
+        self.imageView.setX(x)
+        self.imageView.setY(y)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imageView!.backgroundColor = IconColor
-        self.imageView!.setImageIgnore(self.imageURL)
+        
+        let v = UIProgressView()
+        v.progressTintColor = SeaColor
+        v.trackTintColor = IconColor
+        v.center = imageView.center
+        v.hidden = true
+        
+        delay(0.3) { () -> () in
+            v.hidden = false
+        }
+        
+        /* placeHolder 就是缓存的小图
+        ** 然后加载 !large 的大图
+        */
+        let imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(imageURL)
+        self.imageView.sd_setImageWithURL(NSURL(string: explode(imageURL)), placeholderImage: imageCache, usingProgressView: v)
+    }
+    
+    /* 把 url 的后缀改为 !large
+    */
+    func explode(content: String) -> String {
+        let arr = content.componentsSeparatedByString("!")
+        var after = ""
+        if arr.count > 0 {
+            for i in 0...(arr.count - 1) {
+                if i == 0 {
+                    after = arr[i]
+                } else if i == arr.count - 1 {
+                    after = "\(after)!large"
+                } else {
+                    after = "\(after)!\(arr[i])"
+                }
+            }
+        }
+        return after
+    }
+    
+    func getImageUrlLarge() -> String {
+        return explode(imageURL)
     }
 }

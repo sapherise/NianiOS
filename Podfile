@@ -10,6 +10,7 @@ pod 'NSData+MD5Digest'
 pod 'Base64'
 pod 'UMengAnalytics'
 pod 'SDWebImage'
+pod 'SDWebImage-ProgressView'
 
 end
 

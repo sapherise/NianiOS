@@ -780,12 +780,12 @@ func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: AnyObje
     dataArray.replaceObjectAtIndex(index, withObject: mutableItem)
 }
 
-func SAUpdate(index: Int, section: Int, tableView: UITableView) {
-    tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
+func SAUpdate(dataArray: NSMutableArray, index: Int, data: NSDictionary, tableView: UITableView) {
+    dataArray.replaceObjectAtIndex(index, withObject: data)
 }
 
-func SAUpdate(tableView: UITableView) {
-    tableView.reloadData()
+func SAUpdate(index: Int, section: Int, tableView: UITableView) {
+    tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: UITableViewRowAnimation.Left)
 }
 
 func SAUpdate(delete: Bool, dataArray: NSMutableArray, index: Int, tableView: UITableView, section: Int) {

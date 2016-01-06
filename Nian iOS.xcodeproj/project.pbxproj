@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1200406A1C3C26C100D7B549 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120040691C3C26C100D7B549 /* Lock.swift */; };
 		12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028E331A3EECBD0072FBE1 /* CircleTag.swift */; };
 		12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12028E351A3EED220072FBE1 /* CircleTag.storyboard */; };
 		120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6DC71BD2265500422B86 /* VVeboViewController.swift */; };
@@ -325,6 +326,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		120040691C3C26C100D7B549 /* Lock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		12028E331A3EECBD0072FBE1 /* CircleTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleTag.swift; sourceTree = "<group>"; };
 		12028E351A3EED220072FBE1 /* CircleTag.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CircleTag.storyboard; sourceTree = "<group>"; };
 		120B6DC71BD2265500422B86 /* VVeboViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboViewController.swift; sourceTree = "<group>"; };
@@ -710,6 +712,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		120040661C3C26A800D7B549 /* 密码 */ = {
+			isa = PBXGroup;
+			children = (
+				120040691C3C26C100D7B549 /* Lock.swift */,
+			);
+			name = "密码";
+			sourceTree = "<group>";
+		};
 		12028E2E1A3EDA330072FBE1 /* 创建梦境 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1120,6 +1130,7 @@
 		12A6564519719BAC004F530B /* 设置 */ = {
 			isa = PBXGroup;
 			children = (
+				120040661C3C26A800D7B549 /* 密码 */,
 				12BE103E19C6055300370348 /* Help.swift */,
 				1255785B1A0CD434005E56D7 /* Web.swift */,
 				12DE696419D130940006B5B5 /* Care.swift */,
@@ -2038,6 +2049,7 @@
 				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
 				C4E1DCD51BF9DE87008896AB /* MyActivitiesViewController.swift in Sources */,
 				129F6C6E1C306FAD008B61A5 /* AddStep.swift in Sources */,
+				1200406A1C3C26C100D7B549 /* Lock.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
 				12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */,
 				C488B47B1BFD9E8D00C735EC /* PatternViewController.swift in Sources */,

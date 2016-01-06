@@ -53,6 +53,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         setupReachability()
         
         let a = FileUtility.cachePath("")
+//        print(a)
+        
+        delay(1) { () -> () in
+            let vc = Lock()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
         
         let notiCenter = NSNotificationCenter.defaultCenter()
         notiCenter.addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)

@@ -46,8 +46,7 @@ extension AddStep {
     /* collectionView */
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let c: AddStepImageCell! = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepImageCell", forIndexPath: indexPath) as? AddStepImageCell
-        c.imageView.backgroundColor = IconColor
-        c.asset = imageArray[indexPath.row]
+        c.image = imageArray[indexPath.row]
         c.setup()
         return c
     }
@@ -71,6 +70,7 @@ extension AddStep {
         if buttonIndex == 0 {
             if rowDelete >= 0 {
                 imageArray.removeAtIndex(rowDelete)
+                hasUploadedArray.removeAtIndex(rowDelete)
                 reLayout()
             }
         }
