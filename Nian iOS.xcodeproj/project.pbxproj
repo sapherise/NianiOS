@@ -15,6 +15,7 @@
 		120B6E421BD3E23F00422B86 /* Explore+NewestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */; };
 		121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121702171BA18BDC00656AE1 /* AddTopic.swift */; };
 		1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121702191BA18C1B00656AE1 /* AddTopic.xib */; };
+		121E513B1C3D31980019F69A /* MySteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121E513A1C3D31980019F69A /* MySteps.swift */; };
 		121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121F669E1B15CCC100103B14 /* SAMenu.xib */; };
 		121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F66A01B15CCCA00103B14 /* SAMenu.swift */; };
 		12216F941A61471C003701BF /* MeNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12216F931A61471C003701BF /* MeNext.swift */; };
@@ -334,6 +335,7 @@
 		120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+NewestCell.swift"; sourceTree = "<group>"; };
 		121702171BA18BDC00656AE1 /* AddTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTopic.swift; sourceTree = "<group>"; };
 		121702191BA18C1B00656AE1 /* AddTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTopic.xib; sourceTree = "<group>"; };
+		121E513A1C3D31980019F69A /* MySteps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySteps.swift; sourceTree = "<group>"; };
 		121F669E1B15CCC100103B14 /* SAMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAMenu.xib; sourceTree = "<group>"; };
 		121F66A01B15CCCA00103B14 /* SAMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAMenu.swift; sourceTree = "<group>"; };
 		12216F931A61471C003701BF /* MeNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeNext.swift; sourceTree = "<group>"; };
@@ -865,7 +867,7 @@
 				1234FDA91A1B33E900AF8A50 /* NianCell.swift */,
 				12DA48B51A1C34F7002651EF /* NianCell.xib */,
 				124F3257197B19EC0070CA4C /* NianViewController.storyboard */,
-				C486BDE61BF46A0B00EF1C2A /* ActivitiesSummary */,
+				C486BDE61BF46A0B00EF1C2A /* 收藏 */,
 			);
 			name = "首页";
 			sourceTree = "<group>";
@@ -1592,17 +1594,18 @@
 			name = NIALertView;
 			sourceTree = "<group>";
 		};
-		C486BDE61BF46A0B00EF1C2A /* ActivitiesSummary */ = {
+		C486BDE61BF46A0B00EF1C2A /* 收藏 */ = {
 			isa = PBXGroup;
 			children = (
 				C486BDE71BF46ABD00EF1C2A /* ActivitiesSummary.storyboard */,
+				C486BDE91BF477E800EF1C2A /* ActivitiesViewController.swift */,
+				121E513A1C3D31980019F69A /* MySteps.swift */,
 				C4E1DCD21BF992E2008896AB /* MyLikeNoteViewController.swift */,
 				C4E1DCD41BF9DE87008896AB /* MyActivitiesViewController.swift */,
-				C486BDE91BF477E800EF1C2A /* ActivitiesViewController.swift */,
 				C486BDEB1BF4809F00EF1C2A /* ActivitiesSummaryModel.swift */,
 				C4B879A01BFB3E85004B0C0D /* ResponsedTopicCell.swift */,
 			);
-			name = ActivitiesSummary;
+			name = "收藏";
 			sourceTree = "<group>";
 		};
 		C486FD2E1C04430A009F1F90 /* Cartography */ = {
@@ -1959,6 +1962,7 @@
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				C486FD561C04430A009F1F90 /* Property.swift in Sources */,
 				126D6E441C2F1E800053211C /* LSYAlbumDelegateClass.swift in Sources */,
+				121E513B1C3D31980019F69A /* MySteps.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				C4C2C3CA1C1BD06000209B55 /* NewAddStepUtils.swift in Sources */,
 				1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */,

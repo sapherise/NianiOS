@@ -157,6 +157,9 @@ class Lock: SAViewController, UITextViewDelegate {
             }
         }
         
+        // todo: showtooltips 应该可以滑动上去
+        // todo: progressView 丢失了
+        
         if l == 4 {
             if type == lockType.verify {
                 if let password = Cookies.get("Lock") as? String {

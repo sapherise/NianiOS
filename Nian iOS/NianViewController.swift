@@ -191,7 +191,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.viewHolder!.setY(height)
                     self.viewMenu.setY(height + 320)
                     self.imageBG.frame = CGRectMake(height/10, height, globalWidth-height/5, 320)
-             //       self.imageBG.backgroundColor = UIColor.redColor()
                 }
                 scrollHidden(self.viewHolderHead, scrollY: 68)
                 scrollHidden(self.imageBadge, scrollY: 68)
@@ -200,6 +199,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 scrollHidden(self.coinButton, scrollY: 214)
                 scrollHidden(self.levelButton, scrollY: 214)
                 scrollHidden(self.imageSettings, scrollY: 50)
+                scrollHidden(self.dynamicSummary, scrollY: 50)
                 if height >= 320 - 64 {
                     self.navView.hidden = false
                 }else{
@@ -382,9 +382,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
      */
     func toActivitiesSummary(sender: UIButton) {
         let storyBoard = UIStoryboard(name: "ActivitiesSummary", bundle: nil)
-        let activitiesSummaryVC = storyBoard.instantiateViewControllerWithIdentifier("ActivitiesViewController")
-        
-        self.navigationController?.pushViewController(activitiesSummaryVC, animated: true)
+        let vc = storyBoard.instantiateViewControllerWithIdentifier("ActivitiesViewController")
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onDreamClick(ID:String){

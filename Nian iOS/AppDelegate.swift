@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         self.window!.makeKeyAndVisible()
         
         // todo: 封号的时候能否进入密码界面
+        // todo: 添加进展后，手势右滑返回的时候是返回到哪儿呢
 
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
