@@ -115,8 +115,7 @@ func thepush(content: String, dateSinceNow: NSTimeInterval, willReapt: Bool, id:
     noti.fireDate = date
     noti.timeZone = NSTimeZone.defaultTimeZone()
     if willReapt {
-        noti.repeatInterval = NSCalendarUnit.Minute
-        // todo
+        noti.repeatInterval = NSCalendarUnit.Day
     }
     noti.alertBody = content
     noti.userInfo = ["id": id]

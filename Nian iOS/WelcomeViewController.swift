@@ -42,9 +42,10 @@ class WelcomeViewController: UIViewController {
         if let _uid = CurrentUser.sharedCurrentUser.uid {      //如果登录了
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
             uidKey.setObject(_uid, forKey: kSecAttrAccount)
+            
+            /* 普通启动 */
             launch()
             
-            print("普通界面")
             delay(1, closure: { () -> () in
                 self.view.hidden = false
             })
@@ -61,6 +62,7 @@ class WelcomeViewController: UIViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWeibo:", name: "weibo", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWechat:", name: "Wechat", object: nil)
+        
     }
     
     
@@ -240,10 +242,11 @@ extension WelcomeViewController {
             let accessToken = (notiObject as! NSArray)[1] as? String
             
             if weiboUid != nil && accessToken != nil {
-                LogOrRegModel.getWeiboName(accessToken!, openid: "n*A\(weiboUid!)".md5) {
+                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                    (task, responseObject, error) in
                     
-                    if let _ = error {
+                    if let err = error {
+                        print(err)
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
@@ -311,13 +314,13 @@ extension WelcomeViewController {
     
     
     func logInVia3rdHelper(id: String, nameFrom3rd: String, type: String) {
-        // TODO: start animating
+        self.viewLoadingShow()
+        
+        
         
         LogOrRegModel.check3rdOauth(id, type: type) {
             (task, responseObject, error) in
-            
-            //TODO: stop animating
-            
+            self.viewLoadingHide()
             if let _ = error {
                 self.showTipText("网络有点问题，等一会儿再试")
             } else {
@@ -353,14 +356,14 @@ extension WelcomeViewController {
                                 uidKey.setObject(uid, forKey: kSecAttrAccount)
                                 uidKey.setObject(shell, forKey: kSecValueData)
                                 
-                                // TODO: need verify
                                 CurrentUser.sharedCurrentUser.uid = uid
                                 CurrentUser.sharedCurrentUser.shell = shell
                                 
                                 Api.requestLoad()
                                 globalWillReEnter = 1
+                                
+                                /* 使用第三方来登录 */
                                 self.launch()
-                                print("第三方")
                             }  // if json["error"] != 0
                         } // if let _error = error
                         

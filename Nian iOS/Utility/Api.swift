@@ -715,8 +715,7 @@ struct Api {
     
     // MARK: - 极光推送
     static func postJpushBinding(callback: V.JsonCallback) {
-        // todo;
-//        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
     }
     
     static func postDeviceTokenClear(callback: V.StringCallback) {

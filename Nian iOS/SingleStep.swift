@@ -82,7 +82,6 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
             }
         }
     }
-    // todo: 搜索进展返回多图
     
     // todo: 发送成功后清除草稿
     

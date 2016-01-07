@@ -348,8 +348,8 @@ extension LogOrRegViewController {
                             Api.requestLoad()
                             globalWillReEnter = 1
                             
+                            /* 使用邮箱来登录 */
                             self.launch()
-                            print("登录或者注册")
 //                            self.navigationController?.popViewControllerAnimated(false)
                             self.emailTextField.text = ""
                             self.passwordTextField.text = ""

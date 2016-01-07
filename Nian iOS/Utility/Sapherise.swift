@@ -403,6 +403,7 @@ func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
 
 extension UIViewController {
     
+    /* 邮箱登录、第三方登录、邮箱注册、第三方注册、普通启动*/
     func launch() {
         delay(0.1) { () -> () in
             let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
@@ -423,6 +424,11 @@ extension UIViewController {
         Api.postJpushBinding(){_ in }
     }
     
+    /* 第二天推送 */
+    func pushTomorrow() {
+        thepush("Mua!", dateSinceNow: 60 * 60 * 24, willReapt: false, id: "signup")
+    }
+    
     func viewLoadingShow() {
         globalViewLoading = UIView(frame: CGRectMake((globalWidth-50)/2, (globalHeight-50)/2, 50, 50))
         globalViewLoading!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -436,7 +442,7 @@ extension UIViewController {
         activity.hidden = false
         activity.startAnimating()
         globalViewLoading!.addSubview(activity)
-        if let v = self.navigationController?.navigationBar.window {
+        if let v = UIApplication.sharedApplication().windows.first {
             v.addSubview(globalViewLoading!)
             delay(0.3, closure: { () -> () in
                 globalViewLoading!.hidden = false
@@ -444,6 +450,7 @@ extension UIViewController {
             })
         }
     }
+    
     func viewLoadingHide() {
         globalViewLoading?.removeFromSuperview()
     }

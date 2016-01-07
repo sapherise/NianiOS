@@ -38,8 +38,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var tabButtonArray = NSMutableArray()
     
-    // todo: 修改 bundle
-    // todo: 所有上传图片的地方都修改为多图样式
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -325,17 +323,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
-        
-        // todo:
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     // 3D Touch 下的更新进展
     func QuickActions(sender: NSNotification) {
         let type = sender.object as! String
         if type == "1" {
-//            self.addStep()
-            // todo: 新进展的 3D Touch
+            let vc = AddStep(nibName: "AddStep", bundle: nil)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

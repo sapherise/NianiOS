@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        // todo: 开启下面两行
         APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
         APService.setupWithOption(launchOptions)
         
@@ -92,7 +91,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         }
         
         /* 设置极光推送 */
-        // todo: 开启下面这一行
         APService.registerDeviceToken(deviceToken)
         Api.postJpushBinding(){ _ in }
     }
@@ -115,9 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             let aps = userInfo["aps"] as! NSDictionary
             
             handleReceiveRemoteNotification(aps)
-            /*    */
-            
-            // todo: 开启下面一行
             APService.handleRemoteNotification(userInfo)
             completionHandler(UIBackgroundFetchResult.NewData)
     }
@@ -187,11 +182,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
                 parameters: nil,
                 success: {
                     (task, id) in
-                    
+                    print("21")
                     NSNotificationCenter.defaultCenter().postNotificationName("Wechat", object: id)
                     
                 }, failure: {
                     (task, error) in
+                    print(error)
             })   
         }
     }

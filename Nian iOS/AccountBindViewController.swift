@@ -336,8 +336,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                                     self.bindDict["QQ"] = 1
                                     self.bindDict["QQ_username"] = ""
                                     
-                                    // todo: 微博登录和微信登录都失败了
-                                    
                                     self.tableview.beginUpdates()
                                     self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
                                     self.tableview.endUpdates()
@@ -518,16 +516,10 @@ extension AccountBindViewController {
             let accessToken = (notiObject as! NSArray)[1] as? String
             
             if weiboUid != nil && accessToken != nil {
-                LogOrRegModel.getWeiboName(accessToken!, openid: "n*A\(weiboUid!)".md5) {
+                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                     (task, responseObject, error) in
-                    print("===")
-                    print(responseObject)
-                    print(task)
-                    print("===")
-                    
-                    if let err = error {
+                    if let _ = error {
                         print(9)
-                        print(err)
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)

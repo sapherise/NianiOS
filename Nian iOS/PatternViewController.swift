@@ -131,11 +131,9 @@ class PatternViewController: UIViewController {
                         
                         Api.requestLoad()
                         
-                        // 注册后一天提供推送，形成第一天习惯
-                        thepush("Mua!", dateSinceNow: 60 * 60 * 24, willReapt: false, id: "signup")
+                        /* 使用邮箱来注册 */
                         self.launch()
-                        
-                        print("类型选择")
+                        self.pushTomorrow()
                     }
                     
                 }

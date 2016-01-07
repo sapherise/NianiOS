@@ -218,8 +218,6 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
             imageArrow.hidden = true
         }
         
-        // todo: 本地提醒功能
-        
         self.view.backgroundColor = UIColor.whiteColor()
         self.field2.delegate = self
         

@@ -159,7 +159,10 @@ class Lock: SAViewController, UITextViewDelegate {
             }
         }
         
+        // todo: 关注使用新 API
+        // todo: 回应使用新 API
         // todo: progressView 丢失了
+        // todo: 图片加载预览
         
         if l == 4 {
             if type == lockType.verify {
