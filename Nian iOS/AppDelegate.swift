@@ -7,7 +7,6 @@
 //  change the world
 
 import UIKit
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
@@ -29,9 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
-        
-        // todo: 封号的时候能否进入密码界面
-        // todo: 添加进展后，手势右滑返回的时候是返回到哪儿呢
 
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
@@ -45,9 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 2 : UIUserNotificationType.Badge
         */
         // todo: 开启下面两行
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
+        application.applicationIconBadgeNumber = 1
         application.applicationIconBadgeNumber = 0
         
         // check current shortcut item
@@ -67,24 +64,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     
     func applicationDidEnterBackground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
-        
+    }
+    
+    // todo: 添加照片可以预览
+    func applicationWillEnterForeground(application: UIApplication) {
+        NSNotificationCenter.defaultCenter().postNotificationName("AppEnterForeground", object: nil)
+        application.applicationIconBadgeNumber = 1
         application.applicationIconBadgeNumber = 0
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("AppEnterForeground", object: nil)
-        
-//        application.applicationIconBadgeNumber = 0
-////        application.cancelAllLocalNotifications()
-//        UIApplication* application = [UIApplication sharedApplication];
-//        
-//        NSArray* scheduledNotifications = [NSArray arrayWithArray:application.scheduledLocalNotifications];
-//        
-//        application.scheduledLocalNotifications = scheduledNotifications;
-        // todo: 删除进入 App 后的通知中心的所有内容
-    }
-    
     func applicationDidBecomeActive(application: UIApplication) {
+        application.applicationIconBadgeNumber = 1
+        application.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -102,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         /* 设置极光推送 */
         // todo: 开启下面这一行
-//        APService.registerDeviceToken(deviceToken)
+        APService.registerDeviceToken(deviceToken)
         Api.postJpushBinding(){ _ in }
     }
 
@@ -125,6 +116,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             
             handleReceiveRemoteNotification(aps)
             /*    */
+            
+            // todo: 开启下面一行
             APService.handleRemoteNotification(userInfo)
             completionHandler(UIBackgroundFetchResult.NewData)
     }
@@ -178,9 +171,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     到 tab[3] 对应的 VC， 即私信界面
     */
     func navTo_MEVC() {
-        let navViewController = window?.rootViewController as! UINavigationController
-        let welcomeVC = navViewController.viewControllers[0] as! WelcomeViewController
-        welcomeVC.shouldNavToMe = true
     }
     
     func onResp(resp: BaseResp!) {

@@ -185,11 +185,11 @@ extension EditProfileViewController {
                 self.profileDict!["name"] = _name
             } else {
                 shouldReturn = false
-                self.view.showTipText("昵称里有奇怪的字符...", delay: 1)
+                self.showTipText("昵称里有奇怪的字符...")
             }
         } else {
             shouldReturn = false
-            self.view.showTipText("昵称不能为空...")
+            self.showTipText("昵称不能为空...")
         }
         
         let previousPhone = self.profileDict!["phone"]
@@ -201,7 +201,7 @@ extension EditProfileViewController {
                 self.profileDict!["phone"] = _phone
             } else {
                 shouldReturn = false
-                self.view.showTipText("手机号码不正确...", delay: 1)
+                self.showTipText("手机号码不正确...")
             }
         } else {
             self.profileDict!["phone"] = ""
@@ -243,12 +243,12 @@ extension EditProfileViewController {
                     (task, responseObject, error) -> Void in
                     
                     if let _ = error {
-                        self.view.showTipText("网络有点问题，等一会儿再试")
+                        self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if json["error"] != 0 {
-                            self.view.showTipText("昵称或手机号不可用...")
+                            self.showTipText("昵称或手机号不可用...")
                         } else {
                             self.delegate?.editProfile?(profileDict: self.profileDict!)
                         

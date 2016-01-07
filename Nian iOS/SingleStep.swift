@@ -61,15 +61,20 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func SAReloadData(){
         Api.getSingleStep(self.Id) { json in
             if json != nil {
+                print(json)
                 self.dataArray.removeAllObjects()
-                let data = json!.objectForKey("data") as! NSDictionary
-                let hidden = data.stringAttributeForKey("hidden")
-                if hidden == "1" {
-                    self.tableView?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
-                    self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
-                } else {
-                    let d = VVeboCell.SACellDataRecode(data)
-                    self.dataArray.addObject(d)
+                let arr = json!.objectForKey("data")
+                let error = json!.objectForKey("error") as? NSNumber
+                if error == 0 {
+                    let data = arr!.objectForKey("step") as! NSDictionary
+                    let hidden = data.stringAttributeForKey("hidden")
+                    if hidden == "0" {
+                        let d = VVeboCell.SACellDataRecode(data)
+                        self.dataArray.addObject(d)
+                    } else {
+                        self.tableView?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                        self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
+                    }
                 }
                 self.currentDataArray = self.dataArray
                 self.tableView!.reloadData()
@@ -77,6 +82,9 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
             }
         }
     }
+    // todo: 搜索进展返回多图
+    
+    // todo: 发送成功后清除草稿
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

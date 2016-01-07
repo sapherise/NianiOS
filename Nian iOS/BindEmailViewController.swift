@@ -158,29 +158,29 @@ class BindEmailViewController: UIViewController {
                             self.confirmButton.stopAnimating()
                             
                             if let _ = error {
-                                self.view.showTipText("网络有点问题，等一会儿再试")
+                                self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 let json = JSON(responseObject!)
                                 
                                 if json["data"] == "0" {
                                     self.handleBindEmail()
                                 } else if json["data"] == "1" {
-                                    self.view.showTipText("邮箱已被注册...", delay: 2)
+                                    self.showTipText("邮箱已被注册...")
                                     self.bindFuntionType = .confirm
                                 }
                             }
                         })
 
                     } else {
-                        self.view.showTipText("不是地球上的邮箱...")
+                        self.showTipText("不是地球上的邮箱...")
                     }
                 } else {
-                    self.view.showTipText("绑定邮箱不能为空...")
+                    self.showTipText("绑定邮箱不能为空...")
                 }
             } else if self.bindFuntionType == .finish {
                 if let _pwdText = self.passwordTextField.text {
                     if _pwdText.characters.count < 4 {
-                        self.view.showTipText("密码至少 4 个字符", delay: 1)
+                        self.showTipText("密码至少 4 个字符")
                         return
                     }
                     
@@ -196,7 +196,7 @@ class BindEmailViewController: UIViewController {
                         self.confirmButton.stopAnimating()
                         
                         if let _ = error {
-                            self.view.showTipText("网络有点问题，等一会儿再试")
+                            self.showTipText("网络有点问题，等一会儿再试")
                         } else {
                             let json = JSON(responseObject!)
                             
@@ -208,7 +208,7 @@ class BindEmailViewController: UIViewController {
                                 let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                                 uidKey.setObject(shell, forKey: kSecValueData)
                                 
-                                self.view.showTipText("邮箱绑定成功", delay: 1)
+                                self.showTipText("邮箱绑定成功")
                                 self.delegate?.bindEmail?(email: self.emailTextField.text!)
                                 self.dismissViewControllerAnimated(true, completion: nil)
                             }
@@ -219,7 +219,7 @@ class BindEmailViewController: UIViewController {
         } else if self.modeType == .modify {
             if let _pwd = self.passwordTextField.text {
                 if _pwd.characters.count < 4 {
-                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    self.showTipText("密码至少 4 个字符")
                     return
                 }
                 
@@ -233,12 +233,12 @@ class BindEmailViewController: UIViewController {
                     self.bindFuntionType = .confirm
                     
                     if let _ = error {
-                        self.view.showTipText("网络有点问题，只加载了本地设置")
+                        self.showTipText("网络有点问题，只加载了本地设置")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if json["error"] != 0 {
-                            self.view.showTipText("密码不对...")
+                            self.showTipText("密码不对...")
                         } else {
                             self.passwordTextField.hidden = true
                             self.emailTextField.hidden = false

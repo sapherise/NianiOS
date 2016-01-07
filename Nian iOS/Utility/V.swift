@@ -343,7 +343,6 @@ struct V {
 }
 
 extension UIView {
-    
     func findRootViewController() -> UIViewController? {
         for var view: UIView? = self; view != nil; view = view!.superview {
             let responder = view?.nextResponder()
@@ -353,35 +352,4 @@ extension UIView {
         }
         return nil
     }
-    
-    func showTipText(text: String, delay: Double = 2.0) {
-        let v = UIView()
-        v.frame = CGRectMake(0, -64, globalWidth, 64)
-        v.backgroundColor = SeaColor
-        v.userInteractionEnabled = true
-        
-        let label = UILabel()
-        label.frame = CGRectMake(20, 20, globalWidth - 40, 44)
-        label.text = text
-        label.textColor = UIColor.whiteColor()
-        label.numberOfLines = 0
-        label.font = UIFont.systemFontOfSize(14)
-        label.textAlignment = NSTextAlignment.Center
-        label.alpha = 0
-        
-        v.addSubview(label)
-        window?.addSubview(v)
-        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
-            v.setY(0)
-            label.alpha = 1
-            }) { (Bool) -> Void in
-                UIView.animateWithDuration(0.2, delay: delay, options: UIViewAnimationOptions(), animations: { () -> Void in
-                    v.setY(-64)
-                    label.alpha = 0
-                    }, completion: { (Bool) -> Void in
-                        v.removeFromSuperview()
-                })
-        }
-    }
-    
 }

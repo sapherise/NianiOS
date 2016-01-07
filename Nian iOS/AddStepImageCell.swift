@@ -12,21 +12,22 @@ import AssetsLibrary
 
 class AddStepImageCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
-    var image: UIImage!
+    var image: AnyObject!
     
     func setup() {
         imageView.backgroundColor = IconColor
-        imageView.image = image
-//        if asset != nil {
-//            let img = asset!.thumbnail().takeUnretainedValue()
-//            imageView.image = UIImage(CGImage: img)
-//            go {
-//                let img = UIImage(CGImage: self.asset!.aspectRatioThumbnail().takeUnretainedValue())
-//                let imgLarge = resizedImage(img, newWidth: self.width() * globalScale)
-//                back {
-//                    self.imageView.image = imgLarge
-//                }
-//            }
-//        }
+        
+        if let a = image as? UIImage {
+            imageView.image = a
+        } else if let a = image as? ALAsset {
+            imageView.image = UIImage(CGImage: a.thumbnail().takeUnretainedValue())
+            go {
+                let img = UIImage(CGImage: a.aspectRatioThumbnail().takeUnretainedValue())
+                let imgLarge = resizedImage(img, newWidth: self.width() * globalScale)
+                back {
+                    self.imageView.image = imgLarge
+                }
+            }
+        }
     }
 }

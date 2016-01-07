@@ -165,6 +165,10 @@
                                                 <animations/>
                                                 <state key="normal" image="home_collection"/>
                                             </button>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" id="eS0-0e-HKW">
+                                                <rect key="frame" x="260" y="32" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -180,6 +184,7 @@
                         <outlet property="UserHead" destination="WVF-kW-IoC" id="H49-Cg-aec"/>
                         <outlet property="UserName" destination="JMe-EB-Oyc" id="iA3-of-pLb"/>
                         <outlet property="UserStep" destination="b27-lw-zLa" id="Y2d-K3-Z2X"/>
+                        <outlet property="activity" destination="eS0-0e-HKW" id="caM-Ov-Qga"/>
                         <outlet property="coinButton" destination="HFX-ex-0re" id="twb-VD-d6Z"/>
                         <outlet property="collectionView" destination="2uf-97-Eok" id="f0s-kw-y61"/>
                         <outlet property="dynamicSummary" destination="gND-mr-pi3" id="bf8-kN-zpz"/>

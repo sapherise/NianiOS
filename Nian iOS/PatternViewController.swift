@@ -113,12 +113,12 @@ class PatternViewController: UIViewController {
                 self.accompolishButton.setTitle("完成", forState: .Normal)
                 
                 if let _ = error { // 服务器返回错误
-                    self.view.showTipText("网络有点问题，等一会儿再试")
+                    self.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
                     if json["error"] == 2 { // 服务器返回的数据包含“错误信息”
-                        self.view.showTipText("用户名被占用...", delay: 2)
+                        self.showTipText("用户名被占用...")
                         self.dismissViewControllerAnimated(true, completion: nil)
                         
                     } else if json["error"] == 0 { // 服务器返回正常，注册成功
@@ -133,18 +133,9 @@ class PatternViewController: UIViewController {
                         
                         // 注册后一天提供推送，形成第一天习惯
                         thepush("Mua!", dateSinceNow: 60 * 60 * 24, willReapt: false, id: "signup")
+                        self.launch()
                         
-                        let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                        let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                        navigationViewController.navigationBar.translucent = true
-                        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                        navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                        navigationViewController.navigationBar.clipsToBounds = true
-                        self.presentViewController(navigationViewController, animated: true, completion: nil)
-                        
-                        Api.postJpushBinding() {_ in }
+                        print("类型选择")
                     }
                     
                 }

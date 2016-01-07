@@ -468,7 +468,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.topCell.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
                     self.topCell.BGImage.image = UIImage(named: "bg")
                 }else{
-                    self.topCell.BGImage.setCover(AllCoverURL, ignore: false, animated: true, radius: 0)
+                    self.topCell.BGImage.setCover(AllCoverURL, ignore: false, animated: true)
                 }
             }
         }

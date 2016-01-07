@@ -161,7 +161,7 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
     }
     
     func onReport() {
-        self.view.showTipText("举报好了！", delay: 2)
+        self.showTipText("举报好了！")
     }
     
     func updateData(index: Int, key: String, value: String, section: Int) {

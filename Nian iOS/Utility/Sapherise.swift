@@ -320,7 +320,56 @@ extension UIViewController: UIGestureRecognizerDelegate {
     func SAXib(named: String) -> AnyObject {
         return (NSBundle.mainBundle().loadNibNamed(named, owner: self, options: nil) as NSArray).objectAtIndex(0)
     }
+    
+    func showTipText(text: String, delayTime: Double = 2.0) {
+        let v: UIView? = UIView()
+        v!.frame = CGRectMake(0, -64, globalWidth, 64)
+        v!.backgroundColor = SeaColor
+        v!.userInteractionEnabled = true
+        
+        let label = UILabel()
+        label.frame = CGRectMake(20, 20, globalWidth - 40, 44)
+        label.text = text
+        label.textColor = UIColor.whiteColor()
+        label.numberOfLines = 0
+        label.font = UIFont.systemFontOfSize(14)
+        label.textAlignment = NSTextAlignment.Center
+        label.alpha = 0
+        
+        v!.addSubview(label)
+        UIApplication.sharedApplication().windows.first?.addSubview(v!)
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
+            v!.setY(0)
+            label.alpha = 1
+            }, completion: { (Bool) -> Void in
+                v!.userInteractionEnabled = true
+                v!.addGestureRecognizer(UITapGestureRecognizer(target: self.view.window, action: "onTip:"))
+        })
+        
+        delay(delayTime) { () -> () in
+            UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                v?.setY(-64)
+                label.alpha = 0
+                }) { (Bool) -> Void in
+                    v?.removeFromSuperview()
+            }
+        }
+        
+    }
 }
+
+extension UIWindow {
+    func onTip(sender: UIGestureRecognizer) {
+        UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+            sender.view?.setY(-64)
+            sender.view?.subviews.first?.alpha = 0
+            }) { (Bool) -> Void in
+                sender.view?.removeFromSuperview()
+        }
+    }
+}
+
 
 func getImageFromView(view: UIView)->UIImage {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, globalScale);
@@ -353,6 +402,27 @@ func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
 }
 
 extension UIViewController {
+    
+    func launch() {
+        delay(0.1) { () -> () in
+            let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
+            let navigationViewController = UINavigationController(rootViewController: mainViewController)
+            navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+            navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+            navigationViewController.navigationBar.translucent = true
+            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            navigationViewController.navigationBar.clipsToBounds = true
+            self.presentViewController(navigationViewController, animated: true, completion: nil)
+            
+            /* 调用 Home 中的唤醒函数 */
+            NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
+        }
+        
+        /* 远程推送 */
+        Api.postJpushBinding(){_ in }
+    }
+    
     func viewLoadingShow() {
         globalViewLoading = UIView(frame: CGRectMake((globalWidth-50)/2, (globalHeight-50)/2, 50, 50))
         globalViewLoading!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -610,6 +680,16 @@ extension UIImageView{
 }
 
 extension UIViewController {
+    
+    func keyboardStartObserve() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    func keyboardEndObserve() {
+        NSNotificationCenter.defaultCenter().removeObserver(UIKeyboardWillShowNotification)
+        NSNotificationCenter.defaultCenter().removeObserver(UIKeyboardWillHideNotification)
+    }
+    
     func onURL(sender: NSNotification){
         let url = sender.object as! String
         var urlArray = "\(url)".componentsSeparatedByString("nian://")

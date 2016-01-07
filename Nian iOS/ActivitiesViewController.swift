@@ -15,17 +15,47 @@ class ActivitiesViewController: SAViewController {
     @IBOutlet weak var sp3HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sp4HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sp5HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp6HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sp7HeightConstraint: NSLayoutConstraint!
+    @IBOutlet var viewSteps: UIView!
+    @IBOutlet var viewLikeSteps: UIView!
+    @IBOutlet var viewLikeDreams: UIView!
+    @IBOutlet var viewFollowDreams: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         self._setTitle("收藏")
         self.setSeperateViewHeight()
         self.view.backgroundColor = UIColor.C96()
         self.automaticallyAdjustsScrollViewInsets = false
-        
-        // todo: 图片的缓存还是有问题，我在 iOS 截图上传的图片，返回的图片质量非常差
+        viewSteps.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSteps"))
+        viewLikeSteps.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeSteps"))
+        viewLikeDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeDreams"))
+        viewFollowDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFollowDreams"))
+    }
+    
+    func onSteps() {
+        let vc = MySteps()
+        vc.type = CollectType.mysteps
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onLikeSteps() {
+        let vc = MySteps()
+        vc.type = CollectType.likesteps
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onLikeDreams() {
+        let vc = ExploreNext()
+        vc.type = 3
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onFollowDreams() {
+        let vc = ExploreNext()
+        vc.type = 4
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -36,6 +66,8 @@ extension ActivitiesViewController {
         sp3HeightConstraint.constant = globalHalf
         sp4HeightConstraint.constant = globalHalf
         sp5HeightConstraint.constant = globalHalf
+        sp6HeightConstraint.constant = globalHalf
+        sp7HeightConstraint.constant = globalHalf
     }
 }
 

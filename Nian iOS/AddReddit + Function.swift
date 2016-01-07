@@ -104,10 +104,10 @@ extension AddTopic {
             let title = field1.text!
             let tags = tokenView.tokenTitles!
             if title == "" {
-                self.view.showTipText("标题不能是空的...")
+                self.showTipText("标题不能是空的...")
                 field1.becomeFirstResponder()
             } else if content == "" {
-                self.view.showTipText("正文不能是空的...")
+                self.showTipText("正文不能是空的...")
                 field2.becomeFirstResponder()
             } else {
                 navigationItem.rightBarButtonItems = buttonArray()
@@ -193,7 +193,7 @@ extension AddTopic {
         } else if type == 1 {
             // 发布回应
             if content == "" {
-                self.view.showTipText("正文不能是空的...")
+                self.showTipText("正文不能是空的...")
                 field2.becomeFirstResponder()
             } else {
                 navigationItem.rightBarButtonItems = buttonArray()

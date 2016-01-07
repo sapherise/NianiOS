@@ -34,7 +34,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     @IBOutlet var imageBadge: SABadgeView!
     @IBOutlet var viewHolderHead: UIView!
     @IBOutlet var imageSettings: UIImageView!
-//    @IBOutlet var activity: UIActivityIndicatorView!
+    @IBOutlet var activity: UIActivityIndicatorView!
     @IBOutlet weak var dynamicSummary: UIButton!
     
     var currentCell:Int = 0
@@ -61,7 +61,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let frameSquare = CGRectMake(0, 0, globalWidth, 320)
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
         self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
-        self.scrollView.contentSize.height = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
+        self.scrollView.contentSize.height = globalHeight - 49 > 640 ? globalHeight - 49 : 640
+        self.scrollView.alwaysBounceVertical = true
         self.extendedLayoutIncludesOpaqueBars = true
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false
@@ -78,8 +79,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.coinButton.frame.origin.x = globalWidth/2-104
         self.levelButton.frame.origin.x = globalWidth/2-104+108
         
-//        self.activity.setX(globalWidth - 32)
-//        self.activity.hidden = true
+        self.activity.setX(globalWidth - 24 - 40)
+        self.activity.transform = CGAffineTransformMakeScale(0.8, 0.8)
+        self.activity.hidden = true
         self.dynamicSummary.setX(globalWidth - 44)
         self.dynamicSummary.addTarget(self, action: "toActivitiesSummary:", forControlEvents: .TouchUpInside)
         
@@ -200,6 +202,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 scrollHidden(self.levelButton, scrollY: 214)
                 scrollHidden(self.imageSettings, scrollY: 50)
                 scrollHidden(self.dynamicSummary, scrollY: 50)
+                scrollHidden(self.activity, scrollY: 50)
                 if height >= 320 - 64 {
                     self.navView.hidden = false
                 }else{
@@ -414,14 +417,13 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.dataArray = mutableArrayLocal
             reloadFromDataArray()
         }
-        // todo: 加上网络检测动画
-//        activity.hidden = false
-//        activity.startAnimating()
+        activity.hidden = false
+        activity.startAnimating()
         
         // 从服务器加载记本数据
         Api.getNian() { json in
             if json != nil {
-//                self.activity.hidden = true
+                self.activity.hidden = true
                 let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
                     let d = json!.objectForKey("data") as! NSDictionary
@@ -494,7 +496,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.collectionView.reloadData()
         let height = ceil(CGFloat(self.dataArray.count) / 3) * 125
         self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
-        let heightContentSize = globalHeight - 49 + 1 > 640 ? globalHeight - 49 + 1 : 640
+        let heightContentSize = globalHeight - 49 > 640 ? globalHeight - 49 : 640
         self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
         self.collectionView.contentSize.height = height
         if self.dataArray.count == 0 {

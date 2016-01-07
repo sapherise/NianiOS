@@ -47,21 +47,24 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
+        
+        /* 从导航栏栈里删除，只剩下 Home 和当前视图控制器 */
+        if willBackToRootViewController {
+            var arr = navigationController?.viewControllers
+            var arrNew: [UIViewController] = []
+            if arr != nil {
+                for i in 0...(arr!.count - 1) {
+                    if i == 0 || i == arr!.count - 1 {
+                        arrNew.append(arr![i])
+                    }
+                }
+                navigationController?.viewControllers = arrNew
+            }
+        }
     }
     
-    //
-    
     func setupViews() {
-        
-        /* 判断是返回上一级还是直接返回根视图 */
-        if !willBackToRootViewController {
-            self.viewBack()
-        } else {
-            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigationRoot")
-            leftButton.image = UIImage(named:"newBack")
-            self.navigationItem.leftBarButtonItem = leftButton
-            viewBackFix()
-        }
+        self.viewBack()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = BarColor
@@ -104,7 +107,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     } else if status == 403 {
                         self.view.addGhost("你发现了\n一个私密的记本\n里面记着什么？")
                     } else {
-                        self.view.showTipText("遇到了一个奇怪的错误，代码是 \(status)", delay: 2)
+                        self.showTipText("遇到了一个奇怪的错误，代码是 \(status)")
                     }
                 } else {
                     let data: AnyObject? = json!.objectForKey("data")
@@ -192,7 +195,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         acReport.saActivityType = "举报"
         acReport.saActivityImage = UIImage(named: "av_report")
         acReport.saActivityFunction = {
-            self.view.showTipText("举报好了！", delay: 2)
+            self.showTipText("举报好了！")
         }
         
         let arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]

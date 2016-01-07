@@ -36,7 +36,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var newEditDreamId: String = ""
     
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
-    var shouldNavToMe: Bool = false
     var tabButtonArray = NSMutableArray()
     
     // todo: 修改 bundle
@@ -135,19 +134,19 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     */
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if shouldNavToMe {
-            if let _ = self.viewControllers  {
-                self.selectedIndex = 3
-                
-                (self.tabButtonArray[0] as! UIButton).selected = false
-                (self.tabButtonArray[3] as! UIButton).selected = true
-                
-                self.dot!.hidden = true
-                NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
-            }
-            shouldNavToMe = false
-        }
+//        
+//        if shouldNavToMe {
+//            if let _ = self.viewControllers  {
+//                self.selectedIndex = 3
+//                
+//                (self.tabButtonArray[0] as! UIButton).selected = false
+//                (self.tabButtonArray[3] as! UIButton).selected = true
+//                
+//                self.dot!.hidden = true
+//                NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
+//            }
+//            shouldNavToMe = false
+//        }
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -326,7 +325,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+        
+        // todo:
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     // 3D Touch 下的更新进展
@@ -435,8 +436,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             } else {
-                let vc = AddStep(nibName: "AddStep", bundle: nil)
-                self.navigationController?.pushViewController(vc, animated: true)
+                Nian.addDreamButton()
             }
         }
         if index != idExplore {

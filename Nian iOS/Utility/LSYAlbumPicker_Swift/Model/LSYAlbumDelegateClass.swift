@@ -91,7 +91,7 @@ extension LSYAlbumPicker:UICollectionViewDelegate,UICollectionViewDataSource{
     }
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         if !(self.maxminumNumber > collectionView.indexPathsForSelectedItems()!.count){
-            self.view.showTipText("最多只能 9 张...", delay: 1)
+            self.showTipText("最多只能 9 张...", delayTime: 1)
             return false
         }
         return true

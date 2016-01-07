@@ -131,13 +131,13 @@ class MeCell: UITableViewCell {
                 }else{
                     view.text = "接受"
                     if reason == "1" {
-                        self.View?.showTipText("遇到了一个奇怪的错误...", delay: 2)
+                        self.findRootViewController()!.showTipText("遇到了一个奇怪的错误...")
                     }else if reason == "2" {
-                        self.View?.showTipText("你的权限不够...", delay: 2)
+                        self.findRootViewController()!.showTipText("你的权限不够...")
                     }else if reason == "3" {
-                        self.View?.showTipText("梦境的人满了！", delay: 2)
+                        self.findRootViewController()!.showTipText("梦境的人满了！")
                     }else{
-                        self.View?.showTipText("遇到了一个奇怪的错误...", delay: 2)
+                        self.findRootViewController()!.showTipText("遇到了一个奇怪的错误...")
                     }
                 }
             }

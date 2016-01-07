@@ -107,7 +107,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
                                 self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
                             }
                         } else {
-                            self.showTipText("没有人叫这个名字...", delay: 2)
+                            self.findRootViewController()!.showTipText("没有人叫这个名字...")
                         }
                     }
                 }
@@ -195,7 +195,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
     }
     
     func onReport() {
-        self.viewLine.showTipText("举报好了！", delay: 2)
+        self.findRootViewController()!.showTipText("举报好了！")
     }
     
     func onDelete() {

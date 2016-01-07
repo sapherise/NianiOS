@@ -173,7 +173,7 @@ class CoinViewController: UIViewController, UITableViewDelegate, UITableViewData
                     film.removeFromSuperview()
                     switch state {
                     case .Purchased:
-                        self.view.showTipText("刚刚一笔支付成功了，刷新念币看看！", delay: 1)
+                        self.showTipText("刚刚一笔支付成功了，刷新念币看看！")
                         break
                     case .Failed:
                         break

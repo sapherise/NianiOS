@@ -324,7 +324,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             customActivity.saActivityType = "举报"
             customActivity.saActivityImage = UIImage(named: "av_report")
             customActivity.saActivityFunction = {
-                self.showTipText("举报好了！", delay: 2)
+                self.findRootViewController()!.showTipText("举报好了！")
             }
             // 保存卡片
             let cardActivity = SAActivity()
@@ -333,7 +333,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             cardActivity.saActivityImage = UIImage(named: "card")
             cardActivity.saActivityFunction = {
                 card.onCardSave()
-                self.showTipText("保存好了！", delay: 2)
+                self.findRootViewController()!.showTipText("保存好了！")
             }
             //编辑按钮
             let editActivity = SAActivity()
@@ -497,7 +497,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                             self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
                         }
                     } else {
-                        self.showTipText("没有人叫这个名字...", delay: 2)
+                        self.findRootViewController()!.showTipText("没有人叫这个名字...")
                     }
                 }
             }

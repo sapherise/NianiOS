@@ -79,6 +79,7 @@ class VVeboViewController: UIViewController, delegateSAStepCell, UIScrollViewDel
     }
     
     // 获得 cell
+    // 0 为关注，1 为记本，2 为动态
     func getCell(indexPath: NSIndexPath, dataArray: NSMutableArray, type: Int = 0) -> VVeboCell {
         if let c = currenTableView?.getCell(indexPath, dataArray: dataArray, type: type) {
             c.delegate = self

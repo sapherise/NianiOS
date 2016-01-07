@@ -9,8 +9,6 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-    /// 传递型参数，参考 HomeViewController 里的 shouldNavToMe
-    var shouldNavToMe: Bool = false
     /// 如果读取到得 User 的 uid 和 shell 来自 NSUserdefault， 那么就要更新 Keychain
     var needUpdateKeychain: Bool = false
     
@@ -44,21 +42,11 @@ class WelcomeViewController: UIViewController {
         if let _uid = CurrentUser.sharedCurrentUser.uid {      //如果登录了
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
             uidKey.setObject(_uid, forKey: kSecAttrAccount)
+            launch()
             
-            let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-            mainViewController.shouldNavToMe = self.shouldNavToMe
-            
-            let navigationViewController = UINavigationController(rootViewController: mainViewController)
-            navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-            navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-            navigationViewController.navigationBar.clipsToBounds = true
-            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            delay(0.1, closure: { () -> () in
-                self.navigationController!.presentViewController(navigationViewController, animated: false, completion: {
-                    self.view.hidden = false
-                    NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
-                })
+            print("普通界面")
+            delay(1, closure: { () -> () in
+                self.view.hidden = false
             })
         } else {  // 没有登录
             /* 留在当前页面 */
@@ -121,7 +109,7 @@ class WelcomeViewController: UIViewController {
             
             WXApi.sendReq(req)
         } else {
-            self.view.showTipText("未安装微信...")
+            self.showTipText("未安装微信...")
         }
     }
     
@@ -196,12 +184,12 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
                 (task, responseObject, error) in
                 
                 if let _ = error {
-                    self.view.showTipText("网络有点问题，等一会儿再试")
+                    self.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
                     if json["ret"].numberValue != 0 {
-                        self.view.showTipText("QQ 授权不成功...")
+                        self.showTipText("QQ 授权不成功...")
                     } else {
                         let _name = json["nickname"].stringValue
                         
@@ -213,7 +201,7 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
             }
             
         } else {
-            self.view.showTipText("QQ 授权不成功...")
+            self.showTipText("QQ 授权不成功...")
         }
         
     }
@@ -256,12 +244,12 @@ extension WelcomeViewController {
                    (task, responseObject, error) in
                     
                     if let _ = error {
-                        self.view.showTipText("网络有点问题，等一会儿再试")
+                        self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if let _ = json["error"].string {
-                            self.view.showTipText("微博授权不成功...")
+                            self.showTipText("微博授权不成功...")
                         } else {
                             let _name = json["name"].stringValue
                             
@@ -276,7 +264,7 @@ extension WelcomeViewController {
             }
             
         } else {
-            self.view.showTipText("微博授权不成功...")
+            self.showTipText("微博授权不成功...")
         }
         
         
@@ -298,12 +286,12 @@ extension WelcomeViewController {
                     (task, responseObject, error) in
                     
                     if let _ = error {
-                        self.view.showTipText("网络有点问题，等一会儿再试")
+                        self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if let _ = json["errcode"].number {
-                            self.view.showTipText("微信授权不成功...")
+                            self.showTipText("微信授权不成功...")
                         } else {
                             let _name = json["nickname"].stringValue
                             
@@ -316,7 +304,7 @@ extension WelcomeViewController {
                 }
             }
         } else {
-            self.view.showTipText("微信授权不成功...")
+            self.showTipText("微信授权不成功...")
         }
         
     }
@@ -331,7 +319,7 @@ extension WelcomeViewController {
             //TODO: stop animating
             
             if let _ = error {
-                self.view.showTipText("网络有点问题，等一会儿再试")
+                self.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
@@ -351,12 +339,12 @@ extension WelcomeViewController {
                         (task, responseObject, error) in
                         
                         if let _ = error {
-                            self.view.showTipText("网络有点问题，等一会儿再试")
+                            self.showTipText("网络有点问题，等一会儿再试")
                         } else {
                             let json = JSON(responseObject!)
                             
                             if json["error"] != 0 {
-                                self.view.showTipText("网络有点问题，等一会儿再试")
+                                self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 let shell = json["data"]["shell"].stringValue
                                 let uid = json["data"]["uid"].stringValue
@@ -371,19 +359,8 @@ extension WelcomeViewController {
                                 
                                 Api.requestLoad()
                                 globalWillReEnter = 1
-                                let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                                let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                                navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                                navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                                navigationViewController.navigationBar.translucent = true
-                                navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                                navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                navigationViewController.navigationBar.clipsToBounds = true
-                                
-                                self.presentViewController(navigationViewController, animated: true, completion: nil)
-                                
-                                Api.postJpushBinding(){_ in }
-                                
+                                self.launch()
+                                print("第三方")
                             }  // if json["error"] != 0
                         } // if let _error = error
                         

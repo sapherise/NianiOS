@@ -80,7 +80,7 @@ class CoinDetailViewController: UIViewController, UITableViewDelegate, UITableVi
                 if success {
                     self.tableView.reloadData()
                 } else {
-                    self.tableView.showTipText("已经到底啦", delay: 1)
+                    self.showTipText("已经到底啦")
                 }
             }
             switch forWhich {

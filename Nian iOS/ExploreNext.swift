@@ -14,7 +14,7 @@ protocol DreamSelectedDelegate {
 
 class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
     var type = 0    // 0 为
-    var arrType = ["推荐", "最新", "插入记本"]
+    var arrType = ["推荐", "最新", "插入记本", "赞过的记本", "关注的记本"]
     var dataArray = NSMutableArray()
     var collectionView: UICollectionView!
     var page = 1
@@ -40,6 +40,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         collectionView.backgroundColor = UIColor.whiteColor()
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.alwaysBounceVertical = true
         self.view.addSubview(collectionView)
         self.collectionView.registerNib(UINib(nibName: "ExploreMoreCell", bundle: nil), forCellWithReuseIdentifier: "ExploreMoreCell")
         collectionView.addHeaderWithCallback { () -> Void in
@@ -118,6 +119,48 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                 self.collectionView.footerEndRefreshing()
                 self.collectionView.reloadData()
                 isLoading = false
+            } else if type == 3 {
+                Api.getMyLikeDreams("\(page)") { json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        if error == 0 {
+                            if clear {
+                                self.dataArray.removeAllObjects()
+                            }
+                            let arr = json!.objectForKey("data") as! NSArray
+                            for d in arr {
+                                let data = self.getDataEncode(d)
+                                self.dataArray.addObject(data!)
+                            }
+                            self.collectionView.reloadData()
+                            self.collectionView.headerEndRefreshing()
+                            self.collectionView.footerEndRefreshing()
+                            self.page++
+                            self.isLoading = false
+                        }
+                    }
+                }
+            } else if type == 4 {
+                Api.getMyFollowDreams("\(page)") { json in
+                    if json != nil {
+                        let error = json!.objectForKey("error") as! NSNumber
+                        if error == 0 {
+                            if clear {
+                                self.dataArray.removeAllObjects()
+                            }
+                            let arr = json!.objectForKey("data") as! NSArray
+                            for d in arr {
+                                let data = self.getDataEncode(d)
+                                self.dataArray.addObject(data!)
+                            }
+                            self.collectionView.reloadData()
+                            self.collectionView.headerEndRefreshing()
+                            self.collectionView.footerEndRefreshing()
+                            self.page++
+                            self.isLoading = false
+                        }
+                    }
+                }
             }
         }
     }
@@ -152,10 +195,10 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView == collectionView {
+        if scrollView == collectionView && type == 1 {
             let a = scrollView.contentOffset.y + globalHeight - 64
             let b = scrollView.contentSize.height
-            if a + 400 > b && type != 2 {
+            if a + 400 > b {
                 collectionView.footerBeginRefreshing()
             }
         }

@@ -23,6 +23,8 @@ class WeChatSessionActivity: WeChatActivityGeneral {
         return "微信"
     }
     
+    // 浮游
+    
     override func activityImage() -> UIImage? {
         return UIImage(named: "wechat_session")
     }

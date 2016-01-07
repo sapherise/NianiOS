@@ -922,9 +922,9 @@ extension ExploreSearch: UIActionSheetDelegate {
                     if let _data = json!.objectForKey("data") as? String {
                         if _data == "success" {
                             if self.hasFollowTag {
-                                self.view.showTipText("已取消关注标签 #\(self.searchText.text!)")
+                                self.showTipText("已取消关注标签 #\(self.searchText.text!)")
                             } else {
-                                self.view.showTipText("已关注标签 #\(self.searchText.text!)")
+                                self.showTipText("已关注标签 #\(self.searchText.text!)")
                             }
                         }
                     }

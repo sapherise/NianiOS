@@ -45,7 +45,7 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
                         self.tableViewPet.reloadData()
                         self.setPetTitle()
                     } else {
-                        self.view.showTipText("加载宠物列表失败了...", delay: 2)
+                        self.showTipText("加载宠物列表失败了...")
                     }
                 }
             }

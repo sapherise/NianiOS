@@ -65,7 +65,7 @@ extension RedditViewController {
                     self.tableViewLeft.footerEndRefreshing()
                     self.pageLeft++
                 } else {
-                    self.view.showTipText("服务器坏了", delay: 2)
+                    self.showTipText("服务器坏了")
                 }
             }
         }
@@ -91,7 +91,7 @@ extension RedditViewController {
                     self.tableViewRight.footerEndRefreshing()
                     self.pageRight++
                 } else {
-                    self.view.showTipText("服务器坏了", delay: 2)
+                    self.showTipText("服务器坏了")
                 }
             }
         }

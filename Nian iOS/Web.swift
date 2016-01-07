@@ -35,7 +35,7 @@ class WebViewController: UIViewController, UIWebViewDelegate{
             let request = NSURLRequest(URL: url!)
             web.loadRequest(request)
         } else {
-            self.view.showTipText("网址错误", delay: 2)
+            self.showTipText("网址错误")
         }
         
         let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))

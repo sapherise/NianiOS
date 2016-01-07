@@ -142,11 +142,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                                 self.tableview.endUpdates()
                             }
                         } else {
-                            self.view.showTipText("对方设置了不被回应...", delay: 2)
+                            self.showTipText("对方设置了不被回应...")
                             self.inputKeyboard.text = replyContent
                         }
                     } else {
-                        self.view.showTipText("服务器坏了...", delay: 2)
+                        self.showTipText("服务器坏了...")
                         self.inputKeyboard.text = replyContent
                     }
                 }

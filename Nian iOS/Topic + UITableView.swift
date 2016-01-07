@@ -67,7 +67,7 @@ extension TopicViewController {
                     self.tableViewLeft.reloadData()
                     self.pageLeft++
                 } else {
-                    self.view.showTipText("服务器坏了")
+                    self.showTipText("服务器坏了")
                 }
                 self.tableViewLeft.headerEndRefreshing()
                 self.tableViewLeft.footerEndRefreshing()
@@ -97,7 +97,7 @@ extension TopicViewController {
                     self.tableViewRight.reloadData()
                     self.pageRight++
                 } else {
-                    self.view.showTipText("服务器坏了")
+                    self.showTipText("服务器坏了")
                 }
                 self.tableViewRight.headerEndRefreshing()
                 self.tableViewRight.footerEndRefreshing()

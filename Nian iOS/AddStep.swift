@@ -9,6 +9,15 @@
 import Foundation
 import AssetsLibrary
 
+@objc protocol AddstepDelegate {
+    func Editstep()
+    optional func countUp(coin: String, isfirst: String)
+    optional func countUp(coin: String, total: String, isfirst: String)
+    optional func update(data: NSDictionary)
+    var editStepRow:Int { get set }
+    var editStepData:NSDictionary? { get set }
+}
+
 class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, LSYAlbumPickerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, upYunDelegate, ShareDelegate {
     
     @IBOutlet var viewDream: UIView!
@@ -32,7 +41,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     var dict = NSMutableDictionary()
     var id: String = ""
     var idDream: String = "-1"
-    var imageArray: [UIImage] = []
+    var imageArray: [AnyObject] = []
     
     var keyboardHeight: CGFloat = 0.0  // 键盘的高度
     var dataArray = NSMutableArray()
@@ -64,6 +73,14 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
+        
+        /* 如果是新增进展，返回的时候保存到草稿中 */
+        if !willEdit {
+            let content = field2.text
+            if content != nil {
+                Cookies.set(content, forKey: "draft")
+            }
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -148,6 +165,8 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
             self.dataArray = NianDreams
             tableView.reloadData()
             var count = 0
+            
+            /* 先从传值来找到记本封面 */
             for d in dataArray {
                 let id = (d as! NSDictionary).stringAttributeForKey("id")
                 if idDream != "-1" && idDream == id {
@@ -160,18 +179,27 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                     self.labelDream.text = title
                     count = 1
                     break
-                } else if id == Cookies.get("DreamNewest") as? String {
-                    let data = d
-                    let title = data.objectForKey("title") as! String
-                    let image = data.objectForKey("image") as! String
-                    let userImageURL = "http://img.nian.so/dream/\(image)!dream"
-                    self.imageDream.setImage(userImageURL)
-                    self.idDream = id
-                    self.labelDream.text = title
-                    count = 1
-                    break
                 }
             }
+            
+            /* 再从缓存中的最新来找到记本封面 */
+            if count == 0 {
+                for d in dataArray {
+                    let id = (d as! NSDictionary).stringAttributeForKey("id")
+                    if id == Cookies.get("DreamNewest") as? String {
+                        let data = d
+                        let title = data.objectForKey("title") as! String
+                        let image = data.objectForKey("image") as! String
+                        let userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                        self.imageDream.setImage(userImageURL)
+                        self.idDream = id
+                        self.labelDream.text = title
+                        count = 1
+                        break
+                    }
+                }
+            }
+            
             if count == 0 {
                 let data = dataArray[0] as! NSDictionary
                 let id = data.stringAttributeForKey("id")
@@ -191,7 +219,6 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         }
         
         // todo: 本地提醒功能
-        // todo: 新手引导
         
         self.view.backgroundColor = UIColor.whiteColor()
         self.field2.delegate = self
@@ -218,6 +245,14 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                 labelPlaceholder.hidden = true
             }
             reLayout()
+        } else {
+            /* 草稿功能完成 */
+            if let draft = Cookies.get("draft") as? String {
+                if draft != "" {
+                    field2.text = draft
+                    labelPlaceholder.hidden = true
+                }
+            }
         }
     }
     

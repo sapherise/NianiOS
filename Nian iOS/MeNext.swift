@@ -196,9 +196,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             UserVC.Id = uid
             self.navigationController!.pushViewController(UserVC, animated: true)
         }else if type == "4" {  //参与了你的话题
-            self.view.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！", delay: 2)
+            self.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！")
         }else if type == "5" {  //在某个话题提及你
-            self.view.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！", delay: 2)
+            self.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！")
         }else if type == "6" {  //为你更新了记本
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)

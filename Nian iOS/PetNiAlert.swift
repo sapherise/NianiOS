@@ -119,7 +119,7 @@ extension PetViewController {
                             self.energy = self.energy - coins * 100
                             self.setPetTitle()
                         } else {
-                            self.view.showTipText("遇到了一个奇怪的错误...", delay: 2)
+                            self.showTipText("遇到了一个奇怪的错误...")
                         }
                     }
                 }

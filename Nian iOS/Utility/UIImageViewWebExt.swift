@@ -28,19 +28,7 @@ extension UIImageView {
             self.sd_setImageWithURL(url, completed: { (image, err, type, url) -> Void in
                 if image != nil {
                     self.contentMode = .ScaleAspectFill
-                    if radius == 0 {
-                        self.image = image
-                    } else {
-                        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, globalScale)
-                        UIColor.e6().set()
-                        let bPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: radius)
-                        bPath.addClip()
-                        image.drawInRect(self.bounds)
-                        bPath.lineWidth = globalHalf
-                        bPath.stroke()
-                        self.image = UIGraphicsGetImageFromCurrentImageContext()
-                        UIGraphicsEndImageContext()
-                    }
+                    self.image = image
                 }
             })
         }
@@ -60,7 +48,7 @@ extension UIImageView {
         setPet(urlString)
     }
     
-    func setCover(urlString: String, ignore: Bool = false, animated: Bool = false, radius: CGFloat = 0) {
+    func setCover(urlString: String, ignore: Bool = false, animated: Bool = false) {
         self.backgroundColor = UIColor.blackColor()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()

@@ -186,12 +186,12 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
             self.endLoading()
             
             if let _ = error { // AFNetworking 返回的错误
-                self.view.showTipText("网络有点问题，只加载了本地设置")
+                self.showTipText("网络有点问题，只加载了本地设置")
             } else {
                 let json = JSON(responseObject!)
                 
                 if json["error"] != 0 {   // 服务器返回的错误代码
-                    self.view.showTipText("网络有点问题，等下再试")
+                    self.showTipText("网络有点问题，等下再试")
                 } else {
                     self.userDict = json["data"]["user"].dictionaryObject!
 //                    
@@ -241,7 +241,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
     
     func onEgg(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Began {
-            self.view.showTipText("念 爱 你")
+            self.showTipText("念 爱 你")
         }
     }
     
@@ -509,7 +509,7 @@ extension NewSettingViewController {
             back {
                 self.cacheActivityIndicator.stopAnimating()
                 self.cacheActivityIndicator.hidden = true
-                self.view.showTipText("缓存清理好了", delay: 1)
+                self.showTipText("缓存清理好了")
             }
         }
     }
@@ -580,7 +580,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
                     self.endLoading()
                     
                     if let _ = error {
-                        self.view.showTipText("上传不成功...", delay: 2)
+                        self.showTipText("上传不成功...")
                     } else {
                         setCacheImage(coverImageURL, img: image, width: 500)
                         // 上传成功后，本地显示新的封面
@@ -593,7 +593,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             
             uy.failBlocker = ({ (error: NSError!) in
                 self.endLoading()
-                self.view.showTipText("上传不成功...", delay: 2)
+                self.showTipText("上传不成功...")
             })
             
             uy.uploadImage(resizedImage(image, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
@@ -613,7 +613,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             })
             uy.failBlocker = ({ (error: NSError!) in
                 self.endLoading()
-                self.view.showTipText("上传失败了...再试试", delay: 2)
+                self.showTipText("上传失败了...再试试")
             })
             
             let _tmpString = "/head/" + "\(CurrentUser.sharedCurrentUser.uid!)" + ".jpg"

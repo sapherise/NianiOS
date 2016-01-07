@@ -115,7 +115,8 @@ func thepush(content: String, dateSinceNow: NSTimeInterval, willReapt: Bool, id:
     noti.fireDate = date
     noti.timeZone = NSTimeZone.defaultTimeZone()
     if willReapt {
-        noti.repeatInterval = NSCalendarUnit.Day
+        noti.repeatInterval = NSCalendarUnit.Minute
+        // todo
     }
     noti.alertBody = content
     noti.userInfo = ["id": id]
@@ -126,6 +127,18 @@ func thepush(content: String, dateSinceNow: NSTimeInterval, willReapt: Bool, id:
     } else {
         // Fallback on earlier versions
     }
-    
     UIApplication.sharedApplication().scheduleLocalNotification(noti)
+}
+
+func cancelPush(id: String) {
+    if let notis = UIApplication.sharedApplication().scheduledLocalNotifications {
+        for noti in notis {
+            if let dict = noti.userInfo!["id"] {
+                if "\(dict)" == id {
+                    UIApplication.sharedApplication().cancelLocalNotification(noti)
+                    print("\(id) 已移除")
+                }
+            }
+        }
+    }
 }

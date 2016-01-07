@@ -54,7 +54,7 @@ class TopicViewController: SAViewController, getCommentDelegate, UITableViewData
             acReport.saActivityType = "举报"
             acReport.saActivityImage = UIImage(named: "av_report")
             acReport.saActivityFunction = {
-                self.view.showTipText("举报好了！", delay: 2)
+                self.showTipText("举报好了！")
             }
             
             //删除按钮

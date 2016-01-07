@@ -43,9 +43,11 @@ class Lock: SAViewController, UITextViewDelegate {
     }
     
     func setupViews() {
-        // todo: 需要根据三个场景来决定是什么
         
         titleString = "应用密码"
+        if type == lockType.verify {
+            titleString = ""
+        }
         _setTitle(titleString)
         self.view.backgroundColor = BarColor
         
@@ -157,7 +159,6 @@ class Lock: SAViewController, UITextViewDelegate {
             }
         }
         
-        // todo: showtooltips 应该可以滑动上去
         // todo: progressView 丢失了
         
         if l == 4 {
@@ -183,7 +184,7 @@ class Lock: SAViewController, UITextViewDelegate {
                         self.navigationController?.popViewControllerAnimated(true)
                         delegate?.setLockState(true)
                         Cookies.set(passwordTmp, forKey: "Lock")
-                        self.view.showTipText("应用密码设好了")
+                        self.showTipText("应用密码设好了")
                     } else {
                         wrong()
                     }
@@ -195,7 +196,7 @@ class Lock: SAViewController, UITextViewDelegate {
                         self.navigationController?.popViewControllerAnimated(true)
                         delegate?.setLockState(false)
                         Cookies.remove("Lock")
-                        self.view.showTipText("应用密码关掉了")
+                        self.showTipText("应用密码关掉了")
                     } else {
                         wrong()
                     }

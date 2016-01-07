@@ -116,7 +116,7 @@ class RedditCell: UITableViewCell {
 //                                self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
 //                            }
 //                        } else {
-//                            self.showTipText("没有人叫这个名字...", delay: 2)
+//                            self.showTipText("没有人叫这个名字...")
 //                        }
 //                    }
 //                }

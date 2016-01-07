@@ -44,7 +44,7 @@ class ExploreMoreCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         coverImageView.cancelImageRequestOperation()
-        coverImageView.image = nil
+//        coverImageView.image = nil
     }
     
 }

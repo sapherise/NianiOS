@@ -16,7 +16,7 @@ protocol upYunDelegate {
 
 class UpyunOperation: NSOperation {
     var num = 0
-    var image: UIImage!
+    var image: AnyObject!
     var delegate: upYunDelegate?
     var hasUploaded = false
     
@@ -26,14 +26,20 @@ class UpyunOperation: NSOperation {
         /* 由于多图不等待，所以在文件名后加个计数 */
         let name = "/step/\(SAUid())_\(Int(date))\(num).png"
         if !hasUploaded {
-            uy.uploadImage(resizedImage(image, newWidth: 500), savekey: name)
+            var imageFinal: UIImage!
+            if let imgTmp = image as? UIImage {
+                imageFinal = imgTmp
+            } else if let imgTmp = image as? ALAsset {
+                imageFinal = UIImage(CGImage: imgTmp.defaultRepresentation().fullScreenImage().takeUnretainedValue())
+            }
+            uy.uploadImage(resizedImage(imageFinal, newWidth: 500), savekey: name)
             uy.successBlocker = ({(data: AnyObject!) in
                 if let d = data as? NSDictionary {
                     var url = d.stringAttributeForKey("url")
                     url = SAReplace(url, before: "/step/", after: "") as String
                     let w = d.stringAttributeForKey("image-width")
                     let h = d.stringAttributeForKey("image-height")
-                    setCacheImage("http://img.nian.so/step/\(url)!large", img: self.image, width: globalWidth * globalScale)
+                    setCacheImage("http://img.nian.so/step/\(url)!large", img: imageFinal, width: globalWidth * globalScale)
                     let data = ["path": url, "width": w, "height": h]
                     self.delegate?.upYunMulti(data, count: self.num)
                 }

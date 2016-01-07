@@ -181,18 +181,16 @@ extension AddStep {
                         
                         if isfirst == "1" {
                             Nian.saegg(coin, totalCoin: totalCoin)
-                            self.navigationController?.popViewControllerAnimated(true)
-                        } else {
-                            let vc = DreamViewController()
-                            vc.willBackToRootViewController = true
-                            vc.Id = self.idDream
-                            self.navigationController?.pushViewController(vc, animated: true)
                         }
+                        let vc = DreamViewController()
+                        vc.Id = self.idDream
+                        vc.willBackToRootViewController = true
+                        self.navigationController?.pushViewController(vc, animated: true)
                     } else {
-                        self.view.showTipText("服务器坏了", delay: 1)
+                        self.showTipText("服务器坏了")
                     }
                 } else {
-                    self.view.showTipText("服务器坏了", delay: 1)
+                    self.showTipText("服务器坏了")
                 }
             })
         }
@@ -218,15 +216,13 @@ extension AddStep {
             }
         }
     }
-    // todo: 编辑的图片不要再次上传
     
     /* 筛选多图完成后调用 */
     func AlbumPickerDidFinishPick(assets:NSArray) {
         for asset in assets {
             if let a = asset as? ALAsset {
                 if  a.valueForProperty("ALAssetPropertyType").isEqual("ALAssetTypePhoto") {
-                    let img = UIImage(CGImage: a.aspectRatioThumbnail().takeUnretainedValue())
-                    imageArray.append(img)
+                    imageArray.append(a)
                     hasUploadedArray.append(-1)
                 }
             }

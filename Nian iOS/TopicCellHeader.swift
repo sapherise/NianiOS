@@ -116,7 +116,7 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
                                         v.view.addGhost("这个回应\n不见了")
                                     }
                                 } else {
-                                    self.showTipText("服务器坏了", delay: 2)
+                                    self.findRootViewController()!.showTipText("服务器坏了")
                                 }
                             }
                         }

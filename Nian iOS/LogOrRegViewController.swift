@@ -160,7 +160,7 @@ class LogOrRegViewController: UIViewController {
             self.functionalType = _tmpType
             
             if let _ = error {
-                self.view.showTipText("网络有点问题，等一会儿再试")
+                self.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
@@ -168,9 +168,9 @@ class LogOrRegViewController: UIViewController {
                     let msg = json["message"].stringValue
                     
                     if msg == "The resources is not exist." {
-                        self.view.showTipText("这个邮箱没注册过...")
+                        self.showTipText("这个邮箱没注册过...")
                     } else if msg == "The request is too busy." {
-                        self.view.showTipText("超出发送限制...")
+                        self.showTipText("超出发送限制...")
                     }
                     
                 } else {
@@ -287,7 +287,7 @@ extension LogOrRegViewController {
                         self.functionalButton.stopAnimating()
                         
                         if let _ = error {
-                            self.view.showTipText("网络有点问题，等一会儿再试")
+                            self.showTipText("网络有点问题，等一会儿再试")
                         } else {
                             let json = JSON(responseObject!)
                             if json["data"] == "0" {  // email 未注册
@@ -301,17 +301,17 @@ extension LogOrRegViewController {
                         }
                     }
                 } else {  //if self.validateEmailAddress == false
-                    self.view.showTipText("不是地球上的邮箱...")
+                    self.showTipText("不是地球上的邮箱...")
                 }
             } else { // if let _text = self.emailTextField.text == nil
-                self.view.showTipText("邮箱不能为空...")
+                self.showTipText("邮箱不能为空...")
             }
             
         } else if self.functionalType == .logIn {
             /*@explain: 这里不需要再验证邮箱 */
             if let _pwdText = self.passwordTextField.text {
                 if _pwdText.characters.count < 4 {
-                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    self.showTipText("密码至少 4 个字符")
                     return
                 }
                 
@@ -327,12 +327,12 @@ extension LogOrRegViewController {
                     self.functionalType = .logIn
                     
                     if let _ = error {
-                        self.view.showTipText("网络有点问题，等一会儿再试")
+                        self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
                         
                         if json["error"] != 0 { // 服务器返回错误
-                            self.view.showTipText("邮箱或密码不对...")
+                            self.showTipText("邮箱或密码不对...")
                         } else {
                             let shell = json["data"]["shell"].stringValue
                             let uid = json["data"]["uid"].stringValue
@@ -347,21 +347,12 @@ extension LogOrRegViewController {
                             
                             Api.requestLoad()
                             globalWillReEnter = 1
-                            let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                            let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                            navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                            navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                            navigationViewController.navigationBar.translucent = true
-                            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                            navigationViewController.navigationBar.clipsToBounds = true
                             
-                            self.presentViewController(navigationViewController, animated: true, completion: {
-                                self.emailTextField.text = ""
-                                self.passwordTextField.text = ""
-                            })
-                            
-                            Api.postJpushBinding(){_ in }
+                            self.launch()
+                            print("登录或者注册")
+//                            self.navigationController?.popViewControllerAnimated(false)
+                            self.emailTextField.text = ""
+                            self.passwordTextField.text = ""
                             
                         } // if json["error"] != 0
                     } // if let _error = error
@@ -371,7 +362,7 @@ extension LogOrRegViewController {
         } else if self.functionalType == .register {
             if self.passwordTextField.text != "" {
                 if self.passwordTextField.text!.characters.count < 4 {
-                    self.view.showTipText("密码至少 4 个字符", delay: 1)
+                    self.showTipText("密码至少 4 个字符")
                     return
                 }
                 
@@ -387,12 +378,12 @@ extension LogOrRegViewController {
                             self.functionalType = .register
                             
                             if let _ = error { // 服务器返回错误
-                                self.view.showTipText("网络有点问题，等一会儿再试")
+                                self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] == 1 { // 服务器返回的数据包含“错误信息”
-                                    self.view.showTipText("昵称被占用...", delay: 2)
+                                    self.showTipText("昵称被占用...")
                                     
                                 } else if json["error"] == 0 {
                                     self.performSegueWithIdentifier("toModeVC", sender: nil)
@@ -404,10 +395,10 @@ extension LogOrRegViewController {
                         
                     }
                 } else { // 没有输入 nickname
-                    self.view.showTipText("名字不能是空的...")
+                    self.showTipText("名字不能是空的...")
                 }
             } else { // 没有输入 password
-                self.view.showTipText("密码不能是空的...")
+                self.showTipText("密码不能是空的...")
             }
         }
     }
@@ -436,15 +427,15 @@ extension LogOrRegViewController {
      */
     func validateNickname(name: String) -> Bool {
         if name == "" {
-            self.view.showTipText("名字不能是空的...")
+            self.showTipText("名字不能是空的...")
             
             return false
         } else if name.characters.count < 2 {
-            self.view.showTipText("名字有点短...")
+            self.showTipText("名字有点短...")
             
             return false
         } else if !name.isValidName() {
-            self.view.showTipText("名字里有奇怪的字符...")
+            self.showTipText("名字里有奇怪的字符...")
             
             return false
         }

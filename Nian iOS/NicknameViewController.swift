@@ -99,7 +99,7 @@ extension NicknameViewController {
                 (task, responseObject, error) in
                 
                 if let _ = error {
-                    self.view.showTipText("网络有点问题，等一会儿再试")
+                    self.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
                     
@@ -107,7 +107,7 @@ extension NicknameViewController {
                         self.button.stopAnimating()
                         self.button.setTitle("确定", forState: .Normal)
                         
-                        self.view.showTipText("昵称被占用...", delay: 2)
+                        self.showTipText("昵称被占用...")
                         
                     } else {
                         /*=========================================================================================================================================*/
@@ -119,13 +119,13 @@ extension NicknameViewController {
                             self.button.setTitle("确定", forState: UIControlState.Normal)
                             
                             if let _ = error {
-                                self.view.showTipText("网络有点问题，等一会儿再试")
+                                self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    self.view.showTipText("注册不成功...")
+                                    self.showTipText("注册不成功...")
                                 } else {
                                     let shell = json["data"]["shell"].stringValue
                                     let uid = json["data"]["uid"].stringValue
@@ -139,20 +139,10 @@ extension NicknameViewController {
                                     
                                     Api.requestLoad()
                                     globalWillReEnter = 1
-                                    let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-                                    let navigationViewController = UINavigationController(rootViewController: mainViewController)
-                                    navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-                                    navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-                                    navigationViewController.navigationBar.translucent = true
-                                    navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-                                    navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-                                    navigationViewController.navigationBar.clipsToBounds = true
+                                    self.launch()
                                     
-                                    self.presentViewController(navigationViewController, animated: true, completion: {
-                                        self.nameTextfield.text = ""
-                                    })
-                                    
-                                    Api.postJpushBinding(){_ in }
+                                    print("昵称")
+                                    self.nameTextfield.text = ""
                                 }
                             }
                         }
@@ -171,15 +161,15 @@ extension NicknameViewController {
      */
     func validateNickname(name: String) -> Bool {
         if name == "" {
-            self.view.showTipText("名字不能是空的...")
+            self.showTipText("名字不能是空的...")
             
             return false
         } else if name.characters.count < 2 {
-            self.view.showTipText("名字有点短...")
+            self.showTipText("名字有点短...")
             
             return false
         } else if !name.isValidName() {
-            self.view.showTipText("名字里有奇怪的字符...")
+            self.showTipText("名字里有奇怪的字符...")
             
             return false
         }
