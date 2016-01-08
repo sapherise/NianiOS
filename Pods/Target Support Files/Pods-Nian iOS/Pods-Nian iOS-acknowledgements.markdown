@@ -38,6 +38,10 @@ Francis Chong francis@ignition.hk
 
 MIT license
 
+## RongCloudIMLib
+
+Copyright 2014 Rong Cloud
+
 ## SDWebImage
 
 Copyright (c) 2009 Olivier Poitrey <rs@dailymotion.com>

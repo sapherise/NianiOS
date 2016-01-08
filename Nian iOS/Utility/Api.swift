@@ -714,8 +714,9 @@ struct Api {
     }
     
     // MARK: - 极光推送
+    //todo
     static func postJpushBinding(callback: V.JsonCallback) {
-        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
+//        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
     }
     
     static func postDeviceTokenClear(callback: V.StringCallback) {
@@ -994,6 +995,13 @@ extension Api {
     static func getRewards(activity: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/rewards.php?uid=\(s_uid)&shell=\(s_shell)&activity=\(activity)", callback: callback)
+    }
+}
+
+extension Api {
+    static func getRongToken(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/message/token?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
 }
 

@@ -245,8 +245,7 @@ extension WelcomeViewController {
                 LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                    (task, responseObject, error) in
                     
-                    if let err = error {
-                        print(err)
+                    if let _ = error {
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)

@@ -143,8 +143,6 @@ extension NicknameViewController {
                                     /* 使用第三方来注册 */
                                     self.launch()
                                     self.pushTomorrow()
-                                    
-                                    print("昵称")
                                     self.nameTextfield.text = ""
                                 }
                             }

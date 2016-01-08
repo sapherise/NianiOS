@@ -43,7 +43,6 @@ class AccountBindViewController: SAViewController {
             self.stopAnimating()
             
             if let _ = error {
-                print(1)
                 self.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
@@ -265,14 +264,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
                         SettingModel.relieveThirdAccount("wechat", callback: { (task, responseObject, error) -> Void in
                             if let _ = error {
-                                print(2)
                                 self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    print(3)
                                     self.showTipText("网络有点问题，等一会儿再试")
                                 } else {
                                     
@@ -323,14 +320,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
                         SettingModel.relieveThirdAccount("QQ", callback: { (task, responseObject, error) -> Void in
                             if let _ = error {
-                                print(4)
                                 self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    print(5)
                                     self.showTipText("网络有点问题，等一会儿再试")
                                 } else {
                                     self.bindDict["QQ"] = 1
@@ -399,14 +394,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
                         SettingModel.relieveThirdAccount("weibo", callback: { (task, responseObject, error) -> Void in
                             if let _ = error {
-                                print(6)
                                 self.showTipText("网络有点问题，等一会儿再试")
                             } else {
                                 
                                 let json = JSON(responseObject!)
                                 
                                 if json["error"] != 0 {
-                                    print(7)
                                     self.showTipText("网络有点问题，等一会儿再试")
                                 } else {
                                     self.bindDict["weibo"] = "0"
@@ -463,7 +456,6 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
                 (task, responseObject, error) in
                 
                 if let _ = error {
-                    print(8)
                     self.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     let json = JSON(responseObject!)
@@ -519,7 +511,6 @@ extension AccountBindViewController {
                 LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
                     (task, responseObject, error) in
                     if let _ = error {
-                        print(9)
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
@@ -554,7 +545,6 @@ extension AccountBindViewController {
                     (task, responseObject, error) in
                     
                     if let _ = error {
-                        print(10)
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
                         let json = JSON(responseObject!)
@@ -585,13 +575,11 @@ extension AccountBindViewController {
             (task, responseObject, error) -> Void in
             
             if let _ = error {
-                print(11)
                 self.showTipText("网络有点问题，等一会儿再试")
             } else {
                 let json = JSON(responseObject!)
                 
                 if json["error"].numberValue != 0 {
-                    print(12)
                     self.showTipText("网络有点问题，等一会儿再试")
                 } else {
                     

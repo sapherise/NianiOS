@@ -9,7 +9,7 @@
 import UIKit
 
 var Nian: NianViewController!
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate {
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate, RCIMClientReceiveMessageDelegate {
     var myTabbar :UIView?
     var currentViewController: UIViewController?
     var currentIndex: Int?
@@ -38,6 +38,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var tabButtonArray = NSMutableArray()
     
+    func onReceived(message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
+        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: message)
+        print("收到新消息，未接受消息数：\(nLeft)")
+        shake()
+    }
+    
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -46,6 +52,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.initViewControllers()
         gameoverCheck()
         setupReachability()
+        IMClass.IMConnect()
+        RCIMClient.sharedRCIMClient().setReceiveMessageDelegate(self, object: nil)
     }
 
     func gameoverCheck() {
@@ -323,7 +331,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+        //todo
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     // 3D Touch 下的更新进展
@@ -541,9 +550,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                     let type = data.stringAttributeForKey("type")
                     let time = data.stringAttributeForKey("lastdate")
                     var isread = 0
-                    if circle == "\(globalCurrentCircle)" {
-                        isread = 1
-                    }
                     
                     let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
                     let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String

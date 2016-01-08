@@ -31,8 +31,6 @@ var globalViewFilm:ILTranslucentView?
 var globalViewFilmExist: Bool = false
 var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
-var globalCurrentCircle: Int = 0
-var globalCurrentLetter: Int = 0
 var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
 
@@ -405,7 +403,7 @@ extension UIViewController {
     
     /* 邮箱登录、第三方登录、邮箱注册、第三方注册、普通启动*/
     func launch() {
-        delay(0.1) { () -> () in
+        delay(0.2) { () -> () in
             let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
             let navigationViewController = UINavigationController(rootViewController: mainViewController)
             navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)

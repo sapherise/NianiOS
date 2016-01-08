@@ -17,6 +17,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var numLeft: String = ""
     var numMiddel: String = ""
     var numRight: String = ""
+    var labelNav = UILabel()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -45,18 +46,17 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewDidAppear(animated)
         navHide()
         self.navigationController!.interactivePopGestureRecognizer!.enabled = false
-        SALoadLetter()
+        load()
     }
     
     func Letter(noti: NSNotification) {
-        self.SALoadLetter()
+        self.load()
     }
     
     func setupViews() {
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
         navView.backgroundColor = BarColor
-        let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
-        labelNav.text = "消息"
+        labelNav.frame = CGRectMake(0, 20, globalWidth, 44)
         labelNav.textColor = UIColor.whiteColor()
         labelNav.font = UIFont.systemFontOfSize(17)
         labelNav.textAlignment = NSTextAlignment.Center
@@ -90,27 +90,45 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     var isLoadingLetter = false
-    func SALoadLetter(){
+    func load(){
         if !isLoadingLetter {
             isLoadingLetter = true
-            let safeuid = SAUid()
-            let safename = Cookies.get("user") as? String
-            let (resultCircle, _) = SD.executeQuery("SELECT circle FROM `letter` where owner = '\(safeuid)' GROUP BY circle ORDER BY lastdate DESC")
             self.dataArray.removeAllObjects()
-            for row in resultCircle {
-                let id = (row["circle"]?.asString())!
-                var title = "玩家 #\(id)"
-                let (resultDes, _) = SD.executeQuery("select * from letter where circle = '\(id)' and owner = '\(safeuid)' order by id desc limit 1")
-                if resultDes.count > 0 {
-                    for row in resultDes {
-                        title = (row["name"]?.asString())!
+            
+            let arr = RCIMClient.sharedRCIMClient().getConversationList([RCConversationType.ConversationType_PRIVATE.rawValue])
+            for item in arr {
+                if let conversation = item as? RCConversation {
+                    let json = conversation.jsonDict as NSDictionary
+                    let content = json.stringAttributeForKey("content")
+                    let extra = json.stringAttributeForKey("extra")
+                    if let nameSelf = Cookies.get("user") as? String {
+                        var name = SAReplace(extra, before: nameSelf, after: "")
+                        name = SAReplace(name as String, before: ":", after: "")
+                        let id = conversation.targetId
+                        
+                        // 需要几个参数：
+                        // 对方的 uid，对方的名字，最后一句话的内容，时间，未读条数
+                        //       hao                   hao                hao
+                        let unread = conversation.unreadMessageCount
+                        let time = ("\(conversation.sentTime / Int64(1000))" as NSString).doubleValue
+                        let lastdate = V.absoluteTime(time)
+                        
+                        let e = ["id": id, "title": name, "content": content, "unread": "\(unread)", "lastdate": lastdate]
+                        self.dataArray.addObject(e)
                     }
-                }else if safeuid == id {
-                    title = safename!
+                    
+//                    let c = RCIMClient.sharedRCIMClient().getLatestMessages(RCConversationType.ConversationType_PRIVATE, targetId: b, count: 1)
+//                    if c.count > 0 {
+//                        let d = IMClass().messageToDictionay(c[0] as! RCMessage)
+//                        let id = d.stringAttributeForKey("uid")
+//                        let title = d.stringAttributeForKey("user")
+//                        let e = ["id": id, "title": title]
+//                        print(e)
+//                        self.dataArray.addObject(e)
+//                    }
                 }
-                let data = NSDictionary(objects: [id, title], forKeys: ["id", "title"])
-                self.dataArray.addObject(data)
             }
+            
             back {
                 self.tableView.reloadData()
                 if self.dataArray.count == 0 {
@@ -163,7 +181,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let data = self.dataArray[indexPath.row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
         SQLLetterDelete(id)
-        SALoadLetter()
+        load()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -261,13 +279,13 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             let letterVC = CircleController()
             if let id = Int(data.stringAttributeForKey("id")) {
                 let title = data.stringAttributeForKey("title")
-                letterVC.ID = id
-                letterVC.circleTitle = title
+                letterVC.id = id
+                letterVC.name = title
                 self.navigationController?.pushViewController(letterVC, animated: true)
                 
                 let safeuid = SAUid()
                 SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
-                SALoadLetter()
+                load()
             }
         }
     }

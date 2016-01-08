@@ -37,7 +37,8 @@
  *
  *  极光推送 API 
  */
-#import "APService.h"
+//todo
+//#import "APService.h"
 
 /**
  *  @author Bob Wei, 15-10-26 16:10:41
@@ -77,4 +78,7 @@
 /* 图片加载进度
  */
 #import "UIImageView+ProgressView.h"
+
+/* 融云 IM */
+#import <RongIMLib/RongIMLib.h>
 

@@ -570,7 +570,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     func SALetter(sender: UIButton) {
         let letterVC = CircleController()
         if let id = Int(self.Id) {
-            letterVC.ID = id
+            letterVC.id = id
+            letterVC.name = self.topCell.UserName.text!
             self.navigationController?.pushViewController(letterVC, animated: true)
         }
     }

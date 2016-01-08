@@ -40,11 +40,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-        APService.setupWithOption(launchOptions)
+        //todo
+//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+//        APService.setupWithOption(launchOptions)
         
         application.applicationIconBadgeNumber = 1
         application.applicationIconBadgeNumber = 0
+        
+        /* 融云 IM 接入 */
+        RCIMClient.sharedRCIMClient().initWithAppKey("pwe86ga5e0zq6")
         
         // check current shortcut item
         if #available(iOS 9.0, *) {
@@ -91,7 +95,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         }
         
         /* 设置极光推送 */
-        APService.registerDeviceToken(deviceToken)
+        // todo
+//        APService.registerDeviceToken(deviceToken)
         Api.postJpushBinding(){ _ in }
     }
 
@@ -113,7 +118,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             let aps = userInfo["aps"] as! NSDictionary
             
             handleReceiveRemoteNotification(aps)
-            APService.handleRemoteNotification(userInfo)
+            //todo
+//            APService.handleRemoteNotification(userInfo)
             completionHandler(UIBackgroundFetchResult.NewData)
     }
     
@@ -182,12 +188,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
                 parameters: nil,
                 success: {
                     (task, id) in
-                    print("21")
                     NSNotificationCenter.defaultCenter().postNotificationName("Wechat", object: id)
                     
                 }, failure: {
                     (task, error) in
-                    print(error)
             })   
         }
     }

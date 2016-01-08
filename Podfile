@@ -11,6 +11,7 @@ pod 'Base64'
 pod 'UMengAnalytics'
 pod 'SDWebImage'
 pod 'SDWebImage-ProgressView'
+pod 'RongCloudIMLib'
 
 end
 

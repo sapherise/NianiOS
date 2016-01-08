@@ -42,47 +42,30 @@ class LetterCell: MKTableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let safeuid = SAUid()
         if data != nil {
             let id = self.data!.stringAttributeForKey("id")
             let title = self.data!.stringAttributeForKey("title")
+            let content = self.data!.stringAttributeForKey("content")
+            let unread = self.data!.stringAttributeForKey("unread")
+            let lastdate = self.data!.stringAttributeForKey("lastdate")
             self.imageHead.setHead(id)
             if let v = Int(id) {
                 self.imageHead.tag = v
             }
             self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
             self.labelTitle.text = title
-            let (resultSet2, _) = SD.executeQuery("select * from letter where circle='\(id)' and owner = '\(safeuid)' order by id desc limit 1")
-            if resultSet2.count > 0 {
-                for row in resultSet2 {
-                    let postdate = (row["lastdate"]!.asString() as NSString).doubleValue
-                    let content = row["content"]!.asString()
-                    let type = row["type"]!.asString()
-                    var textContent = content
-                    if type == "2" {
-                        textContent = "发了一张图片"
-                    }
-                    self.lastdate!.text = V.relativeTime(postdate, current: NSDate().timeIntervalSince1970)
-                    self.labelContent.text = textContent
-                    break
-                }
-            }else{
-                self.lastdate!.hidden = true
-                self.labelContent.text = "可以开始聊天啦"
-            }
-            let (resultSet, err) = SD.executeQuery("select id from letter where circle='\(id)' and isread = 0 and owner = '\(safeuid)'")
-            if err == nil {
-                let count = resultSet.count
-                if count == 0 {
-                    self.labelCount.text = "0"
-                    self.labelCount.hidden = true
-                }else{
-                    self.labelCount.hidden = false
-                    let widthCount = ceil("\(count)".stringWidthWith(11, height: 20) + 16.0)
-                    self.labelCount.text = "\(count)"
-                    self.labelCount.setWidth(widthCount)
-                    self.labelCount.setX(globalWidth-15-widthCount)
-                }
+            self.labelContent.text = content
+            self.lastdate?.text = lastdate
+            
+            if unread == "0" {
+                labelCount.text = "0"
+                labelCount.hidden = true
+            } else {
+                labelCount.hidden = false
+                let w = unread.stringWidthWith(11, height: 20) + 16
+                labelCount.text = unread
+                labelCount.setWidth(w)
+                labelCount.setX(globalWidth - 15 - w)
             }
         }
     }

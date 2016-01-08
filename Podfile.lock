@@ -22,6 +22,7 @@ PODS:
     - AFNetworking/NSURLSession
   - Base64 (1.0.1)
   - NSData+MD5Digest (1.0.0)
+  - RongCloudIMLib (2.4.3)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage-ProgressView (0.4.0):
@@ -33,6 +34,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
   - Base64
   - NSData+MD5Digest
+  - RongCloudIMLib
   - SDWebImage
   - SDWebImage-ProgressView
   - UMengAnalytics
@@ -41,6 +43,7 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Base64: 4924bf3ca6fa559a5161ef717291bd450eb7bd1a
   NSData+MD5Digest: 0743d53874455e2bdf49f70e7f815b0b963a355f
+  RongCloudIMLib: e9f3923df0936e1f390b70fe72eacf61b7bfb29f
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SDWebImage-ProgressView: cdc29091ec0d53fd6dab3df65039a4f308e0a5ae
   UMengAnalytics: d24fb5200e13d2874f36b6337bc129b96511c54e

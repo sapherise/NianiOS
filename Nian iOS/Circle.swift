@@ -16,8 +16,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var actionSheetPhoto:UIActionSheet?
     var navView:UIView!
     var dataTotal:Int = 30
-    var ID:Int = 0
-    var circleTitle: String = ""
     var ReplyContent:String = ""
     var ReplyRow:Int = 0
     var ReplyCid:String = ""
@@ -31,10 +29,14 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var keyboardHeight:CGFloat = 0
     var imagePicker:UIImagePickerController?
     
+    /* 消息发送者的 id 和 name */
+    var id: Int = 0
+    var name: String = ""
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        SAloadData()
+        load()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
     }
@@ -42,17 +44,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardEndObserve()
+        
+        /* 当离开该页面时，设置所有为已读 */
+        RCIMClient.sharedRCIMClient().clearMessagesUnreadStatus(RCConversationType.ConversationType_PRIVATE, targetId: "\(id)")
     }
     
     override func viewDidDisappear(animated: Bool) {
-        globalCurrentCircle = 0
-        globalCurrentLetter = 0
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         keyboardStartObserve()
-            globalCurrentLetter = self.ID
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -64,7 +66,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             let data = noti.object as! NSDictionary
             let circle = data.stringAttributeForKey("to")
-            if circle == "\(self.ID)" {
+            if circle == "\(self.id)" {
                 _ = data.stringAttributeForKey("msgid")
                 let uid = data.stringAttributeForKey("from")
                 let name = data.stringAttributeForKey("fromname")
@@ -94,26 +96,18 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func Letter(noti: NSNotification) {
-        let data = noti.object as! NSDictionary
-        let uid = data.stringAttributeForKey("from")
-        if uid == "\(self.ID)" {
-            let name = data.stringAttributeForKey("fromname")
-            let content = data.stringAttributeForKey("msg").decode()
-            let title = data.stringAttributeForKey("title")
-            let type = data.stringAttributeForKey("msgtype")
-            let time = (data.stringAttributeForKey("time") as NSString).doubleValue
-            
-            let commentReplyRow = self.dataArray.count
-            let absoluteTime = V.absoluteTime(time)
-            let newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
-            self.dataArray.insertObject(newinsert, atIndex: 0)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableview.reloadData()
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
-                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+        if let message = noti.object as? RCMessage {
+            if "\(id)" == message.senderUserId {
+                let new = IMClass().messageToDictionay(message)
+                self.dataArray.insertObject(new, atIndex: 0)
+                back {
+                    self.tableview.reloadData()
+                    let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+                    if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
+                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                    }
                 }
-            })
+            }
         }
     }
     
@@ -185,6 +179,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.text = self.name
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
     }
@@ -266,64 +261,82 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     //将内容发送至服务器
-    func addReply(contentAfter:String, type:Int = 1){
-        let content = SAEncode(contentAfter)
-            Api.postLetterChat(self.ID, content: content, type: type) { json in
-                if json != nil {
-                    let status = json!.objectForKey("status") as! NSNumber
-                    let msgid = (json!.objectForKey("data") as! NSDictionary)["msgid"] as! NSNumber
-                    let lastdate = (json!.objectForKey("data") as! NSDictionary)["lastdate"] as! NSNumber
-                    if status == 200 {
-                        self.tableUpdate(contentAfter)
-                        let safeuid = SAUid()
-                        
-                        Api.postName(self.ID) { result in
-                            if result != nil {
-                                SQLLetterContent(String(msgid), uid: safeuid, name: result!, circle: "\(self.ID)", content: contentAfter, type: "\(type)", time: String(lastdate), isread: 1) {}
-                            }
-                        }
-                    }
-                }
-            }
+    func addReply(content: String, type: Int = 1){
+//        let content = SAEncode(contentAfter)
+//        Api.postLetterChat(self.ID, content: content, type: type) { json in
+//            if json != nil {
+//                let status = json!.objectForKey("status") as! NSNumber
+//                let msgid = (json!.objectForKey("data") as! NSDictionary)["msgid"] as! NSNumber
+//                let lastdate = (json!.objectForKey("data") as! NSDictionary)["lastdate"] as! NSNumber
+//                if status == 200 {
+//                    self.tableUpdate(contentAfter)
+//                    let safeuid = SAUid()
+//                    
+//                    Api.postName(self.ID) { result in
+//                        if result != nil {
+//                            SQLLetterContent(String(msgid), uid: safeuid, name: result!, circle: "\(self.ID)", content: contentAfter, type: "\(type)", time: String(lastdate), isread: 1) {}
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        
+        var nameSelf = ""
+        if let _name = Cookies.get("user") as? String {
+            nameSelf = _name
+        }
+        let message = RCTextMessage(content: content)
+        message.extra = "\(self.name):\(nameSelf)"
+        
+        RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: nil, success: { (messageID) -> Void in
+            self.tableUpdate(content)
+            }) { (err, no) -> Void in
+        }
     }
     
-    func SAloadData(clear: Bool = true){
+    /* 进入页面时，从本地拉取最新的消息 */
+    func load(clear: Bool = true){
         if clear {
             self.page = 0
             self.dataTotal = 0
             self.dataArray.removeAllObjects()
         }
-        let (resultSet, err) = SD.executeQuery("SELECT * FROM letter where circle ='\(self.ID)' and owner = '\(SAUid())' order by id desc limit \(self.page*30),30")
-        if err == nil {
-            self.page++
-            for row in resultSet {
-                let id = row["id"]?.asString()
-                let uid = row["uid"]?.asString()
-                let user = row["name"]?.asString()
-                let content = row["content"]?.asString()
-                let type = row["type"]?.asString()
-                let lastdate = row["lastdate"]?.asString()
-                let time = V.absoluteTime((lastdate! as NSString).doubleValue)
-                let data = NSDictionary(objects: [id!, uid!, user!, content!, type!, time], forKeys: ["id", "uid", "user", "content", "type", "lastdate"])
+        
+        /* 默认是拉取最新的 30 条 */
+        var arr = RCIMClient.sharedRCIMClient().getLatestMessages(RCConversationType.ConversationType_PRIVATE, targetId: "\(id)", count: 30)
+        
+        /* 当不是在第一页时，拉取数据从最新的 id 往后 */
+        let count = dataArray.count
+        if count > 0 {
+            let data = dataArray[count - 1] as! NSDictionary
+            let oldestid = data.stringAttributeForKey("id")
+            arr = RCIMClient.sharedRCIMClient().getHistoryMessages(.ConversationType_PRIVATE, targetId: "\(id)", oldestMessageId: Int(oldestid)!, count: 30)
+        }
+        
+        self.page++
+        
+        for _item in arr {
+            if let item = _item as? RCMessage {
+                let data = IMClass().messageToDictionay(item)
+                let id = data.stringAttributeForKey("id")
+                print(id)
                 self.dataArray.addObject(data)
                 self.dataTotal++
             }
-            let heightBefore = self.tableview.contentSize.height
-            self.tableview.reloadData()
-            let heightAfter = self.tableview.contentSize.height
-            if clear {
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0  {
-                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
-                }
-                if let v = (self.navigationItem.titleView as? UILabel) {
-                    v.text = self.circleTitle
-                }
-            }else{
-                let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                self.tableview.contentOffset = CGPointMake(0, heightChange)
-                self.animating = 0
+        }
+        
+        let heightBefore = self.tableview.contentSize.height
+        self.tableview.reloadData()
+        let heightAfter = self.tableview.contentSize.height
+        if clear {
+            let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
+            if offset > 0  {
+                self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
             }
+        }else{
+            let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
+            self.tableview.contentOffset = CGPointMake(0, heightChange)
+            self.animating = 0
         }
     }
     
@@ -333,7 +346,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if y < 40 {
                 if self.animating == 0 {
                     self.animating = 1
-                    self.SAloadData(false)
+                    self.load(false)
                 }
             }
         }
@@ -348,7 +361,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         let type = data.stringAttributeForKey("type")
-        // 1: 文字消息，2: 图片消息，3: 进展更新，4: 成就通告，5: 用户加入，6: 管理员操作，7: 邀请用户
         if type == "1" {
             let c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
             c.data = data

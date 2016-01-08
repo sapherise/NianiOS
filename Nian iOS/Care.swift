@@ -135,7 +135,6 @@ func cancelPush(id: String) {
             if let dict = noti.userInfo!["id"] {
                 if "\(dict)" == id {
                     UIApplication.sharedApplication().cancelLocalNotification(noti)
-                    print("\(id) 已移除")
                 }
             }
         }

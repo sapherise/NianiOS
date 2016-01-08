@@ -35,6 +35,7 @@ class CircleBubbleCell: UITableViewCell {
     
     override func layoutSubviews() {
         if data != nil {
+            let id = data.stringAttributeForKey("id")
             let uid = self.data.stringAttributeForKey("uid")
             let user = self.data.stringAttributeForKey("user")
             let lastdate = self.data.stringAttributeForKey("lastdate")
