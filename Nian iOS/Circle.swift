@@ -262,35 +262,27 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     //将内容发送至服务器
     func addReply(content: String, type: Int = 1){
-//        let content = SAEncode(contentAfter)
-//        Api.postLetterChat(self.ID, content: content, type: type) { json in
-//            if json != nil {
-//                let status = json!.objectForKey("status") as! NSNumber
-//                let msgid = (json!.objectForKey("data") as! NSDictionary)["msgid"] as! NSNumber
-//                let lastdate = (json!.objectForKey("data") as! NSDictionary)["lastdate"] as! NSNumber
-//                if status == 200 {
-//                    self.tableUpdate(contentAfter)
-//                    let safeuid = SAUid()
-//                    
-//                    Api.postName(self.ID) { result in
-//                        if result != nil {
-//                            SQLLetterContent(String(msgid), uid: safeuid, name: result!, circle: "\(self.ID)", content: contentAfter, type: "\(type)", time: String(lastdate), isread: 1) {}
-//                        }
-//                    }
-//                }
-//            }
-//        }
-        
         var nameSelf = ""
         if let _name = Cookies.get("user") as? String {
             nameSelf = _name
         }
-        let message = RCTextMessage(content: content)
-        message.extra = "\(self.name):\(nameSelf)"
         
-        RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: nil, success: { (messageID) -> Void in
-            self.tableUpdate(content)
-            }) { (err, no) -> Void in
+        /* 文本 */
+        if type == 1 {
+            let message = RCTextMessage(content: content)
+            message.extra = "\(self.name):\(nameSelf)"
+            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: nil, success: { (messageID) -> Void in
+                self.tableUpdate(content)
+                }) { (err, no) -> Void in
+            }
+        } else if type == 2 {
+            /* 图片 */
+            let message = RCImageMessage(imageURI: "\(content)")
+            message.extra = "\(self.name):\(nameSelf)"
+            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: nil, success: { (messageID) -> Void in
+                self.tableUpdate(content)
+                }) { (err, no) -> Void in
+            }
         }
     }
     
@@ -318,8 +310,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         for _item in arr {
             if let item = _item as? RCMessage {
                 let data = IMClass().messageToDictionay(item)
-                let id = data.stringAttributeForKey("id")
-                print(id)
                 self.dataArray.addObject(data)
                 self.dataTotal++
             }
@@ -367,9 +357,10 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.textContent.tag = index
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.textContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleLongClick:"))
             c.View.tag = index
             cell = c
-        }else{
+        } else {
             let c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
             c.data = data
             c.imageContent.tag = index
@@ -419,7 +410,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             let img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
             if img0 != 0 {
                 if let v = sender.view as? UIImageView {
-                    let url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!a"
+                    let url = "\(arrContent[0])_\(arrContent[1]).png!a"
                     v.showImage(url)
                 }
             }
@@ -431,6 +422,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
+    }
+    
+    func onBubbleLongClick(sender: UILongPressGestureRecognizer) {
+        if sender.state == .Began {
+            onBubbleClick(sender)
+        }
     }
     
     func onBubbleClick(sender:UIGestureRecognizer) {
@@ -528,14 +525,18 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
         }
         
-        let safeuid = SAUid()
+        /* 在上传前设置缓存 */
+        let wSmall = 88 * globalScale
+        let wLarge = globalWidth * globalScale
         
+        let safeuid = SAUid()
         self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
         let uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             var uploadUrl = data.objectForKey("url") as! String
-            setCacheImage("http://img.nian.so\(uploadUrl)!large", img: img, width: 500)
-            uploadUrl = SAReplace(uploadUrl, before: "/circle/", after: "") as String
+            uploadUrl = "http://img.nian.so\(uploadUrl)"
+            setCacheImage("\(uploadUrl)!a", img: img, width: wSmall)
+            setCacheImage("\(uploadUrl)!large", img: img, width: wLarge)
             uploadUrl = SAReplace(uploadUrl, before: ".png", after: "") as String
             let content = "\(uploadUrl)_\(width)_\(height)"
             self.addReply(content, type: 2)

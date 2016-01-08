@@ -40,14 +40,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func onReceived(message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
         NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: message)
-        print("收到新消息，未接受消息数：\(nLeft)")
+        // todo: 很多很多未读消息的时候怎么办？
         shake()
     }
     
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        SQLInit()
         self.setupViews()
         self.initViewControllers()
         gameoverCheck()
@@ -125,10 +124,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         navHide()
         self.navigationController!.interactivePopGestureRecognizer!.enabled = false
         // 当前账户退出，载入其他账户时使用
-        if globalWillReEnter == 1 {
-            globalWillReEnter = 0
-            onCircleEnter()
-        }
+        // todo: 从其他账户登录时，应该怎么显示？
     }
     
     func onAppActive() {
@@ -172,49 +168,42 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     */
     func handleNetworkReceiveMsg(noti: NSNotification) {
         // 设置 [String: AnyObject] 的别名 Dict, 下面代码会略简洁
-        typealias Dict = [String: AnyObject]
-        
-        // 用正则表达式解析
-        if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
-            
-            let pattern1 = "(回应|提到)"
-            let matcher: RegexHelper?
-            do  {
-                matcher = try RegexHelper(pattern1)
-            } catch _ as NSError {
-                matcher = nil
-            }
-            
-            if matcher!.match(_string) {
-                self.noticeDot()
-            }
-            
-            let pattern2 = "(一封信)"
-            let matcher2: RegexHelper?
-            do {
-                matcher2 = try RegexHelper(pattern2)
-            } catch _ as NSError {
-                matcher2 = nil
-            }
-            
-            if matcher2!.match(_string) {
-                self.loadLetter()
-            }
-        }
+        // todo: 现在没有进行任何处理
+//        typealias Dict = [String: AnyObject]
+//        
+//        // 用正则表达式解析
+//        if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
+//            
+//            let pattern1 = "(回应|提到)"
+//            let matcher: RegexHelper?
+//            do  {
+//                matcher = try RegexHelper(pattern1)
+//            } catch _ as NSError {
+//                matcher = nil
+//            }
+//            
+//            if matcher!.match(_string) {
+//                self.noticeDot()
+//            }
+//            
+//            let pattern2 = "(一封信)"
+//            let matcher2: RegexHelper?
+//            do {
+//                matcher2 = try RegexHelper(pattern2)
+//            } catch _ as NSError {
+//                matcher2 = nil
+//            }
+//            
+//            if matcher2!.match(_string) {
+//                self.loadLetter()
+//            }
+//        }
     }
     
     /* App 从后台进入前台，或者在登录状态下启动 */
     func onAppEnterForeground() {
         launchTimer()
-        onCircleEnter()
         onLock(lockType.verify)
-    }
-    
-    // 连接数据库
-    var isLoadFinish = 0
-    func onCircleEnter() {
-        isLoadFinish = 0
-        self.loadLetter()
     }
     
     // 断开数据库
@@ -243,39 +232,40 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func noticeDot() {
-        if self.dot != nil {
-            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-            let safeshell = uidKey.objectForKey(kSecValueData) as! String
-            
-            if safeuid != "" {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
-                    let a = resultSet.count
-                    let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
-                    if let number = Int(b) {
-                        globalNoticeNumber = a + number
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
-                                self.dot!.hidden = false
-                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
-                                    self.dot!.frame = CGRectMake(globalWidth*0.7+4, 8, 20, 17)
-                                }, completion: { (complete: Bool) in
-                                    self.dot!.text = "\(globalNoticeNumber)"
-                                    globalNoticeNumber = 0
-                                })
-                            } else if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
-                                self.dot!.hidden = true
-                                
-                                if number > 0 {
-                                    NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object: nil)
-                                }
-                            }
-                        })
-                    } // if let number = Int(b)
-                })
-            }
-        }
+        // todo: 重新写这个
+//        if self.dot != nil {
+//            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
+//            let safeshell = uidKey.objectForKey(kSecValueData) as! String
+//            
+//            if safeuid != "" {
+//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+//                    let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
+//                    let a = resultSet.count
+//                    let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
+//                    if let number = Int(b) {
+//                        globalNoticeNumber = a + number
+//                        dispatch_async(dispatch_get_main_queue(), {
+//                            if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
+//                                self.dot!.hidden = false
+//                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
+//                                    self.dot!.frame = CGRectMake(globalWidth*0.7+4, 8, 20, 17)
+//                                }, completion: { (complete: Bool) in
+//                                    self.dot!.text = "\(globalNoticeNumber)"
+//                                    globalNoticeNumber = 0
+//                                })
+//                            } else if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
+//                                self.dot!.hidden = true
+//                                
+//                                if number > 0 {
+//                                    NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object: nil)
+//                                }
+//                            }
+//                        })
+//                    } // if let number = Int(b)
+//                })
+//            }
+//        }
     }
     
     
@@ -449,42 +439,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-//    func addStep(){
-//        if globalNumberDream == 0 {
-//            let adddreamVC = AddDreamController(nibName: "AddDreamController", bundle: nil)
-//            self.navigationController!.pushViewController(adddreamVC, animated: true)
-//        } else {
-//            self.addView = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-//            self.addView.translucentAlpha = 1
-//            self.addView.translucentStyle = UIBarStyle.Default
-//            self.addView.translucentTintColor = UIColor.clearColor()
-//            self.addView.backgroundColor = UIColor.clearColor()
-//            self.addView.alpha = 0
-//            self.addView.center = CGPointMake(globalWidth/2, globalHeight/2)
-//            let Tap = UITapGestureRecognizer(target: self, action: "onAddViewClick")
-//            Tap.delegate = self
-//            self.addView.addGestureRecognizer(Tap)
-//            
-//            let nib = NSBundle.mainBundle().loadNibNamed("AddStep", owner: self, options: nil)
-//            self.addStepView = nib[0] as! AddStep
-//            self.addStepView.delegate = self
-//            self.addStepView.setX(globalWidth/2-140)
-//            self.addStepView.setY(globalHeight/2-106)
-//            self.addView.addSubview(self.addStepView)
-//            
-//            self.viewClose = UIImageView(frame: CGRectMake(10, 20, 44, 44))
-//            self.viewClose.image = UIImage(named: "closeBlue")
-//            self.viewClose.contentMode = UIViewContentMode.Center
-//            self.viewClose.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCloseConfirm"))
-//            self.viewClose.userInteractionEnabled = true
-//            self.view.window?.addSubview(self.viewClose)
-//            self.view.addSubview(self.addView)
-//            UIView.animateWithDuration(0.3, animations: { () -> Void in
-//                self.addView.alpha = 1
-//            })
-//        }
-//    }
-    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if NSStringFromClass(touch.view!.classForCoder) == "UITableViewCellContentView"  {
             return false
@@ -492,82 +446,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         return true
     }
     
-//    func onViewCloseClick(){
-//        self.viewClose.removeFromSuperview()
-//        self.addStepView.textView.resignFirstResponder()
-//        UIView.animateWithDuration(0.2, animations: { () -> Void in
-//            let newTransform = CGAffineTransformScale(self.addView.transform, 1.2, 1.2)
-//            self.addView.transform = newTransform
-//            self.addView.alpha = 0
-//            }) { (Bool) -> Void in
-//                self.addView.removeFromSuperview()
-//        }
-//    }
-    
     func onShare(avc: UIActivityViewController) {
         self.presentViewController(avc, animated: true, completion: nil)
-    }
-    
-//    func onCloseConfirm(){
-//        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
-//            self.addStepView.textView.resignFirstResponder()
-//            self.cancelSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-//            self.cancelSheet!.addButtonWithTitle("不写了")
-//            self.cancelSheet!.addButtonWithTitle("继续写")
-//            self.cancelSheet!.cancelButtonIndex = 1
-//            self.cancelSheet!.showInView(self.view)
-//        }else{
-//            self.onViewCloseClick()
-//        }
-//    }
-    
-//    func onAddViewClick(){
-//        self.addStepView.textView.resignFirstResponder()
-//        UIView.animateWithDuration(0.3, animations: { () -> Void in
-//            self.addStepView.setY(globalHeight/2-106)
-//        })
-//        if ((self.addStepView.textView.text != "进展正文") && (self.addStepView.textView.text != "")) || self.addStepView.uploadUrl != "" {
-//            self.addStepView.textView.resignFirstResponder()
-//        }else{
-//            self.onViewCloseClick()
-//        }
-//    }
-
-    func loadLetter() {
-        Api.postLetterInit() { json in
-            if json != nil {
-                // 成功
-                self.isLoadFinish++
-                let arr = json!.objectForKey("items") as! NSArray
-                let lastid = json!.objectForKey("lastid") as! String
-                for i : AnyObject  in arr {
-                    let data = i as! NSDictionary
-                    let id = data.stringAttributeForKey("id")
-                    let uid = data.stringAttributeForKey("uid")
-                    let name = data.stringAttributeForKey("name")
-                    let circle = uid
-                    let content = data.stringAttributeForKey("content")
-                    let type = data.stringAttributeForKey("type")
-                    let time = data.stringAttributeForKey("lastdate")
-                    var isread = 0
-                    
-                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                    let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-                    
-                    let (resultSet2, _) = SD.executeQuery("SELECT * FROM letter where msgid='\(id)' and owner = '\(safeuid)' order by id desc limit  1")
-                    if resultSet2.count == 0 {
-                        SQLLetterContent(id, uid: uid, name: name, circle: circle, content: content, type: type, time: time, isread: isread) {
-                            let data = NSDictionary(objects: ["0", uid, name, content, id, type, time, circle, "0"], forKeys: ["cid", "from", "fromname", "msg", "msgid", "msgtype", "time", "to", "totype"])
-                            NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: data)
-                        }
-                    }
-                }
-                self.noticeDot()
-                Api.postUserLetterLastid(lastid) { json in
-                }
-//                self.enter()
-            }
-        }
     }
 }
 

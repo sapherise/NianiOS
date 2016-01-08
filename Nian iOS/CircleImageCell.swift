@@ -62,7 +62,7 @@ class CircleImageCell: UITableViewCell {
                 let width = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
                 let imageHeight = CGFloat(n)
                 self.imageContent.frame = CGRectMake(0, 15, width, imageHeight)
-                let url = "http://img.nian.so/circle/\(arrContent[0])_\(arrContent[1]).png!a"
+                let url = "\(arrContent[0])_\(arrContent[1]).png!a"
                 if arrContent[1] == "loading" {
                     self.activity = UIActivityIndicatorView()
                     self.activity!.color = UIColor.whiteColor()
@@ -93,7 +93,8 @@ class CircleImageCell: UITableViewCell {
                 }
                 self.imageContent.setHeight(imageHeight)
                 self.imageContent.setWidth(width)
-                self.imageContent.SAMaskImage(isMe)
+                self.imageContent.layer.masksToBounds = true
+                self.imageContent.layer.cornerRadius = 8
                 self.avatarView.setBottom(imageHeight + 35)
                 self.lastdate.setBottom(imageHeight + 40)
             }

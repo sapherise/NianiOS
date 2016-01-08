@@ -10,7 +10,6 @@ import UIKit
 
 class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
-    let identifier = "LetterCell"
     var tableView:UITableView!
     var dataArray = NSMutableArray()
     var Id:String = ""
@@ -28,6 +27,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func noticeShare() {
         self.tableView.headerBeginRefreshing()
     }
+    
+    // todo: 封面图会闪烁
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -59,6 +60,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         labelNav.frame = CGRectMake(0, 20, globalWidth, 44)
         labelNav.textColor = UIColor.whiteColor()
         labelNav.font = UIFont.systemFontOfSize(17)
+        labelNav.text = "消息"
         labelNav.textAlignment = NSTextAlignment.Center
         navView.addSubview(labelNav)
         self.view.addSubview(navView)
@@ -71,7 +73,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         let nib = UINib(nibName:"LetterCell", bundle: nil)
         let nib2 = UINib(nibName:"MeCellTop", bundle: nil)
         
-        self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView!.registerNib(nib, forCellReuseIdentifier: "LetterCell")
         self.tableView!.registerNib(nib2, forCellReuseIdentifier: "MeCellTop")
         self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.view.addSubview(self.tableView!)
@@ -89,64 +91,50 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    var isLoadingLetter = false
     func load(){
-        if !isLoadingLetter {
-            isLoadingLetter = true
-            self.dataArray.removeAllObjects()
-            
-            let arr = RCIMClient.sharedRCIMClient().getConversationList([RCConversationType.ConversationType_PRIVATE.rawValue])
-            for item in arr {
-                if let conversation = item as? RCConversation {
-                    let json = conversation.jsonDict as NSDictionary
-                    let content = json.stringAttributeForKey("content")
+        self.dataArray.removeAllObjects()
+        let arr = RCIMClient.sharedRCIMClient().getConversationList([RCConversationType.ConversationType_PRIVATE.rawValue])
+        for item in arr {
+            if let conversation = item as? RCConversation {
+                if let _json = conversation.jsonDict {
+                    let json = _json as NSDictionary
+                    
+                    /* 根据类型是图片还是文字，来决定内容是什么 */
+                    var content = json.stringAttributeForKey("content")
+                    if conversation.objectName == "RC:ImgMsg" {
+                        content = "[图片]"
+                    }
+                    
                     let extra = json.stringAttributeForKey("extra")
                     if let nameSelf = Cookies.get("user") as? String {
                         var name = SAReplace(extra, before: nameSelf, after: "")
                         name = SAReplace(name as String, before: ":", after: "")
                         let id = conversation.targetId
-                        
-                        // 需要几个参数：
-                        // 对方的 uid，对方的名字，最后一句话的内容，时间，未读条数
-                        //       hao                   hao                hao
                         let unread = conversation.unreadMessageCount
                         let time = ("\(conversation.sentTime / Int64(1000))" as NSString).doubleValue
                         let lastdate = V.absoluteTime(time)
-                        
                         let e = ["id": id, "title": name, "content": content, "unread": "\(unread)", "lastdate": lastdate]
                         self.dataArray.addObject(e)
                     }
-                    
-//                    let c = RCIMClient.sharedRCIMClient().getLatestMessages(RCConversationType.ConversationType_PRIVATE, targetId: b, count: 1)
-//                    if c.count > 0 {
-//                        let d = IMClass().messageToDictionay(c[0] as! RCMessage)
-//                        let id = d.stringAttributeForKey("uid")
-//                        let title = d.stringAttributeForKey("user")
-//                        let e = ["id": id, "title": title]
-//                        print(e)
-//                        self.dataArray.addObject(e)
-//                    }
                 }
             }
-            
-            back {
-                self.tableView.reloadData()
-                if self.dataArray.count == 0 {
-                    let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
-                    let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-                    viewQuestion.setY(70)
-                    let btnGo = UIButton()
-                    btnGo.setButtonNice("  嗯！")
-                    btnGo.setX(globalWidth/2-50)
-                    btnGo.setY(viewQuestion.bottom())
-                    btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
-                    viewHeader.addSubview(viewQuestion)
-                    viewHeader.addSubview(btnGo)
-                    self.tableView.tableFooterView = viewHeader
-                }else{
-                    self.tableView.tableFooterView = UIView()
-                }
-                self.isLoadingLetter = false
+        }
+        back {
+            self.tableView.reloadData()
+            if self.dataArray.count == 0 {
+                let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
+                viewQuestion.setY(70)
+                let btnGo = UIButton()
+                btnGo.setButtonNice("  嗯！")
+                btnGo.setX(globalWidth/2-50)
+                btnGo.setY(viewQuestion.bottom())
+                btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                viewHeader.addSubview(viewQuestion)
+                viewHeader.addSubview(btnGo)
+                self.tableView.tableFooterView = viewHeader
+            }else{
+                self.tableView.tableFooterView = UIView()
             }
         }
     }
@@ -180,7 +168,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         let data = self.dataArray[indexPath.row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
-        SQLLetterDelete(id)
+        RCIMClient.sharedRCIMClient().clearMessages(RCConversationType.ConversationType_PRIVATE, targetId: id)
+        RCIMClient.sharedRCIMClient().removeConversation(RCConversationType.ConversationType_PRIVATE, targetId: id)
         load()
     }
     
@@ -201,15 +190,10 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             cell!.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
             return cell!
         }else{
-            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LetterCell
-            let index = indexPath.row
-            let data = self.dataArray[index] as! NSDictionary
-            cell!.data = data
-            if let tag = Int(data.stringAttributeForKey("uid")) {
-                cell!.imageHead.tag = tag
-                cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
-            }
-            return cell!
+            let c: LetterCell! = tableView.dequeueReusableCellWithIdentifier("LetterCell", forIndexPath: indexPath) as? LetterCell
+            c.data = dataArray[indexPath.row] as! NSDictionary
+            c.setup()
+            return c
         }
     }
     
@@ -274,18 +258,17 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            let index = indexPath.row
-            let data = self.dataArray[index] as! NSDictionary
-            let letterVC = CircleController()
+            let data = self.dataArray[indexPath.row] as! NSDictionary
+            let mutableData = NSMutableDictionary(dictionary: data)
+            mutableData.setValue("0", forKey: "unread")
+            dataArray.replaceObjectAtIndex(indexPath.row, withObject: mutableData)
+            tableView.reloadData()
+            let vc = CircleController()
             if let id = Int(data.stringAttributeForKey("id")) {
                 let title = data.stringAttributeForKey("title")
-                letterVC.id = id
-                letterVC.name = title
-                self.navigationController?.pushViewController(letterVC, animated: true)
-                
-                let safeuid = SAUid()
-                SD.executeChange("update letter set isread = 1 where circle = \(id) and isread = 0 and owner = '\(safeuid)'")
-                load()
+                vc.id = id
+                vc.name = title
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
     }

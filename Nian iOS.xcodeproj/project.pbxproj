@@ -32,7 +32,6 @@
 		1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */; };
 		1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */; };
 		122A3F7C1BA13E9500C2FE67 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122A3F7B1BA13E9500C2FE67 /* Vote.swift */; };
-		122AFE031A80864800464641 /* SqliteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122AFE021A80864800464641 /* SqliteData.swift */; };
 		122D93A11B932FC000968F3E /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D93A01B932FC000968F3E /* Topic.swift */; };
 		122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D93A21B93430700968F3E /* Topic + UITableView.swift */; };
 		122F39211B4E794700DE8628 /* Card.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122F39201B4E794700DE8628 /* Card.xib */; };
@@ -195,7 +194,6 @@
 		12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A51BAD5533009EADC0 /* Reachability.swift */; };
 		12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */; };
 		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
-		12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F9253E1A8467F8005ECD9F /* SQL.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -337,7 +335,6 @@
 		1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAUserCell.xib; sourceTree = "<group>"; };
 		1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAUserCell.swift; sourceTree = "<group>"; };
 		122A3F7B1BA13E9500C2FE67 /* Vote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
-		122AFE021A80864800464641 /* SqliteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqliteData.swift; sourceTree = "<group>"; };
 		122D93A01B932FC000968F3E /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		122D93A21B93430700968F3E /* Topic + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + UITableView.swift"; sourceTree = "<group>"; };
 		122F39201B4E794700DE8628 /* Card.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Card.xib; sourceTree = "<group>"; };
@@ -521,7 +518,6 @@
 		12F678A51BAD5533009EADC0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+Reachability.swift"; sourceTree = "<group>"; };
 		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
-		12F9253E1A8467F8005ECD9F /* SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQL.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1383,7 +1379,6 @@
 				12652837196C6755005765D2 /* Sapherise.swift */,
 				C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */,
 				1285FDC71BCFC69F00F52DB8 /* size.swift */,
-				12F9253E1A8467F8005ECD9F /* SQL.swift */,
 				12B1BFFE1A6CB79B000D9284 /* Contacts.swift */,
 				12D846041A233B09005DCC08 /* BlurView.swift */,
 				12FB48BE196AE8010026DD51 /* FileUtility.swift */,
@@ -1396,7 +1391,6 @@
 				323F783D1A105C93003C3755 /* V.swift */,
 				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
-				122AFE021A80864800464641 /* SqliteData.swift */,
 				C448F55D1B93F9F200214984 /* APService.h */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 				C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */,
@@ -1888,7 +1882,6 @@
 				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
 				123FD9421C3A7DF800A92188 /* VVeboCell+Delegate.swift in Sources */,
 				C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */,
-				122AFE031A80864800464641 /* SqliteData.swift in Sources */,
 				C486FD581C04430A009F1F90 /* View.swift in Sources */,
 				126FDBEC1C382DA900DECA80 /* UpyunOperation.swift in Sources */,
 				12028E341A3EECBD0072FBE1 /* CircleTag.swift in Sources */,
@@ -2069,7 +2062,6 @@
 				120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */,
 				12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */,
 				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
-				12F9253F1A8467F8005ECD9F /* SQL.swift in Sources */,
 				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
 				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,

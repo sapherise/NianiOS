@@ -807,6 +807,18 @@ struct Api {
         loadCookies()
         V.httpPostForJson("http://api.nian.so/consume?uid=\(s_uid)&shell=\(s_shell)", content: "type=\(type)&coins=\(coins)", callback: callback)
     }
+    
+    /* 拖进小黑屋 */
+    static func postBlackAdd(uid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://api.nian.so/blacklist/add?uid=\(s_uid)&shell=\(s_shell)", content: "user=\(uid)", callback: callback)
+    }
+    
+    /* 取消小黑屋 */
+    static func postBlackRemove(uid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpPostForJson("http://api.nian.so/blacklist/remove?uid=\(s_uid)&shell=\(s_shell)", content: "user=\(uid)", callback: callback)
+    }
 }
 
 

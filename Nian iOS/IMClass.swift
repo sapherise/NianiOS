@@ -29,15 +29,28 @@ class IMClass: AnyObject {
     
     /* 将 RCMessage 解析为梦境支持的字典 */
     func messageToDictionay(message: RCMessage) -> NSDictionary {
-        let text = message.content as! RCTextMessage
-        let time = ("\(message.sentTime / 1000)" as NSString).doubleValue
-        let lastdate = V.absoluteTime(time)
-        let extra = text.extra.componentsSeparatedByString(":")
-        let messageid = "\(message.messageId)"
-        let senderUserid = message.senderUserId
-        
-        /* 发起者的昵称 */
-        let nameSender = extra[1]
-        return NSDictionary(objects: [text.content, messageid, lastdate, senderUserid, nameSender, "1", "", "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+        if let text = message.content as? RCTextMessage {
+            let time = ("\(message.sentTime / 1000)" as NSString).doubleValue
+            let lastdate = V.absoluteTime(time)
+            let extra = text.extra.componentsSeparatedByString(":")
+            let messageid = "\(message.messageId)"
+            let senderUserid = message.senderUserId
+            
+            /* 发起者的昵称 */
+            let nameSender = extra[1]
+            return NSDictionary(objects: [text.content, messageid, lastdate, senderUserid, nameSender, "1", "", "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+        } else if let text = message.content as? RCImageMessage {
+            let time = ("\(message.sentTime / 1000)" as NSString).doubleValue
+            let lastdate = V.absoluteTime(time)
+            let extra = text.extra.componentsSeparatedByString(":")
+            let messageid = "\(message.messageId)"
+            let senderUserid = message.senderUserId
+            
+            /* 发起者的昵称 */
+            let nameSender = extra[1]
+            return NSDictionary(objects: [text.imageUrl, messageid, lastdate, senderUserid, nameSender, "2", "", "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+        } else {
+            return NSDictionary()
+        }
     }
 }

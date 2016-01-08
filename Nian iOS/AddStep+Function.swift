@@ -162,8 +162,14 @@ extension AddStep {
                         let isfirst = result.stringAttributeForKey("isfirst")
                         self.field2.resignFirstResponder()
                         
-                        /* 创建进展卡片 */
                         go {
+                            /* 清除草稿 */
+                            print("清除草稿")
+                            Cookies.remove("draft")
+                            let a = NSUserDefaults.standardUserDefaults()
+                            print(a)
+                            
+                            /* 创建进展卡片 */
                             let modeCard = SACookie("modeCard")
                             if modeCard == "off" {
                             } else {

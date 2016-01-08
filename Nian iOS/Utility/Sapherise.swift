@@ -588,29 +588,6 @@ extension UIImage{
 
 extension UIImageView{
     func SAMaskImage(isMe: Bool = true){
-        var textMask = "bubble"
-        if isMe {
-            textMask = "bubble_me"
-        }
-        let size = CGSizeMake(self.bounds.size.width, self.bounds.size.height)
-        UIGraphicsBeginImageContext(size)
-        let ctx = UIGraphicsGetCurrentContext()
-        CGContextSetFillColor(ctx, [1.0,1.0,1.0,1.0])
-        CGContextFillRect(ctx, CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height))
-        let background = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        let subLayer = CALayer()
-        subLayer.frame = self.bounds
-        subLayer.contents = background.CGImage
-        subLayer.rasterizationScale = UIScreen.mainScreen().scale
-        let maskLayer = CALayer()
-        maskLayer.frame = self.bounds
-        subLayer.mask = maskLayer
-        let roundCornerLayer = CALayer()
-        roundCornerLayer.frame = self.bounds
-        roundCornerLayer.contents = UIImage(named: textMask)!.resetToSize(self.bounds.size).CGImage
-        self.layer.addSublayer(subLayer)
-        self.layer.mask = roundCornerLayer
     }
     
     func setHolder(){
@@ -1039,6 +1016,7 @@ class Cookies {
     class func remove(key: String) {
         let Cookie = NSUserDefaults.standardUserDefaults()
         Cookie.removeObjectForKey(key)
+        Cookie.synchronize()
     }
 }
 

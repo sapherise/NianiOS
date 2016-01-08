@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class LetterCell: MKTableViewCell {
+class LetterCell: UITableViewCell {
     
     @IBOutlet var labelTitle:UILabel!
     @IBOutlet var lastdate:UILabel?
@@ -19,9 +19,7 @@ class LetterCell: MKTableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelCount: UILabel!
     @IBOutlet var viewDelete: UIView!
-    
-    var largeImageURL:String = ""
-    var data :NSDictionary?
+    var data: NSDictionary!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,39 +32,38 @@ class LetterCell: MKTableViewCell {
         self.imageHead.layer.masksToBounds = true   
     }
     
-    func onUserClick(sender: UIGestureRecognizer) {
-        let UserVC = PlayerViewController()
-        UserVC.Id = "\(sender.view!.tag)"
-        self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+    func onUserClick() {
+        let uid = data.stringAttributeForKey("id")
+        let vc = PlayerViewController()
+        vc.Id = uid
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if data != nil {
-            let id = self.data!.stringAttributeForKey("id")
-            let title = self.data!.stringAttributeForKey("title")
-            let content = self.data!.stringAttributeForKey("content")
-            let unread = self.data!.stringAttributeForKey("unread")
-            let lastdate = self.data!.stringAttributeForKey("lastdate")
-            self.imageHead.setHead(id)
-            if let v = Int(id) {
-                self.imageHead.tag = v
-            }
-            self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
-            self.labelTitle.text = title
-            self.labelContent.text = content
-            self.lastdate?.text = lastdate
-            
-            if unread == "0" {
-                labelCount.text = "0"
-                labelCount.hidden = true
-            } else {
-                labelCount.hidden = false
-                let w = unread.stringWidthWith(11, height: 20) + 16
-                labelCount.text = unread
-                labelCount.setWidth(w)
-                labelCount.setX(globalWidth - 15 - w)
-            }
+    func setup() {
+        self.selectionStyle = .None
+        let id = self.data.stringAttributeForKey("id")
+        let title = self.data.stringAttributeForKey("title")
+        let content = self.data.stringAttributeForKey("content")
+        let unread = self.data.stringAttributeForKey("unread")
+        let lastdate = self.data.stringAttributeForKey("lastdate")
+        self.imageHead.setHead(id)
+        if let v = Int(id) {
+            self.imageHead.tag = v
+        }
+        self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+        self.labelTitle.text = title
+        self.labelContent.text = content
+        self.lastdate?.text = lastdate
+        
+        if unread == "0" {
+            labelCount.text = "0"
+            labelCount.hidden = true
+        } else {
+            labelCount.hidden = false
+            let w = unread.stringWidthWith(11, height: 20) + 16
+            labelCount.text = unread
+            labelCount.setWidth(w)
+            labelCount.setX(globalWidth - 15 - w)
         }
     }
 }

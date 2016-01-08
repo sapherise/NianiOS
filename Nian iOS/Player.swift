@@ -134,30 +134,24 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == self.userMoreSheet {
             if buttonIndex == 0 {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = SAUid()
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                if self.isBan == 0 {    // 拖进小黑屋
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        let sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/ban.php")
-                        if sa == "1" {
-                            dispatch_async(dispatch_get_main_queue(), {
-                                UIView.showAlertView("再见啦", message: "成功拖进小黑屋")
-                                self.isBan = 1
-                            })
+                if self.isBan == 0 {
+                    // 拖进小黑屋
+                    self.showTipText("成功拖进小黑屋")
+                    Api.postBlackAdd(Id) { json in
+                        if json != nil {
+                            RCIMClient.sharedRCIMClient().addToBlacklist(self.Id, success: nil, error: nil)
+                            self.isBan = 1
                         }
-                    })
-                }else{      // 取消小黑屋
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        let sa = SAPost("uid=\(self.Id)&&myuid=\(safeuid)&&shell=\(safeshell)&&noban=1", urlString: "http://nian.so/api/ban.php")
-                        if sa == "1" {
-                            dispatch_async(dispatch_get_main_queue(), {
-                                UIView.showAlertView("和好了", message: "成功取消小黑屋")
-                                self.isBan = 0
-                            })
+                    }
+                }else{
+                    // 取消小黑屋
+                    self.showTipText("和好了")
+                    Api.postBlackRemove(Id) { json in
+                        if json != nil {
+                            RCIMClient.sharedRCIMClient().removeFromBlacklist(self.Id, success: nil, error: nil)
+                            self.isBan = 0
                         }
-                    })
+                    }
                 }
             }
         }
