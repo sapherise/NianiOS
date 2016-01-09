@@ -40,15 +40,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        //todo
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
+        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+        APService.setupWithOption(launchOptions)
         
         application.applicationIconBadgeNumber = 1
         application.applicationIconBadgeNumber = 0
         
         /* 融云 IM 接入 */
-        RCIMClient.sharedRCIMClient().initWithAppKey("pwe86ga5e0zq6")
+        RCIMClient.sharedRCIMClient().initWithAppKey("4z3hlwrv3t1yt")
         
         // check current shortcut item
         if #available(iOS 9.0, *) {
@@ -61,15 +60,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     }
     
     func applicationWillResignActive(application: UIApplication) {
-//        NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
         NSNotificationCenter.defaultCenter().postNotificationName("AppDeactive", object: nil)
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("CircleLeave", object: nil)
     }
     
-    // todo: 添加照片可以预览
     func applicationWillEnterForeground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("AppEnterForeground", object: nil)
         application.applicationIconBadgeNumber = 1
@@ -95,8 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         }
         
         /* 设置极光推送 */
-        // todo
-//        APService.registerDeviceToken(deviceToken)
+        APService.registerDeviceToken(deviceToken)
         Api.postJpushBinding(){ _ in }
     }
 
@@ -118,8 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             let aps = userInfo["aps"] as! NSDictionary
             
             handleReceiveRemoteNotification(aps)
-            //todo
-//            APService.handleRemoteNotification(userInfo)
+            APService.handleRemoteNotification(userInfo)
             completionHandler(UIBackgroundFetchResult.NewData)
     }
     

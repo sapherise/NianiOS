@@ -25,7 +25,7 @@ class SAMenu: UIView {
         viewLineBottom.frame = CGRectMake(160 - globalWidth/2, 39.5, globalWidth, 0.5)
     }
     
-    override func layoutSubviews() {
+    func setup() {
         if arr.count == 2 {
             viewRight.hidden = true
             viewLeft.setX(320/2 - 86)

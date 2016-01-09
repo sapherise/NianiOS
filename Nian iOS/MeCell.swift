@@ -117,31 +117,6 @@ class MeCell: UITableViewCell {
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {
-        let view = sender.view! as! UILabel
-        view.text = ""
-        let id = self.data.stringAttributeForKey("id") as String
-        Api.getCircleJoinConfirmOK(id) { json in
-            if json != nil {
-                let success = json!.objectForKey("success") as! String
-                let reason = json!.objectForKey("reason") as! String
-                if success == "1" {
-                    view.text = "已接受"
-                    view.backgroundColor = IconColor
-                    view.removeGestureRecognizer(sender)
-                }else{
-                    view.text = "接受"
-                    if reason == "1" {
-                        self.findRootViewController()!.showTipText("遇到了一个奇怪的错误...")
-                    }else if reason == "2" {
-                        self.findRootViewController()!.showTipText("你的权限不够...")
-                    }else if reason == "3" {
-                        self.findRootViewController()!.showTipText("梦境的人满了！")
-                    }else{
-                        self.findRootViewController()!.showTipText("遇到了一个奇怪的错误...")
-                    }
-                }
-            }
-        }
     }
     
     

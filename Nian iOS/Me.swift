@@ -28,8 +28,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView.headerBeginRefreshing()
     }
     
-    // todo: 封面图会闪烁
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)

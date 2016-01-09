@@ -348,7 +348,26 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 json in
                 let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
-                    globalWillNianReload = 1
+                    if let dreams = Cookies.get("NianDreams") as? NSMutableArray {
+                        var i = 0
+                        let arr = NSMutableArray(array: dreams)
+                        for _dream in dreams {
+                            if let dream = _dream as? NSDictionary {
+                                let id = dream.stringAttributeForKey("id")
+                                if id == self.editId {
+                                    let mutableData = NSMutableDictionary(dictionary: dream)
+                                    mutableData.setValue(self.field1!.text!, forKey: "title")
+                                    mutableData.setValue(self.uploadUrl, forKey: "image")
+                                    arr.replaceObjectAtIndex(i, withObject: mutableData)
+                                    Cookies.set(arr, forKey: "NianDreams")
+                                    Nian.loadFromLocal()
+                                    break
+                                }
+                            }
+                            i++
+                        }
+                    }
+                    
                     self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray)
                     self.navigationController?.popViewControllerAnimated(true)
                 }

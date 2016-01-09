@@ -52,8 +52,7 @@ class TopicCell: UITableViewCell, UIActionSheetDelegate {
         btnMore.layer.borderColor = lineColor.CGColor
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             let content = data.stringAttributeForKey("content").decode().toRedditReduce()
             let uid = data.stringAttributeForKey("user_id")

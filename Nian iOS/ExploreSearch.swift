@@ -745,7 +745,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             cell.delegate = self
             cell.data = self.dataArrayTopic[indexPath.row] as! NSDictionary
             cell.index = indexPath.row
-            
+            cell.setup()
             return cell
         default:
             let cell = UITableViewCell()
@@ -867,11 +867,9 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         self.dataArrayUser[tag] = mutableData
         self.userTableView.reloadData()
         if follow == "1" {
-            Api.postUnfollow(uid) { string in
-            }
+            Api.getUnfollow(uid) { json in }
         } else {
-            Api.postFollow(uid, follow: 1) { string in
-            }
+            Api.getFollow(uid) { json in }
         }
     }
     

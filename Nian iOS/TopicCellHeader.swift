@@ -92,8 +92,7 @@ class TopicCellHeader: UITableViewCell, getCommentDelegate {
     // 加入 count 以避免某个奇怪的 bug，
     // 这个 bug 已经没法重现了，但是会导致一直重复请求服务器
     var count = 0
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             layout(data)
         } else {

@@ -82,8 +82,6 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         }
     }
     
-    // todo: 发送成功后清除草稿
-    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }

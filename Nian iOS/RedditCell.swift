@@ -52,8 +52,7 @@ class RedditCell: UITableViewCell {
         labelTag.backgroundColor = SeaColor
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             let title = data.stringAttributeForKey("title").decode()
             let content = data.stringAttributeForKey("content").decode().toRedditReduce()

@@ -19,8 +19,7 @@ class NianCell: UICollectionViewCell{
     var total: Int = 0
     var index = 0
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
         let lock = Cookies.get("Lock") as? String
         if globaliOS >= 8.0 && globalhasLaunched == 0 && lock == nil {

@@ -52,8 +52,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             titleLabel.text = "听众"
         }else if self.urlIdentify == 3 {
             titleLabel.text = "赞过记本"
-        }else if self.urlIdentify == 4 {
-            titleLabel.text = "邀请"
         }
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel

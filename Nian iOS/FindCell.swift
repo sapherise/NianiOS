@@ -25,9 +25,7 @@ class FindCell: UITableViewCell {
         self.viewLine.setWidth(globalWidth-85)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func setup() {
         if self.data != nil {
             self.uid = self.data.stringAttributeForKey("uid") as String
             let follow = self.data.stringAttributeForKey("follow") as String
@@ -64,17 +62,10 @@ class FindCell: UITableViewCell {
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             sender.backgroundColor = SeaColor
             sender.setTitle("已关注", forState: UIControlState.Normal)
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = SAUid()
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
+            
+            Api.getFollow(uid) { json in
                 
-                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", urlString: "http://nian.so/api/fo.php")
-                
-                if sa != "" && sa != "err" {
-                }
-                
-            })
+            }
         }else if tag == 200 {   //正在关注
             let mutableItem = NSMutableDictionary(dictionary: data)
             mutableItem.setObject("0", forKey: "follow")
@@ -85,16 +76,9 @@ class FindCell: UITableViewCell {
             sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = SAUid()
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", urlString: "http://nian.so/api/fo.php")
-                
-                if sa != "" && sa != "err" {
-                }
-            })
+            
+            Api.getUnfollow(self.uid) { json in
+            }
         }
     }
 }

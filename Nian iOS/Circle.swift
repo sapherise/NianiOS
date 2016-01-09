@@ -359,6 +359,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
             c.textContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleLongClick:"))
             c.View.tag = index
+            c.setup()
             cell = c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
@@ -367,6 +368,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
             c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
             c.View.tag = index
+            c.setup()
             cell = c
         }
         return cell

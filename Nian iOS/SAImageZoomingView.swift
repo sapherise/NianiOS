@@ -49,7 +49,7 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let v = UIProgressView()
+        let v = UIProgressView(frame: CGRectMake(0, 0, 100, 200))
         v.progressTintColor = SeaColor
         v.trackTintColor = IconColor
         v.center = imageView.center

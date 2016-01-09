@@ -290,66 +290,6 @@ struct Api {
         V.httpPostForJson("http://nian.so/api/lab_trip.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&subid=\(subid)", callback: callback)
     }
     
-    static func postCircleNew(name: String, content: String, img: String, privateType: Int, dream: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_new2.php", content: "uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&dream=\(dream)&circleshellid=\(sid)", callback: callback)
-//        V.httpPostForJson_AFN("http://nian.so/api/circle_new2.php",
-//            content: ["uid": "\(s_uid)", "shell": "\(s_shell)", "title": "\(name)", "content": "\(content)", "img": "\(img)", "private": "\(privateType)", "dream": "\(dream)", "circleshellid": "\(sid)" ],
-//            callback: callback)
-    }
-    
-    static func postCircleEdit(name: String, content: String, img: String, privateType: Int, ID: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_edit.php", content: "id=\(ID)&uid=\(s_uid)&shell=\(s_shell)&title=\(name)&content=\(content)&img=\(img)&private=\(privateType)&circleshellid=\(sid)", callback: callback)
-//        V.httpPostForJson_AFN("http://nian.so/api/circle_edit.php",
-//            content: ["id": "\(ID)", "uid": "\(s_uid)", "shell": "\(s_shell)", "title": "\(name)", "content": "\(content)", "img": "\(img)", "private": "\(privateType)", "circleshellid": "\(sid)"],
-//            callback: callback)
-    }
-    
-    static func postCircleChat(id: Int, content: String, type: Int, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJsonSync("http://nian.so/api/circle_chat2.php", content: "id=\(id)&uid=\(s_uid)&shell=\(s_shell)&content=\(content)&type=\(type)&circleshellid=\(sid)", callback: callback)
-    }
-    
-    static func postCircleQuit(Id: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_quit.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&circleshellid=\(sid)", callback: callback)
-    }
-    
-    static func postCircleDelete(Id: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_delete.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&circleshellid=\(sid)", callback: callback)
-    }
-    
-    static func postCircleFire(Id: String, fireuid:Int, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_fire.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&fireuid=\(fireuid)&circleshellid=\(sid)", callback: callback)
-    }
-    
-    static func postCirclePromo(Id: String, promouid: Int, promoname: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_promote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&promouid=\(promouid)&circleshellid=\(sid)&promoname=\(promoname)", callback: callback)
-    }
-    
-    static func postCircleDemo(Id: String, promouid: Int, promoname: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_demote.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(Id)&promouid=\(promouid)&circleshellid=\(sid)&promoname=\(promoname)", callback: callback)
-    }
-    
-    static func postCircleJoinDirectly(Id: String, dream:String, word:String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_join.php", content: "uid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&dream=\(dream)&word=\(word)&circleshellid=\(sid)", callback: callback)
-    }
-    
     static func getCircleExplore(page: Int, callback: V.JsonCallback) {
         loadCookies()
 //        V.httpGetForJson("http://nian.so/api/circle_explore.php?lastid=\(lastid)", callback: callback)
@@ -359,23 +299,6 @@ struct Api {
     static func getCircleChatList(page: Int, id: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/circle_chat_list.php?page=\(page)&id=\(id)&uid=\(s_uid)", callback: callback)
-    }
-    
-    static func getCircleJoinConfirmOK(id:String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpGetForJson("http://nian.so/api/circle_confirm_ok.php?uid=\(s_uid)&shell=\(s_shell)&id=\(id)&circleshellid=\(sid)", callback: callback)
-    }
-    
-    static func getCircleStatus(id:String, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJsonSync("http://nian.so/api/circle_status.php?uid=\(s_uid)&id=\(id)", callback: callback)
-    }
-    
-    static func postCircleInvite(Id: String, uid: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/circle_invite.php", content: "uid=\(uid)&myuid=\(s_uid)&shell=\(s_shell)&circle=\(Id)&circleshellid=\(sid)", callback: callback)
     }
     
     static func postLetter(callback: V.JsonCallback) {
@@ -432,15 +355,6 @@ struct Api {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/user_update.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&type=10&&lastid=\(lastid)", callback: callback)
     }
-    
-//    static func getBBSComment(page: Int, flow: Int, id: String, callback: V.JsonCallback) {
-//        loadCookies()
-////        V.httpGetForJson("http://nian.so/api/bbs_comment.php?page=\(page)&flow=\(flow)&id=\(id)", callback: callback)
-//        
-////        GET /bbs/{bbs_id}/comments?page=2&sort=desc
-//        
-//        V.httpGetForJson("http://api.nian.so/bbs/\(id)/comments?page=\(page)&sort=\(what)", callback: callback)
-//    }
     
     static func getBBSComment(id: String, page: Int, isAsc: Bool, callback: V.JsonCallback) {
         loadCookies()
@@ -508,39 +422,6 @@ struct Api {
     static func postGameoverCoin(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://nian.so/api/gameover_coin.php", content: "uid=\(s_uid)&shell=\(s_shell)&id=\(id)", callback: callback)
-    }
-    
-    static func postAddStep(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://nian.so/api/addstep_query2.php", content: "uid=\(s_uid)&shell=\(s_shell)&dream=\(dream)&content=\(content)&img=\(img)&img0=\(img0)&img1=\(img1)&circleshellid=\(sid)", callback: callback)
-        
-//        ["uid": "\(s_uid)", "shell": "\(s_shell)", "dream": "\(dream)", "content": "\(content)", "img": "\(img)", "img0": "\(img0)", "img1": "\(img1)", "circleshellid": "\(sid)"]
-    }
-    
-    // MARK: post add step API
-    /**
-    取代上面的 postAddStep API
-    and 上面的 API 有问题
-    
-    */
-    static func postAddStep_AFN(dream: String, content: String, img: String, img0: String, img1: String, callback: V.JsonCallback) {
-        loadCookies()
-        Cookies.set(dream, forKey: "DreamNewest")
-        V.httpPostForJson_AFN("http://api.nian.so/step?uid=\(s_uid)&shell=\(s_shell)", content: ["dream": dream, "content": content, "image": img, "width": img0, "height": img1], callback: callback)
-    }
-    
-    // ===
-    
-    static func postAddBBSComment(id: String, content: String, callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/addbbscomment_query.php", content: "id=\(id)&&uid=\(s_uid)&&shell=\(s_shell)&&content=\(content)", callback: callback)
-    }
-    
-    static func postAddBBS(title: String, content: String, circle: String, callback: V.JsonCallback) {
-        loadCookies()
-        let sid = client.getSid()
-        V.httpPostForJson("http://api.nian.so/bbs?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&circle_id=\(circle)&circleshellid=\(sid)", callback: callback)
     }
     
     static func getDeleteDream(id: String, callback: V.JsonCallback) {
@@ -631,29 +512,34 @@ struct Api {
         V.httpPostForString("http://nian.so/api/dream_cool_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&cool=\(like)", callback: callback)
     }
     
+    /* 添加回应 */
     static func postDreamStepComment(dream: String, step: String, content: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpPostForJson("http://api.nian.so/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: "dream_id=\(dream)&content=\(content)", callback: callback)
     }
     
+    /* 删除回应 */
     static func postDeleteComment(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/comment/\(id)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    /* 获取回应 */
     static func getDreamStepComment(sid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/comment_step.php?page=\(page)&id=\(sid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/step/\(sid)/comments?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    static func postFollow(uid: String, follow: Int, callback: V.StringCallback) {
+    /* 关注用户 */
+    static func getFollow(uid: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(uid)/follow?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    static func postUnfollow(uid: String, callback: V.StringCallback) {
+    /* 取消关注用户 */
+    static func getUnfollow(uid: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/fo.php", content: "uid=\(uid)&&myuid=\(s_uid)&&shell=\(s_shell)&&unfo=1", callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(uid)/unfollow?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     
@@ -714,9 +600,8 @@ struct Api {
     }
     
     // MARK: - 极光推送
-    //todo
     static func postJpushBinding(callback: V.JsonCallback) {
-//        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
     }
     
     static func postDeviceTokenClear(callback: V.StringCallback) {
@@ -1011,9 +896,21 @@ extension Api {
 }
 
 extension Api {
+    
+    /* 获取融云 IM 的 Token */
     static func getRongToken(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/message/token?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getPlankton(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/plankton/all?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getPlanktonIncrease(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/plankton/increase?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
 }
 

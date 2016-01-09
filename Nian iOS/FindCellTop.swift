@@ -26,8 +26,4 @@ class FindCellTop: UITableViewCell {
         self.setWidth(globalWidth)
         self.viewHolder.setX(globalWidth/2 - 160)
     }
-    
-    override func layoutSubviews(){
-        super.layoutSubviews()
-    }
 }

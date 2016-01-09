@@ -31,7 +31,6 @@ var globalViewFilm:ILTranslucentView?
 var globalViewFilmExist: Bool = false
 var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
-var globalNoticeNumber: Int = 0
 var globalhasLaunched: Int = 0
 
 // 定义三个页面为未加载状态
@@ -403,6 +402,8 @@ extension UIViewController {
     
     /* 邮箱登录、第三方登录、邮箱注册、第三方注册、普通启动*/
     func launch() {
+        
+        IMClass.IMConnect()
         delay(0.2) { () -> () in
             let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
             let navigationViewController = UINavigationController(rootViewController: mainViewController)
@@ -469,13 +470,9 @@ extension UIViewController {
         
         // 退出后应该设置三个都为未加载状态
         globalTabhasLoaded = [false, false, false]
-        
-//        let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
-//        let welcomeVC = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
-        
-//        self.presentViewController(welcomeVC, animated: false, completion: nil)
-        
         self.dismissViewControllerAnimated(true, completion: nil)
+        
+        RCIMClient.sharedRCIMClient().disconnect(false)
     }
 }
 
@@ -1053,4 +1050,12 @@ func bubble(arr: [Int]) -> [Int] {
         }
     }
     return _arr
+}
+
+func go(justdoit: () -> Void) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), justdoit)
+}
+
+func back(justdoit: () -> Void) {
+    dispatch_async(dispatch_get_main_queue(), justdoit)
 }

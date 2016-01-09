@@ -74,6 +74,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.SATableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.SATableView.delegate = self
         self.SATableView.dataSource = self
+        self.SATableView.separatorStyle = .None
         
         let nib = UINib(nibName:"DreamCell", bundle: nil)
         let nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
@@ -244,6 +245,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     }
                 }
             }
+            c.setup()
             return c
         } else {
 //            return getCell(indexPath, dataArray: dataArray, type: 1)
@@ -319,7 +321,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除记本
                 self.navigationItem.rightBarButtonItems = buttonArray()
-//                globalWillNianReload = 1
                 Api.getDeleteDream(self.Id, callback: { json in
                     self.navigationItem.rightBarButtonItems = []
                     self.delegateDelete?.deleteDreamCallback(self.Id)

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SAUserCell: MKTableViewCell {
+class SAUserCell: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
     @IBOutlet var btnMain: UIButton!

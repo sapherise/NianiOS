@@ -182,6 +182,9 @@ class SAEgg: NIAlert, NIAlertDelegate {
                                     // 如果还没全部获得
                                     count = next
                                     id = next
+                                    Api.getPlanktonIncrease() { json in
+                                        
+                                    }
                                 }
                             }
                         }

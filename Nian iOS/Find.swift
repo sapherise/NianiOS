@@ -166,11 +166,13 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             let data = self.dataArray[index] as! NSDictionary
             cell!.data = data
             cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
+            cell!.setup()
             return cell!
         }else{
             let data = self.dataArrayPhone[index] as! NSDictionary
             cell!.data = data
             cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
+            cell!.setup()
             return cell!
         }
     }

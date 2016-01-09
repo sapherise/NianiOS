@@ -58,8 +58,4 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
         }
         return viewHit
     }
-    
-//    override func layoutSubviews(){
-//        super.layoutSubviews()
-//    }
 }

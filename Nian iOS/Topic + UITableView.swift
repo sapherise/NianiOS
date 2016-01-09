@@ -136,6 +136,7 @@ extension TopicViewController {
             c.delegateTop = self
             c.indexVote = 0
             c.id = id
+            c.setup()
             return c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCell", forIndexPath: indexPath) as! TopicCell
@@ -145,6 +146,7 @@ extension TopicViewController {
             c.indexVote = indexPath.row
             c.delegate = self
             c.delegateDelete = self
+            c.setup()
             return c
         }
     }

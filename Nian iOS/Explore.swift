@@ -72,6 +72,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             if type == "1" {
                 let c = t.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as! ExploreDynamicDreamCell
                 c.data = data
+                c.setup()
                 return c
             } else {
                 //                return getCell(indexPath, dataArray: d, type: 2)

@@ -37,8 +37,7 @@
  *
  *  极光推送 API 
  */
-//todo
-//#import "APService.h"
+#import "APService.h"
 
 /**
  *  @author Bob Wei, 15-10-26 16:10:41

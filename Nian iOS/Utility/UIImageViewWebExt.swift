@@ -34,6 +34,34 @@ extension UIImageView {
         }
     }
     
+    /* 进展中的单图要用到，用以显示进度条 */
+    func setCell(urlString: String) {
+        self.backgroundColor = IconColor
+        let url = NSURL(string: urlString)
+        let networkStatus = getStatus()
+        let saveMode = Cookies.get("saveMode") as? String
+        if (saveMode == "on") && (networkStatus == 1) {   //如果是开启了同时是在2G下
+            self.loadCacheImage(urlString, placeholderImage: self.image)
+        } else {
+            let v = UIProgressView(frame: CGRectMake(0, 0, 100, 200))
+            v.progressTintColor = SeaColor
+            v.trackTintColor = UIColor.e6()
+            v.center = self.center
+            v.hidden = true
+            
+            delay(0.3, closure: { () -> () in
+                v.hidden = false
+            })
+            
+            self.sd_setImageWithURL(url, completed: { (image, err, type, url) -> Void in
+                if image != nil {
+                    self.contentMode = .ScaleAspectFill
+                    self.image = image
+                }
+                }, usingProgressView: v)
+        }
+    }
+    
     func setPet(urlString: String) {
         let url = NSURL(string: urlString)
         self.sd_setImageWithURL(url) { (image, err, type, url) -> Void in

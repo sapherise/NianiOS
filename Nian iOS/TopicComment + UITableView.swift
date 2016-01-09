@@ -57,11 +57,13 @@ extension TopicComment: UITableViewDataSource, UITableViewDelegate, RedditDelega
             c.data = dataArrayTop
             c.delegateVote = self
             c.titleContent = titleContent
+            c.setup()
             return c
         } else {
             let c = tableView.dequeueReusableCellWithIdentifier("TopicCommentCell", forIndexPath: indexPath) as! TopicCommentCell
             let data = dataArray[indexPath.row] as! NSDictionary
             c.data = data
+            c.setup()
             return c
         }
     }

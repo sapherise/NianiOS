@@ -22,8 +22,4 @@ class MeCellTop: UITableViewCell{
         self.selectionStyle = .None
         self.viewHolder.setX(globalWidth/2-160)
     }
-    
-    override func layoutSubviews(){
-        super.layoutSubviews()
-    }
 }

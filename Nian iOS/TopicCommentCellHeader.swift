@@ -38,8 +38,7 @@ class TopicCommentCellHeader: UITableViewCell {
         labelTitle.setWidth(globalWidth - 32)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             if let _ = Int(data.stringAttributeForKey("like_count")) {
                 layout(data)

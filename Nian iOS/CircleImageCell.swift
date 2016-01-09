@@ -32,8 +32,7 @@ class CircleImageCell: UITableViewCell {
         self.setWidth(globalWidth)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             let uid = self.data.stringAttributeForKey("uid")
             let user = self.data.stringAttributeForKey("user")

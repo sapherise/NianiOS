@@ -150,6 +150,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.whiteColor()
         collectionView.registerNib(UINib(nibName: "VVeboCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "VVeboCollectionViewCell")
+        collectionView.scrollsToTop = false
         contentView.addSubview(collectionView)
         
         // 回应
@@ -437,7 +438,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             if heightImage > 0 {
                 imageHolder.setHeight(heightImage)
                 imageHolder.hidden = false
-                imageHolder.setImage("http://img.nian.so/step/\(urlImage)!large")
+                imageHolder.setCell("http://img.nian.so/step/\(urlImage)!large")
             }
         } else {
             collectionView.hidden = false
@@ -551,7 +552,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             if typeImages == "3" {
                 if let images = data.objectForKey("images") as? NSArray {
                     let count = ceil(CGFloat(images.count) / 3)
-                    var h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                    let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
                     heightImage = h * count - SIZE_COLLECTION_PADDING
                     heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
                 }
@@ -559,7 +560,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 /* 多图不带文字 */
                 if let images = data.objectForKey("images") as? NSArray {
                     let count = ceil(CGFloat(images.count) / 3)
-                    var h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                    let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
                     heightImage = h * count - SIZE_COLLECTION_PADDING
                     heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
                 }

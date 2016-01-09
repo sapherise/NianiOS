@@ -63,6 +63,9 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     var rowEdit = -1
     var delegate: AddstepDelegate?
     
+    /* 第一次进入要 focus，但是上传图片之类的就不要 focus 了 */
+    var isFirstTimeToAppear = true
+    
     /* 如果是编辑的图片，就跳过上传 */
     var hasUploadedArray: [Int] = []
     
@@ -97,6 +100,14 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if !willEdit && isFirstTimeToAppear {
+            isFirstTimeToAppear = false
+            field2.becomeFirstResponder()
+        }
     }
     
     func setupViews(){

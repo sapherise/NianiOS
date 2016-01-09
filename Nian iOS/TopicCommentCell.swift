@@ -28,8 +28,7 @@ class TopicCommentCell: UITableViewCell {
         viewLine.setHeight(globalHalf)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             let content = data.stringAttributeForKey("content").decode()
             let uid = data.stringAttributeForKey("user_id")

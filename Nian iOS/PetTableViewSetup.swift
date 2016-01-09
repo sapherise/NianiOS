@@ -24,6 +24,7 @@ extension PetViewController: NIAlertDelegate {
         tableViewPet.dataSource = self
         
         if let viewLevel = (NSBundle.mainBundle().loadNibNamed("Level", owner: self, options: nil) as NSArray).objectAtIndex(0) as? LevelView {
+            viewLevel.setup()
             tableView.tableFooterView = viewLevel
         }
         
@@ -75,6 +76,8 @@ extension PetViewController: NIAlertDelegate {
         labelRight.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         labelRight.userInteractionEnabled = true
         tableView.addSubview(labelRight)
+        
+        getPlankton()
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -117,16 +120,43 @@ extension PetViewController: NIAlertDelegate {
             labelLeft.text = "礼物：\(energy)"
             labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGift"))
             
-            let _plankton = Cookies.get("plankton") as? String
-            let plankton = _plankton == nil ? "0" : _plankton!
-            labelRight.text = "浮游：\(plankton)"
-            labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPlankton"))
+            
+            
+            
             
             if owned == "1" {
                 imageView.setPet("http://img.nian.so/pets/\(image)!d")
             } else {
                 let imageGrey = SAReplace(image, before: ".png", after: "@Grey.png")
                 imageView.setPet("http://img.nian.so/pets/\(imageGrey)!d")
+            }
+        }
+    }
+    
+    func getPlankton() {
+        
+        /* 从服务器获取浮游的数量
+        ** 当数量少于本地时候，同步本地的数量到服务器
+        ** 只是当前的过度方案，只后要直接走服务器
+        */
+        let _plankton = Cookies.get("plankton") as? String
+        let plankton = _plankton == nil ? "0" : _plankton!
+        labelRight.text = "浮游：\(plankton)"
+        labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPlankton"))
+        
+        Api.getPlankton() { json in
+            if let j = json as? NSDictionary {
+                let data = j.stringAttributeForKey("data")
+                let numLocal = Int(plankton)
+                let numRemote = Int(data)
+                if numLocal != nil && numRemote != nil && numLocal > numRemote {
+                    for _ in 0...(numLocal! - numRemote! - 1) {
+                        Api.getPlanktonIncrease() { json in }
+                    }
+                } else {
+                    Cookies.set(data, forKey: "plankton")
+                    self.labelRight.text = "浮游：\(data)"
+                }
             }
         }
     }

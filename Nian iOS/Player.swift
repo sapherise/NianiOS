@@ -545,7 +545,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         if let num = Int(textFoed) {
             self.topCell.UserFoed.text = "\(num + 1) 听众"
         }
-        Api.postFollow(self.Id, follow: 1) { string in
+        Api.getFollow(self.Id) { json in
         }
     }
     
@@ -557,7 +557,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         if let num = Int(textFoed) {
             self.topCell.UserFoed.text = "\(num - 1) 听众"
         }
-        Api.postUnfollow(self.Id) { result in
+        Api.getUnfollow(self.Id) { json in
         }
     }
     

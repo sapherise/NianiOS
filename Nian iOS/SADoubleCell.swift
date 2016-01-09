@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SADoubleCell: MKTableViewCell {
+class SADoubleCell: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
     @IBOutlet var labelContent: UILabel!

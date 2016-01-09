@@ -128,6 +128,7 @@ extension RedditViewController {
         }
         c.index = i
         c.delegate = self
+        c.setup()
         return c
     }
     

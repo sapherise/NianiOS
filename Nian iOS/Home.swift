@@ -35,13 +35,17 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var newEditStepData: NSDictionary?
     var newEditDreamId: String = ""
     
+    /* 未读消息 */
+    var unread: Int32 = 0
+    
     /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
     var tabButtonArray = NSMutableArray()
     
     func onReceived(message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
         NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: message)
-        // todo: 很多很多未读消息的时候怎么办？
         shake()
+        unread += 1
+        dotShow()
     }
     
     
@@ -51,7 +55,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.initViewControllers()
         gameoverCheck()
         setupReachability()
-        IMClass.IMConnect()
         RCIMClient.sharedRCIMClient().setReceiveMessageDelegate(self, object: nil)
     }
 
@@ -124,7 +127,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         navHide()
         self.navigationController!.interactivePopGestureRecognizer!.enabled = false
         // 当前账户退出，载入其他账户时使用
-        // todo: 从其他账户登录时，应该怎么显示？
     }
     
     func onAppActive() {
@@ -167,48 +169,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     :param: noti <#noti description#>
     */
     func handleNetworkReceiveMsg(noti: NSNotification) {
-        // 设置 [String: AnyObject] 的别名 Dict, 下面代码会略简洁
-        // todo: 现在没有进行任何处理
-//        typealias Dict = [String: AnyObject]
-//        
-//        // 用正则表达式解析
-//        if let _string = ((noti.userInfo as? Dict) ?? Dict())["content"] as? String {
-//            
-//            let pattern1 = "(回应|提到)"
-//            let matcher: RegexHelper?
-//            do  {
-//                matcher = try RegexHelper(pattern1)
-//            } catch _ as NSError {
-//                matcher = nil
-//            }
-//            
-//            if matcher!.match(_string) {
-//                self.noticeDot()
-//            }
-//            
-//            let pattern2 = "(一封信)"
-//            let matcher2: RegexHelper?
-//            do {
-//                matcher2 = try RegexHelper(pattern2)
-//            } catch _ as NSError {
-//                matcher2 = nil
-//            }
-//            
-//            if matcher2!.match(_string) {
-//                self.loadLetter()
-//            }
-//        }
+        noticeDot()
     }
     
     /* App 从后台进入前台，或者在登录状态下启动 */
     func onAppEnterForeground() {
         launchTimer()
         onLock(lockType.verify)
-    }
-    
-    // 断开数据库
-    func onCircleLeave() {
-        client.leave()
     }
     
     func onObserveDeactive() {
@@ -232,40 +199,34 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func noticeDot() {
-        // todo: 重新写这个
-//        if self.dot != nil {
-//            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//            let safeuid = uidKey.objectForKey(kSecAttrAccount) as! String
-//            let safeshell = uidKey.objectForKey(kSecValueData) as! String
-//            
-//            if safeuid != "" {
-//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//                    let (resultSet, _) = SD.executeQuery("select id from letter where isread = 0 and owner = '\(safeuid)'")
-//                    let a = resultSet.count
-//                    let b = SAPost("uid=\(safeuid)&&shell=\(safeshell)", urlString: "http://nian.so/api/dot.php")
-//                    if let number = Int(b) {
-//                        globalNoticeNumber = a + number
-//                        dispatch_async(dispatch_get_main_queue(), {
-//                            if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
-//                                self.dot!.hidden = false
-//                                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
-//                                    self.dot!.frame = CGRectMake(globalWidth*0.7+4, 8, 20, 17)
-//                                }, completion: { (complete: Bool) in
-//                                    self.dot!.text = "\(globalNoticeNumber)"
-//                                    globalNoticeNumber = 0
-//                                })
-//                            } else if globalNoticeNumber != 0 && globalTabBarSelected != 103 {
-//                                self.dot!.hidden = true
-//                                
-//                                if number > 0 {
-//                                    NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object: nil)
-//                                }
-//                            }
-//                        })
-//                    } // if let number = Int(b)
-//                })
-//            }
-//        }
+        if dot != nil {
+            self.dot?.hidden = true
+            Api.postDot() { string in
+                if string != nil {
+                    if let notice = Int32(string!) {
+                        let _letter = RCIMClient.sharedRCIMClient().getTotalUnreadCount()
+                        let letter = max(0, _letter)
+                        self.unread = letter + notice
+                        self.dotShow()
+                    }
+                }
+            }
+        }
+    }
+    
+    /* 出现小蓝点 */
+    func dotShow() {
+        back {
+            /* 当不在消息按钮上 */
+            if self.unread > 0 && globalTabBarSelected != 103 {
+                self.dot!.hidden = false
+                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
+                    self.dot!.frame = CGRectMake(globalWidth * 0.7+4, 8, 20, 17)
+                    }, completion: { (complete: Bool) in
+                        self.dot!.text = "\(self.unread)"
+                })
+            }
+        }
     }
     
     
@@ -320,9 +281,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppEnterForeground", name: "AppEnterForeground", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onCircleLeave", name: "CircleLeave", object: nil)
-        //todo
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     // 3D Touch 下的更新进展

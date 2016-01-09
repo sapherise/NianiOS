@@ -28,10 +28,6 @@ class Card: UIView {
         viewLineTop.setHeightHalf()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-    
     func getCard() -> UIImage {
         
         if self.content == "" {

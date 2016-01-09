@@ -32,6 +32,8 @@ extension NianViewController {
             c.imageCover.setImage(img)
         }
         
+        c.setup()
+        
         cell = c
         return cell
     }

@@ -23,7 +23,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
         self.viewLine.setHeightHalf()
     }
     
-    override func layoutSubviews() {
+    func setup() {
         if data != nil {
             let uidlike = data.stringAttributeForKey("uidlike")
             let userlike = data.stringAttributeForKey("userlike")

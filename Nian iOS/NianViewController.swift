@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SpriteKit
+import SceneKit
 
 protocol AddDreamDelegate {
     func addDreamCallback(id: String, img: String, title: String)
@@ -84,6 +85,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.activity.hidden = true
         self.dynamicSummary.setX(globalWidth - 44)
         self.dynamicSummary.addTarget(self, action: "toActivitiesSummary:", forControlEvents: .TouchUpInside)
+        
+        /* 添加 3D 彩蛋 */
+        let press = UILongPressGestureRecognizer(target: self, action: "on3D:")
+//        press.minimumPressDuration = 3
+        self.dynamicSummary.addGestureRecognizer(press)
         
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
@@ -173,6 +179,26 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
+    /* 长按收藏出现的小企鹅 */
+    func on3D(sender: UIGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            let eggShell = NIAlert()
+            eggShell.delegate = self
+            eggShell.dict = NSMutableDictionary(objects: ["", "", "", ["再见小企鹅"]], forKeys: ["img", "title", "content", "buttonArray"])
+            
+            let stage = SCNView(frame: CGRectMake(0, 0, 272, 240))
+            stage.allowsCameraControl = true
+            stage.autoenablesDefaultLighting = true
+            
+            if #available(iOS 8.0, *) {
+                stage.scene = SCNScene(named: "penguin.dae")
+            }
+            
+            eggShell._containerView?.addSubview(stage)
+            eggShell.showWithAnimation(.flip)
+        }
+    }
+    
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
         niAlert.dismissWithAnimation(.normal)
     }
@@ -238,7 +264,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         return true
     }
     
-    func setupUserTop(){
+    func setupUserTop(willRefreshCover: Bool = true){
         let safeuid = SAUid()
         if let uid = Int(safeuid) {
             Api.getUserTop(uid){ json in
@@ -261,7 +287,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
                         self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
                         self.UserName.text = "\(name)"
-                        Cookies.set(name, forKey: "user")
                         self.UserHead.setHead(safeuid)
                         self.imageBadge.setType(vip)
                         if deadLine == "0" {
@@ -269,13 +294,15 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         } else {
                             self.UserStep.text = "倒计时 \(deadLine)"
                         }
-                        if coverURL == "" {
-                            self.imageBG.image = UIImage(named: "bg")
-                            self.navView.image = UIImage(named: "bg")
-                            self.navView.contentMode = UIViewContentMode.ScaleAspectFill
-                        }else{
-                            self.navView.setCover(AllCoverURL)
-                            self.imageBG.setCover(AllCoverURL)
+                        if willRefreshCover {
+                            if coverURL == "" {
+                                self.imageBG.image = UIImage(named: "bg")
+                                self.navView.image = UIImage(named: "bg")
+                                self.navView.contentMode = UIViewContentMode.ScaleAspectFill
+                            } else {
+                                self.navView.setCover(AllCoverURL)
+                                self.imageBG.setCover(AllCoverURL)
+                            }
                         }
                         Cookies.set(name, forKey: "user")
                         Cookies.set(AllCoverURL, forKey: "coverUrl")
@@ -365,7 +392,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if globalWillNianReload == 1 {
             globalWillNianReload = 0
             self.load()
-            self.setupUserTop()
+            self.setupUserTop(false)
         }
     }
     
@@ -406,8 +433,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
-    func load(){
-        // 从本地加载记本数据
+    /* 从本地数据中加载 */
+    func loadFromLocal() {
         let NianDreams = Cookies.get("NianDreams") as? NSMutableArray
         if NianDreams != nil {
             let mutableArrayLocal = NSMutableArray()
@@ -417,6 +444,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.dataArray = mutableArrayLocal
             reloadFromDataArray()
         }
+    }
+    
+    func load(){
+        loadFromLocal()
+        
         activity.hidden = false
         activity.startAnimating()
         

@@ -9,7 +9,7 @@
 import UIKit
 
 
-class LikeCell: MKTableViewCell {
+class LikeCell: UITableViewCell {
     
     @IBOutlet var avatarView:UIImageView!
     @IBOutlet var nickLabel:UILabel!
@@ -48,20 +48,13 @@ class LikeCell: MKTableViewCell {
         
         let safeuid = SAUid()
         
-        if self.urlIdentify == 4 {
-            self.btnFollow.layer.borderColor = SeaColor.CGColor
-            self.btnFollow.layer.borderWidth = 1
-            self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
-            self.btnFollow.backgroundColor = UIColor.whiteColor()
-            self.btnFollow.setTitle("邀请", forState: UIControlState.Normal)
-            self.btnFollow.addTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        }else if self.urlIdentify == 1 && self.ownerID == safeuid {
+        if self.urlIdentify == 1 && self.ownerID == safeuid {
             self.btnFollow.layer.borderWidth = 0
             self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             self.btnFollow.backgroundColor = SeaColor
             self.btnFollow.setTitle("写信", forState: UIControlState.Normal)
             self.btnFollow.addTarget(self, action: "onLetterClick", forControlEvents: UIControlEvents.TouchUpInside)
-        }else{
+        } else {
             if follow == "0" {
                 self.btnFollow.tag = 100
                 self.btnFollow.layer.borderColor = SeaColor.CGColor
@@ -96,16 +89,6 @@ class LikeCell: MKTableViewCell {
     }
     
     func onInviteClick(sender:UIButton){
-        sender.layer.borderWidth = 0
-        sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        sender.backgroundColor = SeaColor
-        sender.setTitle("已邀请", forState: UIControlState.Normal)
-        sender.removeTarget(self, action: "onInviteClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        Api.postCircleInvite(self.circleID, uid: self.uid) { json in
-            if json != nil {
-                globalWillCircleChatReload = 1
-            }
-        }
     }
     
     func onFollowClick(sender:UIButton){
@@ -117,16 +100,10 @@ class LikeCell: MKTableViewCell {
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             sender.backgroundColor = SeaColor
             sender.setTitle("已关注", forState: UIControlState.Normal)
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            Api.getFollow(uid) { json in
                 
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = SAUid()
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&fo=1", urlString: "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
-            })
+            }
+            
         }else if tag == 200 {   //正在关注
             self.data.setValue("0", forKey: "follow")
             sender.tag = 100
@@ -135,15 +112,8 @@ class LikeCell: MKTableViewCell {
             sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                let safeuid = SAUid()
-                let safeshell = uidKey.objectForKey(kSecValueData) as! String
-                
-                let sa = SAPost("uid=\(self.uid)&&myuid=\(safeuid)&&shell=\(safeshell)&&unfo=1", urlString: "http://nian.so/api/fo.php")
-                if sa != "" && sa != "err" {
-                }
-            })
+            Api.getUnfollow(self.uid) { json in
+            }
         }
     }
 }

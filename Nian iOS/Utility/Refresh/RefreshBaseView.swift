@@ -11,10 +11,10 @@ import UIKit
 let RefreshViewHeight:CGFloat = 64.0
 let RefreshSlowAnimationDuration:NSTimeInterval = 0.2
 let RefreshFooterPullToRefresh:NSString = "上拉加载"
-let RefreshFooterReleaseToRefresh:NSString =  "松开加载"
+let RefreshFooterReleaseToRefresh:NSString =  "放开加载"
 let RefreshFooterRefreshing:NSString =  ""
 let RefreshHeaderPullToRefresh:NSString =  "下拉刷新"
-let RefreshHeaderReleaseToRefresh:NSString =  "松开刷新"
+let RefreshHeaderReleaseToRefresh:NSString =  "放开刷新"
 let RefreshHeaderRefreshing:NSString =  ""
 let RefreshHeaderTimeKey:NSString =  "RefreshHeaderView"
 let RefreshContentOffset:NSString =  "contentOffset"
@@ -22,7 +22,7 @@ let RefreshContentSize:NSString =  "contentSize"
 
 //控件的刷新状态
 enum RefreshState {
-    case  Pulling               // 松开就可以进行刷新的状态
+    case  Pulling               // 放开就可以进行刷新的状态
     case  Normal                // 普通状态
     case  Refreshing            // 正在刷新中的状态
     case  WillRefreshing

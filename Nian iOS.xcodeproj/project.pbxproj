@@ -13,6 +13,9 @@
 		120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6DC71BD2265500422B86 /* VVeboViewController.swift */; };
 		120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E3F1BD3C42100422B86 /* Explore+UITableView.swift */; };
 		120B6E421BD3E23F00422B86 /* Explore+NewestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */; };
+		120B8A721C418B08006B0C15 /* penguin.dae in Resources */ = {isa = PBXBuildFile; fileRef = 120B8A6E1C418B08006B0C15 /* penguin.dae */; };
+		120B8A731C418B08006B0C15 /* body.png in Resources */ = {isa = PBXBuildFile; fileRef = 120B8A701C418B08006B0C15 /* body.png */; };
+		120B8A741C418B08006B0C15 /* wing.png in Resources */ = {isa = PBXBuildFile; fileRef = 120B8A711C418B08006B0C15 /* wing.png */; };
 		121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121702171BA18BDC00656AE1 /* AddTopic.swift */; };
 		1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121702191BA18C1B00656AE1 /* AddTopic.xib */; };
 		121E513B1C3D31980019F69A /* MySteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121E513A1C3D31980019F69A /* MySteps.swift */; };
@@ -46,10 +49,8 @@
 		123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 123FD9451C3A803200A92188 /* VVeboCollectionViewCell.xib */; };
 		1243C6F71B4F60A0007F741C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C6F61B4F60A0007F741C /* Card.swift */; };
 		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
-		12497C371A7102C4001DBD0F /* mainClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12497C361A7102C4001DBD0F /* mainClient.swift */; };
 		124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFFE21B9D82B100345299 /* AddRedditDream.xib */; };
 		124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124DFFE41B9D866D00345299 /* AddRedditDream.swift */; };
-		124EFD6A1A664912009D837B /* ImClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124EFD691A664912009D837B /* ImClient.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
 		1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6131975729100F55389 /* RefreshBaseView.swift */; };
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
@@ -71,9 +72,6 @@
 		12652836196C673A005765D2 /* DreamCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652835196C673A005765D2 /* DreamCellTop.swift */; };
 		12652838196C6755005765D2 /* Sapherise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652837196C6755005765D2 /* Sapherise.swift */; };
 		126593F219CD5CE500884947 /* AddDreamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126593F119CD5CE500884947 /* AddDreamController.xib */; };
-		126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC31A25DAED001BB5DA /* Tag.swift */; };
-		126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ABCC51A25DAFC001BB5DA /* TagCell.swift */; };
-		126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126ABCC71A25DB07001BB5DA /* TagCell.xib */; };
 		126D6E431C2F1E800053211C /* LSYAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E361C2F1E800053211C /* LSYAlbum.swift */; };
 		126D6E441C2F1E800053211C /* LSYAlbumDelegateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E371C2F1E800053211C /* LSYAlbumDelegateClass.swift */; };
 		126D6E451C2F1E800053211C /* LSYAlbumModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E381C2F1E800053211C /* LSYAlbumModel.swift */; };
@@ -119,8 +117,6 @@
 		129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E41A6A90F900BB213C /* FindCellTop.swift */; };
 		129152E71A6A910200BB213C /* FindCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E61A6A910200BB213C /* FindCellTop.xib */; };
 		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
-		129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492811AD9322A000E7461 /* MKTableViewCell.swift */; };
-		129492841AD9329D000E7461 /* MKLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129492831AD9329D000E7461 /* MKLayer.swift */; };
 		129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home+News.swift */; };
 		129B9F051BA2AFD800E5B25A /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */; };
 		129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 129B9F021BA2AFD800E5B25A /* WeiboSDK.bundle */; };
@@ -276,7 +272,6 @@
 		C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */ = {isa = PBXBuildFile; fileRef = C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */; };
 		C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C492D6191B4D10E800EEA71F /* PetCell.xib */; };
 		C49A57151C0C525C008D0780 /* AddStepModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A57141C0C525C008D0780 /* AddStepModel.swift */; };
-		C49E53FD1B5247B90048CF89 /* ImModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E53FC1B5247B90048CF89 /* ImModel.swift */; };
 		C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A350BE1B6B6BEE00E8AF10 /* Security.framework */; };
 		C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A380781B32C4A9005EC0AA /* URLRegex.m */; };
@@ -316,6 +311,9 @@
 		120B6DC71BD2265500422B86 /* VVeboViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboViewController.swift; sourceTree = "<group>"; };
 		120B6E3F1BD3C42100422B86 /* Explore+UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+UITableView.swift"; sourceTree = "<group>"; };
 		120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+NewestCell.swift"; sourceTree = "<group>"; };
+		120B8A6E1C418B08006B0C15 /* penguin.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = penguin.dae; sourceTree = "<group>"; };
+		120B8A701C418B08006B0C15 /* body.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body.png; sourceTree = "<group>"; };
+		120B8A711C418B08006B0C15 /* wing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wing.png; sourceTree = "<group>"; };
 		121702171BA18BDC00656AE1 /* AddTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTopic.swift; sourceTree = "<group>"; };
 		121702191BA18C1B00656AE1 /* AddTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTopic.xib; sourceTree = "<group>"; };
 		121E513A1C3D31980019F69A /* MySteps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySteps.swift; sourceTree = "<group>"; };
@@ -350,10 +348,8 @@
 		1243C6F61B4F60A0007F741C /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		1248FB9E1A91B46100110EEF /* NSObject+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swift.h"; sourceTree = "<group>"; };
 		1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swift.m"; sourceTree = "<group>"; };
-		12497C361A7102C4001DBD0F /* mainClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainClient.swift; sourceTree = "<group>"; };
 		124DFFE21B9D82B100345299 /* AddRedditDream.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRedditDream.xib; sourceTree = "<group>"; };
 		124DFFE41B9D866D00345299 /* AddRedditDream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRedditDream.swift; sourceTree = "<group>"; };
-		124EFD691A664912009D837B /* ImClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImClient.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
 		1251D6131975729100F55389 /* RefreshBaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshBaseView.swift; sourceTree = "<group>"; };
 		1251D6151975729100F55389 /* RefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshFooterView.swift; sourceTree = "<group>"; };
@@ -375,9 +371,6 @@
 		12652835196C673A005765D2 /* DreamCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCellTop.swift; sourceTree = "<group>"; };
 		12652837196C6755005765D2 /* Sapherise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sapherise.swift; sourceTree = "<group>"; };
 		126593F119CD5CE500884947 /* AddDreamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddDreamController.xib; sourceTree = "<group>"; };
-		126ABCC31A25DAED001BB5DA /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
-		126ABCC51A25DAFC001BB5DA /* TagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
-		126ABCC71A25DB07001BB5DA /* TagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		126D6E361C2F1E800053211C /* LSYAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbum.swift; sourceTree = "<group>"; };
 		126D6E371C2F1E800053211C /* LSYAlbumDelegateClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumDelegateClass.swift; sourceTree = "<group>"; };
 		126D6E381C2F1E800053211C /* LSYAlbumModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumModel.swift; sourceTree = "<group>"; };
@@ -429,8 +422,6 @@
 		129152E61A6A910200BB213C /* FindCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCellTop.xib; sourceTree = "<group>"; };
 		1292ABA51A5FB45B0091CC5F /* showImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showImage.swift; sourceTree = "<group>"; };
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
-		129492811AD9322A000E7461 /* MKTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTableViewCell.swift; sourceTree = "<group>"; };
-		129492831AD9329D000E7461 /* MKLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLayer.swift; sourceTree = "<group>"; };
 		129A76601B8DC92E00EC5A19 /* Home+News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+News.swift"; sourceTree = "<group>"; };
 		129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		129B9EFA1BA2AFD800E5B25A /* WBHttpRequest+WeiboGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WBHttpRequest+WeiboGame.h"; sourceTree = "<group>"; };
@@ -615,7 +606,6 @@
 		C48FBCDD1B4A5B2A007E0BF9 /* NSData+NSHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+NSHash.m"; sourceTree = "<group>"; };
 		C492D6191B4D10E800EEA71F /* PetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PetCell.xib; sourceTree = "<group>"; };
 		C49A57141C0C525C008D0780 /* AddStepModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepModel.swift; sourceTree = "<group>"; };
-		C49E53FC1B5247B90048CF89 /* ImModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImModel.swift; sourceTree = "<group>"; };
 		C4A350BE1B6B6BEE00E8AF10 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C4A350C11B6B6C5200E8AF10 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
 		C4A350C21B6B6C5200E8AF10 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
@@ -740,6 +730,15 @@
 			name = "动态";
 			sourceTree = "<group>";
 		};
+		120B8A6F1C418B08006B0C15 /* tex */ = {
+			isa = PBXGroup;
+			children = (
+				120B8A701C418B08006B0C15 /* body.png */,
+				120B8A711C418B08006B0C15 /* wing.png */,
+			);
+			path = tex;
+			sourceTree = "<group>";
+		};
 		121F66971B15B3DF00103B14 /* 新梦境列表 */ = {
 			isa = PBXGroup;
 			children = (
@@ -812,6 +811,8 @@
 				129089381B5E268C00EB73E5 /* GameScene.sks */,
 				129FE4DB1B5E2DA400BDFE03 /* star.sks */,
 				129FE4DD1B5E2F5100BDFE03 /* star.png */,
+				120B8A6E1C418B08006B0C15 /* penguin.dae */,
+				120B8A6F1C418B08006B0C15 /* tex */,
 			);
 			name = "游戏";
 			sourceTree = "<group>";
@@ -847,16 +848,6 @@
 			name = performSelector;
 			sourceTree = "<group>";
 		};
-		124EFD681A6648FC009D837B /* ImClient */ = {
-			isa = PBXGroup;
-			children = (
-				124EFD691A664912009D837B /* ImClient.swift */,
-				12497C361A7102C4001DBD0F /* mainClient.swift */,
-				C49E53FC1B5247B90048CF89 /* ImModel.swift */,
-			);
-			name = ImClient;
-			sourceTree = "<group>";
-		};
 		1251D6101975729100F55389 /* Refresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -890,16 +881,6 @@
 				1257833819B5F1B1008A1B3B /* LikeCell.xib */,
 			);
 			name = "点赞";
-			sourceTree = "<group>";
-		};
-		126ABCC21A25DAD3001BB5DA /* 同类标签 */ = {
-			isa = PBXGroup;
-			children = (
-				126ABCC31A25DAED001BB5DA /* Tag.swift */,
-				126ABCC51A25DAFC001BB5DA /* TagCell.swift */,
-				126ABCC71A25DB07001BB5DA /* TagCell.xib */,
-			);
-			name = "同类标签";
 			sourceTree = "<group>";
 		};
 		126D6E331C2F1E800053211C /* LSYAlbumPicker_Swift */ = {
@@ -1025,15 +1006,6 @@
 				C488B4701BFD9E8D00C735EC /* LogOrRegModel.swift */,
 			);
 			name = "欢迎";
-			sourceTree = "<group>";
-		};
-		129492801AD93211000E7461 /* MaterialKit */ = {
-			isa = PBXGroup;
-			children = (
-				129492811AD9322A000E7461 /* MKTableViewCell.swift */,
-				129492831AD9329D000E7461 /* MKLayer.swift */,
-			);
-			name = MaterialKit;
 			sourceTree = "<group>";
 		};
 		129B9EF81BA2AFD800E5B25A /* WeiboSharing */ = {
@@ -1324,7 +1296,6 @@
 				12F7A4E01A07405A00F16F99 /* 念币 */,
 				121F66971B15B3DF00103B14 /* 新梦境列表 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
-				126ABCC21A25DAD3001BB5DA /* 同类标签 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
 				1253C2C01A1DD169003D4ECF /* 玩家 */,
 				12A49109198EB550000B6D5E /* 消息 */,
@@ -1370,9 +1341,7 @@
 				C40F0F2C1BE7632E007B7C6B /* PSTAlertController */,
 				C4077BC01B04A5FB004E0D03 /* TITokenView */,
 				C4CDB41A1AF8C77C00936E03 /* htmlParse */,
-				129492801AD93211000E7461 /* MaterialKit */,
 				1248FB9D1A91B44A00110EEF /* performSelector */,
-				124EFD681A6648FC009D837B /* ImClient */,
 				1282230519C7E6710002937D /* upyun */,
 				1251D6101975729100F55389 /* Refresh */,
 				12E1C81F1A146DCA00453805 /* LabelAnimation */,
@@ -1760,13 +1729,14 @@
 				C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
+				120B8A721C418B08006B0C15 /* penguin.dae in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				C486BDE81BF46ABD00EF1C2A /* ActivitiesSummary.storyboard in Resources */,
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
 				C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */,
-				126ABCC81A25DB07001BB5DA /* TagCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */,
+				120B8A731C418B08006B0C15 /* body.png in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
@@ -1776,6 +1746,7 @@
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
+				120B8A741C418B08006B0C15 /* wing.png in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,
@@ -1919,7 +1890,6 @@
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				C486FD511C04430A009F1F90 /* Extensions.swift in Sources */,
-				129492841AD9329D000E7461 /* MKLayer.swift in Sources */,
 				C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
 				126D6E461C2F1E800053211C /* LSYAlbumCatalogView.swift in Sources */,
@@ -1968,7 +1938,6 @@
 				C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
 				129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */,
-				126ABCC41A25DAED001BB5DA /* Tag.swift in Sources */,
 				1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */,
 				120B6E421BD3E23F00422B86 /* Explore+NewestCell.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamicDreamCell.swift in Sources */,
@@ -1980,7 +1949,6 @@
 				12776A0B1BCE4C5A00745811 /* VVeboCell.swift in Sources */,
 				C488B47B1BFD9E8D00C735EC /* PatternViewController.swift in Sources */,
 				C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */,
-				126ABCC61A25DAFC001BB5DA /* TagCell.swift in Sources */,
 				123CB05319785B780062BB8A /* NianViewController.swift in Sources */,
 				129152E11A6A90E500BB213C /* FindCell.swift in Sources */,
 				128470721BF1F36D007E235C /* PlanktonCell.swift in Sources */,
@@ -1989,7 +1957,6 @@
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,
 				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
-				129492821AD9322A000E7461 /* MKTableViewCell.swift in Sources */,
 				C488B4791BFD9E8D00C735EC /* LogOrRegViewController.swift in Sources */,
 				C486FD501C04430A009F1F90 /* Expression.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
@@ -2014,7 +1981,6 @@
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				C488B47F1BFD9E8D00C735EC /* WelcomeViewController.swift in Sources */,
-				C49E53FD1B5247B90048CF89 /* ImModel.swift in Sources */,
 				C486FD551C04430A009F1F90 /* Priority.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				C4C9AB0D1C13FACB00B99B8C /* VVImageCollectionView.swift in Sources */,
@@ -2065,8 +2031,6 @@
 				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
 				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
-				124EFD6A1A664912009D837B /* ImClient.swift in Sources */,
-				12497C371A7102C4001DBD0F /* mainClient.swift in Sources */,
 				126D6E4A1C2F1E800053211C /* LSYAlbumPicker.swift in Sources */,
 				C486FD481C04430A009F1F90 /* Constrain.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,
@@ -2201,8 +2165,6 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
 					"$(PROJECT_DIR)/QQSharing",
 				);
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
@@ -2255,8 +2217,6 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
 					"$(PROJECT_DIR)/QQSharing",
 				);
 				INFOPLIST_FILE = "Nian iOS/Info.plist";

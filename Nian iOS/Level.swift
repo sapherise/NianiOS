@@ -37,9 +37,7 @@ class LevelView: UIView {
         self.viewBottomHolder.setX(globalWidth/2-160)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func setup() {
         Api.getUserMe() { json in
             if json != nil {
                 let data = json!.objectForKey("user") as! NSDictionary

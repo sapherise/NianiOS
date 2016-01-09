@@ -125,8 +125,7 @@ class DreamCellTop: UITableViewCell {
         }
     }
     
-    override func layoutSubviews(){
-        super.layoutSubviews()
+    func setup() {
         if data != nil {
             var title = data!.stringAttributeForKey("title").decode()
             var content = data!.stringAttributeForKey("content").decode()

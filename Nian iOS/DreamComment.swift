@@ -12,10 +12,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     var tableview:UITableView!
     var dataArray = NSMutableArray()
-    var page :Int = 0
+    var page :Int = 1
     var replySheet:UIActionSheet?
     var deleteCommentSheet:UIActionSheet?
-    var dataTotal: Int = 0
     var viewTop: UIView!
     
     var dreamID: Int = 0
@@ -27,8 +26,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
 //    var ReplyRow:Int = 0
 //    var ReplyCid:String = ""
     var rowSelected = -1
-    var animating: Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
-    var activityIndicatorView: UIActivityIndicatorView!
+    var isAnimating = false
+//    var activityIndicatorView: UIActivityIndicatorView!
     
     var desHeight: CGFloat = 0
     var inputKeyboard: UITextField!
@@ -42,7 +41,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        SAReloadData()
+        load(true)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -77,11 +76,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.view.addSubview(self.tableview)
         
         self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 56))
-        self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
-        self.activityIndicatorView.hidden = false
-        self.activityIndicatorView.startAnimating()
-        self.activityIndicatorView.color = SeaColor
-        self.tableview.tableHeaderView = self.viewTop
+//        self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
+//        self.activityIndicatorView.hidden = false
+//        self.activityIndicatorView.startAnimating()
+//        self.activityIndicatorView.color = SeaColor
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.tableview.tableFooterView = self.viewBottom
         
@@ -104,6 +102,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.navigationItem.titleView = titleLabel
         
         self.viewLoadingShow()
+        
+        tableview.addHeaderWithCallback { () -> Void in
+            self.load(false)
+        }
     }
     
     //按下发送后调用此函数
@@ -119,7 +121,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.inputKeyboard.text = ""
         if let name = Cookies.get("user") as? String {
             let newinsert = NSDictionary(objects: [replyContent, "" , "sending", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-            self.dataArray.insertObject(newinsert, atIndex: 0)
+            self.dataArray.insertObject(self.dataDecode(newinsert), atIndex: 0)
             self.tableview.reloadData()
             //当提交评论后滚动到最新评论的底部
             
@@ -135,11 +137,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                             IDComment = Int((json as! NSDictionary).stringAttributeForKey("data"))!
                             success = true
                             if finish {
-                                let newinsert = NSDictionary(objects: [replyContent, "\(IDComment)" , "0s", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-                                self.tableview.beginUpdates()
-                                self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
-                                self.tableview.reloadData()
-                                self.tableview.endUpdates()
+                                self.newInsert(replyContent, id: IDComment)
                             }
                         } else {
                             self.showTipText("对方设置了不被回应...")
@@ -159,11 +157,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 }
                 }) { (Bool) -> Void in
                     if success {
-                        let newinsert = NSDictionary(objects: [replyContent, "\(IDComment)" , "0s", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-                        self.tableview.beginUpdates()
-                        self.dataArray.replaceObjectAtIndex(0, withObject: newinsert)
-                        self.tableview.reloadData()
-                        self.tableview.endUpdates()
+                        self.newInsert(replyContent, id: IDComment)
                     } else {
                         finish = true
                     }
@@ -171,67 +165,62 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         }
     }
     
-    func SAloadData() {
-        let heightBefore = self.tableview.contentSize.height
-        let url = "http://nian.so/api/comment_step.php?page=\(page)&id=\(stepID)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull() {
-                let arr = data.objectForKey("items") as! NSArray
-                let total = data.objectForKey("total") as! NSString!
-                self.dataTotal = Int("\(total)")!
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
-                }
-                self.tableview.reloadData()
-                let heightAfter = self.tableview.contentSize.height
-                let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-                self.tableview.setContentOffset(CGPointMake(0, heightChange), animated: false)
-                self.page++
-                self.animating = 0
-            }
-        })
+    /* 插入新回应并在 UI 上显示 */
+    func newInsert(content: String, id: Int) {
+        if let name = Cookies.get("user") as? String {
+            let newinsert = NSDictionary(objects: [content, "\(id)" , V.now(), "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+            self.tableview.beginUpdates()
+            self.dataArray.replaceObjectAtIndex(0, withObject: self.dataDecode(newinsert))
+            self.tableview.reloadData()
+            self.tableview.endUpdates()
+        }
     }
     
-    func SAReloadData(){
-        let url = "http://nian.so/api/comment_step.php?page=0&id=\(stepID)"
-        SAHttpRequest.requestWithURL(url,completionHandler:{ data in
-            if data as! NSObject != NSNull(){
-                let arr = data.objectForKey("items") as! NSArray
-                let total = data.objectForKey("total") as! NSString!
-                self.dataTotal = Int("\(total)")!
-                self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr {
-                    self.dataArray.addObject(data)
+    func load(clear: Bool) {
+        if !isAnimating {
+            isAnimating = true
+            if clear {
+                page = 1
+            }
+            let heightBefore = self.tableview.contentSize.height
+            Api.getDreamStepComment("\(stepID)", page: page) { json in
+                if json != nil {
+                    self.viewLoadingHide()
+                    let data = json!.objectForKey("data") as! NSDictionary
+                    let comments = data.objectForKey("comments") as! NSArray
+                    var i = 0
+                    for comment in comments {
+                        if let _d = comment as? NSDictionary {
+                            let d = self.dataDecode(_d)
+                            self.dataArray.addObject(d)
+                            i++
+                        }
+                    }
+                    
+                    if !clear {
+                        delay(0.3, closure: { () -> () in
+                            /* 当加载内容不足时，停止加载更多内容 */
+                            if i < 15 {
+                                self.tableview.setHeaderHidden(true)
+                            }
+                        
+                        /* 因为 tableView 的弹性，需要延时 0.3 秒来加载内容 */
+                            self.tableview.reloadData()
+                            let h = self.tableview.contentSize.height - heightBefore - 2
+                            self.tableview.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
+                            self.page++
+                            self.isAnimating = false
+                        })
+                    } else {
+                        self.tableview.reloadData()
+                        let h = self.tableview.contentSize.height - self.tableview.height()
+                        self.tableview.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
+                        self.page++
+                        self.isAnimating = false
+                    }
                 }
-                if self.dataTotal < 15 {
-                    self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
-                }
-                self.tableview.reloadData()
-                self.viewLoadingHide()
                 self.tableview.headerEndRefreshing()
-                if self.tableview.contentSize.height > self.tableview.bounds.size.height {
-                    self.tableview.setContentOffset(CGPointMake(0, self.tableview.contentSize.height-self.tableview.bounds.size.height), animated: false)
-                }
-                self.page = 1
             }
-        })
-    }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let y = scrollView.contentOffset.y
-        if self.dataTotal == 15 {
-            self.viewTop.addSubview(self.activityIndicatorView)
-            if y < 40 {
-                if self.animating == 0 {
-                    self.animating = 1
-                    delay(0.5, closure: { () -> () in
-                        self.SAloadData()
-                    })
-                }
-            }
-        }else{
-            self.activityIndicatorView.hidden = true
-            self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, 0))
         }
     }
     
@@ -335,28 +324,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let index = indexPath.row
         let data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
-//        return  CommentCell.cellHeightByData(data)
-        
-        
-//        let data = dataArray[index] as! NSDictionary
-        let heightCell = data.stringAttributeForKey("heightCell")
-        // 当高度
-        if heightCell == "" {
-            let arr = CommentCell.cellHeightByData(data)
-            let hCell = arr[0] as! CGFloat
-            let hContent = arr[1] as! CGFloat
-            let wImage = arr[2] as! CGFloat
-            let hImage = arr[3] as! CGFloat
-            let d = NSMutableDictionary(dictionary: data)
-            d.setValue(hCell, forKey: "heightCell")
-            d.setValue(hContent, forKey: "heightContent")
-            d.setValue(wImage, forKey: "widthImage")
-            d.setValue(hImage, forKey: "heightImage")
-            dataArray.replaceObjectAtIndex(dataArray.count - 1 - index, withObject: d)
-            return hCell
-        } else {
-            return CGFloat((heightCell as NSString).floatValue)
-        }
+        let heightCell = data.objectForKey("heightCell") as! CGFloat
+        return heightCell
     }
     
     func commentVC(){
@@ -432,6 +401,37 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         }else{
             return true
         }
+    }
+    
+    /* 将数据转码 */
+    func dataDecode(data: NSDictionary) -> NSDictionary {
+        let mutableData = NSMutableDictionary(dictionary: data)
+        let content = data.stringAttributeForKey("content").decode()
+        let h = content.stringHeightWith(15, width: 208)
+        var time = data.stringAttributeForKey("lastdate")
+        if time != "sending" {
+            time = V.relativeTime(time)
+        }
+        var wImage: CGFloat = 0
+        var hImage: CGFloat = 0
+        var wContent: CGFloat = 0
+        if h == "".stringHeightWith(15, width: 208) {
+            wContent = content.stringWidthWith(15, height: h)
+            wImage = wContent + 27
+            hImage = 37
+        } else {
+            wImage = 235
+            hImage = h + 20
+            wContent = 208
+        }
+        mutableData.setValue(h, forKey: "heightContent")
+        mutableData.setValue(wContent, forKey: "widthContent")
+        mutableData.setValue(wImage, forKey: "widthImage")
+        mutableData.setValue(hImage, forKey: "heightImage")
+        mutableData.setValue(content, forKey: "content")
+        mutableData.setValue(time, forKey: "lastdate")
+        mutableData.setValue(h + 60, forKey: "heightCell")
+        return mutableData as NSDictionary
     }
 }
 
