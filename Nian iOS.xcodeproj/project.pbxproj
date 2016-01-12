@@ -72,6 +72,10 @@
 		12652836196C673A005765D2 /* DreamCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652835196C673A005765D2 /* DreamCellTop.swift */; };
 		12652838196C6755005765D2 /* Sapherise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12652837196C6755005765D2 /* Sapherise.swift */; };
 		126593F219CD5CE500884947 /* AddDreamController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126593F119CD5CE500884947 /* AddDreamController.xib */; };
+		126A808F1C44A2C70057EAAF /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A808E1C44A2C70057EAAF /* List.swift */; };
+		126A80911C44A6680057EAAF /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126A80901C44A6680057EAAF /* ListCell.xib */; };
+		126A80931C44A6880057EAAF /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A80921C44A6880057EAAF /* ListCell.swift */; };
+		126A80D01C44BC600057EAAF /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A80CF1C44BC600057EAAF /* Coin.swift */; };
 		126D6E431C2F1E800053211C /* LSYAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E361C2F1E800053211C /* LSYAlbum.swift */; };
 		126D6E441C2F1E800053211C /* LSYAlbumDelegateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E371C2F1E800053211C /* LSYAlbumDelegateClass.swift */; };
 		126D6E451C2F1E800053211C /* LSYAlbumModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E381C2F1E800053211C /* LSYAlbumModel.swift */; };
@@ -189,7 +193,7 @@
 		12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C2D1B65703F0051A914 /* CoinCircle.swift */; };
 		12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A51BAD5533009EADC0 /* Reachability.swift */; };
 		12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */; };
-		12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin.swift */; };
+		12F7A4E21A07406F00F16F99 /* Coin3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin3.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -371,6 +375,10 @@
 		12652835196C673A005765D2 /* DreamCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCellTop.swift; sourceTree = "<group>"; };
 		12652837196C6755005765D2 /* Sapherise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sapherise.swift; sourceTree = "<group>"; };
 		126593F119CD5CE500884947 /* AddDreamController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddDreamController.xib; sourceTree = "<group>"; };
+		126A808E1C44A2C70057EAAF /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		126A80901C44A6680057EAAF /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
+		126A80921C44A6880057EAAF /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		126A80CF1C44BC600057EAAF /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		126D6E361C2F1E800053211C /* LSYAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbum.swift; sourceTree = "<group>"; };
 		126D6E371C2F1E800053211C /* LSYAlbumDelegateClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumDelegateClass.swift; sourceTree = "<group>"; };
 		126D6E381C2F1E800053211C /* LSYAlbumModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumModel.swift; sourceTree = "<group>"; };
@@ -508,7 +516,7 @@
 		12F65C2D1B65703F0051A914 /* CoinCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCircle.swift; sourceTree = "<group>"; };
 		12F678A51BAD5533009EADC0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+Reachability.swift"; sourceTree = "<group>"; };
-		12F7A4E11A07406F00F16F99 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
+		12F7A4E11A07406F00F16F99 /* Coin3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin3.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -699,6 +707,7 @@
 				12652833196C671E005765D2 /* DreamCellTop.xib */,
 				12E4939C19953DD600F8DF32 /* 回应 */,
 				122D73E8197EB8CD00310C6B /* 更新梦想 */,
+				126A808D1C44A2BB0057EAAF /* 邀请 */,
 			);
 			name = "梦想";
 			sourceTree = "<group>";
@@ -881,6 +890,24 @@
 				1257833819B5F1B1008A1B3B /* LikeCell.xib */,
 			);
 			name = "点赞";
+			sourceTree = "<group>";
+		};
+		126A808D1C44A2BB0057EAAF /* 邀请 */ = {
+			isa = PBXGroup;
+			children = (
+				126A808E1C44A2C70057EAAF /* List.swift */,
+				126A80921C44A6880057EAAF /* ListCell.swift */,
+				126A80901C44A6680057EAAF /* ListCell.xib */,
+			);
+			name = "邀请";
+			sourceTree = "<group>";
+		};
+		126A80CE1C44BC470057EAAF /* 念币（使用） */ = {
+			isa = PBXGroup;
+			children = (
+				126A80CF1C44BC600057EAAF /* Coin.swift */,
+			);
+			name = "念币（使用）";
 			sourceTree = "<group>";
 		};
 		126D6E331C2F1E800053211C /* LSYAlbumPicker_Swift */ = {
@@ -1245,7 +1272,7 @@
 			isa = PBXGroup;
 			children = (
 				326BB93B1A0B6E21007E12B4 /* 详情 */,
-				12F7A4E11A07406F00F16F99 /* Coin.swift */,
+				12F7A4E11A07406F00F16F99 /* Coin3.swift */,
 				12F65C2D1B65703F0051A914 /* CoinCircle.swift */,
 				12BAEB2B1A19F9B90041C7C0 /* Film.xib */,
 				12BAEB2D1A19FA6D0041C7C0 /* Film.swift */,
@@ -1294,6 +1321,7 @@
 				12F65C071B64F44F0051A914 /* 宠物 */,
 				12BD36901B8EABDC00B37573 /* 新广场 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
+				126A80CE1C44BC470057EAAF /* 念币（使用） */,
 				121F66971B15B3DF00103B14 /* 新梦境列表 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
@@ -1727,6 +1755,7 @@
 				129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */,
+				126A80911C44A6680057EAAF /* ListCell.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
 				120B8A721C418B08006B0C15 /* penguin.dae in Resources */,
@@ -1886,12 +1915,14 @@
 				12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
+				126A80931C44A6880057EAAF /* ListCell.swift in Sources */,
 				1255785C1A0CD434005E56D7 /* Web.swift in Sources */,
 				1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */,
 				323F783E1A105C93003C3755 /* V.swift in Sources */,
 				C486FD511C04430A009F1F90 /* Extensions.swift in Sources */,
 				C4CDB41D1AF8C79000936E03 /* NSString+HTML.m in Sources */,
 				12E8090D1A2DBFB20022C094 /* SingleStep.swift in Sources */,
+				126A808F1C44A2C70057EAAF /* List.swift in Sources */,
 				126D6E461C2F1E800053211C /* LSYAlbumCatalogView.swift in Sources */,
 				129F6C761C3070B7008B61A5 /* AddStep+Function.swift in Sources */,
 				123FD9441C3A802600A92188 /* VVeboCollectionViewCell.swift in Sources */,
@@ -1899,6 +1930,7 @@
 				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				12776A181BCE731A00745811 /* NSString+Additions.m in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
+				126A80D01C44BC600057EAAF /* Coin.swift in Sources */,
 				126D6E451C2F1E800053211C /* LSYAlbumModel.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C488B48A1BFDA06700C735EC /* AccountBindViewController.swift in Sources */,
@@ -1961,7 +1993,7 @@
 				C486FD501C04430A009F1F90 /* Expression.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
-				12F7A4E21A07406F00F16F99 /* Coin.swift in Sources */,
+				12F7A4E21A07406F00F16F99 /* Coin3.swift in Sources */,
 				121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */,
 				C43680161BDA411C00D51516 /* CustomButton.swift in Sources */,
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,

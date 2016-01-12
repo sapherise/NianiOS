@@ -273,16 +273,10 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/circle_title.php?id=\(id)", callback: callback)
     }
     
-    static func postIapVerify(transactionId: String, data: NSData, callback: V.JsonCallback) {
+    /* 应用内购买念币 */
+    static func postIapVerify(transactionId: String, data: String, callback: V.JsonCallback) {
         loadCookies()
-        let receiptData = ["receipt-data" : data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions())]
-        var jsonData: NSData?
-        do {
-            jsonData = try NSJSONSerialization.dataWithJSONObject(receiptData, options: NSJSONWritingOptions())
-        } catch _ as NSError {
-            jsonData = nil
-        }
-        V.httpPostForJson("http://nian.so/api/iap_verify.php", content: "uid=\(s_uid)&shell=\(s_shell)&transaction_id=\(transactionId)&data=\(jsonData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions()))", callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/payment/apple/iap/verify?uid=\(s_uid)&shell=\(s_shell)", content: ["transaction_id": transactionId, "data": data], callback: callback)
     }
     
     static func postLabTrip(id: String, subid: Int = 0, callback: V.JsonCallback) {
@@ -292,7 +286,6 @@ struct Api {
     
     static func getCircleExplore(page: Int, callback: V.JsonCallback) {
         loadCookies()
-//        V.httpGetForJson("http://nian.so/api/circle_explore.php?lastid=\(lastid)", callback: callback)
         V.httpGetForJson("http://api.nian.so/circle/explore?page=\(page)", callback: callback)
     }
     
@@ -911,6 +904,12 @@ extension Api {
     static func getPlanktonIncrease(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/plankton/increase?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 记本邀请好友一同更新 */
+    static func getMultiInviteList(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/\(id)/invite/users?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
     }
 }
 

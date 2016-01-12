@@ -364,9 +364,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func coinClick(){
-        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
-        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
-        self.navigationController!.pushViewController(viewController, animated: true)
+//        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
+//        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
+//        self.navigationController!.pushViewController(viewController, animated: true)
+        let vc = Coin()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -549,7 +551,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             if let cBefore = Int(SAReplace(coinButton.currentTitle!, before: "念币 ", after: "") as String) {
                 if let coin = Int(coin) {
                     let cAfter = coin + cBefore
-                    coinButton.setTitle("念币 \(cAfter)", forState: UIControlState.Normal)
+                    coinButton.setTitle("念币 \(cAfter)", forState: UIControlState())
                 }
             }
         }

@@ -40,8 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         * 1 << 1 : UIUserNotificationType.Alert
         * 1 << 2 : UIUserNotificationType.Badge
         */
-        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-        APService.setupWithOption(launchOptions)
+        // todo: 启用下面这两行
+//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
+//        APService.setupWithOption(launchOptions)
         
         application.applicationIconBadgeNumber = 1
         application.applicationIconBadgeNumber = 0

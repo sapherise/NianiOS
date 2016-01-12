@@ -420,7 +420,8 @@ extension UIViewController {
         }
         
         /* 远程推送 */
-        Api.postJpushBinding(){_ in }
+        // todo: 启用下面这一行
+//        Api.postJpushBinding(){_ in }
     }
     
     /* 第二天推送 */

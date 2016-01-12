@@ -34,6 +34,8 @@ class DreamCellTop: UITableViewCell {
     @IBOutlet var viewBG: UIView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var viewLineTop: UIView!
+    @IBOutlet var labelInvite: UILabel!
+    
     var delegate: topDelegate?
     
     var data: NSDictionary?
@@ -59,6 +61,7 @@ class DreamCellTop: UITableViewCell {
         viewLineLeft.setWidth(0.5)
         viewLineTop.setHeightHalf()
         scrollView.setTag()
+        labelInvite.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onInvite"))
     }
 
     override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -276,6 +279,14 @@ class DreamCellTop: UITableViewCell {
     // 自定义 label
     func labelWidthWithItsContent(label: UILabel, content: String) {
         label.setTagLabel(content)
+    }
+    
+    func onInvite() {
+        if data != nil {
+            let vc = List()
+            vc.id = data!.stringAttributeForKey("id")
+            self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
