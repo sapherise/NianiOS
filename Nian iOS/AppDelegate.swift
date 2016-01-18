@@ -11,7 +11,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
     
-    var isNoti = false
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -209,21 +208,16 @@ extension HandleForShorCutItem {
     /// Shortcut Item, also called a Home screen dynamic quick action, specifies a user-initiated action for app.
     @available(iOS 9.0, *)
     func QuickActionsForItem(shortcutItem: UIApplicationShortcutItem) {
-        if !isNoti {
-            isNoti = true
-            if let shorchutItemType = QuickActionsType.init(rawValue: shortcutItem.type) {
-                switch shorchutItemType {
-                case .AddStep:
-                    delay(1, closure: { () -> () in
-                        NSNotificationCenter.defaultCenter().postNotificationName("QuickActions", object: "1")
-                        self.isNoti = false
-                    })
-                case .Egg:
-                    delay(1, closure: { () -> () in
-                        NSNotificationCenter.defaultCenter().postNotificationName("QuickActionsEgg", object: "2")
-                        self.isNoti = false
-                    })
-                }
+        if let shorchutItemType = QuickActionsType.init(rawValue: shortcutItem.type) {
+            switch shorchutItemType {
+            case .AddStep:
+                delay(1, closure: { () -> () in
+                    NSNotificationCenter.defaultCenter().postNotificationName("QuickActions", object: "1")
+                })
+            case .Egg:
+                delay(1, closure: { () -> () in
+                    NSNotificationCenter.defaultCenter().postNotificationName("QuickActionsEgg", object: "2")
+                })
             }
         }
     }

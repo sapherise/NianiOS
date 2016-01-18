@@ -14,7 +14,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var Id: String = "1"
     var deleteDreamSheet:UIActionSheet?
     var navView:UIView!
-    var viewCoin: Popup!
     
     //editStepdelegate
     var editStepRow:Int = 0
@@ -24,9 +23,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var newEditStepData: NSDictionary?
     
     var dataArrayTop: NSDictionary!
-    var btnMain: UIButton!
-    
-    var alertCoin: NIAlert?
     
     var SATableView: VVeboTableView!
     var dataArray = NSMutableArray()
@@ -113,7 +109,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                 } else {
                     let data: AnyObject? = json!.objectForKey("data")
                     if clear {
-                        self.dataArrayTop = data!.objectForKey("dream") as! NSDictionary
+                        self.dataArrayTop = self.DataDecode(data!.objectForKey("dream") as! NSDictionary)
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
                         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
@@ -227,24 +223,28 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             let c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
             c.data = dataArrayTop
             c.delegate = self
-            if dataArrayTop != nil {
-                let uid = dataArrayTop.stringAttributeForKey("uid")
-                let follow = dataArrayTop.stringAttributeForKey("follow")
-                c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStep"))
-                if SAUid() == uid {
-                    c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
-                    c.btnMain.setTitle("更新", forState: UIControlState())
-                } else {
-                    self.btnMain = c.btnMain
-                    if follow == "0" {
-                        c.btnMain.setTitle("关注", forState: UIControlState())
-                        c.btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
-                    } else {
-                        c.btnMain.setTitle("已关注", forState: UIControlState())
-                        c.btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
-                    }
-                }
-            }
+            
+            
+            
+            // todo: 这些应该怎么办
+//            if dataArrayTop != nil {
+//                let uid = dataArrayTop.stringAttributeForKey("uid")
+//                let follow = dataArrayTop.stringAttributeForKey("follow")
+//                c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStep"))
+//                if SAUid() == uid {
+//                    c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
+//                    c.btnMain.setTitle("更新", forState: UIControlState())
+//                } else {
+//                    self.btnMain = c.btnMain
+//                    if follow == "0" {
+//                        c.btnMain.setTitle("关注", forState: UIControlState())
+//                        c.btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
+//                    } else {
+//                        c.btnMain.setTitle("已关注", forState: UIControlState())
+//                        c.btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
+//                    }
+//                }
+//            }
             c.setup()
             return c
         } else {
@@ -253,40 +253,33 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         }
     }
     
-    // MARK: - 分割线 ---------------------------------------------------------
-    
     func onFo() {
-        btnMain.setTitle("已关注", forState: UIControlState())
-        btnMain.removeTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
-        btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
         let id = dataArrayTop.stringAttributeForKey("id")
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
-        mutableData.setValue("1", forKey: "follow")
+        mutableData.setValue("1", forKey: "followed")
         dataArrayTop = mutableData
+        SATableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.None)
         Api.postFollowDream(id, follow: "1") { string in }
     }
     
     func onUnFo() {
-        btnMain.setTitle("关注", forState: UIControlState())
-        btnMain.removeTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
-        btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
         let id = dataArrayTop.stringAttributeForKey("id")
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
-        mutableData.setValue("0", forKey: "follow")
+        mutableData.setValue("0", forKey: "followed")
         dataArrayTop = mutableData
+        SATableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.None)
         Api.postFollowDream(id, follow: "0") { string in }
     }
+    
+    // todo: 记本标签出错了
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if dataArrayTop != nil {
-                var title = dataArrayTop.stringAttributeForKey("title").decode()
-                if dataArrayTop.stringAttributeForKey("private") == "1" {
-                    title = "\(title)（私密）"
-                } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
-                    title = "\(title)（完成）"
+//                return title.stringHeightBoldWith(18, width: 240) + 252 + 52
+                if let h = dataArrayTop.objectForKey("heightCell") as? CGFloat {
+                    return h
                 }
-                return title.stringHeightBoldWith(18, width: 240) + 252 + 52
             }
             return 0
         }else{
@@ -296,7 +289,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 1
+            return dataArrayTop == nil ? 0 : 1
         }else{
             return self.dataArray.count
         }
@@ -356,7 +349,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue(editDes, forKey: "content")
         mutableData.setValue(editImage, forKey: "image")
         mutableData.setValue(editTags, forKey: "tags")
-        dataArrayTop = mutableData
+        dataArrayTop = DataDecode(mutableData)
         self.SATableView.reloadData()
     }
     
@@ -384,88 +377,35 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
-}
-
-// MARK: - 实现 NIAlertDelegate
-extension DreamViewController: NIAlertDelegate {
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
-        if niAlert == self.alertCoin {
-                niAlert.dismissWithAnimation(.normal)
+    func DataDecode(data: NSDictionary) -> NSDictionary {
+        let thePrivate = data.stringAttributeForKey("private")
+        let percent = data.stringAttributeForKey("percent")
+        let title = data.stringAttributeForKey("title").decode()
+        let content = data.stringAttributeForKey("content").decode()
+        var _title = ""
+        if thePrivate == "1" {
+            _title = "\(title)（私密）"
+        } else if percent == "1" {
+            _title = "\(title)（完成）"
         }
+        let hTitle = _title.stringHeightBoldWith(18, width: 240)
+        var hContent: CGFloat = 0
+        if content != "" {
+            hContent = content.stringHeightWith(12, width: 240)
+            // todo: 测试 4 行
+            let h4Lines = "\n\n\n".stringHeightWith(12, width: 240)
+            hContent = min(hContent, h4Lines)
+        }
+        var heightCell = 306 + hTitle + 8 + hContent + globalHalf
+        if content == "" {
+            heightCell = 306 + hTitle + globalHalf
+        }
+        let mutableData = NSMutableDictionary(dictionary: data)
+        mutableData.setValue(hTitle, forKey: "heightTitle")
+        mutableData.setValue(hContent, forKey: "heightContent")
+        mutableData.setValue(heightCell, forKey: "heightCell")
+        mutableData.setValue(content, forKey: "content")
+        mutableData.setValue(title, forKey: "title")
+        return NSDictionary(dictionary: mutableData)
     }
 }
-
-//extension DreamViewController: NewAddStepDelegate {
-//    func newEditstep() {
-//        self.dataArray[self.newEditStepRow] = self.editStepData!
-//        let newpath = NSIndexPath(forRow: self.newEditStepRow, inSection: 1)
-//        self.SATableView!.reloadRowsAtIndexPaths([newpath], withRowAnimation: UITableViewRowAnimation.Left)
-//    }
-//
-//    func newCountUp(coin: String, total: String, isfirst: String) {
-//        if isfirst == "1" {
-//            if Int(total) < 3 {
-//                self.alertCoin = NIAlert()
-//                self.alertCoin?.delegate = self
-//                self.alertCoin?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]],
-//                    forKeys: ["img", "title", "content", "buttonArray"])
-//                self.alertCoin?.showWithAnimation(.flip)
-//            } else {
-//                // 如果念币多于 3， 那么就出现抽宠物
-//                let v = SAEgg()
-//                v.delegateShare = self
-//                v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-//                    forKeys: ["img", "title", "content", "buttonArray"])
-//                v.showWithAnimation(.flip)
-//            }
-//        }
-//    }
-//    
-//    func newUpdate(data: NSDictionary) {
-//        if let step = Int(dataArrayTop.stringAttributeForKey("step")) {
-//            let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
-//            mutableData.setValue("\(step + 1)", forKey: "step")
-//            dataArrayTop = mutableData
-//            dataArray.insertObject(data, atIndex: 0)
-//            globalVVeboReload = true
-//            SATableView.reloadData()
-//        }
-//
-//    }
-//    
-//
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
