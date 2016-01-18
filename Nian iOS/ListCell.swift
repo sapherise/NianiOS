@@ -24,6 +24,8 @@ class ListCell: UITableViewCell {
 //        heightViewLine.constant = globalHalf
         viewLine.frame = CGRectMake(70, 70, globalWidth - 85, globalHalf)
         imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        labelButton.setX(globalWidth - 15 - labelButton.width())
+        labelTitle.setWidth(globalWidth - 170)
     }
     
     func setup() {
@@ -31,7 +33,7 @@ class ListCell: UITableViewCell {
         let name = data.stringAttributeForKey("name")
         
         /* 当 inviting 为 0 时，不要高亮 */
-        let isHighlight = data.stringAttributeForKey("inviting") != "0"
+//        let isHighlight = data.stringAttributeForKey("inviting") != "0"
         labelTitle.text = name
         imageHead.setHead(uid)
     }

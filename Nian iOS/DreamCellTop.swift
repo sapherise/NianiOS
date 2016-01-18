@@ -32,6 +32,7 @@ class DreamCellTop: UITableViewCell {
     @IBOutlet var numRightNum: UILabel!
     
     @IBOutlet var viewLineLeft: UIView!
+    @IBOutlet var viewLineRight: UIView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var viewLineTop: UIView!
     
@@ -47,6 +48,7 @@ class DreamCellTop: UITableViewCell {
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.viewLineTop.setWidth(globalWidth - 40)
         viewLineLeft.setWidth(0.5)
+        viewLineRight.setWidth(0.5)
         viewLineTop.setHeightHalf()
         scrollView.setTag()
         btnMain.backgroundColor = SeaColor
@@ -138,6 +140,7 @@ class DreamCellTop: UITableViewCell {
         numMiddleNum.text = step
         numRightNum.text = totalUsers
         numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
+        numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMembers"))
         
         /* 按钮 */
         btnMain.setY(viewHolder.bottom() + 16)
@@ -238,10 +241,21 @@ class DreamCellTop: UITableViewCell {
         imageDream.showImage("http://img.nian.so/dream/\(img)!dream")
     }
     
+    /* 查看按赞 */
     func onLike() {
         let vc = LikeViewController()
         vc.Id = data!.stringAttributeForKey("id")
         vc.urlIdentify = 3
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    /* 查看成员 */
+    func onMembers() {
+//        let vc = 
+        print("查看成员")
+        let vc = List()
+        let id = data.stringAttributeForKey("id")
+        vc.id = id
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import SpriteKit
-import SceneKit
 
 protocol AddDreamDelegate {
     func addDreamCallback(id: String, img: String, title: String)
@@ -85,11 +84,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.activity.hidden = true
         self.dynamicSummary.setX(globalWidth - 44)
         self.dynamicSummary.addTarget(self, action: "toActivitiesSummary:", forControlEvents: .TouchUpInside)
-        
-        /* 添加 3D 彩蛋 */
-        let press = UILongPressGestureRecognizer(target: self, action: "on3D:")
-//        press.minimumPressDuration = 3
-        self.dynamicSummary.addGestureRecognizer(press)
         
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
@@ -176,26 +170,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             skView.presentScene(scene)
             scene.setupViews()
             eggShell._containerView?.sendSubviewToBack(skView)
-        }
-    }
-    
-    /* 长按收藏出现的小企鹅 */
-    func on3D(sender: UIGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
-            let eggShell = NIAlert()
-            eggShell.delegate = self
-            eggShell.dict = NSMutableDictionary(objects: ["", "", "", ["再见小企鹅"]], forKeys: ["img", "title", "content", "buttonArray"])
-            
-            let stage = SCNView(frame: CGRectMake(0, 0, 272, 240))
-            stage.allowsCameraControl = true
-            stage.autoenablesDefaultLighting = true
-            
-            if #available(iOS 8.0, *) {
-                stage.scene = SCNScene(named: "penguin.dae")
-            }
-            
-            eggShell._containerView?.addSubview(stage)
-            eggShell.showWithAnimation(.flip)
         }
     }
     

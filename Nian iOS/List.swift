@@ -9,10 +9,17 @@
 import Foundation
 import UIKit
 
+enum ListType {
+    /* 从记本页面进来，想要 */
+    case Members
+    case Invite
+}
+
 class List: SAViewController, UITableViewDataSource, UITableViewDelegate {
     
     var tableView: UITableView!
     var dataArray = NSMutableArray()
+    var type: ListType!
     
     /* 其他页面传入的 id */
     var id: String = "-1"
@@ -25,7 +32,11 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func setup() {
-        _setTitle("邀请")
+        if type == ListType.Members {
+            _setTitle("邀请")
+        } else if type == ListType.Invite {
+            
+        }
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         tableView.delegate = self
         tableView.dataSource = self

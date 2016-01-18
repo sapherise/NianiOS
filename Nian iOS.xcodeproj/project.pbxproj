@@ -13,9 +13,6 @@
 		120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6DC71BD2265500422B86 /* VVeboViewController.swift */; };
 		120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E3F1BD3C42100422B86 /* Explore+UITableView.swift */; };
 		120B6E421BD3E23F00422B86 /* Explore+NewestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */; };
-		120B8A721C418B08006B0C15 /* penguin.dae in Resources */ = {isa = PBXBuildFile; fileRef = 120B8A6E1C418B08006B0C15 /* penguin.dae */; };
-		120B8A731C418B08006B0C15 /* body.png in Resources */ = {isa = PBXBuildFile; fileRef = 120B8A701C418B08006B0C15 /* body.png */; };
-		120B8A741C418B08006B0C15 /* wing.png in Resources */ = {isa = PBXBuildFile; fileRef = 120B8A711C418B08006B0C15 /* wing.png */; };
 		121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121702171BA18BDC00656AE1 /* AddTopic.swift */; };
 		1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121702191BA18C1B00656AE1 /* AddTopic.xib */; };
 		121E513B1C3D31980019F69A /* MySteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121E513A1C3D31980019F69A /* MySteps.swift */; };
@@ -315,9 +312,6 @@
 		120B6DC71BD2265500422B86 /* VVeboViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboViewController.swift; sourceTree = "<group>"; };
 		120B6E3F1BD3C42100422B86 /* Explore+UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+UITableView.swift"; sourceTree = "<group>"; };
 		120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+NewestCell.swift"; sourceTree = "<group>"; };
-		120B8A6E1C418B08006B0C15 /* penguin.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = penguin.dae; sourceTree = "<group>"; };
-		120B8A701C418B08006B0C15 /* body.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body.png; sourceTree = "<group>"; };
-		120B8A711C418B08006B0C15 /* wing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wing.png; sourceTree = "<group>"; };
 		121702171BA18BDC00656AE1 /* AddTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTopic.swift; sourceTree = "<group>"; };
 		121702191BA18C1B00656AE1 /* AddTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTopic.xib; sourceTree = "<group>"; };
 		121E513A1C3D31980019F69A /* MySteps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySteps.swift; sourceTree = "<group>"; };
@@ -739,15 +733,6 @@
 			name = "动态";
 			sourceTree = "<group>";
 		};
-		120B8A6F1C418B08006B0C15 /* tex */ = {
-			isa = PBXGroup;
-			children = (
-				120B8A701C418B08006B0C15 /* body.png */,
-				120B8A711C418B08006B0C15 /* wing.png */,
-			);
-			path = tex;
-			sourceTree = "<group>";
-		};
 		121F66971B15B3DF00103B14 /* 新梦境列表 */ = {
 			isa = PBXGroup;
 			children = (
@@ -820,8 +805,6 @@
 				129089381B5E268C00EB73E5 /* GameScene.sks */,
 				129FE4DB1B5E2DA400BDFE03 /* star.sks */,
 				129FE4DD1B5E2F5100BDFE03 /* star.png */,
-				120B8A6E1C418B08006B0C15 /* penguin.dae */,
-				120B8A6F1C418B08006B0C15 /* tex */,
 			);
 			name = "游戏";
 			sourceTree = "<group>";
@@ -1758,14 +1741,12 @@
 				126A80911C44A6680057EAAF /* ListCell.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
-				120B8A721C418B08006B0C15 /* penguin.dae in Resources */,
 				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				C486BDE81BF46ABD00EF1C2A /* ActivitiesSummary.storyboard in Resources */,
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
 				C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */,
-				120B8A731C418B08006B0C15 /* body.png in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
 				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
@@ -1775,7 +1756,6 @@
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
-				120B8A741C418B08006B0C15 /* wing.png in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,

@@ -275,6 +275,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 self.tableUpdate(content)
                 }) { (err, no) -> Void in
             }
+            
+            
         } else if type == 2 {
             /* 图片 */
             let message = RCImageMessage(imageURI: "\(content)")
