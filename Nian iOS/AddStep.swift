@@ -187,7 +187,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                     let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                     self.imageDream.setImage(userImageURL)
                     self.idDream = id
-                    self.labelDream.text = title
+                    self.labelDream.text = title.decode()
                     count = 1
                     break
                 }
@@ -204,7 +204,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                         let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                         self.imageDream.setImage(userImageURL)
                         self.idDream = id
-                        self.labelDream.text = title
+                        self.labelDream.text = title.decode()
                         count = 1
                         break
                     }
@@ -219,7 +219,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                 let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                 self.imageDream.setImage(userImageURL)
                 self.idDream = id
-                self.labelDream.text = title
+                self.labelDream.text = title.decode()
             }
         }
         

@@ -42,8 +42,6 @@ class MeCell: UITableViewCell {
         var content = self.data.stringAttributeForKey("content").decode()
         let type = self.data.stringAttributeForKey("type")
         let isread = self.data.stringAttributeForKey("isread")
-        let img = self.data.stringAttributeForKey("image")
-        let dream = self.data.stringAttributeForKey("dream")
         let isConfirm = self.data.stringAttributeForKey("isConfirm")
         var word:String = ""
         

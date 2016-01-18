@@ -39,6 +39,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     func setup() {
         if type == ListType.Members {
             _setTitle("成员")
+            setBarButtonImage("addFriend", actionGesture: "onInvite")
         } else if type == ListType.Invite {
             _setTitle("邀请")
         }
@@ -54,6 +55,14 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         tableView.addFooterWithCallback { () -> Void in
             self.load(false)
         }
+    }
+    
+    /* 当点击了邀请后 */
+    func onInvite() {
+        let vc = List()
+        vc.type = ListType.Invite
+        vc.id = id
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -130,11 +139,15 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         }
         /* 邀请列表 */
         if type == ListType.Invite {
+            print("当前页面：\(page)")
             Api.getMultiInviteList(id, page: page) { json in
                 if json != nil {
                     if let err = json!.objectForKey("error") as? NSNumber {
                         if err == 0 {
                             if let items = json!.objectForKey("data") as? NSArray {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
                                 for item in items {
                                     self.dataArray.addObject(item)
                                 }
@@ -155,6 +168,9 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                     if let err = json!.objectForKey("error") as? NSNumber {
                         if err == 0 {
                             if let items = json!.objectForKey("data") as? NSArray {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
                                 for item in items {
                                     self.dataArray.addObject(item)
                                 }

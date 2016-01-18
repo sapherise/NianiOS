@@ -921,5 +921,11 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/multidream/\(id)/kick/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
+    
+    /* 离开多人记本 */
+    static func getQuit(id: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/leave/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
 }
 

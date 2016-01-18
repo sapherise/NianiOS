@@ -413,7 +413,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 let foedX = foX + foWidth
                 let AllCoverURL = "http://img.nian.so/cover/\(cover)!cover"
                 self.topCell.UserName.text = name
-                let width = name.stringWidthBoldWith(19, height: 23)
+                let width = name.stringWidthBoldWith(19, height: 23) + 4
                 self.topCell.UserName.setWidth(width)
                 self.topCell.UserName.setX((globalWidth-width)/2)
                 self.topCell.imageSex.setX((globalWidth-width)/2+width)

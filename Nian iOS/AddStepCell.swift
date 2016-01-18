@@ -19,7 +19,7 @@ class AddStepCell: UITableViewCell {
             let title:String = self.data!.objectForKey("title") as! String
             let image:String = self.data!.objectForKey("image") as! String
             let userImageURL = "http://img.nian.so/dream/\(image)!dream"
-            self.labelTitle.text = title
+            self.labelTitle.text = title.decode()
             self.imageDream.setImage(userImageURL)
         }
     }

@@ -13,6 +13,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var page: Int = 1
     var Id: String = "1"
     var deleteDreamSheet:UIActionSheet?
+    var quitSheet: UIActionSheet!
     var navView:UIView!
     
     //editStepdelegate
@@ -155,6 +156,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let percent = dataArrayTop.stringAttributeForKey("percent")
         let title = dataArrayTop.stringAttributeForKey("title")
         let isLiked = dataArrayTop.stringAttributeForKey("isliked")
+        let joined = dataArrayTop.stringAttributeForKey("joined")
+        
+        // todo: 完成了吗？
         
         let acEdit = SAActivity()
         acEdit.saActivityTitle = "编辑"
@@ -184,7 +188,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         acDelete.saActivityType = "删除"
         acDelete.saActivityImage = UIImage(named: "av_delete")
         acDelete.saActivityFunction = {
-            self.deleteDreamSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.deleteDreamSheet = UIActionSheet(title: "再见啦，记本 #\(self.Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
             self.deleteDreamSheet!.addButtonWithTitle("确定删除")
             self.deleteDreamSheet!.addButtonWithTitle("取消")
             self.deleteDreamSheet!.cancelButtonIndex = 1
@@ -212,7 +216,24 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             self.showTipText("举报好了！")
         }
         
-        let arr = SAUid() == uid ? [acDone, acEdit, acDelete] : [acLike, acReport]
+        let acQuit = SAActivity()
+        acQuit.saActivityTitle = "离开"
+        acQuit.saActivityType = "离开"
+        acQuit.saActivityImage = UIImage(named: "av_quit")
+        acQuit.saActivityFunction = {
+            self.quitSheet = UIActionSheet(title: "再见啦，记本 #\(self.Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+            self.quitSheet.addButtonWithTitle("确定退出")
+            self.quitSheet.addButtonWithTitle("取消")
+            self.quitSheet.cancelButtonIndex = 1
+            self.quitSheet.showInView(self.view)
+        }
+        
+        var arr = [acLike, acReport]
+        if uid == SAUid() {
+            arr = [acDone, acEdit, acDelete]
+        } else if joined == "1" {
+            arr = [acQuit, acLike, acReport]
+        }
         let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
         self.presentViewController(avc, animated: true, completion: nil)
     }
@@ -336,6 +357,16 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     self.delegateDelete?.deleteDreamCallback(self.Id)
                     self.navigationController?.popViewControllerAnimated(true)
                 })
+            }
+        } else if actionSheet == quitSheet {
+            /* 离开多人记本 */
+            if buttonIndex == 0 {
+                self.navigationItem.rightBarButtonItems = buttonArray()
+                Api.getQuit(self.Id) { json in
+                    self.navigationItem.rightBarButtonItems = []
+                    self.delegateDelete?.deleteDreamCallback(self.Id)
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
             }
         }
     }
