@@ -18,6 +18,10 @@ class AddStepModel: NSObject {
      - parameter images:   <#images description#>
      - parameter callback: <#callback description#>
      */
+    
+    // todo: 可以编辑自己的进展吗？
+    // todo: 可以删除自己的进展吗？
+    // todo: 接受邀请后应该在本地插入一个那个记本
     class func postAddStep(content content: String, stepType: Int, images: NSArray, dreamId: String, callback: NetworkClosure) {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!
@@ -27,7 +31,7 @@ class AddStepModel: NSObject {
         let imagesString = NSString(data: jsonString, encoding: NSUTF8StringEncoding)!
         
         NianNetworkClient.sharedNianNetworkClient.post(
-            "dream/\(dreamId)/step/create?uid=\(_uid)&&shell=\(_shell)",
+            "multidream/\(dreamId)/update?uid=\(_uid)&&shell=\(_shell)",
             content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
             callback: callback)
     }

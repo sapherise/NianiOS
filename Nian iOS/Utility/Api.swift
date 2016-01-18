@@ -583,25 +583,6 @@ struct Api {
         V.httpPostForJson_AFN("http://api.nian.so/user/username?uid=\(s_uid)&&shell=\(s_shell)", content: ["username": name], callback: callback)
     }
     
-    static func postDeviceToken(callback: V.StringCallback) {
-        loadCookies()
-        let UserDefaults = NSUserDefaults.standardUserDefaults()
-        let DeviceToken = UserDefaults.objectForKey("DeviceToken") as? String
-        if DeviceToken != nil {
-            V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=\(DeviceToken!)&&uid=\(s_uid)&&shell=\(s_shell)&&type=1", callback: callback)
-        }
-    }
-    
-    // MARK: - 极光推送
-    static func postJpushBinding(callback: V.JsonCallback) {
-        V.httpPostForJson_AFN("http://api.nian.so/jpush/add?uid=\(s_uid)&&shell=\(s_shell)", content: ["registration_id": "\(APService.registrationID())", "platform": "ios"], callback: callback)
-    }
-    
-    static func postDeviceTokenClear(callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/user_update.php", content: "devicetoken=&uid=\(s_uid)&shell=\(s_shell)&type=1", callback: callback)
-    }
-    
     static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
@@ -896,6 +877,12 @@ extension Api {
         V.httpGetForJson("http://api.nian.so/message/token?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    /* 获取融云 IM 的开发环境的 Token */
+    static func getRongTokenDevelopment(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/message/test/token?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
     static func getPlankton(callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/plankton/all?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
@@ -910,6 +897,29 @@ extension Api {
     static func getMultiInviteList(id: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/multidream/\(id)/invite/users?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
+    /* 发送邀请 */
+    static func getInvite(id: String, uid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/invite/user/\(uid)/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 接受邀请 */
+    static func postJoin(id: String, cuid: String, callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/multidream/join/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", content: ["cuid": cuid], callback: callback)
+    }
+    
+    /* 获取多人记本成员列表 */
+    static func getMultiDreamList(id: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/\(id)/users?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
+    }
+    
+    /* 移除多人记本成员 */
+    static func getKick(id: String, uid: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/\(id)/kick/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
 }
 

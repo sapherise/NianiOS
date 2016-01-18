@@ -33,27 +33,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
-        /* 极光推送 */
-        /**
-        * 1 << 0 : UIUserNotificationType.Sound
-        * 1 << 1 : UIUserNotificationType.Alert
-        * 1 << 2 : UIUserNotificationType.Badge
-        */
-        // todo: 启用下面这两行
-//        APService.registerForRemoteNotificationTypes( 1 << 0 | 1 << 1 | 1 << 2, categories: nil)
-//        APService.setupWithOption(launchOptions)
-        
         application.applicationIconBadgeNumber = 1
         application.applicationIconBadgeNumber = 0
         
         /* 融云 IM 接入 */
-        RCIMClient.sharedRCIMClient().initWithAppKey("4z3hlwrv3t1yt")
+        RCIMClient.sharedRCIMClient().initWithAppKey("pwe86ga5e0zq6")
+        // todo: 修改为生产环境
         
         // check current shortcut item
         if #available(iOS 9.0, *) {
             if let item = launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem {
                 QuickActionsForItem(item)
             }
+        }
+        
+        /* 融云推送 */
+        if #available(iOS 8.0, *) {
+            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            application.registerForRemoteNotificationTypes([.Alert, .Badge, .Sound])
         }
         
         return true
@@ -81,40 +81,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        go {
-            let Sa:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var newDeviceToken = SAReplace("\(deviceToken)", before: "<", after: "")
-            newDeviceToken = SAReplace("\(newDeviceToken)", before: ">", after: "")
-            newDeviceToken = SAReplace("\(newDeviceToken)", before: " ", after: "")
-            Sa.setObject(newDeviceToken, forKey:"DeviceToken")
-            Sa.synchronize()
-        }
-        
-        /* 设置极光推送 */
-        APService.registerDeviceToken(deviceToken)
-        Api.postJpushBinding(){ _ in }
+        let token = deviceToken.description.stringByReplacingOccurrencesOfString("<", withString: "").stringByReplacingOccurrencesOfString(">", withString: "").stringByReplacingOccurrencesOfString(" ", withString: "")
+        RCIMClient.sharedRCIMClient().setDeviceToken(token)
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     }
     
     @available(iOS 8.0, *)
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {       
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        application.registerForRemoteNotifications()
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        RCIMClient.sharedRCIMClient().recordRemoteNotificationEvent(userInfo)
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-    }
-    
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
-        fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-            let aps = userInfo["aps"] as! NSDictionary
-            
-            handleReceiveRemoteNotification(aps)
-            APService.handleRemoteNotification(userInfo)
-            completionHandler(UIBackgroundFetchResult.NewData)
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {

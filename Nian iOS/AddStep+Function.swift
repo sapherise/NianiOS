@@ -153,6 +153,7 @@ extension AddStep {
             })
         } else {
             AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
+                print(data)
                 if let d = data as? NSDictionary {
                     let error = d.stringAttributeForKey("error")
                     if error == "0" {

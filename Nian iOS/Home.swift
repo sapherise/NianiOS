@@ -163,15 +163,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         super.viewDidDisappear(animated)
     }
     
-    /**
-    处理在 app 打开的情况下，通过极光 TCP 推送来的消息
-    
-    :param: noti <#noti description#>
-    */
-    func handleNetworkReceiveMsg(noti: NSNotification) {
-        noticeDot()
-    }
-    
     /* App 从后台进入前台，或者在登录状态下启动 */
     func onAppEnterForeground() {
         launchTimer()
@@ -281,7 +272,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppEnterForeground", name: "AppEnterForeground", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkReceiveMsg:", name: kJPFNetworkDidReceiveMessageNotification, object: nil)
     }
     
     // 3D Touch 下的更新进展

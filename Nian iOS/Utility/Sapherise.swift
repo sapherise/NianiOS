@@ -418,10 +418,6 @@ extension UIViewController {
             /* 调用 Home 中的唤醒函数 */
             NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
         }
-        
-        /* 远程推送 */
-        // todo: 启用下面这一行
-//        Api.postJpushBinding(){_ in }
     }
     
     /* 第二天推送 */
@@ -460,9 +456,6 @@ extension UIViewController {
         
         let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
         uidKey.resetKeychainItem()
-        
-        Api.postDeviceTokenClear() { string in
-        }
         Sa.removeObjectForKey("uid")
         Sa.removeObjectForKey("shell")
         Sa.removeObjectForKey("followData")

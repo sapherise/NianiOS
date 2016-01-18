@@ -18,7 +18,6 @@ class MeCell: UITableViewCell {
     @IBOutlet var lastdate:UILabel?
     @IBOutlet var View:UIView?
     @IBOutlet var viewLine: UIView!
-    @IBOutlet var imageDream: UIImageView!
     @IBOutlet var labelConfirm: UILabel!
     var largeImageURL:String = ""
     var data :NSDictionary!
@@ -27,7 +26,6 @@ class MeCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .None
         self.View!.backgroundColor = BGColor
-        self.imageDream.setX(globalWidth-55)
         self.lastdate!.setX(globalWidth-107)
         self.contentLabel?.setWidth(globalWidth-40)
         self.viewLine.setWidth(globalWidth - 40)
@@ -36,7 +34,6 @@ class MeCell: UITableViewCell {
     }
     
     func _layoutSubviews() {
-
         let uid = self.data.stringAttributeForKey("cuid")
         let user = self.data.stringAttributeForKey("cname")
         var lastdate = self.data.stringAttributeForKey("lastdate")
@@ -73,6 +70,8 @@ class MeCell: UITableViewCell {
         case "14": word = "赞了你的回应"
         case "16": word = "在话题中提到你"
         case "17": word = "在话题中提到你"
+        case "18": word = "邀请你加入记本"
+            content = "「\(dreamtitle)」"
         default: word = "与你互动了"
         }
         
@@ -90,13 +89,9 @@ class MeCell: UITableViewCell {
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
-        if type == "9" {
+        if type == "9" || type == "18" {
             self.labelConfirm.setY(self.contentLabel!.bottom()+20)
-            self.imageDream.hidden = false
             self.labelConfirm.hidden = false
-            self.imageDream.tag = Int(dream)!
-            self.imageDream.setImage("http://img.nian.so/dream/\(img)!dream")
-            self.lastdate!.hidden = true
             self.viewLine.setY(self.labelConfirm!.bottom()+25)
             let tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
             if isConfirm == "0" {
@@ -109,14 +104,17 @@ class MeCell: UITableViewCell {
                 self.labelConfirm.removeGestureRecognizer(tap)
             }
         }else{
-            self.imageDream.hidden = true
             self.labelConfirm.hidden = true
-            self.lastdate!.hidden = false
             self.viewLine.setY(self.contentLabel!.bottom()+25)
         }
     }
     
     func onConfirmClick(sender:UIGestureRecognizer) {
+        let cuid = data.stringAttributeForKey("cuid")
+        let dream = data.stringAttributeForKey("dream")
+        self.findRootViewController()?.showTipText("加入好了！")
+        Api.postJoin(dream, cuid: cuid) { json in
+        }
     }
     
     
@@ -128,7 +126,7 @@ class MeCell: UITableViewCell {
             content = dreamtitle
         }
         let height = content.stringHeightWith(16,width:globalWidth-30)
-        if type == "9" {
+        if type == "9" || type == "18" {
             return 159 + height
         }else{
             return 103 + height

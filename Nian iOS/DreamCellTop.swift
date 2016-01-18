@@ -72,8 +72,6 @@ class DreamCellTop: UITableViewCell {
     //    }
     
     func setup() {
-        print(data)
-        
         /* 解析数据 */
         var title = data.stringAttributeForKey("title")
         let content = data.stringAttributeForKey("content")
@@ -148,7 +146,6 @@ class DreamCellTop: UITableViewCell {
         
         /* 分割线 */
         viewLineTop.setY(btnMain.bottom() + 32)
-        print(viewLineTop.y())
         
         /* 如果已经加入 */
         if isJoined == "1" || SAUid() == uid {
@@ -251,9 +248,8 @@ class DreamCellTop: UITableViewCell {
     
     /* 查看成员 */
     func onMembers() {
-//        let vc = 
-        print("查看成员")
         let vc = List()
+        vc.type = ListType.Members
         let id = data.stringAttributeForKey("id")
         vc.id = id
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
@@ -272,14 +268,6 @@ class DreamCellTop: UITableViewCell {
     // 自定义 label
     func labelWidthWithItsContent(label: UILabel, content: String) {
         label.setTagLabel(content)
-    }
-    
-    func onInvite() {
-        if data != nil {
-            let vc = List()
-            vc.id = data!.stringAttributeForKey("id")
-            self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
-        }
     }
 }
 

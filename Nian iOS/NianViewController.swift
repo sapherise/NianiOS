@@ -495,9 +495,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 }
             }
         }
-        
-        Api.postDeviceToken() { string in
-        }
     }
     
     func reloadFromDataArray() {

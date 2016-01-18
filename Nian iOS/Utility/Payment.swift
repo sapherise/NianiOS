@@ -30,15 +30,6 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
         let url = NSBundle.mainBundle().appStoreReceiptURL
         if let receiptData = NSData(contentsOfURL: url!) {
             _callback(.OnVerifying, nil)
-//            Api.postIapVerify(transaction.transactionIdentifier!, data: receiptData) {
-//                json in
-////                if json == nil {
-////                    self._callback(.VerifyFailed, nil)
-////                } else {
-////                    self._callback(Int((json!.objectForKey("success") as! String))! == 1 ? .Purchased : .VerifyFailed, json)
-////                }
-//                print(json)
-//            }
         }
     }
     

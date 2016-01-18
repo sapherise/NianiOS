@@ -33,13 +33,6 @@
 #import "KeychainItemWrapper.h"
 
 /**
- *  @author Bob Wei, 15-08-25 18:08:46
- *
- *  极光推送 API 
- */
-#import "APService.h"
-
-/**
  *  @author Bob Wei, 15-10-26 16:10:41
  *
  *  @brief  QQ API

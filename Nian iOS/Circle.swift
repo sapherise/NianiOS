@@ -271,17 +271,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if type == 1 {
             let message = RCTextMessage(content: content)
             message.extra = "\(self.name):\(nameSelf)"
-            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: nil, success: { (messageID) -> Void in
+            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_SYSTEM, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
                 self.tableUpdate(content)
                 }) { (err, no) -> Void in
             }
-            
-            
         } else if type == 2 {
             /* 图片 */
             let message = RCImageMessage(imageURI: "\(content)")
             message.extra = "\(self.name):\(nameSelf)"
-            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: nil, success: { (messageID) -> Void in
+            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
                 self.tableUpdate(content)
                 }) { (err, no) -> Void in
             }

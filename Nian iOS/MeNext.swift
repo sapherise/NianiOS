@@ -125,7 +125,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-        cell!.imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onDreamClick:"))
         if indexPath.row == self.dataArray.count - 1 {
             cell!.viewLine.hidden = true
         }else{
@@ -235,6 +234,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "17" {    // 在回应中提及你
             TopicVC.id = cid
             self.navigationController?.pushViewController(TopicVC, animated: true)
+        } else if type == "18" {
+            DreamVC.Id = dream
+            self.navigationController?.pushViewController(DreamVC, animated: true)
         }
     }
     

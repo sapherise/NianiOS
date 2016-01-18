@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol ListDelegate {
+    func update(index: Int, key: String, value: String)
+}
+
 class ListCell: UITableViewCell {
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var labelButton: UILabel!
@@ -17,6 +21,19 @@ class ListCell: UITableViewCell {
 //    @IBOutlet weak var heightViewLine: NSLayoutConstraint!
     
     var data: NSDictionary!
+    var type: ListType!
+    
+    /* 判断是否已经激活按钮 */
+    var hasSelected = false
+    
+    /* List 的代理协议 */
+    var delegate: ListDelegate?
+    
+    /* indexPath */
+    var num = -1
+    
+    /* 传入的记本 id */
+    var id = "-1"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,7 +41,6 @@ class ListCell: UITableViewCell {
 //        heightViewLine.constant = globalHalf
         viewLine.frame = CGRectMake(70, 70, globalWidth - 85, globalHalf)
         imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
-        labelButton.setX(globalWidth - 15 - labelButton.width())
         labelTitle.setWidth(globalWidth - 170)
     }
     
@@ -32,10 +48,40 @@ class ListCell: UITableViewCell {
         let uid = data.stringAttributeForKey("uid")
         let name = data.stringAttributeForKey("name")
         
-        /* 当 inviting 为 0 时，不要高亮 */
-//        let isHighlight = data.stringAttributeForKey("inviting") != "0"
         labelTitle.text = name
         imageHead.setHead(uid)
+        
+        if type == ListType.Members {
+            labelButton.hidden = true
+        } else {
+            labelButton.layer.borderColor = SeaColor.CGColor
+            labelButton.layer.borderWidth = 1
+            labelButton.setX(globalWidth - 15 - labelButton.width())
+            
+            /* 通过判断 hasSelected 来显示按钮与绑定动作 */
+            if !hasSelected {
+                labelButton.backgroundColor = UIColor.whiteColor()
+                labelButton.textColor = SeaColor
+                labelButton.text = "邀请"
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSelect"))
+            } else {
+                labelButton.backgroundColor = SeaColor
+                labelButton.textColor = UIColor.whiteColor()
+                labelButton.text = "已邀请"
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUnSelect"))
+            }
+        }
+    }
+    
+    func onSelect() {
+        let uid = data.stringAttributeForKey("uid")
+        delegate?.update(num, key: "inviting", value: "1")
+        Api.getInvite(id, uid: uid) { json in
+        }
+    }
+    
+    func onUnSelect() {
+//        delegate?.update(num, key: "inviting", value: "0")
     }
     
     func onHead() {
