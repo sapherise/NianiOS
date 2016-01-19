@@ -52,7 +52,7 @@ extension HomeViewController: NIAlertDelegate {
                             if hasGotRewards == "0" {
                                 // 未获得该版本奖励，通过网络请求获得奖励
                                 // 市场评分，查看是否还有这个活动存在
-                                let numberActivity = "0923"
+                                let numberActivity = "0924"
                                 /*
                                 **  每次上线新版本时，修改 numberActivity 的值
                                 **  然后在数据库里插入这个值

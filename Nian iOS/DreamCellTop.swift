@@ -126,6 +126,7 @@ class DreamCellTop: UITableViewCell {
         if content != "" {
             labelDes.frame = CGRectMake(globalWidth/2 - 120, labelTitle.bottom() + 8, 240, heightContent)
             labelDes.text = content
+            labelDes.hidden = false
         } else {
             labelDes.hidden = true
         }
@@ -161,8 +162,6 @@ class DreamCellTop: UITableViewCell {
                 btnMain.addTarget(self, action: "onFollow", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
-        
-        // todo: 编辑记本有问题
         
         /* 标签行 */
         scrollView.contentSize =  CGSizeMake(8, 0)

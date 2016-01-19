@@ -81,10 +81,12 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         Api.postLetter() { json in
             self.tableView.headerEndRefreshing()
             if json != nil {
-                self.numLeft = json!.objectForKey("notice_reply") as! String
-                self.numMiddel = json!.objectForKey("notice_like") as! String
-                self.numRight = json!.objectForKey("notice_news") as! String
-                self.tableView.reloadData()
+                if let data = json as? NSDictionary {
+                    self.numLeft = data.stringAttributeForKey("notice_reply")
+                    self.numMiddel = data.stringAttributeForKey("notice_like")
+                    self.numRight = data.stringAttributeForKey("notice_news")
+                    self.tableView.reloadData()
+                }
             }
         }
     }

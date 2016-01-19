@@ -338,11 +338,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func coinClick(){
-//        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
-//        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
-//        self.navigationController!.pushViewController(viewController, animated: true)
-        let vc = Coin()
-        self.navigationController?.pushViewController(vc, animated: true)
+        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
+        self.navigationController!.pushViewController(viewController, animated: true)
+//        let vc = Coin()
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {

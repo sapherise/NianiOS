@@ -37,8 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         application.applicationIconBadgeNumber = 0
         
         /* 融云 IM 接入 */
-        RCIMClient.sharedRCIMClient().initWithAppKey("pwe86ga5e0zq6")
-        // todo: 修改为生产环境
+        RCIMClient.sharedRCIMClient().initWithAppKey("4z3hlwrv3t1yt")
         
         // check current shortcut item
         if #available(iOS 9.0, *) {

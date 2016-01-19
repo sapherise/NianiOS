@@ -582,7 +582,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
                     if let _ = error {
                         self.showTipText("上传不成功...")
                     } else {
-                        setCacheImage(coverImageURL, img: image, width: 500)
+                        setCacheImage(coverImageURL, img: image, width: 500 * globalScale)
                         // 上传成功后，本地显示新的封面
                         self.coverImageView.image = image
                         self.coverImageModified = true

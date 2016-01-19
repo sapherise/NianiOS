@@ -106,8 +106,6 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         }
     }
     
-    // todo: 念币页面
-    
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 0 {
             /* 需要先获得 uid 再移除，不然会越界 */

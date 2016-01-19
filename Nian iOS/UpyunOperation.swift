@@ -40,7 +40,7 @@ class UpyunOperation: NSOperation {
                     let w = d.stringAttributeForKey("image-width")
                     let h = d.stringAttributeForKey("image-height")
                     setCacheImage("http://img.nian.so/step/\(url)!large", img: imageFinal, width: globalWidth * globalScale)
-                    setCacheImage("http://img.nian.so/step/\(url)!200x", img: imageFinal, width: 200)
+                    setCacheImage("http://img.nian.so/step/\(url)!200x", img: imageFinal, width: 200 * globalScale)
                     let data = ["path": url, "width": w, "height": h]
                     self.delegate?.upYunMulti(data, count: self.num)
                 }

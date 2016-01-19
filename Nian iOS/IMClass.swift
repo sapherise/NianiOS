@@ -11,8 +11,7 @@ class IMClass: AnyObject {
     
     /* 连接 IM 服务器 */
     class func IMConnect() {
-        // todo: 修改为生产环境
-        Api.getRongTokenDevelopment() { json in
+        Api.getRongToken() { json in
             if json != nil {
                 if let j = json as? NSDictionary {
                     let token = j.stringAttributeForKey("data")

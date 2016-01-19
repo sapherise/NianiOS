@@ -110,8 +110,18 @@ class MeCell: UITableViewCell {
     func onConfirmClick(sender:UIGestureRecognizer) {
         let cuid = data.stringAttributeForKey("cuid")
         let dream = data.stringAttributeForKey("dream")
-        self.findRootViewController()?.showTipText("加入好了！")
+        self.findRootViewController()?.navigationItem.rightBarButtonItems = buttonArray()
         Api.postJoin(dream, cuid: cuid) { json in
+            if json != nil {
+                self.findRootViewController()?.navigationItem.rightBarButtonItems = []
+                if let d = json!.objectForKey("data") as? NSDictionary {
+                    let id = d.stringAttributeForKey("id")
+                    let img = d.stringAttributeForKey("image")
+                    let title = d.stringAttributeForKey("title").decode()
+                    Nian.addDreamCallback(id, img: img, title: title)
+                    self.findRootViewController()?.showTipText("加入好了！")
+                }
+            }
         }
     }
     

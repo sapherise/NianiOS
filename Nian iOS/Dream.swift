@@ -158,8 +158,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let isLiked = dataArrayTop.stringAttributeForKey("isliked")
         let joined = dataArrayTop.stringAttributeForKey("joined")
         
-        // todo: 完成了吗？
-        
         let acEdit = SAActivity()
         acEdit.saActivityTitle = "编辑"
         acEdit.saActivityType = "编辑"
@@ -261,32 +259,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             let c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
             c.data = dataArrayTop
             c.delegate = self
-            
-            
-            
-            // todo: 这些应该怎么办
-//            if dataArrayTop != nil {
-//                let uid = dataArrayTop.stringAttributeForKey("uid")
-//                let follow = dataArrayTop.stringAttributeForKey("follow")
-//                c.numMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStep"))
-//                if SAUid() == uid {
-//                    c.btnMain.addTarget(self, action: "onAddStep", forControlEvents: UIControlEvents.TouchUpInside)
-//                    c.btnMain.setTitle("更新", forState: UIControlState())
-//                } else {
-//                    self.btnMain = c.btnMain
-//                    if follow == "0" {
-//                        c.btnMain.setTitle("关注", forState: UIControlState())
-//                        c.btnMain.addTarget(self, action: "onFo", forControlEvents: UIControlEvents.TouchUpInside)
-//                    } else {
-//                        c.btnMain.setTitle("已关注", forState: UIControlState())
-//                        c.btnMain.addTarget(self, action: "onUnFo", forControlEvents: UIControlEvents.TouchUpInside)
-//                    }
-//                }
-//            }
             c.setup()
             return c
         } else {
-//            return getCell(indexPath, dataArray: dataArray, type: 1)
             return getCell(indexPath, dataArray: dataArray, type: 1)
         }
     }
@@ -309,12 +284,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         Api.postFollowDream(id, follow: "0") { string in }
     }
     
-    // todo: 记本标签出错了
-    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if dataArrayTop != nil {
-//                return title.stringHeightBoldWith(18, width: 240) + 252 + 52
                 if let h = dataArrayTop.objectForKey("heightCell") as? CGFloat {
                     return h
                 }
@@ -398,6 +370,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue(editImage, forKey: "image")
         mutableData.setValue(editTags, forKey: "tags")
         dataArrayTop = DataDecode(mutableData)
+        print(dataArrayTop)
         self.SATableView.reloadData()
     }
     
@@ -440,7 +413,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         var hContent: CGFloat = 0
         if content != "" {
             hContent = content.stringHeightWith(12, width: 240)
-            // todo: 测试 4 行
             let h4Lines = "\n\n\n".stringHeightWith(12, width: 240)
             hContent = min(hContent, h4Lines)
         }

@@ -296,7 +296,7 @@ struct Api {
     
     static func postLetter(callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://nian.so/api/letter_list3.php", content: "uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/letter/list?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     static func postLetterAddReply(id: Int, content: String, type: Int, callback: V.JsonCallback) {
@@ -476,9 +476,9 @@ struct Api {
     }
     
     
-    static func postDeleteStep(sid: String, callback: V.StringCallback) {
+    static func postDeleteStep(sid: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/delete_step.php", content: "uid=\(s_uid)&shell=\(s_shell)&sid=\(sid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/step/\(sid)/delete?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
     
