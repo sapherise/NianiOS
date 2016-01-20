@@ -38,17 +38,34 @@ class LevelView: UIView {
     }
     
     func setup() {
-        Api.getUserMe() { json in
-            if json != nil {
-                let data = json!.objectForKey("user") as! NSDictionary
-                let foed = data.stringAttributeForKey("foed")
-                let like = data.stringAttributeForKey("like")
-                let step = data.stringAttributeForKey("step")
-                self.menuLeft.text = like
-                self.menuMiddle.text = step
-                self.menuRight.text = foed
+        if let uid = Int(SAUid()) {
+            Api.getUserTop(uid) { json in
+                if json != nil {
+                    if let data = json!.objectForKey("data") {
+                        if let user = data.objectForKey("user") as? NSDictionary {
+                            let likes = user.stringAttributeForKey("likes")
+                            let steps = user.stringAttributeForKey("step")
+                            let followed = user.stringAttributeForKey("followed")
+                            self.menuLeft.text = likes
+                            self.menuMiddle.text = steps
+                            self.menuRight.text = followed
+                        }
+                    }
+                }
             }
         }
+        
+//        Api.getUserMe() { json in
+//            if json != nil {
+//                let data = json!.objectForKey("user") as! NSDictionary
+//                let foed = data.stringAttributeForKey("foed")
+//                let like = data.stringAttributeForKey("like")
+//                let step = data.stringAttributeForKey("step")
+//                self.menuLeft.text = like
+//                self.menuMiddle.text = step
+//                self.menuRight.text = foed
+//            }
+//        }
         
         Api.getLevelCalendar(){ json in
             if json != nil {

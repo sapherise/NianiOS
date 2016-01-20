@@ -370,7 +370,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue(editImage, forKey: "image")
         mutableData.setValue(editTags, forKey: "tags")
         dataArrayTop = DataDecode(mutableData)
-        print(dataArrayTop)
         self.SATableView.reloadData()
     }
     

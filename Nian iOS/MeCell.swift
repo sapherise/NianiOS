@@ -70,6 +70,8 @@ class MeCell: UITableViewCell {
         case "17": word = "在话题中提到你"
         case "18": word = "邀请你加入记本"
             content = "「\(dreamtitle)」"
+        case "19": word = "更新了你们共同的记本"
+        content = "「\(dreamtitle)」"
         default: word = "与你互动了"
         }
         

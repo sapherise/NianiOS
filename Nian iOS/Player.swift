@@ -15,7 +15,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     var tableViewStep: VVeboTableView!
     var dataArray = NSMutableArray()
     var dataArrayStep = NSMutableArray()
-    var page: Int = 0
+    var page: Int = 1
     var pageStep: Int = 1
     var Id:String = "0"
     var ownerMoreSheet:UIActionSheet?
@@ -235,7 +235,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     func SALoadData(isClear: Bool = true) {
         if isClear {
             self.tableViewDream.setFooterHidden(false)
-            self.page = 0
+            self.page = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
             let activity = UIActivityIndicatorView()
             activity.color = SeaColor
@@ -248,7 +248,9 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         Api.getUserDream(Id, page: page) { json in
             if json != nil {
                 self.tableViewDream.tableFooterView = UIView()
-                let arr = json!.objectForKey("items") as! NSArray
+                let d = json!.objectForKey("data")
+                let arr = d!.objectForKey("dreams") as! NSArray
+                
                 if isClear {
                     self.dataArray.removeAllObjects()
                 }
@@ -258,11 +260,6 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 self.tableViewDream.reloadData()
                 self.tableViewStep.footerEndRefreshing()
                 self.page++
-                if let total = json!.objectForKey("total") as? Int {
-                    if total < 30 {
-                        self.tableViewDream.setFooterHidden(true)
-                    }
-                }
             }
         }
     }
@@ -363,9 +360,6 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     }
     
     func setupRefresh(){
-        self.tableViewDream.addFooterWithCallback({
-            self.SALoadData(false)
-        })
         self.tableViewStep.addFooterWithCallback({
             self.SALoadDataStep(false)
         })

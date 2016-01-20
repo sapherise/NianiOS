@@ -30,8 +30,10 @@ class UpyunOperation: NSOperation {
             if let imgTmp = image as? UIImage {
                 imageFinal = imgTmp
             } else if let imgTmp = image as? ALAsset {
-                imageFinal = UIImage(CGImage: imgTmp.defaultRepresentation().fullScreenImage().takeUnretainedValue())
+                let assetRepresentation = imgTmp.defaultRepresentation()
+                imageFinal = UIImage(CGImage: assetRepresentation.fullResolutionImage().takeUnretainedValue())
             }
+            
             uy.uploadImage(resizedImage(imageFinal, newWidth: 500), savekey: name)
             uy.successBlocker = ({(data: AnyObject!) in
                 if let d = data as? NSDictionary {

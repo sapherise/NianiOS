@@ -153,7 +153,6 @@ extension AddStep {
             })
         } else {
             AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
-                print(data)
                 if let d = data as? NSDictionary {
                     let error = d.stringAttributeForKey("error")
                     if error == "0" {
@@ -163,25 +162,26 @@ extension AddStep {
                         let isfirst = result.stringAttributeForKey("isfirst")
                         self.field2.resignFirstResponder()
                         
-                        /* 设置为空，以确保保存到 draft 里的内容为空 */
-                        self.field2.text = ""
-                        
+                        let contentCard = self.field2.text
                         go {
                             /* 创建进展卡片 */
                             let modeCard = SACookie("modeCard")
                             if modeCard == "off" {
                             } else {
                                 let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
-                                card.content = self.field2.text
                                 if self.uploadArray.count > 0 {
                                     let image = self.uploadArray[0] as! NSDictionary
+                                    card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
                                     card.widthImage = image.stringAttributeForKey("width")
                                     card.heightImage = image.stringAttributeForKey("height")
-                                    card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
                                 }
+                                card.content = contentCard
                                 card.onCardSave()
                             }
                         }
+                        
+                        /* 设置为空，以确保保存到 draft 里的内容为空 */
+                        self.field2.text = ""
                         
                         if isfirst == "1" {
                             Nian.saegg(coin, totalCoin: totalCoin)

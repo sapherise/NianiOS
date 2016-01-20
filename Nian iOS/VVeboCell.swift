@@ -385,7 +385,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 delegate?.updateStep(num, delete: true)
                 let sid = data!.stringAttributeForKey("sid")
                 Api.postDeleteStep(sid) { json in
-                    print(json)
                 }
             }
         }

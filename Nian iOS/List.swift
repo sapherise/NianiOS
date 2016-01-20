@@ -137,7 +137,6 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         }
         /* 邀请列表 */
         if type == ListType.Invite {
-            print("当前页面：\(page)")
             Api.getMultiInviteList(id, page: page) { json in
                 if json != nil {
                     if let err = json!.objectForKey("error") as? NSNumber {

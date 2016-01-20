@@ -94,6 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         RCIMClient.sharedRCIMClient().recordRemoteNotificationEvent(userInfo)
+        NSNotificationCenter.defaultCenter().postNotificationName("Notice", object: nil)
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
@@ -137,17 +138,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             
             NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
         }
-    }
-    
-    // 收到消息通知， JPush
-    func handleReceiveRemoteNotification(aps: NSDictionary) {
-        navTo_MEVC()
-    }
-    
-    /**
-    到 tab[3] 对应的 VC， 即私信界面
-    */
-    func navTo_MEVC() {
     }
     
     func onResp(resp: BaseResp!) {

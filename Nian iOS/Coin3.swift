@@ -75,11 +75,16 @@ class CoinViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.viewCircle.setX(globalWidth/2-84)
         self.tableView.setWidth(globalWidth)
         
-        Api.getUserMe() { json in
-            if json != nil {
-                let data = json!.objectForKey("user") as! NSDictionary
-                if let coin = Int(data.stringAttributeForKey("coin")) {
-                    self.levelLabelCount(coin)
+        if let uid = Int(SAUid()) {
+            Api.getUserTop(uid) { json in
+                if json != nil {
+                    if let data = json!.objectForKey("data") {
+                        if let user = data.objectForKey("user") as? NSDictionary {
+                            if let coin = Int(user.stringAttributeForKey("coin")) {
+                                self.levelLabelCount(coin)
+                            }
+                        }
+                    }
                 }
             }
         }

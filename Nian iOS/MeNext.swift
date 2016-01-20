@@ -237,8 +237,13 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "18" {
             DreamVC.Id = dream
             self.navigationController?.pushViewController(DreamVC, animated: true)
+        } else if type == "19" {    // 更新了你们的共同记本
+            DreamVC.Id = dream
+            self.navigationController?.pushViewController(DreamVC, animated: true)
         }
     }
+    
+    // todo: noticedot 一直有问题
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({

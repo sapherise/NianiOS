@@ -608,8 +608,7 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
                 self.avatarImageView.image = image
                 self.avatarImageModified = true
                 
-                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream",
-                    img: image, width: 150)
+                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream", img: image, width: 150)
             })
             uy.failBlocker = ({ (error: NSError!) in
                 self.endLoading()

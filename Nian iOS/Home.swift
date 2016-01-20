@@ -38,9 +38,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /* 未读消息 */
     var unread: Int32 = 0
     
-    /// 是否 nav 到私信界面，对应的是启动时是否是从 NSNotification 启动的。
-    var tabButtonArray = NSMutableArray()
-    
     func onReceived(message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
         NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: message)
         shake()
@@ -138,24 +135,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     */
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-//        
-//        if shouldNavToMe {
-//            if let _ = self.viewControllers  {
-//                self.selectedIndex = 3
-//                
-//                (self.tabButtonArray[0] as! UIButton).selected = false
-//                (self.tabButtonArray[3] as! UIButton).selected = true
-//                
-//                self.dot!.hidden = true
-//                NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
-//            }
-//            shouldNavToMe = false
-//        }
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
         navShow()
     }
     
@@ -192,13 +175,19 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func noticeDot() {
         if dot != nil {
             self.dot?.hidden = true
-            Api.postDot() { string in
-                if string != nil {
-                    if let notice = Int32(string!) {
-                        let _letter = RCIMClient.sharedRCIMClient().getTotalUnreadCount()
-                        let letter = max(0, _letter)
-                        self.unread = letter + notice
-                        self.dotShow()
+            Api.postLetter() { json in
+                if json != nil {
+                    if let data = json as? NSDictionary {
+                        let noticeReply = Int(data.stringAttributeForKey("notice_reply"))
+                        let noticeLike = Int(data.stringAttributeForKey("notice_like"))
+                        let noticeNews = Int(data.stringAttributeForKey("notice_news"))
+                        if noticeReply != nil && noticeLike != nil && noticeNews != nil {
+                            let notice = Int32(noticeReply! + noticeLike! + noticeNews!)
+                            let _letter = RCIMClient.sharedRCIMClient().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
+                            let letter = max(0, _letter)
+                            self.unread = letter + notice
+                            self.dotShow()
+                        }
                     }
                 }
             }
@@ -253,8 +242,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             if index == 0 {
                 button.selected = true
             }
-            
-            tabButtonArray.insertObject(button, atIndex: index)
         }
         self.dot = UILabel(frame: CGRectMake(globalWidth*0.7+4, 10, 20, 15))
         self.dot!.textColor = UIColor.whiteColor()
@@ -272,6 +259,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppEnterForeground", name: "AppEnterForeground", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
+        
+        /* 当收到远程推送时 */
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeDot", name: "Notice", object: nil)
     }
     
     // 3D Touch 下的更新进展
@@ -369,6 +359,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }else if index == idDream {     // 记本
         }else if index == idMe {     // 消息
             self.dot!.hidden = true
+            unread = 0
             NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
         }else if index == idUpdate {      // 更新
             /* 当缓存中没有记本时，点击第三栏跳转到添加记本 */

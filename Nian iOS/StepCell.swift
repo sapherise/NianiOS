@@ -44,14 +44,14 @@ class StepCell: UITableViewCell {
     
     func _layoutSubviews() {
         let id1 = self.data1.stringAttributeForKey("id")
-        let title1 = self.data1.stringAttributeForKey("title")
-        let img1 = self.data1.stringAttributeForKey("img")
+        let title1 = self.data1.stringAttributeForKey("title").decode()
+        let img1 = self.data1.stringAttributeForKey("image")
         let id2 = self.data2.stringAttributeForKey("id")
-        let title2 = self.data2.stringAttributeForKey("title")
-        let img2 = self.data2.stringAttributeForKey("img")
+        let title2 = self.data2.stringAttributeForKey("title").decode()
+        let img2 = self.data2.stringAttributeForKey("image")
         let id3 = self.data3.stringAttributeForKey("id")
-        let title3 = self.data3.stringAttributeForKey("title")
-        let img3 = self.data3.stringAttributeForKey("img")
+        let title3 = self.data3.stringAttributeForKey("title").decode()
+        let img3 = self.data3.stringAttributeForKey("image")
         
         
         if(id1 != ""){

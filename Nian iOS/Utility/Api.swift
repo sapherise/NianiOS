@@ -57,11 +57,6 @@ struct Api {
         return (s_uid, s_shell)
     }
     
-    static func getUserMe(callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/user.php?uid=\(s_uid)&myuid=\(s_uid)", callback: callback)
-    }
-    
     static func postResetPwd(email: String, callback: V.JsonCallback) {
         V.httpPostForJson_AFN("http://api.nian.so/password/reset/mail", content: ["email": email], callback: callback)
     }
@@ -612,7 +607,7 @@ struct Api {
     
     static func getUserDream(uid: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://nian.so/api/user_dream.php?page=\(page)&uid=\(uid)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(uid)/dreams?uid=\(s_uid)&shell=\(s_shell)&page=\(page)", callback: callback)
     }
     
     static func getUserActive(uid: String, page: Int, callback: V.JsonCallback) {
