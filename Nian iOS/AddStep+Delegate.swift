@@ -31,7 +31,7 @@ extension AddStep {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let data = dataArray[indexPath.row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
-        let title = data.stringAttributeForKey("title")
+        let title = data.stringAttributeForKey("title").decode()
         let image = data.stringAttributeForKey("image")
         let userImageURL = "http://img.nian.so/dream/\(image)!dream"
         self.imageDream.setImage(userImageURL)

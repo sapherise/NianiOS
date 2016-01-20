@@ -168,8 +168,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()
         let StepVC = SingleStepViewController()
-        let TopicVC = TopicViewController()
-        let TopicCommentVC = TopicComment()
         if type == "0" {    //在你的记本留言
             if step != "0" {
                 StepVC.Id = step
@@ -195,9 +193,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             UserVC.Id = uid
             self.navigationController!.pushViewController(UserVC, animated: true)
         }else if type == "4" {  //参与了你的话题
-            self.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！")
+            self.showTipText("广场下线了 :(")
         }else if type == "5" {  //在某个话题提及你
-            self.showTipText("旧广场已经下线了...这条消息可以到网页版 http://nian.so 去看看！")
+            self.showTipText("广场下线了 :(")
         }else if type == "6" {  //为你更新了记本
             DreamVC.Id = dream
             self.navigationController!.pushViewController(DreamVC, animated: true)
@@ -217,24 +215,18 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "9" {
         } else if type == "10" {
         } else if type == "11" {    // 回应了话题
-            TopicVC.id = cid
-            self.navigationController?.pushViewController(TopicVC, animated: true)
+            self.showTipText("广场下线了 :(")
         } else if type == "12" {    // 回应了话题回应
-            TopicCommentVC.id = cid
-            self.navigationController?.pushViewController(TopicCommentVC, animated: true)
+            self.showTipText("广场下线了 :(")
         } else if type == "13" {    // 赞了话题
-            TopicVC.id = cid
-            self.navigationController?.pushViewController(TopicVC, animated: true)
+            self.showTipText("广场下线了 :(")
         } else if type == "14" {    // 赞了话题回应
-            TopicCommentVC.id = cid
-            self.navigationController?.pushViewController(TopicCommentVC, animated: true)
+            self.showTipText("广场下线了 :(")
         } else if type == "16" {    // 在回应的回应中提及你
-            TopicCommentVC.id = cid
-            self.navigationController?.pushViewController(TopicCommentVC, animated: true)
+            self.showTipText("广场下线了 :(")
         } else if type == "17" {    // 在回应中提及你
-            TopicVC.id = cid
-            self.navigationController?.pushViewController(TopicVC, animated: true)
-        } else if type == "18" {
+            self.showTipText("广场下线了 :(")
+        } else if type == "18" {    // 邀请你加入记本
             DreamVC.Id = dream
             self.navigationController?.pushViewController(DreamVC, animated: true)
         } else if type == "19" {    // 更新了你们的共同记本
@@ -242,8 +234,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             self.navigationController?.pushViewController(DreamVC, animated: true)
         }
     }
-    
-    // todo: noticedot 一直有问题
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({

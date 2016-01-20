@@ -17,6 +17,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var GameOverView:Popup!
     var animationBool:Int = 0
     var numExplore = 0
+    var numHot = 0
     var gameoverId:String = ""
     var gameoverMode: Int = -1
     var addView:ILTranslucentView!
@@ -354,8 +355,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if index == idExplore {       // 发现
             NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
             numExplore = numExplore + 1
-        }else if index == idBBS {     // 梦境
-            NSNotificationCenter.defaultCenter().postNotificationName("reddit", object:"1")
+        }else if index == idBBS {     // 热门
+            NSNotificationCenter.defaultCenter().postNotificationName("reddit", object:"\(numHot)")
+            numHot = numHot + 1
         }else if index == idDream {     // 记本
         }else if index == idMe {     // 消息
             self.dot!.hidden = true
@@ -376,6 +378,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
         if index != idExplore {
             numExplore = 0
+        }
+        if index != idBBS {
+            numHot = 0
         }
     }
     

@@ -70,15 +70,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             }
         }
     }
-    var dataArrayTopic = NSMutableArray() {
-        didSet {
-            if dataArrayTopic.count > 0 {
-                if index == 3 {
-                    topicTableView.hidden = false
-                }
-            }
-        }
-    }
     
     /* dataSourceArray 里面存的是上面的 dataArray */
     var dataSourceArray: [NSMutableArray] = []
@@ -95,7 +86,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     @IBOutlet weak var userButton: UIButton!
     @IBOutlet weak var dreamButton: UIButton!
     @IBOutlet weak var stepButton: UIButton!
-    @IBOutlet weak var topicButton: UIButton!
     @IBOutlet weak var floatView: UIView!
     
     var hasFollowTag: Bool = false
@@ -106,7 +96,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     var dreamPage: Int = 1
     var userPage: Int = 1
     var stepPage: Int = 1
-    var topicPage: Int = 1
     
     /* 改变 Button 的颜色时使用 */
     var btnArray:[UIButton] = []
@@ -115,10 +104,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     var tableDict = Dictionary<Int, UITableView>()
     
     /* 代码生成的搜索框 */
-    var searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 96, 26))
-    
-    /*  */
-    var rightButton: UIBarButtonItem?
+    var searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 72, 26))
     
     // 用在计算 table view 滚动时应不应该加载图片
     //    var targetRect: NSValue?
@@ -169,21 +155,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         return stepTableView
     }()
     
-    lazy var topicTableView: UITableView = {
-        let topicTableView = UITableView(frame: CGRectMake(globalWidth * 3, 0, globalWidth, globalHeight - 104))
-        topicTableView.registerNib(UINib(nibName: "RedditCell", bundle: nil), forCellReuseIdentifier: "RedditCell")
-        topicTableView.separatorStyle = .None
-        
-        topicTableView.dataSource = self
-        topicTableView.delegate = self
-        
-        if self.dataArrayTopic.count == 0 {
-            topicTableView.hidden = true
-        }
-        
-        return topicTableView
-    }()
-    
     // MARK: - View Controller 的生命周期和 View 的颜色、位置的控制
     
     override func viewDidLoad() {
@@ -210,7 +181,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         self.navigationController?.navigationBar.addSubview(searchText)
         searchText.alpha = 0.0
         
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animateWithDuration(0.3, animations: {
             self.searchText.alpha = 1.0
         })
     }
@@ -228,7 +199,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
         
         /* 现在可能预先设置的搜索来自 Dream cell top, 对应 index == 1； Topic cell top 对应 index == 3  */
-        let flowViewOffset = index == 1 ? (globalWidth/2 - 65) : (index == 3 ? globalWidth/2 + 95 : 0)
+        let flowViewOffset = index == 1 ? (globalWidth/2 - 40 + 15) : (globalWidth/2 - 120 + 15)
         
         if (preSetSearch.characters.count > 0 && shouldPerformSearch) {
             if let _ = self.tableDict[index] {
@@ -261,21 +232,16 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         navView.setWidth(globalWidth)
         indiView.setWidth(globalWidth)
         
-        rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "Follow:")
-        rightButton!.image = UIImage(named:"more")
-        self.navigationItem.rightBarButtonItems = [rightButton!];
-        
         let _tmpWidth = globalWidth/2
-        userButton.setX(_tmpWidth - 160)
-        dreamButton.setX(_tmpWidth - 80)
-        stepButton.setX(_tmpWidth)
-        topicButton.setX(_tmpWidth + 80)
+        userButton.setX(_tmpWidth - 120)
+        dreamButton.setX(_tmpWidth - 40)
+        stepButton.setX(_tmpWidth + 40)
         
-        floatView.setX(_tmpWidth - 160 + 15)
+        floatView.setX(_tmpWidth - 120 + 15)
         floatView.backgroundColor = SeaColor
         
-        btnArray = [userButton, dreamButton, stepButton, topicButton]
-        dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep, dataArrayTopic]
+        btnArray = [userButton, dreamButton, stepButton]
+        dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep]
         
         let color = UIColor(red: 0xd8/255, green: 0xd8/255, blue: 0xd8/255, alpha: 1)
         //        searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 96, 26))
@@ -299,7 +265,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         //        self.navigationController?.navigationBar.addSubview(searchText)
         
         scrollView.scrollsToTop = false
-        scrollView.contentSize = CGSizeMake(globalWidth * 4, scrollView.frame.size.height)
+        scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
         scrollView.delegate = self
     }
     
@@ -313,12 +279,8 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 _btn.setTitleColor(UIColor.blackColor(), forState: .Normal)
             }
         }
-    }
-    
-    /**
-     which table 能 scrollToTop
-     */
-    func tableScrollToTop() {
+        
+        /* 修改 scrollsToTop */
         for (_index, _table) in self.tableDict {
             if _index == index {
                 _table.scrollsToTop = true
@@ -327,8 +289,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             }
         }
     }
-    
-    // MARK: - 数据加载和 Table 的使用控制
     
     /**
     <#Description#>
@@ -366,15 +326,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 
                 self.scrollView.addSubview(stepTableView)
             }
-        case 3:
-            if let _ = self.tableDict[index] {
-            } else {
-                self.tableDict[index] = topicTableView
-                topicTableView.addHeaderWithCallback(onPullDown)
-                topicTableView.addFooterWithCallback(onPullUp)
-                
-                self.scrollView.addSubview(topicTableView)
-            }
         default:
             break
         }
@@ -410,13 +361,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             self.scrollView.setContentOffset(CGPointMake(globalWidth * 2, 0), animated: true)
             
             stepSearch(clear)
-        } else if index == 3 {
-            self.scrollView.setContentOffset(CGPointMake(globalWidth * 3, 0), animated: true)
-            
-            topicSearch(clear)
         }
-        
-        tableScrollToTop()
     }
     
     func onRefresh() {
@@ -462,34 +407,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         searchText.becomeFirstResponder()
     }
     
-    // MARK: - 关注搜索的内容
-    /* */
-    func Follow(sender: AnyObject) {
-        if self.searchText.text?.characters.count > 0{
-            self.navigationItem.rightBarButtonItems = buttonArray()
-            self.searchText.resignFirstResponder()
-            
-            Api.getHasFollowTopic(self.searchText.text!.encode()) {
-                [unowned self] json in
-                if json != nil {
-                    self.navigationItem.rightBarButtonItems = [self.rightButton!]
-                    
-                    if let _data = json!.objectForKey("data") as? String {
-                        self.hasFollowTag = _data == "1" ? true : false
-                        let tag = self.searchText.text!
-                        let content = _data == "1" ? "取消关注 #\(tag)" : "关注 #\(tag)"
-                        self.tagFollowActionSheet = UIActionSheet()
-                        self.tagFollowActionSheet?.delegate = self
-                        self.tagFollowActionSheet?.addButtonWithTitle(content)
-                        self.tagFollowActionSheet?.addButtonWithTitle("取消")
-                        self.tagFollowActionSheet?.cancelButtonIndex = 1
-                        self.tagFollowActionSheet?.showInView(self.view)
-                    }
-                }
-            }
-        }
-    }
-    
     /* */
     //MARK: -
     
@@ -500,7 +417,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         showTableViewWithIndex(index)
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.floatView.setX(globalWidth/2 - 145)
+            self.floatView.setX(globalWidth/2 - 120 + 15)
         })
         
         self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
@@ -517,7 +434,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         showTableViewWithIndex(index)
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.floatView.setX(globalWidth/2 - 65)
+            self.floatView.setX(globalWidth/2 - 40 + 15)
         })
         
         self.scrollView.setContentOffset(CGPointMake(globalWidth, 0), animated: true)
@@ -534,30 +451,13 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         showTableViewWithIndex(index)
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.floatView.setX(globalWidth/2 + 15)
+            self.floatView.setX(globalWidth/2 + 40 + 15)
         })
         
         self.scrollView.setContentOffset(CGPointMake(globalWidth * 2, 0), animated: true)
         
         if searchText.text != ""  && (tmp == index || self.dataArrayStep.count == 0) {
             self.stepTableView.headerBeginRefreshing()
-        }
-    }
-    
-    @IBAction func topic(sender: AnyObject) {
-        let tmp = index
-        index = 3
-        setupButtonColor(index)
-        showTableViewWithIndex(index)
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.floatView.setX(globalWidth/2 + 95)
-        })
-        
-        self.scrollView.setContentOffset(CGPointMake(globalWidth * 3, 0), animated: true)
-        
-        if searchText.text != "" && (tmp == index || self.dataArrayTopic.count == 0) {
-            self.topicTableView.headerBeginRefreshing()
         }
     }
     
@@ -664,40 +564,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         })
     }
     
-    func topicSearch(clear: Bool) {
-        if clear {
-            topicPage = 1
-        }
-        Api.getSearchTopics(searchText.text!.encode(), page: topicPage++, callback: {
-            json in
-            if json != nil {
-                if clear {
-                    self.dataArrayTopic.removeAllObjects()
-                }
-                let data: AnyObject? = json!.objectForKey("data")
-                let itemTopic = data?.objectForKey("topics") as? NSArray
-                if itemTopic != nil {
-                    for item in itemTopic! {
-                        self.dataArrayTopic.addObject(item)
-                    }
-                }
-                if self.dataArrayTopic.count == 0 {
-                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
-                    v.addGhost("还没有这个标签的话题...")
-                    self.topicTableView.tableHeaderView = v
-                } else {
-                    self.topicTableView.tableHeaderView = nil
-                }
-                
-                self.hasFollowTag = (data?.objectForKey("followed") as? String) == "1" ? true : false
-            }
-            
-            self.topicTableView.reloadData()
-            self.topicTableView.headerEndRefreshing()
-            self.topicTableView.footerEndRefreshing()
-        })
-    }
-    
     // MARK: - table view delegate
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -708,8 +574,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             return self.dataArrayDream.count
         case 2:
             return self.dataArrayStep.count
-        case 3:
-            return self.dataArrayTopic.count
         default:
             return 0
         }
@@ -740,13 +604,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             return cell!
         case 2:
             return getCell(indexPath, dataArray: dataArrayStep, type: 0)
-        case 3:
-            let cell = self.topicTableView.dequeueReusableCellWithIdentifier("RedditCell", forIndexPath: indexPath) as! RedditCell
-            cell.delegate = self
-            cell.data = self.dataArrayTopic[indexPath.row] as! NSDictionary
-            cell.index = indexPath.row
-            cell.setup()
-            return cell
         default:
             let cell = UITableViewCell()
             
@@ -772,16 +629,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             viewController.Id = data.stringAttributeForKey("dream")
             
             self.navigationController?.pushViewController(viewController, animated: true)
-        } else if index == 3 {
-            let dict = dataArrayTopic[indexPath.row] as! NSDictionary
-            
-            let TopicVC = TopicViewController()
-            TopicVC.id = dict["id"] as! String
-            TopicVC.index = indexPath.row
-            TopicVC.dataArrayTopLeft = NSMutableDictionary(dictionary: dict)
-            TopicVC.delegate = self
-            
-            self.navigationController?.pushViewController(TopicVC, animated: true)
         }
     }
     
@@ -811,18 +658,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             }
         } else if index == 2 {
             return getHeight(indexPath, dataArray: dataArrayStep)
-        } else if index == 3 {
-            let data = dataArrayTopic[indexPath.row] as! NSDictionary
-            let title = data.stringAttributeForKey("title").decode()
-            let content = data.stringAttributeForKey("content").decode()
-            var hTitle = title.stringHeightWith(16, width: globalWidth - 80)
-            var hContent = content.stringHeightWith(12, width: globalWidth - 80)
-            let hTitleMax = "\n".stringHeightWith(16, width: globalWidth - 80)
-            let hContentMax = "\n\n\n".stringHeightWith(12, width: globalWidth - 80)
-            hTitle = min(hTitle, hTitleMax)
-            hContent = min(hContent, hContentMax)
-            
-            return hTitle + hContent + 99
         } else {
             return 0
         }
@@ -890,23 +725,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     }
 }
 
-extension ExploreSearch: RedditDelegate {
-    /**
-     <#Description#>
-     */
-    func updateData(index: Int, key: String, value: String, section: Int) {
-        SAUpdate(self.dataArrayTopic, index: index, key: key, value: value, tableView: self.topicTableView)
-    }
-    
-    func updateTable() {
-        self.topicTableView.reloadData()
-    }
-    
-    func updateTableFooter() {
-        self.topicTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
-    }
-}
-
 // MARK: - UIActionSheet Delegate
 extension ExploreSearch: UIActionSheetDelegate {
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
@@ -940,10 +758,6 @@ extension ExploreSearch {
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView is UITableView {
-            
-            if index == 2 {
-                //                self.loadImagesForVisibleCells()
-            }
         } else if scrollView .isMemberOfClass(UIScrollView) {
             let xOffset = scrollView.contentOffset.x
             let page: Int = Int(xOffset / globalWidth)
@@ -953,10 +767,9 @@ extension ExploreSearch {
             /* */
             
             setupButtonColor(page)
-            tableScrollToTop()
             
             UIView.animateWithDuration(0.2, animations: {
-                self.floatView.setX((globalWidth - 320)/2 + CGFloat(page * 80) + 15.0)
+                self.floatView.setX((globalWidth - 320)/2 + 40 + CGFloat(page * 80) + 15.0)
             })
             
             if self.dataSourceArray[index].count == 0 {

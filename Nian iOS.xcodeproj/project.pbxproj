@@ -13,27 +13,14 @@
 		120B6DC81BD2265500422B86 /* VVeboViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6DC71BD2265500422B86 /* VVeboViewController.swift */; };
 		120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E3F1BD3C42100422B86 /* Explore+UITableView.swift */; };
 		120B6E421BD3E23F00422B86 /* Explore+NewestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */; };
-		121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121702171BA18BDC00656AE1 /* AddTopic.swift */; };
-		1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121702191BA18C1B00656AE1 /* AddTopic.xib */; };
 		121E513B1C3D31980019F69A /* MySteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121E513A1C3D31980019F69A /* MySteps.swift */; };
 		121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121F669E1B15CCC100103B14 /* SAMenu.xib */; };
 		121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F66A01B15CCCA00103B14 /* SAMenu.swift */; };
 		12216F941A61471C003701BF /* MeNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12216F931A61471C003701BF /* MeNext.swift */; };
-		12245DA61B95849900D831AC /* TopicComment + UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DA51B95849900D831AC /* TopicComment + UITextField.swift */; };
-		12245DA81B95867500D831AC /* TopicCommentCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DA71B95867500D831AC /* TopicCommentCellHeader.swift */; };
-		12245DAA1B95868000D831AC /* TopicCommentCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12245DA91B95868000D831AC /* TopicCommentCellHeader.xib */; };
-		12245DAC1B95906F00D831AC /* TopicCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12245DAB1B95906F00D831AC /* TopicCommentCell.swift */; };
-		12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12245DAD1B95907B00D831AC /* TopicCommentCell.xib */; };
-		1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226CE231B8EC585004E2F6C /* RedditCell.swift */; };
-		1226CE261B8EC5F9004E2F6C /* RedditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1226CE251B8EC5F9004E2F6C /* RedditCell.xib */; };
-		1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */; };
 		1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227F0EF1A615EB70088DEB1 /* LetterCell.swift */; };
 		1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1227F0F11A615EC20088DEB1 /* LetterCell.xib */; };
 		1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */; };
 		1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */; };
-		122A3F7C1BA13E9500C2FE67 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122A3F7B1BA13E9500C2FE67 /* Vote.swift */; };
-		122D93A11B932FC000968F3E /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D93A01B932FC000968F3E /* Topic.swift */; };
-		122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122D93A21B93430700968F3E /* Topic + UITableView.swift */; };
 		122F39211B4E794700DE8628 /* Card.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122F39201B4E794700DE8628 /* Card.xib */; };
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
@@ -46,8 +33,6 @@
 		123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 123FD9451C3A803200A92188 /* VVeboCollectionViewCell.xib */; };
 		1243C6F71B4F60A0007F741C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C6F61B4F60A0007F741C /* Card.swift */; };
 		1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */; };
-		124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFFE21B9D82B100345299 /* AddRedditDream.xib */; };
-		124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124DFFE41B9D866D00345299 /* AddRedditDream.swift */; };
 		124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124F3257197B19EC0070CA4C /* NianViewController.storyboard */; };
 		1251D61A1975729100F55389 /* RefreshBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6131975729100F55389 /* RefreshBaseView.swift */; };
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
@@ -101,7 +86,6 @@
 		12776A0D1BCE54EA00745811 /* VVeboTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A0C1BCE54EA00745811 /* VVeboTableView.swift */; };
 		12776A121BCE668500745811 /* VVeboLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12776A111BCE668500745811 /* VVeboLabel.m */; };
 		12776A181BCE731A00745811 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 12776A171BCE731A00745811 /* NSString+Additions.m */; };
-		12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12779FAA1BA71E7F00956B46 /* Topic + Function.swift */; };
 		1282230D19C7E6710002937D /* UpYun.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230719C7E6710002937D /* UpYun.m */; };
 		1282230E19C7E6710002937D /* NSData+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282230C19C7E6710002937D /* NSData+Utils.m */; };
 		128470701BF1E429007E235C /* Plankton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284706F1BF1E429007E235C /* Plankton.swift */; };
@@ -135,21 +119,12 @@
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
 		12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B8C91A613D5200DD8912 /* MeCellTop.swift */; };
 		12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */; };
-		12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ABFD261B9C1D6000E2870C /* AddReddit + TITokenField.swift */; };
-		12ABFD291B9C1DEC00E2870C /* AddReddit + UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ABFD281B9C1DEC00E2870C /* AddReddit + UIScrollView.swift */; };
-		12ABFD2B1B9C1EAE00E2870C /* AddReddit + UIGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ABFD2A1B9C1EAE00E2870C /* AddReddit + UIGesture.swift */; };
-		12ABFD2D1B9C217800E2870C /* AddReddit + Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ABFD2C1B9C217800E2870C /* AddReddit + Function.swift */; };
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
-		12BB33451B93471F00B7E03F /* TopicCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BB33441B93471F00B7E03F /* TopicCellHeader.swift */; };
-		12BB33471B93473500B7E03F /* TopicCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BB33461B93473500B7E03F /* TopicCellHeader.xib */; };
-		12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BB33481B936C9200B7E03F /* TopicCell.swift */; };
-		12BB334B1B936CAB00B7E03F /* TopicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BB334A1B936CAB00B7E03F /* TopicCell.xib */; };
 		12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36911B8EABFA00B37573 /* Reddit.swift */; };
 		12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
-		12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE1B921B945FFA005976B8 /* TopicComment.swift */; };
 		12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */; };
 		12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */; };
 		12C354531AD5126F0078693F /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C354521AD5126F0078693F /* Badge.swift */; };
@@ -170,7 +145,6 @@
 		12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8241A146E1500453805 /* LTMorphingLabel.swift */; };
 		12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */; };
 		12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1E5241A0EBBFD0005B129 /* DreamComment.swift */; };
-		12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E315BB1B9552350034DD7E /* TopicComment + UITableView.swift */; };
 		12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E315BD1B95544F0034DD7E /* SATextField.swift */; };
 		12E4939919953DBB00F8DF32 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* CommentCell.xib */; };
 		12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4939A19953DCC00F8DF32 /* CommentCell.swift */; };
@@ -222,7 +196,6 @@
 		C43680161BDA411C00D51516 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43680151BDA411C00D51516 /* CustomButton.swift */; };
 		C43B604C1BDE11AA0022CB32 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C43B604B1BDE11AA0022CB32 /* libiconv.tbd */; };
 		C43B604E1BDE11CA0022CB32 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C43B604D1BDE11CA0022CB32 /* libstdc++.tbd */; };
-		C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */; };
 		C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C450C5141B2FFF3D0024F4DE /* KILabel.m */; };
 		C470B22E1B94024A00863821 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22D1B94024A00863821 /* PushConfig.plist */; };
 		C470B2301B94029E00863821 /* LikeCount.plist in Resources */ = {isa = PBXBuildFile; fileRef = C470B22F1B94029E00863821 /* LikeCount.plist */; };
@@ -312,27 +285,14 @@
 		120B6DC71BD2265500422B86 /* VVeboViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVeboViewController.swift; sourceTree = "<group>"; };
 		120B6E3F1BD3C42100422B86 /* Explore+UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+UITableView.swift"; sourceTree = "<group>"; };
 		120B6E411BD3E23F00422B86 /* Explore+NewestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Explore+NewestCell.swift"; sourceTree = "<group>"; };
-		121702171BA18BDC00656AE1 /* AddTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTopic.swift; sourceTree = "<group>"; };
-		121702191BA18C1B00656AE1 /* AddTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTopic.xib; sourceTree = "<group>"; };
 		121E513A1C3D31980019F69A /* MySteps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySteps.swift; sourceTree = "<group>"; };
 		121F669E1B15CCC100103B14 /* SAMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAMenu.xib; sourceTree = "<group>"; };
 		121F66A01B15CCCA00103B14 /* SAMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAMenu.swift; sourceTree = "<group>"; };
 		12216F931A61471C003701BF /* MeNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeNext.swift; sourceTree = "<group>"; };
-		12245DA51B95849900D831AC /* TopicComment + UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TopicComment + UITextField.swift"; sourceTree = "<group>"; };
-		12245DA71B95867500D831AC /* TopicCommentCellHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCommentCellHeader.swift; sourceTree = "<group>"; };
-		12245DA91B95868000D831AC /* TopicCommentCellHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCommentCellHeader.xib; sourceTree = "<group>"; };
-		12245DAB1B95906F00D831AC /* TopicCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCommentCell.swift; sourceTree = "<group>"; };
-		12245DAD1B95907B00D831AC /* TopicCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCommentCell.xib; sourceTree = "<group>"; };
-		1226CE231B8EC585004E2F6C /* RedditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditCell.swift; sourceTree = "<group>"; };
-		1226CE251B8EC5F9004E2F6C /* RedditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RedditCell.xib; sourceTree = "<group>"; };
-		1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UIScrollView.swift"; sourceTree = "<group>"; };
 		1227F0EF1A615EB70088DEB1 /* LetterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterCell.swift; sourceTree = "<group>"; };
 		1227F0F11A615EC20088DEB1 /* LetterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LetterCell.xib; sourceTree = "<group>"; };
 		1229AA3C1AFC9BE500C5B644 /* SAUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAUserCell.xib; sourceTree = "<group>"; };
 		1229AA3E1AFC9C1300C5B644 /* SAUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAUserCell.swift; sourceTree = "<group>"; };
-		122A3F7B1BA13E9500C2FE67 /* Vote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
-		122D93A01B932FC000968F3E /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
-		122D93A21B93430700968F3E /* Topic + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + UITableView.swift"; sourceTree = "<group>"; };
 		122F39201B4E794700DE8628 /* Card.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Card.xib; sourceTree = "<group>"; };
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
@@ -346,8 +306,6 @@
 		1243C6F61B4F60A0007F741C /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		1248FB9E1A91B46100110EEF /* NSObject+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swift.h"; sourceTree = "<group>"; };
 		1248FB9F1A91B46B00110EEF /* NSObject+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swift.m"; sourceTree = "<group>"; };
-		124DFFE21B9D82B100345299 /* AddRedditDream.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRedditDream.xib; sourceTree = "<group>"; };
-		124DFFE41B9D866D00345299 /* AddRedditDream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRedditDream.swift; sourceTree = "<group>"; };
 		124F3257197B19EC0070CA4C /* NianViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NianViewController.storyboard; sourceTree = "<group>"; };
 		1251D6131975729100F55389 /* RefreshBaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshBaseView.swift; sourceTree = "<group>"; };
 		1251D6151975729100F55389 /* RefreshFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshFooterView.swift; sourceTree = "<group>"; };
@@ -403,7 +361,6 @@
 		12776A111BCE668500745811 /* VVeboLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVeboLabel.m; sourceTree = "<group>"; };
 		12776A161BCE731A00745811 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
 		12776A171BCE731A00745811 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
-		12779FAA1BA71E7F00956B46 /* Topic + Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic + Function.swift"; sourceTree = "<group>"; };
 		1282230619C7E6710002937D /* UpYun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpYun.h; sourceTree = "<group>"; };
 		1282230719C7E6710002937D /* UpYun.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpYun.m; sourceTree = "<group>"; };
 		1282230819C7E6710002937D /* UpYunSDK2.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UpYunSDK2.0-Prefix.pch"; sourceTree = "<group>"; };
@@ -451,21 +408,12 @@
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
 		12A8B8C91A613D5200DD8912 /* MeCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCellTop.swift; sourceTree = "<group>"; };
 		12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCellTop.xib; sourceTree = "<group>"; };
-		12ABFD261B9C1D6000E2870C /* AddReddit + TITokenField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddReddit + TITokenField.swift"; sourceTree = "<group>"; };
-		12ABFD281B9C1DEC00E2870C /* AddReddit + UIScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddReddit + UIScrollView.swift"; sourceTree = "<group>"; };
-		12ABFD2A1B9C1EAE00E2870C /* AddReddit + UIGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddReddit + UIGesture.swift"; sourceTree = "<group>"; };
-		12ABFD2C1B9C217800E2870C /* AddReddit + Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddReddit + Function.swift"; sourceTree = "<group>"; };
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
-		12BB33441B93471F00B7E03F /* TopicCellHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCellHeader.swift; sourceTree = "<group>"; };
-		12BB33461B93473500B7E03F /* TopicCellHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCellHeader.xib; sourceTree = "<group>"; };
-		12BB33481B936C9200B7E03F /* TopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
-		12BB334A1B936CAB00B7E03F /* TopicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicCell.xib; sourceTree = "<group>"; };
 		12BD36911B8EABFA00B37573 /* Reddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reddit.swift; sourceTree = "<group>"; };
 		12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UITableView.swift"; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
-		12BE1B921B945FFA005976B8 /* TopicComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicComment.swift; sourceTree = "<group>"; };
 		12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SABottom.swift; sourceTree = "<group>"; };
 		12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SABottom.xib; sourceTree = "<group>"; };
 		12C354521AD5126F0078693F /* Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
@@ -490,7 +438,6 @@
 		12E1C8241A146E1500453805 /* LTMorphingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTMorphingLabel.swift; sourceTree = "<group>"; };
 		12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LTMorphingLabel+Evaporate.swift"; sourceTree = "<group>"; };
 		12E1E5241A0EBBFD0005B129 /* DreamComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamComment.swift; sourceTree = "<group>"; };
-		12E315BB1B9552350034DD7E /* TopicComment + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TopicComment + UITableView.swift"; sourceTree = "<group>"; };
 		12E315BD1B95544F0034DD7E /* SATextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SATextField.swift; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		12E4939A19953DCC00F8DF32 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -551,7 +498,6 @@
 		C43680151BDA411C00D51516 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		C43B604B1BDE11AA0022CB32 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		C43B604D1BDE11CA0022CB32 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
-		C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DreamSearchStepCell.xib; sourceTree = "<group>"; };
 		C450C5131B2FFF3D0024F4DE /* KILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KILabel.h; sourceTree = "<group>"; };
 		C450C5141B2FFF3D0024F4DE /* KILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KILabel.m; sourceTree = "<group>"; };
 		C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -709,7 +655,6 @@
 			isa = PBXGroup;
 			children = (
 				C483CF901AEB435200E1C550 /* ExploreSearch.swift */,
-				C44D196D1AF0CB3800A8F681 /* DreamSearchStepCell.xib */,
 			);
 			name = "搜索";
 			sourceTree = "<group>";
@@ -751,21 +696,6 @@
 			name = "下一级消息";
 			sourceTree = "<group>";
 		};
-		12245DAF1B95A98900D831AC /* 发表话题 */ = {
-			isa = PBXGroup;
-			children = (
-				121702171BA18BDC00656AE1 /* AddTopic.swift */,
-				12ABFD261B9C1D6000E2870C /* AddReddit + TITokenField.swift */,
-				12ABFD281B9C1DEC00E2870C /* AddReddit + UIScrollView.swift */,
-				12ABFD2A1B9C1EAE00E2870C /* AddReddit + UIGesture.swift */,
-				12ABFD2C1B9C217800E2870C /* AddReddit + Function.swift */,
-				124DFFE21B9D82B100345299 /* AddRedditDream.xib */,
-				124DFFE41B9D866D00345299 /* AddRedditDream.swift */,
-				121702191BA18C1B00656AE1 /* AddTopic.xib */,
-			);
-			name = "发表话题";
-			sourceTree = "<group>";
-		};
 		1227F0EE1A615EAA0088DEB1 /* 私信 */ = {
 			isa = PBXGroup;
 			children = (
@@ -781,20 +711,6 @@
 				126593F119CD5CE500884947 /* AddDreamController.xib */,
 			);
 			name = "更新梦想";
-			sourceTree = "<group>";
-		};
-		122D939F1B932FAE00968F3E /* 话题 */ = {
-			isa = PBXGroup;
-			children = (
-				122D93A01B932FC000968F3E /* Topic.swift */,
-				122D93A21B93430700968F3E /* Topic + UITableView.swift */,
-				12779FAA1BA71E7F00956B46 /* Topic + Function.swift */,
-				12BB33441B93471F00B7E03F /* TopicCellHeader.swift */,
-				12BB33461B93473500B7E03F /* TopicCellHeader.xib */,
-				12BB33481B936C9200B7E03F /* TopicCell.swift */,
-				12BB334A1B936CAB00B7E03F /* TopicCell.xib */,
-			);
-			name = "话题";
 			sourceTree = "<group>";
 		};
 		122F7F591B5E6B7B00B4EA32 /* 游戏 */ = {
@@ -1094,29 +1010,8 @@
 			children = (
 				12BD36911B8EABFA00B37573 /* Reddit.swift */,
 				12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */,
-				1226CE271B8EE6F0004E2F6C /* Reddit + UIScrollView.swift */,
-				1226CE231B8EC585004E2F6C /* RedditCell.swift */,
-				1226CE251B8EC5F9004E2F6C /* RedditCell.xib */,
-				122A3F7B1BA13E9500C2FE67 /* Vote.swift */,
-				12245DAF1B95A98900D831AC /* 发表话题 */,
-				122D939F1B932FAE00968F3E /* 话题 */,
-				12BE1B911B945FBC005976B8 /* 回应层 */,
 			);
 			name = "新广场";
-			sourceTree = "<group>";
-		};
-		12BE1B911B945FBC005976B8 /* 回应层 */ = {
-			isa = PBXGroup;
-			children = (
-				12BE1B921B945FFA005976B8 /* TopicComment.swift */,
-				12245DA51B95849900D831AC /* TopicComment + UITextField.swift */,
-				12E315BB1B9552350034DD7E /* TopicComment + UITableView.swift */,
-				12245DA71B95867500D831AC /* TopicCommentCellHeader.swift */,
-				12245DA91B95868000D831AC /* TopicCommentCellHeader.xib */,
-				12245DAB1B95906F00D831AC /* TopicCommentCell.swift */,
-				12245DAD1B95907B00D831AC /* TopicCommentCell.xib */,
-			);
-			name = "回应层";
 			sourceTree = "<group>";
 		};
 		12C96DE81A6F7B3300B0E327 /* WeChatSharing */ = {
@@ -1716,17 +1611,13 @@
 				C488B47E1BFD9E8D00C735EC /* Welcome.storyboard in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
-				12BB334B1B936CAB00B7E03F /* TopicCell.xib in Resources */,
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
 				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
 				C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
-				1226CE261B8EC5F9004E2F6C /* RedditCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
-				12245DAA1B95868000D831AC /* TopicCommentCellHeader.xib in Resources */,
-				124DFFE31B9D82B100345299 /* AddRedditDream.xib in Resources */,
 				129F6C701C306FED008B61A5 /* AddStep.xib in Resources */,
 				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
 				C470B22E1B94024A00863821 /* PushConfig.plist in Resources */,
@@ -1747,10 +1638,8 @@
 				123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
 				12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */,
-				12245DAE1B95907B00D831AC /* TopicCommentCell.xib in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
-				C44D196E1AF0CB3800A8F681 /* DreamSearchStepCell.xib in Resources */,
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
@@ -1758,12 +1647,10 @@
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,
 				122F39211B4E794700DE8628 /* Card.xib in Resources */,
-				1217021A1BA18C1B00656AE1 /* AddTopic.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
 				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
-				12BB33471B93473500B7E03F /* TopicCellHeader.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
 				326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */,
 				129152E71A6A910200BB213C /* FindCellTop.xib in Resources */,
@@ -1857,7 +1744,6 @@
 				C486FD451C04430A009F1F90 /* Align.swift in Sources */,
 				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
-				12ABFD271B9C1D6000E2870C /* AddReddit + TITokenField.swift in Sources */,
 				123FD9421C3A7DF800A92188 /* VVeboCell+Delegate.swift in Sources */,
 				C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */,
 				C486FD581C04430A009F1F90 /* View.swift in Sources */,
@@ -1869,7 +1755,6 @@
 				126D6E441C2F1E800053211C /* LSYAlbumDelegateClass.swift in Sources */,
 				121E513B1C3D31980019F69A /* MySteps.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
-				1226CE281B8EE6F0004E2F6C /* Reddit + UIScrollView.swift in Sources */,
 				C488B47C1BFD9E8D00C735EC /* PrivacyViewController.swift in Sources */,
 				12D9494E1B58091C0071B53A /* SAEgg.swift in Sources */,
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
@@ -1882,15 +1767,12 @@
 				12776A121BCE668500745811 /* VVeboLabel.m in Sources */,
 				12CE15A71A3EC525006AC031 /* Circle.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
-				12BB33451B93471F00B7E03F /* TopicCellHeader.swift in Sources */,
-				12245DA81B95867500D831AC /* TopicCommentCellHeader.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
 				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
 				129F6C7C1C3178C3008B61A5 /* AddStepCell.swift in Sources */,
-				12779FAB1BA71E7F00956B46 /* Topic + Function.swift in Sources */,
 				12FB48C7196AE8010026DD51 /* UIImageViewWebExt.swift in Sources */,
 				1232ADC71A53AA5F00C4182A /* CircleBubbleCell.swift in Sources */,
 				126A80931C44A6880057EAAF /* ListCell.swift in Sources */,
@@ -1929,7 +1811,6 @@
 				C486FD591C04430A009F1F90 /* ViewUtils.swift in Sources */,
 				C488B47A1BFD9E8D00C735EC /* NicknameViewController.swift in Sources */,
 				129152DF1A6A5BBE00BB213C /* Find.swift in Sources */,
-				12ABFD2B1B9C1EAE00E2870C /* AddReddit + UIGesture.swift in Sources */,
 				12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */,
 				129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
@@ -1943,7 +1824,6 @@
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
-				12245DAC1B95906F00D831AC /* TopicCommentCell.swift in Sources */,
 				12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */,
 				C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,
@@ -1952,7 +1832,6 @@
 				120B6E421BD3E23F00422B86 /* Explore+NewestCell.swift in Sources */,
 				3274A3831A15F0DA00D2425A /* ExploreDynamicDreamCell.swift in Sources */,
 				12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */,
-				12E315BC1B9552350034DD7E /* TopicComment + UITableView.swift in Sources */,
 				129F6C6E1C306FAD008B61A5 /* AddStep.swift in Sources */,
 				1200406A1C3C26C100D7B549 /* Lock.swift in Sources */,
 				1227F0F01A615EB70088DEB1 /* LetterCell.swift in Sources */,
@@ -1966,27 +1845,21 @@
 				C486FD4A1C04430A009F1F90 /* ConstraintGroup.swift in Sources */,
 				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,
-				122D93A31B93430700968F3E /* Topic + UITableView.swift in Sources */,
 				C488B4791BFD9E8D00C735EC /* LogOrRegViewController.swift in Sources */,
 				C486FD501C04430A009F1F90 /* Expression.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				12F7A4E21A07406F00F16F99 /* Coin3.swift in Sources */,
-				121702181BA18BDC00656AE1 /* AddTopic.swift in Sources */,
 				C43680161BDA411C00D51516 /* CustomButton.swift in Sources */,
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
-				12BB33491B936C9200B7E03F /* TopicCell.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
-				12ABFD2D1B9C217800E2870C /* AddReddit + Function.swift in Sources */,
 				1243C6F71B4F60A0007F741C /* Card.swift in Sources */,
 				C4AD26D51BE887E000BF6242 /* AccountBindCell.swift in Sources */,
 				12C354531AD5126F0078693F /* Badge.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
-				12BE1B931B945FFA005976B8 /* TopicComment.swift in Sources */,
 				C486FD4D1C04430A009F1F90 /* Distribute.swift in Sources */,
-				12ABFD291B9C1DEC00E2870C /* AddReddit + UIScrollView.swift in Sources */,
 				1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */,
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
@@ -2004,7 +1877,6 @@
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				129F6C741C30708F008B61A5 /* AddStep+Scroll.swift in Sources */,
-				122A3F7C1BA13E9500C2FE67 /* Vote.swift in Sources */,
 				C486FD531C04430A009F1F90 /* LayoutProxy.swift in Sources */,
 				C486FD491C04430A009F1F90 /* Constraint.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
@@ -2012,7 +1884,6 @@
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				C40F0F2B1BE74708007B7C6B /* CurrentUser.swift in Sources */,
 				C4CA84D61BD8C7C50075B075 /* NianNetworkClient.swift in Sources */,
-				124DFFE51B9D866D00345299 /* AddRedditDream.swift in Sources */,
 				C47672E91B394DC10011C9AC /* NIAlert.swift in Sources */,
 				126D6E471C2F1E800053211C /* LSYAlbumPickerView.swift in Sources */,
 				1257833519B5F19F008A1B3B /* Like.swift in Sources */,
@@ -2021,7 +1892,6 @@
 				12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */,
 				129089371B5E1EA100EB73E5 /* GameScene.swift in Sources */,
 				C486FD4B1C04430A009F1F90 /* Context.swift in Sources */,
-				12245DA61B95849900D831AC /* TopicComment + UITextField.swift in Sources */,
 				C4F6D77B1B5E22880033671D /* PetCell.swift in Sources */,
 				C49A57151C0C525C008D0780 /* AddStepModel.swift in Sources */,
 				125D93CC1AFCC1B0006FFDED /* SADoubleCell.swift in Sources */,
@@ -2038,7 +1908,6 @@
 				120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */,
 				12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */,
 				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
-				122D93A11B932FC000968F3E /* Topic.swift in Sources */,
 				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
 				126D6E4A1C2F1E800053211C /* LSYAlbumPicker.swift in Sources */,
@@ -2050,7 +1919,6 @@
 				1282230D19C7E6710002937D /* UpYun.m in Sources */,
 				3252850F1A10C2C300316021 /* Explore.swift in Sources */,
 				12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */,
-				1226CE241B8EC585004E2F6C /* RedditCell.swift in Sources */,
 				121F66A11B15CCCA00103B14 /* SAMenu.swift in Sources */,
 				12776A0D1BCE54EA00745811 /* VVeboTableView.swift in Sources */,
 			);

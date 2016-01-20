@@ -13,7 +13,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet weak var btnFollow: UILabel!
     @IBOutlet weak var btnDynamic: UILabel!
-    @IBOutlet weak var btnHot: UILabel!
     @IBOutlet weak var imageSearch: UIImageView!
     @IBOutlet weak var imageFriend: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -22,21 +21,12 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     
     var tableView: VVeboTableView!
     var tableViewDynamic: VVeboTableView!
-    var tableViewHot: UITableView!
-    var tableViewEditor: UITableView!
-    var tableViewNewest: UITableView!
     var dataArray = NSMutableArray()
     var dataArrayDynamic = NSMutableArray()
-    var dataArrayHot = NSMutableArray()
-    var dataArrayEditor = NSMutableArray()
-    var dataArrayNewest = NSMutableArray()
     
     var current = -1
     var page = 1
     var pageDynamic = 1
-    var pageHot = 1
-    
-    var isLoadingHot = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,36 +68,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                 //                return getCell(indexPath, dataArray: d, type: 2)
                 return getCell(indexPath, dataArray: d, type: 2)
             }
-        } else if tableView == self.tableViewHot {
-            let c = tableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
-            c!.data = self.dataArrayHot[indexPath.row] as! NSDictionary
-            c!.indexPath = indexPath
-            c!._layoutSubviews()
-            return c!
-        } else if tableView == self.tableViewEditor {
-            var c = tableViewEditor.dequeueReusableCellWithIdentifier("NewestCell") as? NewestCell
-            if c == nil {
-                c = NewestCell(style: .Default, reuseIdentifier: "NewestCell")
-            }
-            if dataArrayEditor.count == 0 {
-                c?.data = NSDictionary()
-            } else {
-                c?.data = dataArrayEditor[indexPath.row] as! NSDictionary
-            }
-            c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
-            return c!
-        } else if tableView == self.tableViewNewest {
-            var c = tableViewNewest.dequeueReusableCellWithIdentifier("NewestCell") as? NewestCell
-            if c == nil {
-                c = NewestCell(style: .Default, reuseIdentifier: "NewestCell")
-            }
-            if dataArrayNewest.count == 0 {
-                c?.data = NSDictionary()
-            } else {
-                c?.data = dataArrayNewest[indexPath.row] as! NSDictionary
-            }
-            c!.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
-            return c!
         }
         return getCell(indexPath, dataArray: d, type: 0)
     }
@@ -117,20 +77,9 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         let vc = DreamViewController()
         if tableView == self.tableViewDynamic {
             d = dataArrayDynamic
-        } else if tableView == self.tableViewHot {
-            d = dataArrayHot
-        } else if tableView == self.tableViewEditor || tableView == self.tableViewNewest {
-            if dataArrayEditor.count == 0 || dataArrayNewest.count == 0 {
-                return
-            }
-            d = tableView == self.tableViewEditor ? dataArrayEditor : dataArrayNewest
-            let data = d[indexPath.row] as! NSDictionary
-            vc.Id = data.stringAttributeForKey("id")
-            self.navigationController?.pushViewController(vc, animated: true)
-            return
         }
         let data = d[indexPath.row] as! NSDictionary
-        vc.Id = tableView != tableViewHot ? data.stringAttributeForKey("dream") : data.stringAttributeForKey("id")
+        vc.Id = data.stringAttributeForKey("dream")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -145,14 +94,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             if type == "1" {
                 return 77
             }
-        } else if tableView == self.tableViewHot {
-            let data = dataArrayHot[indexPath.row] as! NSDictionary
-            let heightCell = data.objectForKey("heightCell") as! CGFloat
-            return heightCell
-        } else if tableView == self.tableViewEditor {
-            return 96
-        } else if tableView == self.tableViewNewest {
-            return 96
         }
         return t.getHeight(indexPath, dataArray: d)
     }
@@ -161,18 +102,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         var d = dataArray
         if tableView == self.tableViewDynamic {
             d = dataArrayDynamic
-        } else if tableView == self.tableViewHot {
-            d = dataArrayHot
-        } else if tableView == self.tableViewEditor {
-            d = dataArrayEditor
-            if dataArrayEditor.count == 0 {
-                return 6
-            }
-        } else if tableView == self.tableViewNewest {
-            d = dataArrayNewest
-            if dataArrayNewest.count == 0 {
-                return 6
-            }
         }
         return d.count
     }
@@ -202,12 +131,10 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         view.backgroundColor = UIColor.whiteColor()
         
         scrollView.setWidth(globalWidth)
-        scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
-        //        recomTableView.frame.origin.x = globalWidth * 2
+        scrollView.contentSize = CGSizeMake(globalWidth * 2, scrollView.frame.size.height)
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-        btnHot.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
         
         setupTables()
     }
@@ -234,8 +161,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                     } else if tab == 1 {
                         tableViewDynamic.headerBeginRefreshing()
                     }
-                } else {
-                    tableViewHot.headerBeginRefreshing()
                 }
             }
         } else {
@@ -245,8 +170,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                 } else if tab == 1 {
                     tableViewDynamic.headerBeginRefreshing()
                 }
-            } else {
-                tableViewHot.headerBeginRefreshing()
             }
         }
         _setupScrolltoTop(current)
@@ -286,13 +209,6 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
             let x = scrollView.contentOffset.x
             self.btnFollow.setTabAlpha(x, index: 0)
             self.btnDynamic.setTabAlpha(x, index: 1)
-            self.btnHot.setTabAlpha(x, index: 2)
-        } else if scrollView == tableViewHot {
-            let y = tableViewHot.contentOffset.y + tableViewHot.height()
-            let height = tableViewHot.contentSize.height
-            if y + 400 > height && dataArrayHot.count > 0 {
-                tableViewHot.footerBeginRefreshing()
-            }
         }
     }
     
@@ -308,15 +224,9 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         if tab == 0 {
             tableView.scrollsToTop = true
             tableViewDynamic.scrollsToTop = false
-            tableViewHot.scrollsToTop = false
         } else if tab == 1 {
             tableView.scrollsToTop = false
             tableViewDynamic.scrollsToTop = true
-            tableViewHot.scrollsToTop = false
-        } else if tab == 2 {
-            tableView.scrollsToTop = false
-            tableViewDynamic.scrollsToTop = false
-            tableViewHot.scrollsToTop = true
         }
     }
     

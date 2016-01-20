@@ -34,7 +34,7 @@ var globalTabBarSelected: Int = 0
 var globalhasLaunched: Int = 0
 
 // 定义三个页面为未加载状态
-var globalTabhasLoaded = [false, false, false]
+var globalTabhasLoaded = [false, false]
 var globalReachability = ""
 
 // 定义是否加载时清除已有 cell
@@ -463,7 +463,7 @@ extension UIViewController {
         Sa.synchronize()
         
         // 退出后应该设置三个都为未加载状态
-        globalTabhasLoaded = [false, false, false]
+        globalTabhasLoaded = [false, false]
         self.dismissViewControllerAnimated(true, completion: nil)
         
         RCIMClient.sharedRCIMClient().disconnect(false)
