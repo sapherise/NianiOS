@@ -163,7 +163,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let type = data.stringAttributeForKey("type")
         let step = data.stringAttributeForKey("step")
         let name = data.stringAttributeForKey("cname")
-        let cid = data.stringAttributeForKey("cid")
         
         let DreamVC = DreamViewController()
         let UserVC = PlayerViewController()

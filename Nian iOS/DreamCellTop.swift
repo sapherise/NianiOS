@@ -85,7 +85,6 @@ class DreamCellTop: UITableViewCell {
         let percent = data.stringAttributeForKey("percent")
         let uid = data.stringAttributeForKey("uid")
         tagArray = data.objectForKey("tags") as! Array
-        let identity = data.stringAttributeForKey("identity")
         let heightTitle = data.objectForKey("heightTitle") as! CGFloat
         let heightContent = data.objectForKey("heightContent") as! CGFloat
         let totalUsers = data.stringAttributeForKey("total_users")

@@ -28,7 +28,7 @@ class Payment: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
     
     private func onPaymentPurchased(transaction: SKPaymentTransaction) {
         let url = NSBundle.mainBundle().appStoreReceiptURL
-        if let receiptData = NSData(contentsOfURL: url!) {
+        if let _ = NSData(contentsOfURL: url!) {
             _callback(.OnVerifying, nil)
         }
     }
