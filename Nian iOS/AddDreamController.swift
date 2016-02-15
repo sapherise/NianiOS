@@ -163,7 +163,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.automaticallyAdjustsScrollViewInsets = false
         
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         
         let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
         titleLabel.textColor = UIColor.whiteColor()
@@ -199,7 +199,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.seperatorView.setWidth(globalWidth)
         self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.BackgroundColor()
 //        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
         self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
         self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)

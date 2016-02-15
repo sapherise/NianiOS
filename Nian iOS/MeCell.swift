@@ -81,7 +81,7 @@ class MeCell: UITableViewCell {
         if isread == "1" {
             self.nickLabel!.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
         }else{
-            self.nickLabel!.textColor = SeaColor
+            self.nickLabel!.textColor = UIColor.HightlightColor()
         }
         self.avatarView?.setHead(uid)
         self.avatarView!.tag = Int(uid)!
@@ -96,11 +96,11 @@ class MeCell: UITableViewCell {
             let tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
             if isConfirm == "0" {
                 self.labelConfirm.text = "接受"
-                self.labelConfirm.backgroundColor = SeaColor
+                self.labelConfirm.backgroundColor = UIColor.HightlightColor()
                 self.labelConfirm.addGestureRecognizer(tap)
             }else{
                 self.labelConfirm.text = "已接受"
-                self.labelConfirm.backgroundColor = IconColor
+                self.labelConfirm.backgroundColor = UIColor.GreyColor1()
                 self.labelConfirm.removeGestureRecognizer(tap)
             }
         }else{

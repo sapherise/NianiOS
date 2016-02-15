@@ -62,11 +62,11 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             if liked == "0" {
                 btnLike.setImage(UIImage(named: "like"), forState: UIControlState())
                 btnLike.backgroundColor = UIColor.clearColor()
-                btnLike.layer.borderColor = lineColor.CGColor
+                btnLike.layer.borderColor = UIColor.LineColor().CGColor
                 btnLike.layer.borderWidth = 1
             } else {
                 btnLike.setImage(UIImage(named: "liked"), forState: UIControlState())
-                btnLike.backgroundColor = SeaColor
+                btnLike.backgroundColor = UIColor.HightlightColor()
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
@@ -94,7 +94,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var drawColorFlag: UInt32?
     var postBGView: UIImageView!
     var imageHead: UIImageView!
-    var imageHeadCover: UIImageView!
     var imageHolder: UIImageView!
     var labelComment: UILabel!
     var labelLike: UILabel!
@@ -114,10 +113,11 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.clipsToBounds = true
+        contentView.backgroundColor = UIColor.BackgroundColor()
         postBGView = UIImageView(frame: CGRectZero)
         contentView.insertSubview(postBGView, atIndex: 0)
         viewLine = UIView(frame: CGRectMake(SIZE_PADDING, 0, globalWidth - SIZE_PADDING * 2, globalHalf))
-        viewLine?.backgroundColor = UIColor.e6()
+        viewLine?.backgroundColor = UIColor.LineColor()
         contentView.addSubview(viewLine!)
         
         
@@ -125,17 +125,12 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         imageHead = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING, SIZE_IMAGEHEAD_WIDTH, SIZE_IMAGEHEAD_WIDTH))
         imageHead.backgroundColor = UIColor.whiteColor()
         imageHead.layer.masksToBounds = true
+        imageHead.layer.cornerRadius = SIZE_IMAGEHEAD_WIDTH / 2
         contentView.addSubview(imageHead)
-        
-        // 头像遮罩
-        imageHeadCover = UIImageView(frame: CGRectMake(0, 0, SIZE_IMAGEHEAD_WIDTH, SIZE_IMAGEHEAD_WIDTH))
-        imageHeadCover.image = UIImage(named: "cover")
-        imageHeadCover.center = imageHead.center
-        contentView.addSubview(imageHeadCover)
         
         // 添加配图
         imageHolder = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
-        imageHolder.backgroundColor = IconColor
+        imageHolder.backgroundColor = UIColor.GreyColor1()
         contentView.addSubview(imageHolder)
         
         // 添加多图
@@ -148,25 +143,25 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         collectionView = UICollectionView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0), collectionViewLayout: flowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.backgroundColor = UIColor.BackgroundColor()
         collectionView.registerNib(UINib(nibName: "VVeboCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "VVeboCollectionViewCell")
         collectionView.scrollsToTop = false
         contentView.addSubview(collectionView)
         
         // 回应
         labelComment = UILabel(frame: CGRectMake(SIZE_PADDING, 0, 0, SIZE_LABEL_HEIGHT))
-        labelComment.backgroundColor = IconColor
+        labelComment.backgroundColor = UIColor.GreyColor2()
         labelComment.textAlignment = .Center
-        labelComment.textColor = UIColor.b3()
+        labelComment.textColor = UIColor.GreyColor3()
         labelComment.font = UIFont.systemFontOfSize(13)
         labelComment.opaque = true
         contentView.addSubview(labelComment)
         
         // 赞
         labelLike = UILabel(frame: CGRectMake(0, 0, 0, SIZE_LABEL_HEIGHT))
-        labelLike.backgroundColor = IconColor
+        labelLike.backgroundColor = UIColor.GreyColor2()
         labelLike.textAlignment = .Center
-        labelLike.textColor = UIColor.b3()
+        labelLike.textColor = UIColor.GreyColor3()
         labelLike.font = UIFont.systemFontOfSize(13)
         contentView.addSubview(labelLike)
         
@@ -175,7 +170,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         btnMore.setImage(UIImage(named: "btnmore"), forState: UIControlState())
         btnMore.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
         btnMore.layer.masksToBounds = true
-        btnMore.layer.borderColor = lineColor.CGColor
+        btnMore.layer.borderColor = UIColor.LineColor().CGColor
         btnMore.layer.borderWidth = 1
         contentView.addSubview(btnMore)
         
@@ -187,13 +182,13 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
         // 绑定事件
         imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
-        imageHeadCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
         labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
         btnMore.addTarget(self, action: "onMoreClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
         imageHolder.userInteractionEnabled = true
-        imageHeadCover.userInteractionEnabled = true
+        imageHead.userInteractionEnabled = true
         labelComment.userInteractionEnabled = true
         labelLike.userInteractionEnabled = true
     }
@@ -210,10 +205,10 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         let flag = drawColorFlag
         go {
             let heightCell = self.data["heightCell"] as! CGFloat
-            let rect = CGRectMake(0, 0, globalWidth, heightCell + 1)
+            let rect = CGRectMake(0, 0, globalWidth, heightCell)
             UIGraphicsBeginImageContextWithOptions(rect.size, true, 0)
             let context = UIGraphicsGetCurrentContext()
-            UIColor.whiteColor().set()
+            UIColor.BackgroundColor().set()
             CGContextFillRect(context, rect)
             
             // 昵称
@@ -221,7 +216,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             if self.type == 2 {
                 name = self.data.stringAttributeForKey("userlike") as NSString
             }
-            name.drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING), andFont: UIFont.systemFontOfSize(14), andTextColor: SeaColor, andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
+            name.drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING), andFont: UIFont.systemFontOfSize(14), andTextColor: UIColor.HightlightColor(), andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
             
             // 时间或标题
             var textSubtitle = self.data.stringAttributeForKey("title") as NSString
@@ -464,7 +459,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         label = nil
         let heightContent = data["heightContent"] as! CGFloat
         label = VVeboLabel(frame: CGRectMake(20, 20, globalWidth - SIZE_PADDING * 2, heightContent))
-        label?.backgroundColor = UIColor.whiteColor()
+        label?.textColor = UIColor.ContentColor()
+        label?.backgroundColor = UIColor.BackgroundColor()
         label?.text = data.stringAttributeForKey("content")
         
         // 网页跳转
@@ -570,7 +566,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             }
         }
         data["heightImage"] = heightImage
-        data["heightCell"] = heightCell
+        data["heightCell"] = SACeil(heightCell, dot: 0, isCeil: true)
         data["content"] = content
         data["heightContent"] = heightContent
         data["widthComment"] = widthComment

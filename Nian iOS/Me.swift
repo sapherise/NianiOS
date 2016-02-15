@@ -54,7 +54,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func setupViews() {
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         labelNav.frame = CGRectMake(0, 20, globalWidth, 44)
         labelNav.textColor = UIColor.whiteColor()
         labelNav.font = UIFont.systemFontOfSize(17)
@@ -286,7 +286,7 @@ extension UILabel {
             if content == 0 {
                 self.textColor = UIColor.blackColor()
             }else{
-                self.textColor = SeaColor
+                self.textColor = UIColor.HightlightColor()
             }
         }else{
             self.textColor = UIColor.blackColor()

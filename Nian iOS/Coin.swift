@@ -18,7 +18,7 @@ class Coin: SAViewController, SKProductsRequestDelegate, SKPaymentTransactionObs
     
     func setup() {
         let btn = UIView(frame: CGRectMake(globalWidth/2 - 100, 200, 200, 50))
-        btn.backgroundColor = SeaColor
+        btn.backgroundColor = UIColor.HightlightColor()
         btn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onClick"))
         btn.userInteractionEnabled = true
         self.view.addSubview(btn)

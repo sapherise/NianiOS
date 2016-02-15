@@ -30,7 +30,7 @@ class ExploreMoreCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        coverImageView.layer.borderColor = lineColor.CGColor
+        coverImageView.layer.borderColor = UIColor.LineColor().CGColor
         coverImageView.layer.borderWidth = 0.5
         if SAUid() == "171264" {
             coverImageView.layer.cornerRadius = 0

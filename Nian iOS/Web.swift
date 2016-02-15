@@ -18,7 +18,7 @@ class WebViewController: UIViewController, UIWebViewDelegate{
         self.view.backgroundColor = BGColor
         
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
         
         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
@@ -45,8 +45,6 @@ class WebViewController: UIViewController, UIWebViewDelegate{
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
-        
-        viewLoadingShow()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,11 +52,6 @@ class WebViewController: UIViewController, UIWebViewDelegate{
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        viewLoadingHide()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        self.viewLoadingHide()
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {

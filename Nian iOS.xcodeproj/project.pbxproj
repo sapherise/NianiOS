@@ -65,6 +65,7 @@
 		126D6E471C2F1E800053211C /* LSYAlbumPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E3B1C2F1E800053211C /* LSYAlbumPickerView.swift */; };
 		126D6E491C2F1E800053211C /* LSYAlbumCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E3E1C2F1E800053211C /* LSYAlbumCatalog.swift */; };
 		126D6E4A1C2F1E800053211C /* LSYAlbumPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E3F1C2F1E800053211C /* LSYAlbumPicker.swift */; };
+		126F1EA21C62882000565BF2 /* Instagram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126F1EA11C62882000565BF2 /* Instagram.swift */; };
 		126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FB4721B574EDB0056221C /* SAActivityViewController.swift */; };
 		126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126FDBD41C37B1BE00DECA80 /* AddStepImageCell.xib */; };
 		126FDBD71C37B1EF00DECA80 /* AddStepImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */; };
@@ -119,6 +120,7 @@
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
 		12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B8C91A613D5200DD8912 /* MeCellTop.swift */; };
 		12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */; };
+		12AAD1B51C5B1BEE007C42FD /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAD1B41C5B1BEE007C42FD /* Color.swift */; };
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
 		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
@@ -338,6 +340,7 @@
 		126D6E3B1C2F1E800053211C /* LSYAlbumPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumPickerView.swift; sourceTree = "<group>"; };
 		126D6E3E1C2F1E800053211C /* LSYAlbumCatalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumCatalog.swift; sourceTree = "<group>"; };
 		126D6E3F1C2F1E800053211C /* LSYAlbumPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumPicker.swift; sourceTree = "<group>"; };
+		126F1EA11C62882000565BF2 /* Instagram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instagram.swift; sourceTree = "<group>"; };
 		126FB4721B574EDB0056221C /* SAActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAActivityViewController.swift; sourceTree = "<group>"; };
 		126FDBD41C37B1BE00DECA80 /* AddStepImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepImageCell.xib; sourceTree = "<group>"; };
 		126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepImageCell.swift; sourceTree = "<group>"; };
@@ -408,6 +411,7 @@
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
 		12A8B8C91A613D5200DD8912 /* MeCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCellTop.swift; sourceTree = "<group>"; };
 		12A8B8CB1A613D5E00DD8912 /* MeCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCellTop.xib; sourceTree = "<group>"; };
+		12AAD1B41C5B1BEE007C42FD /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
 		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
@@ -847,6 +851,14 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		126F1EA01C62880A00565BF2 /* 授权 */ = {
+			isa = PBXGroup;
+			children = (
+				126F1EA11C62882000565BF2 /* Instagram.swift */,
+			);
+			name = "授权";
+			sourceTree = "<group>";
+		};
 		126FB4711B574EB80056221C /* 复用 */ = {
 			isa = PBXGroup;
 			children = (
@@ -864,6 +876,7 @@
 				125D93C91AFCC198006FFDED /* SADoubleCell.xib */,
 				125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */,
 				12E315BD1B95544F0034DD7E /* SATextField.swift */,
+				12AAD1B41C5B1BEE007C42FD /* Color.swift */,
 			);
 			name = "复用";
 			sourceTree = "<group>";
@@ -1195,6 +1208,7 @@
 				12E8090B1A2DBF830022C094 /* 进展 */,
 				123CB05119785B610062BB8A /* 首页 */,
 				3252850B1A10C2A200316021 /* 发现 */,
+				126F1EA01C62880A00565BF2 /* 授权 */,
 				12F65C071B64F44F0051A914 /* 宠物 */,
 				12BD36901B8EABDC00B37573 /* 新广场 */,
 				12F7A4E01A07405A00F16F99 /* 念币 */,
@@ -1735,6 +1749,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				126F1EA21C62882000565BF2 /* Instagram.swift in Sources */,
 				C488B48C1BFDA06700C735EC /* EditProfileViewController.swift in Sources */,
 				128470701BF1E429007E235C /* Plankton.swift in Sources */,
 				C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */,
@@ -1858,6 +1873,7 @@
 				C4AD26D51BE887E000BF6242 /* AccountBindCell.swift in Sources */,
 				12C354531AD5126F0078693F /* Badge.swift in Sources */,
 				1265282E196C6460005765D2 /* Dream.swift in Sources */,
+				12AAD1B51C5B1BEE007C42FD /* Color.swift in Sources */,
 				12A8B8CA1A613D5200DD8912 /* MeCellTop.swift in Sources */,
 				C486FD4D1C04430A009F1F90 /* Distribute.swift in Sources */,
 				1229AA3F1AFC9C1300C5B644 /* SAUserCell.swift in Sources */,

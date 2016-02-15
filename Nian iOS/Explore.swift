@@ -122,13 +122,13 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         globalNumExploreBar = 0
         
         self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
-        self.navTopView.backgroundColor = BarColor
+        self.navTopView.backgroundColor = UIColor.NavColor()
         self.navTopView.setWidth(globalWidth)
         self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
         self.imageSearch.setX(globalWidth - 43)
         self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
         self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.BackgroundColor()
         
         scrollView.setWidth(globalWidth)
         scrollView.contentSize = CGSizeMake(globalWidth * 2, scrollView.frame.size.height)

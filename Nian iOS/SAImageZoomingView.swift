@@ -50,8 +50,8 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
         super.layoutSubviews()
         
         let v = UIProgressView(frame: CGRectMake(0, 0, 100, 200))
-        v.progressTintColor = SeaColor
-        v.trackTintColor = IconColor
+        v.progressTintColor = UIColor.HightlightColor()
+        v.trackTintColor = UIColor.GreyColor1()
         v.center = imageView.center
         v.hidden = true
         

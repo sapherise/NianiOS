@@ -61,7 +61,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.view.backgroundColor = UIColor.whiteColor()
         
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
         
         self.tableview = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 56))
@@ -76,10 +76,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.view.addSubview(self.tableview)
         
         self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 56))
-//        self.activityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(globalWidth / 2 - 10, 21, 20, 20))
-//        self.activityIndicatorView.hidden = false
-//        self.activityIndicatorView.startAnimating()
-//        self.activityIndicatorView.color = SeaColor
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
         self.tableview.tableFooterView = self.viewBottom
         

@@ -45,7 +45,7 @@ class CoinViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupViews() {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         self.viewBack()
         scrollView.setHeight(globalHeight)
@@ -66,7 +66,7 @@ class CoinViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.viewCircleBackground.layer.borderColor = UIColor.whiteColor().CGColor
         self.viewCircleBackground.layer.borderWidth = 8
         
-        self.labelCoin.textColor = SeaColor
+        self.labelCoin.textColor = UIColor.HightlightColor()
         self.labelCoin.morphingEffect = .Evaporate
         self.labelCoin.delegate = self
         
@@ -309,7 +309,7 @@ class CoinViewController: UIViewController, UITableViewDelegate, UITableViewData
         CGPathAddCurveToPoint(path, nil, 124.18, 160, 160, 124.18, 160, 80)
         CGPathAddCurveToPoint(path, nil, 160, 35.82, 124.18, 0, 80, 0)
         self.top.path = path
-        self.top.strokeColor = SeaColor.CGColor
+        self.top.strokeColor = UIColor.HightlightColor().CGColor
         self.top.lineWidth = 8
         self.top.lineCap = kCALineCapRound
         self.top.masksToBounds = true

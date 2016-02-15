@@ -19,7 +19,7 @@ class SAViewController: UIViewController {
         
         /* 添加导航栏 */
         navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         navView.userInteractionEnabled = true
         self.view.addSubview(navView)
         self.viewBack()

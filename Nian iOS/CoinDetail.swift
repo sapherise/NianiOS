@@ -26,7 +26,7 @@ class CoinDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func setupViews() {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         self.viewBack()
         let titleLabel:UILabel = UILabel(frame: CGRectZero)

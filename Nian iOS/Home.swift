@@ -220,7 +220,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         
         //底部
         self.myTabbar = UIView(frame: CGRectMake(0,globalHeight-49,globalWidth,49)) //x，y，宽度，高度
-        self.myTabbar!.backgroundColor = BarColor  //底部的背景色
+        self.myTabbar!.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.myTabbar!)
         
         //底部按钮
@@ -248,7 +248,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
         self.dot!.textAlignment = NSTextAlignment.Center
-        self.dot!.backgroundColor = SeaColor
+        self.dot!.backgroundColor = UIColor.HightlightColor()
         self.dot!.layer.cornerRadius = 5
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true

@@ -30,7 +30,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     func setupViews() {
         viewBack()
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
         var textTitle = "消息"
         if self.tag == 1 {

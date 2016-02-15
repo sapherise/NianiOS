@@ -25,7 +25,7 @@ class CircleImageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.nickLabel!.textColor = SeaColor
+        self.nickLabel!.textColor = UIColor.HightlightColor()
         self.avatarView.layer.masksToBounds = true
         self.avatarView.layer.cornerRadius = 20
         self.View.userInteractionEnabled = true
@@ -68,7 +68,7 @@ class CircleImageCell: UITableViewCell {
                     self.activity!.transform = CGAffineTransformMakeScale(0.7, 0.7)
                     self.activity!.startAnimating()
                     self.activity!.hidden = false
-                    self.imageContent.image = SAColorImg(SeaColor)
+                    self.imageContent.image = SAColorImg(UIColor.HightlightColor())
                     self.addSubview(activity!)
                 }else{
                     self.imageContent.setImage(url)

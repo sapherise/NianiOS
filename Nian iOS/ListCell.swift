@@ -54,18 +54,18 @@ class ListCell: UITableViewCell {
         if type == ListType.Members {
             labelButton.hidden = true
         } else {
-            labelButton.layer.borderColor = SeaColor.CGColor
+            labelButton.layer.borderColor = UIColor.HightlightColor().CGColor
             labelButton.layer.borderWidth = 1
             labelButton.setX(globalWidth - 15 - labelButton.width())
             
             /* 通过判断 hasSelected 来显示按钮与绑定动作 */
             if !hasSelected {
                 labelButton.backgroundColor = UIColor.whiteColor()
-                labelButton.textColor = SeaColor
+                labelButton.textColor = UIColor.HightlightColor()
                 labelButton.text = "邀请"
                 labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSelect"))
             } else {
-                labelButton.backgroundColor = SeaColor
+                labelButton.backgroundColor = UIColor.HightlightColor()
                 labelButton.textColor = UIColor.whiteColor()
                 labelButton.text = "已邀请"
                 labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUnSelect"))

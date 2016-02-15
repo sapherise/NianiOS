@@ -16,6 +16,7 @@ class VVeboTableView: UITableView {
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
         self.separatorStyle = .None
+        self.backgroundColor = UIColor.BackgroundColor()
     }
     
     required init?(coder aDecoder: NSCoder) {

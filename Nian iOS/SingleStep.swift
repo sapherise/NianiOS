@@ -35,7 +35,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         self.viewBack()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         
         self.view.backgroundColor = UIColor.whiteColor()

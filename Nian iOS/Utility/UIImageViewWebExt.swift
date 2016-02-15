@@ -18,7 +18,7 @@ extension UIImageView {
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
     func setImage(urlString: String, radius: CGFloat = 0) {
-        self.backgroundColor = IconColor
+        self.backgroundColor = UIColor.GreyColor1()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
@@ -36,7 +36,7 @@ extension UIImageView {
     
     /* 进展中的单图要用到，用以显示进度条 */
     func setCell(urlString: String) {
-        self.backgroundColor = IconColor
+        self.backgroundColor = UIColor.GreyColor1()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
@@ -44,7 +44,7 @@ extension UIImageView {
             self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
             let v = UIProgressView(frame: CGRectMake(0, 0, 100, 200))
-            v.progressTintColor = SeaColor
+            v.progressTintColor = UIColor.HightlightColor()
             v.trackTintColor = UIColor.e6()
             v.center = self.center
             v.hidden = true

@@ -19,7 +19,7 @@ class CoinCell : UITableViewCell {
     
     override func awakeFromNib() {
         self.btnBuy.setX(globalWidth-85)
-        self.btnBuy.backgroundColor = SeaColor
+        self.btnBuy.backgroundColor = UIColor.HightlightColor()
         self.viewLine.setWidth(globalWidth-85)
     }
     
@@ -30,14 +30,14 @@ class CoinCell : UITableViewCell {
         self.btnBuy.setTitle(cost, forState: UIControlState.Normal)
         self.textDescription.numberOfLines = 0
         self.textDescription.text = description
-        self.imageIcon.layer.borderColor = SeaColor.CGColor
+        self.imageIcon.layer.borderColor = UIColor.HightlightColor().CGColor
         self.imageIcon.layer.borderWidth = 1
         if sectionNumber == 0 {
             self.textDescription.hidden = true
             self.viewLine.setY(80)
             self.textTitle.setY(30)
             self.labelImage.text = imageURL
-            self.labelImage.textColor = SeaColor
+            self.labelImage.textColor = UIColor.HightlightColor()
         }else{
             self.textDescription.setHeight(CoinCell.getDespHeight(description))
             self.textDescription.hidden = false

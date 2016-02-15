@@ -17,7 +17,7 @@ class LSYAlbumPickerCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        imageView.layer.borderColor = SeaColor.CGColor
+        imageView.layer.borderColor = UIColor.HightlightColor().CGColor
     }
     
     func setup() {

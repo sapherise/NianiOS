@@ -14,7 +14,7 @@ class HelpViewController: UIViewController {
     
     func setupViews(){
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         self.view.backgroundColor = BGColor
         
@@ -44,7 +44,7 @@ class HelpViewController: UIViewController {
         title1.text = titlestring1
         title1.numberOfLines = 0
         title1.font = UIFont.systemFontOfSize(14)
-        title1.textColor = SeaColor
+        title1.textColor = UIColor.HightlightColor()
         title1.setHeight(titlestring1.stringHeightWith(14, width: globalWidth - 80))
         
         let content1 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
@@ -59,7 +59,7 @@ class HelpViewController: UIViewController {
         title2.text = titlestring2
         title2.numberOfLines = 0
         title2.font = UIFont.systemFontOfSize(14)
-        title2.textColor = SeaColor
+        title2.textColor = UIColor.HightlightColor()
         title2.setHeight(titlestring2.stringHeightWith(14, width: globalWidth - 80))
         title2.setY(content1.bottom()+20)
         
@@ -75,7 +75,7 @@ class HelpViewController: UIViewController {
         title3.text = titlestring3
         title3.numberOfLines = 0
         title3.font = UIFont.systemFontOfSize(14)
-        title3.textColor = SeaColor
+        title3.textColor = UIColor.HightlightColor()
         title3.setHeight(titlestring3.stringHeightWith(14, width: globalWidth - 80))
         title3.setY(content2.bottom()+20)
         
@@ -91,7 +91,7 @@ class HelpViewController: UIViewController {
         title4.text = titlestring4
         title4.numberOfLines = 0
         title4.font = UIFont.systemFontOfSize(14)
-        title4.textColor = SeaColor
+        title4.textColor = UIColor.HightlightColor()
         title4.setHeight(titlestring4.stringHeightWith(14, width: globalWidth - 80))
         title4.setY(content3.bottom()+20)
         
@@ -107,7 +107,7 @@ class HelpViewController: UIViewController {
         title5.text = titlestring5
         title5.numberOfLines = 0
         title5.font = UIFont.systemFontOfSize(14)
-        title5.textColor = SeaColor
+        title5.textColor = UIColor.HightlightColor()
         title5.setHeight(titlestring5.stringHeightWith(14, width: globalWidth - 80))
         title5.setY(content4.bottom()+20)
         
@@ -123,7 +123,7 @@ class HelpViewController: UIViewController {
         title6.text = titlestring6
         title6.numberOfLines = 0
         title6.font = UIFont.systemFontOfSize(14)
-        title6.textColor = SeaColor
+        title6.textColor = UIColor.HightlightColor()
         title6.setHeight(titlestring6.stringHeightWith(14, width: globalWidth - 80))
         title6.setY(content5.bottom()+20)
         

@@ -44,32 +44,21 @@ class DreamCellTop: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        self.btnMain.backgroundColor = SeaColor
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.viewLineTop.setWidth(globalWidth - 40)
         viewLineLeft.setWidth(0.5)
         viewLineRight.setWidth(0.5)
         viewLineTop.setHeightHalf()
         scrollView.setTag()
-        btnMain.backgroundColor = SeaColor
+        btnMain.backgroundColor = UIColor.HightlightColor()
+        contentView.backgroundColor = UIColor.BackgroundColor()
+        viewHolder.backgroundColor = UIColor.BackgroundColor()
+        labelTitle.backgroundColor = UIColor.BackgroundColor()
+        numLeft.backgroundColor = UIColor.BackgroundColor()
+        numMiddle.backgroundColor = UIColor.BackgroundColor()
+        numRight.backgroundColor = UIColor.BackgroundColor()
+        labelDes.backgroundColor = UIColor.BackgroundColor()
     }
-    
-    //    override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-    //        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
-    //            return false
-    //        }else{
-    //            let panGesture = gestureRecognizer as! UIPanGestureRecognizer
-    //            let panY = panGesture.locationInView(self).y
-    //            let translation = panGesture.translationInView(self)
-    //            if fabs(translation.y) > fabs(translation.x) {  //如果是往下划
-    //                return false
-    //            } else if panY < 52 {
-    //                return false
-    //            } else {
-    //                return true
-    //            }
-    //        }
-    //    }
     
     func setup() {
         /* 解析数据 */
@@ -106,7 +95,7 @@ class DreamCellTop: UITableViewCell {
             let textTitle = NSMutableAttributedString(string: title)
             let l = textTitle.length
             textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, l-4))
-            textTitle.addAttribute(NSForegroundColorAttributeName, value: SeaColor, range: NSMakeRange(l-4, 4))
+            textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.HightlightColor(), range: NSMakeRange(l-4, 4))
             labelTitle.attributedText = textTitle
         } else if percent == "1" {
             title = "\(title)（完成）"

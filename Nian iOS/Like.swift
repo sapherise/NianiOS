@@ -29,7 +29,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func setupViews() {
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         
         self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
@@ -101,7 +101,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func urlString()->String{
         let safeuid = SAUid()
-        
+        // todo: 修改这些 API
         if self.urlIdentify == 0 {
             return "http://nian.so/api/like2.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 1 {

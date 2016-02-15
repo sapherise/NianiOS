@@ -136,7 +136,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
             sender.setX(104)
         })
         let ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
-        ac.color = SeaColor
+        ac.color = UIColor.HightlightColor()
         ac.hidden = false
         ac.startAnimating()
         self.confirmNiAlert._containerView!.addSubview(ac)

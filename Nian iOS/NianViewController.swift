@@ -93,7 +93,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
         
         self.navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.navView.hidden = true
         self.navView.clipsToBounds = true
         self.navView.userInteractionEnabled = true

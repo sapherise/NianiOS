@@ -238,7 +238,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         stepButton.setX(_tmpWidth + 40)
         
         floatView.setX(_tmpWidth - 120 + 15)
-        floatView.backgroundColor = SeaColor
+        floatView.backgroundColor = UIColor.HightlightColor()
         
         btnArray = [userButton, dreamButton, stepButton]
         dataSourceArray = [dataArrayUser, dataArrayDream, dataArrayStep]
@@ -274,7 +274,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         /* 改变 Button 的颜色 */
         for (_index, _btn) in self.btnArray.enumerate() {
             if _index == index {
-                _btn.setTitleColor(SeaColor, forState: .Normal)
+                _btn.setTitleColor(UIColor.HightlightColor(), forState: .Normal)
             } else {
                 _btn.setTitleColor(UIColor.blackColor(), forState: .Normal)
             }

@@ -43,7 +43,7 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
         self.UserFo.setX(globalWidth/2 - 53)
         self.UserFoed.setX(globalWidth/2 + 1)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
-        self.labelMenuSlider.backgroundColor = SeaColor
+        self.labelMenuSlider.backgroundColor = UIColor.HightlightColor()
         self.imageSex.hidden = true
         self.layer.masksToBounds = true
     }

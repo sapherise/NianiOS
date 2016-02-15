@@ -31,6 +31,11 @@ class AddStepModel: NSObject {
             "multidream/\(dreamId)/update?uid=\(_uid)&shell=\(_shell)",
             content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
             callback: callback)
+        print("content: \(content)")
+        print("type: \(stepType)")
+        print("images: \(imagesString)")
+        print("uid: \(_uid)")
+        print("shell: \(_shell)")
     }
     
     /**

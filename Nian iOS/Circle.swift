@@ -116,7 +116,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.view.backgroundColor = UIColor.whiteColor()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         
         

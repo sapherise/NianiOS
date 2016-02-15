@@ -224,6 +224,7 @@ struct Api {
     
     static func getUserTop(uid:Int, callback: V.JsonCallback) {
         loadCookies()
+        print("http://api.nian.so/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
@@ -921,6 +922,10 @@ extension Api {
     static func getQuit(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/multidream/leave/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    static func getInstagram(token: String, callback: V.JsonCallback) {
+        V.httpGetForJson("https://api.instagram.com/v1/users/self/media/recent/?access_token=\(token)", callback: callback)
     }
 }
 

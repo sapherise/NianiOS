@@ -51,22 +51,22 @@ class LikeCell: UITableViewCell {
         if self.urlIdentify == 1 && self.ownerID == safeuid {
             self.btnFollow.layer.borderWidth = 0
             self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            self.btnFollow.backgroundColor = SeaColor
+            self.btnFollow.backgroundColor = UIColor.HightlightColor()
             self.btnFollow.setTitle("写信", forState: UIControlState.Normal)
             self.btnFollow.addTarget(self, action: "onLetterClick", forControlEvents: UIControlEvents.TouchUpInside)
         } else {
             if follow == "0" {
                 self.btnFollow.tag = 100
-                self.btnFollow.layer.borderColor = SeaColor.CGColor
+                self.btnFollow.layer.borderColor = UIColor.HightlightColor().CGColor
                 self.btnFollow.layer.borderWidth = 1
-                self.btnFollow.setTitleColor(SeaColor, forState: UIControlState.Normal)
+                self.btnFollow.setTitleColor(UIColor.HightlightColor(), forState: UIControlState.Normal)
                 self.btnFollow.backgroundColor = UIColor.whiteColor()
                 self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
             }else{
                 self.btnFollow.tag = 200
                 self.btnFollow.layer.borderWidth = 0
                 self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-                self.btnFollow.backgroundColor = SeaColor
+                self.btnFollow.backgroundColor = UIColor.HightlightColor()
                 self.btnFollow.setTitle("已关注", forState: UIControlState.Normal)
             }
             self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -98,7 +98,7 @@ class LikeCell: UITableViewCell {
             sender.tag = 200
             sender.layer.borderWidth = 0
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            sender.backgroundColor = SeaColor
+            sender.backgroundColor = UIColor.HightlightColor()
             sender.setTitle("已关注", forState: UIControlState.Normal)
             Api.getFollow(uid) { json in
                 
@@ -107,9 +107,9 @@ class LikeCell: UITableViewCell {
         }else if tag == 200 {   //正在关注
             self.data.setValue("0", forKey: "follow")
             sender.tag = 100
-            sender.layer.borderColor = SeaColor.CGColor
+            sender.layer.borderColor = UIColor.HightlightColor().CGColor
             sender.layer.borderWidth = 1
-            sender.setTitleColor(SeaColor, forState: UIControlState.Normal)
+            sender.setTitleColor(UIColor.HightlightColor(), forState: UIControlState.Normal)
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             Api.getUnfollow(self.uid) { json in

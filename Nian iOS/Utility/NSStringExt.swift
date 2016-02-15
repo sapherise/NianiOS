@@ -21,7 +21,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.height, dot: 0, isCeil: true)
+        return rect.size.height
     }
     
     // 拥有行距的 TextView 的函数
@@ -33,7 +33,7 @@ extension String {
         let attrDictionary = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options: .UsesLineFragmentOrigin, attributes: attrDictionary, context: nil)
-        return SACeil(rect.size.height, dot: 0, isCeil: true)
+        return rect.size.height
     }
     
     func stringHeightBoldWith(fontSize:CGFloat,width:CGFloat)->CGFloat {
@@ -45,7 +45,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.height, dot: 0, isCeil: true)
+        return rect.size.height
     }
     
     func stringWidthWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
@@ -57,7 +57,7 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.width, dot: 0, isCeil: true) + 1
+        return rect.size.width
     }
     
     func stringWidthBoldWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
@@ -69,6 +69,6 @@ extension String {
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
-        return SACeil(rect.size.width, dot: 0, isCeil: true) + 1
+        return rect.size.width
     }
 }

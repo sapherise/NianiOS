@@ -64,9 +64,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.viewBack()
         
         self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.BackgroundColor()
         
         self.SATableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
         self.SATableView.delegate = self

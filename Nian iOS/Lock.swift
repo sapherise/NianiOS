@@ -49,7 +49,7 @@ class Lock: SAViewController, UITextViewDelegate {
             titleString = ""
         }
         _setTitle(titleString)
-        self.view.backgroundColor = BarColor
+        self.view.backgroundColor = UIColor.NavColor()
         
         /* 添加四个视图 */
         var x = (globalWidth - size_width * 4 - padding * 3) / 2

@@ -31,7 +31,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func setupViews() {
         viewBack()
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
         labelNav.text = "发现好友"
         labelNav.textColor = UIColor.whiteColor()
@@ -47,7 +47,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.tableViewPhone.frame.origin.x = globalWidth
         self.viewPromo = UIView(frame: CGRectMake(globalWidth * 2, 64 + 75, globalWidth, globalHeight - 64 - 75))
         imagePromo = UIImageView(frame: CGRectMake(globalWidth/2-80, globalHeight/2-200, 160, 160))
-        imagePromo.backgroundColor = IconColor
+        imagePromo.backgroundColor = UIColor.GreyColor1()
         imagePromo.layer.masksToBounds = true
         imagePromo.layer.cornerRadius = 8
         self.viewPromo.addSubview(imagePromo)

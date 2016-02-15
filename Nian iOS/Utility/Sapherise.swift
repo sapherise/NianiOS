@@ -43,7 +43,7 @@ var globalVVeboReload = false
 let globalWidth = UIScreen.mainScreen().bounds.width
 let globalHeight = UIScreen.mainScreen().bounds.height
 let globalScale = UIScreen.mainScreen().scale
-let globalHalf = globalScale == 0 ? 1 : 1 / globalScale
+let globalHalf: CGFloat = 0.5
 var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
 var globaliOS: Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
 var isiPhone6: Bool = globalWidth == 375 ? true : false
@@ -245,7 +245,7 @@ func buttonArray()->[UIBarButtonItem]{
     let rightButtonView = UIView(frame: CGRectMake(0, 0, 40, 30))
     let activity = UIActivityIndicatorView()
     activity.startAnimating()
-    activity.color = IconColor
+    activity.color = UIColor.GreyColor1()
     activity.frame = CGRectMake(14, 9, 12, 12)
     activity.transform = CGAffineTransformMakeScale(0.8, 0.8)
     rightButtonView.addSubview(activity)
@@ -321,7 +321,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
     func showTipText(text: String, delayTime: Double = 2.0) {
         let v: UIView? = UIView()
         v!.frame = CGRectMake(0, -64, globalWidth, 64)
-        v!.backgroundColor = SeaColor
+        v!.backgroundColor = UIColor.HightlightColor()
         v!.userInteractionEnabled = true
         
         let label = UILabel()
@@ -681,6 +681,15 @@ extension UIViewController {
                     }
                 }
             }
+        } else {
+            /* instagram 的调用 */
+            let arr = url.componentsSeparatedByString("nian:%23access_token=")
+            if arr.count == 2 {
+                let token = arr[1]
+                let vc = Instagram()
+                vc.token = token
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
@@ -726,7 +735,7 @@ extension UIButton {
     func setButtonNice(content:String){
         self.frame = CGRectMake(0, 0, 100, 36)
         self.layer.cornerRadius = 18
-        self.backgroundColor = SeaColor
+        self.backgroundColor = UIColor.HightlightColor()
         self.layer.masksToBounds = true
         self.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
         self.titleLabel!.font = UIFont.systemFontOfSize(13)
@@ -889,7 +898,7 @@ extension UIColor {
             options: .ReportProgress,
             range: NSMakeRange(0, hexString.characters.count))
         if num != 1 {
-            return SeaColor
+            return UIColor.HightlightColor()
         }
         var rgbValue : UInt32 = 0
         let scanner = NSScanner(string: hexString)
@@ -930,13 +939,8 @@ extension UIColor {
     }
 }
 
-
-let SeaColor:UIColor = UIColor(red: 0x6c/255.0, green: 0xc5/255.0, blue: 0xee/255.0, alpha: 1)
-let IconColor:UIColor = UIColor(red:0.97, green:0.97,blue:0.97,alpha: 1)    //字体灰
 let BGColor:UIColor = UIColor.whiteColor()
-let BarColor:UIColor = UIColor(red:0.11, green:0.12, blue:0.13, alpha:1)
 let GoldColor:UIColor = UIColor(red:0.96, green:0.77,blue:0.23,alpha: 1)   //金色
-let lineColor: UIColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
 let greyColor = UIColor(red:0.18, green:0.18, blue:0.18, alpha:1) // #333333
 
 func SAThousand(num: String) -> String {

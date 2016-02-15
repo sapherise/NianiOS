@@ -90,7 +90,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.dreamowner = 1
         }
         self.navView = UIImageView(frame: CGRectMake(0, -64, globalWidth, 64))
-        self.navView.backgroundColor = BarColor
+        self.navView.backgroundColor = UIColor.NavColor()
         self.navView.hidden = true
         self.navView.clipsToBounds = true
         self.view.addSubview(self.navView)
@@ -238,7 +238,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.page = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
             let activity = UIActivityIndicatorView()
-            activity.color = SeaColor
+            activity.color = UIColor.HightlightColor()
             activity.startAnimating()
             activity.hidden = false
             v.addSubview(activity)
@@ -271,7 +271,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.pageStep = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
             let activity = UIActivityIndicatorView()
-            activity.color = SeaColor
+            activity.color = UIColor.HightlightColor()
             activity.startAnimating()
             activity.hidden = false
             v.addSubview(activity)
@@ -484,7 +484,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.tableViewDream.contentOffset.y = y2
             self.tableViewStep.hidden = true
             self.tableViewDream.hidden = false
-            self.topCell.labelMenuLeft.textColor = SeaColor
+            self.topCell.labelMenuLeft.textColor = UIColor.HightlightColor()
             self.topCell.labelMenuRight.textColor = UIColor.blackColor()
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuLeft.x()+15)
@@ -496,7 +496,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.tableViewStep.contentOffset.y = y1
             self.tableViewDream.hidden = true
             self.tableViewStep.hidden = false
-            self.topCell.labelMenuRight.textColor = SeaColor
+            self.topCell.labelMenuRight.textColor = UIColor.HightlightColor()
             self.topCell.labelMenuLeft.textColor = UIColor.blackColor()
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuRight.x()+15)

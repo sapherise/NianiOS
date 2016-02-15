@@ -31,7 +31,7 @@ class CircleTagViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func setupViews(){
         let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         self.viewBack()
         self.view.addSubview(navView)
         self.collectionView.delegate = self

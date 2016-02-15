@@ -53,7 +53,7 @@ class RedditViewController: UIViewController, UIScrollViewDelegate, UITableViewD
     
     func setupViews() {
         navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         navView.userInteractionEnabled = true
         self.view.addSubview(navView)
         

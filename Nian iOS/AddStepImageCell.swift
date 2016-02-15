@@ -15,7 +15,7 @@ class AddStepImageCell: UICollectionViewCell {
     var image: AnyObject!
     
     func setup() {
-        imageView.backgroundColor = IconColor
+        imageView.backgroundColor = UIColor.GreyColor1()
         
         if let a = image as? UIImage {
             imageView.image = a

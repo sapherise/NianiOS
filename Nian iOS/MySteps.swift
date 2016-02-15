@@ -39,7 +39,7 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
     func setupViews() {
         viewBack()
         navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        navView.backgroundColor = BarColor
+        navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
         self.view.backgroundColor = UIColor.whiteColor()
         

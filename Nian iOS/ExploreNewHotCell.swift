@@ -75,7 +75,7 @@ class ExploreNewHotCell: UITableViewCell {
             } else {
                 self.imageHead.image = UIImage(named: "drop")
                 self.imageHead.contentMode = .Center
-                self.imageHead.backgroundColor = IconColor
+                self.imageHead.backgroundColor = UIColor.GreyColor1()
             }
             self.viewLine.setY(self.viewLeft.bottom() + 32)
         }
