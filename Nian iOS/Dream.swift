@@ -272,7 +272,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue("1", forKey: "followed")
         dataArrayTop = mutableData
         SATableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.None)
-        Api.postFollowDream(id, follow: "1") { string in }
+        Api.getFollowDream(id) { json in }
     }
     
     func onUnFo() {
@@ -281,7 +281,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue("0", forKey: "followed")
         dataArrayTop = mutableData
         SATableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.None)
-        Api.postFollowDream(id, follow: "0") { string in }
+        Api.getUnFollowDream(id) { json in }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -415,10 +415,11 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             let h4Lines = "\n\n\n".stringHeightWith(12, width: 240)
             hContent = min(hContent, h4Lines)
         }
-        var heightCell = 306 + hTitle + 8 + hContent + globalHalf
+        var heightCell = 306 + hTitle + 8 + hContent
         if content == "" {
-            heightCell = 306 + hTitle + globalHalf
+            heightCell = 306 + hTitle
         }
+        heightCell = SACeil(heightCell, dot: 0, isCeil: true)
         let mutableData = NSMutableDictionary(dictionary: data)
         mutableData.setValue(hTitle, forKey: "heightTitle")
         mutableData.setValue(hContent, forKey: "heightContent")

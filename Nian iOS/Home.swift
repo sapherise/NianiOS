@@ -41,7 +41,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func onReceived(message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
         NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: message)
-        shake()
         unread += 1
         dotShow()
     }
@@ -54,6 +53,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         gameoverCheck()
         setupReachability()
         RCIMClient.sharedRCIMClient().setReceiveMessageDelegate(self, object: nil)
+        
+        // todo: 测试
     }
 
     func gameoverCheck() {

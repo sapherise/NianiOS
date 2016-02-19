@@ -86,10 +86,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             page = 1
         }
         
-        /* 换新的 API  */
-//        Api.getMeNext(page, tag: tag) { json in
         Api.getNotify(self.msgType, page: page) { json in
             if json != nil {
+                print(json)
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
@@ -231,8 +230,13 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "19" {    // 更新了你们的共同记本
             DreamVC.Id = dream
             self.navigationController?.pushViewController(DreamVC, animated: true)
+        } else if type == "20" {    // 关注了你的记本
+            DreamVC.Id = dream
+            self.navigationController?.pushViewController(DreamVC, animated: true)
         }
     }
+    
+    // todo: globalHalf 都要改一下
     
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({

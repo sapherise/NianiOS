@@ -14,6 +14,8 @@ extension VVeboCell {
         let c: VVeboCollectionViewCell!  = collectionView.dequeueReusableCellWithReuseIdentifier("VVeboCollectionViewCell", forIndexPath: indexPath) as? VVeboCollectionViewCell
         if let images = data.objectForKey("images") as? NSArray {
             c.image = images[indexPath.row] as? NSDictionary
+            c.index = indexPath.row
+            c.images = images
             c.setup()
         }
         return c

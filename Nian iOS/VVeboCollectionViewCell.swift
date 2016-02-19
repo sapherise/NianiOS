@@ -12,6 +12,9 @@ import UIKit
 class VVeboCollectionViewCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
     var image: NSDictionary?
+    var index: Int!
+    var images: NSArray!
+    
     func setup() {
         if image != nil {
             let path = image?.stringAttributeForKey("path")
@@ -21,10 +24,23 @@ class VVeboCollectionViewCell: UICollectionViewCell {
     }
     
     func onImage() {
-        let path = image?.stringAttributeForKey("path")
-        let w = CGFloat((image!.stringAttributeForKey("width") as NSString).floatValue)
-        let h = CGFloat((image!.stringAttributeForKey("height") as NSString).floatValue)
-        imageView.showImage("http://img.nian.so/step/\(path!)!200x", newWidth: w, newHeight: h)
+//        let path = image?.stringAttributeForKey("path")
+//        let w = CGFloat((image!.stringAttributeForKey("width") as NSString).floatValue)
+//        let h = CGFloat((image!.stringAttributeForKey("height") as NSString).floatValue)
+//        imageView.showImage("http://img.nian.so/step/\(path!)!200x", newWidth: w, newHeight: h)
+        // todo: 上面的是对的
+        imageView.open(images, index: index, exten: "!200x")
+    }
+}
+
+extension UIImageView {
+    func open(images: NSArray, index: Int, exten: String) {
+        let v = ImageViewer(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        v.images = images
+        v.index = index
+        v.exten = exten
+        v.setup()
+        self.window?.addSubview(v)
     }
 }
 

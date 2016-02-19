@@ -33,7 +33,7 @@ class LikeCell: UITableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnFollow.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
-        viewLine.setHeightHalf()
+        viewLine.setHeight(globalHalf)
     }
     
     func _layoutSubviews() {

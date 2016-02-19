@@ -20,7 +20,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
     override func awakeFromNib() {
         imageCover.setX(globalWidth - 52)
         self.viewLine.setWidth(globalWidth - 40)
-        self.viewLine.setHeightHalf()
+        self.viewLine.setHeight(globalHalf)
     }
     
     func setup() {

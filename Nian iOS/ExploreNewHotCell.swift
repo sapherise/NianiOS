@@ -33,7 +33,7 @@ class ExploreNewHotCell: UITableViewCell {
         self.labelTag.setX(globalWidth-66)
         self.viewLine.setWidth(globalWidth - 32)
         self.viewHolder.setX(globalWidth/2-160)
-        viewLine.setHeightHalf()
+        viewLine.setHeight(globalHalf)
     }
     
     func _layoutSubviews() {

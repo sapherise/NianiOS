@@ -31,23 +31,8 @@ class AddStepModel: NSObject {
             "multidream/\(dreamId)/update?uid=\(_uid)&shell=\(_shell)",
             content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
             callback: callback)
-        print("content: \(content)")
-        print("type: \(stepType)")
-        print("images: \(imagesString)")
-        print("uid: \(_uid)")
-        print("shell: \(_shell)")
     }
     
-    /**
-     <#Description#>
-     
-     - parameter content:  <#content description#>
-     - parameter stepType: <#stepType description#>
-     - parameter sid:      <#sid description#>
-     - parameter images:   <#images description#>
-     - parameter dreamId:  <#dreamId description#>
-     - parameter callback: <#callback description#>
-     */
     class func postEditStep(content content: String, stepType: Int, images: NSArray, sid: String, callback: NetworkClosure) {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!

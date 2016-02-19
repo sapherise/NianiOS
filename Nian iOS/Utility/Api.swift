@@ -224,7 +224,6 @@ struct Api {
     
     static func getUserTop(uid:Int, callback: V.JsonCallback) {
         loadCookies()
-        print("http://api.nian.so/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)")
         V.httpGetForJson("http://api.nian.so/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
@@ -490,11 +489,15 @@ struct Api {
     }
     
     
-    static func postFollowDream(dream: String, follow: String, callback: V.StringCallback) {
+    static func getFollowDream(dream: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForString("http://nian.so/api/dream_fo_query.php", content: "id=\(dream)&&uid=\(s_uid)&&shell=\(s_shell)&&fo=\(follow)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/dream/\(dream)/follow?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
+    static func getUnFollowDream(dream: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/dream/\(dream)/unfollow?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
     
     static func postLikeDream(dream: String, like: String, callback: V.StringCallback) {
         loadCookies()
@@ -579,19 +582,13 @@ struct Api {
         V.httpPostForJson_AFN("http://api.nian.so/user/username?uid=\(s_uid)&&shell=\(s_shell)", content: ["username": name], callback: callback)
     }
     
-    static func getMeNext(page: Int, tag: Int, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/me_next2.php?page=\(page)&uid=\(s_uid)&shell=\(s_shell)&tag=\(tag)", callback: callback)
-    }
-    
     /**
-    获得通知详情，替代上面的 getMeNext
-    
-    :param: type --  "reply" or "like" or "notify"
+    获得通知详情
     */
     static func getNotify(type: String, page: Int, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/notify?type=\(type)&&page=\(page)&&uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/v2/notify?type=\(type)&page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+//        GET /v2/notify
     }
     
     static func postBan(uid: String, callback: V.StringCallback) {
@@ -922,10 +919,6 @@ extension Api {
     static func getQuit(id: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/multidream/leave/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
-    }
-    
-    static func getInstagram(token: String, callback: V.JsonCallback) {
-        V.httpGetForJson("https://api.instagram.com/v1/users/self/media/recent/?access_token=\(token)", callback: callback)
     }
 }
 

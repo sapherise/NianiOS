@@ -29,7 +29,10 @@ protocol delegateSAStepCell {
 **  8 dataArray 在添加数据时，数据应转码，完成后设定 currentDataArray
 */
 
+
+
 class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+    
     var data: NSDictionary! {
         didSet {
             let heightCell = data["heightCell"] as! CGFloat
@@ -50,7 +53,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             }
             
             let yButton = heightCell - SIZE_PADDING - SIZE_LABEL_HEIGHT
-            viewLine?.setY(heightCell - globalHalf)
+            viewLine?.setY(heightCell - globalHalf - globalHalf/2)
+            
             labelComment.setY(yButton)
             labelComment.setWidth(widthComment)
             labelComment.text = comments == "0" ? "回应" : "回应 \(comments)"
@@ -101,7 +105,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var btnNoLike: UIButton!
     var btnLike: UIButton!
     var num = -1
-    var viewLine: UIView?
+    var viewLine: UIView!
     var type = 0    // 0 为关注，1 为记本，2 为动态
     var actionSheetDelete: UIActionSheet!
     var activityViewController: UIActivityViewController!
@@ -117,8 +121,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         postBGView = UIImageView(frame: CGRectZero)
         contentView.insertSubview(postBGView, atIndex: 0)
         viewLine = UIView(frame: CGRectMake(SIZE_PADDING, 0, globalWidth - SIZE_PADDING * 2, globalHalf))
-        viewLine?.backgroundColor = UIColor.LineColor()
-        contentView.addSubview(viewLine!)
+        viewLine.backgroundColor = UIColor.LineColor()
+        contentView.addSubview(viewLine)
         
         
         // 头像
@@ -130,7 +134,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
         // 添加配图
         imageHolder = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING * 2 + SIZE_IMAGEHEAD_WIDTH, globalWidth - SIZE_PADDING * 2, 0))
-        imageHolder.backgroundColor = UIColor.GreyColor1()
+        imageHolder.backgroundColor = UIColor.GreyColor4()
         contentView.addSubview(imageHolder)
         
         // 添加多图
@@ -150,7 +154,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
         // 回应
         labelComment = UILabel(frame: CGRectMake(SIZE_PADDING, 0, 0, SIZE_LABEL_HEIGHT))
-        labelComment.backgroundColor = UIColor.GreyColor2()
+        labelComment.backgroundColor = UIColor.GreyColor4()
         labelComment.textAlignment = .Center
         labelComment.textColor = UIColor.GreyColor3()
         labelComment.font = UIFont.systemFontOfSize(13)
@@ -159,7 +163,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
         // 赞
         labelLike = UILabel(frame: CGRectMake(0, 0, 0, SIZE_LABEL_HEIGHT))
-        labelLike.backgroundColor = UIColor.GreyColor2()
+        labelLike.backgroundColor = UIColor.GreyColor4()
         labelLike.textAlignment = .Center
         labelLike.textColor = UIColor.GreyColor3()
         labelLike.font = UIFont.systemFontOfSize(13)

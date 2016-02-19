@@ -18,11 +18,11 @@ extension UIImageView {
     // ignore 是否无视网络环境加载图片
     // animated 加载完成后是否渐隐显示
     func setImage(urlString: String, radius: CGFloat = 0) {
-        self.backgroundColor = UIColor.GreyColor1()
+        self.backgroundColor = UIColor.GreyColor4()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String
-        if (saveMode == "on") && (networkStatus == 1) {   //如果是开启了同时是在2G下
+        if (saveMode == "on") && (networkStatus == 1) {   //如果是开启了同时是在流量下
             self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
             self.sd_setImageWithURL(url, completed: { (image, err, type, url) -> Void in
@@ -36,7 +36,7 @@ extension UIImageView {
     
     /* 进展中的单图要用到，用以显示进度条 */
     func setCell(urlString: String) {
-        self.backgroundColor = UIColor.GreyColor1()
+        self.backgroundColor = UIColor.GreyColor4()
         let url = NSURL(string: urlString)
         let networkStatus = getStatus()
         let saveMode = Cookies.get("saveMode") as? String

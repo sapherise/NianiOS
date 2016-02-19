@@ -24,8 +24,8 @@ class Card: UIView {
     
     override func awakeFromNib() {
         self.frame = CGRectMake(10, 10, widthCard, widthCard)
-        viewLine.setHeightHalf()
-        viewLineTop.setHeightHalf()
+        viewLine.setHeight(globalHalf)
+        viewLineTop.setHeight(globalHalf)
     }
     
     func getCard() -> UIImage {

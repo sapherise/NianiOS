@@ -29,7 +29,7 @@ class MeCell: UITableViewCell {
         self.lastdate!.setX(globalWidth-107)
         self.contentLabel?.setWidth(globalWidth-40)
         self.viewLine.setWidth(globalWidth - 40)
-        viewLine.setHeightHalf()
+        viewLine.setHeight(globalHalf)
         self.labelConfirm.setX(globalWidth/2-50)
     }
     
@@ -71,7 +71,9 @@ class MeCell: UITableViewCell {
         case "18": word = "邀请你加入记本"
             content = "「\(dreamtitle)」"
         case "19": word = "更新了你们共同的记本"
-        content = "「\(dreamtitle)」"
+            content = "「\(dreamtitle)」"
+        case "20": word = "关注了你的记本"
+            content = "「\(dreamtitle)」"
         default: word = "与你互动了"
         }
         

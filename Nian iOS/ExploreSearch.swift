@@ -687,7 +687,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         mutableData.setValue(newFollow, forKey: "follow")
         self.dataArrayDream[tag] = mutableData
         self.dreamTableView.reloadData()
-        Api.postFollowDream(id, follow: newFollow) { json in
+        Api.getFollowDream(id) { json in
         }
     }
     

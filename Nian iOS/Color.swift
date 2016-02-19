@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /* 主题编号 */
-var theme = 2
+var theme = 1
 
 extension UIColor {
     
@@ -68,8 +68,16 @@ extension UIColor {
         return UIColor(red: 0x66/255.0, green: 0x66/255.0, blue: 0x66/255.0, alpha: 1)
     }
     
+    /* 最浅的颜色，#fafafa */
+    class func GreyColor4() -> UIColor {
+        return UIColor(red: 0xfa/255.0, green: 0xfa/255.0, blue: 0xfa/255.0, alpha: 1)
+    }
+    
     /* 主文本颜色 */
     class func ContentColor() -> UIColor {
+        if theme == 1 {
+            return UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1)
+        }
         return UIColor(red: 0xb3/255.0, green: 0xb3/255.0, blue: 0xb3/255.0, alpha: 1)
     }
     
@@ -80,4 +88,5 @@ extension UIColor {
         }
         return UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1)
     }
+    
 }

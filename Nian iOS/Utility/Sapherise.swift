@@ -43,7 +43,7 @@ var globalVVeboReload = false
 let globalWidth = UIScreen.mainScreen().bounds.width
 let globalHeight = UIScreen.mainScreen().bounds.height
 let globalScale = UIScreen.mainScreen().scale
-let globalHalf: CGFloat = 0.5
+let globalHalf: CGFloat = globalScale > 0 ? 1 / globalScale : 0.5
 var globaliPhone: Int =  globalHeight < 500 ? 4 : 5
 var globaliOS: Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
 var isiPhone6: Bool = globalWidth == 375 ? true : false
@@ -681,15 +681,6 @@ extension UIViewController {
                     }
                 }
             }
-        } else {
-            /* instagram 的调用 */
-            let arr = url.componentsSeparatedByString("nian:%23access_token=")
-            if arr.count == 2 {
-                let token = arr[1]
-                let vc = Instagram()
-                vc.token = token
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
         }
     }
     
@@ -967,10 +958,6 @@ extension UIView {
         maskLayer.frame = self.bounds
         maskLayer.path = maskPath.CGPath
         self.layer.mask = maskLayer
-    }
-    
-    func setHeightHalf() {
-        self.setHeight(globalHalf)
     }
     
     func addGhost(content: String) {

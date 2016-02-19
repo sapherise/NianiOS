@@ -26,7 +26,7 @@ class SAUserCell: UITableViewCell {
         self.viewHolder.setWidth(globalWidth)
         self.btnMain.setX(globalWidth-85)
         self.viewLine.setWidth(globalWidth-85)
-        viewLine.setHeightHalf()
+        viewLine.setHeight(globalHalf)
     }
     
     override func layoutSubviews() {

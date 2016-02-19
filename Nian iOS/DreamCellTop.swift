@@ -46,9 +46,9 @@ class DreamCellTop: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.None
         self.viewLineTop.setWidth(globalWidth - 40)
-        viewLineLeft.setWidth(0.5)
-        viewLineRight.setWidth(0.5)
-        viewLineTop.setHeightHalf()
+        viewLineLeft.setWidth(globalHalf)
+        viewLineRight.setWidth(globalHalf)
+        viewLineTop.setHeight(globalHalf)
         scrollView.setTag()
         btnMain.backgroundColor = UIColor.HightlightColor()
         contentView.backgroundColor = UIColor.BackgroundColor()
@@ -77,6 +77,7 @@ class DreamCellTop: UITableViewCell {
         let heightTitle = data.objectForKey("heightTitle") as! CGFloat
         let heightContent = data.objectForKey("heightContent") as! CGFloat
         let totalUsers = data.stringAttributeForKey("total_users")
+        let heightCell = data.objectForKey("heightCell") as! CGFloat
         
         /* 判断是否加入该记本了，0 未加入，1 已加入，2 邀请中 */
         let isJoined = data.stringAttributeForKey("joined")
@@ -134,7 +135,7 @@ class DreamCellTop: UITableViewCell {
         btnMain.setX((globalWidth - btnMain.width())/2)
         
         /* 分割线 */
-        viewLineTop.setY(btnMain.bottom() + 32)
+        viewLineTop.setY(heightCell - globalHalf - globalHalf/2)
         
         /* 如果已经加入 */
         if isJoined == "1" || SAUid() == uid {
