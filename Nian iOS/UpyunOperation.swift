@@ -28,12 +28,13 @@ class UpyunOperation: NSOperation {
         if !hasUploaded {
             var imageFinal: UIImage!
             if let imgTmp = image as? UIImage {
-                imageFinal = imgTmp
+                imageFinal = imgTmp.fixOrientation()
             } else if let imgTmp = image as? ALAsset {
                 let assetRepresentation = imgTmp.defaultRepresentation()
-                imageFinal = UIImage(CGImage: assetRepresentation.fullResolutionImage().takeUnretainedValue())
+                let orientationValue = imgTmp.valueForProperty("ALAssetPropertyOrientation") as! Int
+                let orientation = UIImageOrientation(rawValue: orientationValue)
+                imageFinal = UIImage(CGImage: assetRepresentation.fullResolutionImage().takeUnretainedValue(), scale: 1, orientation: orientation!)
             }
-            
             uy.uploadImage(resizedImage(imageFinal, newWidth: 500), savekey: name)
             uy.successBlocker = ({(data: AnyObject!) in
                 if let d = data as? NSDictionary {

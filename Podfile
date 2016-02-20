@@ -12,6 +12,7 @@ pod 'UMengAnalytics'
 pod 'SDWebImage'
 pod 'SDWebImage-ProgressView'
 pod 'RongCloudIMLib'
+pod 'FLAnimatedImage'
 
 end
 

@@ -34,8 +34,8 @@ class Card: UIView {
             self.content = V.enTime()
         }
         var heightNew: CGFloat = 0
-        let w = CGFloat((self.widthImage as NSString).floatValue)
-        let h = SACeil(CGFloat((self.heightImage as NSString).floatValue), dot: 0, isCeil: false)
+        let w = self.widthImage.toCGFloat()
+        let h = SACeil(self.heightImage.toCGFloat(), dot: 0, isCeil: false)
         if w != 0 {
             heightNew = h * (self.widthCard - self.num * 2) / w
             self.image.frame = CGRectMake(self.num, self.num * 2 + 1, self.widthCard - self.num * 2, heightNew)

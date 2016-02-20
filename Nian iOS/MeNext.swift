@@ -88,7 +88,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         Api.getNotify(self.msgType, page: page) { json in
             if json != nil {
-                print(json)
                 if clear {
                     self.dataArray.removeAllObjects()
                 }

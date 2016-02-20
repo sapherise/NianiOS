@@ -343,7 +343,24 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             editActivity.saActivityFunction = {
                 let vc = AddStep(nibName: "AddStep", bundle: nil)
                 vc.willEdit = true
-                vc.dataEdit = self.data
+                
+                /* 改造 data，以修复编辑单图时图片丢失 */
+                let mutableData = NSMutableDictionary(dictionary: self.data)
+                if let _images = self.data.objectForKey("images") as? NSArray {
+                    let images = NSMutableArray(array: _images)
+                    if images.count == 0 {
+                        let image = self.data.stringAttributeForKey("image")
+                        if image != "" {
+                            let w = self.data.stringAttributeForKey("width").toCGFloat()
+                            let h = self.data.stringAttributeForKey("height").toCGFloat()
+                            let d = ["path": image, "width": w, "height": h]
+                            images.addObject(d)
+                            mutableData.setValue(images, forKey: "images")
+                        }
+                    }
+                }
+                
+                vc.dataEdit = mutableData
                 vc.rowEdit = row
                 vc.idDream = self.data.stringAttributeForKey("dream")
                 vc.delegate = self
@@ -531,8 +548,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         let content = data.stringAttributeForKey("content").decode()
         let lastdate = data.stringAttributeForKey("lastdate")
         let title = data.stringAttributeForKey("title").decode()
-        let img0 = (data.stringAttributeForKey("width") as NSString).floatValue
-        let img1 = (data.stringAttributeForKey("height") as NSString).floatValue
+        let img0 = data.stringAttributeForKey("width").toCGFloat()
+        let img1 = data.stringAttributeForKey("height").toCGFloat()
         let typeImages = data.stringAttributeForKey("type")
         var comment = data.stringAttributeForKey("comments")
         comment = comment == "0" ? "回应" : "回应 \(comment)"
@@ -565,7 +582,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                     heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
                 }
             } else {
-                heightImage = CGFloat(img1 * Float(globalWidth - 40) / img0)
+                heightImage = img1 * (globalWidth - 40) / img0
                 heightCell = content == "" ?  heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT : heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
             }
         }

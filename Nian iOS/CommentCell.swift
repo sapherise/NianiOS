@@ -67,7 +67,11 @@ class CommentCell: UITableViewCell {
 
 extension String {
     func toCGFloat() -> CGFloat {
-        return CGFloat((self as NSString).floatValue)
+        let f = CGFloat((self as NSString).floatValue)
+        if f != 0 {
+            return f
+        }
+        return 1.0
     }
 }
 

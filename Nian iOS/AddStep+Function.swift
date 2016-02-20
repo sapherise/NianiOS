@@ -127,9 +127,9 @@ extension AddStep {
                             } else {
                                 /* 单图 */
                                 if let image = self.uploadArray[0] as? NSDictionary {
-                                    let w = (image.stringAttributeForKey("width") as NSString).floatValue
-                                    let h = (image.stringAttributeForKey("height") as NSString).floatValue
-                                    heightImage = CGFloat(h * Float(globalWidth - 40) / w)
+                                    let w = image.stringAttributeForKey("width").toCGFloat()
+                                    let h = image.stringAttributeForKey("height").toCGFloat()
+                                    heightImage = h * (globalWidth - 40) / w
                                     if type == 6 {
                                         /* 有文字，单图片 */
                                         heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT

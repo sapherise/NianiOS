@@ -1,1 +1,1 @@
-../../../../RongCloudIMLib/Rong_Cloud_iOS_SDK_v2_4_3_stable/RongIMLib.framework/Headers/RCIMClient.h
+../../../../RongCloudIMLib/Rong_Cloud_iOS_SDK_v2_4_2_stable/RongIMLib.framework/Headers/RCIMClient.h

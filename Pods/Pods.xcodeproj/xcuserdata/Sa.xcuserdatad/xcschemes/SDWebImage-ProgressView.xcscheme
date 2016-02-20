@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '34594EDF75DC393B9FE3AFE2'
+               BlueprintIdentifier = '7848198337CB9F0F1EEE80A9'
                BlueprintName = 'SDWebImage-ProgressView'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libSDWebImage-ProgressView.a'>

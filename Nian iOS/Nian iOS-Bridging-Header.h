@@ -74,3 +74,5 @@
 /* 融云 IM */
 #import <RongIMLib/RongIMLib.h>
 
+#import "FLAnimatedImage.h"
+

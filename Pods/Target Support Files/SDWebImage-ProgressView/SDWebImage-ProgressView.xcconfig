@@ -1,4 +1,4 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/SDWebImage-ProgressView" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Base64" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public/RongCloudIMLib" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/SDWebImage-ProgressView" "${PODS_ROOT}/Headers/Public/UMengAnalytics"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/SDWebImage-ProgressView" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Base64" "${PODS_ROOT}/Headers/Public/FLAnimatedImage" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public/RongCloudIMLib" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/SDWebImage-ProgressView" "${PODS_ROOT}/Headers/Public/UMengAnalytics"
 PODS_ROOT = ${SRCROOT}
 SKIP_INSTALL = YES

@@ -520,41 +520,12 @@ extension UIImage{
         if self.imageOrientation == UIImageOrientation.Up {
             return self
         }
-        var transform = CGAffineTransformIdentity
-        switch (self.imageOrientation) {
-        case .Down, .DownMirrored:
-            transform = CGAffineTransformTranslate(transform, self.size.width, self.size.height)
-            transform = CGAffineTransformRotate(transform, CGFloat(M_PI))
-        case .Left, .LeftMirrored:
-            transform = CGAffineTransformTranslate(transform, self.size.width, 0)
-            transform = CGAffineTransformRotate(transform, CGFloat(M_PI_2))
-        case .Right, .RightMirrored:
-            transform = CGAffineTransformTranslate(transform, 0, self.size.height)
-            transform = CGAffineTransformRotate(transform, -CGFloat(M_PI_2))
-        default:
-            break
-        }
-        switch (self.imageOrientation) {
-        case .UpMirrored, .DownMirrored:
-            transform = CGAffineTransformTranslate(transform, self.size.width, 0)
-            transform = CGAffineTransformScale(transform, -1, 1)
-        case .LeftMirrored, .RightMirrored:
-            transform = CGAffineTransformTranslate(transform, self.size.height, 0)
-            transform = CGAffineTransformScale(transform, -1, 1)
-        default:
-            break
-        }
-        let ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), CGImageGetBitsPerComponent(self.CGImage), 0, CGImageGetColorSpace(self.CGImage), 1)
-        CGContextConcatCTM(ctx, transform)
-        switch (self.imageOrientation) {
-        case .Left, .LeftMirrored, .Right, .RightMirrored:
-            CGContextDrawImage(ctx, CGRectMake(0, 0, self.size.height, self.size.width), self.CGImage)
-        default:
-            CGContextDrawImage(ctx, CGRectMake(0, 0, self.size.width, self.size.height), self.CGImage)
-        }
-        let cgimg = CGBitmapContextCreateImage(ctx)
-        let img = UIImage(CGImage: cgimg!)
-        return img
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        self.drawInRect(rect)
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return normalizedImage
     }
     
     class func imageFromURL(aURL: NSURL, success: ((image: UIImage) -> Void), error: () -> Void) {
@@ -819,17 +790,10 @@ func shake() {
 }
 
 func getCacheImage(url: String) -> UIImage? {
-//    let urlImage = NSURL(string: url)!
-//    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-//    let cachedImage: UIImage? = UIImageView.sharedImageCache().cachedImageForRequest(req)
-//    return cachedImage
     return SDImageCache.sharedImageCache().imageFromDiskCacheForKey(url)
 }
 
 func setCacheImage(url: String, img: UIImage, width: CGFloat) {
-//    let urlImage = NSURL(string: url)!
-//    let req = NSURLRequest(URL: urlImage, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 60)
-//    UIImageView.sharedImageCache().cacheImage(imageNew, forRequest: req)
     var imageNew = width == 0 ? img : resizedImage(img, newWidth: width)
     imageNew = imageNew.fixOrientation()
     SDImageCache.sharedImageCache().storeImage(imageNew, forKey: url)

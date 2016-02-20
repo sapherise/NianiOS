@@ -59,6 +59,8 @@ class SAImageZoomingView: UIScrollView, UIScrollViewDelegate {
             v.hidden = false
         }
         
+        // todo: 编辑单图的时候图片会丢失
+        
         /* placeHolder 就是缓存的小图
         ** 然后加载 !large 的大图
         */

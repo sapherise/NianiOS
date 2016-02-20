@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FLAnimatedImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>NSData+MD5Digest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,7 +42,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>202ACECFA6D261FD1D28A1E14EE91437</key>
+		<key>1A79BA86DB198181905CBBFC1F1E6701</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>814CFDC78551C5FF0F2459637B517ACE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,22 +57,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9FAFE7D2332C671DDA045FE1F94013F0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ACE84AEA4AD81BF5DDA3EBDC5432D207</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AF4E429E2B66ED5C71EE4F2F218B0132</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CDA9A3E097C2FBB5E489F766A13240CC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D5CF59D7D561FCDA3A8704DF93231ED1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D643DA2EF8981FB495190A923C0BDDF1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -17,8 +17,8 @@ class VVeboCollectionViewCell: UICollectionViewCell {
     
     func setup() {
         if image != nil {
-            let path = image?.stringAttributeForKey("path")
-            imageView.setImage("http://img.nian.so/step/\(path!)!200x")
+            let path = image!.stringAttributeForKey("path")
+            imageView.setImage("http://img.nian.so/step/\(path)!200x")
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         }
     }
@@ -30,17 +30,6 @@ class VVeboCollectionViewCell: UICollectionViewCell {
 //        imageView.showImage("http://img.nian.so/step/\(path!)!200x", newWidth: w, newHeight: h)
         // todo: 上面的是对的
         imageView.open(images, index: index, exten: "!200x")
-    }
-}
-
-extension UIImageView {
-    func open(images: NSArray, index: Int, exten: String) {
-        let v = ImageViewer(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-        v.images = images
-        v.index = index
-        v.exten = exten
-        v.setup()
-        self.window?.addSubview(v)
     }
 }
 
