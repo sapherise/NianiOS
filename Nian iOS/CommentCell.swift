@@ -71,7 +71,7 @@ extension String {
         if f != 0 {
             return f
         }
-        return 1.0
+        return 0
     }
 }
 

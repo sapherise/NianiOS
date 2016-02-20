@@ -101,7 +101,6 @@
 		129152E31A6A90ED00BB213C /* FindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E21A6A90ED00BB213C /* FindCell.xib */; };
 		129152E51A6A90F900BB213C /* FindCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129152E41A6A90F900BB213C /* FindCellTop.swift */; };
 		129152E71A6A910200BB213C /* FindCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129152E61A6A910200BB213C /* FindCellTop.xib */; };
-		1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292ABA51A5FB45B0091CC5F /* showImage.swift */; };
 		129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129A76601B8DC92E00EC5A19 /* Home+News.swift */; };
 		129B9F051BA2AFD800E5B25A /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */; };
 		129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 129B9F021BA2AFD800E5B25A /* WeiboSDK.bundle */; };
@@ -135,7 +134,6 @@
 		12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DED1A6F7B3300B0E327 /* WeChatActivityGeneral.swift */; };
 		12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */; };
 		12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */; };
-		12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */; };
 		12CE15A71A3EC525006AC031 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A61A3EC525006AC031 /* Circle.swift */; };
 		12D1048D19F3387600E65B54 /* Level.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D1048C19F3387600E65B54 /* Level.xib */; };
 		12D846011A2318A6005DCC08 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D845FF1A2318A6005DCC08 /* Reachability.m */; };
@@ -382,7 +380,6 @@
 		129152E21A6A90ED00BB213C /* FindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCell.xib; sourceTree = "<group>"; };
 		129152E41A6A90F900BB213C /* FindCellTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCellTop.swift; sourceTree = "<group>"; };
 		129152E61A6A910200BB213C /* FindCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindCellTop.xib; sourceTree = "<group>"; };
-		1292ABA51A5FB45B0091CC5F /* showImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = showImage.swift; sourceTree = "<group>"; };
 		129375181A236E8B001F7442 /* AddStepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStepCell.xib; sourceTree = "<group>"; };
 		129A76601B8DC92E00EC5A19 /* Home+News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+News.swift"; sourceTree = "<group>"; };
 		129B9EF91BA2AFD800E5B25A /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
@@ -429,7 +426,6 @@
 		12C96DED1A6F7B3300B0E327 /* WeChatActivityGeneral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatActivityGeneral.swift; sourceTree = "<group>"; };
 		12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatMomentsActivity.swift; sourceTree = "<group>"; };
 		12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatSessionActivity.swift; sourceTree = "<group>"; };
-		12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAImageZoomingView.swift; sourceTree = "<group>"; };
 		12CE15A61A3EC525006AC031 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		12D1048C19F3387600E65B54 /* Level.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Level.xib; sourceTree = "<group>"; };
 		12D845FF1A2318A6005DCC08 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -1044,7 +1040,6 @@
 		12CDE5CE19AC9FB4002E793F /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
-				12CDE5D119ACA58E002E793F /* SAImageZoomingView.swift */,
 				129E836A1C76E9B300DC8C58 /* ImageViewer.swift */,
 				12B2F8811C79134100902208 /* Gif.swift */,
 			);
@@ -1272,7 +1267,6 @@
 				12FB48C2196AE8010026DD51 /* UIViewExt.swift */,
 				12FB48C3196AE8010026DD51 /* SAHttpRequest.swift */,
 				323F783D1A105C93003C3755 /* V.swift */,
-				1292ABA51A5FB45B0091CC5F /* showImage.swift */,
 				32A2197B1A25C5B800B5BC35 /* Payment.swift */,
 				12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */,
 				C4CA84D51BD8C7C50075B075 /* NianNetworkClient.swift */,
@@ -1778,7 +1772,6 @@
 				12CE15A71A3EC525006AC031 /* Circle.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
-				12CDE5D219ACA58E002E793F /* SAImageZoomingView.swift in Sources */,
 				C483CF911AEB435200E1C550 /* ExploreSearch.swift in Sources */,
 				126FB4731B574EDB0056221C /* SAActivityViewController.swift in Sources */,
 				C48FBCDF1B4A5B2A007E0BF9 /* NSData+NSHash.m in Sources */,
@@ -1880,7 +1873,6 @@
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				C4C9AB0D1C13FACB00B99B8C /* VVImageCollectionView.swift in Sources */,
 				32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */,
-				1292ABA61A5FB45B0091CC5F /* showImage.swift in Sources */,
 				12F07B451BAF4C31008F8ADB /* ExploreNext.swift in Sources */,
 				C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */,
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
