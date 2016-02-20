@@ -412,8 +412,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             let img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
             if img0 != 0 {
                 if let v = sender.view as? UIImageView {
-                    let url = "\(arrContent[0])_\(arrContent[1]).png!a"
-                    v.showImage(url)
+                    let images = NSMutableArray()
+                    let path = "\(SAUid())_\(arrContent[1]).png"
+                    let d = ["path": path, "width": arrContent[2], "height": arrContent[3]]
+                    images.addObject(d)
+                    v.open(images, index: 0, exten: "!a", folder: "circle")
                 }
             }
         }

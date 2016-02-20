@@ -472,7 +472,12 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     
     func onUserHeadClick(sender:UIGestureRecognizer) {
         if let v = sender.view as? UIImageView {
-            v.showImage("http://img.nian.so/head/\(self.Id).jpg!dream")
+            let images = NSMutableArray()
+            let data = ["path": "\(self.Id).jpg", "width": "500", "height": "500"]
+            images.addObject(data)
+//            v.showImage("http://img.nian.so/head/\(self.Id).jpg!dream")
+//            v.open(images, index: 0, exten: "!dream")
+            v.open(images, index: 0, exten: "!dream", folder: "head")
         }
     }
     

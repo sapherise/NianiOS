@@ -10,12 +10,19 @@ import Foundation
 import UIKit
 
 extension UIImageView {
-    func open(images: NSArray, index: Int, exten: String) {
+    /* 
+        images 为 path/width/height 的字典的组，
+        index 为点进来时该图片的 index，
+        exten 是原图片的拓展，
+        folder 是该图片在又拍云上的路径 
+    */
+    func open(images: NSArray, index: Int, exten: String, folder: String = "step") {
         let v = ImageViewer(frame: CGRectMake(0, 0, globalWidth, globalHeight))
         v.images = images
         v.index = index
         v.exten = exten
         v.imageOriginal = self
+        v.folder = folder
         v.setup()
         self.window?.addSubview(v)
     }
@@ -33,6 +40,7 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
     var exten = ""
     var current = 0
     var imageOriginal: UIImageView!
+    var folder = "step"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -134,10 +142,10 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
         if sender.state == UIGestureRecognizerState.Began {
             if let data = images[current] as? NSDictionary {
                 let path = data.stringAttributeForKey("path")
-                if let image = getCacheImage("http://img.nian.so/step/\(path)!large") {
+                if let image = getCacheImage("http://img.nian.so/\(folder)/\(path)!large") {
                     let avc = SAActivityViewController.shareSheetInView(["喜欢念上这张照片！", image, NSURL(string: "http://nian.so/app")!], applicationActivities: [], isStep: true)
                     imageOriginal.findRootViewController()?.presentViewController(avc, animated: true, completion: nil)
-                } else if let image = getCacheImage("http://img.nian.so/step/\(path)") {
+                } else if let image = getCacheImage("http://img.nian.so/\(folder)/\(path)") {
                     let avc = SAActivityViewController.shareSheetInView(["喜欢念上这张动图！", image, NSURL(string: "http://nian.so/app")!], applicationActivities: [], isStep: true)
                     imageOriginal.findRootViewController()?.presentViewController(avc, animated: true, completion: nil)
                 }
@@ -218,9 +226,9 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
                     viewProgress.hidden = true
                     
                     /* 将传入的图片作为 placeHolder */
-                    let imageURLBefore = "http://img.nian.so/step/\(path)\(exten)"
+                    let imageURLBefore = "http://img.nian.so/\(folder)/\(path)\(exten)"
                     let imageBefore = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(imageURLBefore)
-                    let imageURLAfter = "http://img.nian.so/step/\(path)!large"
+                    let imageURLAfter = "http://img.nian.so/\(folder)/\(path)!large"
                     
                     /* 设置新的滚动视图 */
                     let scrollView = UIScrollView(frame: CGRectMake(globalWidth * CGFloat(i), 0, globalWidth, globalHeight))

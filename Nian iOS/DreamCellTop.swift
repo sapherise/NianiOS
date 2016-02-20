@@ -223,7 +223,13 @@ class DreamCellTop: UITableViewCell {
     
     func onImage() {
         let img = data!.stringAttributeForKey("image")
-        imageDream.showImage("http://img.nian.so/dream/\(img)!dream")
+//        imageDream.showImage("http://img.nian.so/dream/\(img)!dream")
+        
+        
+        let images = NSMutableArray()
+        let d = ["path": "\(img)", "width": "500", "height": "500"]
+        images.addObject(d)
+        imageDream.open(images, index: 0, exten: "!dream", folder: "dream")
     }
     
     /* 查看按赞 */
