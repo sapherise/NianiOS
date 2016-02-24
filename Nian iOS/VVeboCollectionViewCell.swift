@@ -24,11 +24,6 @@ class VVeboCollectionViewCell: UICollectionViewCell {
     }
     
     func onImage() {
-//        let path = image?.stringAttributeForKey("path")
-//        let w = CGFloat((image!.stringAttributeForKey("width") as NSString).floatValue)
-//        let h = CGFloat((image!.stringAttributeForKey("height") as NSString).floatValue)
-//        imageView.showImage("http://img.nian.so/step/\(path!)!200x", newWidth: w, newHeight: h)
-        // todo: 上面的是对的
         imageView.open(images, index: index, exten: "!200x")
     }
 }

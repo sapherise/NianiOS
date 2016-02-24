@@ -27,7 +27,6 @@ var globalWillCircleJoinReload:Int = 0
 var globalWillReEnter: Int = 0
 var globalURL:String = ""
 var globalViewLoading:UIView?
-var globalViewFilm:ILTranslucentView?
 var globalViewFilmExist: Bool = false
 var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
@@ -702,86 +701,6 @@ extension UIButton {
         self.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
         self.titleLabel!.font = UIFont.systemFontOfSize(13)
         self.setTitle(content, forState: UIControlState())
-    }
-}
-
-extension UIViewController {
-    
-    // transDirectly 为真的时候，直接与服务器交互，否则会先跳转到某个页面进行选择，如推广、废纸篓
-    // globalViewfilmExist 为真的时候，直接在当前的幕布下修改，否则创建一个幕布进行修改
-    func showFilm(title: String, prompt: String, button: String, transDirectly: Bool, callback: (FilmCell) -> Void) {
-        if !globalViewFilmExist {
-            globalViewFilmExist = true
-            globalViewFilm = ILTranslucentView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
-            globalViewFilm!.alpha = 0
-            globalViewFilm!.translucentAlpha = 1
-            globalViewFilm!.translucentStyle = UIBarStyle.Default
-            globalViewFilm!.translucentTintColor = UIColor.clearColor()
-            globalViewFilm!.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)
-            globalViewFilm!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFilmTap:"))
-            globalViewFilm!.userInteractionEnabled = true
-            let nib = NSBundle.mainBundle().loadNibNamed("Film", owner: self, options: nil) as NSArray
-            let viewFilmDialog: FilmCell = nib.objectAtIndex(0) as! FilmCell
-            viewFilmDialog.frame.origin.x = ( globalWidth - 270 ) / 2
-            viewFilmDialog.frame.origin.y = -270
-            viewFilmDialog.labelTitle.text = title
-            viewFilmDialog.labelDes.text = prompt
-            viewFilmDialog.labelDes.setHeight(prompt.stringHeightWith(12, width: 200))
-            viewFilmDialog.btnBuy.setTitle(button, forState: UIControlState.Normal)
-            viewFilmDialog.btnBuy.setY(viewFilmDialog.labelDes.bottom()+22)
-            viewFilmDialog.transDirectly = transDirectly
-            viewFilmDialog.callback = callback
-            globalViewFilm!.addSubview(viewFilmDialog)
-            view.addSubview(globalViewFilm!)
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                globalViewFilm!.alpha = 1
-                viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 45
-            })
-            delay(0.3, closure: {
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
-                    viewFilmDialog.frame.origin.y = (globalHeight - globalWidth)/2 + 25
-                })
-            })
-        } else {
-            let views:NSArray = globalViewFilm!.subviews
-            for view:AnyObject in views {
-                if NSStringFromClass(view.classForCoder) == "Nian_iOS.FilmCell" {
-                    if let v = view as? FilmCell {
-                        v.labelTitle.text = title
-                        v.labelDes.text = prompt
-                        v.labelDes.setHeight(prompt.stringHeightWith(12, width: 200))
-                        v.btnBuy.setTitle(button, forState: UIControlState.Normal)
-                        v.btnBuy.setY(v.labelDes.bottom()+22)
-                        v.transDirectly = transDirectly
-                        v.callback = callback
-                    }
-                }
-            }
-        }
-    }
-    
-    // 点击 Film 的其他部分，消失并移除这个 Film
-    func onFilmTap(sender: UIGestureRecognizer){
-        globalViewFilmExist = false
-        UIView.animateWithDuration(0.3, animations: {
-            () -> Void in
-            if sender.view != nil {
-                sender.view!.alpha = 0
-            }
-            }, completion: {
-                finish in
-                if sender.view != nil {
-                    sender.view!.removeFromSuperview()
-                }
-        })
-    }
-    
-    // 关闭当前的 Film
-    func onFilmClose(){
-        if globalViewFilm != nil {
-            globalViewFilm!.removeFromSuperview()
-            globalViewFilmExist = false
-        }
     }
 }
 

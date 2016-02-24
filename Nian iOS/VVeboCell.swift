@@ -270,9 +270,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         let h = data.stringAttributeForKey("height")
 //        imageHolder.showImage(V.urlStepImage(img, tag: .Large))
         
-        // todo: 所有 open 的地方都要改
-        
-        // todo: 滚动条要隐藏起来
         let images = NSMutableArray()
         let d = ["path": img, "width": w, "height": h]
         images.addObject(d)

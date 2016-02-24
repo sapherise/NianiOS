@@ -200,9 +200,6 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
         tap.requireGestureRecognizerToFail(doubleTap)
         self.addGestureRecognizer(doubleTap)
         
-        // todo: 怎么不管哪个都有图片了？
-        // todo: 支持 gif 吗？
-        
         if images.count > 0 {
             for i in 0...(images.count - 1) {
                 if let data = images[i] as? NSDictionary {

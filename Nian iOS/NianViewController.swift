@@ -247,7 +247,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     if error == 0 {
                         let _data = json!.objectForKey("data") as! NSDictionary
                         let data = _data.objectForKey("user") as! NSDictionary
-                        //                    let data = json!.objectForKey("user") as! NSDictionary
                         let name = data.stringAttributeForKey("name")
                         let coin = data.stringAttributeForKey("coin")
                         let dream = data.stringAttributeForKey("dream")
@@ -280,6 +279,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         }
                         Cookies.set(name, forKey: "user")
                         Cookies.set(AllCoverURL, forKey: "coverUrl")
+                        Cookies.set(coin, forKey: "coin")
                     } else {
                         self.SAlogout()
                     }
@@ -338,11 +338,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func coinClick(){
-        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
-        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
-        self.navigationController!.pushViewController(viewController, animated: true)
-//        let vc = Coin()
-//        self.navigationController?.pushViewController(vc, animated: true)
+//        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
+//        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
+//        self.navigationController!.pushViewController(viewController, animated: true)
+        let vc = Coin()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {

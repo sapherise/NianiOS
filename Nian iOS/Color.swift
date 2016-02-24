@@ -47,12 +47,24 @@ extension UIColor {
         return UIColor(red: 0x1e/255.0, green: 0x20/255.0, blue: 0x25/255.0, alpha: 1)
     }
     
+    class func GreyBackgroundColor() -> UIColor {
+        return UIColor(red: 0xfa/255.0, green: 0xfa/255.0, blue: 0xfa/255.0, alpha: 1)
+    }
+    
     /* 浅灰 */
     class func GreyColor1() -> UIColor {
         if theme == 1 {
             return UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1)
         }
         return UIColor(red: 0xe6/255.0, green: 0xe6/255.0, blue: 0xe6/255.0, alpha: 1)
+    }
+    
+    class func MainColor() -> UIColor {
+        return UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1)
+    }
+    
+    class func secAuxiliaryColor() -> UIColor {
+        return UIColor(red: 0xb3/255.0, green: 0xb3/255.0, blue: 0xb3/255.0, alpha: 1)
     }
     
     /* 深灰，#333 */

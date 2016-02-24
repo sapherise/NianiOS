@@ -57,7 +57,6 @@
 		126A808F1C44A2C70057EAAF /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A808E1C44A2C70057EAAF /* List.swift */; };
 		126A80911C44A6680057EAAF /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126A80901C44A6680057EAAF /* ListCell.xib */; };
 		126A80931C44A6880057EAAF /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A80921C44A6880057EAAF /* ListCell.swift */; };
-		126A80D01C44BC600057EAAF /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A80CF1C44BC600057EAAF /* Coin.swift */; };
 		126D6E431C2F1E800053211C /* LSYAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E361C2F1E800053211C /* LSYAlbum.swift */; };
 		126D6E441C2F1E800053211C /* LSYAlbumDelegateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E371C2F1E800053211C /* LSYAlbumDelegateClass.swift */; };
 		126D6E451C2F1E800053211C /* LSYAlbumModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126D6E381C2F1E800053211C /* LSYAlbumModel.swift */; };
@@ -114,6 +113,12 @@
 		129F6C7C1C3178C3008B61A5 /* AddStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129F6C7B1C3178C3008B61A5 /* AddStepCell.swift */; };
 		129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DB1B5E2DA400BDFE03 /* star.sks */; };
 		129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 129FE4DD1B5E2F5100BDFE03 /* star.png */; };
+		12A190FE1C7DA4E1005668C6 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A190FD1C7DA4E1005668C6 /* Coin.swift */; };
+		12A191021C7DA93F005668C6 /* Coin+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A191011C7DA93F005668C6 /* Coin+Delegate.swift */; };
+		12A191041C7DAC94005668C6 /* CoinProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A191031C7DAC94005668C6 /* CoinProductCell.swift */; };
+		12A191061C7DACA4005668C6 /* CoinProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A191051C7DACA4005668C6 /* CoinProductCell.xib */; };
+		12A191081C7DC33D005668C6 /* CoinProductTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A191071C7DC33D005668C6 /* CoinProductTop.swift */; };
+		12A1910A1C7DC399005668C6 /* CoinProductTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A191091C7DC399005668C6 /* CoinProductTop.xib */; };
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
@@ -122,8 +127,6 @@
 		12AAD1B51C5B1BEE007C42FD /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAD1B41C5B1BEE007C42FD /* Color.swift */; };
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12B2F8821C79134100902208 /* Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B2F8811C79134100902208 /* Gif.swift */; };
-		12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BAEB2B1A19F9B90041C7C0 /* Film.xib */; };
-		12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAEB2D1A19FA6D0041C7C0 /* Film.swift */; };
 		12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36911B8EABFA00B37573 /* Reddit.swift */; };
 		12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
@@ -162,10 +165,8 @@
 		12F65C131B65098F0051A914 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C121B65098F0051A914 /* Level.swift */; };
 		12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C161B654EB00051A914 /* PetTableViewGesture.swift */; };
 		12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C181B6559DB0051A914 /* PetNiAlert.swift */; };
-		12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C2D1B65703F0051A914 /* CoinCircle.swift */; };
 		12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A51BAD5533009EADC0 /* Reachability.swift */; };
 		12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */; };
-		12F7A4E21A07406F00F16F99 /* Coin3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F7A4E11A07406F00F16F99 /* Coin3.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -180,15 +181,10 @@
 		3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */; };
 		3252850D1A10C2B600316021 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3252850C1A10C2B600316021 /* Explore.storyboard */; };
 		3252850F1A10C2C300316021 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3252850E1A10C2C300316021 /* Explore.swift */; };
-		3257F7711A077B69005475BB /* Coin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3257F7701A077B69005475BB /* Coin.storyboard */; };
 		326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */; };
 		326A3E7B1A0724EE00AA92F9 /* DreamTagViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */; };
 		3274A3831A15F0DA00D2425A /* ExploreDynamicDreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3274A3821A15F0DA00D2425A /* ExploreDynamicDreamCell.swift */; };
-		328181E71A08CE2700768D7D /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328181E61A08CE2700768D7D /* CoinCell.swift */; };
 		32A2197C1A25C5B800B5BC35 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A2197B1A25C5B800B5BC35 /* Payment.swift */; };
-		32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49201A0BAA4900570B95 /* CoinDetail.swift */; };
-		32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */; };
-		32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */; };
 		3B6630BD2F2567A3267B483A /* libPods-Nian iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CC01538B73788619BF339C /* libPods-Nian iOS.a */; };
 		C401132E1B11CD8600CA6503 /* AddDreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C401132D1B11CD8600CA6503 /* AddDreamController.swift */; };
 		C40F0F291BE744FC007B7C6B /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40F0F281BE744FC007B7C6B /* SettingModel.swift */; };
@@ -331,7 +327,6 @@
 		126A808E1C44A2C70057EAAF /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		126A80901C44A6680057EAAF /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 		126A80921C44A6880057EAAF /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
-		126A80CF1C44BC600057EAAF /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		126D6E361C2F1E800053211C /* LSYAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbum.swift; sourceTree = "<group>"; };
 		126D6E371C2F1E800053211C /* LSYAlbumDelegateClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumDelegateClass.swift; sourceTree = "<group>"; };
 		126D6E381C2F1E800053211C /* LSYAlbumModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSYAlbumModel.swift; sourceTree = "<group>"; };
@@ -404,6 +399,12 @@
 		129F6C7B1C3178C3008B61A5 /* AddStepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepCell.swift; sourceTree = "<group>"; };
 		129FE4DB1B5E2DA400BDFE03 /* star.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = star.sks; path = Utility/star.sks; sourceTree = "<group>"; };
 		129FE4DD1B5E2F5100BDFE03 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star.png; path = Utility/star.png; sourceTree = "<group>"; };
+		12A190FD1C7DA4E1005668C6 /* Coin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
+		12A191011C7DA93F005668C6 /* Coin+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Coin+Delegate.swift"; sourceTree = "<group>"; };
+		12A191031C7DAC94005668C6 /* CoinProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinProductCell.swift; sourceTree = "<group>"; };
+		12A191051C7DACA4005668C6 /* CoinProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinProductCell.xib; sourceTree = "<group>"; };
+		12A191071C7DC33D005668C6 /* CoinProductTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinProductTop.swift; sourceTree = "<group>"; };
+		12A191091C7DC399005668C6 /* CoinProductTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinProductTop.xib; sourceTree = "<group>"; };
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
@@ -412,8 +413,6 @@
 		12AAD1B41C5B1BEE007C42FD /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Color.swift; path = ../Color.swift; sourceTree = "<group>"; };
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12B2F8811C79134100902208 /* Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gif.swift; sourceTree = "<group>"; };
-		12BAEB2B1A19F9B90041C7C0 /* Film.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Film.xib; sourceTree = "<group>"; };
-		12BAEB2D1A19FA6D0041C7C0 /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		12BD36911B8EABFA00B37573 /* Reddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reddit.swift; sourceTree = "<group>"; };
 		12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UITableView.swift"; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
@@ -456,10 +455,8 @@
 		12F65C121B65098F0051A914 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		12F65C161B654EB00051A914 /* PetTableViewGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableViewGesture.swift; sourceTree = "<group>"; };
 		12F65C181B6559DB0051A914 /* PetNiAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetNiAlert.swift; sourceTree = "<group>"; };
-		12F65C2D1B65703F0051A914 /* CoinCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCircle.swift; sourceTree = "<group>"; };
 		12F678A51BAD5533009EADC0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+Reachability.swift"; sourceTree = "<group>"; };
-		12F7A4E11A07406F00F16F99 /* Coin3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coin3.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -477,15 +474,10 @@
 		3250AD091A1B011F0070F3EB /* ExploreDynamicDreamCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreDynamicDreamCell.xib; sourceTree = "<group>"; };
 		3252850C1A10C2B600316021 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		3252850E1A10C2C300316021 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
-		3257F7701A077B69005475BB /* Coin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Coin.storyboard; sourceTree = "<group>"; };
 		326A3E741A071A5B00AA92F9 /* DreamTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamTagViewController.swift; sourceTree = "<group>"; };
 		326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DreamTagViewController.storyboard; sourceTree = "<group>"; };
 		3274A3821A15F0DA00D2425A /* ExploreDynamicDreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDynamicDreamCell.swift; sourceTree = "<group>"; };
-		328181E61A08CE2700768D7D /* CoinCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
 		32A2197B1A25C5B800B5BC35 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
-		32AA49201A0BAA4900570B95 /* CoinDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetail.swift; sourceTree = "<group>"; };
-		32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetailCell.swift; sourceTree = "<group>"; };
-		32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CoinDetail.storyboard; sourceTree = "<group>"; };
 		4E2DA6A1044D36B6BDFBCA61 /* Pods-Nian iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.release.xcconfig"; sourceTree = "<group>"; };
 		730E0650E36136FB2164F4AD /* Pods-Nian iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nian iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nian iOS/Pods-Nian iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		88CC01538B73788619BF339C /* libPods-Nian iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Nian iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -802,12 +794,17 @@
 			name = "邀请";
 			sourceTree = "<group>";
 		};
-		126A80CE1C44BC470057EAAF /* 念币（使用） */ = {
+		126A80CE1C44BC470057EAAF /* 念币 */ = {
 			isa = PBXGroup;
 			children = (
-				126A80CF1C44BC600057EAAF /* Coin.swift */,
+				12A190FD1C7DA4E1005668C6 /* Coin.swift */,
+				12A191011C7DA93F005668C6 /* Coin+Delegate.swift */,
+				12A191031C7DAC94005668C6 /* CoinProductCell.swift */,
+				12A191051C7DACA4005668C6 /* CoinProductCell.xib */,
+				12A191071C7DC33D005668C6 /* CoinProductTop.swift */,
+				12A191091C7DC399005668C6 /* CoinProductTop.xib */,
 			);
-			name = "念币（使用）";
+			name = "念币";
 			sourceTree = "<group>";
 		};
 		126D6E331C2F1E800053211C /* LSYAlbumPicker_Swift */ = {
@@ -1148,20 +1145,6 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
-		12F7A4E01A07405A00F16F99 /* 念币 */ = {
-			isa = PBXGroup;
-			children = (
-				326BB93B1A0B6E21007E12B4 /* 详情 */,
-				12F7A4E11A07406F00F16F99 /* Coin3.swift */,
-				12F65C2D1B65703F0051A914 /* CoinCircle.swift */,
-				12BAEB2B1A19F9B90041C7C0 /* Film.xib */,
-				12BAEB2D1A19FA6D0041C7C0 /* Film.swift */,
-				3257F7701A077B69005475BB /* Coin.storyboard */,
-				328181E61A08CE2700768D7D /* CoinCell.swift */,
-			);
-			name = "念币";
-			sourceTree = "<group>";
-		};
 		12FB4890196AE76E0026DD51 = {
 			isa = PBXGroup;
 			children = (
@@ -1200,8 +1183,7 @@
 				3252850B1A10C2A200316021 /* 发现 */,
 				12F65C071B64F44F0051A914 /* 宠物 */,
 				12BD36901B8EABDC00B37573 /* 新广场 */,
-				12F7A4E01A07405A00F16F99 /* 念币 */,
-				126A80CE1C44BC470057EAAF /* 念币（使用） */,
+				126A80CE1C44BC470057EAAF /* 念币 */,
 				121F66971B15B3DF00103B14 /* 新梦境列表 */,
 				326A3E711A0719F400AA92F9 /* 标签 */,
 				1257833319B5F183008A1B3B /* 点赞 */,
@@ -1307,16 +1289,6 @@
 				326A3E7A1A0724EE00AA92F9 /* DreamTagViewController.storyboard */,
 			);
 			name = "标签";
-			sourceTree = "<group>";
-		};
-		326BB93B1A0B6E21007E12B4 /* 详情 */ = {
-			isa = PBXGroup;
-			children = (
-				32AA49201A0BAA4900570B95 /* CoinDetail.swift */,
-				32AA49261A0BB36E00570B95 /* CoinDetail.storyboard */,
-				32AA49241A0BAEF700570B95 /* CoinDetailCell.swift */,
-			);
-			name = "详情";
 			sourceTree = "<group>";
 		};
 		AD792103EEA56B9F94E30178 /* Pods */ = {
@@ -1615,7 +1587,6 @@
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
-				32AA49271A0BB36E00570B95 /* CoinDetail.storyboard in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
 				C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
@@ -1633,10 +1604,10 @@
 				126A80911C44A6680057EAAF /* ListCell.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
-				12BAEB2C1A19F9B90041C7C0 /* Film.xib in Resources */,
 				C486BDE81BF46ABD00EF1C2A /* ActivitiesSummary.storyboard in Resources */,
 				C470B2301B94029E00863821 /* LikeCount.plist in Resources */,
 				C47674981BE3405700F85DFC /* NewSettingView.xib in Resources */,
+				12A191061C7DACA4005668C6 /* CoinProductCell.xib in Resources */,
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
@@ -1645,13 +1616,13 @@
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
 				128F63BF1AAFEC8400E4835E /* CircleImageCell.xib in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
+				12A1910A1C7DC399005668C6 /* CoinProductTop.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,
 				122F39211B4E794700DE8628 /* Card.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
-				3257F7711A077B69005475BB /* Coin.storyboard in Resources */,
 				126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
@@ -1743,7 +1714,6 @@
 				C4C694DA1BA16FCA0003437B /* SZTextView.m in Sources */,
 				12FB48C5196AE8010026DD51 /* NSDictionaryExt.swift in Sources */,
 				126D6E431C2F1E800053211C /* LSYAlbum.swift in Sources */,
-				12F65C2E1B65703F0051A914 /* CoinCircle.swift in Sources */,
 				C486FD451C04430A009F1F90 /* Align.swift in Sources */,
 				C4A350C31B6B6C5200E8AF10 /* KeychainItemWrapper.m in Sources */,
 				12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */,
@@ -1756,6 +1726,7 @@
 				12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */,
 				C486FD561C04430A009F1F90 /* Property.swift in Sources */,
 				126D6E441C2F1E800053211C /* LSYAlbumDelegateClass.swift in Sources */,
+				12A190FE1C7DA4E1005668C6 /* Coin.swift in Sources */,
 				121E513B1C3D31980019F69A /* MySteps.swift in Sources */,
 				12652836196C673A005765D2 /* DreamCellTop.swift in Sources */,
 				C488B47C1BFD9E8D00C735EC /* PrivacyViewController.swift in Sources */,
@@ -1763,7 +1734,6 @@
 				12BE103F19C6055300370348 /* Help.swift in Sources */,
 				12F65C111B65084A0051A914 /* PetTableViewSetup.swift in Sources */,
 				C486FD4E1C04430A009F1F90 /* Edge.swift in Sources */,
-				32AA49211A0BAA4900570B95 /* CoinDetail.swift in Sources */,
 				12B2F8821C79134100902208 /* Gif.swift in Sources */,
 				C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */,
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
@@ -1790,10 +1760,8 @@
 				129F6C761C3070B7008B61A5 /* AddStep+Function.swift in Sources */,
 				123FD9441C3A802600A92188 /* VVeboCollectionViewCell.swift in Sources */,
 				12FB48C8196AE8010026DD51 /* UIViewExt.swift in Sources */,
-				328181E71A08CE2700768D7D /* CoinCell.swift in Sources */,
 				12776A181BCE731A00745811 /* NSString+Additions.m in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
-				126A80D01C44BC600057EAAF /* Coin.swift in Sources */,
 				126D6E451C2F1E800053211C /* LSYAlbumModel.swift in Sources */,
 				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C488B48A1BFDA06700C735EC /* AccountBindViewController.swift in Sources */,
@@ -1826,6 +1794,7 @@
 				12216F941A61471C003701BF /* MeNext.swift in Sources */,
 				C48FBCDE1B4A5B2A007E0BF9 /* NSString+NSHash.m in Sources */,
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,
+				12A191021C7DA93F005668C6 /* Coin+Delegate.swift in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
 				12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */,
 				C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */,
@@ -1853,7 +1822,6 @@
 				C486FD501C04430A009F1F90 /* Expression.swift in Sources */,
 				12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */,
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
-				12F7A4E21A07406F00F16F99 /* Coin3.swift in Sources */,
 				C43680161BDA411C00D51516 /* CustomButton.swift in Sources */,
 				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
@@ -1876,8 +1844,6 @@
 				12F07B451BAF4C31008F8ADB /* ExploreNext.swift in Sources */,
 				C450C5151B2FFF3D0024F4DE /* KILabel.m in Sources */,
 				1248FBA01A91B46B00110EEF /* NSObject+Swift.m in Sources */,
-				12BAEB2E1A19FA6D0041C7C0 /* Film.swift in Sources */,
-				32AA49251A0BAEF700570B95 /* CoinDetailCell.swift in Sources */,
 				1282230E19C7E6710002937D /* NSData+Utils.m in Sources */,
 				1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */,
 				129F6C741C30708F008B61A5 /* AddStep+Scroll.swift in Sources */,
@@ -1911,9 +1877,11 @@
 				12F65C131B65098F0051A914 /* Level.swift in Sources */,
 				120B6E401BD3C42100422B86 /* Explore+UITableView.swift in Sources */,
 				12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */,
+				12A191041C7DAC94005668C6 /* CoinProductCell.swift in Sources */,
 				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
 				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
+				12A191081C7DC33D005668C6 /* CoinProductTop.swift in Sources */,
 				126D6E4A1C2F1E800053211C /* LSYAlbumPicker.swift in Sources */,
 				C486FD481C04430A009F1F90 /* Constrain.swift in Sources */,
 				12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */,

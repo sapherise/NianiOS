@@ -55,18 +55,6 @@ class LevelView: UIView {
             }
         }
         
-//        Api.getUserMe() { json in
-//            if json != nil {
-//                let data = json!.objectForKey("user") as! NSDictionary
-//                let foed = data.stringAttributeForKey("foed")
-//                let like = data.stringAttributeForKey("like")
-//                let step = data.stringAttributeForKey("step")
-//                self.menuLeft.text = like
-//                self.menuMiddle.text = step
-//                self.menuRight.text = foed
-//            }
-//        }
-        
         Api.getLevelCalendar(){ json in
             if json != nil {
                 self.marks = [Bool](count: 32, repeatedValue: false)
