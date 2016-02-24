@@ -46,6 +46,7 @@ class CoinProductCell: UITableViewCell {
         if num == 0 {
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
             v.backgroundColor = UIColor.LineColor()
+            v.setY(globalHalf/2)
             self.contentView.addSubview(v)
         } else if num == numMax - 1 {
             viewLine.setX(0)
