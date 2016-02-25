@@ -67,6 +67,18 @@ extension UIColor {
         return UIColor(red: 0xb3/255.0, green: 0xb3/255.0, blue: 0xb3/255.0, alpha: 1)
     }
     
+    class func AuxiliaryColor() -> UIColor {
+        return UIColor(red: 0x66/255.0, green: 0x66/255.0, blue: 0x66/255.0, alpha: 1)
+    }
+    
+    class func WindowColor() -> UIColor {
+        return UIColor(red: 0xf5/255.0, green: 0xf5/255.0, blue: 0xf5/255.0, alpha: 1)
+    }
+    
+    class func Accomplish() -> UIColor {
+        return UIColor(red: 0xf5/255.0, green: 0xc4/255.0, blue: 0x3b/255.0, alpha: 1)
+    }
+    
     /* 深灰，#333 */
     class func GreyColor2() -> UIColor {
         return UIColor(red: 0x33/255.0, green: 0x33/255.0, blue: 0x33/255.0, alpha: 1)

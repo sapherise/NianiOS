@@ -60,4 +60,11 @@ extension Coin {
             return dataArray.count
         }
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 {
+            let vc = Product()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }

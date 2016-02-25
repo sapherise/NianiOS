@@ -920,5 +920,10 @@ extension Api {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/multidream/leave/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
+    
+    /* 微信支付获取订单 */
+    static func postWechatPay(price: String, coins: String, callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
+    }
 }
 

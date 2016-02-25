@@ -119,6 +119,11 @@
 		12A191061C7DACA4005668C6 /* CoinProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A191051C7DACA4005668C6 /* CoinProductCell.xib */; };
 		12A191081C7DC33D005668C6 /* CoinProductTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A191071C7DC33D005668C6 /* CoinProductTop.swift */; };
 		12A1910A1C7DC399005668C6 /* CoinProductTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A191091C7DC399005668C6 /* CoinProductTop.xib */; };
+		12A1910C1C7E9D1B005668C6 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1910B1C7E9D1B005668C6 /* Product.swift */; };
+		12A1910E1C7EA61F005668C6 /* Product+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1910D1C7EA61F005668C6 /* Product+Delegate.swift */; };
+		12A191101C7EB91D005668C6 /* ProductCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A1910F1C7EB91D005668C6 /* ProductCollectionCell.xib */; };
+		12A191121C7EB956005668C6 /* ProductCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A191111C7EB956005668C6 /* ProductCollectionCell.swift */; };
+		12A191171C7F3B6B005668C6 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A191161C7F3B6B005668C6 /* libWeChatSDK.a */; };
 		12A4910B198EB56D000B6D5E /* Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910A198EB56D000B6D5E /* Me.swift */; };
 		12A4910D198EB577000B6D5E /* MeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A4910C198EB577000B6D5E /* MeCell.swift */; };
 		12A4910F198EB580000B6D5E /* MeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A4910E198EB580000B6D5E /* MeCell.xib */; };
@@ -133,7 +138,6 @@
 		12BFB0801B1DD06E00CB0AA6 /* SABottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */; };
 		12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */; };
 		12C354531AD5126F0078693F /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C354521AD5126F0078693F /* Badge.swift */; };
-		12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */; };
 		12C96DF11A6F7B3300B0E327 /* WeChatActivityGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DED1A6F7B3300B0E327 /* WeChatActivityGeneral.swift */; };
 		12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */; };
 		12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */; };
@@ -405,6 +409,14 @@
 		12A191051C7DACA4005668C6 /* CoinProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinProductCell.xib; sourceTree = "<group>"; };
 		12A191071C7DC33D005668C6 /* CoinProductTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinProductTop.swift; sourceTree = "<group>"; };
 		12A191091C7DC399005668C6 /* CoinProductTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinProductTop.xib; sourceTree = "<group>"; };
+		12A1910B1C7E9D1B005668C6 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		12A1910D1C7EA61F005668C6 /* Product+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Product+Delegate.swift"; sourceTree = "<group>"; };
+		12A1910F1C7EB91D005668C6 /* ProductCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductCollectionCell.xib; sourceTree = "<group>"; };
+		12A191111C7EB956005668C6 /* ProductCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCollectionCell.swift; sourceTree = "<group>"; };
+		12A191131C7F3B36005668C6 /* WechatAuthSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		12A191141C7F3B4B005668C6 /* WXApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		12A191151C7F3B59005668C6 /* WXApiObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		12A191161C7F3B6B005668C6 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		12A4910A198EB56D000B6D5E /* Me.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Me.swift; sourceTree = "<group>"; };
 		12A4910C198EB577000B6D5E /* MeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeCell.swift; sourceTree = "<group>"; };
 		12A4910E198EB580000B6D5E /* MeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MeCell.xib; sourceTree = "<group>"; };
@@ -419,9 +431,6 @@
 		12BFB07F1B1DD06E00CB0AA6 /* SABottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SABottom.swift; sourceTree = "<group>"; };
 		12BFB0811B1DD94A00CB0AA6 /* SABottom.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SABottom.xib; sourceTree = "<group>"; };
 		12C354521AD5126F0078693F /* Badge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
-		12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
-		12C96DEB1A6F7B3300B0E327 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
-		12C96DEC1A6F7B3300B0E327 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		12C96DED1A6F7B3300B0E327 /* WeChatActivityGeneral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatActivityGeneral.swift; sourceTree = "<group>"; };
 		12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatMomentsActivity.swift; sourceTree = "<group>"; };
 		12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatSessionActivity.swift; sourceTree = "<group>"; };
@@ -591,11 +600,11 @@
 				127497FA1B92DF880046B440 /* UIKit.framework in Frameworks */,
 				127497F81B92DF7F0046B440 /* CoreText.framework in Frameworks */,
 				127497F71B92DF750046B440 /* CoreTelephony.framework in Frameworks */,
+				12A191171C7F3B6B005668C6 /* libWeChatSDK.a in Frameworks */,
 				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */,
 				127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */,
 				127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */,
-				12C96DF01A6F7B3300B0E327 /* libWeChatSDK.a in Frameworks */,
 				324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */,
 				3B6630BD2F2567A3267B483A /* libPods-Nian iOS.a in Frameworks */,
 			);
@@ -803,6 +812,10 @@
 				12A191051C7DACA4005668C6 /* CoinProductCell.xib */,
 				12A191071C7DC33D005668C6 /* CoinProductTop.swift */,
 				12A191091C7DC399005668C6 /* CoinProductTop.xib */,
+				12A1910B1C7E9D1B005668C6 /* Product.swift */,
+				12A1910D1C7EA61F005668C6 /* Product+Delegate.swift */,
+				12A1910F1C7EB91D005668C6 /* ProductCollectionCell.xib */,
+				12A191111C7EB956005668C6 /* ProductCollectionCell.swift */,
 			);
 			name = "念币";
 			sourceTree = "<group>";
@@ -1027,9 +1040,10 @@
 		12C96DE91A6F7B3300B0E327 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				12C96DEB1A6F7B3300B0E327 /* WXApi.h */,
-				12C96DEC1A6F7B3300B0E327 /* WXApiObject.h */,
-				12C96DEA1A6F7B3300B0E327 /* libWeChatSDK.a */,
+				12A191131C7F3B36005668C6 /* WechatAuthSDK.h */,
+				12A191151C7F3B59005668C6 /* WXApiObject.h */,
+				12A191161C7F3B6B005668C6 /* libWeChatSDK.a */,
+				12A191141C7F3B4B005668C6 /* WXApi.h */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1598,6 +1612,7 @@
 				128470741BF1F3BC007E235C /* PlanktonCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
+				12A191101C7EB91D005668C6 /* ProductCollectionCell.xib in Resources */,
 				129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */,
@@ -1736,6 +1751,7 @@
 				C486FD4E1C04430A009F1F90 /* Edge.swift in Sources */,
 				12B2F8821C79134100902208 /* Gif.swift in Sources */,
 				C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */,
+				12A1910C1C7E9D1B005668C6 /* Product.swift in Sources */,
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
 				C488B47D1BFD9E8D00C735EC /* SocialMediaButton.swift in Sources */,
 				12776A121BCE668500745811 /* VVeboLabel.m in Sources */,
@@ -1786,6 +1802,7 @@
 				129A76611B8DC92E00EC5A19 /* Home+News.swift in Sources */,
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
+				12A191121C7EB956005668C6 /* ProductCollectionCell.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,
@@ -1796,6 +1813,7 @@
 				C4A380791B32C4A9005EC0AA /* URLRegex.m in Sources */,
 				12A191021C7DA93F005668C6 /* Coin+Delegate.swift in Sources */,
 				326A3E751A071A5B00AA92F9 /* DreamTagViewController.swift in Sources */,
+				12A1910E1C7EA61F005668C6 /* Product+Delegate.swift in Sources */,
 				12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */,
 				C40F0F2F1BE7632E007B7C6B /* PSTAlertController.m in Sources */,
 				1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */,

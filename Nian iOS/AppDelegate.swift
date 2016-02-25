@@ -159,6 +159,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
                 }, failure: {
                     (task, error) in
             })   
+        } else if resp.isKindOfClass(PayResp) {
+            let response = resp as! PayResp
+            let a = response.errCode
+            print("错误代码：\(a)")
         }
     }
     
