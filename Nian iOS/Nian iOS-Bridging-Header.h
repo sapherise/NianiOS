@@ -75,3 +75,6 @@
 
 #import "FLAnimatedImage.h"
 
+/* 支付宝移动支付 */
+#import <AlipaySDK/AlipaySDK.h>
+

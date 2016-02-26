@@ -925,5 +925,20 @@ extension Api {
     static func postWechatPay(price: String, coins: String, callback: V.JsonCallback) {
         V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
     }
+    
+    /* 支付宝支付获取订单 */
+    static func postAlipayPay(price: String, coins: String, callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
+    }
+    
+    /* 微信支付购买会员 */
+    static func postWechatMember(callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order/test?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
+    }
+    
+    /* 支付宝支付购买会员 */
+    static func postAlipayMember(callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order/test?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
+    }
 }
 

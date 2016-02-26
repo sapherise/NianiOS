@@ -23,10 +23,13 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     var collectionView: UICollectionView!
     var dataArray = NSMutableArray()
     var niAlert: NIAlert!
+    var niAlertResult: NIAlert!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onWechatResult:", name: "onWechatResult", object: nil)
+//            NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
     }
     
     func setup() {
@@ -77,12 +80,10 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         btnMain = UIButton(frame: CGRectMake(padding, labelContent.bottom() + 16, globalWidth - padding * 2, 48))
         btnMain.layer.cornerRadius = 24
         btnMain.layer.masksToBounds = true
-        btnMain.setTitle("购买", forState: UIControlState())
-        btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
         btnMain.titleLabel?.font = UIFont.systemFontOfSize(16)
-        btnMain.backgroundColor = UIColor.HightlightColor()
         btnMain.addTarget(self, action: "onClick", forControlEvents: UIControlEvents.TouchUpInside)
         scrollView.addSubview(btnMain)
+        setButtonEnable(Product.btnMainState.willBuy)
         
         /* 分割线 */
         viewLine = UIView(frame: CGRectMake(padding, btnMain.bottom() + 24 - globalHalf / 2, globalWidth - padding * 2, globalHalf))
@@ -114,13 +115,82 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     }
     
     func onClick() {
-        btnMain.backgroundColor = UIColor.WindowColor()
-        btnMain.setTitleColor(UIColor.secAuxiliaryColor(), forState: UIControlState())
-        btnMain.enabled = false
         niAlert = NIAlert()
         niAlert.delegate = self
-        niAlert.dict = NSMutableDictionary(objects: ["", "选择支付方式", "选择一个支付方式", ["微信支付", "支付宝支付"]],
-            forKeys: ["img", "title", "content", "buttonArray"])
+        niAlert.dict = NSMutableDictionary(objects: ["", "选择支付方式", "选择一个支付方式", ["微信支付", "支付宝支付"]], forKeys: ["img", "title", "content", "buttonArray"])
         niAlert.showWithAnimation(.flip)
+    }
+    
+    func onWechatResult(sender: NSNotification) {
+        if let object = sender.object as? String {
+            print("获取到观察对象：\(object)")
+            niAlertResult = NIAlert()
+            niAlertResult.delegate = self
+            if object == "0" {
+                /* 微信支付成功 */
+                niAlertResult.dict = NSMutableDictionary(objects: ["", "支付好了", "获得念的永久会员啦！\n蟹蟹你对念的支持", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+                niAlert.dismissWithAnimationSwtich(niAlertResult)
+                
+                /* 按钮的状态变化 */
+                setButtonEnable(Product.btnMainState.hasBought)
+            } else if object == "-1" {
+                niAlertResult.dict = NSMutableDictionary(objects: ["", "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+                niAlert.dismissWithAnimationSwtich(niAlertResult)
+                setButtonEnable(Product.btnMainState.willBuy)
+            } else {
+                if let btn = niAlert.niButtonArray.firstObject as? NIButton {
+                    btn.stopAnimating()
+                }
+                setButtonEnable(Product.btnMainState.willBuy)
+            }
+        }
+    }
+    
+    enum btnMainState {
+        /* 未购买，未下载 */
+        case willBuy
+        
+        /* 已购买，无需下载 */
+        case hasBought
+        
+        /* 已购买，未下载 */
+        case willDownload
+        
+        /* 已购买，已下载 */
+        case hasDownload
+    }
+    
+    /* 设置按钮的状态 */
+    func setButtonEnable(state: btnMainState) {
+        var enabled = true
+        var content = ""
+        switch state {
+        case .willBuy:
+            enabled = true
+            content = "购买"
+            break
+        case .hasBought:
+            enabled = false
+            content = "已购买"
+            break
+        case .willDownload:
+            enabled = true
+            content = "下载"
+            break
+        case .hasDownload:
+            enabled = false
+            content = "已下载"
+            break
+            
+        }
+        btnMain.enabled = enabled
+        btnMain.setTitle(content, forState: UIControlState())
+        if enabled {
+            btnMain.backgroundColor = UIColor.HightlightColor()
+            btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
+        } else {
+            btnMain.backgroundColor = UIColor.WindowColor()
+            btnMain.setTitleColor(UIColor.secAuxiliaryColor(), forState: UIControlState())
+        }
     }
 }

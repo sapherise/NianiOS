@@ -113,7 +113,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             return TencentOAuth.HandleOpenURL(url)
         } else if s == "wx08fea299d0177c01" {
             return WXApi.handleOpenURL(url, delegate: self)
+        } else if s == "safepay" {
+            AlipaySDK.defaultService().processOrderWithPaymentResult(url) { resultDic in
+                print("支付宝回调", resultDic)
+            }
+        } else if s == "platformapi" {
+            AlipaySDK.defaultService().processAuthResult(url) { resultDic in
+                print("支付宝钱包回调", resultDic)
+            }
         }
+        print(s, "哈哈哈")
         return true
     }
     
@@ -140,6 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         }
     }
     
+    /* 微信回调 */
     func onResp(resp: BaseResp!) {
         if resp.isKindOfClass(SendAuthResp) {
             let _resp = resp as! SendAuthResp
@@ -161,8 +171,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             })   
         } else if resp.isKindOfClass(PayResp) {
             let response = resp as! PayResp
-            let a = response.errCode
-            print("错误代码：\(a)")
+            let code = response.errCode
+            print("微信支付结果：\(code)")
+            NSNotificationCenter.defaultCenter().postNotificationName("onWechatResult", object: "\(code)")
         }
     }
     

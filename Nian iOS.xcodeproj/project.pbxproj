@@ -38,6 +38,7 @@
 		1251D61C1975729100F55389 /* RefreshFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6151975729100F55389 /* RefreshFooterView.swift */; };
 		1251D61D1975729100F55389 /* RefreshHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6161975729100F55389 /* RefreshHeaderView.swift */; };
 		1251D61E1975729100F55389 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251D6171975729100F55389 /* UIScrollView+Refresh.swift */; };
+		1252A2941C80639800B0550B /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F294101C80606B005BBD54 /* AlipaySDK.framework */; };
 		1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C2FB1A1DF0C0003D4ECF /* Player.swift */; };
 		1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C3011A1DF119003D4ECF /* PlayerCellTop.swift */; };
 		1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C3031A1DF12A003D4ECF /* PlayerCellTop.xib */; };
@@ -162,6 +163,9 @@
 		12F07B3C1BAF2033008F8ADB /* CommentCellMe.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */; };
 		12F07B401BAF205E008F8ADB /* CommentCellMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */; };
 		12F07B451BAF4C31008F8ADB /* ExploreNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F07B441BAF4C31008F8ADB /* ExploreNext.swift */; };
+		12F2940B1C805FF8005BBD54 /* Alipay in Resources */ = {isa = PBXBuildFile; fileRef = 12F2940A1C805FF8005BBD54 /* Alipay */; };
+		12F2940D1C806040005BBD54 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F2940C1C806040005BBD54 /* CFNetwork.framework */; };
+		12F2940F1C806048005BBD54 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F2940E1C806048005BBD54 /* CoreMotion.framework */; };
 		12F65C091B64F46C0051A914 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C081B64F46C0051A914 /* Pet.swift */; };
 		12F65C0B1B64F5AE0051A914 /* SAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0A1B64F5AE0051A914 /* SAViewController.swift */; };
 		12F65C0D1B64F98D0051A914 /* PetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C0C1B64F98D0051A914 /* PetTableView.swift */; };
@@ -457,6 +461,10 @@
 		12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCellMe.xib; sourceTree = "<group>"; };
 		12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellMe.swift; sourceTree = "<group>"; };
 		12F07B441BAF4C31008F8ADB /* ExploreNext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreNext.swift; sourceTree = "<group>"; };
+		12F2940A1C805FF8005BBD54 /* Alipay */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Alipay; sourceTree = "<group>"; };
+		12F2940C1C806040005BBD54 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		12F2940E1C806048005BBD54 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		12F294101C80606B005BBD54 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlipaySDK.framework; path = "Nian iOS/Utility/Alipay/AlipaySDK.framework"; sourceTree = "<group>"; };
 		12F65C081B64F46C0051A914 /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		12F65C0A1B64F5AE0051A914 /* SAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAViewController.swift; sourceTree = "<group>"; };
 		12F65C0C1B64F98D0051A914 /* PetTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetTableView.swift; sourceTree = "<group>"; };
@@ -588,6 +596,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1252A2941C80639800B0550B /* AlipaySDK.framework in Frameworks */,
+				12F2940F1C806048005BBD54 /* CoreMotion.framework in Frameworks */,
+				12F2940D1C806040005BBD54 /* CFNetwork.framework in Frameworks */,
 				C47C42321BDF21F1003D934A /* TencentOpenAPI.framework in Frameworks */,
 				C43B604E1BDE11CA0022CB32 /* libstdc++.tbd in Frameworks */,
 				C43B604C1BDE11AA0022CB32 /* libiconv.tbd in Frameworks */,
@@ -1228,6 +1239,7 @@
 		12FB48BD196AE8010026DD51 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12F2940A1C805FF8005BBD54 /* Alipay */,
 				126D6E331C2F1E800053211C /* LSYAlbumPicker_Swift */,
 				C486FD2E1C04430A009F1F90 /* Cartography */,
 				12F678A41BAD5519009EADC0 /* Reachability */,
@@ -1317,6 +1329,9 @@
 		B63CD37464934379B52680E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12F294101C80606B005BBD54 /* AlipaySDK.framework */,
+				12F2940E1C806048005BBD54 /* CoreMotion.framework */,
+				12F2940C1C806040005BBD54 /* CFNetwork.framework */,
 				C47C42311BDF21F1003D934A /* TencentOpenAPI.framework */,
 				C43B604D1BDE11CA0022CB32 /* libstdc++.tbd */,
 				C43B604B1BDE11AA0022CB32 /* libiconv.tbd */,
@@ -1616,6 +1631,7 @@
 				129B9F061BA2AFD800E5B25A /* WeiboSDK.bundle in Resources */,
 				125D93CA1AFCC198006FFDED /* SADoubleCell.xib in Resources */,
 				C4AD26D31BE871C800BF6242 /* AccountBindView.xib in Resources */,
+				12F2940B1C805FF8005BBD54 /* Alipay in Resources */,
 				126A80911C44A6680057EAAF /* ListCell.xib in Resources */,
 				129FE4DC1B5E2DA400BDFE03 /* star.sks in Resources */,
 				12028E361A3EED220072FBE1 /* CircleTag.storyboard in Resources */,
@@ -2034,6 +2050,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/QQSharing",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Alipay,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Alipay,
 				);
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -2086,6 +2106,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/QQSharing",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Alipay,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Alipay,
 				);
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
