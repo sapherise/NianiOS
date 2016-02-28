@@ -22,11 +22,22 @@ class ProductList: SAViewController, UICollectionViewDelegate, UICollectionViewD
     
     func setup() {
         _setTitle(name)
+        if name == "表情" {
+            dataArray = [
+                ["title": "幽灵", "image": "banner_ghost", "color": "#86ccf0", "price": "100"],
+                ["title": "小白", "image": "banner_cat", "color": "#414141", "price": "100"]
+            ]
+        } else {
+            dataArray = [
+                ["title": "请假", "image": "banner_ghost", "color": "#86ccf0", "price": "2"],
+                ["title": "推广", "image": "banner_cat", "color": "#414141", "price": "20"],
+                ["title": "毕业证", "image": "banner_cat", "color": "#414141", "price": "100"]
+            ]
+        }
         
-        dataArray = [["title": "恶灵", "image": "banner_ghost", "color": "#86ccf0"], ["title": "小白", "image": "banner_cat", "color": "#414141"]]
         
         let w = (globalWidth - padding * 3) / 2
-        let h = w / 3 * 4 + 40
+        let h = w / 3 * 4 + 48
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumInteritemSpacing = padding
         flowLayout.minimumLineSpacing = padding
@@ -36,7 +47,7 @@ class ProductList: SAViewController, UICollectionViewDelegate, UICollectionViewD
         collectionView.alwaysBounceVertical = true
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.HightlightColor()
+        collectionView.backgroundColor = UIColor.whiteColor()
         collectionView.registerNib(UINib(nibName: "ProductListCell", bundle: nil), forCellWithReuseIdentifier: "ProductListCell")
         self.view.addSubview(collectionView)
     }
@@ -50,5 +61,12 @@ class ProductList: SAViewController, UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataArray.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let vc = Product()
+        let data = dataArray[indexPath.row] as! NSDictionary
+        vc.name = data.stringAttributeForKey("title")
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

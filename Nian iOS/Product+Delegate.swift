@@ -21,10 +21,40 @@ extension Product {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c: ProductCollectionCell! = collectionView.dequeueReusableCellWithReuseIdentifier("ProductCollectionCell", forIndexPath: indexPath) as? ProductCollectionCell
-        c.data = dataArray[indexPath.row] as! NSDictionary
-        c.setup()
-        return c
+        if type == "vip" {
+            let c: ProductCollectionCell! = collectionView.dequeueReusableCellWithReuseIdentifier("ProductCollectionCell", forIndexPath: indexPath) as? ProductCollectionCell
+            c.data = dataArray[indexPath.row] as! NSDictionary
+            c.setup()
+            return c
+        } else {
+            /* 表情 */
+            let c: ProductEmojiCollectionCell! = collectionView.dequeueReusableCellWithReuseIdentifier("ProductEmojiCollectionCell", forIndexPath: indexPath) as? ProductEmojiCollectionCell
+            c.data = dataArray[indexPath.row] as! NSDictionary
+            c.num = indexPath.row
+            c.imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onGif:"))
+            c.setup()
+            return c
+        }
+    }
+    
+    func onGif(sender: UILongPressGestureRecognizer) {
+        if let view = sender.view {
+            let tag = view.tag
+            let point = view.convertPoint(view.frame.origin, fromView: view.window)
+            let x = -point.x
+            let y = -point.y
+            let xNew = max(x - 20, 0)
+            let yNew = y - view.width() - 40 - 8
+            let data = dataArray[tag] as! NSDictionary
+            let image = data.stringAttributeForKey("image")
+            viewEmojiHolder.qs_setGifImageWithURL(NSURL(string: image), progress: { (a, b) -> Void in
+                }, completed: nil)
+            viewEmojiHolder.frame = CGRectMake(xNew, yNew, view.width() + 50, view.width() + 50)
+            viewEmojiHolder.hidden = sender.state == UIGestureRecognizerState.Ended ? true : false
+            if sender.state == UIGestureRecognizerState.Ended {
+                viewEmojiHolder.image = nil
+            }
+        }
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

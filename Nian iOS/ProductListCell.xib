@@ -8,18 +8,23 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductListCell" id="aAv-Q2-25M" customClass="ProductListCell" customModule="Nian_iOS" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="120" height="200"/>
+            <rect key="frame" x="0.0" y="0.0" width="120" height="208"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="120" height="200"/>
+                <rect key="frame" x="0.0" y="0.0" width="120" height="208"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nfv-rW-tgn">
                         <rect key="frame" x="0.0" y="0.0" width="120" height="160"/>
-                        <color key="backgroundColor" red="1" green="0.46205986370000002" blue="0.33561506600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLY-zN-U0H">
-                        <rect key="frame" x="0.0" y="160" width="120" height="24"/>
+                        <rect key="frame" x="0.0" y="168" width="120" height="24"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="FPs-Gz-jOT"/>
                         </constraints>
@@ -27,8 +32,8 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzX-73-VJw">
-                        <rect key="frame" x="0.0" y="184" width="120" height="16"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzX-73-VJw">
+                        <rect key="frame" x="18" y="192" width="100" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="umK-zb-uBf"/>
                         </constraints>
@@ -36,19 +41,28 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recharge" translatesAutoresizingMaskIntoConstraints="NO" id="3hk-Vf-8U3">
+                        <rect key="frame" x="0.0" y="194" width="12" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="12" id="46q-Ym-huD"/>
+                            <constraint firstAttribute="width" constant="12" id="a6r-ax-l96"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="eLY-zN-U0H" firstAttribute="top" secondItem="nfv-rW-tgn" secondAttribute="bottom" id="6Oo-Fx-7v5"/>
+                <constraint firstItem="eLY-zN-U0H" firstAttribute="top" secondItem="nfv-rW-tgn" secondAttribute="bottom" constant="8" id="6Oo-Fx-7v5"/>
                 <constraint firstAttribute="trailing" secondItem="nfv-rW-tgn" secondAttribute="trailing" id="9iV-yL-1Op"/>
                 <constraint firstAttribute="trailing" secondItem="eLY-zN-U0H" secondAttribute="trailing" id="Fcp-kh-xPM"/>
                 <constraint firstAttribute="bottom" secondItem="JzX-73-VJw" secondAttribute="bottom" id="Irp-jX-YqH"/>
+                <constraint firstAttribute="bottom" secondItem="3hk-Vf-8U3" secondAttribute="bottom" constant="2" id="Kuj-J7-L63"/>
                 <constraint firstItem="eLY-zN-U0H" firstAttribute="leading" secondItem="aAv-Q2-25M" secondAttribute="leading" id="PoC-OF-hV5"/>
                 <constraint firstItem="nfv-rW-tgn" firstAttribute="leading" secondItem="aAv-Q2-25M" secondAttribute="leading" id="fad-3M-t64"/>
-                <constraint firstItem="JzX-73-VJw" firstAttribute="leading" secondItem="aAv-Q2-25M" secondAttribute="leading" id="mtq-al-vWX"/>
+                <constraint firstItem="JzX-73-VJw" firstAttribute="leading" secondItem="aAv-Q2-25M" secondAttribute="leading" constant="18" id="mtq-al-vWX"/>
                 <constraint firstAttribute="trailing" secondItem="JzX-73-VJw" secondAttribute="trailing" id="oX1-2O-RGz"/>
                 <constraint firstItem="JzX-73-VJw" firstAttribute="top" secondItem="eLY-zN-U0H" secondAttribute="bottom" id="r1L-oF-Ehu"/>
+                <constraint firstItem="3hk-Vf-8U3" firstAttribute="leading" secondItem="aAv-Q2-25M" secondAttribute="leading" id="v7a-sY-VqW"/>
                 <constraint firstItem="nfv-rW-tgn" firstAttribute="top" secondItem="aAv-Q2-25M" secondAttribute="top" id="y6Q-ZS-bzU"/>
             </constraints>
             <size key="customSize" width="184" height="251"/>
@@ -60,4 +74,7 @@
             <point key="canvasLocation" x="648" y="300"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="recharge" width="32" height="32"/>
+    </resources>
 </document>

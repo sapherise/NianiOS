@@ -16,15 +16,14 @@ class ProductListCell: UICollectionViewCell {
     var data: NSDictionary!
     
     func setup() {
-        self.backgroundColor = UIColor.yellowColor()
         labelTitle.text = data.stringAttributeForKey("title")
-        let url = data.stringAttributeForKey("image")
+//        let url = data.stringAttributeForKey("image")
         let color = data.stringAttributeForKey("color")
-//        imageView.backgroundColor = UIColor.HightlightColor()
-//        imageView.layer.backgroundColor = UIColor.HightlightColor().CGColor
-        imageView.image = UIImage(named: url)
-        imageView.backgroundColor = UIColor.clearColor()
-        imageView.opaque = false
-        imageView.layer.opaque = false
+        let price = data.stringAttributeForKey("price")
+        imageView.image = UIImage(named: "banner_dragon")
+        imageView.backgroundColor = UIColor.colorWithHex(color)
+        labelTitle.textColor = UIColor.MainColor()
+        labelContent.textColor = UIColor.Accomplish()
+        labelContent.text = "\(price) 念币"
     }
 }

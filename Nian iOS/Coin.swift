@@ -34,9 +34,9 @@ class Coin: SAViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.registerNib(UINib(nibName: "CoinProductCell", bundle: nil), forCellReuseIdentifier: "CoinProductCell")
         tableView.registerNib(UINib(nibName: "CoinProductTop", bundle: nil), forCellReuseIdentifier: "CoinProductTop")
         self.view.addSubview(tableView)
-        dataArray = [["title": "会员", "content": "骄傲地成为念的会员", "image": "coin_pro"], ["title": "表情", "content": "表情商店", "image": "coin_emoji"], ["title": "主题", "content": "主题商店", "image": "coin_theme"], ["title": "插件", "content": "一些没用的插件", "image": "coin_plugin"]]
+        dataArray = [["title": "会员", "content": "骄傲地成为念的会员", "image": "coin_pro"], ["title": "表情", "content": "表情商店", "image": "coin_emoji"], ["title": "插件", "content": "一些没用的插件", "image": "coin_plugin"]]
         if SAUid() == "171264" {
-            dataArray = [["title": "表情", "content": "表情商店", "image": "coin_emoji"], ["title": "主题", "content": "主题商店", "image": "coin_theme"], ["title": "插件", "content": "一些没用的插件", "image": "coin_plugin"]]
+            dataArray = [["title": "表情", "content": "表情商店", "image": "coin_emoji"], ["title": "插件", "content": "一些没用的插件", "image": "coin_plugin"]]
         }
     }
 }

@@ -70,9 +70,12 @@ extension Coin {
                     vc.name = title
                     self.navigationController?.pushViewController(vc, animated: true)
                 } else if title == "插件" {
-                    print("插件")
-                } else {
+                    let vc = ProductList()
+                    vc.name = title
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else if title == "会员" {
                     let vc = Product()
+                    vc.name = title
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
