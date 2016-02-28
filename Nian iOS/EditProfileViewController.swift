@@ -13,7 +13,7 @@ import UIKit
 }
 
 
-class EditProfileViewController: SAViewController {
+class EditProfileViewController: SAViewController, UIActionSheetDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -40,6 +40,7 @@ class EditProfileViewController: SAViewController {
     @IBOutlet weak var sp4HeightConstraint: NSLayoutConstraint!
     
     weak var delegate: EditProfileDelegate?
+    var actionSheet: UIActionSheet!
     
     var profileDict: Dictionary<String, String>?
     
@@ -78,25 +79,44 @@ class EditProfileViewController: SAViewController {
      
      */
     func handleChooseGender(noti: NSNotification) {
-        let alertController = PSTAlertController.actionSheetWithTitle(nil)
+        actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        actionSheet.addButtonWithTitle("男")
+        actionSheet.addButtonWithTitle("女")
+        actionSheet.addButtonWithTitle("保密")
+        actionSheet.addButtonWithTitle("取消")
+        actionSheet.cancelButtonIndex = 3
+        actionSheet.showInView(self.view)
         
-        alertController.addAction(PSTAlertAction(title: "男", style: .Default, handler: { (action) in
-            self.genderTextField.text = "男"
-        }))
-        
-        alertController.addAction(PSTAlertAction(title: "女", style: .Default, handler: { (action) in
-            self.genderTextField.text = "女"
-        }))
-        
-        alertController.addAction(PSTAlertAction(title: "保密", style: .Default, handler: { (action) in
-            self.genderTextField.text = "保密"
-        }))
-        
-        alertController.addCancelActionWithHandler(nil)
-        
-        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+//        let alertController = PSTAlertController.actionSheetWithTitle(nil)
+//        
+//        alertController.addAction(PSTAlertAction(title: "男", style: .Default, handler: { (action) in
+//            self.genderTextField.text = "男"
+//        }))
+//        
+//        alertController.addAction(PSTAlertAction(title: "女", style: .Default, handler: { (action) in
+//            self.genderTextField.text = "女"
+//        }))
+//        
+//        alertController.addAction(PSTAlertAction(title: "保密", style: .Default, handler: { (action) in
+//            self.genderTextField.text = "保密"
+//        }))
+//        
+//        alertController.addCancelActionWithHandler(nil)
+//        
+//        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
     }
     
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.actionSheet {
+            if buttonIndex == 0 {
+                self.genderTextField.text = "男"
+            } else if buttonIndex == 1 {
+                self.genderTextField.text = "女"
+            } else if buttonIndex == 2 {
+                self.genderTextField.text = "保密"
+            }
+        }
+    }
 }
 
 

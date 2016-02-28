@@ -93,6 +93,7 @@ class NIAlert: UIView {
         let content = self.dict?.objectForKey("content") as! String
         let buttonArray = self.dict?.objectForKey("buttonArray") as! NSArray
         
+        /* 如果是 UIImage */
         if let img = (self.dict?.objectForKey("img") as? UIImage) {
             imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, img.size.height))
             imgView?.contentMode = UIViewContentMode.Center
@@ -101,6 +102,7 @@ class NIAlert: UIView {
             setTitle(title)
             self._containerView!.setHeight(imgView!.frame.height + 64 + 20)
         } else if let img = (self.dict?.objectForKey("img") as? String) {
+            /* 如果是 String */
             imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - 80)/2, 40, 80, 80))
             imgView?.contentMode = UIViewContentMode.ScaleAspectFit
             if img != "" {
@@ -110,6 +112,7 @@ class NIAlert: UIView {
             setTitle(title)
             self._containerView!.setHeight(imgView!.frame.height + 64 + 20)
         } else if let img = (self.dict?.objectForKey("img") as? UIImageView) {
+            /* 如果是 UIImageView */
             imgView = UIImageView(frame: CGRectMake((self._containerView!.frame.width - img.width())/2, 40, img.width(), img.height()))
             imgView?.contentMode = UIViewContentMode.ScaleAspectFit
             imgView?.image = img.image

@@ -51,7 +51,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.setupViews()
         self.initViewControllers()
         gameoverCheck()
-        setupReachability()
+        // todo: 开启下面
+        // todo: 退出失败了
+        // todo: 头像未测试
+        // todo: 解绑未测试
+//        setupReachability()
         RCIMClient.sharedRCIMClient().setReceiveMessageDelegate(self, object: nil)
         
         // todo: 测试

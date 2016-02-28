@@ -19,7 +19,7 @@ protocol LockDelegate {
 }
 
 
-class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDelegate {
+class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDelegate, UIActionSheetDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -52,6 +52,11 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
     @IBOutlet weak var versionLabel: UILabel!
     // 念
     @IBOutlet var logo: UIImageView!
+    
+    var actionSheet: UIActionSheet?
+    var actionSheetHead: UIActionSheet?
+//    var actionSheetBye: UIActionSheet!
+    var actionSheetLogout: UIActionSheet?
     
     weak var delegate: NewSettingDelegate?
     
@@ -369,77 +374,134 @@ extension NewSettingViewController {
     设置封面图片， --- @warning: 应该叫做 setCoverImage 的，但是和之前不知道哪里有冲突
      */
     @IBAction func setCover(sender: UITapGestureRecognizer) {
-        let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
+        actionSheet = UIActionSheet(title: "设定封面", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        actionSheet!.addButtonWithTitle("相册")
+        actionSheet!.addButtonWithTitle("拍照")
+        actionSheet!.addButtonWithTitle("恢复默认封面")
+        actionSheet!.addButtonWithTitle("取消")
+        actionSheet!.cancelButtonIndex = 3
+        actionSheet!.showInView(self.view)
+//        let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
+//        
+//        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
+//            self.coverImagePicker = UIImagePickerController()
+//            self.coverImagePicker!.delegate = self
+//            self.coverImagePicker!.allowsEditing = true
+//            self.coverImagePicker!.sourceType = .PhotoLibrary
+//            
+//            self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+//        }))
+//        
+//        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
+//            self.coverImagePicker = UIImagePickerController()
+//            self.coverImagePicker!.delegate = self
+//            self.coverImagePicker!.allowsEditing = true
+//            if UIImagePickerController.isSourceTypeAvailable(.Camera){
+//                self.coverImagePicker!.sourceType = .Camera
+//                self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+//            }
+//        }))
+//        
+//        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Default, handler: { (action) in
+//            SettingModel.changeCoverImage(coverURL: "background.png", callback: {
+//                (task, responseObject, error) in
+//                
+//                self.coverImageView.image = UIImage(named: "bg")
+//                self.coverImageModified = true
+//            })
+//            
+//        }))
         
-        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
-            self.coverImagePicker = UIImagePickerController()
-            self.coverImagePicker!.delegate = self
-            self.coverImagePicker!.allowsEditing = true
-            self.coverImagePicker!.sourceType = .PhotoLibrary
-            
-            self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
-        }))
-        
-        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
-            self.coverImagePicker = UIImagePickerController()
-            self.coverImagePicker!.delegate = self
-            self.coverImagePicker!.allowsEditing = true
-            if UIImagePickerController.isSourceTypeAvailable(.Camera){
-                self.coverImagePicker!.sourceType = .Camera
-                self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
-            }
-        }))
-        
-        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Default, handler: { (action) in
-            SettingModel.changeCoverImage(coverURL: "background.png", callback: {
-                (task, responseObject, error) in
-                
-                self.coverImageView.image = UIImage(named: "bg")
-                self.coverImageModified = true
-            })
-            
-        }))
-        
-        alertController.addCancelActionWithHandler(nil)
-        
-        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+//        alertController.addCancelActionWithHandler(nil)
+//        
+//        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
         
     }
     
-    /*=========================================================================================================================================*/
-    /*
-        为什么使用了第三方的 PSTAlertController， 因为 UIAlertView 在 iOS 9 上会被键盘挡住， UIAlertController 不支持 iOS 7；
-    @brief 这是一个过渡方案
-    */
-    /*=========================================================================================================================================*/
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.actionSheet {
+            if buttonIndex == 0 {
+                self.coverImagePicker = UIImagePickerController()
+                self.coverImagePicker!.delegate = self
+                self.coverImagePicker!.allowsEditing = true
+                self.coverImagePicker!.sourceType = .PhotoLibrary
+                self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+            } else if buttonIndex == 1 {
+                self.coverImagePicker = UIImagePickerController()
+                self.coverImagePicker!.delegate = self
+                self.coverImagePicker!.allowsEditing = true
+                if UIImagePickerController.isSourceTypeAvailable(.Camera){
+                    self.coverImagePicker!.sourceType = .Camera
+                    self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+                }
+            } else if buttonIndex == 2 {
+                SettingModel.changeCoverImage(coverURL: "background.png", callback: {
+                    (task, responseObject, error) in
+                    self.coverImageView.image = UIImage(named: "bg")
+                    self.coverImageModified = true
+                })
+            }
+        } else if actionSheet == self.actionSheetHead {
+            if buttonIndex == 0 {
+                
+                self.avatarImagePicker = UIImagePickerController()
+                self.avatarImagePicker!.delegate = self
+                self.avatarImagePicker!.allowsEditing = true
+                self.avatarImagePicker!.sourceType = .PhotoLibrary
+                
+                self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
+            } else if buttonIndex == 1 {
+                
+                self.avatarImagePicker = UIImagePickerController()
+                self.avatarImagePicker!.delegate = self
+                self.avatarImagePicker!.allowsEditing = true
+                if UIImagePickerController.isSourceTypeAvailable(.Camera){
+                    self.avatarImagePicker!.sourceType = .Camera
+                    self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
+                }
+            }
+        } else if actionSheet == self.actionSheetLogout {
+            if buttonIndex == 0 {
+                SAlogout()
+            }
+        }
+    }
     
-    
+    // todo: 开启后会闪一下
     
     @IBAction func setAvatar(sender: UITapGestureRecognizer) {
-        let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
         
-        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
-            self.avatarImagePicker = UIImagePickerController()
-            self.avatarImagePicker!.delegate = self
-            self.avatarImagePicker!.allowsEditing = true
-            self.avatarImagePicker!.sourceType = .PhotoLibrary
-            
-            self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
-        }))
+        actionSheetHead = UIActionSheet(title: "设定头像", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        actionSheetHead!.addButtonWithTitle("相册")
+        actionSheetHead!.addButtonWithTitle("拍照")
+        actionSheetHead!.addButtonWithTitle("取消")
+        actionSheetHead!.cancelButtonIndex = 2
+        actionSheetHead!.showInView(self.view)
         
-        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
-            self.avatarImagePicker = UIImagePickerController()
-            self.avatarImagePicker!.delegate = self
-            self.avatarImagePicker!.allowsEditing = true
-            if UIImagePickerController.isSourceTypeAvailable(.Camera){
-                self.avatarImagePicker!.sourceType = .Camera
-                self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
-            }
-        }))
-
-        alertController.addCancelActionWithHandler(nil)
-        
-        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+//        let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
+//        
+//        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
+//            self.avatarImagePicker = UIImagePickerController()
+//            self.avatarImagePicker!.delegate = self
+//            self.avatarImagePicker!.allowsEditing = true
+//            self.avatarImagePicker!.sourceType = .PhotoLibrary
+//            
+//            self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
+//        }))
+//        
+//        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
+//            self.avatarImagePicker = UIImagePickerController()
+//            self.avatarImagePicker!.delegate = self
+//            self.avatarImagePicker!.allowsEditing = true
+//            if UIImagePickerController.isSourceTypeAvailable(.Camera){
+//                self.avatarImagePicker!.sourceType = .Camera
+//                self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
+//            }
+//        }))
+//
+//        alertController.addCancelActionWithHandler(nil)
+//        
+//        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
 
     }
     
@@ -533,15 +595,12 @@ extension NewSettingViewController {
      登出
      */
     @IBAction func logout(sender: UITapGestureRecognizer) {
-        let alertController = PSTAlertController.actionSheetWithTitle("欢迎下次再来玩。")
         
-        alertController.addAction(PSTAlertAction(title: "拜拜", style: .Default, handler: { (action) in
-            self.SAlogout()
-        }))
-        
-        alertController.addCancelActionWithHandler(nil)
-        
-        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+        actionSheetLogout = UIActionSheet(title: "欢迎下次再来玩", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        actionSheetLogout!.addButtonWithTitle("拜拜")
+        actionSheetLogout!.addButtonWithTitle("取消")
+        actionSheetLogout!.cancelButtonIndex = 1
+        actionSheetLogout!.showInView(self.view)
     }
 }
 

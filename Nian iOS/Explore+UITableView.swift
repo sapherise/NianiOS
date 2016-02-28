@@ -52,7 +52,6 @@ extension ExploreViewController {
         }
         Api.getExploreFollow("\(page++)", callback: {
             json in
-            print(json)
             if json != nil {
                 globalTabhasLoaded[0] = true
                 if clear {

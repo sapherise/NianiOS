@@ -30,5 +30,17 @@ class CoinProductTop: UITableViewCell {
         
         let coin = Cookies.get("coin") as? String
         labelContent.text = coin
+        
+        btn.addTarget(self, action: "onRecharge", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        /* 如果是苹果测试账号 */
+        if SAUid() == "171264" {
+            btn.hidden = true
+        }
+    }
+    
+    func onRecharge() {
+        let vc = Recharge()
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
 }

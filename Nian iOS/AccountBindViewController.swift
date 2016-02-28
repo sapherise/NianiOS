@@ -12,7 +12,7 @@ protocol UpdateUserDictDelegate {
     func updateUserDict(email: String)
 }
 
-class AccountBindViewController: SAViewController {
+class AccountBindViewController: SAViewController, UIActionSheetDelegate {
     
     ///
     @IBOutlet weak var tableview: UITableView!
@@ -24,6 +24,10 @@ class AccountBindViewController: SAViewController {
     var delegate: UpdateUserDictDelegate?
     
     var oauth: TencentOAuth?
+    
+    var actionSheet: UIActionSheet?
+    var actionSheetQQ: UIActionSheet?
+    var actionSheetWeibo: UIActionSheet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -259,39 +263,11 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                         }
                     }
                     
-                    let alertController = PSTAlertController.actionSheetWithTitle("微信账号: 昵称 " + (self.bindDict["wechat_username"] as! String))
-                    
-                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
-                        SettingModel.relieveThirdAccount("wechat", callback: { (task, responseObject, error) -> Void in
-                            if let _ = error {
-                                self.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                
-                                let json = JSON(responseObject!)
-                                
-                                if json["error"] != 0 {
-                                    self.showTipText("网络有点问题，等一会儿再试")
-                                } else {
-                                    
-                                    self.bindDict["wechat"] = "0"
-                                    self.bindDict["wechat_username"] = ""
-                                    
-                                    self.tableview.beginUpdates()
-                                    self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
-                                    self.tableview.endUpdates()
-                                    
-                                    self.showTipText("微信解除绑定成功")
-                                }
-                            }
-                            
-                        })
-
-                    }))
-                    
-                    alertController.addCancelActionWithHandler(nil)
-                    
-                    alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
-                    
+                    actionSheet = UIActionSheet(title: "微信账号：" + (self.bindDict["wechat_username"] as! String), delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                    actionSheet!.addButtonWithTitle("解除绑定")
+                    actionSheet!.addButtonWithTitle("取消")
+                    actionSheet!.cancelButtonIndex = 1
+                    actionSheet!.showInView(self.view)
                 } else {
                     if WXApi.isWXAppInstalled() {
                         let req = SendAuthReq()
@@ -315,38 +291,11 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                         }
                     }
                     
-                    let alertController = PSTAlertController.actionSheetWithTitle("QQ 账号: 昵称 " + (self.bindDict["QQ_username"] as! String))
-                    
-                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
-                        SettingModel.relieveThirdAccount("QQ", callback: { (task, responseObject, error) -> Void in
-                            if let _ = error {
-                                self.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                
-                                let json = JSON(responseObject!)
-                                
-                                if json["error"] != 0 {
-                                    self.showTipText("网络有点问题，等一会儿再试")
-                                } else {
-                                    self.bindDict["QQ"] = 1
-                                    self.bindDict["QQ_username"] = ""
-                                    
-                                    self.tableview.beginUpdates()
-                                    self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
-                                    self.tableview.endUpdates()
-                                    
-                                    self.showTipText("QQ 解除绑定成功")
-                                }
-                            }
-                            
-                        })
-                        
-                    }))
-                    
-                    alertController.addCancelActionWithHandler(nil)
-                    
-                    alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
-                    
+                    actionSheetQQ = UIActionSheet(title: "QQ 账号：" + (self.bindDict["QQ_username"] as! String), delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                    actionSheetQQ!.addButtonWithTitle("解除绑定")
+                    actionSheetQQ!.addButtonWithTitle("取消")
+                    actionSheetQQ!.cancelButtonIndex = 1
+                    actionSheetQQ!.showInView(self.view)
                 } else {
                     let permissions = [
                         kOPEN_PERMISSION_GET_USER_INFO,
@@ -389,37 +338,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                         }
                     }
                     
-                    let alertController = PSTAlertController.actionSheetWithTitle("微博账号: 昵称 " + (self.bindDict["weibo_username"] as! String))
                     
-                    alertController.addAction(PSTAlertAction(title: "解除绑定", style: .Default, handler: { (action) in
-                        SettingModel.relieveThirdAccount("weibo", callback: { (task, responseObject, error) -> Void in
-                            if let _ = error {
-                                self.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                
-                                let json = JSON(responseObject!)
-                                
-                                if json["error"] != 0 {
-                                    self.showTipText("网络有点问题，等一会儿再试")
-                                } else {
-                                    self.bindDict["weibo"] = "0"
-                                    self.bindDict["weibo_username"] = ""
-                                    
-                                    self.tableview.beginUpdates()
-                                    self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 1)], withRowAnimation: .None)
-                                    self.tableview.endUpdates()
-                                    
-                                    self.showTipText("微博解除绑定成功")
-                                }
-                            }
-                            
-                        })
-                    }))
-                    
-                    alertController.addCancelActionWithHandler(nil)
-                    
-                    alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
-                    
+                    actionSheetWeibo = UIActionSheet(title: "微博账号：" + (self.bindDict["weibo_username"] as! String), delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                    actionSheetWeibo!.addButtonWithTitle("解除绑定")
+                    actionSheetWeibo!.addButtonWithTitle("取消")
+                    actionSheetWeibo!.cancelButtonIndex = 1
+                    actionSheetWeibo!.showInView(self.view)
                 } else {
                     let request = WBAuthorizeRequest()
                     request.redirectURI = "https://api.weibo.com/oauth2/default.html"
@@ -431,7 +355,78 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         }
     }
     
-    
+    // todo: 三个解除绑定的功能要放上来
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if actionSheet == self.actionSheet {
+            if buttonIndex == 0 {
+                /* 解除微信 */
+                SettingModel.relieveThirdAccount("wechat", callback: { (task, responseObject, error) -> Void in
+                    if let _ = error {
+                        self.showTipText("网络有点问题，等一会儿再试")
+                    } else {
+                        let json = JSON(responseObject!)
+                        
+                        if json["error"] != 0 {
+                            self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.bindDict["wechat"] = "0"
+                            self.bindDict["wechat_username"] = ""
+                            self.tableview.beginUpdates()
+                            self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
+                            self.tableview.endUpdates()
+                            self.showTipText("微信解除绑定成功")
+                        }
+                    }
+                })
+            }
+        } else if actionSheet == self.actionSheetQQ {
+            if buttonIndex == 0 {
+                SettingModel.relieveThirdAccount("QQ", callback: { (task, responseObject, error) -> Void in
+                    if let _ = error {
+                        self.showTipText("网络有点问题，等一会儿再试")
+                    } else {
+                        
+                        let json = JSON(responseObject!)
+                        
+                        if json["error"] != 0 {
+                            self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.bindDict["QQ"] = 1
+                            self.bindDict["QQ_username"] = ""
+                            self.tableview.beginUpdates()
+                            self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
+                            self.tableview.endUpdates()
+                            self.showTipText("QQ 解除绑定成功")
+                        }
+                    }
+                })
+            }
+        } else if actionSheet == self.actionSheetWeibo {
+            if buttonIndex == 0 {
+                SettingModel.relieveThirdAccount("weibo", callback: { (task, responseObject, error) -> Void in
+                    if let _ = error {
+                        self.showTipText("网络有点问题，等一会儿再试")
+                    } else {
+                        
+                        let json = JSON(responseObject!)
+                        
+                        if json["error"] != 0 {
+                            self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.bindDict["weibo"] = "0"
+                            self.bindDict["weibo_username"] = ""
+                            
+                            self.tableview.beginUpdates()
+                            self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 1)], withRowAnimation: .None)
+                            self.tableview.endUpdates()
+                            
+                            self.showTipText("微博解除绑定成功")
+                        }
+                    }
+                })
+            }
+        }
+    }
 }
 
 

@@ -63,8 +63,19 @@ extension Coin {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            let vc = Product()
-            self.navigationController?.pushViewController(vc, animated: true)
+            if let data = dataArray[indexPath.row] as? NSDictionary {
+                let title = data.stringAttributeForKey("title")
+                if title == "表情" {
+                    let vc = ProductList()
+                    vc.name = title
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else if title == "插件" {
+                    print("插件")
+                } else {
+                    let vc = Product()
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
         }
     }
 }

@@ -923,6 +923,8 @@ extension Api {
     
     /* 微信支付获取订单 */
     static func postWechatPay(price: String, coins: String, callback: V.JsonCallback) {
+        print("购买的念币是 ",coins, "价格是", price)
+        print(s_uid, s_shell)
         V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
     }
     

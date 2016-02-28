@@ -71,7 +71,7 @@ extension Product {
                     }
                 }
             } else {
-                print("支付宝支付")
+                print("支付宝购买念币")
                 Api.postAlipayMember() { json in
                     if json != nil {
                         if let j = json as? NSDictionary {
@@ -80,6 +80,14 @@ extension Product {
                                 print("==")
                                 print(resultDic)
                                 print("==")
+                                let data = resultDic as NSDictionary
+                                let resultStatus = data.stringAttributeForKey("resultStatus")
+                                let success = data.stringAttributeForKey("success")
+                                if resultStatus == "9000" && success == "true" {
+                                    print("支付成功")
+                                } else {
+                                    print("支付失败！")
+                                }
                             }
                         }
                     }

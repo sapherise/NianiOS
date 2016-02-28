@@ -33,8 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         WXApi.registerApp("wx08fea299d0177c01")
         MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
-        application.applicationIconBadgeNumber = 1
-        application.applicationIconBadgeNumber = 0
+        application.clearBadge()
         
         /* 融云 IM 接入 */
         RCIMClient.sharedRCIMClient().initWithAppKey("4z3hlwrv3t1yt")
@@ -67,13 +66,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     
     func applicationWillEnterForeground(application: UIApplication) {
         NSNotificationCenter.defaultCenter().postNotificationName("AppEnterForeground", object: nil)
-        application.applicationIconBadgeNumber = 1
-        application.applicationIconBadgeNumber = 0
+        application.clearBadge()
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-        application.applicationIconBadgeNumber = 1
-        application.applicationIconBadgeNumber = 0
+        application.clearBadge()
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -113,16 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             return TencentOAuth.HandleOpenURL(url)
         } else if s == "wx08fea299d0177c01" {
             return WXApi.handleOpenURL(url, delegate: self)
-        } else if s == "safepay" {
+        } else if s == "nianalipay" {
             AlipaySDK.defaultService().processOrderWithPaymentResult(url) { resultDic in
-                print("支付宝回调", resultDic)
-            }
-        } else if s == "platformapi" {
-            AlipaySDK.defaultService().processAuthResult(url) { resultDic in
-                print("支付宝钱包回调", resultDic)
             }
         }
-        print(s, "哈哈哈")
         return true
     }
     
@@ -148,6 +139,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
         }
     }
+    
+    
     
     /* 微信回调 */
     func onResp(resp: BaseResp!) {

@@ -927,3 +927,11 @@ func go(justdoit: () -> Void) {
 func back(justdoit: () -> Void) {
     dispatch_async(dispatch_get_main_queue(), justdoit)
 }
+
+/* 清除角标 */
+extension UIApplication {
+    func clearBadge() {
+        self.applicationIconBadgeNumber = 1
+        self.applicationIconBadgeNumber = 0
+    }
+}

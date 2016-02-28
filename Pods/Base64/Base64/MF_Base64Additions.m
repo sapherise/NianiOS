@@ -83,7 +83,7 @@
     }
     @catch (NSException *exception) {
         data = nil;
-        NSLog(@"WARNING: error occured while decoding base 32 string: %@", exception);
+//        NSLog(@"WARNING: error occured while decoding base 32 string: %@", exception);
     }
     @finally {
         if( decodedBytes != NULL ) {
@@ -169,7 +169,7 @@
     }
     @catch (NSException *exception) {
         encoding = nil;
-        NSLog(@"WARNING: error occured while tring to encode base 32 data: %@", exception);
+//        NSLog(@"WARNING: error occured while tring to encode base 32 data: %@", exception);
     }
     @finally {
         if( encodingBytes != NULL ) {

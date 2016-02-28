@@ -25,20 +25,25 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     var niAlert: NIAlert!
     var niAlertResult: NIAlert!
     
+    /* 传入的值，会员、表情、插件 */
+    var name = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onWechatResult:", name: "onWechatResult", object: nil)
-//            NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
     }
     
     func setup() {
+        
         navView.backgroundColor = UIColor.clearColor()
         self.view.backgroundColor = UIColor.HightlightColor()
         
         /* 添加顶部头图 */
+        
+        let url = "http://img.nian.so/product/graduation.png!large"
         imageHead = UIImageView(frame: CGRectMake(0, 0, globalWidth, globalWidth * 3/4))
-        imageHead.setImage("http://img.nian.so/product/graduation.png!large")
+        imageHead.setImage(url)
         imageHead.backgroundColor = UIColor.HightlightColor()
         self.view.addSubview(imageHead)
         
@@ -117,7 +122,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     func onClick() {
         niAlert = NIAlert()
         niAlert.delegate = self
-        niAlert.dict = NSMutableDictionary(objects: ["", "选择支付方式", "选择一个支付方式", ["微信支付", "支付宝支付"]], forKeys: ["img", "title", "content", "buttonArray"])
+        niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pay_wallet")!, "购买", "选择一种支付方式", ["微信支付", "支付宝支付"]], forKeys: ["img", "title", "content", "buttonArray"])
         niAlert.showWithAnimation(.flip)
     }
     
@@ -128,13 +133,13 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
             niAlertResult.delegate = self
             if object == "0" {
                 /* 微信支付成功 */
-                niAlertResult.dict = NSMutableDictionary(objects: ["", "支付好了", "获得念的永久会员啦！\n蟹蟹你对念的支持", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+                niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "获得念的永久会员啦！\n蟹蟹你对念的支持", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
                 niAlert.dismissWithAnimationSwtich(niAlertResult)
                 
                 /* 按钮的状态变化 */
                 setButtonEnable(Product.btnMainState.hasBought)
             } else if object == "-1" {
-                niAlertResult.dict = NSMutableDictionary(objects: ["", "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+                niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
                 niAlert.dismissWithAnimationSwtich(niAlertResult)
                 setButtonEnable(Product.btnMainState.willBuy)
             } else {

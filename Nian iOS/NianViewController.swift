@@ -519,10 +519,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func saegg(coin: String, totalCoin: String) {
         /* 更新后在首页上更新念币数量 */
         if coinButton.currentTitle != nil {
-            if let cBefore = Int(SAReplace(coinButton.currentTitle!, before: "念币 ", after: "") as String) {
-                if let coin = Int(coin) {
-                    let cAfter = coin + cBefore
-                    coinButton.setTitle("念币 \(cAfter)", forState: UIControlState())
+            if let coinBefore = Cookies.get("coin") as? String {
+                if let _coin = Int(coin) {
+                    let coinAfter = _coin + Int(coinBefore)!
+                    coinButton.setTitle("念币 \(coinAfter)", forState: UIControlState())
                 }
             }
         }

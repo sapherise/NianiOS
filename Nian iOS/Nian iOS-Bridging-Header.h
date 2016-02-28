@@ -43,15 +43,6 @@
 #import "TencentOpenAPI/TencentApiInterface.h"
 #import "TencentOpenAPI/sdkdef.h"
 
-
-/**
- *  @author Bob Wei, 15-11-02 17:11:44
- *
- *  @brief  iOS 9 之后 UIAlertView 会被键盘挡住，而 UIAlertViewController 不支持 iOS 7， 所以，用
- *          PSTAlertController 代替，该作者是资深 iOS 开发者
- */
-#import "PSTAlertController.h"
-
 /**
  *  @author Bob Wei, 15-11-24 13:11:19
  *
