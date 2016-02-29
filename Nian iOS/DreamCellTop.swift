@@ -50,7 +50,7 @@ class DreamCellTop: UITableViewCell {
         viewLineRight.setWidth(globalHalf)
         viewLineTop.setHeight(globalHalf)
         scrollView.setTag()
-        btnMain.backgroundColor = UIColor.HightlightColor()
+        btnMain.backgroundColor = UIColor.HighlightColor()
         contentView.backgroundColor = UIColor.BackgroundColor()
         viewHolder.backgroundColor = UIColor.BackgroundColor()
         labelTitle.backgroundColor = UIColor.BackgroundColor()
@@ -96,7 +96,7 @@ class DreamCellTop: UITableViewCell {
             let textTitle = NSMutableAttributedString(string: title)
             let l = textTitle.length
             textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, l-4))
-            textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.HightlightColor(), range: NSMakeRange(l-4, 4))
+            textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(l-4, 4))
             labelTitle.attributedText = textTitle
         } else if percent == "1" {
             title = "\(title)（完成）"

@@ -26,12 +26,26 @@ extension PetViewController {
                         let err = json!.objectForKey("error") as! NSNumber
                         if err == 0 {
                             self.isUpgradeSuccess = true
-                            globalWillNianReload = 1
                             let data = json!.objectForKey("data") as! NSDictionary
                             let id = data.stringAttributeForKey("id")
                             let level = data.stringAttributeForKey("level")
                             let image = data.stringAttributeForKey("image")
                             let name = data.stringAttributeForKey("name")
+                            
+                            /* 如果最后的等级是 2，那么就扣除 5 念币 */
+                            var reduce = 5
+                            if Int(level)! > 10 {
+                                reduce = 15
+                            } else if Int(level)! > 5 {
+                                reduce = 10
+                            }
+                            if let coin = Cookies.get("coin") as? String {
+                                if let _coin = Int(coin) {
+                                    let coinNew = _coin - reduce
+                                    Cookies.set("\(coinNew)", forKey: "coin")
+                                }
+                            }
+                            
                             if self.dataArray.count >= 1 {
                                 for i: Int in 0...self.dataArray.count - 1 {
                                     let d = self.dataArray[i] as! NSDictionary
@@ -115,7 +129,14 @@ extension PetViewController {
                         let err = json!.objectForKey("error") as! NSNumber
                         self.giftView?.dismissWithAnimation(.normal)
                         if err == 0 {
-                            globalWillNianReload = 1
+                            print("获得了这么多念币：\(coins)")
+                            if let coin = Cookies.get("coin") as? String {
+                                if let _coin = Int(coin) {
+                                    let coinNew = _coin + coins
+                                    Cookies.set("\(coinNew)", forKey: "coin")
+                                    print("设置新的念币为\(coinNew)，既原来的\(_coin)，和新增加的\(coins)")
+                                }
+                            }
                             self.energy = self.energy - coins * 100
                             self.setPetTitle()
                         } else {

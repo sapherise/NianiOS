@@ -36,7 +36,6 @@ extension Recharge {
         if niAlert == self.alert {
             
             if didselectAtIndex == 0 {
-                print("微信支付")
                 if let btn = niAlert.niButtonArray.firstObject as? NIButton {
                     btn.startAnimating()
                 }
@@ -48,7 +47,6 @@ extension Recharge {
                     Api.postWechatPay(price, coins: title) { json in
                         if json != nil {
                             if let j = json as? NSDictionary {
-                                print(j)
                                 let data = NSData(base64EncodedString: j.stringAttributeForKey("data"), options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
                                 let base64Decoded = NSString(data: data!, encoding: NSUTF8StringEncoding)
                                 let jsonString = base64Decoded?.dataUsingEncoding(NSASCIIStringEncoding)
@@ -83,22 +81,10 @@ extension Recharge {
                                     let resultStatus = data.stringAttributeForKey("resultStatus")
                                     if resultStatus == "9000" {
                                         /* 支付宝：支付成功 */
-                                        self.alertResult = NIAlert()
-                                        self.alertResult.delegate = self
-                                        self.alertResult.dict = ["img": UIImage(named: "pay_result")!, "title": "支付好了", "content": "念币买好了！", "buttonArray": [" 嗯！"]]
-                                        self.alert.dismissWithAnimationSwtich(self.alertResult)
-                                        
-                                        if let coin = Cookies.get("coin") as? String {
-                                            if let _coin = Int(coin) {
-                                                let coinNew = _coin + Int(title)!
-                                                Cookies.set("\(coinNew)", forKey: "coin")
-                                            }
-                                        }
+                                        self.payMemberSuccess()
                                     } else {
                                         /* 支付宝：支付失败 */
-                                        if let btn = self.alert.niButtonArray.lastObject as? NIButton {
-                                            btn.stopAnimating()
-                                        }
+                                        self.payMemberCancel()
                                     }
                                 }
                             }
@@ -107,15 +93,65 @@ extension Recharge {
                 }
             }
         } else if niAlert == self.alertResult {
+            /* 如果是支付结果页面 */
             alert.dismissWithAnimation(.normal)
             alertResult.dismissWithAnimation(.normal)
         }
     }
     
+    /* 移除整个支付界面 */
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
         alert.dismissWithAnimation(.normal)
         if alertResult != nil {
             alertResult.dismissWithAnimation(.normal)
+        }
+    }
+    
+    /* 购买念币成功 */
+    func payMemberSuccess() {
+        alertResult = NIAlert()
+        alertResult.delegate = self
+        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "念币买好了！", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+        alert.dismissWithAnimationSwtich(alertResult)
+        if let coin = Cookies.get("coin") as? String {
+            if let _coin = Int(coin) {
+                if let data = dataArray[index] as? NSDictionary {
+                    let insertCoin = data.stringAttributeForKey("title")
+                    let coinNew = _coin + Int(insertCoin)!
+                    Cookies.set("\(coinNew)", forKey: "coin")
+                }
+            }
+        }
+    }
+    
+    /* 购买念币用户取消了操作 */
+    func payMemberCancel() {
+        if let btn = alert.niButtonArray.firstObject as? NIButton {
+            btn.stopAnimating()
+        }
+        if let btn = alert.niButtonArray.lastObject as? NIButton {
+            btn.stopAnimating()
+        }
+    }
+    
+    /* 购买念币失败 */
+    func payMemberFailed() {
+        alertResult = NIAlert()
+        alertResult.delegate = self
+        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+        alert.dismissWithAnimationSwtich(alertResult)
+    }
+    
+    /* 微信购买念币回调 */
+    func onWechatResult(sender: NSNotification) {
+        if let object = sender.object as? String {
+            if object == "0" {
+                payMemberSuccess()
+            } else if object == "-1" {
+                payMemberFailed()
+            } else {
+                payMemberCancel()
+            }
         }
     }
 }

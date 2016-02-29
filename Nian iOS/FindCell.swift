@@ -35,16 +35,16 @@ class FindCell: UITableViewCell {
             
             if follow == "0" {
                 self.btnFollow.tag = 100
-                self.btnFollow.layer.borderColor = UIColor.HightlightColor().CGColor
+                self.btnFollow.layer.borderColor = UIColor.HighlightColor().CGColor
                 self.btnFollow.layer.borderWidth = 1
-                self.btnFollow.setTitleColor(UIColor.HightlightColor(), forState: UIControlState.Normal)
+                self.btnFollow.setTitleColor(UIColor.HighlightColor(), forState: UIControlState.Normal)
                 self.btnFollow.backgroundColor = UIColor.whiteColor()
                 self.btnFollow.setTitle("关注", forState: UIControlState.Normal)
             }else{
                 self.btnFollow.tag = 200
                 self.btnFollow.layer.borderWidth = 0
                 self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-                self.btnFollow.backgroundColor = UIColor.HightlightColor()
+                self.btnFollow.backgroundColor = UIColor.HighlightColor()
                 self.btnFollow.setTitle("已关注", forState: UIControlState.Normal)
             }
             self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -60,7 +60,7 @@ class FindCell: UITableViewCell {
             sender.tag = 200
             sender.layer.borderWidth = 0
             sender.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            sender.backgroundColor = UIColor.HightlightColor()
+            sender.backgroundColor = UIColor.HighlightColor()
             sender.setTitle("已关注", forState: UIControlState.Normal)
             
             Api.getFollow(uid) { json in
@@ -71,9 +71,9 @@ class FindCell: UITableViewCell {
             mutableItem.setObject("0", forKey: "follow")
             self.data = mutableItem
             sender.tag = 100
-            sender.layer.borderColor = UIColor.HightlightColor().CGColor
+            sender.layer.borderColor = UIColor.HighlightColor().CGColor
             sender.layer.borderWidth = 1
-            sender.setTitleColor(UIColor.HightlightColor(), forState: UIControlState.Normal)
+            sender.setTitleColor(UIColor.HighlightColor(), forState: UIControlState.Normal)
             sender.backgroundColor = UIColor.whiteColor()
             sender.setTitle("关注", forState: UIControlState.Normal)
             

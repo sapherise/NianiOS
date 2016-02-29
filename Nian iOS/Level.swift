@@ -122,7 +122,7 @@ class LevelView: UIView {
                 myB.font = UIFont(name: "Verdana", size: 11)
                 myB.frame = CGRectMake(thePosX, thePosY, 24, 24)
                 if marks[index] {
-                    myB.textColor = UIColor.HightlightColor()
+                    myB.textColor = UIColor.HighlightColor()
                     if index <= todayDInt {
                         self.textLeft = self.textLeft + 1
                         self.textRight = self.textRight + 1
@@ -135,7 +135,7 @@ class LevelView: UIView {
                 }
                 
                 if (strAll == firstDay) {
-                    myB.backgroundColor = UIColor.HightlightColor()
+                    myB.backgroundColor = UIColor.HighlightColor()
                     myB.textColor = UIColor.whiteColor()
                     myB.layer.cornerRadius = 3
                     myB.layer.masksToBounds = true

@@ -21,7 +21,7 @@ class SAMenu: UIView {
         viewLeft.tag = 0
         viewMiddle.tag = 1
         viewRight.tag = 2
-        viewLeft.textColor = UIColor.HightlightColor()
+        viewLeft.textColor = UIColor.HighlightColor()
         viewLineBottom.frame = CGRectMake(160 - globalWidth/2, 39.5, globalWidth, 0.5)
     }
     
@@ -45,7 +45,7 @@ class SAMenu: UIView {
         viewLeft.textColor = greyColor
         viewMiddle.textColor = greyColor
         viewRight.textColor = greyColor
-        arrView[tab].textColor = UIColor.HightlightColor()
+        arrView[tab].textColor = UIColor.HighlightColor()
         let x = arrView[tab].x()
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.viewLine.setX(x + 15)

@@ -25,7 +25,7 @@ class CommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .None
-        self.nickLabel!.textColor = UIColor.HightlightColor()
+        self.nickLabel!.textColor = UIColor.HighlightColor()
         self.avatarView.layer.masksToBounds = true
         self.avatarView.layer.cornerRadius = 16
     }

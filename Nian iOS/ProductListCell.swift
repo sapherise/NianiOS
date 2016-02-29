@@ -16,14 +16,17 @@ class ProductListCell: UICollectionViewCell {
     var data: NSDictionary!
     
     func setup() {
-        labelTitle.text = data.stringAttributeForKey("title")
+        labelTitle.text = data.stringAttributeForKey("name")
 //        let url = data.stringAttributeForKey("image")
-        let color = data.stringAttributeForKey("color")
-        let price = data.stringAttributeForKey("price")
-        imageView.image = UIImage(named: "banner_dragon")
+        let color = data.stringAttributeForKey("background_color")
+        let price = data.stringAttributeForKey("cost")
+        let banner = data.stringAttributeForKey("banner")
+        imageView.setImage(banner)
         imageView.backgroundColor = UIColor.colorWithHex(color)
         labelTitle.textColor = UIColor.MainColor()
         labelContent.textColor = UIColor.Accomplish()
         labelContent.text = "\(price) 念币"
     }
+    
+    // todo: 其他用户点进成员列表，却有邀请按钮
 }

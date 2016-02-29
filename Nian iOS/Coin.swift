@@ -21,7 +21,6 @@ class Coin: SAViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         tableView.reloadData()
-        print("重载了该界面")
     }
     
     func setup() {

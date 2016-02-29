@@ -95,6 +95,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             self.page = 1
         }
         Api.getDreamStep(Id, page: page) { json in
+            print(json)
             if json != nil {
                 if json!.objectForKey("error") as! NSNumber != 0 {
                     let status = json!.objectForKey("status") as! NSNumber

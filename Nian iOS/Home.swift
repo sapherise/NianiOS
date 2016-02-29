@@ -51,14 +51,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.setupViews()
         self.initViewControllers()
         gameoverCheck()
-        // todo: 开启下面
-        // todo: 退出失败了
-        // todo: 头像未测试
-        // todo: 解绑未测试
-//        setupReachability()
+        setupReachability()
         RCIMClient.sharedRCIMClient().setReceiveMessageDelegate(self, object: nil)
-        
-        // todo: 测试
     }
 
     func gameoverCheck() {
@@ -253,7 +247,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.textColor = UIColor.whiteColor()
         self.dot!.font = UIFont.systemFontOfSize(10)
         self.dot!.textAlignment = NSTextAlignment.Center
-        self.dot!.backgroundColor = UIColor.HightlightColor()
+        self.dot!.backgroundColor = UIColor.HighlightColor()
         self.dot!.layer.cornerRadius = 5
         self.dot!.layer.masksToBounds = true
         self.dot!.hidden = true
@@ -280,7 +274,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     func GameOverHide(){
-        globalWillNianReload = 1
         self.navigationItem.rightBarButtonItems = buttonArray()
         if self.gameoverMode == 1 {
             Api.postGameoverCoin(self.gameoverId) { json in

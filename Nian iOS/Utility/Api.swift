@@ -197,11 +197,6 @@ struct Api {
         V.httpPostForJson_AFN("http://api.nian.so/tags?uid=\(s_uid)&&shell=\(s_shell)", content: ["tag": "\(tag)"], callback: callback)
     }
     
-    static func postReport(type: String, id: String, callback: V.StringCallback) {
-        loadCookies()
-        V.httpPostForString("http://nian.so/api/a.php", content: "uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
-    }
-    
     static func postLikeStep(sid: String, like: Int, callback: V.StringCallback) {
         loadCookies()
         V.httpPostForString("http://nian.so/api/like_query.php", content: "uid=\(s_uid)&&shell=\(s_shell)&&step=\(sid)&&like=\(like)", callback: callback)
@@ -923,8 +918,6 @@ extension Api {
     
     /* 微信支付获取订单 */
     static func postWechatPay(price: String, coins: String, callback: V.JsonCallback) {
-        print("购买的念币是 ",coins, "价格是", price)
-        print(s_uid, s_shell)
         V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
     }
     
@@ -935,12 +928,41 @@ extension Api {
     
     /* 微信支付购买会员 */
     static func postWechatMember(callback: V.JsonCallback) {
-        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order/test?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
     }
     
+    // todo: 需要把上面和下面的 test 删除
+    // todo: 正式版 API 无效
     /* 支付宝支付购买会员 */
     static func postAlipayMember(callback: V.JsonCallback) {
-        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order/test?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
+    }
+    
+    /* 获取表情列表 */
+    static func getEmoji(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/shop/products?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 购买表情 */
+    static func postEmojiBuy(code: String, callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/shop/buy?uid=\(s_uid)&shell=\(s_shell)", content: ["code": code], callback: callback)
+    }
+    
+    /* 请假 */
+    static func postLeave(callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/exchange?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "leave"], callback: callback)
+    }
+    
+    /* 购买毕业证 */
+    static func getGraduate(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/shop/graduate/buy?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 推广 */
+    static func postPromo(id: String, callback: V.JsonCallback) {
+        V.httpPostForJson_AFN("http://api.nian.so/shop/promote/buy?uid=\(s_uid)&shell=\(s_shell)", content: ["dream": id], callback: callback)
     }
 }
 

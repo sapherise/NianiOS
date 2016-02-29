@@ -53,16 +53,16 @@ class SADoubleCell: UITableViewCell {
             }
         }
         if bool == "0" {
-            self.btnMain.layer.borderColor = UIColor.HightlightColor().CGColor
+            self.btnMain.layer.borderColor = UIColor.HighlightColor().CGColor
             self.btnMain.layer.borderWidth = 1
-            self.btnMain.setTitleColor(UIColor.HightlightColor(), forState: UIControlState())
+            self.btnMain.setTitleColor(UIColor.HighlightColor(), forState: UIControlState())
             self.btnMain.backgroundColor = UIColor.whiteColor()
             self.btnMain.setTitle(content[0], forState: UIControlState())
         } else {
-            self.btnMain.layer.borderColor = UIColor.HightlightColor().CGColor
+            self.btnMain.layer.borderColor = UIColor.HighlightColor().CGColor
             self.btnMain.layer.borderWidth = 1
             self.btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
-            self.btnMain.backgroundColor = UIColor.HightlightColor()
+            self.btnMain.backgroundColor = UIColor.HighlightColor()
             self.btnMain.setTitle(content[1], forState: UIControlState())
         }
     }

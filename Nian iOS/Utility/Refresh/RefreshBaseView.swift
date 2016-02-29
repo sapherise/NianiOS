@@ -33,7 +33,7 @@ enum RefreshViewType {
     case  TypeHeader             // 头部控件
     case  TypeFooter             // 尾部控件
 }
-let RefreshLabelTextColor:UIColor = UIColor.HightlightColor()
+let RefreshLabelTextColor:UIColor = UIColor.HighlightColor()
 
 
 class RefreshBaseView: UIView {
@@ -107,7 +107,7 @@ class RefreshBaseView: UIView {
         //self.addSubview(arrowImage)
         //状态标签
         activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        activityView.color = UIColor.HightlightColor()
+        activityView.color = UIColor.HighlightColor()
 //        activityView.bounds = self.arrowImage.bounds
         activityView.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin]
         self.addSubview(activityView)

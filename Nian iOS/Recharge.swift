@@ -33,6 +33,8 @@ class Recharge: SAViewController, UITableViewDataSource, UITableViewDelegate, NI
         tableView.registerNib(UINib(nibName: "RechargeCell", bundle: nil), forCellReuseIdentifier: "RechargeCell")
         tableView.separatorStyle = .None
         self.view.addSubview(tableView)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onWechatResult:", name: "onWechatResult", object: nil)
     }
     
     func onClick(sender: UIButton) {

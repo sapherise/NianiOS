@@ -238,7 +238,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.page = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
             let activity = UIActivityIndicatorView()
-            activity.color = UIColor.HightlightColor()
+            activity.color = UIColor.HighlightColor()
             activity.startAnimating()
             activity.hidden = false
             v.addSubview(activity)
@@ -271,7 +271,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.pageStep = 1
             let v = UIView(frame: CGRectMake(0, 0, globalWidth, 70))
             let activity = UIActivityIndicatorView()
-            activity.color = UIColor.HightlightColor()
+            activity.color = UIColor.HighlightColor()
             activity.startAnimating()
             activity.hidden = false
             v.addSubview(activity)
@@ -299,6 +299,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             }
         }
     }
+    
+    //todo: 修改用户界面的梦想
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
@@ -489,7 +491,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.tableViewDream.contentOffset.y = y2
             self.tableViewStep.hidden = true
             self.tableViewDream.hidden = false
-            self.topCell.labelMenuLeft.textColor = UIColor.HightlightColor()
+            self.topCell.labelMenuLeft.textColor = UIColor.HighlightColor()
             self.topCell.labelMenuRight.textColor = UIColor.blackColor()
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuLeft.x()+15)
@@ -501,7 +503,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             self.tableViewStep.contentOffset.y = y1
             self.tableViewDream.hidden = true
             self.tableViewStep.hidden = false
-            self.topCell.labelMenuRight.textColor = UIColor.HightlightColor()
+            self.topCell.labelMenuRight.textColor = UIColor.HighlightColor()
             self.topCell.labelMenuLeft.textColor = UIColor.blackColor()
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.topCell.labelMenuSlider.setX(self.topCell.labelMenuRight.x()+15)

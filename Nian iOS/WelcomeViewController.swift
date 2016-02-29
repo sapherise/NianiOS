@@ -359,7 +359,6 @@ extension WelcomeViewController {
                                 CurrentUser.sharedCurrentUser.shell = shell
                                 
                                 Api.requestLoad()
-                                globalWillReEnter = 1
                                 
                                 /* 使用第三方来登录 */
                                 self.launch()

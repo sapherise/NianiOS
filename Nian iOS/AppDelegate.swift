@@ -165,7 +165,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         } else if resp.isKindOfClass(PayResp) {
             let response = resp as! PayResp
             let code = response.errCode
-            print("微信支付结果：\(code)")
             NSNotificationCenter.defaultCenter().postNotificationName("onWechatResult", object: "\(code)")
         }
     }

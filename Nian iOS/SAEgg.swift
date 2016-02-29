@@ -136,7 +136,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
             sender.setX(104)
         })
         let ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
-        ac.color = UIColor.HightlightColor()
+        ac.color = UIColor.HighlightColor()
         ac.hidden = false
         ac.startAnimating()
         self.confirmNiAlert._containerView!.addSubview(ac)
@@ -149,7 +149,12 @@ class SAEgg: NIAlert, NIAlertDelegate {
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
                     let isOwned = self.petData.stringAttributeForKey("own")
-                    globalWillNianReload = 1
+                    if let coin = Cookies.get("coin") as? String {
+                        if let _coin = Int(coin) {
+                            let coinNew = _coin - 3
+                            Cookies.set("\(coinNew)", forKey: "coin")
+                        }
+                    }
                     if isOwned == "0" {
                         // 此前没有这个宠物，出现宠物
                         self.lotteryNiAlert.delegate = self

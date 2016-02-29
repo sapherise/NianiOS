@@ -256,9 +256,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         let petCount = data.stringAttributeForKey("pet_count")
                         let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                         let vip = data.stringAttributeForKey("vip")
+                        let member = data.stringAttributeForKey("member")
+                        Cookies.set(member, forKey: "member")
                         let deadLine = data.stringAttributeForKey("deadline")
-                        self.coinButton.setTitle("念币 \(coin)", forState: UIControlState.Normal)
-                        self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState.Normal)
+                        self.coinButton.setTitle("念币 \(coin)", forState: UIControlState())
+                        self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState())
                         self.UserName.text = "\(name)"
                         self.UserHead.setHead(safeuid)
                         self.imageBadge.setType(vip)
@@ -357,18 +359,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
         navShow()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         navHide()
-        if globalWillNianReload == 1 {
-            globalWillNianReload = 0
-            self.load()
-            self.setupUserTop(false)
+        if let coin = Cookies.get("coin") as? String {
+            coinButton.setTitle("念币 \(coin)", forState: UIControlState())
         }
     }
     
@@ -509,7 +507,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }else{
             self.viewHeader.hidden = true
         }
-        globalNumberDream = self.dataArray.count
     }
     
     func onShare(avc: UIActivityViewController) {

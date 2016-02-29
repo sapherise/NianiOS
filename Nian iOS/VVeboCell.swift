@@ -35,6 +35,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     var data: NSDictionary! {
         didSet {
+            let member = data.stringAttributeForKey("member")
             let heightCell = data["heightCell"] as! CGFloat
             let widthComment = data["widthComment"] as! CGFloat
             let uid = data.stringAttributeForKey("uid")
@@ -50,6 +51,17 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                     collectionView.setHeight(heightImage + SIZE_COLLECTION_PADDING)
                                         collectionView.reloadData()
                 }
+            }
+            
+            var name = self.data.stringAttributeForKey("user")
+            if self.type == 2 {
+                name = self.data.stringAttributeForKey("userlike")
+            }
+            if member == "1" {
+                pro.setX(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8 + 6 + name.stringWidthWith(14, height: SIZE_IMAGEHEAD_WIDTH/2) - 10)
+                pro.hidden = false
+            } else {
+                pro.hidden = true
             }
             
             let yButton = heightCell - SIZE_PADDING - SIZE_LABEL_HEIGHT
@@ -70,7 +82,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 btnLike.layer.borderWidth = 1
             } else {
                 btnLike.setImage(UIImage(named: "liked"), forState: UIControlState())
-                btnLike.backgroundColor = UIColor.HightlightColor()
+                btnLike.backgroundColor = UIColor.HighlightColor()
                 btnLike.layer.borderColor = nil
                 btnLike.layer.borderWidth = 0
             }
@@ -113,6 +125,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var editStepData:NSDictionary?
     var delegate: delegateSAStepCell?
     var collectionView: UICollectionView!
+    var pro: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -127,7 +140,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
         // 头像
         imageHead = UIImageView(frame: CGRectMake(SIZE_PADDING, SIZE_PADDING, SIZE_IMAGEHEAD_WIDTH, SIZE_IMAGEHEAD_WIDTH))
-        imageHead.backgroundColor = UIColor.whiteColor()
+        imageHead.backgroundColor = UIColor.HighlightColor()
         imageHead.layer.masksToBounds = true
         imageHead.layer.cornerRadius = SIZE_IMAGEHEAD_WIDTH / 2
         contentView.addSubview(imageHead)
@@ -183,18 +196,28 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         btnLike.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
         btnLike.layer.masksToBounds = true
         contentView.addSubview(btnLike)
+        // todo: 为什么2月有31日？
+        
+        // 会员
+        pro = UIImageView(frame: CGRectMake(0, SIZE_PADDING + 2 - 16, 44, 44))   // 24, 12
+        pro.image = UIImage(named: "pro")
+        pro.contentMode = UIViewContentMode.Center
+        contentView.addSubview(pro)
         
         // 绑定事件
         imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
         imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        
         labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
         labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
         btnMore.addTarget(self, action: "onMoreClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+        pro.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPro"))
         imageHolder.userInteractionEnabled = true
         imageHead.userInteractionEnabled = true
         labelComment.userInteractionEnabled = true
         labelLike.userInteractionEnabled = true
+        pro.userInteractionEnabled = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -220,7 +243,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             if self.type == 2 {
                 name = self.data.stringAttributeForKey("userlike") as NSString
             }
-            name.drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING), andFont: UIFont.systemFontOfSize(14), andTextColor: UIColor.HightlightColor(), andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
+            name.drawInContext(context, withPosition: CGPointMake(SIZE_PADDING + SIZE_IMAGEHEAD_WIDTH + 8, SIZE_PADDING), andFont: UIFont.systemFontOfSize(14), andTextColor: UIColor.HighlightColor(), andHeight: Float(SIZE_IMAGEHEAD_WIDTH/2))
             
             // 时间或标题
             var textSubtitle = self.data.stringAttributeForKey("title") as NSString
@@ -412,6 +435,12 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 }
             }
         }
+    }
+    
+    func onPro() {
+        let vc = Product()
+        vc.type = Product.ProductType.Pro
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onLikeClick() {

@@ -217,7 +217,7 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
                     
                     /* 图片加载的进度条 */
                     let viewProgress = UIProgressView(frame: CGRectMake(0, 0, 100, 200))
-                    viewProgress.progressTintColor = UIColor.HightlightColor()
+                    viewProgress.progressTintColor = UIColor.HighlightColor()
                     viewProgress.trackTintColor = UIColor.GreyColor1()
                     viewProgress.center = v.center
                     viewProgress.hidden = true

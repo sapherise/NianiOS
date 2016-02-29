@@ -25,22 +25,19 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     var dataArray = NSMutableArray()
     var niAlert: NIAlert!
     var niAlertResult: NIAlert!
-    var content = ""
-    var price = ""
-    var isCoin = ""
-    var type = ""
-    var path = ""
+//    var content = ""
+//    var price = ""
+//    var isCoin = ""
+//    var type = ""
+//    var path = ""
+    var data: NSDictionary!
+    var type: ProductType!
     
-    /* 传入的值，会员、表情、插件 */
-    var name = ""
-    let items = [
-        ["type": "vip", "title": "会员", "content": "永久地成为念的会员，在享受念币商店 7 折优惠的基础上，还能获得一个好看的会员标识。", "price": "120", "isCoin": "false"],
-        ["type": "emoji", "title": "幽灵", "content": "隐藏中的宠物，无法通过正常途径获得。喜欢帮助念的玩家更好地玩念。", "price": "100", "isCoin": "true", "path": "ghost"],
-        ["type": "emoji", "title": "小白", "content": "念的实验室里的隐藏 BOSS，当感受到爱时会长出第二条尾巴。", "price": "100", "isCoin": "true", "path": "cat"],
-        ["type": "plugin", "title": "请假", "content": "72 小时内不会被停号！如果你开启了日更模式，出去玩时记得买张请假条！", "price": "2", "isCoin": "true"],
-        ["type": "plugin", "title": "推广", "content": "在接下来的 24 小时里，置顶你的记本到发现页面。多次购买可重复叠加时间！", "price": "20", "isCoin": "true"],
-        ["type": "plugin", "title": "毕业证", "content": "永不停号，愿你已从念获益。", "price": "100", "isCoin": "true"]
-    ]
+    enum ProductType {
+        case Emoji
+        case Pro
+        case Plugin
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,28 +46,47 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     }
     
     func setup() {
-        
         navView.backgroundColor = UIColor.clearColor()
-        self.view.backgroundColor = UIColor.HightlightColor()
-        print("1")
-        for _item in items {
-            let item = _item as NSDictionary
-            let title = item.stringAttributeForKey("title")
-            if title == name {
-                self.content = item.stringAttributeForKey("content")
-                price = item.stringAttributeForKey("price")
-                isCoin = item.stringAttributeForKey("isCoin")
-                type = item.stringAttributeForKey("type")
-                path = item.stringAttributeForKey("path")
-                break
+//        for _item in items {
+//            let item = _item as NSDictionary
+//            let title = item.stringAttributeForKey("title")
+//            if title == name {
+//                self.content = item.stringAttributeForKey("content")
+//                price = item.stringAttributeForKey("price")
+//                isCoin = item.stringAttributeForKey("isCoin")
+//                type = item.stringAttributeForKey("type")
+//                path = item.stringAttributeForKey("path")
+//                break
+//            }
+//        }
+        
+        var owned = "0"
+        if type == ProductType.Pro {
+            if let member = Cookies.get("member") as? String {
+                if member == "1" {
+                    owned = "1"
+                }
             }
+            data = [
+                "banner": "http://img.nian.so/banner/unicorn.png",
+                "cost": "120",
+                "description": "永久地成为念的会员，在享受念币商店 7 折优惠的基础上，还能获得一个好看的会员标识。",
+                "name": "会员",
+                "owned": owned,
+                "background_color": "#A69DBD"
+            ]
+        } else {
+            owned = data.stringAttributeForKey("owned")
         }
         
         /* 添加顶部头图 */
+        let banner = data.stringAttributeForKey("banner")
+        let bgColor = data.stringAttributeForKey("background_color")
         imageHead = UIImageView(frame: CGRectMake(0, 0, globalWidth, globalWidth * 3/4))
-        imageHead.image = UIImage(named: "banner_dragon")
-        imageHead.backgroundColor = UIColor.HightlightColor()
+        imageHead.setImage(banner)
+        imageHead.backgroundColor = UIColor.colorWithHex(bgColor)
         self.view.addSubview(imageHead)
+        self.view.backgroundColor = UIColor.colorWithHex(bgColor)
         
         /* 添加遮挡视图，避免划到很上面的时候遮不住头图 */
         viewCover = UIView(frame: CGRectMake(0, globalWidth * 3/4, globalWidth, globalHeight - globalWidth * 3/4))
@@ -85,12 +101,13 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         
         /* 添加标题和简介 */
         labelTitle = UILabel(frame: CGRectMake(padding, imageHead.height() + 8, globalWidth, 56))
-        labelTitle.text = name
+        labelTitle.text = data.stringAttributeForKey("name")
         labelTitle.textColor = UIColor.MainColor()
         labelTitle.font = UIFont.systemFontOfSize(18)
         scrollView.addSubview(labelTitle)
         
         labelContent = UILabel(frame: CGRectMake(padding, labelTitle.bottom(), globalWidth - padding * 2, 24))
+        let content = data.stringAttributeForKey("description")
         labelContent.text = content
         labelContent.textColor = UIColor.AuxiliaryColor()
         labelContent.font = UIFont.systemFontOfSize(14)
@@ -100,7 +117,8 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         
         /* 价格 */
         viewPrice = UILabel(frame: CGRectMake(0, imageHead.height() + 8, 0, 56))
-        price = isCoin == "true" ? price : "¥ \(price)"
+        var price = data.stringAttributeForKey("cost")
+        price = type != ProductType.Pro ? price : "¥ \(price)"
         viewPrice.text = price
         let w = price.stringWidthWith(14, height: 56)
         viewPrice.setWidth(w)
@@ -111,7 +129,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         scrollView.addSubview(viewPrice)
         
         /* 价格左边的图标 */
-        if isCoin == "true" {
+        if type != ProductType.Pro {
             let imageCoin = UIImageView(frame: CGRectMake(0, 0, 16, 56))
             imageCoin.image = UIImage(named: "recharge")
             imageCoin.setX(viewPrice.x() - 24)
@@ -127,7 +145,13 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         btnMain.titleLabel?.font = UIFont.systemFontOfSize(16)
         btnMain.addTarget(self, action: "onClick", forControlEvents: UIControlEvents.TouchUpInside)
         scrollView.addSubview(btnMain)
-        setButtonEnable(Product.btnMainState.willBuy)
+        
+        /* 根据是否拥有来设置按钮状态 */
+        if owned == "0" {
+            setButtonEnable(Product.btnMainState.willBuy)
+        } else {
+            setButtonEnable(Product.btnMainState.hasBought)
+        }
         
         /* 分割线 */
         viewLine = UIView(frame: CGRectMake(padding, btnMain.bottom() + 24 - globalHalf / 2, globalWidth - padding * 2, globalHalf))
@@ -135,14 +159,13 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         scrollView.addSubview(viewLine)
         
         /* 列表 */
-        
         let flowLayout = UICollectionViewFlowLayout()
         var frame: CGRect?
         var cell = ""
         var heightContentSize: CGFloat = 0
         
         /* 如果是会员 */
-        if type == "vip" {
+        if type == ProductType.Pro {
             dataArray = [["title": "购买优惠", "content": "念币商店表情、主题 30% 的折扣。", "image": "vip_discount"], ["title": "身份标识", "content": "每条进展都有好看的会员标识。", "image": "vip_mark"], ["title": "表达你的喜爱", "content": "蟹蟹你对念的支持 :))", "image": "vip_love"]]
             let w = globalWidth - padding * 2
             let h: CGFloat = 72
@@ -152,19 +175,20 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
             flowLayout.minimumLineSpacing = 0
             flowLayout.itemSize = CGSize(width: w, height: h)
             flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            frame = CGRectMake(0, viewLine.bottom() + padding, wCollectionView, hCollectionView)
+            frame = CGRectMake(0, viewLine.bottom() + 20, wCollectionView, hCollectionView)
             cell = "ProductCollectionCell"
             heightContentSize = hCollectionView
-        } else if type == "emoji" {
+        } else if type == ProductType.Emoji {
+            let path = data.stringAttributeForKey("path")
             dataArray = [
-                ["image": "http://img.nian.so/emoji/\(path)/1.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/2.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/3.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/4.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/5.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/6.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/7.gif"],
-                ["image": "http://img.nian.so/emoji/\(path)/8.gif"]
+                ["image": "\(path)/1.gif"],
+                ["image": "\(path)/2.gif"],
+                ["image": "\(path)/3.gif"],
+                ["image": "\(path)/4.gif"],
+                ["image": "\(path)/5.gif"],
+                ["image": "\(path)/6.gif"],
+                ["image": "\(path)/7.gif"],
+                ["image": "\(path)/8.gif"],
             ]
             let w = (globalWidth - padding * 2) / 4
             let h: CGFloat = w
@@ -177,11 +201,11 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
             frame = CGRectMake(0, viewLine.bottom() + padding, wCollectionView, hCollectionView)
             cell = "ProductEmojiCollectionCell"
             heightContentSize = hCollectionView
-        } else if type == "plugin" {
+        } else if type == ProductType.Plugin {
             dataArray = []
             flowLayout.minimumInteritemSpacing = 0
             flowLayout.minimumLineSpacing = 0
-            flowLayout.itemSize = CGSize(width: 0, height: 0)
+            flowLayout.itemSize = CGSize(width: 10, height: 10)
             flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             frame = CGRectMake(0, 0, 0, 0)
             cell = "ProductEmojiCollectionCell"
@@ -209,33 +233,32 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     }
     
     func onClick() {
-        niAlert = NIAlert()
-        niAlert.delegate = self
-        niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pay_wallet")!, "购买", "选择一种支付方式", ["微信支付", "支付宝支付"]], forKeys: ["img", "title", "content", "buttonArray"])
-        niAlert.showWithAnimation(.flip)
-    }
-    
-    func onWechatResult(sender: NSNotification) {
-        if let object = sender.object as? String {
-            print("获取到观察对象：\(object)")
-            niAlertResult = NIAlert()
-            niAlertResult.delegate = self
-            if object == "0" {
-                /* 微信支付成功 */
-                niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "获得念的永久会员啦！\n蟹蟹你对念的支持", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
-                niAlert.dismissWithAnimationSwtich(niAlertResult)
-                
-                /* 按钮的状态变化 */
-                setButtonEnable(Product.btnMainState.hasBought)
-            } else if object == "-1" {
-                niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
-                niAlert.dismissWithAnimationSwtich(niAlertResult)
-                setButtonEnable(Product.btnMainState.willBuy)
-            } else {
-                if let btn = niAlert.niButtonArray.firstObject as? NIButton {
-                    btn.stopAnimating()
-                }
-                setButtonEnable(Product.btnMainState.willBuy)
+        /* 如果是会员 */
+        if type == ProductType.Pro {
+            niAlert = NIAlert()
+            niAlert.delegate = self
+            niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pay_wallet")!, "购买", "选择一种支付方式", ["微信支付", "支付宝支付"]], forKeys: ["img", "title", "content", "buttonArray"])
+            niAlert.showWithAnimation(.flip)
+        } else if type == ProductType.Emoji {
+            niAlert = NIAlert()
+            niAlert.delegate = self
+            niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pay_wallet")!, "购买表情", "确定购买吗？", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+            niAlert.showWithAnimation(.flip)
+        } else if type == ProductType.Plugin {
+            let name = data.stringAttributeForKey("name")
+            if name == "请假" {
+                niAlert = NIAlert()
+                niAlert.delegate = self
+                niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pay_wallet")!, "请假", "确定购买吗？", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+                niAlert.showWithAnimation(.flip)
+            } else if name == "推广" {
+                let vc = Promo()
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else if name == "毕业证" {
+                niAlert = NIAlert()
+                niAlert.delegate = self
+                niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pay_wallet")!, "毕业证", "确定购买吗？", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+                niAlert.showWithAnimation(.flip)
             }
         }
     }
@@ -275,12 +298,11 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
             enabled = false
             content = "已下载"
             break
-            
         }
         btnMain.enabled = enabled
         btnMain.setTitle(content, forState: UIControlState())
         if enabled {
-            btnMain.backgroundColor = UIColor.HightlightColor()
+            btnMain.backgroundColor = UIColor.HighlightColor()
             btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
         } else {
             btnMain.backgroundColor = UIColor.WindowColor()

@@ -44,7 +44,7 @@ extension UIImageView {
             self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
             let v = UIProgressView(frame: CGRectMake(0, 0, 100, 200))
-            v.progressTintColor = UIColor.HightlightColor()
+            v.progressTintColor = UIColor.HighlightColor()
             v.trackTintColor = UIColor.e6()
             v.center = self.center
             v.hidden = true

@@ -75,7 +75,7 @@ extension Coin {
                     self.navigationController?.pushViewController(vc, animated: true)
                 } else if title == "会员" {
                     let vc = Product()
-                    vc.name = title
+                    vc.type = Product.ProductType.Pro
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }

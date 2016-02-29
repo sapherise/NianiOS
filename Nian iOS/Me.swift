@@ -286,7 +286,7 @@ extension UILabel {
             if content == 0 {
                 self.textColor = UIColor.blackColor()
             }else{
-                self.textColor = UIColor.HightlightColor()
+                self.textColor = UIColor.HighlightColor()
             }
         }else{
             self.textColor = UIColor.blackColor()

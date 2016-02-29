@@ -18,16 +18,7 @@ let product_coin295 = "so.nian.c295"
 
 let TextLoadFailed = "加载数据失败了..."
 
-var globalWillNianReload:Int = 0
-var globalWillBBSReload:Int = 0
-var globalNumberDream:Int = 0
-var globalImageYPoint:CGRect = CGRectZero
-var globalWillCircleChatReload:Int = 0
-var globalWillCircleJoinReload:Int = 0
-var globalWillReEnter: Int = 0
-var globalURL:String = ""
 var globalViewLoading:UIView?
-var globalViewFilmExist: Bool = false
 var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
 var globalhasLaunched: Int = 0
@@ -320,7 +311,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
     func showTipText(text: String, delayTime: Double = 2.0) {
         let v: UIView? = UIView()
         v!.frame = CGRectMake(0, -64, globalWidth, 64)
-        v!.backgroundColor = UIColor.HightlightColor()
+        v!.backgroundColor = UIColor.HighlightColor()
         v!.userInteractionEnabled = true
         
         let label = UILabel()
@@ -696,7 +687,7 @@ extension UIButton {
     func setButtonNice(content:String){
         self.frame = CGRectMake(0, 0, 100, 36)
         self.layer.cornerRadius = 18
-        self.backgroundColor = UIColor.HightlightColor()
+        self.backgroundColor = UIColor.HighlightColor()
         self.layer.masksToBounds = true
         self.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
         self.titleLabel!.font = UIFont.systemFontOfSize(13)
@@ -772,7 +763,7 @@ extension UIColor {
             options: .ReportProgress,
             range: NSMakeRange(0, hexString.characters.count))
         if num != 1 {
-            return UIColor.HightlightColor()
+            return UIColor.HighlightColor()
         }
         var rgbValue : UInt32 = 0
         let scanner = NSScanner(string: hexString)

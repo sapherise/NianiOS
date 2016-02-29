@@ -138,7 +138,6 @@ extension NicknameViewController {
                                     NSUserDefaults.standardUserDefaults().setObject(self.nameTextfield.text!, forKey: "user")
                                     
                                     Api.requestLoad()
-                                    globalWillReEnter = 1
                                     
                                     /* 使用第三方来注册 */
                                     self.launch()

@@ -346,7 +346,6 @@ extension LogOrRegViewController {
                             uidKey.setObject(shell, forKey: kSecValueData)
                             
                             Api.requestLoad()
-                            globalWillReEnter = 1
                             
                             /* 使用邮箱来登录 */
                             self.launch()
