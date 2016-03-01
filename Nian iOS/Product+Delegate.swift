@@ -40,7 +40,7 @@ extension Product {
     func onGif(sender: UILongPressGestureRecognizer) {
         if let view = sender.view {
             let tag = view.tag
-            let point = view.convertPoint(view.frame.origin, fromView: view.window)
+            let point = view.convertPoint(view.frame.origin, fromView: scrollView)
             let x = -point.x
             let y = -point.y
             let xNew = max(x - 20, 0)
@@ -126,7 +126,6 @@ extension Product {
                     let code = data.stringAttributeForKey("code")
                     Api.postEmojiBuy(code) { json in
                         if json != nil {
-                            print(json)
                             if let btn = niAlert.niButtonArray.firstObject as? NIButton {
                                 btn.startAnimating()
                             }
@@ -143,7 +142,6 @@ extension Product {
                                         let arr = NSMutableArray()
                                         for _emoji in emojis {
                                             if let emoji = _emoji as? NSDictionary {
-                                                print(emoji)
                                                 let e = NSMutableDictionary(dictionary: emoji)
                                                 let newCode = emoji.stringAttributeForKey("code")
                                                 if code == newCode {
@@ -218,7 +216,6 @@ extension Product {
                         }
                         Api.getGraduate() { json in
                             if json != nil {
-                                print(json)
                                 if let j = json as? NSDictionary {
                                     let error = j.stringAttributeForKey("error")
                                     if error == "0" {
@@ -236,9 +233,13 @@ extension Product {
                                         /* 念币不够 */
                                         self.niAlertResult = NIAlert()
                                         self.niAlertResult.delegate = self
-                                        self.niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "失败了", "念币不够...", [" 哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+                                        let message = j.stringAttributeForKey("message")
+                                        if message == "you have graduate." {
+                                            self.niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "失败了", "毕业过啦", [" 哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+                                        } else {
+                                            self.niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "失败了", "念币不够...", [" 哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+                                        }
                                         self.niAlert.dismissWithAnimationSwtich(self.niAlertResult)
-                                        // todo: 已经毕业过的结果
                                     }
                                 }
                             }

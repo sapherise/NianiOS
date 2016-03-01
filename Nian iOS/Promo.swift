@@ -43,7 +43,6 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
     func load() {
         if let dreams = Cookies.get("NianDreams") as? NSMutableArray {
             for dream in dreams {
-                print(dream)
                 dataArray.addObject(dream)
             }
             collectionView.reloadData()
@@ -80,7 +79,6 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
                 }
                 Api.postPromo(id) { json in
                     if json != nil {
-                        print(json)
                         if let j = json as? NSDictionary {
                             let error = j.stringAttributeForKey("error")
                             if error == "0" {

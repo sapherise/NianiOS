@@ -129,12 +129,10 @@ extension PetViewController {
                         let err = json!.objectForKey("error") as! NSNumber
                         self.giftView?.dismissWithAnimation(.normal)
                         if err == 0 {
-                            print("获得了这么多念币：\(coins)")
                             if let coin = Cookies.get("coin") as? String {
                                 if let _coin = Int(coin) {
                                     let coinNew = _coin + coins
                                     Cookies.set("\(coinNew)", forKey: "coin")
-                                    print("设置新的念币为\(coinNew)，既原来的\(_coin)，和新增加的\(coins)")
                                 }
                             }
                             self.energy = self.energy - coins * 100

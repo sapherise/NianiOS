@@ -51,7 +51,6 @@ extension ExploreViewController {
             page = 1
         }
         Api.getExploreFollow("\(page++)", callback: { json in
-            print(json)
             if json != nil {
                 globalTabhasLoaded[0] = true
                 if clear {
@@ -88,7 +87,6 @@ extension ExploreViewController {
         }
         Api.getExploreDynamic("\(pageDynamic++)", callback: {
             json in
-            print(json)
             if json != nil {
                 globalTabhasLoaded[1] = true
                 let data: AnyObject? = json!.objectForKey("data")

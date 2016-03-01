@@ -27,7 +27,6 @@ class ProductList: SAViewController, UICollectionViewDelegate, UICollectionViewD
             Api.getEmoji() { json in
                 if json != nil {
                     self.dataArray.removeAllObjects()
-                    print(json)
                     /* 为了判断是否购买过表情 */
                     let items = json!.objectForKey("data") as! NSArray
                     for _item in items {

@@ -61,7 +61,6 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func SAReloadData(){
         Api.getSingleStep(self.Id) { json in
             if json != nil {
-                print(json)
                 self.dataArray.removeAllObjects()
                 let arr = json!.objectForKey("data")
                 let error = json!.objectForKey("error") as? NSNumber

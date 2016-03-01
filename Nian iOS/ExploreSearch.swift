@@ -535,7 +535,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         Api.getSearchSteps(searchText.text!.encode(), page: stepPage++, callback: {
             json in
             if json != nil {
-                print(json)
                 if clear {
                     globalVVeboReload = true
                     self.dataArrayStep.removeAllObjects()

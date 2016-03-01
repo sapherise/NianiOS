@@ -140,10 +140,6 @@
 		12C96DF21A6F7B3300B0E327 /* WeChatMomentsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */; };
 		12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */; };
 		12CE15A71A3EC525006AC031 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE15A61A3EC525006AC031 /* Circle.swift */; };
-		12CF0AB71C83EA6F00189180 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CF0AB51C83EA6F00189180 /* TencentOpenAPI.framework */; };
-		12CF0AB81C83EA6F00189180 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12CF0AB61C83EA6F00189180 /* TencentOpenApi_IOS_Bundle.bundle */; };
-		12CF0ABC1C83EAC500189180 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12CF0ABA1C83EAC500189180 /* AlipaySDK.bundle */; };
-		12CF0ABD1C83EAC500189180 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CF0ABB1C83EAC500189180 /* AlipaySDK.framework */; };
 		12CF0AC01C844E5800189180 /* Promo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CF0ABF1C844E5800189180 /* Promo.swift */; };
 		12CF0AC21C84515F00189180 /* PromoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CF0AC11C84515F00189180 /* PromoCell.xib */; };
 		12CF0AC41C84527000189180 /* PromoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CF0AC31C84527000189180 /* PromoCell.swift */; };
@@ -186,6 +182,15 @@
 		12F65C191B6559DB0051A914 /* PetNiAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F65C181B6559DB0051A914 /* PetNiAlert.swift */; };
 		12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A51BAD5533009EADC0 /* Reachability.swift */; };
 		12F678A81BAD5D40009EADC0 /* Home+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */; };
+		12F88ADE1C857859001FF0C2 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12F88ADC1C857858001FF0C2 /* TencentOpenApi_IOS_Bundle.bundle */; };
+		12F88ADF1C857859001FF0C2 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F88ADD1C857858001FF0C2 /* TencentOpenAPI.framework */; };
+		12F88AE61C857877001FF0C2 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12F88AE41C857877001FF0C2 /* AlipaySDK.bundle */; };
+		12F88AE71C857877001FF0C2 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F88AE51C857877001FF0C2 /* AlipaySDK.framework */; };
+		12F88AE91C858CC7001FF0C2 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AE81C858CC7001FF0C2 /* EmojiCell.swift */; };
+		12F88AEB1C858D0C001FF0C2 /* EmojiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F88AEA1C858D0C001FF0C2 /* EmojiCell.xib */; };
+		12F88AED1C85992C001FF0C2 /* SATextField+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */; };
+		12F88AEF1C859D9A001FF0C2 /* EmojiCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */; };
+		12F88AF11C859DA3001FF0C2 /* EmojiCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -445,10 +450,6 @@
 		12C96DEE1A6F7B3300B0E327 /* WeChatMomentsActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatMomentsActivity.swift; sourceTree = "<group>"; };
 		12C96DEF1A6F7B3300B0E327 /* WeChatSessionActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeChatSessionActivity.swift; sourceTree = "<group>"; };
 		12CE15A61A3EC525006AC031 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
-		12CF0AB51C83EA6F00189180 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
-		12CF0AB61C83EA6F00189180 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
-		12CF0ABA1C83EAC500189180 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
-		12CF0ABB1C83EAC500189180 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		12CF0ABF1C844E5800189180 /* Promo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promo.swift; sourceTree = "<group>"; };
 		12CF0AC11C84515F00189180 /* PromoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PromoCell.xib; sourceTree = "<group>"; };
 		12CF0AC31C84527000189180 /* PromoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromoCell.swift; sourceTree = "<group>"; };
@@ -493,6 +494,15 @@
 		12F65C181B6559DB0051A914 /* PetNiAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetNiAlert.swift; sourceTree = "<group>"; };
 		12F678A51BAD5533009EADC0 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		12F678A71BAD5D40009EADC0 /* Home+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+Reachability.swift"; sourceTree = "<group>"; };
+		12F88ADC1C857858001FF0C2 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
+		12F88ADD1C857858001FF0C2 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
+		12F88AE41C857877001FF0C2 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
+		12F88AE51C857877001FF0C2 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		12F88AE81C858CC7001FF0C2 /* EmojiCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
+		12F88AEA1C858D0C001FF0C2 /* EmojiCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmojiCell.xib; sourceTree = "<group>"; };
+		12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SATextField+Delegate.swift"; sourceTree = "<group>"; };
+		12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCollectionCell.swift; sourceTree = "<group>"; };
+		12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmojiCollectionCell.xib; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -629,9 +639,9 @@
 				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */,
 				127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */,
-				12CF0ABD1C83EAC500189180 /* AlipaySDK.framework in Frameworks */,
+				12F88AE71C857877001FF0C2 /* AlipaySDK.framework in Frameworks */,
 				127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */,
-				12CF0AB71C83EA6F00189180 /* TencentOpenAPI.framework in Frameworks */,
+				12F88ADF1C857859001FF0C2 /* TencentOpenAPI.framework in Frameworks */,
 				324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */,
 				3B6630BD2F2567A3267B483A /* libPods-Nian iOS.a in Frameworks */,
 			);
@@ -891,6 +901,11 @@
 				125D93C91AFCC198006FFDED /* SADoubleCell.xib */,
 				125D93CB1AFCC1B0006FFDED /* SADoubleCell.swift */,
 				12E315BD1B95544F0034DD7E /* SATextField.swift */,
+				12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */,
+				12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */,
+				12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */,
+				12F88AE81C858CC7001FF0C2 /* EmojiCell.swift */,
+				12F88AEA1C858D0C001FF0C2 /* EmojiCell.xib */,
 			);
 			name = "复用";
 			sourceTree = "<group>";
@@ -1087,8 +1102,8 @@
 		12CF0AB41C83EA6F00189180 /* QQSharing */ = {
 			isa = PBXGroup;
 			children = (
-				12CF0AB51C83EA6F00189180 /* TencentOpenAPI.framework */,
-				12CF0AB61C83EA6F00189180 /* TencentOpenApi_IOS_Bundle.bundle */,
+				12F88ADC1C857858001FF0C2 /* TencentOpenApi_IOS_Bundle.bundle */,
+				12F88ADD1C857858001FF0C2 /* TencentOpenAPI.framework */,
 			);
 			path = QQSharing;
 			sourceTree = "<group>";
@@ -1096,8 +1111,8 @@
 		12CF0AB91C83EAC500189180 /* Alipay */ = {
 			isa = PBXGroup;
 			children = (
-				12CF0ABA1C83EAC500189180 /* AlipaySDK.bundle */,
-				12CF0ABB1C83EAC500189180 /* AlipaySDK.framework */,
+				12F88AE41C857877001FF0C2 /* AlipaySDK.bundle */,
+				12F88AE51C857877001FF0C2 /* AlipaySDK.framework */,
 			);
 			path = Alipay;
 			sourceTree = "<group>";
@@ -1662,6 +1677,7 @@
 				12DA22661C8364150062D335 /* ProductEmojiCollectionCell.xib in Resources */,
 				C488B47E1BFD9E8D00C735EC /* Welcome.storyboard in Resources */,
 				12652834196C671E005765D2 /* DreamCellTop.xib in Resources */,
+				12F88AF11C859DA3001FF0C2 /* EmojiCollectionCell.xib in Resources */,
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
@@ -1669,11 +1685,12 @@
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
 				1229AA3D1AFC9BE500C5B644 /* SAUserCell.xib in Resources */,
-				12CF0AB81C83EA6F00189180 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				129F6C701C306FED008B61A5 /* AddStep.xib in Resources */,
+				12F88ADE1C857859001FF0C2 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				1290893A1B5E268C00EB73E5 /* GameScene.sks in Resources */,
 				C470B22E1B94024A00863821 /* PushConfig.plist in Resources */,
 				128470741BF1F3BC007E235C /* PlanktonCell.xib in Resources */,
+				12F88AEB1C858D0C001FF0C2 /* EmojiCell.xib in Resources */,
 				12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */,
 				12EAABFC1AB292A500D20676 /* Popup.xib in Resources */,
 				12A191101C7EB91D005668C6 /* ProductCollectionCell.xib in Resources */,
@@ -1704,7 +1721,7 @@
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,
 				122F39211B4E794700DE8628 /* Card.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
-				12CF0ABC1C83EAC500189180 /* AlipaySDK.bundle in Resources */,
+				12F88AE61C857877001FF0C2 /* AlipaySDK.bundle in Resources */,
 				126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */,
 				1227F0F21A615EC20088DEB1 /* LetterCell.xib in Resources */,
 				12A4910F198EB580000B6D5E /* MeCell.xib in Resources */,
@@ -1823,6 +1840,7 @@
 				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
 				C488B47D1BFD9E8D00C735EC /* SocialMediaButton.swift in Sources */,
 				12776A121BCE668500745811 /* VVeboLabel.m in Sources */,
+				12F88AE91C858CC7001FF0C2 /* EmojiCell.swift in Sources */,
 				12CE15A71A3EC525006AC031 /* Circle.swift in Sources */,
 				12E4939B19953DCC00F8DF32 /* CommentCell.swift in Sources */,
 				12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */,
@@ -1938,6 +1956,7 @@
 				C486FD531C04430A009F1F90 /* LayoutProxy.swift in Sources */,
 				C486FD491C04430A009F1F90 /* Constraint.swift in Sources */,
 				12F65C171B654EB00051A914 /* PetTableViewGesture.swift in Sources */,
+				12F88AED1C85992C001FF0C2 /* SATextField+Delegate.swift in Sources */,
 				12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */,
 				1253C2FC1A1DF0C0003D4ECF /* Player.swift in Sources */,
 				C40F0F2B1BE74708007B7C6B /* CurrentUser.swift in Sources */,
@@ -1971,6 +1990,7 @@
 				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
 				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
+				12F88AEF1C859D9A001FF0C2 /* EmojiCollectionCell.swift in Sources */,
 				12A191081C7DC33D005668C6 /* CoinProductTop.swift in Sources */,
 				126D6E4A1C2F1E800053211C /* LSYAlbumPicker.swift in Sources */,
 				C486FD481C04430A009F1F90 /* Constrain.swift in Sources */,
@@ -2109,6 +2129,10 @@
 					iOS/Utility/QQSharing,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/Alipay,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Alipay,
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -2163,6 +2187,10 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/Alipay,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility/QQSharing,
 					"$(PROJECT_DIR)/Nian",

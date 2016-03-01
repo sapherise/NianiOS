@@ -25,11 +25,6 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     var dataArray = NSMutableArray()
     var niAlert: NIAlert!
     var niAlertResult: NIAlert!
-//    var content = ""
-//    var price = ""
-//    var isCoin = ""
-//    var type = ""
-//    var path = ""
     var data: NSDictionary!
     var type: ProductType!
     
@@ -47,18 +42,6 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     
     func setup() {
         navView.backgroundColor = UIColor.clearColor()
-//        for _item in items {
-//            let item = _item as NSDictionary
-//            let title = item.stringAttributeForKey("title")
-//            if title == name {
-//                self.content = item.stringAttributeForKey("content")
-//                price = item.stringAttributeForKey("price")
-//                isCoin = item.stringAttributeForKey("isCoin")
-//                type = item.stringAttributeForKey("type")
-//                path = item.stringAttributeForKey("path")
-//                break
-//            }
-//        }
         
         var owned = "0"
         if type == ProductType.Pro {
@@ -179,16 +162,16 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
             cell = "ProductCollectionCell"
             heightContentSize = hCollectionView
         } else if type == ProductType.Emoji {
-            let path = data.stringAttributeForKey("path")
+            let code = data.stringAttributeForKey("code")
             dataArray = [
-                ["image": "\(path)/1.gif"],
-                ["image": "\(path)/2.gif"],
-                ["image": "\(path)/3.gif"],
-                ["image": "\(path)/4.gif"],
-                ["image": "\(path)/5.gif"],
-                ["image": "\(path)/6.gif"],
-                ["image": "\(path)/7.gif"],
-                ["image": "\(path)/8.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/1.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/2.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/3.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/4.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/5.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/6.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/7.gif"],
+                ["image": "http://img.nian.so/emoji/\(code)/8.gif"],
             ]
             let w = (globalWidth - padding * 2) / 4
             let h: CGFloat = w

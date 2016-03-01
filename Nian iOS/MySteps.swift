@@ -64,7 +64,6 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
         if type == CollectType.mysteps {
             Api.getUserActive(SAUid(), page: page) { json in
                 if json != nil {
-                    print(json)
                     let data = json!.objectForKey("data")
                     let arr = data!.objectForKey("steps") as! NSArray
                     if clear {
@@ -86,7 +85,6 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
             }
         } else {
             Api.getLikeSteps(page) { json in
-                print(json)
                 if json != nil {
                     let arr = json!.objectForKey("data") as! NSArray
                     if clear {

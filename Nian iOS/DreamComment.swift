@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate{
+class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextViewDelegate, delegateInput {
     
     var tableview:UITableView!
     var dataArray = NSMutableArray()
@@ -30,13 +30,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
 //    var activityIndicatorView: UIActivityIndicatorView!
     
     var desHeight: CGFloat = 0
-    var inputKeyboard: UITextField!
-    var keyboardView: UIView!
+    var keyboardView: InputView!
     var viewBottom: UIView!
     var keyboardHeight: CGFloat = 0
     var lastContentOffset: CGFloat?
     var name: String?
     var index: Int = -1
+    var Locking = false
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -80,13 +80,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview.tableFooterView = self.viewBottom
         
         //输入框
-        keyboardView = UIView()
-        inputKeyboard = UITextField()
-        inputKeyboard.delegate = self
-        keyboardView.setTextField(inputKeyboard)
+        keyboardView = InputView()
+        keyboardView.setup()
+        keyboardView.delegate = self
+        
         self.view.addSubview(keyboardView)
         if name != nil {
-            inputKeyboard.text = "@\(name!) "
+            keyboardView.inputKeyboard.text = "@\(name!) "
         }
         
         //标题颜色
@@ -104,17 +104,18 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         }
     }
     
-    //按下发送后调用此函数
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        let contentComment = self.inputKeyboard.text
-        if contentComment != "" {
-            commentFinish(contentComment!)
-        }
-        return true
+    /* 根据输入视图的高度来调整 tableView */
+    func resize() {
+        let h = globalHeight - keyboardView.height() - 64 - keyboardHeight
+        self.tableview.setHeight(h)
+        self.tableview.contentOffset.y = max(self.tableview.contentSize.height - h, 0)
+        keyboardView.setY(globalHeight - keyboardView.height() - keyboardHeight)
     }
     
-    func commentFinish(replyContent:String){
-        self.inputKeyboard.text = ""
+    /* 发送内容到服务器 */
+    func send() {
+        let replyContent = keyboardView.inputKeyboard.text
+        keyboardView.inputKeyboard.text = ""
         if let name = Cookies.get("user") as? String {
             let newinsert = NSDictionary(objects: [replyContent, "" , "sending", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
             self.dataArray.insertObject(self.dataDecode(newinsert), atIndex: 0)
@@ -137,11 +138,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                             }
                         } else {
                             self.showTipText("对方设置了不被回应...")
-                            self.inputKeyboard.text = replyContent
+                            self.keyboardView.inputKeyboard.text = replyContent
                         }
                     } else {
                         self.showTipText("服务器坏了...")
-                        self.inputKeyboard.text = replyContent
+                        self.keyboardView.inputKeyboard.text = replyContent
                     }
                 }
             }
@@ -301,17 +302,32 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             let distanceX = sender.translationInView(self.view).x
             let distanceY = sender.translationInView(self.view).y
             if fabs(distanceY) > fabs(distanceX) {
-                self.inputKeyboard.resignFirstResponder()
+                resign()
             }
         }
     }
     
     func onCellTap(sender:UITapGestureRecognizer) {
-        self.inputKeyboard.resignFirstResponder()
+        resign()
+    }
+    
+    /* 收起键盘 */
+    func resign() {
+        /* 当键盘是系统自带键盘时 */
+        if self.keyboardView.inputKeyboard.isFirstResponder() {
+            self.keyboardView.inputKeyboard.resignFirstResponder()
+        } else {
+            /* 当键盘是我们自己写的键盘（表情）时 */
+            keyboardView.resignEmoji()
+            keyboardHeight = 0
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.resize()
+                }, completion: nil)
+        }
     }
     
     func userclick(sender:UITapGestureRecognizer){
-        self.inputKeyboard.resignFirstResponder()
+        resign()
         let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
@@ -328,8 +344,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         if index >= 0 {
             let data = dataArray[index] as! NSDictionary
             let name = data.stringAttributeForKey("user")
-            self.inputKeyboard.text = "@\(name) "
-            self.inputKeyboard.becomeFirstResponder()
+            self.keyboardView.inputKeyboard.text = "@\(name) "
+            self.keyboardView.inputKeyboard.becomeFirstResponder()
         }
     }
     
@@ -377,18 +393,16 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
-        self.keyboardHeight = keyboardSize.height
-        self.keyboardView.setY( globalHeight - self.keyboardHeight - 56 )
-        let heightScroll = globalHeight - 56 - 64 - self.keyboardHeight
-        let contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
-        self.tableview.setHeight( heightScroll )
-        self.tableview.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
+        keyboardHeight = keyboardSize.height
+        keyboardView.onTap()
+        resize()
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        let heightScroll = globalHeight - 56 - 64
-        self.keyboardView.setY( globalHeight - 56 )
-        self.tableview.setHeight( heightScroll )
+        if !Locking {
+            keyboardHeight = 0
+            resize()
+        }
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
