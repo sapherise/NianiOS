@@ -191,6 +191,8 @@
 		12F88AED1C85992C001FF0C2 /* SATextField+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */; };
 		12F88AEF1C859D9A001FF0C2 /* EmojiCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */; };
 		12F88AF11C859DA3001FF0C2 /* EmojiCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */; };
+		12F88AFF1C88516B001FF0C2 /* Comment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F88AFE1C88516B001FF0C2 /* Comment.xib */; };
+		12F88B011C8851FE001FF0C2 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88B001C8851FE001FF0C2 /* Comment.swift */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -503,6 +505,8 @@
 		12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SATextField+Delegate.swift"; sourceTree = "<group>"; };
 		12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCollectionCell.swift; sourceTree = "<group>"; };
 		12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmojiCollectionCell.xib; sourceTree = "<group>"; };
+		12F88AFE1C88516B001FF0C2 /* Comment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Comment.xib; sourceTree = "<group>"; };
+		12F88B001C8851FE001FF0C2 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1182,6 +1186,8 @@
 				12F07B3F1BAF205E008F8ADB /* CommentCellMe.swift */,
 				12F07B3B1BAF2033008F8ADB /* CommentCellMe.xib */,
 				12E1E5241A0EBBFD0005B129 /* DreamComment.swift */,
+				12F88AFE1C88516B001FF0C2 /* Comment.xib */,
+				12F88B001C8851FE001FF0C2 /* Comment.swift */,
 			);
 			name = "回应";
 			sourceTree = "<group>";
@@ -1719,6 +1725,7 @@
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,
+				12F88AFF1C88516B001FF0C2 /* Comment.xib in Resources */,
 				122F39211B4E794700DE8628 /* Card.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
 				12F88AE61C857877001FF0C2 /* AlipaySDK.bundle in Resources */,
@@ -1890,6 +1897,7 @@
 				C4F6D7761B5DFCC30033671D /* UIImage+Grayscale.m in Sources */,
 				1253C3021A1DF119003D4ECF /* PlayerCellTop.swift in Sources */,
 				12A191121C7EB956005668C6 /* ProductCollectionCell.swift in Sources */,
+				12F88B011C8851FE001FF0C2 /* Comment.swift in Sources */,
 				12C96DF31A6F7B3300B0E327 /* WeChatSessionActivity.swift in Sources */,
 				12FB48C6196AE8010026DD51 /* NSStringExt.swift in Sources */,
 				12EAABFE1AB292AF00D20676 /* Popup.swift in Sources */,

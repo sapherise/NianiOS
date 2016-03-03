@@ -450,6 +450,7 @@ extension UIViewController {
         Sa.removeObjectForKey("shell")
         Sa.removeObjectForKey("followData")
         Sa.removeObjectForKey("user")
+        Sa.removeObjectForKey("emojis")
         Sa.synchronize()
         
         // 退出后应该设置三个都为未加载状态

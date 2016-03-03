@@ -13,56 +13,54 @@ import CoreGraphics
 
 class CommentCell: UITableViewCell {
     
-    @IBOutlet var avatarView:UIImageView!
-    @IBOutlet var nickLabel:UILabel!
-    @IBOutlet var contentLabel:UILabel!
-    @IBOutlet var lastdate:UILabel!
-    @IBOutlet var View:UIView!
+    @IBOutlet var imageHead:UIImageView!
+    @IBOutlet var labelName:UILabel!
+    @IBOutlet var labelContent:UILabel!
     @IBOutlet var imageContent:UIImageView!
-    var data :NSDictionary!
-    var contentLabelWidth:CGFloat = 0
+    var data: NSDictionary!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.selectionStyle = .None
-        self.nickLabel!.textColor = UIColor.HighlightColor()
-        self.avatarView.layer.masksToBounds = true
-        self.avatarView.layer.cornerRadius = 16
-    }
-    
-    func _layoutSubviews() {
-        let uid = self.data.stringAttributeForKey("uid")
-        let user = self.data.stringAttributeForKey("user")
-        let lastdate = self.data.stringAttributeForKey("lastdate")
-        let content = self.data.stringAttributeForKey("content")
-        self.nickLabel!.text = user
-        self.lastdate!.text = lastdate
-        self.avatarView!.setHead(uid)
-        let height = data.objectForKey("heightContent") as! CGFloat
-        let wContent = data.objectForKey("widthContent") as! CGFloat
+    func setup() {
+        selectionStyle = .None
+        labelName.textColor = UIColor.HighlightColor()
+        imageHead.layer.masksToBounds = true
+        imageHead.layer.cornerRadius = 16
+        let uid = data.stringAttributeForKey("uid")
+        let name = data.stringAttributeForKey("user")
+        let time = data.stringAttributeForKey("lastdate")
+        let content = data.stringAttributeForKey("content")
+        let heightContent = data.objectForKey("heightContent") as! CGFloat
+        let widthContent = data.objectForKey("widthContent") as! CGFloat
         let wImage = data.objectForKey("widthImage") as! CGFloat
         let hImage = data.objectForKey("heightImage") as! CGFloat
+        let heightCell = data.objectForKey("heightCell") as! CGFloat
         
-        self.avatarView?.tag = Int(uid)!
-        self.contentLabel!.frame.size = CGSizeMake(wContent, height)
-        self.contentLabel!.text = content
-        self.imageContent.frame.size = CGSizeMake(wImage, hImage)
-        self.avatarView.setBottom(height + 55)
-        self.nickLabel.setBottom(height + 60)
-        self.nickLabel.setWidth(user.stringWidthWith(11, height: 21))
-        self.lastdate.setWidth(lastdate.stringWidthWith(11, height: 21))
-        self.lastdate.setBottom(height + 60)
+        imageHead.setHead(uid)
+        imageHead.tag = Int(uid)!
+        labelContent.frame.size = CGSizeMake(widthContent, heightContent)
+        labelContent.text = content
+        imageContent.frame.size = CGSizeMake(wImage, hImage)
+        imageHead.setY(heightCell - 32 - 4)
+        labelName.setY(heightCell - 22)
         
-        self.lastdate.setX(user.stringWidthWith(11, height: 21)+83)
-        self.contentLabel.setX(80)
+        if uid == SAUid() {
+            imageHead.setX(globalWidth - 32 - 16)
+            labelName.setX(globalWidth - 64 - 231)
+            labelName.text = time
+            labelName.textColor = UIColor.secAuxiliaryColor()
+            labelName.textAlignment = NSTextAlignment.Right
+            imageContent.image = UIImage(named: "bubble_me")
+            imageContent.setX(globalWidth - imageContent.width() - 60)
+            labelContent.setX(globalWidth - labelContent.width() - 73)
+            labelContent.textColor = UIColor.MainColor()
+        } else {
+            let attrStr = NSMutableAttributedString(string: "\(name)  \(time)")
+            attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
+            attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
+            labelName.attributedText = attrStr
+            labelName.textAlignment = NSTextAlignment.Left
+            labelContent.textColor = UIColor.BackgroundColor()
+        }
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        avatarView.image = nil
-        nickLabel.text = nil
-    }
-    
 }
 
 extension String {

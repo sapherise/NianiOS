@@ -109,12 +109,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         let h = globalHeight - keyboardView.height() - 64 - keyboardHeight
         self.tableview.setHeight(h)
         self.tableview.contentOffset.y = max(self.tableview.contentSize.height - h, 0)
-        keyboardView.setY(globalHeight - keyboardView.height() - keyboardHeight)
+        self.keyboardView.setY(self.tableview.bottom())
     }
     
     /* 发送内容到服务器 */
-    func send() {
-        let replyContent = keyboardView.inputKeyboard.text
+    func send(replyContent: String, type: String) {
         keyboardView.inputKeyboard.text = ""
         if let name = Cookies.get("user") as? String {
             let newinsert = NSDictionary(objects: [replyContent, "" , "sending", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
@@ -127,7 +126,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             var success = false
             var finish = false
             var IDComment = 0
-            Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content) { json in
+            Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content, type: "0") { json in
                 if json != nil {
                     if let status = json!.objectForKey("status") as? NSNumber {
                         if status == 200 {
@@ -235,28 +234,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
-        let uid = data.stringAttributeForKey("uid")
-        if uid == SAUid() {
-            let c = tableView.dequeueReusableCellWithIdentifier("CommentCellMe", forIndexPath: indexPath) as! CommentCellMe
-            c.data = data
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.imageContent.tag = dataArray.count - 1 - index
-            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.imageContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
-            c.View.tag = index
-            c._layoutSubviews()
-            return c
-        } else {
-            let c = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! CommentCell
-            c.data = data
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.imageContent.tag = dataArray.count - 1 - index
-            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.imageContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
-            c.View.tag = index
-            c._layoutSubviews()
-            return c
-        }
+        let c = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! CommentCell
+        c.data = data
+        c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        c.imageContent.tag = dataArray.count - 1 - index
+        c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+        c.imageContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
+        c.setup()
+        return c
     }
     
     func onMore(sender: UILongPressGestureRecognizer) {
@@ -318,6 +303,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.keyboardView.inputKeyboard.resignFirstResponder()
         } else {
             /* 当键盘是我们自己写的键盘（表情）时 */
+            print("2")
             keyboardView.resignEmoji()
             keyboardHeight = 0
             UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -393,9 +379,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
-        keyboardHeight = keyboardSize.height
-        keyboardView.onTap()
-        resize()
+        keyboardHeight = max(keyboardSize.height, keyboardHeight)
+        
+        /* 移除表情界面，修改按钮样式 */
+        keyboardView.resignEmoji()
+        self.resize()
     }
     
     func keyboardWillBeHidden(notification: NSNotification){

@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+protocol delegateEmoji {
+    
+    /* 当购买表情后，刷新 UI */
+    func load()
+}
+
 class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, NIAlertDelegate {
     var imageHead: UIImageView!
     var scrollView: UIScrollView!
@@ -27,6 +33,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     var niAlertResult: NIAlert!
     var data: NSDictionary!
     var type: ProductType!
+    var delegate: delegateEmoji?
     
     enum ProductType {
         case Emoji

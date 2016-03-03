@@ -500,9 +500,9 @@ struct Api {
     }
     
     /* 添加回应 */
-    static func postDreamStepComment(dream: String, step: String, content: String, callback: V.JsonCallback) {
+    static func postDreamStepComment(dream: String, step: String, content: String, type: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://api.nian.so/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: "dream_id=\(dream)&content=\(content)", callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/v2/step/\(step)/comment?uid=\(s_uid)&shell=\(s_shell)", content: ["dream_id": dream, "content": content, "type": type], callback: callback)
     }
     
     /* 删除回应 */

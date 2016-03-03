@@ -15,13 +15,13 @@ protocol delegateInput {
     var Locking: Bool { get set }
     
     /* 按下 Send 后的操作 */
-    func send()
+    func send(replyContent: String, type: String)
     
     /* 每次键盘或者该视图发生变化都要调用这个参数 */
     func resize()
 }
 
-class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, delegateEmoji {
     let heightCell: CGFloat = 56
     let widthImageHead: CGFloat = 32
     let heightImageHead: CGFloat = 32
@@ -36,6 +36,15 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     var tableView: UITableView!
     var dataArray = NSMutableArray()
     var collectionView: UICollectionView!
+    
+    /* 空状态引导去购买表情 */
+    var viewCollectionHolder: UIView!
+    var imageCollectionHolder: UIImageView!
+    var titleCollectionHolder: UILabel!
+    var contentCollectionHolder: UILabel!
+    var btnCollectionHolder: UIButton!
+    
+    var viewEmojiHolder: FLAnimatedImageView!
     
     /* 当前选择的图片 */
     var current = 0
@@ -68,6 +77,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         inputKeyboard.font = UIFont.systemFontOfSize(12)
         inputKeyboard.returnKeyType = UIReturnKeyType.Send
         inputKeyboard.delegate = self
+        inputKeyboard.layoutManager.allowsNonContiguousLayout = false
         heightInputOneLine = resize()
         inputKeyboard.setY((heightCell - heightInputOneLine)/2)
         
@@ -135,6 +145,47 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         collectionView.alwaysBounceHorizontal = true
         viewEmoji.addSubview(collectionView)
         
+        /* 当表情未购买时的说明 */
+        viewCollectionHolder = UIView(frame: CGRectMake(0, 0, globalWidth, heightEmoji - 44))
+        viewCollectionHolder.backgroundColor = UIColor.BackgroundColor()
+        viewEmoji.addSubview(viewCollectionHolder)
+        
+        /* 当未下载时候显示的引导 */
+        let p: CGFloat = 16
+        let wImage: CGFloat = 96
+        let hTitle: CGFloat = 18
+        let wBtn: CGFloat = 96
+        let hBtn: CGFloat = 36
+        
+        imageCollectionHolder = UIImageView(frame: CGRectMake(p, p, wImage, wImage))
+        imageCollectionHolder.backgroundColor = UIColor.HighlightColor()
+        imageCollectionHolder.layer.masksToBounds = true
+        imageCollectionHolder.layer.cornerRadius = 8
+        viewCollectionHolder.addSubview(imageCollectionHolder)
+        
+        titleCollectionHolder = UILabel(frame: CGRectMake(wImage + 2 * p, p, globalWidth - wImage - 3 * p, hTitle))
+        titleCollectionHolder.text = "标题"
+        titleCollectionHolder.textColor = UIColor.MainColor()
+        viewCollectionHolder.addSubview(titleCollectionHolder)
+        
+        contentCollectionHolder = UILabel(frame: CGRectMake(wImage + 2 * p, p * 2 + hTitle, globalWidth - wImage - 3 * p, heightEmoji - 44 - p * 3 - hBtn))
+        contentCollectionHolder.text = "正文"
+        contentCollectionHolder.textColor = UIColor.MainColor()
+        contentCollectionHolder.numberOfLines = 0
+        contentCollectionHolder.textColor = UIColor.AuxiliaryColor()
+        contentCollectionHolder.font = UIFont.systemFontOfSize(14)
+        viewCollectionHolder.addSubview(contentCollectionHolder)
+        
+        btnCollectionHolder = UIButton(frame: CGRectMake(globalWidth - wBtn - p, heightEmoji - 44 - p - hBtn, wBtn, hBtn))
+        btnCollectionHolder.backgroundColor = UIColor.HighlightColor()
+        btnCollectionHolder.layer.cornerRadius = hBtn / 2
+        btnCollectionHolder.layer.masksToBounds = true
+        btnCollectionHolder.titleLabel?.font = UIFont.systemFontOfSize(14)
+        btnCollectionHolder.setTitleColor(UIColor.BackgroundColor(), forState: UIControlState())
+        btnCollectionHolder.setTitle("购买", forState: UIControlState())
+        btnCollectionHolder.addTarget(self, action: "onProduct", forControlEvents: UIControlEvents.TouchUpInside)
+        viewCollectionHolder.addSubview(btnCollectionHolder)
+        
         let v1 = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
         v1.backgroundColor = UIColor.LineColor()
         viewEmoji.addSubview(v1)
@@ -153,11 +204,26 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         tableView.registerNib(UINib(nibName: "EmojiCell", bundle: nil), forCellReuseIdentifier: "EmojiCell")
         viewEmoji.addSubview(tableView)
         
+        /* 前往表情商店 */
         let imageStore = UIImageView(frame: CGRectMake(globalWidth - 44, heightEmoji - 44, 44, 44))
         imageStore.image = UIImage(named: "keysettings")
+        imageStore.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStore"))
+        imageStore.userInteractionEnabled = true
         viewEmoji.addSubview(imageStore)
         
-        load()
+        let v3 = UIView(frame: CGRectMake(globalWidth - 44, heightEmoji - 44, globalHalf, 44))
+        v3.backgroundColor = UIColor.LineColor()
+        viewEmoji.addSubview(v3)
+        
+        /*  查看表情动图的视图 */
+        viewEmojiHolder = FLAnimatedImageView()
+        viewEmojiHolder.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        viewEmojiHolder.layer.borderColor = UIColor.LineColor().CGColor
+        viewEmojiHolder.layer.borderWidth = 0.5
+        viewEmojiHolder.layer.cornerRadius = 4
+        viewEmojiHolder.layer.masksToBounds = true
+        viewEmojiHolder.hidden = true
+        viewEmoji.addSubview(viewEmojiHolder)
     }
     
     /* 弹起系统自带键盘 */
@@ -191,6 +257,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             viewEmoji.hidden = false
             /* 设置表情的界面 */
             self.findRootViewController()?.view.addSubview(viewEmoji)
+            load()
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.delegate?.resize()
                 self.viewEmoji.setY(globalHeight - self.heightEmoji)
@@ -200,6 +267,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             
         } else {
             /* 如果是表情键盘，弹出自带键盘 */
+            print("3")
             onTap()
         }
     }
@@ -233,17 +301,71 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     func load() {
         if let emojis = Cookies.get("emojis") as? NSMutableArray {
             var i = 0
+            dataArray.removeAllObjects()
             for _emoji in emojis {
                 if let emoji = _emoji as? NSDictionary {
                     let e = NSMutableDictionary(dictionary: emoji)
-                    let isClicked = i == 0 ? "1" : "0"
+                    let isClicked = i == current ? "1" : "0"
                     e.setValue(isClicked, forKey: "isClicked")
                     dataArray.addObject(e)
+                    print(e)
                 }
                 i++
             }
             tableView.reloadData()
+            collectionView.reloadData()
+        } else {
+            print("不存在，需要加载")
+            let loading = UIActivityIndicatorView()
+            loading.center = collectionView.center
+            loading.color = UIColor.HighlightColor()
+            loading.startAnimating()
+            collectionView.addSubview(loading)
+            // todo: 关掉延迟
+            delay(3, closure: { () -> () in
+                Api.getEmoji() { json in
+                    if json != nil {
+                        self.dataArray.removeAllObjects()
+                        let items = json!.objectForKey("data") as! NSArray
+                        var i = 0
+                        for _item in items {
+                            if let item = _item as? NSDictionary {
+                                let type = item.stringAttributeForKey("type")
+                                if type == "expression" {
+                                    let e = NSMutableDictionary(dictionary: item)
+                                    let isClicked = i == self.current ? "1" : "0"
+                                    e.setValue(isClicked, forKey: "isClicked")
+                                    self.dataArray.addObject(e)
+                                }
+                            }
+                            i++
+                        }
+                        Cookies.set(self.dataArray, forKey: "emojis")
+                        self.tableView.reloadData()
+                        self.collectionView.reloadData()
+                        loading.removeFromSuperview()
+                    }
+                }
+            })
         }
         // todo: 判断没有的情况？！
+    }
+    
+    /* 前往购买表情 */
+    func onProduct() {
+        if dataArray.count > current {
+            let vc = Product()
+            let data = dataArray[current] as! NSDictionary
+            vc.type = Product.ProductType.Emoji
+            vc.data = data
+            vc.delegate = self
+            self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func onStore() {
+        let vc = ProductList()
+        vc.name = "表情"
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
 }

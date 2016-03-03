@@ -52,7 +52,7 @@ extension Product {
             viewEmojiHolder.frame = CGRectMake(xNew, yNew, view.width() + 50, view.width() + 50)
             viewEmojiHolder.hidden = sender.state == UIGestureRecognizerState.Ended ? true : false
             if sender.state == UIGestureRecognizerState.Ended {
-                viewEmojiHolder.image = nil
+                viewEmojiHolder.animatedImage = nil
             }
         }
     }
@@ -152,6 +152,8 @@ extension Product {
                                         }
                                         Cookies.set(arr, forKey: "emojis")
                                     }
+                                    
+                                    self.delegate?.load()
                                     
                                     // todo: 逻辑！先看有没有 emojis 的缓存，如果没有，读取，然后缓存。总之就是要有。
                                     // 然后看下如果拥有，就展现八个，如果没有，就出现一个按钮跳转。

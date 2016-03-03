@@ -13,7 +13,8 @@ extension InputView {
     /* 提交回应 */
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            delegate?.send()
+            let content = textView.text
+            delegate?.send(content, type: "0")
             let h = resize()
             resizeView(h)
             return false
@@ -60,11 +61,31 @@ extension InputView {
                 dataArray.replaceObjectAtIndex(i, withObject: d)
             }
             tableView.reloadData()
+            collectionView.reloadData()
         }
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        if dataArray.count > current {
+            let data = dataArray[current] as! NSDictionary
+            let owned = data.stringAttributeForKey("owned")
+            if owned == "0" {
+                let code = data.stringAttributeForKey("code")
+                let description = data.stringAttributeForKey("description")
+                let name = data.stringAttributeForKey("name")
+                let h = description.stringHeightWith(14, width: contentCollectionHolder.width())
+                imageCollectionHolder.setImage("http://img.nian.so/emoji/\(code)/type_sticker_cover.png")
+                titleCollectionHolder.text = name
+                contentCollectionHolder.text = description
+                contentCollectionHolder.setHeight(h)
+                viewCollectionHolder.hidden = false
+            } else {
+                viewCollectionHolder.hidden = true
+            }
+            return 8
+        }
+        viewCollectionHolder.hidden = true
+        return 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -74,8 +95,43 @@ extension InputView {
             let code = data.stringAttributeForKey("code")
             c.path = "http://img.nian.so/emoji/\(code)/\(indexPath.row + 1).gif!dream"
             c.num = indexPath.row
+            c.imageHead.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onEmojiLongPress:"))
+            c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEmojiTap:"))
             c.setup()
         }
         return c
+    }
+    
+    /* 表情长按预览 */
+    func onEmojiLongPress(sender: UIGestureRecognizer) {
+        if let view = sender.view {
+            let point = view.convertPoint(view.frame.origin, fromView: self.viewEmoji)
+            let x = -point.x
+            let y = -point.y
+            
+            /* 6 为 cell 中的 padding */
+            let padding: CGFloat = 25
+            let w = view.width() + padding * 2
+            let xNew = min(max(x - 25 + 12, 0), globalWidth - view.width() - 50)
+            let yNew = y - view.width() - 50 - 8
+            let data = dataArray[current] as! NSDictionary
+            let code = data.stringAttributeForKey("code")
+            let url = "http://img.nian.so/emoji/\(code)/\(view.tag + 1).gif"
+            viewEmojiHolder.qs_setGifImageWithURL(NSURL(string: url)!, progress: nil, completed: nil)
+            viewEmojiHolder.frame = CGRectMake(xNew, yNew, w, w)
+            viewEmojiHolder.hidden = sender.state == UIGestureRecognizerState.Ended
+            if sender.state == UIGestureRecognizerState.Ended {
+                viewEmojiHolder.animatedImage = nil
+            }
+        }
+    }
+    
+    /* 表情单击 */
+    func onEmojiTap(sender: UIGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            let data = dataArray[current] as! NSDictionary
+            let code = data.stringAttributeForKey("code")
+            delegate?.send("\(code)-\(tag + 1)", type: "1")
+        }
     }
 }

@@ -35,10 +35,9 @@ extension FLAnimatedImageView {
                         imageData: gifData, forKey: url.absoluteString, toDisk: true)
                     /* 将图片添加到本地缓存 */
                     let gifImage = FLAnimatedImage(animatedGIFData: gifData)
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    back {
                         self.animatedImage = gifImage
-                    })
+                    }
                 }
                 completedBlock?(image, gifData, error, finished)
         }

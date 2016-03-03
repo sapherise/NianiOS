@@ -29,5 +29,7 @@ class EmojiCollectionCell: UICollectionViewCell {
         }
         imageHead.frame = CGRectMake(x, y, n, n)
         imageHead.setImageIgnore(path)
+        imageHead.tag = num
+        imageHead.userInteractionEnabled = true
     }
 }

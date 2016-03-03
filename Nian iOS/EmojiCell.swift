@@ -11,6 +11,7 @@ import UIKit
 
 class EmojiCell: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
+    @IBOutlet var viewLine: UIView!
     var data: NSDictionary!
     var isClicked = false
     
@@ -20,5 +21,8 @@ class EmojiCell: UITableViewCell {
         let isClicked = data.stringAttributeForKey("isClicked")
         imageHead.setImageIgnore("http://img.nian.so/emoji/\(code)/thumb.png")
         self.backgroundColor = isClicked == "1" ? UIColor.GreyBackgroundColor() : UIColor.BackgroundColor()
+        viewLine.backgroundColor = UIColor.LineColor()
+        viewLine.setWidth(globalHalf)
+        viewLine.setX(44 - globalHalf)
     }
 }
