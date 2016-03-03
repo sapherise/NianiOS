@@ -70,8 +70,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview.dataSource = self;
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        self.tableview.registerNib(UINib(nibName:"CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
-        self.tableview.registerNib(UINib(nibName:"CommentCellMe", bundle: nil), forCellReuseIdentifier: "CommentCellMe")
+        self.tableview.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
         self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
@@ -126,7 +125,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             var success = false
             var finish = false
             var IDComment = 0
-            Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content, type: "0") { json in
+            Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content, type: type) { json in
                 if json != nil {
                     if let status = json!.objectForKey("status") as? NSNumber {
                         if status == 200 {
@@ -234,9 +233,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
-        let c = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! CommentCell
+        let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
         c.data = data
-        c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
         c.imageContent.tag = dataArray.count - 1 - index
         c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
         c.imageContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
@@ -310,13 +308,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 self.resize()
                 }, completion: nil)
         }
-    }
-    
-    func userclick(sender:UITapGestureRecognizer){
-        resign()
-        let UserVC = PlayerViewController()
-        UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

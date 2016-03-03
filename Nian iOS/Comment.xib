@@ -7,50 +7,48 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Comment" id="4jK-iB-hrv" customClass="Comment" customModule="Nian_iOS" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4jK-iB-hrv" id="RjT-6q-GRK">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
-                <autoresizingMask key="autoresizingMask"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Comment" rowHeight="438" id="Nxi-zM-L6x" customClass="Comment" customModule="Nian_iOS" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="438"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nxi-zM-L6x" id="kE4-Ol-CVT">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bubble" id="yAZ-BX-lvE">
-                        <rect key="frame" x="56" y="16" width="240" height="128"/>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hfy-Ik-GGq">
+                        <rect key="frame" x="16" y="24" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Jq3-l5-t01">
-                        <rect key="frame" x="111" y="69" width="165" height="21"/>
+                    <label clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="匿名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RaU-Rm-cQH">
+                        <rect key="frame" x="64" y="62" width="231" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PqY-Kd-QBf">
-                        <rect key="frame" x="56" y="147" width="200" height="22"/>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bubble" id="zSc-As-WmX" customClass="FLAnimatedImageView" customModule="Nian_iOS" customModuleProvider="target">
+                        <rect key="frame" x="60" y="15" width="235" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="UXc-Ac-Aiy">
-                        <rect key="frame" x="16" y="16" width="32" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="16"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
                     </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QFB-Pf-uQa">
+                        <rect key="frame" x="73" y="25" width="208" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="imageContent" destination="yAZ-BX-lvE" id="sE5-I8-saG"/>
-                <outlet property="imageHead" destination="UXc-Ac-Aiy" id="rOx-V8-clK"/>
-                <outlet property="labelContent" destination="Jq3-l5-t01" id="KVr-aa-5vo"/>
-                <outlet property="labelName" destination="PqY-Kd-QBf" id="5kD-gx-ebc"/>
+                <outlet property="imageContent" destination="zSc-As-WmX" id="7wa-8e-Lq2"/>
+                <outlet property="imageHead" destination="Hfy-Ik-GGq" id="SiY-TS-ZSh"/>
+                <outlet property="labelContent" destination="QFB-Pf-uQa" id="W5r-OF-OUg"/>
+                <outlet property="labelName" destination="RaU-Rm-cQH" id="F9e-c8-E4e"/>
             </connections>
-            <point key="canvasLocation" x="194" y="408"/>
+            <point key="canvasLocation" x="212" y="312"/>
         </tableViewCell>
     </objects>
     <resources>
