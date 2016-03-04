@@ -10,7 +10,7 @@ import UIKit
 
 class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextViewDelegate, delegateInput {
     
-    var tableview:UITableView!
+    var tableView: UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 1
     var replySheet:UIActionSheet?
@@ -64,20 +64,20 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
         
-        self.tableview = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 56))
-        self.tableview.backgroundColor = UIColor.clearColor()
-        self.tableview.delegate = self;
-        self.tableview.dataSource = self;
-        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, 0))
+        self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         
-        self.tableview.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
-        self.tableview.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
-        self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
-        self.view.addSubview(self.tableview)
+        self.tableView.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
+        self.tableView.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
+        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
+        self.view.addSubview(self.tableView)
         
         self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 56))
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
-        self.tableview.tableFooterView = self.viewBottom
+        self.tableView.tableFooterView = self.viewBottom
         
         //输入框
         keyboardView = InputView()
@@ -90,6 +90,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             keyboardView.labelPlaceHolder.hidden = true
         }
         
+        tableView.setHeight(globalHeight - 64 - keyboardView.heightCell)
+        
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
@@ -100,31 +102,18 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         
         self.viewLoadingShow()
         
-        tableview.addHeaderWithCallback { () -> Void in
+        tableView.addHeaderWithCallback { () -> Void in
             self.load(false)
         }
-    }
-    
-    /* 根据输入视图的高度来调整 tableView */
-    func resize() {
-        let h = globalHeight - keyboardView.height() - 64 - keyboardHeight
-        
-        /* 当 tableview 原来就是在底部的时候，才选择继续滚到底部 */
-        let h1 = tableview.contentSize.height - tableview.height()
-        if tableview.contentOffset.y == h1 {
-            self.tableview.contentOffset.y = max(self.tableview.contentSize.height - h, 0)
-        }
-        self.tableview.setHeight(h)
-        self.keyboardView.setY(self.tableview.bottom())
     }
     
     /* 发送内容到服务器 */
     func send(replyContent: String, type: String) {
         keyboardView.inputKeyboard.text = ""
         if let name = Cookies.get("user") as? String {
-            let newinsert = NSDictionary(objects: [replyContent, "" , "sending", "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
+            let newinsert = NSDictionary(objects: [replyContent, "" , "sending", "\(SAUid())", "\(name)", type], forKeys: ["content", "id", "lastdate", "uid", "user", "type"])
             self.dataArray.insertObject(self.dataDecode(newinsert), atIndex: 0)
-            self.tableview.reloadData()
+            self.tableView.reloadData()
             //当提交评论后滚动到最新评论的底部
             
             //  提交到服务器
@@ -139,7 +128,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                             IDComment = Int((json as! NSDictionary).stringAttributeForKey("data"))!
                             success = true
                             if finish {
-                                self.newInsert(replyContent, id: IDComment)
+                                self.newInsert(replyContent, id: IDComment, type: type)
                             }
                         } else {
                             self.showTipText("对方设置了不被回应...")
@@ -151,15 +140,11 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                     }
                 }
             }
-            
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 {
-                    self.tableview.contentOffset.y = offset
-                }
+                    self.tableView.contentOffset.y = max(self.tableView.contentSize.height - self.tableView.bounds.size.height, 0)
                 }) { (Bool) -> Void in
                     if success {
-                        self.newInsert(replyContent, id: IDComment)
+                        self.newInsert(replyContent, id: IDComment, type: type)
                     } else {
                         finish = true
                     }
@@ -168,13 +153,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     /* 插入新回应并在 UI 上显示 */
-    func newInsert(content: String, id: Int) {
+    func newInsert(content: String, id: Int, type: String) {
         if let name = Cookies.get("user") as? String {
-            let newinsert = NSDictionary(objects: [content, "\(id)" , V.now(), "\(SAUid())", "\(name)"], forKeys: ["content", "id", "lastdate", "uid", "user"])
-            self.tableview.beginUpdates()
+            let newinsert = NSDictionary(objects: [content, "\(id)" , V.now(), "\(SAUid())", "\(name)", type], forKeys: ["content", "id", "lastdate", "uid", "user", "type"])
+            self.tableView.beginUpdates()
             self.dataArray.replaceObjectAtIndex(0, withObject: self.dataDecode(newinsert))
-            self.tableview.reloadData()
-            self.tableview.endUpdates()
+            self.tableView.reloadData()
+            self.tableView.endUpdates()
         }
     }
     
@@ -184,7 +169,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             if clear {
                 page = 1
             }
-            let heightBefore = self.tableview.contentSize.height
+            let heightBefore = self.tableView.contentSize.height
             Api.getDreamStepComment("\(stepID)", page: page) { json in
                 if json != nil {
                     self.viewLoadingHide()
@@ -203,25 +188,25 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                         delay(0.3, closure: { () -> () in
                             /* 当加载内容不足时，停止加载更多内容 */
                             if i < 15 {
-                                self.tableview.setHeaderHidden(true)
+                                self.tableView.setHeaderHidden(true)
                             }
                         
                         /* 因为 tableView 的弹性，需要延时 0.3 秒来加载内容 */
-                            self.tableview.reloadData()
-                            let h = self.tableview.contentSize.height - heightBefore - 2
-                            self.tableview.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
+                            self.tableView.reloadData()
+                            let h = self.tableView.contentSize.height - heightBefore - 2
+                            self.tableView.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
                             self.page++
                             self.isAnimating = false
                         })
                     } else {
-                        self.tableview.reloadData()
-                        let h = self.tableview.contentSize.height - self.tableview.height()
-                        self.tableview.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
+                        self.tableView.reloadData()
+                        let h = self.tableView.contentSize.height - self.tableView.height()
+                        self.tableView.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
                         self.page++
                         self.isAnimating = false
                     }
                 }
-                self.tableview.headerEndRefreshing()
+                self.tableView.headerEndRefreshing()
             }
         }
     }
@@ -298,16 +283,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             }
         }
     }
-
-    func onCellClick(sender:UIPanGestureRecognizer){
-        if sender.state == UIGestureRecognizerState.Changed {
-            let distanceX = sender.translationInView(self.view).x
-            let distanceY = sender.translationInView(self.view).y
-            if fabs(distanceY) > fabs(distanceX) {
-                resign()
-            }
-        }
-    }
     
     func onCellTap(sender:UITapGestureRecognizer) {
         resign()
@@ -323,7 +298,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             keyboardView.resignEmoji()
             keyboardHeight = 0
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.resize()
+                self.keyboardView.resizeTableView()
                 }, completion: nil)
         }
     }
@@ -382,10 +357,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                 let data = dataArray[rowSelected] as! NSDictionary
                 let cid = data.stringAttributeForKey("id")
                 self.dataArray.removeObjectAtIndex(rowSelected)
-                self.tableview.beginUpdates()
-                self.tableview.deleteRowsAtIndexPaths([NSIndexPath(forRow: rowSelected, inSection: 0)], withRowAnimation: .Fade)
-                self.tableview.reloadData()
-                self.tableview.endUpdates()
+                self.tableView.beginUpdates()
+                self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: rowSelected, inSection: 0)], withRowAnimation: .Fade)
+                self.tableView.reloadData()
+                self.tableView.endUpdates()
                 Api.postDeleteComment(cid) { json in
                 }
             }
@@ -403,14 +378,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         
         /* 移除表情界面，修改按钮样式 */
         keyboardView.resignEmoji()
-        self.resize()
+        keyboardView.resizeTableView()
         keyboardView.labelPlaceHolder.hidden = true
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
         if !Locking {
             keyboardHeight = 0
-            resize()
+            keyboardView.resizeTableView()
         }
     }
     

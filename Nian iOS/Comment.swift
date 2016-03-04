@@ -18,8 +18,6 @@ class Comment: UITableViewCell {
     var data: NSDictionary!
     
     func setup() {
-        
-        print(data)
         selectionStyle = .None
         labelName.textColor = UIColor.HighlightColor()
         imageHead.layer.masksToBounds = true
@@ -28,7 +26,6 @@ class Comment: UITableViewCell {
         let name = data.stringAttributeForKey("user")
         let time = data.stringAttributeForKey("lastdate")
         let content = data.stringAttributeForKey("content")
-        let type = data.stringAttributeForKey("type")
         let heightContent = data.objectForKey("heightContent") as! CGFloat
         let widthContent = data.objectForKey("widthContent") as! CGFloat
         let wImage = data.objectForKey("widthImage") as! CGFloat
@@ -76,18 +73,6 @@ class Comment: UITableViewCell {
             imageBubble.setX(60)
             imageBubble.image = UIImage(named: "bubble")
         }
-//        
-//        if type == "1" {
-//            labelContent.hidden = true
-//            let arr = content.componentsSeparatedByString("-")
-//            if arr.count == 2 {
-//                let code = arr[0]
-//                let num = arr[1]
-//                let url = "http://img.nian.so/emoji/\(code)/\(num).gif"
-//                imageContent.qs_setGifImageWithURL(NSURL(string: url)!, progress: nil, completed: nil)
-//                imageContent.frame.size = CGSizeMake(100, 100)
-//            }
-//        }
     }
     
     func onHead(){

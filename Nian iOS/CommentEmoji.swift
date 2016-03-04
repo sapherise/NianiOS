@@ -16,8 +16,6 @@ class CommentEmoji: UITableViewCell {
     var data: NSDictionary!
     
     func setup() {
-        
-        print(data)
         selectionStyle = .None
         labelName.textColor = UIColor.HighlightColor()
         imageHead.layer.masksToBounds = true
@@ -26,7 +24,6 @@ class CommentEmoji: UITableViewCell {
         let name = data.stringAttributeForKey("user")
         let time = data.stringAttributeForKey("lastdate")
         let content = data.stringAttributeForKey("content")
-        let type = data.stringAttributeForKey("type")
         let wImage = data.objectForKey("widthImage") as! CGFloat
         let hImage = data.objectForKey("heightImage") as! CGFloat
         let heightCell = data.objectForKey("heightCell") as! CGFloat

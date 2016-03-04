@@ -8,8 +8,8 @@
 
 import UIKit
 
-class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    var tableview:UITableView!
+class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, delegateInput {
+    var tableView: UITableView!
     var dataArray = NSMutableArray()
     var page :Int = 0
     var replySheet:UIActionSheet?
@@ -23,11 +23,11 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var ReturnReplyContent:String = ""
     var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
     var desHeight:CGFloat = 0
-    var inputKeyboard:UITextField!
-    var keyboardView: SABottom!
+    var keyboardView: InputView!
     var viewBottom:UIView!
-    var keyboardHeight:CGFloat = 0
+    var keyboardHeight: CGFloat = 0
     var imagePicker:UIImagePickerController?
+    var Locking = false
     
     /* 消息发送者的 id 和 name */
     var id: Int = 0
@@ -37,7 +37,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewDidLoad()
         setupViews()
         load()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Poll:", name: "Poll", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
     }
     
@@ -62,49 +61,63 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.viewBackFix()
     }
     
-    func Poll(noti: NSNotification) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = noti.object as! NSDictionary
-            let circle = data.stringAttributeForKey("to")
-            if circle == "\(self.id)" {
-                _ = data.stringAttributeForKey("msgid")
-                let uid = data.stringAttributeForKey("from")
-                let name = data.stringAttributeForKey("fromname")
-                let content = data.stringAttributeForKey("msg")
-                let title = data.stringAttributeForKey("title")
-                let type = data.stringAttributeForKey("msgtype")
-                let time = (data.stringAttributeForKey("time") as NSString).doubleValue
-                let cid = data.stringAttributeForKey("cid")
-                
-                let safeuid = SAUid()
-                
+    func send(replyContent: String, type: String) {
+        back {
+            if let name = Cookies.get("user") as? String {
                 let commentReplyRow = self.dataArray.count
-                let absoluteTime = V.absoluteTime(time)
-                if (safeuid != uid) || (type != "1" && type != "2") {     // 如果是朋友们发的
-                    let newinsert = NSDictionary(objects: [content, "\(commentReplyRow)" , absoluteTime, uid, name,"\(type)", title, cid], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
-                    self.dataArray.insertObject(newinsert, atIndex: 0)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.tableview.reloadData()
-                        let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                        if offset > 0 && offset - self.tableview.contentOffset.y < globalHeight * 0.5 {
-                            self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-                        }
-                    })
+                let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
+                self.dataArray.insertObject(self.dataDecode(data), atIndex: 0)
+                self.tableView.reloadData()
+                var success = false
+                var finish = false
+                var nameSelf = ""
+                if let _name = Cookies.get("user") as? String {
+                    nameSelf = _name
                 }
+                let message = RCTextMessage(content: replyContent)
+                message.extra = "\(self.name):\(nameSelf)"
+                RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
+                    success = true
+                    if finish {
+                        self.newInsert(replyContent, id: messageID, type: type)
+                    }
+                    }) { (err, no) -> Void in
+                }
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.tableView.contentOffset.y = max(self.tableView.contentSize.height - self.tableView.height(), 0)
+                    }, completion: { (Bool) -> Void in
+                        if success {
+                            self.newInsert(replyContent, id: 0, type: type)
+                        } else {
+                            finish = true
+                        }
+                })
             }
-        })
+            self.keyboardView.inputKeyboard.text = ""
+        }
+    }
+    
+    /* 插入新回应并在 UI 上显示 */
+    func newInsert(content: String, id: Int, type: String) {
+        if let name = Cookies.get("user") as? String {
+            let newinsert = NSDictionary(objects: [content, "\(id)" , "刚刚", "\(SAUid())", "\(name)", type], forKeys: ["content", "id", "lastdate", "uid", "user", "type"])
+            self.tableView.beginUpdates()
+            self.dataArray.replaceObjectAtIndex(0, withObject: self.dataDecode(newinsert))
+            self.tableView.reloadData()
+            self.tableView.endUpdates()
+        }
     }
     
     func Letter(noti: NSNotification) {
         if let message = noti.object as? RCMessage {
             if "\(id)" == message.senderUserId {
                 let new = IMClass().messageToDictionay(message)
-                self.dataArray.insertObject(new, atIndex: 0)
+                self.dataArray.insertObject(dataDecode(new), atIndex: 0)
                 back {
-                    self.tableview.reloadData()
-                    let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                    if offset > 0 && offset - self.tableview.contentOffset.y < self.tableview.bounds.size.height * 0.5 {
-                        self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
+                    self.tableView.reloadData()
+                    let offset = self.tableView.contentSize.height - self.tableView.bounds.size.height
+                    if offset > 0 && offset - self.tableView.contentOffset.y < self.tableView.bounds.size.height * 0.5 {
+                        self.tableView.setContentOffset(CGPointMake(0, offset), animated: true)
                     }
                 }
             }
@@ -120,60 +133,32 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.view.addSubview(self.navView)
         
         
-        self.tableview = UITableView(frame:CGRectMake(0,64,globalWidth,globalHeight - 64 - 44))
-        self.tableview.backgroundColor = UIColor.clearColor()
-        self.tableview.delegate = self
-        self.tableview.dataSource = self
-        self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
-        let nib = UINib(nibName:"CircleBubbleCell", bundle: nil)
-        self.tableview.registerNib(nib, forCellReuseIdentifier: "CircleBubbleCell")
-        let nib4 = UINib(nibName:"CircleImageCell", bundle: nil)
-        self.tableview.registerNib(nib4, forCellReuseIdentifier: "CircleImageCell")
+        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, 0))
+        self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
+        self.tableView.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
         
-        
-        let pan = UIPanGestureRecognizer(target: self, action: "onCellPan:")
-        pan.delegate = self
-        self.tableview.addGestureRecognizer(pan)
-        self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
-        self.view.addSubview(self.tableview)
+        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
+        self.view.addSubview(self.tableView)
         
         self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
-        self.tableview.tableFooterView = self.viewBottom
+        self.tableView.tableFooterView = self.viewBottom
         
         
         // 输入框
-        
-        
-        self.keyboardView = (NSBundle.mainBundle().loadNibNamed("SABottom", owner: self, options: nil) as NSArray).objectAtIndex(0) as! SABottom
-        self.keyboardView.pointX = 0
-        self.keyboardView.pointY = globalHeight - 44
-        
-        let inputLineView = UIView(frame: CGRectMake(0, 0, globalWidth, 1))
-        inputLineView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
-        self.keyboardView.addSubview(inputLineView)
-        self.inputKeyboard = UITextField(frame: CGRectMake(8+28+8, 8, globalWidth-16-36, 28))
-        self.inputKeyboard.layer.cornerRadius = 4
-        self.inputKeyboard.layer.masksToBounds = true
-        self.inputKeyboard.font = UIFont.systemFontOfSize(13)
-        
-        self.inputKeyboard.leftView = UIView(frame: CGRectMake(0, 0, 8, 28))
-        self.inputKeyboard.rightView = UIView(frame: CGRectMake(0, 0, 8, 28))
-        self.inputKeyboard.leftViewMode = UITextFieldViewMode.Always
-        self.inputKeyboard.rightViewMode = UITextFieldViewMode.Always
-        
-        self.inputKeyboard.delegate = self
-        self.inputKeyboard.backgroundColor = UIColor.whiteColor()
-        self.keyboardView.addSubview(self.inputKeyboard)
+        keyboardView = InputView()
+        keyboardView.inputType = InputView.inputTypeEnum.letter
+        keyboardView.setup()
+        keyboardView.delegate = self
+        self.view.addSubview(keyboardView)
+        tableView.setHeight(globalHeight - 64 - keyboardView.heightCell)
         
         // 发送图片
-        let imagePhoto = UIImageView(frame: CGRectMake(8, 8, 28, 28))
-        imagePhoto.image = UIImage(named: "camera")
-        imagePhoto.contentMode = UIViewContentMode.Center
-        imagePhoto.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPhotoClick:"))
-        imagePhoto.userInteractionEnabled = true
-        self.keyboardView.addSubview(imagePhoto)
+        keyboardView.imageUpload?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPhotoClick:"))
         self.view.addSubview(self.keyboardView)
-        self.inputKeyboard.returnKeyType = UIReturnKeyType.Send
         
         //标题颜色
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
@@ -185,7 +170,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onPhotoClick(sender:UITapGestureRecognizer){
-        inputKeyboard.resignFirstResponder()
+        resign()
         self.actionSheetPhoto = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheetPhoto!.addButtonWithTitle("相册")
         self.actionSheetPhoto!.addButtonWithTitle("拍照")
@@ -198,44 +183,26 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     //按下发送后调用此函数
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        let contentComment = self.inputKeyboard.text
-        if contentComment != "" {
-            postWord(contentComment!)
-            self.inputKeyboard.text = ""
-        }
-        return true
-    }
+//    func textFieldShouldReturn(textField: UITextField) -> Bool {
+//        let contentComment = self.inputKeyboard.text
+//        if contentComment != "" {
+//            postWord(contentComment!)
+//            self.inputKeyboard.text = ""
+//        }
+//        return true
+//    }
     
     func commentFinish(replyContent:String, type: Int = 1){
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let name = Cookies.get("user") as? String {
-                let commentReplyRow = self.dataArray.count
-                let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-                self.dataArray.insertObject(data, atIndex: 0)
-                self.tableview.reloadData()
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-                if offset > 0 {
-                    self.tableview.setContentOffset(CGPointMake(0, offset), animated: true)
-                }
-            }
-        })
-    }
-    
-    func postWord(replyContent: String, type: Int = 1) {
         back {
             if let name = Cookies.get("user") as? String {
                 let commentReplyRow = self.dataArray.count
                 let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
                 self.dataArray.insertObject(data, atIndex: 0)
-                let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height + replyContent.stringHeightWith(15,width:208) + 60
+                self.tableView.reloadData()
+                let offset = self.tableView.contentSize.height - self.tableView.bounds.size.height
                 if offset > 0 {
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.tableview.contentOffset.y = offset
-                    })
+                    self.tableView.setContentOffset(CGPointMake(0, offset), animated: true)
                 }
-                self.addReply(replyContent, type: 1)
-                self.tableview.reloadData()
             }
         }
     }
@@ -253,7 +220,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 mutableItem.setObject(contentAfter, forKey: "content")
                 self.dataArray.replaceObjectAtIndex(i, withObject: mutableItem)
                 back {
-                    self.tableview.reloadData()
+                    self.tableView.reloadData()
                 }
                 break
             }
@@ -310,24 +277,56 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         for _item in arr {
             if let item = _item as? RCMessage {
                 let data = IMClass().messageToDictionay(item)
-                self.dataArray.addObject(data)
+                self.dataArray.addObject(dataDecode(data))
                 self.dataTotal++
             }
         }
         
-        let heightBefore = self.tableview.contentSize.height
-        self.tableview.reloadData()
-        let heightAfter = self.tableview.contentSize.height
+        let heightBefore = self.tableView.contentSize.height
+        self.tableView.reloadData()
+        let heightAfter = self.tableView.contentSize.height
         if clear {
-            let offset = self.tableview.contentSize.height - self.tableview.bounds.size.height
-            if offset > 0  {
-                self.tableview.setContentOffset(CGPointMake(0, offset), animated: false)
-            }
+            self.tableView.contentOffset.y = max(tableView.contentSize.height - tableView.height(), 0)
         }else{
             let heightChange = heightAfter > heightBefore ? heightAfter - heightBefore : 0
-            self.tableview.contentOffset = CGPointMake(0, heightChange)
+            self.tableView.contentOffset = CGPointMake(0, heightChange)
             self.animating = 0
         }
+    }
+    
+    /* 将数据转码 */
+    func dataDecode(data: NSDictionary) -> NSDictionary {
+        print("\(data) 编码前")
+        let mutableData = NSMutableDictionary(dictionary: data)
+        let content = data.stringAttributeForKey("content").decode()
+        let h = content.stringHeightWith(15, width: 208)
+        let type = data.stringAttributeForKey("type")
+        var wImage: CGFloat = 72
+        var hImage: CGFloat = 72
+        var wContent: CGFloat = 0
+        var heightCell: CGFloat = 0
+        if type == "1" {
+            if h == "".stringHeightWith(15, width: 208) {
+                wContent = content.stringWidthWith(15, height: h)
+                wImage = wContent + 27
+                hImage = 37
+            } else {
+                wImage = 235
+                hImage = h + 20
+                wContent = 208
+            }
+            heightCell = h + 60
+        } else {
+            heightCell = hImage + 40
+        }
+        mutableData.setValue(h, forKey: "heightContent")
+        mutableData.setValue(wContent, forKey: "widthContent")
+        mutableData.setValue(wImage, forKey: "widthImage")
+        mutableData.setValue(hImage, forKey: "heightImage")
+        mutableData.setValue(content, forKey: "content")
+        mutableData.setValue(heightCell, forKey: "heightCell")
+        print("\(mutableData) 编码后")
+        return mutableData as NSDictionary
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -347,31 +346,50 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell
+//        var cell:UITableViewCell
+//        let index = indexPath.row
+//        let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
+//        let type = data.stringAttributeForKey("type")
+//        if type == "1" {
+//            let c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
+//            c.data = data
+//            c.textContent.tag = index
+//            c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+//            c.textContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleLongClick:"))
+//            c.View.tag = index
+//            c.setup()
+//            cell = c
+//        } else {
+//            let c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
+//            c.data = data
+//            c.imageContent.tag = index
+//            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
+//            c.View.tag = index
+//            c.setup()
+//            cell = c
+//        }
+//        return cell
+        
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         let type = data.stringAttributeForKey("type")
         if type == "1" {
-            let c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
+            let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
             c.data = data
-            c.textContent.tag = index
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.textContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleLongClick:"))
-            c.View.tag = index
+            c.labelHolder.tag = dataArray.count - 1 - index
+            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
             c.setup()
-            cell = c
+            return c
         } else {
-            let c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
+            let c = tableView.dequeueReusableCellWithIdentifier("CommentEmoji", forIndexPath: indexPath) as! CommentEmoji
             c.data = data
-            c.imageContent.tag = index
-            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-            c.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
-            c.View.tag = index
+            c.labelHolder.tag = dataArray.count - 1 - index
+            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
             c.setup()
-            cell = c
+            return c
         }
-        return cell
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -388,22 +406,27 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return true
     }
     
-    func onCellPan(sender:UIPanGestureRecognizer){
-        if sender.state == UIGestureRecognizerState.Changed {
-            let distanceX = sender.translationInView(self.view).x
-            let distanceY = sender.translationInView(self.view).y
-            if fabs(distanceY) > fabs(distanceX) {
-                self.inputKeyboard.resignFirstResponder()
-            }
+    func onCellTap(sender:UITapGestureRecognizer) {
+//        self.inputKeyboard.resignFirstResponder()
+        resign()
+    }
+    
+    func resign() {
+        /* 当键盘是系统自带键盘时 */
+        if self.keyboardView.inputKeyboard.isFirstResponder() {
+            self.keyboardView.inputKeyboard.resignFirstResponder()
+        } else {
+            /* 当键盘是我们自己写的键盘（表情）时 */
+            keyboardView.resignEmoji()
+            keyboardHeight = 0
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.keyboardView.resizeTableView()
+                }, completion: nil)
         }
     }
     
-    func onCellTap(sender:UITapGestureRecognizer) {
-        self.inputKeyboard.resignFirstResponder()
-    }
-    
     func onImageTap(sender:UITapGestureRecognizer) {
-        self.inputKeyboard.resignFirstResponder()
+//        self.inputKeyboard.resignFirstResponder()
         let index = sender.view!.tag
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         let content = data.objectForKey("content") as! String
@@ -424,13 +447,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 }
             }
         }
-    }
-    
-    func userclick(sender:UITapGestureRecognizer){
-        self.inputKeyboard.resignFirstResponder()
-        let UserVC = PlayerViewController()
-        UserVC.Id = "\(sender.view!.tag)"
-        self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
     func onBubbleLongClick(sender: UILongPressGestureRecognizer) {
@@ -478,33 +494,24 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return 65
     }
     
-    func commentVC(){
-        //这里是回应别人
-        self.inputKeyboard.text = "@\(self.ReplyUserName) "
-        delay(0.3, closure: {
-            self.inputKeyboard.becomeFirstResponder()
-            return
-        })
-    }
-    
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
-                self.commentVC()
+//                self.commentVC()
             }else if buttonIndex == 1 { //复制
                 let pasteBoard = UIPasteboard.generalPasteboard()
                 pasteBoard.string = self.ReplyContent
             }
         }else if actionSheet == self.actionSheetPhoto {
             if buttonIndex == 0 {
-                self.inputKeyboard.resignFirstResponder()
+//                self.inputKeyboard.resignFirstResponder()
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
             }else if buttonIndex == 1 {
-                self.inputKeyboard.resignFirstResponder()
+//                self.inputKeyboard.resignFirstResponder()
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                     self.imagePicker = UIImagePickerController()
                     self.imagePicker!.delegate = self
@@ -558,22 +565,37 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func keyboardWasShown(notification: NSNotification) {
+//        var info: Dictionary = notification.userInfo!
+//        let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
+//        self.keyboardHeight = keyboardSize.height
+//        self.keyboardView.pointY = globalHeight - self.keyboardHeight - 44
+//        self.keyboardView.layoutSubviews()
+//        let heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
+//        let contentOffsetTableView = self.tableView.contentSize.height >= heightScroll ? self.tableView.contentSize.height - heightScroll : 0
+//        self.tableView.setHeight( heightScroll )
+//        self.tableView.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
+        
+        
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
-        self.keyboardHeight = keyboardSize.height
-        self.keyboardView.pointY = globalHeight - self.keyboardHeight - 44
-        self.keyboardView.layoutSubviews()
-        let heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
-        let contentOffsetTableView = self.tableview.contentSize.height >= heightScroll ? self.tableview.contentSize.height - heightScroll : 0
-        self.tableview.setHeight( heightScroll )
-        self.tableview.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
+        keyboardHeight = max(keyboardSize.height, keyboardHeight)
+        
+        /* 移除表情界面，修改按钮样式 */
+        keyboardView.resignEmoji()
+        keyboardView.resizeTableView()
+        keyboardView.labelPlaceHolder.hidden = true
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        let heightScroll = globalHeight - 44 - 64
-        self.keyboardView.pointY = globalHeight - 44
-        self.keyboardView.layoutSubviews()
-        self.tableview.setHeight(heightScroll)
+//        let heightScroll = globalHeight - 44 - 64
+//        self.keyboardView.pointY = globalHeight - 44
+//        self.keyboardView.layoutSubviews()
+//        self.tableView.setHeight(heightScroll)
+        
+        if !Locking {
+            keyboardHeight = 0
+            keyboardView.resizeTableView()
+        }
     }
 }
 

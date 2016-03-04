@@ -13,18 +13,17 @@ protocol delegateInput {
     /* 获取键盘高度 */
     var keyboardHeight: CGFloat { get set }
     var Locking: Bool { get set }
+    var tableView: UITableView! { get set }
     
     /* 按下 Send 后的操作 */
     func send(replyContent: String, type: String)
-    
-    /* 每次键盘或者该视图发生变化都要调用这个参数 */
-    func resize()
 }
 
 class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, delegateEmoji {
     let heightCell: CGFloat = 56
     let widthImageHead: CGFloat = 32
     let heightImageHead: CGFloat = 32
+    let widthUpload: CGFloat = 44
     let padding: CGFloat = 16
     let heightInputMax: CGFloat = 75
     let widthEmoji: CGFloat = 44
@@ -33,9 +32,18 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     var imageEmoji: UIImageView!
     var isEmojing = false
     var viewEmoji: UIView!
+    var imageUpload: UIImageView?
     var tableView: UITableView!
     var dataArray = NSMutableArray()
     var collectionView: UICollectionView!
+    
+    var inputType = inputTypeEnum.comment
+    
+    /* 类型 */
+    enum inputTypeEnum {
+        case comment
+        case letter
+    }
     
     /* 空状态引导去购买表情 */
     var viewCollectionHolder: UIView!
@@ -72,8 +80,13 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     
     func setup() {
         /* 输入框 */
+        var widthInput = globalWidth - padding * 3 - widthEmoji - widthImageHead
+        if inputType == inputTypeEnum.letter {
+            widthInput = widthInput - widthUpload
+        }
+        
         inputKeyboard = UITextView()
-        inputKeyboard.frame = CGRectMake(padding * 2 + widthImageHead, 0, globalWidth - padding * 3 - widthEmoji - widthImageHead, 0)
+        inputKeyboard.frame = CGRectMake(padding * 2 + widthImageHead, 0, widthInput, 0)
         inputKeyboard.font = UIFont.systemFontOfSize(12)
         inputKeyboard.returnKeyType = UIReturnKeyType.Send
         inputKeyboard.delegate = self
@@ -101,6 +114,14 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         imageEmoji = UIImageView(frame: CGRectMake(globalWidth - widthEmoji - padding, (heightCell - widthEmoji) / 2, widthEmoji, widthEmoji))
         imageEmoji.image = UIImage(named: "keyemoji")
         self.addSubview(imageEmoji)
+        
+        /* 发送图片 */
+        if inputType == inputTypeEnum.letter {
+            imageUpload = UIImageView(frame: CGRectMake(globalWidth - widthEmoji - padding - widthUpload, (heightCell - widthEmoji) / 2, widthEmoji, widthEmoji))
+            imageUpload?.image = UIImage(named: "keyimage")
+            imageUpload?.userInteractionEnabled = true
+            self.addSubview(imageUpload!)
+        }
         
         /* 分割线 */
         let viewLine = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
@@ -235,7 +256,11 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     /* 移除表情键盘 */
     func resignEmoji() {
         self.isEmojing = false
+        
+        /* 修改表情按钮为笑脸 */
         imageEmoji.image = UIImage(named: "keyemoji")
+        
+        /* 移除表情键盘 */
         if let v = viewEmoji {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 v.setY(globalHeight)
@@ -259,7 +284,8 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             self.findRootViewController()?.view.addSubview(viewEmoji)
             load()
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.delegate?.resize()
+//                self.delegate?.resize()
+                self.resizeTableView()
                 self.viewEmoji.setY(globalHeight - self.heightEmoji)
                 }) { (Bool) -> Void in
                     self.delegate?.Locking = false
@@ -267,7 +293,6 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             
         } else {
             /* 如果是表情键盘，弹出自带键盘 */
-            print("3")
             onTap()
         }
     }
@@ -287,16 +312,20 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         if h != heightOrigin {
             self.imageHead.setY(heightOrigin - self.imageHead.height() - (self.heightCell - self.imageHead.height()) / 2)
             self.imageEmoji.setY(heightOrigin - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
+            self.imageUpload?.setY(heightOrigin - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
             self.setY(globalHeight - heightOrigin - delegate!.keyboardHeight)
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.imageHead.setY(h - self.imageHead.height() - (self.heightCell - self.imageHead.height()) / 2)
                 self.imageEmoji.setY(h - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
+                self.imageUpload?.setY(h - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
                 self.setHeight(h)
-                self.delegate?.resize()
+                self.resizeTableView()
             })
         }
         return h
     }
+    
+    // todo: 返回的手势会很卡很卡，私信页面
     
     func load() {
         if let emojis = Cookies.get("emojis") as? NSMutableArray {
@@ -308,47 +337,61 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
                     let isClicked = i == current ? "1" : "0"
                     e.setValue(isClicked, forKey: "isClicked")
                     dataArray.addObject(e)
-                    print(e)
                 }
                 i++
             }
             tableView.reloadData()
             collectionView.reloadData()
         } else {
-            print("不存在，需要加载")
             let loading = UIActivityIndicatorView()
             loading.center = collectionView.center
             loading.color = UIColor.HighlightColor()
             loading.startAnimating()
             collectionView.addSubview(loading)
             // todo: 关掉延迟
-            delay(3, closure: { () -> () in
-                Api.getEmoji() { json in
-                    if json != nil {
-                        self.dataArray.removeAllObjects()
-                        let items = json!.objectForKey("data") as! NSArray
-                        var i = 0
-                        for _item in items {
-                            if let item = _item as? NSDictionary {
-                                let type = item.stringAttributeForKey("type")
-                                if type == "expression" {
-                                    let e = NSMutableDictionary(dictionary: item)
-                                    let isClicked = i == self.current ? "1" : "0"
-                                    e.setValue(isClicked, forKey: "isClicked")
-                                    self.dataArray.addObject(e)
-                                }
+            Api.getEmoji() { json in
+                if json != nil {
+                    self.dataArray.removeAllObjects()
+                    let items = json!.objectForKey("data") as! NSArray
+                    var i = 0
+                    for _item in items {
+                        if let item = _item as? NSDictionary {
+                            let type = item.stringAttributeForKey("type")
+                            if type == "expression" {
+                                let e = NSMutableDictionary(dictionary: item)
+                                let isClicked = i == self.current ? "1" : "0"
+                                e.setValue(isClicked, forKey: "isClicked")
+                                self.dataArray.addObject(e)
                             }
-                            i++
                         }
-                        Cookies.set(self.dataArray, forKey: "emojis")
-                        self.tableView.reloadData()
-                        self.collectionView.reloadData()
-                        loading.removeFromSuperview()
+                        i++
                     }
+                    Cookies.set(self.dataArray, forKey: "emojis")
+                    self.tableView.reloadData()
+                    self.collectionView.reloadData()
+                    loading.removeFromSuperview()
                 }
-            })
+            }
         }
         // todo: 判断没有的情况？！
+    }
+    
+    /*  调整 tableView 的高度
+    **  调整输入框的坐标
+    */
+    func resizeTableView() {
+        if let de = delegate {
+            let h = globalHeight - self.height() - 64 - de.keyboardHeight
+            
+            /* 当 tableview 原来就是在底部的时候，才选择继续滚到底部 */
+            let h1 = de.tableView.contentSize.height - de.tableView.height()
+            if de.tableView.contentOffset.y == h1 || h1 < 0 {
+                de.tableView.contentOffset.y = max(de.tableView.contentSize.height - h, 0)
+            }
+            de.tableView.setHeight(h)
+            self.setY(h + 64)
+            // todo: 发送表情后输入框没有重置
+        }
     }
     
     /* 前往购买表情 */

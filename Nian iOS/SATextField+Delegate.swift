@@ -14,7 +14,11 @@ extension InputView {
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             let content = textView.text
-            delegate?.send(content, type: "0")
+            if content == "" {
+                return true
+            }
+            let type = inputType == inputTypeEnum.comment ? "0" : "1"
+            delegate?.send(content, type: type)
             let h = resize()
             resizeView(h)
             return false
@@ -131,7 +135,10 @@ extension InputView {
         if let tag = sender.view?.tag {
             let data = dataArray[current] as! NSDictionary
             let code = data.stringAttributeForKey("code")
-            delegate?.send("\(code)-\(tag + 1)", type: "1")
+            let type = inputType == inputTypeEnum.comment ? "1" : "2"
+            delegate?.send("\(code)-\(tag + 1)", type: type)
+            let h = resize()
+            resizeView(h)
         }
     }
 }
