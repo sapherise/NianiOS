@@ -175,6 +175,7 @@ extension Product {
                                     self.niAlertResult.delegate = self
                                     self.niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "失败了", "你的念币不够...", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
                                     self.niAlert.dismissWithAnimationSwtich(self.niAlertResult)
+                                    // todo: 有已经购买过的情况，例如在 A 设备登录了，保存了表情缓存。然后在 B 设备登录并且购买，那么在 A 设备到达这个页面时，会告知没有购买过
                                 }
                             }
                         }

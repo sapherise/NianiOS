@@ -1,20 +1,18 @@
 //
-//  YRJokeCell.swift
-//  JokeClient-Swift
+//  CommentEmoji.swift
+//  Nian iOS
 //
-//  Created by YANGReal on 14-6-6.
-//  Copyright (c) 2014年 YANGReal. All rights reserved.
+//  Created by Sa on 16/3/4.
+//  Copyright © 2016年 Sa. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class Comment: UITableViewCell {
+class CommentEmoji: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelContent: UILabel!
-    @IBOutlet var labelHolder: UIView!
-    @IBOutlet var imageBubble: UIImageView!
+    @IBOutlet var labelHolder: FLAnimatedImageView!
     var data: NSDictionary!
     
     func setup() {
@@ -29,20 +27,14 @@ class Comment: UITableViewCell {
         let time = data.stringAttributeForKey("lastdate")
         let content = data.stringAttributeForKey("content")
         let type = data.stringAttributeForKey("type")
-        let heightContent = data.objectForKey("heightContent") as! CGFloat
-        let widthContent = data.objectForKey("widthContent") as! CGFloat
         let wImage = data.objectForKey("widthImage") as! CGFloat
         let hImage = data.objectForKey("heightImage") as! CGFloat
         let heightCell = data.objectForKey("heightCell") as! CGFloat
         
         imageHead.setHead(uid)
-        labelContent.frame.size = CGSizeMake(widthContent, heightContent)
-        labelContent.text = content
         labelHolder.frame.size = CGSizeMake(wImage, hImage)
         imageHead.setY(heightCell - 32 - 4)
         labelName.setY(heightCell - 22)
-        let x: CGFloat = 2
-        imageBubble.setBottom(labelHolder.bottom() + x)
         
         imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
         
@@ -53,41 +45,31 @@ class Comment: UITableViewCell {
             labelName.text = time
             labelName.textColor = UIColor.secAuxiliaryColor()
             labelName.textAlignment = NSTextAlignment.Right
-//            imageContent.image = UIImage(named: "bubble_me")
             labelHolder.setX(globalWidth - labelHolder.width() - 60)
-            labelContent.setX(globalWidth - labelContent.width() - 73)
-            labelContent.textColor = UIColor.MainColor()
-            labelHolder.backgroundColor = UIColor.GreyBackgroundColor()
-            imageBubble.setX(globalWidth - imageBubble.width() - 60 + x)
-            imageBubble.image = UIImage(named: "bubble_me")
         } else {
             let attrStr = NSMutableAttributedString(string: "\(name)  \(time)")
             attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
             attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
             labelName.attributedText = attrStr
             labelName.textAlignment = NSTextAlignment.Left
-            labelContent.textColor = UIColor.BackgroundColor()
             labelHolder.setX(60)
-            labelContent.setX(73)
             labelName.setX(64)
-//            imageContent.image = UIImage(named: "bubble")
             imageHead.setX(16)
-            labelHolder.backgroundColor = UIColor.HighlightColor()
-            imageBubble.setX(60)
-            imageBubble.image = UIImage(named: "bubble")
         }
-//        
-//        if type == "1" {
-//            labelContent.hidden = true
-//            let arr = content.componentsSeparatedByString("-")
-//            if arr.count == 2 {
-//                let code = arr[0]
-//                let num = arr[1]
-//                let url = "http://img.nian.so/emoji/\(code)/\(num).gif"
-//                imageContent.qs_setGifImageWithURL(NSURL(string: url)!, progress: nil, completed: nil)
-//                imageContent.frame.size = CGSizeMake(100, 100)
-//            }
-//        }
+        
+        let arr = content.componentsSeparatedByString("-")
+        if arr.count == 2 {
+            let code = arr[0]
+            let num = arr[1]
+            let url = "http://img.nian.so/emoji/\(code)/\(num).gif"
+            labelHolder.qs_setGifImageWithURL(NSURL(string: url)!, progress: { (now, total) -> Void in
+                }, completed: { (Image, data, err, bool) -> Void in
+            })
+        }
+    }
+    
+    override func prepareForReuse() {
+        labelHolder.animatedImage = nil
     }
     
     func onHead(){
@@ -97,20 +79,3 @@ class Comment: UITableViewCell {
     }
     
 }
-
-extension String {
-    func toCGFloat() -> CGFloat {
-        let f = CGFloat((self as NSString).floatValue)
-        if f != 0 {
-            return f
-        }
-        return 0
-    }
-}
-
-
-
-
-
-
-

@@ -71,6 +71,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableview.separatorStyle = UITableViewCellSeparatorStyle.None
         
         self.tableview.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
+        self.tableview.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
         self.tableview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableview)
         
@@ -86,6 +87,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.view.addSubview(keyboardView)
         if name != nil {
             keyboardView.inputKeyboard.text = "@\(name!) "
+            keyboardView.labelPlaceHolder.hidden = true
         }
         
         //标题颜色
@@ -106,8 +108,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     /* 根据输入视图的高度来调整 tableView */
     func resize() {
         let h = globalHeight - keyboardView.height() - 64 - keyboardHeight
+        
+        /* 当 tableview 原来就是在底部的时候，才选择继续滚到底部 */
+        let h1 = tableview.contentSize.height - tableview.height()
+        if tableview.contentOffset.y == h1 {
+            self.tableview.contentOffset.y = max(self.tableview.contentSize.height - h, 0)
+        }
         self.tableview.setHeight(h)
-        self.tableview.contentOffset.y = max(self.tableview.contentSize.height - h, 0)
         self.keyboardView.setY(self.tableview.bottom())
     }
     
@@ -233,16 +240,28 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
-        let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
-        c.data = data
-        c.imageContent.tag = dataArray.count - 1 - index
-        c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-        c.imageContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
-        c.setup()
-        return c
+        let type = data.stringAttributeForKey("type")
+        if type == "0" {
+            let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
+            c.data = data
+            c.labelHolder.tag = dataArray.count - 1 - index
+            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
+            c.setup()
+            return c
+        } else {
+            let c = tableView.dequeueReusableCellWithIdentifier("CommentEmoji", forIndexPath: indexPath) as! CommentEmoji
+            c.data = data
+            c.labelHolder.tag = dataArray.count - 1 - index
+            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
+            c.setup()
+            return c
+        }
     }
     
     func onMore(sender: UILongPressGestureRecognizer) {
+        resign()
         if let tag = sender.view?.tag {
             index = tag
             if sender.state == UIGestureRecognizerState.Began {
@@ -301,7 +320,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             self.keyboardView.inputKeyboard.resignFirstResponder()
         } else {
             /* 当键盘是我们自己写的键盘（表情）时 */
-            print("2")
             keyboardView.resignEmoji()
             keyboardHeight = 0
             UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -321,8 +339,19 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         if index >= 0 {
             let data = dataArray[index] as! NSDictionary
             let name = data.stringAttributeForKey("user")
-            self.keyboardView.inputKeyboard.text = "@\(name) "
-            self.keyboardView.inputKeyboard.becomeFirstResponder()
+            let text = keyboardView.inputKeyboard.text
+            if text == "" {
+                self.keyboardView.inputKeyboard.text = "@\(name) "
+            } else {
+                self.keyboardView.inputKeyboard.text = "\(text) @\(name) "
+            }
+            if self.keyboardView.inputKeyboard.isFirstResponder() {
+                keyboardView.resignEmoji()
+                keyboardView.labelPlaceHolder.hidden = true
+                keyboardView.textViewDidChange(keyboardView.inputKeyboard)
+            } else {
+                self.keyboardView.inputKeyboard.becomeFirstResponder()
+            }
         }
     }
     
@@ -375,6 +404,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         /* 移除表情界面，修改按钮样式 */
         keyboardView.resignEmoji()
         self.resize()
+        keyboardView.labelPlaceHolder.hidden = true
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
@@ -397,21 +427,28 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         let mutableData = NSMutableDictionary(dictionary: data)
         let content = data.stringAttributeForKey("content").decode()
         let h = content.stringHeightWith(15, width: 208)
+        let type = data.stringAttributeForKey("type")
         var time = data.stringAttributeForKey("lastdate")
         if time != "sending" {
             time = V.relativeTime(time)
         }
-        var wImage: CGFloat = 0
-        var hImage: CGFloat = 0
+        var wImage: CGFloat = 72
+        var hImage: CGFloat = 72
         var wContent: CGFloat = 0
-        if h == "".stringHeightWith(15, width: 208) {
-            wContent = content.stringWidthWith(15, height: h)
-            wImage = wContent + 27
-            hImage = 37
+        var heightCell: CGFloat = 0
+        if type == "0" {
+            if h == "".stringHeightWith(15, width: 208) {
+                wContent = content.stringWidthWith(15, height: h)
+                wImage = wContent + 27
+                hImage = 37
+            } else {
+                wImage = 235
+                hImage = h + 20
+                wContent = 208
+            }
+            heightCell = h + 60
         } else {
-            wImage = 235
-            hImage = h + 20
-            wContent = 208
+            heightCell = hImage + 40
         }
         mutableData.setValue(h, forKey: "heightContent")
         mutableData.setValue(wContent, forKey: "widthContent")
@@ -419,7 +456,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         mutableData.setValue(hImage, forKey: "heightImage")
         mutableData.setValue(content, forKey: "content")
         mutableData.setValue(time, forKey: "lastdate")
-        mutableData.setValue(h + 60, forKey: "heightCell")
+        mutableData.setValue(heightCell, forKey: "heightCell")
         return mutableData as NSDictionary
     }
 }

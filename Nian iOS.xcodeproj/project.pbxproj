@@ -189,6 +189,8 @@
 		12F88AED1C85992C001FF0C2 /* SATextField+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */; };
 		12F88AEF1C859D9A001FF0C2 /* EmojiCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */; };
 		12F88AF11C859DA3001FF0C2 /* EmojiCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */; };
+		12F88B071C89584C001FF0C2 /* CommentEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F88B061C89584C001FF0C2 /* CommentEmoji.swift */; };
+		12F88B091C895860001FF0C2 /* CommentEmoji.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F88B081C895860001FF0C2 /* CommentEmoji.xib */; };
 		12FB489F196AE76E0026DD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB489E196AE76E0026DD51 /* AppDelegate.swift */; };
 		12FB48BC196AE7A20026DD51 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BB196AE7A20026DD51 /* Home.swift */; };
 		12FB48C4196AE8010026DD51 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FB48BE196AE8010026DD51 /* FileUtility.swift */; };
@@ -499,6 +501,8 @@
 		12F88AEC1C85992C001FF0C2 /* SATextField+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SATextField+Delegate.swift"; sourceTree = "<group>"; };
 		12F88AEE1C859D9A001FF0C2 /* EmojiCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCollectionCell.swift; sourceTree = "<group>"; };
 		12F88AF01C859DA3001FF0C2 /* EmojiCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmojiCollectionCell.xib; sourceTree = "<group>"; };
+		12F88B061C89584C001FF0C2 /* CommentEmoji.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentEmoji.swift; sourceTree = "<group>"; };
+		12F88B081C895860001FF0C2 /* CommentEmoji.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentEmoji.xib; sourceTree = "<group>"; };
 		12FB4899196AE76E0026DD51 /* Nian iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nian iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FB489D196AE76E0026DD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12FB489E196AE76E0026DD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1176,6 +1180,8 @@
 				12E4939A19953DCC00F8DF32 /* Comment.swift */,
 				12E4939819953DBB00F8DF32 /* Comment.xib */,
 				12E1E5241A0EBBFD0005B129 /* DreamComment.swift */,
+				12F88B061C89584C001FF0C2 /* CommentEmoji.swift */,
+				12F88B081C895860001FF0C2 /* CommentEmoji.xib */,
 			);
 			name = "回应";
 			sourceTree = "<group>";
@@ -1675,6 +1681,7 @@
 				129FE4DE1B5E2F5100BDFE03 /* star.png in Resources */,
 				C492D61A1B4D10E800EEA71F /* PetCell.xib in Resources */,
 				1253C3041A1DF12A003D4ECF /* PlayerCellTop.xib in Resources */,
+				12F88B091C895860001FF0C2 /* CommentEmoji.xib in Resources */,
 				C4DC18DC1B86C3E100042EE4 /* ExploreMoreCell.xib in Resources */,
 				1231A07F19B464B500BD425F /* StepCell.xib in Resources */,
 				1232ADC91A53AA6700C4182A /* CircleBubbleCell.xib in Resources */,
@@ -1980,6 +1987,7 @@
 				12DA22481C82DDA80062D335 /* Recharge+Delegate.swift in Sources */,
 				12A191041C7DAC94005668C6 /* CoinProductCell.swift in Sources */,
 				C486FD541C04430A009F1F90 /* Point.swift in Sources */,
+				12F88B071C89584C001FF0C2 /* CommentEmoji.swift in Sources */,
 				1256DDB21C3A5050000E2085 /* File.swift in Sources */,
 				C486FD571C04430A009F1F90 /* Size.swift in Sources */,
 				12F88AEF1C859D9A001FF0C2 /* EmojiCollectionCell.swift in Sources */,
