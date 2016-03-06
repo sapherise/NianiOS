@@ -44,7 +44,8 @@ class WelcomeViewController: UIViewController {
             uidKey.setObject(_uid, forKey: kSecAttrAccount)
             
             /* 普通启动 */
-            launch()
+            launch(1)
+            numExplore = 1
             
             delay(1, closure: { () -> () in
                 self.view.hidden = false
@@ -361,7 +362,7 @@ extension WelcomeViewController {
                                 Api.requestLoad()
                                 
                                 /* 使用第三方来登录 */
-                                self.launch()
+                                self.launch(0)
                             }  // if json["error"] != 0
                         } // if let _error = error
                         

@@ -132,7 +132,7 @@ class PatternViewController: UIViewController {
                         Api.requestLoad()
                         
                         /* 使用邮箱来注册 */
-                        self.launch()
+                        self.launch(0)
                         self.pushTomorrow()
                     }
                     

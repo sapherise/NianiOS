@@ -44,12 +44,23 @@ extension ExploreViewController {
         tableViewDynamic.addFooterWithCallback { () -> Void in
             self.loadDynamic(false)
         }
+        
+        /* 构建时自动加载 */
+        current = 0
+        if let cache = Cookies.get("explore_follow") as? NSMutableArray {
+            self.dataArray = NSMutableArray(array: cache)
+        }
+        self.tableView.tableHeaderView = nil
+        self.tableView.reloadData()
+        globalTabhasLoaded[0] = true
+        tableView.headerBeginRefreshing()
     }
     
     func load(clear: Bool) {
         if clear {
             page = 1
         }
+        
         Api.getExploreFollow("\(page++)", callback: { json in
             if json != nil {
                 globalTabhasLoaded[0] = true
@@ -66,13 +77,19 @@ extension ExploreViewController {
                         let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
                         self.dataArray.addObject(data)
                     }
+                    
+                    /* 当是第一页时，缓存到本地 */
+                    if self.page == 2 {
+                        Cookies.set(self.dataArray, forKey: "explore_follow")
+                    }
                     self.currentDataArray = self.dataArray
                     self.tableView.tableHeaderView = nil
                 } else if clear {
                     self.tableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
                     self.tableView.tableHeaderView?.addGhost("这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
                 }
-                if self.current == 0 {
+                /* 当 current 为 -1 或者 0 时 */
+                if self.current <= 0 {
                     self.tableView.headerEndRefreshing()
                     self.tableView.footerEndRefreshing()
                     self.tableView.reloadData()

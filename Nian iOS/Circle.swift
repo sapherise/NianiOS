@@ -11,23 +11,18 @@ import UIKit
 class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, delegateInput {
     var tableView: UITableView!
     var dataArray = NSMutableArray()
-    var page :Int = 0
-    var replySheet:UIActionSheet?
-    var actionSheetPhoto:UIActionSheet?
-    var navView:UIView!
-    var dataTotal:Int = 30
-    var ReplyContent:String = ""
-    var ReplyRow:Int = 0
-    var ReplyCid:String = ""
-    var ReplyUserName:String = ""
-    var ReturnReplyContent:String = ""
-    var animating:Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
-    var desHeight:CGFloat = 0
+    var page: Int = 0
+    var replySheet: UIActionSheet?
+    var actionSheetPhoto: UIActionSheet?
+    var navView: UIView!
+    var dataTotal: Int = 30
+    var animating: Int = 0   //加载顶部内容的开关，默认为0，初始为1，当为0时加载，1时不动
     var keyboardView: InputView!
-    var viewBottom:UIView!
     var keyboardHeight: CGFloat = 0
-    var imagePicker:UIImagePickerController?
+    var imagePicker: UIImagePickerController?
     var Locking = false
+    
+    var pasteContent = ""
     
     /* 消息发送者的 id 和 name */
     var id: Int = 0
@@ -74,14 +69,32 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 if let _name = Cookies.get("user") as? String {
                     nameSelf = _name
                 }
-                let message = RCTextMessage(content: replyContent)
-                message.extra = "\(self.name):\(nameSelf)"
-                RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
-                    success = true
-                    if finish {
-                        self.newInsert(replyContent, id: messageID, type: type)
+                
+                /* type = 1 时表示文本，2 表示图片，3 表示表情 */
+                if type == "1" {
+                    let message = RCTextMessage(content: replyContent)
+                    message.extra = "\(self.name):\(nameSelf)"
+                    RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
+                        success = true
+                        if finish {
+                            self.newInsert(replyContent, id: messageID, type: type)
+                        }
+                        }) { (err, no) -> Void in
                     }
-                    }) { (err, no) -> Void in
+                } else if type == "2" {
+                } else if type == "3" {
+                    
+                    
+                    //            私信发送 content=[表情]（暂定）extra=聊天对象昵称:自己昵称:gif:1001-1
+                    let message = RCTextMessage(content: "[表情]")
+                    message.extra = "\(self.name):\(nameSelf):gif:\(replyContent)"
+                    RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)发送了一个表情给你！", success: { (messageID) -> Void in
+                        success = true
+                        if finish {
+                            self.newInsert(replyContent, id: messageID, type: type)
+                        }
+                        }, error: { (err, no) -> Void in
+                    })
                 }
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                     self.tableView.contentOffset.y = max(self.tableView.contentSize.height - self.tableView.height(), 0)
@@ -112,7 +125,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         if let message = noti.object as? RCMessage {
             if "\(id)" == message.senderUserId {
                 let new = IMClass().messageToDictionay(message)
-                self.dataArray.insertObject(dataDecode(new), atIndex: 0)
+                var mutableData = NSMutableDictionary(dictionary: dataDecode(new))
+                mutableData = decodeToEmojiType(mutableData, message: message)
+                self.dataArray.insertObject(mutableData, atIndex: 0)
                 back {
                     self.tableView.reloadData()
                     let offset = self.tableView.contentSize.height - self.tableView.bounds.size.height
@@ -140,12 +155,14 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
         self.tableView.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
+        self.tableView.registerNib(UINib(nibName:"CommentImage", bundle: nil), forCellReuseIdentifier: "CommentImage")
+//        CommentImage
         
         self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
         self.view.addSubview(self.tableView)
         
-        self.viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
-        self.tableView.tableFooterView = self.viewBottom
+        let viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
+        self.tableView.tableFooterView = viewBottom
         
         
         // 输入框
@@ -179,34 +196,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.actionSheetPhoto!.showInView(self.view)
     }
     
-    func onCircleDetailClick(){
-    }
-    
-    //按下发送后调用此函数
-//    func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        let contentComment = self.inputKeyboard.text
-//        if contentComment != "" {
-//            postWord(contentComment!)
-//            self.inputKeyboard.text = ""
-//        }
-//        return true
-//    }
-    
-    func commentFinish(replyContent:String, type: Int = 1){
-        back {
-            if let name = Cookies.get("user") as? String {
-                let commentReplyRow = self.dataArray.count
-                let data = NSDictionary(objects: [replyContent, "\(commentReplyRow)" , "sending", "\(SAUid())", "\(name)","\(type)"], forKeys: ["content", "id", "lastdate", "uid", "user","type"])
-                self.dataArray.insertObject(data, atIndex: 0)
-                self.tableView.reloadData()
-                let offset = self.tableView.contentSize.height - self.tableView.bounds.size.height
-                if offset > 0 {
-                    self.tableView.setContentOffset(CGPointMake(0, offset), animated: true)
-                }
-            }
-        }
-    }
-    
     func tableUpdate(contentAfter: String) {
         for var i: Int = 0; i < self.dataArray.count; i++ {
             let data = self.dataArray[i] as! NSDictionary
@@ -223,32 +212,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     self.tableView.reloadData()
                 }
                 break
-            }
-        }
-    }
-    
-    //将内容发送至服务器
-    func addReply(content: String, type: Int = 1){
-        var nameSelf = ""
-        if let _name = Cookies.get("user") as? String {
-            nameSelf = _name
-        }
-        
-        /* 文本 */
-        if type == 1 {
-            let message = RCTextMessage(content: content)
-            message.extra = "\(self.name):\(nameSelf)"
-            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
-                self.tableUpdate(content)
-                }) { (err, no) -> Void in
-            }
-        } else if type == 2 {
-            /* 图片 */
-            let message = RCImageMessage(imageURI: "\(content)")
-            message.extra = "\(self.name):\(nameSelf)"
-            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
-                self.tableUpdate(content)
-                }) { (err, no) -> Void in
             }
         }
     }
@@ -277,7 +240,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         for _item in arr {
             if let item = _item as? RCMessage {
                 let data = IMClass().messageToDictionay(item)
-                self.dataArray.addObject(dataDecode(data))
+                var mutableData = NSMutableDictionary(dictionary: dataDecode(data))
+                mutableData = decodeToEmojiType(mutableData, message: item)
+                self.dataArray.addObject(mutableData)
                 self.dataTotal++
             }
         }
@@ -296,9 +261,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     /* 将数据转码 */
     func dataDecode(data: NSDictionary) -> NSDictionary {
-        print("\(data) 编码前")
         let mutableData = NSMutableDictionary(dictionary: data)
-        let content = data.stringAttributeForKey("content").decode()
+        var content = data.stringAttributeForKey("content").decode()
         let h = content.stringHeightWith(15, width: 208)
         let type = data.stringAttributeForKey("type")
         var wImage: CGFloat = 72
@@ -317,7 +281,17 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             }
             heightCell = h + 60
         } else {
-            heightCell = hImage + 40
+            let arr = content.componentsSeparatedByString("_")
+            if arr.count > 3 {
+                wImage = arr[2].toCGFloat()
+                hImage = arr[3].toCGFloat()
+                if wImage > 0 {
+                    hImage = hImage * CGFloat(88) / wImage
+                    wImage = CGFloat(88)
+                }
+                content = "\(arr[0])_\(arr[1]).png!a"
+            }
+            heightCell = SACeil(hImage, dot: 0, isCeil: true) + 40
         }
         mutableData.setValue(h, forKey: "heightContent")
         mutableData.setValue(wContent, forKey: "widthContent")
@@ -325,7 +299,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         mutableData.setValue(hImage, forKey: "heightImage")
         mutableData.setValue(content, forKey: "content")
         mutableData.setValue(heightCell, forKey: "heightCell")
-        print("\(mutableData) 编码后")
         return mutableData as NSDictionary
     }
     
@@ -346,51 +319,33 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        var cell:UITableViewCell
-//        let index = indexPath.row
-//        let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
-//        let type = data.stringAttributeForKey("type")
-//        if type == "1" {
-//            let c = tableView.dequeueReusableCellWithIdentifier("CircleBubbleCell", forIndexPath: indexPath) as! CircleBubbleCell
-//            c.data = data
-//            c.textContent.tag = index
-//            c.textContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-//            c.textContent.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleLongClick:"))
-//            c.View.tag = index
-//            c.setup()
-//            cell = c
-//        } else {
-//            let c = tableView.dequeueReusableCellWithIdentifier("CircleImageCell", forIndexPath: indexPath) as! CircleImageCell
-//            c.data = data
-//            c.imageContent.tag = index
-//            c.imageContent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImageTap:"))
-//            c.View.tag = index
-//            c.setup()
-//            cell = c
-//        }
-//        return cell
-        
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         let type = data.stringAttributeForKey("type")
         if type == "1" {
+            /* 文本 */
             let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
             c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.setup()
+            return c
+        } else if type == "2" {
+            /* 图片 */
+            let c = tableView.dequeueReusableCellWithIdentifier("CommentImage", forIndexPath: indexPath) as! CommentImage
+            c.data = data
             c.setup()
             return c
         } else {
+            /* 表情 */
             let c = tableView.dequeueReusableCellWithIdentifier("CommentEmoji", forIndexPath: indexPath) as! CommentEmoji
             c.data = data
-            c.labelHolder.tag = dataArray.count - 1 - index
-            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
             c.setup()
             return c
         }
     }
+    
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
@@ -407,7 +362,6 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func onCellTap(sender:UITapGestureRecognizer) {
-//        self.inputKeyboard.resignFirstResponder()
         resign()
     }
     
@@ -425,93 +379,53 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func onImageTap(sender:UITapGestureRecognizer) {
-//        self.inputKeyboard.resignFirstResponder()
-        let index = sender.view!.tag
-        let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
-        let content = data.objectForKey("content") as! String
-        var arrContent = content.componentsSeparatedByString("_")
-        if arrContent.count == 4 {
-            let img0 = CGFloat(NSNumberFormatter().numberFromString(arrContent[2])!)
-            if img0 != 0 {
-                if let v = sender.view as? UIImageView {
-                    let images = NSMutableArray()
-                    let name = arrContent[0].componentsSeparatedByString("/")
-                    let num = name.count - 1
-                    if num > 0 {
-                        let path = "\(name[num])_\(arrContent[1]).png"
-                        let d = ["path": path, "width": arrContent[2], "height": arrContent[3]]
-                        images.addObject(d)
-                        v.open(images, index: 0, exten: "!a", folder: "circle")
-                    }
-                }
+    func onBubbleClick(sender:UIGestureRecognizer) {
+//        if sender.state == UIGestureRecognizerState.Began {
+//        }
+        if sender is UITapGestureRecognizer {
+            showPaste(sender)
+        } else if sender is UILongPressGestureRecognizer {
+            if sender.state == UIGestureRecognizerState.Began {
+                showPaste(sender)
             }
         }
     }
     
-    func onBubbleLongClick(sender: UILongPressGestureRecognizer) {
-        if sender.state == .Began {
-            onBubbleClick(sender)
-        }
-    }
-    
-    func onBubbleClick(sender:UIGestureRecognizer) {
-        let index = sender.view!.tag
-        let data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
-        let user = data.stringAttributeForKey("user")
-        let content = data.stringAttributeForKey("content")
-        let cid = data.stringAttributeForKey("cid")
-        let type = data.stringAttributeForKey("type")
-        self.ReplyRow = self.dataArray.count - 1 - index
-        self.ReplyContent = content
-        self.ReplyCid = cid
-        self.ReplyUserName = user
-        self.replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        
-        if type == "3" {
-            let StepVC = SingleStepViewController()
-            StepVC.Id = cid
-            self.navigationController?.pushViewController(StepVC, animated: true)
-        }else{
-            self.replySheet!.addButtonWithTitle("回应@\(user)")
-            self.replySheet!.addButtonWithTitle("复制")
-            self.replySheet!.addButtonWithTitle("取消")
-            self.replySheet!.cancelButtonIndex = 2
-            self.replySheet!.showInView(self.view)
+    func showPaste(sender: UIGestureRecognizer) {
+        if let v = sender.view {
+            let tag = v.tag
+            if let data = dataArray[tag] as? NSDictionary {
+                pasteContent = data.stringAttributeForKey("content")
+                replySheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+                replySheet?.addButtonWithTitle("复制")
+                replySheet?.addButtonWithTitle("取消")
+                replySheet?.cancelButtonIndex = 1
+                replySheet?.showInView(self.view)
+            }
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let index = indexPath.row
         let data = self.dataArray[self.dataArray.count - 1 - index] as! NSDictionary
-        if let type = data.objectForKey("type") as? String {
-            if type == "2" {
-                return CircleImageCell.cellHeightByData(data)
-            } else {
-                return CircleBubbleCell.cellHeightByData(data)
-            }
-        }
-        return 65
+        let heightCell = data.objectForKey("heightCell") as! CGFloat
+        return heightCell
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         
         if actionSheet == self.replySheet {
             if buttonIndex == 0 {
-//                self.commentVC()
-            }else if buttonIndex == 1 { //复制
                 let pasteBoard = UIPasteboard.generalPasteboard()
-                pasteBoard.string = self.ReplyContent
+                pasteBoard.string = pasteContent
             }
-        }else if actionSheet == self.actionSheetPhoto {
+        } else if actionSheet == self.actionSheetPhoto {
             if buttonIndex == 0 {
-//                self.inputKeyboard.resignFirstResponder()
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 self.presentViewController(self.imagePicker!, animated: true, completion: nil)
             }else if buttonIndex == 1 {
-//                self.inputKeyboard.resignFirstResponder()
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
                     self.imagePicker = UIImagePickerController()
                     self.imagePicker!.delegate = self
@@ -531,22 +445,22 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func uploadFile(img:UIImage){
         var width = img.size.width
         var height = img.size.height
+        let w: CGFloat = 88
         if width * height > 0 {
             if width >= height {
-                height = height * 88 / width
-                width = 88
+                height = height * w / width
+                width = w
             }else{
-                width = width * 88 / height
-                height = 88
+                width = width * w / height
+                height = w
             }
         }
         
         /* 在上传前设置缓存 */
-        let wSmall = 88 * globalScale
+        let wSmall = w * globalScale
         let wLarge = globalWidth * globalScale
         
-        let safeuid = SAUid()
-        self.commentFinish("\(safeuid)_loading_\(width)_\(height)", type: 2)
+        send("\(SAUid())_loading_\(width)_\(height)", type: "2")
         let uy = UpYun()
         uy.successBlocker = ({(data:AnyObject!) in
             var uploadUrl = data.objectForKey("url") as! String
@@ -555,7 +469,55 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             setCacheImage("\(uploadUrl)!large", img: img, width: wLarge)
             uploadUrl = SAReplace(uploadUrl, before: ".png", after: "") as String
             let content = "\(uploadUrl)_\(width)_\(height)"
-            self.addReply(content, type: 2)
+            
+            var i = 0
+            for _data in self.dataArray {
+                if let data = _data as? NSDictionary {
+                    let c = data.stringAttributeForKey("content")
+                    let arr = c.componentsSeparatedByString("_")
+                    if arr.count > 1 {
+                        if arr[1] == "loading.png!a" {
+                            let newarr = content.componentsSeparatedByString("_")
+                            if newarr.count > 3 {
+                                let path = "\(newarr[0])_\(newarr[1]).png!a"
+                                let mutableData = NSMutableDictionary(dictionary: data)
+                                mutableData.setValue(path, forKey: "content")
+                                self.dataArray.replaceObjectAtIndex(i, withObject: mutableData)
+                            }
+                            
+                            break
+                        }
+                    }
+                }
+                i++
+            }
+            self.tableView.reloadData()
+            var nameSelf = ""
+            if let _name = Cookies.get("user") as? String {
+                nameSelf = _name
+            }
+            let message = RCImageMessage(imageURI: "\(content)")
+            message.extra = "\(self.name):\(nameSelf)"
+            RCIMClient.sharedRCIMClient().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
+                var i = 0
+                for _data in self.dataArray {
+                    if let data = _data as? NSDictionary {
+                        let type = data.stringAttributeForKey("type")
+                        let lastdate = data.stringAttributeForKey("lastdate")
+                        if type == "2" && lastdate == "sending" {
+                            let mutableData = NSMutableDictionary(dictionary: data)
+                            mutableData.setValue("刚刚", forKey: "lastdate")
+                            self.dataArray.replaceObjectAtIndex(i, withObject: mutableData)
+                            break
+                        }
+                    }
+                    i++
+                }
+                back {
+                    self.tableView.reloadData()
+                }
+                }, error: { (err, no) -> Void in
+            })
         })
         uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("circle", png: "png") as String)
     }
@@ -565,21 +527,9 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func keyboardWasShown(notification: NSNotification) {
-//        var info: Dictionary = notification.userInfo!
-//        let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
-//        self.keyboardHeight = keyboardSize.height
-//        self.keyboardView.pointY = globalHeight - self.keyboardHeight - 44
-//        self.keyboardView.layoutSubviews()
-//        let heightScroll = globalHeight - 44 - 64 - self.keyboardHeight
-//        let contentOffsetTableView = self.tableView.contentSize.height >= heightScroll ? self.tableView.contentSize.height - heightScroll : 0
-//        self.tableView.setHeight( heightScroll )
-//        self.tableView.setContentOffset(CGPointMake(0, contentOffsetTableView ), animated: false)
-        
-        
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         keyboardHeight = max(keyboardSize.height, keyboardHeight)
-        
         /* 移除表情界面，修改按钮样式 */
         keyboardView.resignEmoji()
         keyboardView.resizeTableView()
@@ -587,15 +537,28 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-//        let heightScroll = globalHeight - 44 - 64
-//        self.keyboardView.pointY = globalHeight - 44
-//        self.keyboardView.layoutSubviews()
-//        self.tableView.setHeight(heightScroll)
-        
         if !Locking {
             keyboardHeight = 0
             keyboardView.resizeTableView()
         }
+    }
+    
+    /* 当收到表情时，将 type 从 1 变成 3，内容从 [表情] 替换成 extra 的另外一个样子 */
+    func decodeToEmojiType(data: NSMutableDictionary, message: RCMessage) -> NSMutableDictionary {
+        if let text = message.content as? RCTextMessage {
+            let extra = text.extra
+            let arr = extra.componentsSeparatedByString(":")
+            if arr.count == 4 {
+                data.setValue("3", forKey: "type")
+                data.setValue(arr[3], forKey: "content")
+                
+                /* 见回应页面表情计算高度的方式 */
+                data.setValue(72 + 40, forKey: "heightCell")
+                data.setValue(72, forKey: "heightImage")
+                data.setValue(72, forKey: "widthImage")
+            }
+        }
+        return data
     }
 }
 

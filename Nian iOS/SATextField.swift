@@ -91,6 +91,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         inputKeyboard.returnKeyType = UIReturnKeyType.Send
         inputKeyboard.delegate = self
         inputKeyboard.layoutManager.allowsNonContiguousLayout = false
+        inputKeyboard.scrollsToTop = false
         heightInputOneLine = resize()
         inputKeyboard.setY((heightCell - heightInputOneLine)/2)
         
@@ -245,6 +246,9 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         viewEmojiHolder.layer.masksToBounds = true
         viewEmojiHolder.hidden = true
         viewEmoji.addSubview(viewEmojiHolder)
+        
+        tableView.scrollsToTop = false
+        collectionView.scrollsToTop = false
     }
     
     /* 弹起系统自带键盘 */
@@ -325,8 +329,6 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         return h
     }
     
-    // todo: 返回的手势会很卡很卡，私信页面
-    
     func load() {
         if let emojis = Cookies.get("emojis") as? NSMutableArray {
             var i = 0
@@ -348,7 +350,6 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             loading.color = UIColor.HighlightColor()
             loading.startAnimating()
             collectionView.addSubview(loading)
-            // todo: 关掉延迟
             Api.getEmoji() { json in
                 if json != nil {
                     self.dataArray.removeAllObjects()
@@ -373,7 +374,6 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
                 }
             }
         }
-        // todo: 判断没有的情况？！
     }
     
     /*  调整 tableView 的高度
@@ -390,7 +390,6 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             }
             de.tableView.setHeight(h)
             self.setY(h + 64)
-            // todo: 发送表情后输入框没有重置
         }
     }
     

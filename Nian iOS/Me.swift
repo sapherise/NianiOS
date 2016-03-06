@@ -107,8 +107,18 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     
                     let extra = json.stringAttributeForKey("extra")
                     if let nameSelf = Cookies.get("user") as? String {
-                        var name = SAReplace(extra, before: nameSelf, after: "")
-                        name = SAReplace(name as String, before: ":", after: "")
+                        
+                        /* 传值为 他人昵称 : 自己昵称 */
+                        var arr = extra.componentsSeparatedByString(":")
+                        var name = ""
+                        if arr.count > 1 {
+                            let a1 = arr[0]
+                            let a2 = arr[1]
+                            name = a1
+                            if a1 == nameSelf {
+                                name = a2
+                            }
+                        }
                         let id = conversation.targetId
                         let unread = conversation.unreadMessageCount
                         let time = ("\(conversation.sentTime / Int64(1000))" as NSString).doubleValue

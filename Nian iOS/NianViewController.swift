@@ -294,6 +294,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     */
     func addDreamCallback(id: String, img: String, title: String) {
         let data = NSDictionary(objects: [id, img, title], forKeys: ["id", "image", "title"])
+        for _d in dataArray {
+            if let d = _d as? NSDictionary {
+                let _id = d.stringAttributeForKey("id")
+                if _id == id {
+                    return
+                }
+            }
+        }
         dataArray.insertObject(data, atIndex: dataArray.count)
         Cookies.set(dataArray, forKey: "NianDreams")
         reloadFromDataArray()
@@ -462,33 +470,31 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     ** 同时服务器的数据会覆盖本地的数据
                     */
                     if bubble(idArrayRemote) != bubble(idArrayLocal) {
-                        let count = self.dataArray.count + 2
-                        if globalhasLaunched == 0 {
-                            let time = Double(count) * 0.2
-                            delay(time, closure: { () -> () in
-                                // 加载服务器数据
-                                globalhasLaunched = 1
-                                self.dataArray = mutableArray
-                                Cookies.set(self.dataArray, forKey: "NianDreams")
-                                self.reloadFromDataArray()
-                            })
-                        } else {
-                            // 启动后不延时
-                            self.dataArray = mutableArray
-                            Cookies.set(self.dataArray, forKey: "NianDreams")
-                            self.reloadFromDataArray()
-                        }
+                        // 启动后不延时
+                        self.dataArray = mutableArray
+                        Cookies.set(self.dataArray, forKey: "NianDreams")
+                        self.reloadFromDataArray()
                     } else {
                         /* 本地与服务器的记本完全相同
                         ** 在完成卡片动画后关闭动画选项
                         */
-                        let count = self.dataArray.count + 2
-                        if globalhasLaunched == 0 {
-                            let time = Double(count) * 0.2
-                            delay(time, closure: { () -> () in
-                                globalhasLaunched = 1
-                            })
+                        let newArr = NSMutableArray()
+                        for _id in idArrayLocal {
+                            if let id = _id as? Int {
+                                for _data in mutableArray {
+                                    if let data = _data as? NSDictionary {
+                                        let newId = data.stringAttributeForKey("id")
+                                        if newId == "\(id)" {
+                                            newArr.addObject(data)
+                                            break
+                                        }
+                                    }
+                                }
+                            }
                         }
+                        self.dataArray = newArr
+                        Cookies.set(self.dataArray, forKey: "NianDreams")
+                        self.reloadFromDataArray()
                     }
                 }
             }

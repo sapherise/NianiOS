@@ -467,8 +467,6 @@ extension NewSettingViewController {
         }
     }
     
-    // todo: 开启后会闪一下
-    
     @IBAction func setAvatar(sender: UITapGestureRecognizer) {
         
         actionSheetHead = UIActionSheet(title: "设定头像", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)

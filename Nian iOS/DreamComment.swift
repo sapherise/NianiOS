@@ -69,6 +69,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.scrollsToTop = true
         
         self.tableView.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
         self.tableView.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
@@ -227,6 +228,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         let type = data.stringAttributeForKey("type")
         if type == "0" {
+            /* 文本 */
             let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
@@ -235,10 +237,10 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             c.setup()
             return c
         } else {
+            /* 表情 */
             let c = tableView.dequeueReusableCellWithIdentifier("CommentEmoji", forIndexPath: indexPath) as! CommentEmoji
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
-            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
             c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
             c.setup()
             return c

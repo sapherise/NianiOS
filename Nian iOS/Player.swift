@@ -300,8 +300,6 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    //todo: 修改用户界面的梦想
-    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }

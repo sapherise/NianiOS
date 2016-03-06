@@ -135,7 +135,7 @@ extension InputView {
         if let tag = sender.view?.tag {
             let data = dataArray[current] as! NSDictionary
             let code = data.stringAttributeForKey("code")
-            let type = inputType == inputTypeEnum.comment ? "1" : "2"
+            let type = inputType == inputTypeEnum.comment ? "1" : "3"
             delegate?.send("\(code)-\(tag + 1)", type: type)
             let h = resize()
             resizeView(h)

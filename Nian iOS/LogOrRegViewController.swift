@@ -348,7 +348,7 @@ extension LogOrRegViewController {
                             Api.requestLoad()
                             
                             /* 使用邮箱来登录 */
-                            self.launch()
+                            self.launch(0)
 //                            self.navigationController?.popViewControllerAnimated(false)
                             self.emailTextField.text = ""
                             self.passwordTextField.text = ""

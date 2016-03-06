@@ -162,6 +162,11 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
                         tableViewDynamic.headerBeginRefreshing()
                     }
                 }
+            } else {
+                /* 当启动后是关注页面时，确保再次点击会重载 */
+                if _current == -1 {
+                    tableView.headerBeginRefreshing()
+                }
             }
         } else {
             if tab < 2 {

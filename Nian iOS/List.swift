@@ -24,6 +24,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     /* 其他页面传入的 id */
     var id: String = "-1"
     var page = 1
+    var willShowInviteButton = false
     
     /* 移除用户弹窗 */
     var actionSheet: UIActionSheet!
@@ -39,7 +40,9 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     func setup() {
         if type == ListType.Members {
             _setTitle("成员")
-            setBarButtonImage("addFriend", actionGesture: "onInvite")
+            if willShowInviteButton {
+                setBarButtonImage("addFriend", actionGesture: "onInvite")
+            }
         } else if type == ListType.Invite {
             _setTitle("邀请")
         }

@@ -30,6 +30,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var delegateDelete: DeleteDreamDelegate?
     var willBackToRootViewController = false
     
+    var removeSheet: UIActionSheet?
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()

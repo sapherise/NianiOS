@@ -9,6 +9,8 @@
 import UIKit
 
 var Nian: NianViewController!
+var numExplore = 0
+
 class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate, RCIMClientReceiveMessageDelegate {
     var myTabbar :UIView?
     var currentViewController: UIViewController?
@@ -16,7 +18,6 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var dot:UILabel?
     var GameOverView:Popup!
     var animationBool:Int = 0
-    var numExplore = 0
     var numHot = 0
     var gameoverId:String = ""
     var gameoverMode: Int = -1
@@ -35,6 +36,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var newEditStepRow: Int = 0
     var newEditStepData: NSDictionary?
     var newEditDreamId: String = ""
+    
+    var firstSelected = 0
     
     /* 未读消息 */
     var unread: Int32 = 0
@@ -211,6 +214,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     
     func setupViews(){
+        
+        if let selected = Cookies.get("selected") as? Int {
+            firstSelected = selected
+        }
+        
         self.automaticallyAdjustsScrollViewInsets = false
         
         //总的
@@ -239,7 +247,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             button.clipsToBounds = true
             button.addTarget(self, action: "tabBarButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
             self.myTabbar?.addSubview(button)
-            if index == 0 {
+            if index == firstSelected {
                 button.selected = true
             }
         }
@@ -321,7 +329,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let vc5 = RedditViewController()
         self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
-        self.selectedIndex = 0
+        self.selectedIndex = firstSelected
     }
     
     //底部的按钮按下去

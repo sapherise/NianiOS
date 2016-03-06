@@ -140,7 +140,7 @@ extension NicknameViewController {
                                     Api.requestLoad()
                                     
                                     /* 使用第三方来注册 */
-                                    self.launch()
+                                    self.launch(0)
                                     self.pushTomorrow()
                                     self.nameTextfield.text = ""
                                 }

@@ -21,7 +21,6 @@ let TextLoadFailed = "加载数据失败了..."
 var globalViewLoading:UIView?
 var globalNumExploreBar: Int = -1
 var globalTabBarSelected: Int = 0
-var globalhasLaunched: Int = 0
 
 // 定义三个页面为未加载状态
 var globalTabhasLoaded = [false, false]
@@ -391,19 +390,26 @@ func viewEmpty(width:CGFloat, content:String = "这里是空的")->UIView {
 extension UIViewController {
     
     /* 邮箱登录、第三方登录、邮箱注册、第三方注册、普通启动*/
-    func launch() {
+    func launch(selected: Int = 0) {
+        
+        /* 设置传的参数进入缓存，当为自然启动时，切换到关注页面 */
+        Cookies.set(selected, forKey: "selected")
         
         IMClass.IMConnect()
         delay(0.2) { () -> () in
-            let mainViewController = HomeViewController(nibName:nil,  bundle: nil)
-            let navigationViewController = UINavigationController(rootViewController: mainViewController)
-            navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-            navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
-            navigationViewController.navigationBar.translucent = true
-            navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-            navigationViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            navigationViewController.navigationBar.clipsToBounds = true
-            self.presentViewController(navigationViewController, animated: true, completion: nil)
+            let vc = HomeViewController(nibName:nil,  bundle: nil)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+            nav.navigationBar.tintColor = UIColor.whiteColor()
+            nav.navigationBar.translucent = true
+            nav.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+            nav.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            nav.navigationBar.clipsToBounds = true
+            self.presentViewController(nav, animated: true, completion: { () -> Void in
+                if selected == 0 {
+                    guideline()
+                }
+            })
             
             /* 调用 Home 中的唤醒函数 */
             NSNotificationCenter.defaultCenter().postNotificationName("AppActive", object: nil)
@@ -451,6 +457,8 @@ extension UIViewController {
         Sa.removeObjectForKey("followData")
         Sa.removeObjectForKey("user")
         Sa.removeObjectForKey("emojis")
+        Sa.removeObjectForKey("explore_follow")
+        Sa.removeObjectForKey("token")
         Sa.synchronize()
         
         // 退出后应该设置三个都为未加载状态
@@ -926,4 +934,15 @@ extension UIApplication {
         self.applicationIconBadgeNumber = 1
         self.applicationIconBadgeNumber = 0
     }
+}
+
+func guideline() {
+    if let bool = Cookies.get("guide") as? String {
+        if bool == "1" {
+            return
+        }
+    }
+    let guide = Guide()
+    guide.setup()
+    UIApplication.sharedApplication().windows.last?.addSubview(guide)
 }

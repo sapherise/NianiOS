@@ -155,9 +155,6 @@ extension Product {
                                     
                                     self.delegate?.load()
                                     
-                                    // todo: 逻辑！先看有没有 emojis 的缓存，如果没有，读取，然后缓存。总之就是要有。
-                                    // 然后看下如果拥有，就展现八个，如果没有，就出现一个按钮跳转。
-                                    
                                     /* 扣除本地的念币 */
                                     if let data = j.objectForKey("data") as? NSDictionary {
                                         let cost = data.stringAttributeForKey("cost")
@@ -175,7 +172,6 @@ extension Product {
                                     self.niAlertResult.delegate = self
                                     self.niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "失败了", "你的念币不够...", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
                                     self.niAlert.dismissWithAnimationSwtich(self.niAlertResult)
-                                    // todo: 有已经购买过的情况，例如在 A 设备登录了，保存了表情缓存。然后在 B 设备登录并且购买，那么在 A 设备到达这个页面时，会告知没有购买过
                                 }
                             }
                         }
@@ -204,7 +200,6 @@ extension Product {
                                             }
                                         }
                                     } else {
-                                        // todo: 念币不够的时候
                                         self.niAlertResult = NIAlert()
                                         self.niAlertResult.delegate = self
                                         self.niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "失败了", "念币不够...", [" 哦"]], forKeys: ["img", "title", "content", "buttonArray"])

@@ -1,18 +1,18 @@
 //
-//  CommentEmoji.swift
+//  CommentImage.swift
 //  Nian iOS
 //
-//  Created by Sa on 16/3/4.
+//  Created by Sa on 16/3/6.
 //  Copyright © 2016年 Sa. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class CommentEmoji: UITableViewCell {
+class CommentImage: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelHolder: FLAnimatedImageView!
+    @IBOutlet var labelHolder: UIImageView!
     var data: NSDictionary!
     
     func setup() {
@@ -54,32 +54,37 @@ class CommentEmoji: UITableViewCell {
             imageHead.setX(16)
         }
         
-        let arr = content.componentsSeparatedByString("-")
-        if arr.count == 2 {
-            let code = arr[0]
-            let num = arr[1]
-            let url = "http://img.nian.so/emoji/\(code)/\(num).gif"
-            labelHolder.qs_setGifImageWithURL(NSURL(string: url)!, progress: { (now, total) -> Void in
-                }, completed: { (Image, data, err, bool) -> Void in
-            })
+        labelHolder.setImage(content)
+        let arr = content.componentsSeparatedByString("_")
+        if arr.count > 1 {
+            if arr[1] == "loading.png!a" {
+                labelHolder.image = UIImage(named: "upload")
+                labelHolder.contentMode = UIViewContentMode.ScaleAspectFit
+            }
         }
         
-        labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEmoji"))
+        labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
     }
     
     override func prepareForReuse() {
-        labelHolder.animatedImage = nil
+        labelHolder.image = nil
+    }
+    
+    func onImage() {
+        let content = data.stringAttributeForKey("content")
+        let wImage = data.stringAttributeForKey("widthImage")
+        let hImage = data.stringAttributeForKey("heightImage")
+        let images = NSMutableArray()
+        let arr = content.componentsSeparatedByString("!")
+        let path = SAReplace(arr[0], before: "http://img.nian.so/circle/", after: "")
+        let d = ["path": path, "width": "\(wImage)", "height": "\(hImage)"]
+        images.addObject(d)
+        labelHolder.open(images, index: 0, exten: "!a", folder: "circle")
     }
     
     func onHead(){
         let vc = PlayerViewController()
         vc.Id = data.stringAttributeForKey("uid")
-        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func onEmoji() {
-        let vc = ProductList()
-        vc.name = "表情"
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

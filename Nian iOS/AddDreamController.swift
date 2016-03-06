@@ -344,7 +344,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
             
-            // todo: 多人记本无法删除和退出
             Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString){
                 json in
                 let error = json!.objectForKey("error") as! NSNumber

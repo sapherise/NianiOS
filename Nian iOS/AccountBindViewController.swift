@@ -355,7 +355,6 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         }
     }
     
-    // todo: 三个解除绑定的功能要放上来
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {

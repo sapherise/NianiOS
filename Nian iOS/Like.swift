@@ -101,7 +101,6 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     func urlString()->String{
         let safeuid = SAUid()
-        // todo: 修改这些 API
         if self.urlIdentify == 0 {
             return "http://nian.so/api/like2.php?page=\(page)&id=\(Id)&myuid=\(safeuid)"
         }else if self.urlIdentify == 1 {

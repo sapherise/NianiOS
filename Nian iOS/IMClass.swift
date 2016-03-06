@@ -11,17 +11,28 @@ class IMClass: AnyObject {
     
     /* 连接 IM 服务器 */
     class func IMConnect() {
-        Api.getRongToken() { json in
-            if json != nil {
-                if let j = json as? NSDictionary {
-                    let token = j.stringAttributeForKey("data")
-                    RCIMClient.sharedRCIMClient().connectWithToken(token, success: { (string) -> Void in
-                        /* 登录成功 */
-                        }, error: { (err) -> Void in
-                            /* 登录失败 */
-                        }, tokenIncorrect: { () -> Void in
-                            /* token 错误 */
-                    })
+        if let token = Cookies.get("token") as? String {
+            RCIMClient.sharedRCIMClient().connectWithToken(token, success: { (string) -> Void in
+                /* 登录成功 */
+                }, error: { (err) -> Void in
+                    /* 登录失败 */
+                }, tokenIncorrect: { () -> Void in
+                    /* token 错误 */
+            })
+        } else {
+            Api.getRongToken() { json in
+                if json != nil {
+                    if let j = json as? NSDictionary {
+                        let token = j.stringAttributeForKey("data")
+                        Cookies.set(token, forKey: "token")
+                        RCIMClient.sharedRCIMClient().connectWithToken(token, success: { (string) -> Void in
+                            /* 登录成功 */
+                            }, error: { (err) -> Void in
+                                /* 登录失败 */
+                            }, tokenIncorrect: { () -> Void in
+                                /* token 错误 */
+                        })
+                    }
                 }
             }
         }

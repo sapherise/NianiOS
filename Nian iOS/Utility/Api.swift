@@ -931,8 +931,6 @@ extension Api {
         V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
     }
     
-    // todo: 需要把上面和下面的 test 删除
-    // todo: 正式版 API 无效
     /* 支付宝支付购买会员 */
     static func postAlipayMember(callback: V.JsonCallback) {
         V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)

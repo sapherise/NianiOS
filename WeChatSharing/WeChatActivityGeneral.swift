@@ -54,7 +54,6 @@ class WeChatActivityGeneral: UIActivity {
             req.scene = Int32(WXSceneSession.rawValue)
         } else {
             req.scene = Int32(WXSceneTimeline.rawValue)
-            // todo: 需要测试分享功能
         }
         
         var imageNew = UIImage(named: "nian")!

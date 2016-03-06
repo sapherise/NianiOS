@@ -20,33 +20,13 @@ class NianCell: UICollectionViewCell{
     var index = 0
     
     func setup() {
-        self.imageCover.layer.anchorPoint = CGPoint(x: 0.5, y: 0)
-        let lock = Cookies.get("Lock") as? String
-        if globaliOS >= 8.0 && globalhasLaunched == 0 && lock == nil {
-            self.imageCover.alpha = 0
-            let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 1, 0, 0)
-            self.imageCover.layer.transform = CATransform3DPerspect(rotate, center: CGPointZero, disZ: 300)
-            delay(Double(index) * 0.2, closure: {
-                UIView.animateWithDuration(0.6, animations: {
-                    self.imageCover.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
-                })
-                UIView.animateWithDuration(0.2, animations: {
-                    self.imageCover.alpha = 1
-                })
-            })
-        }
-        
-        if SAUid() == "171264" {
-            self.imageCover.layer.cornerRadius = 0
-        }
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
         self.imageCover.layer.cornerRadius = 6
         self.imageCover.layer.masksToBounds = true
         self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
         self.imageCover.layer.borderWidth = 0.5
+        if SAUid() == "171264" {
+            self.imageCover.layer.cornerRadius = 0
+        }
     }
     
     override func prepareForReuse() {

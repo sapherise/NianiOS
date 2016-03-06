@@ -196,7 +196,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         btnLike.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
         btnLike.layer.masksToBounds = true
         contentView.addSubview(btnLike)
-        // todo: 为什么2月有31日？
         
         // 会员
         pro = UIImageView(frame: CGRectMake(0, SIZE_PADDING + 2 - 16, 44, 44))   // 24, 12

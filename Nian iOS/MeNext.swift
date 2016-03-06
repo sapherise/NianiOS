@@ -235,8 +235,6 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
     }
     
-    // todo: globalHalf 都要改一下
-    
     func setupRefresh(){
         self.tableView!.addHeaderWithCallback({
             self.load()

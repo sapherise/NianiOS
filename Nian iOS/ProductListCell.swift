@@ -27,6 +27,4 @@ class ProductListCell: UICollectionViewCell {
         labelContent.textColor = UIColor.Accomplish()
         labelContent.text = "\(price) 念币"
     }
-    
-    // todo: 其他用户点进成员列表，却有邀请按钮
 }

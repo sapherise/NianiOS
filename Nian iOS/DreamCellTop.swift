@@ -246,6 +246,11 @@ class DreamCellTop: UITableViewCell {
         vc.type = ListType.Members
         let id = data.stringAttributeForKey("id")
         vc.id = id
+        let uid = data.stringAttributeForKey("uid")
+        let joined = data.stringAttributeForKey("joined")
+        if uid == SAUid() || joined == "1" {
+            vc.willShowInviteButton = true
+        }
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

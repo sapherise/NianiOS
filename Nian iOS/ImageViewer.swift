@@ -15,6 +15,7 @@ extension UIImageView {
         index 为点进来时该图片的 index，
         exten 是原图片的拓展，
         folder 是该图片在又拍云上的路径 
+        注意：path 不带完整路径，只带文件名；width/height 为文本
     */
     func open(images: NSArray, index: Int, exten: String, folder: String = "step") {
         let v = ImageViewer(frame: CGRectMake(0, 0, globalWidth, globalHeight))
@@ -254,7 +255,6 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
                         v.frame = CGRectMake(0, y, globalWidth, heightNew)
                     }
                     
-                    // todo: 测试微信能不能成？
                     if y > 0 {
                         /* 显示大图 */
                         if path.hasSuffix(".gif") {
