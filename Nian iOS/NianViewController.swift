@@ -479,15 +479,13 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         ** 在完成卡片动画后关闭动画选项
                         */
                         let newArr = NSMutableArray()
-                        for _id in idArrayLocal {
-                            if let id = _id as? Int {
-                                for _data in mutableArray {
-                                    if let data = _data as? NSDictionary {
-                                        let newId = data.stringAttributeForKey("id")
-                                        if newId == "\(id)" {
-                                            newArr.addObject(data)
-                                            break
-                                        }
+                        for id in idArrayLocal {
+                            for _data in mutableArray {
+                                if let data = _data as? NSDictionary {
+                                    let newId = data.stringAttributeForKey("id")
+                                    if newId == "\(id)" {
+                                        newArr.addObject(data)
+                                        break
                                     }
                                 }
                             }
