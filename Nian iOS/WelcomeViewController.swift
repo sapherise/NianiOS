@@ -19,6 +19,7 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var qqButton: SocialMediaButton!
     @IBOutlet weak var weiboButton: SocialMediaButton!
     
+    @IBOutlet weak var x: NSLayoutConstraint!
     var oauth: TencentOAuth?
     lazy var thirdPartyType = String()
     lazy var thirdPartyID = String()
@@ -35,6 +36,29 @@ class WelcomeViewController: UIViewController {
         self.logInButton.layer.borderWidth = 0.5
         self.logInButton.layer.borderColor = UIColor.colorWithHex("#333333").CGColor
         self.logInButton.layer.masksToBounds = true
+        
+        if !WXApi.isWXAppInstalled() {
+            wechatButton.hidden = true
+            qqButton.hidden = true
+            let button = UIButton(frame: CGRectMake(0, 0, 44, 44))
+            button.frame.origin = CGPointMake(100, globalHeight - 24 - 44)
+            button.setImage(UIImage(named: "signin_qq"), forState: UIControlState())
+            button.titleLabel?.textAlignment = NSTextAlignment.Center
+            button.titleLabel?.font = UIFont.systemFontOfSize(10)
+            button.setTitle("QQ", forState: UIControlState())
+            button.setTitleColor(UIColor.blackColor(), forState: UIControlState())
+            button.addTarget(self, action: "qq", forControlEvents: UIControlEvents.TouchUpInside)
+            self.view.addSubview(button)
+            
+            let imageSize = button.imageView?.frame.size
+            let titleSize = button.titleLabel?.frame.size
+            let padding: CGFloat = 4.0
+            let totalHeight = imageSize!.height + titleSize!.height + padding
+            button.imageEdgeInsets = UIEdgeInsetsMake(-(totalHeight - imageSize!.height), 0, 0, -titleSize!.width)
+            button.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize!.width, -(totalHeight - titleSize!.height), 0.0)
+            
+            x.constant = 100
+        }
         
         // 先隐藏欢迎界面
         self.view.hidden = true
@@ -120,6 +144,10 @@ class WelcomeViewController: UIViewController {
     
     */
     @IBAction func logInViaQQ(sender: UIButton) {
+        qq()
+    }
+    
+    func qq() {
         let permissions = [
             kOPEN_PERMISSION_GET_USER_INFO,
             kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,

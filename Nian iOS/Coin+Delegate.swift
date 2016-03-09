@@ -47,6 +47,9 @@ extension Coin {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
+            if SAUid() == "171264" {
+                return 220
+            }
             return 261
         } else {
             return 72

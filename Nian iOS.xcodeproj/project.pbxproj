@@ -25,10 +25,6 @@
 		1231A07D19B464AD00BD425F /* StepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A07C19B464AD00BD425F /* StepCell.swift */; };
 		1231A07F19B464B500BD425F /* StepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1231A07E19B464B500BD425F /* StepCell.xib */; };
 		1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234FDA91A1B33E900AF8A50 /* NianCell.swift */; };
-		1239A1E11C8B702F0098EAF6 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1239A1DF1C8B702F0098EAF6 /* TencentOpenApi_IOS_Bundle.bundle */; };
-		1239A1E21C8B702F0098EAF6 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1239A1E01C8B702F0098EAF6 /* TencentOpenAPI.framework */; };
-		1239A1F51C8B753F0098EAF6 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1239A1F31C8B753F0098EAF6 /* AlipaySDK.bundle */; };
-		1239A1F61C8B753F0098EAF6 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1239A1F41C8B753F0098EAF6 /* AlipaySDK.framework */; };
 		1239A1F91C8BB8CA0098EAF6 /* Guide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1239A1F81C8BB8CA0098EAF6 /* Guide.swift */; };
 		123CB05319785B780062BB8A /* NianViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CB05219785B780062BB8A /* NianViewController.swift */; };
 		123FD9421C3A7DF800A92188 /* VVeboCell+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123FD9411C3A7DF800A92188 /* VVeboCell+Delegate.swift */; };
@@ -133,6 +129,10 @@
 		12AAD1B51C5B1BEE007C42FD /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAD1B41C5B1BEE007C42FD /* Color.swift */; };
 		12B1BFFF1A6CB79B000D9284 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1BFFE1A6CB79B000D9284 /* Contacts.swift */; };
 		12B2F8821C79134100902208 /* Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B2F8811C79134100902208 /* Gif.swift */; };
+		12BC0EA71C904F7800DDEC15 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12BC0EA51C904F7800DDEC15 /* AlipaySDK.bundle */; };
+		12BC0EA81C904F7800DDEC15 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC0EA61C904F7800DDEC15 /* AlipaySDK.framework */; };
+		12BC0EAB1C904F8600DDEC15 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12BC0EA91C904F8600DDEC15 /* TencentOpenApi_IOS_Bundle.bundle */; };
+		12BC0EAC1C904F8600DDEC15 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC0EAA1C904F8600DDEC15 /* TencentOpenAPI.framework */; };
 		12BD36921B8EABFA00B37573 /* Reddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36911B8EABFA00B37573 /* Reddit.swift */; };
 		12BD36941B8EB38500B37573 /* Reddit + UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */; };
 		12BE103F19C6055300370348 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE103E19C6055300370348 /* Help.swift */; };
@@ -314,10 +314,6 @@
 		1231A07C19B464AD00BD425F /* StepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepCell.swift; sourceTree = "<group>"; };
 		1231A07E19B464B500BD425F /* StepCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StepCell.xib; sourceTree = "<group>"; };
 		1234FDA91A1B33E900AF8A50 /* NianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianCell.swift; sourceTree = "<group>"; };
-		1239A1DF1C8B702F0098EAF6 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
-		1239A1E01C8B702F0098EAF6 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
-		1239A1F31C8B753F0098EAF6 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
-		1239A1F41C8B753F0098EAF6 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		1239A1F81C8BB8CA0098EAF6 /* Guide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Guide.swift; sourceTree = "<group>"; };
 		123CB05219785B780062BB8A /* NianViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NianViewController.swift; sourceTree = "<group>"; };
 		123FD9411C3A7DF800A92188 /* VVeboCell+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VVeboCell+Delegate.swift"; sourceTree = "<group>"; };
@@ -442,6 +438,10 @@
 		12AAD1B41C5B1BEE007C42FD /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Color.swift; path = ../Color.swift; sourceTree = "<group>"; };
 		12B1BFFE1A6CB79B000D9284 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12B2F8811C79134100902208 /* Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gif.swift; sourceTree = "<group>"; };
+		12BC0EA51C904F7800DDEC15 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
+		12BC0EA61C904F7800DDEC15 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		12BC0EA91C904F8600DDEC15 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
+		12BC0EAA1C904F8600DDEC15 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		12BD36911B8EABFA00B37573 /* Reddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reddit.swift; sourceTree = "<group>"; };
 		12BD36931B8EB38500B37573 /* Reddit + UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reddit + UITableView.swift"; sourceTree = "<group>"; };
 		12BE103E19C6055300370348 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
@@ -637,10 +637,10 @@
 				C4A350BF1B6B6BEE00E8AF10 /* Security.framework in Frameworks */,
 				127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */,
 				127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */,
-				1239A1F61C8B753F0098EAF6 /* AlipaySDK.framework in Frameworks */,
+				12BC0EA81C904F7800DDEC15 /* AlipaySDK.framework in Frameworks */,
 				127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */,
+				12BC0EAC1C904F8600DDEC15 /* TencentOpenAPI.framework in Frameworks */,
 				324C2AED1A28119E00E6A299 /* StoreKit.framework in Frameworks */,
-				1239A1E21C8B702F0098EAF6 /* TencentOpenAPI.framework in Frameworks */,
 				3B6630BD2F2567A3267B483A /* libPods-Nian iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -765,8 +765,8 @@
 		1239A1F21C8B743D0098EAF6 /* Alipay */ = {
 			isa = PBXGroup;
 			children = (
-				1239A1F31C8B753F0098EAF6 /* AlipaySDK.bundle */,
-				1239A1F41C8B753F0098EAF6 /* AlipaySDK.framework */,
+				12BC0EA51C904F7800DDEC15 /* AlipaySDK.bundle */,
+				12BC0EA61C904F7800DDEC15 /* AlipaySDK.framework */,
 			);
 			name = Alipay;
 			sourceTree = "<group>";
@@ -1114,8 +1114,8 @@
 		12CF0AB41C83EA6F00189180 /* QQSharing */ = {
 			isa = PBXGroup;
 			children = (
-				1239A1DF1C8B702F0098EAF6 /* TencentOpenApi_IOS_Bundle.bundle */,
-				1239A1E01C8B702F0098EAF6 /* TencentOpenAPI.framework */,
+				12BC0EA91C904F8600DDEC15 /* TencentOpenApi_IOS_Bundle.bundle */,
+				12BC0EAA1C904F8600DDEC15 /* TencentOpenAPI.framework */,
 			);
 			path = QQSharing;
 			sourceTree = "<group>";
@@ -1710,18 +1710,18 @@
 				124F3258197B19EC0070CA4C /* NianViewController.storyboard in Resources */,
 				123FD9461C3A803200A92188 /* VVeboCollectionViewCell.xib in Resources */,
 				12BFB0821B1DD94A00CB0AA6 /* SABottom.xib in Resources */,
+				12BC0EAB1C904F8600DDEC15 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				1257833919B5F1B1008A1B3B /* LikeCell.xib in Resources */,
 				121F669F1B15CCC100103B14 /* SAMenu.xib in Resources */,
 				12CF0AC21C84515F00189180 /* PromoCell.xib in Resources */,
 				12DA22621C8331E50062D335 /* ProductListCell.xib in Resources */,
-				1239A1F51C8B753F0098EAF6 /* AlipaySDK.bundle in Resources */,
 				3250AD0A1A1B011F0070F3EB /* ExploreDynamicDreamCell.xib in Resources */,
 				12A1910A1C7DC399005668C6 /* CoinProductTop.xib in Resources */,
 				126593F219CD5CE500884947 /* AddDreamController.xib in Resources */,
 				12DA224A1C82DDE80062D335 /* RechargeCell.xib in Resources */,
 				C472F7641AE74E2C00ECC011 /* ExploreNewHotCell.xib in Resources */,
 				1275E4B419A8D02600E2FC4C /* Images.xcassets in Resources */,
-				1239A1E11C8B702F0098EAF6 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
+				12BC0EA71C904F7800DDEC15 /* AlipaySDK.bundle in Resources */,
 				129F6C6B1C305EE5008B61A5 /* LSYAlbumPickerCell.xib in Resources */,
 				122F39211B4E794700DE8628 /* Card.xib in Resources */,
 				12A8B8CC1A613D5E00DD8912 /* MeCellTop.xib in Resources */,
@@ -2147,6 +2147,18 @@
 					iOS/Utility/Alipay,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -2219,6 +2231,18 @@
 					iOS/Utility/Alipay,
 					"$(PROJECT_DIR)/Nian",
 					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility,
+					"$(PROJECT_DIR)/Nian",
+					iOS/Utility/QQSharing,
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;

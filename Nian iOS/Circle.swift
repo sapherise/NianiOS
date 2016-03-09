@@ -114,10 +114,12 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func newInsert(content: String, id: Int, type: String) {
         if let name = Cookies.get("user") as? String {
             let newinsert = NSDictionary(objects: [content, "\(id)" , "刚刚", "\(SAUid())", "\(name)", type], forKeys: ["content", "id", "lastdate", "uid", "user", "type"])
-            self.tableView.beginUpdates()
-            self.dataArray.replaceObjectAtIndex(0, withObject: self.dataDecode(newinsert))
-            self.tableView.reloadData()
-            self.tableView.endUpdates()
+            back {
+                self.tableView.beginUpdates()
+                self.dataArray.replaceObjectAtIndex(0, withObject: self.dataDecode(newinsert))
+                self.tableView.reloadData()
+                self.tableView.endUpdates()
+            }
         }
     }
     

@@ -18,10 +18,8 @@ class PromoCell: UICollectionViewCell {
         labelTitle.textColor = UIColor.MainColor()
         labelTitle.text = data.stringAttributeForKey("title").decode()
         let path = data.stringAttributeForKey("image")
-        let id = data.stringAttributeForKey("id")
         imageView.setImage("http://img.nian.so/dream/\(path)!dream")
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
-//        imageView
     }
 }

@@ -161,6 +161,7 @@
                         <outlet property="qqButton" destination="Zit-kT-Azf" id="3GL-03-yvo"/>
                         <outlet property="wechatButton" destination="cbp-he-Xhq" id="TZ2-vi-t28"/>
                         <outlet property="weiboButton" destination="VVt-bD-UmS" id="eIA-g0-mpv"/>
+                        <outlet property="x" destination="UYi-7P-0eo" id="eJ0-lk-wzy"/>
                         <segue destination="uAC-Da-Fmz" kind="presentation" identifier="toConfirm3rdLogIn" id="wT9-7w-h6S"/>
                     </connections>
                 </viewController>
