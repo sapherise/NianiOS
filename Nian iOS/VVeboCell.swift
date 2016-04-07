@@ -94,13 +94,16 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 imageHead.setHead(uid)
             }
             
-            btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT - SIZE_LABEL_HEIGHT - 8, yButton)
+            btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT - SIZE_LABEL_HEIGHT * 2 - 8 * 2, yButton)
             btnLike.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
+            btnPremium.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT - SIZE_LABEL_HEIGHT - 8, yButton)
             if uid == SAUid() {
                 btnLike.hidden = true
+                btnPremium.hidden = true
                 btnMore.frame.origin = CGPointMake(globalWidth - SIZE_PADDING - SIZE_LABEL_HEIGHT, yButton)
             } else {
                 btnLike.hidden = false
+                btnPremium.hidden = false
             }
         }
     }
@@ -113,6 +116,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var imageHolder: UIImageView!
     var labelComment: UILabel!
     var labelLike: UILabel!
+    var btnPremium: UIButton!
     var btnMore: UIButton!
     var btnNoLike: UIButton!
     var btnLike: UIButton!
@@ -126,6 +130,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var delegate: delegateSAStepCell?
     var collectionView: UICollectionView!
     var pro: UIImageView!
+    var viewPremium: UIView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -191,6 +196,16 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         btnMore.layer.borderWidth = 1
         contentView.addSubview(btnMore)
         
+        // 奖励
+        btnPremium = UIButton(frame: CGRectMake(0, 0, SIZE_LABEL_HEIGHT, SIZE_LABEL_HEIGHT))
+//        btnPremium.setImage(UIImage(named: "btnmore"), forState: UIControlState())
+        btnPremium.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
+        btnPremium.layer.masksToBounds = true
+        btnPremium.layer.borderColor = UIColor.LineColor().CGColor
+        btnPremium.layer.borderWidth = 1
+        contentView.addSubview(btnPremium)
+        
+        
         // 赞
         btnLike = UIButton(frame: CGRectMake(0, 0, SIZE_LABEL_HEIGHT, SIZE_LABEL_HEIGHT))
         btnLike.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
@@ -211,6 +226,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
         btnMore.addTarget(self, action: "onMoreClick", forControlEvents: UIControlEvents.TouchUpInside)
         btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
+        btnPremium.addTarget(self, action: "onPremiumClick", forControlEvents: UIControlEvents.TouchUpInside)
         pro.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPro"))
         imageHolder.userInteractionEnabled = true
         imageHead.userInteractionEnabled = true
@@ -472,6 +488,45 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 }
             }
         }
+    }
+    
+    /* 添加奖励浮层 */
+    func onPremiumClick() {
+        let wHolder: CGFloat = 120
+        let hHolder: CGFloat = 120
+        let wImage: CGFloat = 32
+        let padding: CGFloat = 8
+        let padding2: CGFloat = 4
+        viewPremium = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        viewPremium.userInteractionEnabled = true
+        viewPremium.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewPremiumClose"))
+        viewPremium.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "onViewPremiumClose"))
+        
+        /* 食物的层 */
+        let p = btnPremium.convertPoint(CGPointZero, fromView: self.window)
+        let viewHolder = UIView(frame: CGRectMake(-p.x - wHolder - padding, max(-p.y + btnPremium.height() - hHolder, 64 + padding), wHolder, hHolder))
+        viewHolder.backgroundColor = UIColor.NavColor()
+        viewHolder.layer.masksToBounds = true
+        viewHolder.layer.cornerRadius = 6
+        viewPremium.addSubview(viewHolder)
+        
+        let items = ["1", "2" , "3" , "4", "5", "6"]
+        var i = 0
+        for _ in items {
+            let x = padding + (wImage + padding2) * CGFloat(i % 3)
+            let y = i >= 3 ? padding : padding + wImage + padding2
+            let image = UIImageView(frame: CGRectMake(x, y, wImage, wImage))
+            image.backgroundColor = UIColor.yellowColor()
+            viewHolder.addSubview(image)
+            i++
+        }
+        
+        self.window?.addSubview(viewPremium)
+    }
+    
+    /* 关闭奖励浮层 */
+    func onViewPremiumClose() {
+        viewPremium.removeFromSuperview()
     }
     
     func Editstep() {

@@ -16,11 +16,17 @@ class Coin: SAViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setBarButton("奖励提现", actionGesture: "toPremium")
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         tableView.reloadData()
+    }
+    
+    func toPremium() {
+        let vc = Premium()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func setup() {
