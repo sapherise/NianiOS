@@ -47,7 +47,7 @@ class FindCell: UITableViewCell {
                 self.btnFollow.backgroundColor = UIColor.HighlightColor()
                 self.btnFollow.setTitle("已关注", forState: UIControlState.Normal)
             }
-            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
+            self.btnFollow.addTarget(self, action: #selector(FindCell.onFollowClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         }
     }
     

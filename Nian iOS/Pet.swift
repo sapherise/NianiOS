@@ -41,8 +41,16 @@ class PetViewController: SAViewController, ShareDelegate {
     
     func setupViews() {
         self._setTitle("宠物")
-        self.setBarButton("抽蛋", actionGesture: "onEgg")
+        self.setBarButton("抽蛋", actionGesture: #selector(PetViewController.onEgg))
         setupTable()
+    }
+    
+    func onEgg() {
+        let v = SAEgg()
+        v.delegateShare = self
+        v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
+                                     forKeys: ["img", "title", "content", "buttonArray"])
+        v.showWithAnimation(.flip)
     }
     
     func onShare(avc: UIActivityViewController) {

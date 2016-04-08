@@ -53,7 +53,7 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
         self.settingSeperateHeight()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                        selector: "handleChooseGender:",
+                                                        selector: #selector(EditProfileViewController.handleChooseGender(_:)),
                                                         name: "tapOnGenderTextField",
                                                         object: nil)
         if self.profileDict != nil {
@@ -64,14 +64,14 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
             }
             
             self.genderTextField.text = self.profileDict!["gender"] == "0" ? "保密": self.profileDict!["gender"] == "1" ? "男" : "女"
-            self.setBarButton("保存", actionGesture: "saveProfileSetting:")
+            self.setBarButton("保存", actionGesture: #selector(EditProfileViewController.saveProfileSetting(_:)))
         }
         
 
     }
 
     @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
     }
 
@@ -193,7 +193,7 @@ extension EditProfileViewController {
 extension EditProfileViewController {
     
     func saveProfileSetting(sender: UITapGestureRecognizer) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         var shouldReturn = true
         

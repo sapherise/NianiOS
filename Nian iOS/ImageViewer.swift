@@ -193,10 +193,10 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
         self.contentOffset.x = globalWidth * CGFloat(index)
         
         /* 绑定动作 */
-        let tap = UITapGestureRecognizer(target: self, action: "onTap:")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ImageViewer.onTap(_:)))
         self.addGestureRecognizer(tap)
-        self.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onLongPress:"))
-        let doubleTap = UITapGestureRecognizer(target: self, action: "onDoubleTap:")
+        self.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(ImageViewer.onLongPress(_:))))
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(ImageViewer.onDoubleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
         tap.requireGestureRecognizerToFail(doubleTap)
         self.addGestureRecognizer(doubleTap)

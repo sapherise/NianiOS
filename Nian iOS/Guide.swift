@@ -26,7 +26,7 @@ class Guide: UIView {
         self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
         self.userInteractionEnabled = true
         self.tag = 0
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTap:"))
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Guide.onTap(_:))))
     }
     
     func setup() {

@@ -87,7 +87,7 @@ class DreamCellTop: UITableViewCell {
         
         /* 封面图 */
         imageDream.setImage("http://img.nian.so/dream/\(img)!dream")
-        imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
+        imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.onImage)))
         imageDream.setX((globalWidth - imageDream.width())/2)
         
         /* 标题 */
@@ -127,8 +127,8 @@ class DreamCellTop: UITableViewCell {
         numLeftNum.text = "\(like)"
         numMiddleNum.text = step
         numRightNum.text = totalUsers
-        numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
-        numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMembers"))
+        numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.onLike)))
+        numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.onMembers)))
         
         /* 按钮 */
         btnMain.setY(viewHolder.bottom() + 16)
@@ -140,15 +140,15 @@ class DreamCellTop: UITableViewCell {
         /* 如果已经加入 */
         if isJoined == "1" || SAUid() == uid {
             btnMain.setTitle("更新", forState: UIControlState())
-            btnMain.addTarget(self, action: "onAdd", forControlEvents: UIControlEvents.TouchUpInside)
+            btnMain.addTarget(self, action: #selector(DreamCellTop.onAdd), forControlEvents: UIControlEvents.TouchUpInside)
         } else {
             /* 如果未加入 */
             if isFollowed == "1" {
                 btnMain.setTitle("已关注", forState: UIControlState())
-                btnMain.addTarget(self, action: "onUnFollow", forControlEvents: UIControlEvents.TouchUpInside)
+                btnMain.addTarget(self, action: #selector(DreamCellTop.onUnFollow), forControlEvents: UIControlEvents.TouchUpInside)
             } else {
                 btnMain.setTitle("关注", forState: UIControlState())
-                btnMain.addTarget(self, action: "onFollow", forControlEvents: UIControlEvents.TouchUpInside)
+                btnMain.addTarget(self, action: #selector(DreamCellTop.onFollow), forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
         
@@ -166,11 +166,11 @@ class DreamCellTop: UITableViewCell {
             if SAUid() == uid {
                 label.text = "添加标签"
                 self.labelWidthWithItsContent(label, content: "添加标签")
-                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toEdit"))
+                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.toEdit)))
             } else {
                 label.text = user
                 self.labelWidthWithItsContent(label, content: user)
-                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser"))
+                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.toUser)))
             }
             
             label.frame.origin.x = scrollView.contentSize.width + 8
@@ -179,7 +179,7 @@ class DreamCellTop: UITableViewCell {
             scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
         } else {
             scrollView.hidden = false
-            for var i = 0; i < tagArray.count; i++ {
+            for i in 0 ..< tagArray.count {
                 let label = UILabel(frame: CGRectMake(0, 0, 0, 0))
                 label.userInteractionEnabled = true
                 let content = (tagArray[i] as String).decode()
@@ -188,7 +188,7 @@ class DreamCellTop: UITableViewCell {
                 label.frame.origin.x = scrollView.contentSize.width + 8
                 label.frame.origin.y = 11
                 label.tag = 12000 + i
-                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toSearch:"))
+                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.toSearch(_:))))
                 scrollView.addSubview(label)
                 scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
             }

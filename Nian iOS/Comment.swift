@@ -41,7 +41,7 @@ class Comment: UITableViewCell {
         let x: CGFloat = 2
         imageBubble.setBottom(labelHolder.bottom() + x)
         
-        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Comment.onHead)))
         
         
         if uid == SAUid() {

@@ -32,7 +32,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         super.viewDidLoad()
         setupViews()
         load()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CircleController.Letter(_:)), name: "Letter", object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -160,7 +160,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView.registerNib(UINib(nibName:"CommentImage", bundle: nil), forCellReuseIdentifier: "CommentImage")
 //        CommentImage
         
-        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
+        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CircleController.onCellTap(_:))))
         self.view.addSubview(self.tableView)
         
         let viewBottom = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
@@ -176,7 +176,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         tableView.setHeight(globalHeight - 64 - keyboardView.heightCell)
         
         // 发送图片
-        keyboardView.imageUpload?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPhotoClick:"))
+        keyboardView.imageUpload?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CircleController.onPhotoClick(_:))))
         self.view.addSubview(self.keyboardView)
         
         //标题颜色
@@ -199,7 +199,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     func tableUpdate(contentAfter: String) {
-        for var i: Int = 0; i < self.dataArray.count; i++ {
+        for i: Int in 0 ..< self.dataArray.count {
             let data = self.dataArray[i] as! NSDictionary
             let contentBefore = data.stringAttributeForKey("content")
             let lastdate = data.stringAttributeForKey("lastdate")
@@ -237,7 +237,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             arr = RCIMClient.sharedRCIMClient().getHistoryMessages(.ConversationType_PRIVATE, targetId: "\(id)", oldestMessageId: Int(oldestid)!, count: 30)
         }
         
-        self.page++
+        self.page += 1
         
         for _item in arr {
             if let item = _item as? RCMessage {
@@ -245,7 +245,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 var mutableData = NSMutableDictionary(dictionary: dataDecode(data))
                 mutableData = decodeToEmojiType(mutableData, message: item)
                 self.dataArray.addObject(mutableData)
-                self.dataTotal++
+                self.dataTotal += 1
             }
         }
         
@@ -329,8 +329,8 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
             let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
-            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onBubbleClick:"))
+            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CircleController.onBubbleClick(_:))))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(CircleController.onBubbleClick(_:))))
             c.setup()
             return c
         } else if type == "2" {
@@ -491,7 +491,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                         }
                     }
                 }
-                i++
+                i += 1
             }
             self.tableView.reloadData()
             var nameSelf = ""
@@ -513,7 +513,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                             break
                         }
                     }
-                    i++
+                    i += 1
                 }
                 back {
                     self.tableView.reloadData()
@@ -528,7 +528,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return self.dataArray.count
     }
     
-    func keyboardWasShown(notification: NSNotification) {
+    override func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         keyboardHeight = max(keyboardSize.height, keyboardHeight)
@@ -538,7 +538,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         keyboardView.labelPlaceHolder.hidden = true
     }
     
-    func keyboardWillBeHidden(notification: NSNotification){
+    override func keyboardWillBeHidden(notification: NSNotification){
         if !Locking {
             keyboardHeight = 0
             keyboardView.resizeTableView()

@@ -36,7 +36,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "exploreTop:", name: "exploreTop", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ExploreViewController.exploreTop(_:)), name: "exploreTop", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -126,15 +126,15 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         self.navTopView.setWidth(globalWidth)
         self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
         self.imageSearch.setX(globalWidth - 43)
-        self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFriendClick"))
-        self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSearchClick"))
+        self.imageFriend.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreViewController.onFriendClick)))
+        self.imageSearch.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreViewController.onSearchClick)))
         view.backgroundColor = UIColor.BackgroundColor()
         
         scrollView.setWidth(globalWidth)
         scrollView.contentSize = CGSizeMake(globalWidth * 2, scrollView.frame.size.height)
         
-        btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
-        btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTabClick:"))
+        btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreViewController.onTabClick(_:))))
+        btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreViewController.onTabClick(_:))))
         
         setupTables()
     }

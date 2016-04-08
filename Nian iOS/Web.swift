@@ -21,7 +21,7 @@ class WebViewController: UIViewController, UIWebViewDelegate{
         navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
         
-        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
+        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(WebViewController.setupNavBtn))
         btnMore.image = UIImage(named: "more")
         self.navigationItem.rightBarButtonItems = [btnMore]
         

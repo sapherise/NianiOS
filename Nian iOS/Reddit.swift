@@ -26,7 +26,7 @@ class RedditViewController: UIViewController, UIScrollViewDelegate, UITableViewD
         super.viewDidLoad()
         setupViews()
         setupTable()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reddit:", name: "reddit", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RedditViewController.reddit(_:)), name: "reddit", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {

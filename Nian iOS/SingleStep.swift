@@ -89,7 +89,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let c = getCell(indexPath, dataArray: dataArray, type: 1)
-        (c as VVeboCell).labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
+        (c as VVeboCell).labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SingleStepViewController.onComment)))
         return c
     }
     

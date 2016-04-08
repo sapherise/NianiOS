@@ -83,14 +83,14 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.activity.transform = CGAffineTransformMakeScale(0.8, 0.8)
         self.activity.hidden = true
         self.dynamicSummary.setX(globalWidth - 44)
-        self.dynamicSummary.addTarget(self, action: "toActivitiesSummary:", forControlEvents: .TouchUpInside)
+        self.dynamicSummary.addTarget(self, action: #selector(NianViewController.toActivitiesSummary(_:)), forControlEvents: .TouchUpInside)
         
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
         
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "addDreamButton"))
+        self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.addDreamButton)))
         
         self.navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
         self.navView.backgroundColor = UIColor.NavColor()
@@ -106,7 +106,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         btnGoHeader.setButtonNice("  嗯！")
         btnGoHeader.setX(globalWidth/2-50)
         btnGoHeader.setY(viewQuestionHeader.bottom())
-        btnGoHeader.addTarget(self, action: "addDreamButton", forControlEvents: UIControlEvents.TouchUpInside)
+        btnGoHeader.addTarget(self, action: #selector(NianViewController.addDreamButton), forControlEvents: UIControlEvents.TouchUpInside)
         viewHeader.addSubview(viewQuestionHeader)
         viewHeader.addSubview(btnGoHeader)
         viewHeader.hidden = true
@@ -131,16 +131,16 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
         
         self.setupUserTop()
-        self.coinButton.addTarget(self, action: "coinClick", forControlEvents: UIControlEvents.TouchUpInside)
-        self.levelButton.addTarget(self, action: "levelClick", forControlEvents: UIControlEvents.TouchUpInside)
-        self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
-        self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stepClick"))
-        self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
-        imageSettings.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "headClick"))
-        imageSettings.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "EggShell:"))
+        self.coinButton.addTarget(self, action: #selector(NianViewController.coinClick), forControlEvents: UIControlEvents.TouchUpInside)
+        self.levelButton.addTarget(self, action: #selector(NianViewController.levelClick), forControlEvents: UIControlEvents.TouchUpInside)
+        self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.stepClick)))
+        self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.stepClick)))
+        self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.headClick)))
+        imageSettings.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.headClick)))
+        imageSettings.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(NianViewController.EggShell(_:))))
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "QuickActionsEgg", name: "QuickActionsEgg", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NianViewController.QuickActionsEgg), name: "QuickActionsEgg", object: nil)
     }
     
     func EggShell(sender: UILongPressGestureRecognizer) {

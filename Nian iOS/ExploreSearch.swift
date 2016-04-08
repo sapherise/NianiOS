@@ -254,7 +254,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         searchText.rightView = UIImageView(image: UIImage(named: "close-1"))
         searchText.rightView!.contentMode = .Center
         searchText.rightView!.userInteractionEnabled = true
-        searchText.rightView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "clearText:"))
+        searchText.rightView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreSearch.clearText(_:))))
         searchText.attributedPlaceholder = NSAttributedString(string: "搜索", attributes: [NSForegroundColorAttributeName: color, NSFontAttributeName: UIFont.systemFontOfSize(12.0)])
         searchText.contentVerticalAlignment = .Center
         searchText.font = UIFont.systemFontOfSize(12.0)
@@ -466,7 +466,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             userPage = 1
         }
         
-        Api.getSearchUsers(searchText.text!.encode(), page: userPage++, callback: {
+        Api.getSearchUsers(searchText.text!.encode(), page: userPage, callback: {
             json in
             if json != nil {
                 if clear {
@@ -489,6 +489,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 } else {
                     self.userTableView.tableHeaderView = nil
                 }
+                self.userPage += 1
             }
             self.userTableView.reloadData()
             self.userTableView.headerEndRefreshing()
@@ -500,7 +501,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         if clear {
             dreamPage = 1
         }
-        Api.getSearchDream(searchText.text!.encode(), page: dreamPage++, callback: {
+        Api.getSearchDream(searchText.text!.encode(), page: dreamPage, callback: {
             json in
             if json != nil {
                 if clear {
@@ -520,6 +521,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 } else {
                     self.dreamTableView.tableHeaderView = nil
                 }
+                self.dreamPage += 1
             }
             self.dreamTableView.reloadData()
             self.dreamTableView.headerEndRefreshing()
@@ -532,7 +534,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         if clear {
             stepPage = 1
         }
-        Api.getSearchSteps(searchText.text!.encode(), page: stepPage++, callback: {
+        Api.getSearchSteps(searchText.text!.encode(), page: stepPage, callback: {
             json in
             if json != nil {
                 if clear {
@@ -557,6 +559,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 } else {
                     self.stepTableView.tableHeaderView = nil
                 }
+                self.stepPage += 1
             }
             self.stepTableView.reloadData()
             self.stepTableView.headerEndRefreshing()
@@ -565,7 +568,6 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     // MARK: - table view delegate
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch index {
         case 0:
@@ -585,9 +587,9 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             let cell = self.userTableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
             let data = self.dataArrayUser[indexPath.row] as! NSDictionary
             cell?.data = data
-            cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toUser:"))
+            cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreSearch.toUser(_:))))
             cell?.btnMain.tag = indexPath.row
-            cell?.btnMain.addTarget(self, action: "onFollow:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell?.btnMain.addTarget(self, action: #selector(ExploreSearch.onFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             return cell!
         case 1:

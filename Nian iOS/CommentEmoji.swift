@@ -33,7 +33,7 @@ class CommentEmoji: UITableViewCell {
         imageHead.setY(heightCell - 32 - 4)
         labelName.setY(heightCell - 22)
         
-        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CommentEmoji.onHead)))
         
         
         if uid == SAUid() {
@@ -64,7 +64,7 @@ class CommentEmoji: UITableViewCell {
             })
         }
         
-        labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEmoji"))
+        labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CommentEmoji.onEmoji)))
     }
     
     override func prepareForReuse() {

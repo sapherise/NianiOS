@@ -98,8 +98,8 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         super.viewWillAppear(true)
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(self.handleKeyboardWillShowNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(self.handleKeyboardWillHideNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -113,9 +113,9 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         _setTitle("新进展！")
-        setBarButtonImage("newOK", actionGesture: "add")
+        setBarButtonImage("newOK", actionGesture: #selector(self.add))
         
-        swipeGesuture = UISwipeGestureRecognizer(target: self, action: "dismissKeyboard")
+        swipeGesuture = UISwipeGestureRecognizer(target: self, action: #selector(AddStep.dismissKeyboard))
         swipeGesuture!.direction = UISwipeGestureRecognizerDirection.Down
         swipeGesuture!.cancelsTouchesInView = true
         self.view.addGestureRecognizer(swipeGesuture!)
@@ -150,7 +150,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         
         seperatorView2.setY(self.scrollView.bottom())
         viewHolder.setY(seperatorView2.bottom())
-        imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
+        imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("onImage")))
         
         /* 初始化 UITableView*/
         tableView = UITableView(frame: CGRectMake(0, seperatorView.bottom(), globalWidth, 0))
@@ -164,7 +164,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         
         self.viewDream.setWidth(globalWidth)
         if !willEdit {
-            self.viewDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewDream"))
+            self.viewDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onViewDream)))
         }
         
         

@@ -43,13 +43,13 @@ class NicknameViewController: UIViewController {
     }
     
     @IBAction func backWelcomeViewController(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
     }
     
     // MARK: - Navigation

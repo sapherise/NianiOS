@@ -34,7 +34,7 @@ class Recharge: SAViewController, UITableViewDataSource, UITableViewDelegate, NI
         tableView.separatorStyle = .None
         self.view.addSubview(tableView)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onWechatResult:", name: "onWechatResult", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.onWechatResult(_:)), name: "onWechatResult", object: nil)
     }
     
     func onClick(sender: UIButton) {

@@ -43,7 +43,7 @@ class LikeCell: UITableViewCell {
         user = self.data.stringAttributeForKey("user")
         self.nickLabel!.text = user
         self.avatarView.setHead(uid)
-        self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+        self.avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LikeCell.onUserClick)))
         
         
         let safeuid = SAUid()
@@ -53,7 +53,7 @@ class LikeCell: UITableViewCell {
             self.btnFollow.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
             self.btnFollow.backgroundColor = UIColor.HighlightColor()
             self.btnFollow.setTitle("写信", forState: UIControlState.Normal)
-            self.btnFollow.addTarget(self, action: "onLetterClick", forControlEvents: UIControlEvents.TouchUpInside)
+            self.btnFollow.addTarget(self, action: #selector(LikeCell.onLetterClick), forControlEvents: UIControlEvents.TouchUpInside)
         } else {
             if follow == "0" {
                 self.btnFollow.tag = 100
@@ -69,7 +69,7 @@ class LikeCell: UITableViewCell {
                 self.btnFollow.backgroundColor = UIColor.HighlightColor()
                 self.btnFollow.setTitle("已关注", forState: UIControlState.Normal)
             }
-            self.btnFollow.addTarget(self, action: "onFollowClick:", forControlEvents: UIControlEvents.TouchUpInside)
+            self.btnFollow.addTarget(self, action: #selector(LikeCell.onFollowClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         }
     }
     

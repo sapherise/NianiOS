@@ -344,7 +344,8 @@ struct V {
 
 extension UIView {
     func findRootViewController() -> UIViewController? {
-        for var view: UIView? = self; view != nil; view = view!.superview {
+        var view: UIView?
+        for view = self; view != nil; view = view!.superview {
             if let responder = view?.nextResponder() {
                 if responder is UIViewController {
                     return responder as? UIViewController

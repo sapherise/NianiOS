@@ -107,7 +107,7 @@ class LogOrRegViewController: UIViewController {
         
         /// 监听 email textfield 不能有变化
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "emailTextFieldDidChange:",
+            selector: #selector(LogOrRegViewController.emailTextFieldDidChange(_:)),
             name: UITextFieldTextDidChangeNotification,
             object: self.emailTextField)
     }
@@ -147,7 +147,7 @@ class LogOrRegViewController: UIViewController {
      */
     @IBAction func resetPassword(sender: UIButton) {
         // 收起键盘
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         let _tmpType = self.functionalType
         
@@ -194,7 +194,7 @@ class LogOrRegViewController: UIViewController {
     //MARK: - click on functionalButton
     
     @IBAction func onFunctionalButton(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         self.handleEvent()
     }
@@ -203,14 +203,14 @@ class LogOrRegViewController: UIViewController {
      点击空白 dismiss keyboard
      */
     @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
     }
     
     /**
      无论何时点击左上角的 cancel button, 都将回到 welcome view controller
      */
     @IBAction func backWelcomeViewController(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -244,7 +244,7 @@ class LogOrRegViewController: UIViewController {
 extension LogOrRegViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         if self.functionalType == .confirm {
             if textField == self.emailTextField {

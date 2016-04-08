@@ -116,9 +116,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                         let uid = self.dataArrayTop.stringAttributeForKey("uid")
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
-                        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "setupNavBtn")
+                        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(DreamViewController.setupNavBtn))
                         btnMore.image = UIImage(named: "more")
-                        let btnInvite = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onInvite")
+                        let btnInvite = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(DreamViewController.onInvite))
                         btnInvite.image = UIImage(named: "addFriend")
                         
                         /* 当当前用户是记本主人时，提供邀请入口 */
@@ -139,7 +139,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     self.SATableView.reloadData()
                     self.SATableView.headerEndRefreshing()
                     self.SATableView.footerEndRefreshing()
-                    self.page++
+                    self.page += 1
                 }
             }
         }

@@ -95,7 +95,7 @@ class MeCell: UITableViewCell {
             self.labelConfirm.setY(self.contentLabel!.bottom()+20)
             self.labelConfirm.hidden = false
             self.viewLine.setY(self.labelConfirm!.bottom()+25)
-            let tap = UITapGestureRecognizer(target: self, action: "onConfirmClick:")
+            let tap = UITapGestureRecognizer(target: self, action: #selector(MeCell.onConfirmClick(_:)))
             if isConfirm == "0" {
                 self.labelConfirm.text = "接受"
                 self.labelConfirm.backgroundColor = UIColor.HighlightColor()

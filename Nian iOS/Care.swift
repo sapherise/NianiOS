@@ -36,7 +36,7 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
-        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "startPush")
+        let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(CareViewController.startPush))
         rightButton.image = UIImage(named:"newOK")
         self.navigationItem.rightBarButtonItems = [rightButton];
         

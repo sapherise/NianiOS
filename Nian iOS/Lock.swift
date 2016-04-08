@@ -59,7 +59,7 @@ class Lock: SAViewController, UITextViewDelegate {
             x += size_width + padding
             self.view.addSubview(v)
             v.userInteractionEnabled = true
-            v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onInput"))
+            v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Lock.onInput)))
         }
         
         /* 添加引导文案 */
@@ -119,11 +119,11 @@ class Lock: SAViewController, UITextViewDelegate {
     /* 设置是否允许按钮返回 */
     func setBackButton(isAble: Bool) {
         if isAble {
-            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigation")
+            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(self.backNavigation))
             leftButton.image = UIImage(named:"newBack")
             self.navigationItem.leftBarButtonItem = leftButton
         } else {
-            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "onNoBack")
+            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(Lock.onNoBack))
             leftButton.image = UIImage()
             self.navigationItem.leftBarButtonItem = leftButton
         }
@@ -155,7 +155,7 @@ class Lock: SAViewController, UITextViewDelegate {
                 } else {
                     v.setup(false)
                 }
-                i++
+                i += 1
             }
         }
         
@@ -236,7 +236,7 @@ class Lock: SAViewController, UITextViewDelegate {
                     break
                 }
                 v.setup(false)
-                i++
+                i += 1
             }
         }
         textView.text = ""

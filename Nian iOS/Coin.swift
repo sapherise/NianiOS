@@ -16,7 +16,7 @@ class Coin: SAViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setBarButton("奖励提现", actionGesture: "toPremium")
+        setBarButton("奖励提现", actionGesture: #selector(Coin.toPremium))
     }
     
     override func viewDidAppear(animated: Bool) {

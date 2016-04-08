@@ -19,7 +19,7 @@ class VVeboCollectionViewCell: UICollectionViewCell {
         if image != nil {
             let path = image!.stringAttributeForKey("path")
             imageView.setImage("http://img.nian.so/step/\(path)!200x")
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCollectionViewCell.onImage)))
         }
     }
     

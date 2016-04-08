@@ -141,7 +141,7 @@ extension String  {
         CC_MD5(str!, strLen, result)
 
         let hash = NSMutableString(capacity: digestLen)
-        for var i = 0; i < digestLen; i++ {
+        for i in 0 ..< digestLen {
             hash.appendFormat("%02x", result[i])
         }
 
@@ -253,7 +253,7 @@ func delay(delay:Double, closure:()->()) {
 
 extension UIViewController: UIGestureRecognizerDelegate {
     func viewBack(){
-        let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "backNavigation")
+        let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(UIViewController.backNavigation))
         leftButton.image = UIImage(named:"newBack")
         self.navigationItem.leftBarButtonItem = leftButton
         viewBackFix()
@@ -330,7 +330,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
             label.alpha = 1
             }, completion: { (Bool) -> Void in
                 v!.userInteractionEnabled = true
-                v!.addGestureRecognizer(UITapGestureRecognizer(target: self.view.window, action: "onTip:"))
+                v!.addGestureRecognizer(UITapGestureRecognizer(target: self.view.window, action: #selector(UIWindow.onTip(_:))))
         })
         
         delay(delayTime) { () -> () in
@@ -625,9 +625,16 @@ extension UIImageView{
 extension UIViewController {
     
     func keyboardStartObserve() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWasShown(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
+    
+    func keyboardWasShown(notification: NSNotification) {
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification) {
+    }
+    
     func keyboardEndObserve() {
         NSNotificationCenter.defaultCenter().removeObserver(UIKeyboardWillShowNotification)
         NSNotificationCenter.defaultCenter().removeObserver(UIKeyboardWillHideNotification)

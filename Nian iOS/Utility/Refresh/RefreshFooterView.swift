@@ -148,15 +148,14 @@ class RefreshFooterView: RefreshBaseView {
         if self.scrollView is UITableView {
             let tableView:UITableView = self.scrollView as! UITableView
            
-            for (var i:Int = 0 ; i <  tableView.numberOfSections ; i++){
+            for i in 0 ..< tableView.numberOfSections {
                 totalCount = totalCount + tableView.numberOfRowsInSection(i)
-                
             }
         } else if self.scrollView is UICollectionView{
           let collectionView:UICollectionView = self.scrollView as! UICollectionView
-            for (var i:Int = 0 ; i <  collectionView.numberOfSections() ; i++){
+            //            for (var i:Int = 0 ; i <  collectionView.numberOfSections() ; i += 1){
+            for i in 0 ..< collectionView.numberOfSections() {
                 totalCount = totalCount + collectionView.numberOfItemsInSection(i)
-                
             }
         }
         return totalCount

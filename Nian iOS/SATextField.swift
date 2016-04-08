@@ -130,9 +130,9 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         self.addSubview(viewLine)
         
         /* 绑定事件 */
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTap"))
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onTap)))
         self.userInteractionEnabled = true
-        imageEmoji.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEmoji"))
+        imageEmoji.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onEmoji)))
         imageEmoji.userInteractionEnabled = true
         
         /* 表情键盘构建 */
@@ -205,7 +205,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         btnCollectionHolder.titleLabel?.font = UIFont.systemFontOfSize(14)
         btnCollectionHolder.setTitleColor(UIColor.BackgroundColor(), forState: UIControlState())
         btnCollectionHolder.setTitle("购买", forState: UIControlState())
-        btnCollectionHolder.addTarget(self, action: "onProduct", forControlEvents: UIControlEvents.TouchUpInside)
+        btnCollectionHolder.addTarget(self, action: #selector(InputView.onProduct), forControlEvents: UIControlEvents.TouchUpInside)
         viewCollectionHolder.addSubview(btnCollectionHolder)
         
         let v1 = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
@@ -229,7 +229,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         /* 前往表情商店 */
         let imageStore = UIImageView(frame: CGRectMake(globalWidth - 44, heightEmoji - 44, 44, 44))
         imageStore.image = UIImage(named: "keysettings")
-        imageStore.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onStore"))
+        imageStore.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onStore)))
         imageStore.userInteractionEnabled = true
         viewEmoji.addSubview(imageStore)
         
@@ -340,7 +340,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
                     e.setValue(isClicked, forKey: "isClicked")
                     dataArray.addObject(e)
                 }
-                i++
+                i += 1
             }
             tableView.reloadData()
             collectionView.reloadData()
@@ -365,7 +365,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
                                 self.dataArray.addObject(e)
                             }
                         }
-                        i++
+                        i += 1
                     }
                     Cookies.set(self.dataArray, forKey: "emojis")
                     self.tableView.reloadData()

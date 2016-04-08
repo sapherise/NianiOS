@@ -219,15 +219,15 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         contentView.addSubview(pro)
         
         // 绑定事件
-        imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
-        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        imageHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onImage)))
+        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onHead)))
         
-        labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onComment"))
-        labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLike"))
-        btnMore.addTarget(self, action: "onMoreClick", forControlEvents: UIControlEvents.TouchUpInside)
-        btnLike.addTarget(self, action: "onLikeClick", forControlEvents: UIControlEvents.TouchUpInside)
-        btnPremium.addTarget(self, action: "onPremiumClick", forControlEvents: UIControlEvents.TouchUpInside)
-        pro.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPro"))
+        labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onComment)))
+        labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onLike)))
+        btnMore.addTarget(self, action: #selector(VVeboCell.onMoreClick), forControlEvents: UIControlEvents.TouchUpInside)
+        btnLike.addTarget(self, action: #selector(VVeboCell.onLikeClick), forControlEvents: UIControlEvents.TouchUpInside)
+        btnPremium.addTarget(self, action: #selector(VVeboCell.onPremiumClick), forControlEvents: UIControlEvents.TouchUpInside)
+        pro.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onPro)))
         imageHolder.userInteractionEnabled = true
         imageHead.userInteractionEnabled = true
         labelComment.userInteractionEnabled = true
@@ -499,8 +499,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         let padding2: CGFloat = 4
         viewPremium = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
         viewPremium.userInteractionEnabled = true
-        viewPremium.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onViewPremiumClose"))
-        viewPremium.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "onViewPremiumClose"))
+        viewPremium.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onViewPremiumClose)))
+        viewPremium.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(VVeboCell.onViewPremiumClose)))
         
         /* 食物的层 */
         let p = btnPremium.convertPoint(CGPointZero, fromView: self.window)
@@ -518,7 +518,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             let image = UIImageView(frame: CGRectMake(x, y, wImage, wImage))
             image.backgroundColor = UIColor.yellowColor()
             viewHolder.addSubview(image)
-            i++
+            i += 1
         }
         
         self.window?.addSubview(viewPremium)

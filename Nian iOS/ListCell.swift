@@ -40,7 +40,7 @@ class ListCell: UITableViewCell {
         self.selectionStyle = .None
 //        heightViewLine.constant = globalHalf
         viewLine.frame = CGRectMake(70, 70, globalWidth - 85, globalHalf)
-        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onHead)))
         labelTitle.setWidth(globalWidth - 170)
     }
     
@@ -63,12 +63,12 @@ class ListCell: UITableViewCell {
                 labelButton.backgroundColor = UIColor.whiteColor()
                 labelButton.textColor = UIColor.HighlightColor()
                 labelButton.text = "邀请"
-                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSelect"))
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onSelect)))
             } else {
                 labelButton.backgroundColor = UIColor.HighlightColor()
                 labelButton.textColor = UIColor.whiteColor()
                 labelButton.text = "已邀请"
-                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUnSelect"))
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onUnSelect)))
             }
         }
     }

@@ -59,7 +59,7 @@ class VVImageCollectionView: UICollectionView {
                 let __arr = _arr.last!.characters.split{ $0 == "!" }.map(String.init)
                 self.containImages[__arr.first!] = image
                 
-                for (var tmp = 0; tmp < self.imagesDataSource.count; tmp++) {
+                for tmp in 0 ..< self.imagesDataSource.count {
                     if ((self.imagesDataSource[tmp] as! NSDictionary)["path"] as! String) == __arr.first! {
                         self.reloadData()
                     }
@@ -70,7 +70,7 @@ class VVImageCollectionView: UICollectionView {
     
 
     func downloadImages(urls: NSArray, callback: DownloadedSingleImage) {
-        for (var tmp = 0; tmp < urls.count; tmp++) {
+        for tmp in 0 ..< urls.count {
             let dict = self.imagesDataSource[tmp] as! NSDictionary
             let _imageURLString = dict["path"] as! String
             var _imageURL = NSURL(string: _imageURLString + DEFAULT_IMAGE_WIDTH, relativeToURL: self._imagesBaseURL)!

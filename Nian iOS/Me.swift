@@ -37,8 +37,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeShare", name: "noticeShare", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "Letter:", name: "Letter", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.noticeShare), name: "noticeShare", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.Letter(_:)), name: "Letter", object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -139,7 +139,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 btnGo.setButtonNice("  嗯！")
                 btnGo.setX(globalWidth/2-50)
                 btnGo.setY(viewQuestion.bottom())
-                btnGo.addTarget(self, action: "onBtnGoClick", forControlEvents: UIControlEvents.TouchUpInside)
+                btnGo.addTarget(self, action: #selector(MeViewController.onBtnGoClick), forControlEvents: UIControlEvents.TouchUpInside)
                 viewHeader.addSubview(viewQuestion)
                 viewHeader.addSubview(btnGo)
                 self.tableView.tableFooterView = viewHeader
@@ -195,9 +195,9 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             cell!.viewLeft.tag = 1
             cell!.viewMiddle.tag = 2
             cell!.viewRight.tag = 3
-            cell!.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
-            cell!.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
-            cell!.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
+            cell!.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MeViewController.onTopClick(_:))))
+            cell!.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MeViewController.onTopClick(_:))))
+            cell!.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MeViewController.onTopClick(_:))))
             return cell!
         }else{
             let c: LetterCell! = tableView.dequeueReusableCellWithIdentifier("LetterCell", forIndexPath: indexPath) as? LetterCell

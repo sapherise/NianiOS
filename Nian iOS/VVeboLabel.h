@@ -16,7 +16,7 @@
 @property (nonatomic) NSInteger lineSpace;
 @property (nonatomic) NSTextAlignment textAlignment;
 //==
-typedef void (^VVeboHandler)(NSString *string);
+typedef void (^VVeboHandler)(NSString * _Nonnull string );
 @property (nullable, nonatomic, copy) VVeboHandler AccountHandler;
 @property (nullable, nonatomic, copy) VVeboHandler URLHandler;
 //

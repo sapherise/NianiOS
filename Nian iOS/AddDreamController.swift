@@ -145,8 +145,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         super.viewWillAppear(true)
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AddDreamController.handleKeyboardWillShowNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AddDreamController.handleKeyboardWillHideNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -174,14 +174,14 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.viewBack()
         self.view.addSubview(navView)
         
-        swipeGesuture = UISwipeGestureRecognizer(target: self, action: "dismissKeyboard:")
+        swipeGesuture = UISwipeGestureRecognizer(target: self, action: #selector(AddDreamController.dismissKeyboard(_:)))
         swipeGesuture!.direction = UISwipeGestureRecognizerDirection.Down
         swipeGesuture!.cancelsTouchesInView = true
         self.view.addGestureRecognizer(swipeGesuture!)
 
-        self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "setDream"))
+        self.setPrivate.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(AddDreamController.setDream)))
         
-        self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "uploadClick"))
+        self.imageDreamHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(AddDreamController.uploadClick)))
         self.imageDreamHead.layer.cornerRadius = 4.0
         self.imageDreamHead.layer.masksToBounds = true
         
@@ -254,11 +254,11 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.uploadUrl = self.editImage
             let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             imageDreamHead.setImage(url)
-            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "editDreamOK")
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(AddDreamController.editDreamOK))
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         } else {
-            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "addDreamOK")
+            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(AddDreamController.addDreamOK))
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
@@ -364,7 +364,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                                     break
                                 }
                             }
-                            i++
+                            i += 1
                         }
                     }
                     

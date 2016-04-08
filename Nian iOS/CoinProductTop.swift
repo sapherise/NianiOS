@@ -31,7 +31,7 @@ class CoinProductTop: UITableViewCell {
         let coin = Cookies.get("coin") as? String
         labelContent.text = coin
         
-        btn.addTarget(self, action: "onRecharge", forControlEvents: UIControlEvents.TouchUpInside)
+        btn.addTarget(self, action: #selector(CoinProductTop.onRecharge), forControlEvents: UIControlEvents.TouchUpInside)
         
         /* 如果是苹果测试账号 */
         if SAUid() == "171264" {

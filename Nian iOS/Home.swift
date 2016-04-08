@@ -80,8 +80,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         self.GameOverView.textBtnSub = " 关闭日更模式"
                         self.GameOverView.btnMain.tag = 1
                         self.GameOverView.btnSub.tag = 2
-                        self.GameOverView.btnMain.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
-                        self.GameOverView.btnSub.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
+                        self.GameOverView.btnMain.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                        self.GameOverView.btnSub.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                         let gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
                         gameoverHead.image = UIImage(named: "pet_ghost")
                         let gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
@@ -232,7 +232,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         
         //底部按钮
         let count = 5
-        for var index = 0; index < count; index++ {
+        for index in 0 ..< count {
             let btnWidth = CGFloat(index) * globalWidth * 0.2
             let button  = UIButton(type: UIButtonType.Custom)
             button.frame = CGRectMake(btnWidth, 1, globalWidth * 0.2 ,49)
@@ -245,7 +245,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
             button.setImage(myImage2, forState: UIControlState.Selected)
             
             button.clipsToBounds = true
-            button.addTarget(self, action: "tabBarButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(HomeViewController.tabBarButtonClicked(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             self.myTabbar?.addSubview(button)
             if index == firstSelected {
                 button.selected = true
@@ -262,14 +262,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.dot!.text = "0"
         self.myTabbar!.addSubview(dot!)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onURL:", name: "AppURL", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "QuickActions:", name: "QuickActions", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppEnterForeground", name: "AppEnterForeground", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAppActive", name: "AppActive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onObserveDeactive", name: "AppDeactive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.onURL(_:)), name: "AppURL", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.QuickActions(_:)), name: "QuickActions", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.onAppEnterForeground), name: "AppEnterForeground", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.onAppActive), name: "AppActive", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.onObserveDeactive), name: "AppDeactive", object: nil)
         
         /* 当收到远程推送时 */
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "noticeDot", name: "Notice", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.noticeDot), name: "Notice", object: nil)
     }
     
     // 3D Touch 下的更新进展
@@ -313,7 +313,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         button.titleLabel!.font = UIFont.systemFontOfSize(14)
         button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         button.layer.cornerRadius = 18
-        button.addTarget(self, action: "onBtnGameOverClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         return button
     }
     
@@ -335,7 +335,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     //底部的按钮按下去
     func tabBarButtonClicked(sender:UIButton){
         let index = sender.tag
-        for var i = 0; i < 5; i++ {
+        for i in 0 ..< 5 {
             let button = self.view.viewWithTag(i+100) as? UIButton
             if button != nil {
                 if index != 102 {

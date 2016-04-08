@@ -80,7 +80,7 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
                     self.tableView.reloadData()
                     self.tableView.headerEndRefreshing()
                     self.tableView.footerEndRefreshing()
-                    self.page++
+                    self.page += 1
                 }
             }
         } else {
@@ -101,7 +101,7 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
                     self.tableView.reloadData()
                     self.tableView.headerEndRefreshing()
                     self.tableView.footerEndRefreshing()
-                    self.page++
+                    self.page += 1
                 }
             }
         }

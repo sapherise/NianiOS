@@ -217,7 +217,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         
         // 设定彩蛋
         logo.userInteractionEnabled = true
-        logo.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onEgg:"))
+        logo.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(NewSettingViewController.onEgg(_:))))
     } // view didLoad
     
     override func viewDidAppear(animated: Bool) {

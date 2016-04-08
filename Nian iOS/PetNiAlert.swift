@@ -178,14 +178,6 @@ extension PetViewController {
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
-    func onEgg() {
-        let v = SAEgg()
-        v.delegateShare = self
-        v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-            forKeys: ["img", "title", "content", "buttonArray"])
-        v.showWithAnimation(.flip)
-    }
-    
     func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
         let id = lotteryResult.stringAttributeForKey("id")
         if self.dataArray.count >= 1 {

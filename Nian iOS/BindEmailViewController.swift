@@ -89,7 +89,7 @@ class BindEmailViewController: UIViewController {
         self.passwordTextField.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                            selector: "emailTextFieldDidChange:",
+                                            selector: #selector(BindEmailViewController.emailTextFieldDidChange(_:)),
                                             name: UITextFieldTextDidChangeNotification,
                                             object: self.emailTextField)
     }
@@ -130,7 +130,7 @@ class BindEmailViewController: UIViewController {
     
     
     @IBAction func dismissVC(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -138,12 +138,12 @@ class BindEmailViewController: UIViewController {
      <#Description#>
      */
     @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
     }
     
     
     @IBAction func onConfirmButton(sender: CustomButton) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         if self.modeType == .bind {
             if self.bindFuntionType == .confirm {
@@ -261,7 +261,7 @@ extension BindEmailViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
 
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
         
         return true
     }

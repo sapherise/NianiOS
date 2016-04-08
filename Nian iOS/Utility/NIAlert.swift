@@ -75,7 +75,7 @@ class NIAlert: UIView {
     
     private func _commonSetup() {
         if shouldTapBackgroundToDismiss {
-            let tapGesture = UITapGestureRecognizer(target: self, action: "dismissWithAnimation:")
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(NIAlert.dismissWithAnimation(_:) as (NIAlert) -> (UITapGestureRecognizer) -> ()))
             tapGesture.delegate = self
             self.addGestureRecognizer(tapGesture)
         }
@@ -144,13 +144,13 @@ class NIAlert: UIView {
         // 16.0 : 上边距; 16.0 : 下边距
         self._containerView!.setHeight(self._containerView!.height() + _cHeight + 16.0 + 16.0)   // 调整高度
         
-        for var i = 0; i < buttonArray.count; i++ {
+        for i in 0 ..< buttonArray.count {
             let _title = buttonArray[i] as! String
             let _posY = contentBottom + 44 * CGFloat(i) + 8
             
             let button = NIButton(string: _title, frame: CGRectMake((self._containerView!.frame.width - 120)/2, _posY, 120, 36))
             button.index = i
-            button.addTarget(self, action: "buttonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(NIAlert.buttonTouch(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             
             if i == 0 {
                 button.bgColor = BgColor.blue

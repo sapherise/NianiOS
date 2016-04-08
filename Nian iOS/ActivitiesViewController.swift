@@ -28,10 +28,10 @@ class ActivitiesViewController: SAViewController {
         self.setSeperateViewHeight()
         self.view.backgroundColor = UIColor.C96()
         self.automaticallyAdjustsScrollViewInsets = false
-        viewSteps.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onSteps"))
-        viewLikeSteps.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeSteps"))
-        viewLikeDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onLikeDreams"))
-        viewFollowDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFollowDreams"))
+        viewSteps.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivitiesViewController.onSteps)))
+        viewLikeSteps.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivitiesViewController.onLikeSteps)))
+        viewLikeDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivitiesViewController.onLikeDreams)))
+        viewFollowDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivitiesViewController.onFollowDreams)))
     }
     
     func onSteps() {

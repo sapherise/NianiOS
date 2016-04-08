@@ -99,8 +99,8 @@ extension InputView {
             let code = data.stringAttributeForKey("code")
             c.path = "http://img.nian.so/emoji/\(code)/\(indexPath.row + 1).gif!dream"
             c.num = indexPath.row
-            c.imageHead.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onEmojiLongPress:"))
-            c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEmojiTap:"))
+            c.imageHead.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(InputView.onEmojiLongPress(_:))))
+            c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onEmojiTap(_:))))
             c.setup()
         }
         return c

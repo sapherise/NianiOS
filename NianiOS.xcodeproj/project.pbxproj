@@ -163,10 +163,6 @@
 		12DA22661C8364150062D335 /* ProductEmojiCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DA22651C8364150062D335 /* ProductEmojiCollectionCell.xib */; };
 		12DA48B61A1C34F7002651EF /* NianCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DA48B51A1C34F7002651EF /* NianCell.xib */; };
 		12DE696519D130940006B5B5 /* Care.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE696419D130940006B5B5 /* Care.swift */; };
-		12E1C8211A146DF300453805 /* LTEasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8201A146DF300453805 /* LTEasing.swift */; };
-		12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8221A146E0500453805 /* NSString+LTMorphingLabel.swift */; };
-		12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8241A146E1500453805 /* LTMorphingLabel.swift */; };
-		12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */; };
 		12E1E5251A0EBBFD0005B129 /* DreamComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E1E5241A0EBBFD0005B129 /* DreamComment.swift */; };
 		12E315BE1B95544F0034DD7E /* SATextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E315BD1B95544F0034DD7E /* SATextField.swift */; };
 		12E4939919953DBB00F8DF32 /* Comment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E4939819953DBB00F8DF32 /* Comment.xib */; };
@@ -476,10 +472,6 @@
 		12DA48B51A1C34F7002651EF /* NianCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NianCell.xib; sourceTree = "<group>"; };
 		12DE696419D130940006B5B5 /* Care.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Care.swift; sourceTree = "<group>"; };
 		12DE699419D198C40006B5B5 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		12E1C8201A146DF300453805 /* LTEasing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTEasing.swift; sourceTree = "<group>"; };
-		12E1C8221A146E0500453805 /* NSString+LTMorphingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+LTMorphingLabel.swift"; sourceTree = "<group>"; };
-		12E1C8241A146E1500453805 /* LTMorphingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTMorphingLabel.swift; sourceTree = "<group>"; };
-		12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LTMorphingLabel+Evaporate.swift"; sourceTree = "<group>"; };
 		12E1E5241A0EBBFD0005B129 /* DreamComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamComment.swift; sourceTree = "<group>"; };
 		12E315BD1B95544F0034DD7E /* SATextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SATextField.swift; sourceTree = "<group>"; };
 		12E4939819953DBB00F8DF32 /* Comment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Comment.xib; sourceTree = "<group>"; };
@@ -1182,18 +1174,6 @@
 			name = "商品列表（表情、主题、插件）";
 			sourceTree = "<group>";
 		};
-		12E1C81F1A146DCA00453805 /* LabelAnimation */ = {
-			isa = PBXGroup;
-			children = (
-				12E1C8201A146DF300453805 /* LTEasing.swift */,
-				12E1C8221A146E0500453805 /* NSString+LTMorphingLabel.swift */,
-				12E1C8241A146E1500453805 /* LTMorphingLabel.swift */,
-				12E1C8261A146E2500453805 /* LTMorphingLabel+Evaporate.swift */,
-			);
-			name = LabelAnimation;
-			path = Refresh;
-			sourceTree = "<group>";
-		};
 		12E4939C19953DD600F8DF32 /* 回应 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1363,7 +1343,6 @@
 				1248FB9D1A91B44A00110EEF /* performSelector */,
 				1282230519C7E6710002937D /* upyun */,
 				1251D6101975729100F55389 /* Refresh */,
-				12E1C81F1A146DCA00453805 /* LabelAnimation */,
 				12652837196C6755005765D2 /* Sapherise.swift */,
 				12AAD1B41C5B1BEE007C42FD /* Color.swift */,
 				C40F0F2A1BE74708007B7C6B /* CurrentUser.swift */,
@@ -1861,7 +1840,6 @@
 				12B2F8821C79134100902208 /* Gif.swift in Sources */,
 				C4FC16031BB3D4E20036A9A0 /* RegexHelper.swift in Sources */,
 				12A1910C1C7E9D1B005668C6 /* Product.swift in Sources */,
-				12E1C8231A146E0500453805 /* NSString+LTMorphingLabel.swift in Sources */,
 				C488B47D1BFD9E8D00C735EC /* SocialMediaButton.swift in Sources */,
 				12776A121BCE668500745811 /* VVeboLabel.m in Sources */,
 				12F88AE91C858CC7001FF0C2 /* EmojiCell.swift in Sources */,
@@ -1890,7 +1868,6 @@
 				12DA224C1C82DE020062D335 /* RechargeCell.swift in Sources */,
 				1257833719B5F1A8008A1B3B /* LikeCell.swift in Sources */,
 				126D6E451C2F1E800053211C /* LSYAlbumModel.swift in Sources */,
-				12E1C8211A146DF300453805 /* LTEasing.swift in Sources */,
 				C488B48A1BFDA06700C735EC /* AccountBindViewController.swift in Sources */,
 				126D6E491C2F1E800053211C /* LSYAlbumCatalog.swift in Sources */,
 				1285FDC81BCFC69F00F52DB8 /* size.swift in Sources */,
@@ -1945,7 +1922,6 @@
 				12DA22601C8331D90062D335 /* ProductListCell.swift in Sources */,
 				12FB48BC196AE7A20026DD51 /* Home.swift in Sources */,
 				C486FD4A1C04430A009F1F90 /* ConstraintGroup.swift in Sources */,
-				12E1C8271A146E2500453805 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				12F678A61BAD5533009EADC0 /* Reachability.swift in Sources */,
 				C488B4791BFD9E8D00C735EC /* LogOrRegViewController.swift in Sources */,
 				C486FD501C04430A009F1F90 /* Expression.swift in Sources */,
@@ -1953,7 +1929,6 @@
 				322DB94C1A0C9E95005FD6AE /* Api.swift in Sources */,
 				C43680161BDA411C00D51516 /* CustomButton.swift in Sources */,
 				12CF0AC41C84527000189180 /* PromoCell.swift in Sources */,
-				12E1C8251A146E1500453805 /* LTMorphingLabel.swift in Sources */,
 				12FB48C9196AE8010026DD51 /* SAHttpRequest.swift in Sources */,
 				1231A07D19B464AD00BD425F /* StepCell.swift in Sources */,
 				1243C6F71B4F60A0007F741C /* Card.swift in Sources */,
@@ -2151,47 +2126,25 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/NianiOS/Utility/Alipay",
-					"$(PROJECT_DIR)/NianiOS/Utility/QQ",
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
+					"$(PROJECT_DIR)/Alipay",
+					"$(PROJECT_DIR)/QQ",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/Base64\"",
+					"\"${PODS_ROOT}/Headers/Public/FLAnimatedImage\"",
+					"\"${PODS_ROOT}/Headers/Public/NSData+MD5Digest\"",
+					"\"${PODS_ROOT}/Headers/Public/RongCloudIMLib\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage-ProgressView\"",
+					"\"${PODS_ROOT}/Headers/Public/UMengAnalytics\"",
+					"$(PROJECT_DIR)/Alipay",
+					"$(PROJECT_DIR)/QQ",
+				);
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2201,6 +2154,8 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/WeiboSharing",
+					"$(PROJECT_DIR)/QQ",
+					"$(PROJECT_DIR)/Alipay",
 				);
 				LLVM_LTO = NO;
 				New_Setting = "";
@@ -2244,47 +2199,25 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/Alipay,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility/QQSharing,
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
-					"$(PROJECT_DIR)/NianiOS/Utility/Alipay",
-					"$(PROJECT_DIR)/NianiOS/Utility/QQ",
-					"$(PROJECT_DIR)/Nian",
-					iOS/Utility,
+					"$(PROJECT_DIR)/Alipay",
+					"$(PROJECT_DIR)/QQ",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/Base64\"",
+					"\"${PODS_ROOT}/Headers/Public/FLAnimatedImage\"",
+					"\"${PODS_ROOT}/Headers/Public/NSData+MD5Digest\"",
+					"\"${PODS_ROOT}/Headers/Public/RongCloudIMLib\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage-ProgressView\"",
+					"\"${PODS_ROOT}/Headers/Public/UMengAnalytics\"",
+					"$(PROJECT_DIR)/Alipay",
+					"$(PROJECT_DIR)/QQ",
+				);
 				INFOPLIST_FILE = "Nian iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2294,6 +2227,8 @@
 					"$(PROJECT_DIR)/WeChatSharing/Resources",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/WeiboSharing",
+					"$(PROJECT_DIR)/QQ",
+					"$(PROJECT_DIR)/Alipay",
 				);
 				LLVM_LTO = NO;
 				New_Setting = "";

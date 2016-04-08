@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6DU-gU-wTt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6DU-gU-wTt">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Welcome View Controller-->
         <scene sceneID="6sX-07-cJp">
             <objects>
-                <viewController storyboardIdentifier="welcomeViewController" id="6DU-gU-wTt" customClass="WelcomeViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="welcomeViewController" id="6DU-gU-wTt" customClass="WelcomeViewController" customModule="NianiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CBm-pb-DqJ"/>
                         <viewControllerLayoutGuide type="bottom" id="ANd-5L-1A6"/>
@@ -40,7 +40,7 @@
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zit-kT-Azf" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zit-kT-Azf" customClass="SocialMediaButton" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="278" y="532" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="5u3-NV-ypy"/>
@@ -53,7 +53,7 @@
                                     <action selector="logInViaQQ:" destination="6DU-gU-wTt" eventType="touchUpInside" id="Tmb-Rb-ioE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbp-he-Xhq" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbp-he-Xhq" customClass="SocialMediaButton" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="72" y="532" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Z9c-N6-AH2"/>
@@ -66,7 +66,7 @@
                                     <action selector="logInViaWechat:" destination="6DU-gU-wTt" eventType="touchUpInside" id="0gb-gn-IIR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVt-bD-UmS" customClass="SocialMediaButton" customModule="Nian_iOS" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVt-bD-UmS" customClass="SocialMediaButton" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="484" y="532" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="mvK-NQ-KIs"/>
@@ -172,7 +172,7 @@
         <!--Log Or Reg View Controller-->
         <scene sceneID="Cv3-Tf-ZBs">
             <objects>
-                <viewController storyboardIdentifier="logOrRegViewController" id="PWr-CO-SWy" customClass="LogOrRegViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="logOrRegViewController" id="PWr-CO-SWy" customClass="LogOrRegViewController" customModule="NianiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w2Z-ZY-yki"/>
                         <viewControllerLayoutGuide type="bottom" id="sjY-EG-EGh"/>
@@ -193,7 +193,7 @@
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wH5-fu-1YY" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="电子邮箱" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wH5-fu-1YY" customClass="NITextfield" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="131" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -203,7 +203,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zzw-fx-yPi" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zzw-fx-yPi" customClass="NITextfield" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="131" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -213,7 +213,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-T7-xRk" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-T7-xRk" customClass="NITextfield" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="131" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -223,7 +223,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5B-GQ-h3I" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5B-GQ-h3I" customClass="CustomButton" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="199" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -356,7 +356,7 @@
         <!--Nickname View Controller-->
         <scene sceneID="R8Q-KC-ywo">
             <objects>
-                <viewController id="uAC-Da-Fmz" customClass="NicknameViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="uAC-Da-Fmz" customClass="NicknameViewController" customModule="NianiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="giK-YF-WyX"/>
                         <viewControllerLayoutGuide type="bottom" id="t0d-Oi-Ovw"/>
@@ -374,7 +374,7 @@
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vSO-xV-oKF" customClass="NITextfield" customModule="Nian_iOS" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vSO-xV-oKF" customClass="NITextfield" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="129" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -384,7 +384,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiQ-bp-gha" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CiQ-bp-gha" customClass="CustomButton" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="197" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.42352941179999998" green="0.7725490196" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -483,7 +483,7 @@
         <!--Privacy View Controller-->
         <scene sceneID="FeC-x0-Tp1">
             <objects>
-                <viewController id="ENu-4F-Myn" customClass="PrivacyViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ENu-4F-Myn" customClass="PrivacyViewController" customModule="NianiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vgb-lL-Pq9"/>
                         <viewControllerLayoutGuide type="bottom" id="j4c-hi-r1s"/>
@@ -545,7 +545,7 @@
         <!--Pattern View Controller-->
         <scene sceneID="srH-FW-NXF">
             <objects>
-                <viewController storyboardIdentifier="patternViewController" id="QFM-R0-FhJ" customClass="PatternViewController" customModule="Nian_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="patternViewController" id="QFM-R0-FhJ" customClass="PatternViewController" customModule="NianiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uUf-sE-s8k"/>
                         <viewControllerLayoutGuide type="bottom" id="yHY-SX-BJR"/>
@@ -683,7 +683,7 @@
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN4-5f-XRn" customClass="CustomButton" customModule="Nian_iOS" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN4-5f-XRn" customClass="CustomButton" customModule="NianiOS" customModuleProvider="target">
                                 <rect key="frame" x="160" y="420" width="280" height="44"/>
                                 <color key="backgroundColor" red="0.42352941176470588" green="0.77254901960784317" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>

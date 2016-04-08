@@ -35,7 +35,7 @@ class LSYAlbumPicker: SAViewController {
         if let _title = self.group.valueForProperty(ALAssetsGroupPropertyName) as? String {
             _setTitle(_title)
         }
-        setBarButtonImage("newOK", actionGesture: "onOK")
+        setBarButtonImage("newOK", actionGesture: #selector(LSYAlbumPicker.onOK))
         self.view.backgroundColor = UIColor.blackColor()
         
         let widthImage = (globalWidth - padding * 2) / 3

@@ -70,7 +70,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
-                self.page++
+                self.page += 1
                 if ( data.objectForKey("total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
@@ -93,7 +93,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 }
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
-                self.page++
+                self.page += 1
             }
         })
     }

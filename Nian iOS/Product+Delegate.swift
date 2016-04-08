@@ -31,7 +31,7 @@ extension Product {
             let c: ProductEmojiCollectionCell! = collectionView.dequeueReusableCellWithReuseIdentifier("ProductEmojiCollectionCell", forIndexPath: indexPath) as? ProductEmojiCollectionCell
             c.data = dataArray[indexPath.row] as! NSDictionary
             c.num = indexPath.row
-            c.imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onGif:"))
+            c.imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(Product.onGif(_:))))
             c.setup()
             return c
         }
@@ -287,18 +287,5 @@ extension Product {
         niAlertResult.delegate = self
         niAlertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
         niAlert.dismissWithAnimationSwtich(niAlertResult)
-    }
-    
-    /* 微信购买会员回调 */
-    func onWechatResult(sender: NSNotification) {
-        if let object = sender.object as? String {
-            if object == "0" {
-                payMemberSuccess()
-            } else if object == "-1" {
-                payMemberFailed()
-            } else {
-                payMemberCancel()
-            }
-        }
     }
 }

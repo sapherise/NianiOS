@@ -217,10 +217,10 @@ class SAEgg: NIAlert, NIAlertDelegate {
     
     func setupEgg(x: CGFloat, named: String) -> UIButton {
         let button = UIButton(frame: CGRectMake(x, 40, 64, 80))
-        button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDown)
-        button.addTarget(self, action: "onEggTouchDown:", forControlEvents: UIControlEvents.TouchDragInside)
-        button.addTarget(self, action: "onEggTouchUp:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.addTarget(self, action: "onEggTouchCancel:", forControlEvents: UIControlEvents.TouchDragOutside)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchDown(_:)), forControlEvents: UIControlEvents.TouchDown)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchDown(_:)), forControlEvents: UIControlEvents.TouchDragInside)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchUp(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchCancel(_:)), forControlEvents: UIControlEvents.TouchDragOutside)
         button.setBackgroundImage(UIImage(named: named), forState: UIControlState())
         button.setBackgroundImage(UIImage(named: named), forState: UIControlState.Highlighted)
         button.layer.cornerRadius = 8

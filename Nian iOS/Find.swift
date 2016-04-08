@@ -54,7 +54,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let btnPromo = UIButton()
         btnPromo.setButtonNice("发给伙伴")
         btnPromo.frame = CGRectMake(globalWidth/2-50, imagePromo.bottom() + 16, 100, 36)
-        btnPromo.addTarget(self, action: "sharePromo", forControlEvents: UIControlEvents.TouchUpInside)
+        btnPromo.addTarget(self, action: #selector(FindViewController.sharePromo), forControlEvents: UIControlEvents.TouchUpInside)
         self.viewPromo.addSubview(btnPromo)
         self.view.addSubview(self.viewPromo)
         
@@ -101,16 +101,16 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         // 顶部
         let nib2 = NSBundle.mainBundle().loadNibNamed("FindCellTop", owner: self, options: nil) as NSArray
         self.viewFindCellTop = nib2.objectAtIndex(0) as! FindCellTop
-        self.viewFindCellTop.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
-        self.viewFindCellTop.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
-        self.viewFindCellTop.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onTopClick:"))
+        self.viewFindCellTop.viewLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FindViewController.onTopClick(_:))))
+        self.viewFindCellTop.viewMiddle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FindViewController.onTopClick(_:))))
+        self.viewFindCellTop.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FindViewController.onTopClick(_:))))
         self.viewFindCellTop.imageLeft.image = UIImage(named: arrSelected[0])
         self.viewFindCellTop.frame.origin.y = 64
         self.view.addSubview(self.viewFindCellTop)
         
         // 底部
-        self.tableView.tableFooterView = setupFooter("连接微博", funcButton: "onWeiboClick")
-        self.tableViewPhone.tableFooterView = setupFooter("开启通讯录", funcButton: "onPhoneClick:")
+        self.tableView.tableFooterView = setupFooter("连接微博", funcButton: #selector(FindViewController.onWeiboClick))
+        self.tableViewPhone.tableFooterView = setupFooter("开启通讯录", funcButton: #selector(FindViewController.onPhoneClick(_:)))
         
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.tableViewPhone)
@@ -165,13 +165,13 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         if tableView == self.tableView {
             let data = self.dataArray[index] as! NSDictionary
             cell!.data = data
-            cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
+            cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FindViewController.onUserClick(_:))))
             cell!.setup()
             return cell!
         }else{
             let data = self.dataArrayPhone[index] as! NSDictionary
             cell!.data = data
-            cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick:"))
+            cell!.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FindViewController.onUserClick(_:))))
             cell!.setup()
             return cell!
         }
@@ -199,8 +199,8 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             self.transPhone()
         }else{
             sender.setTitle("发现通讯录", forState: UIControlState())
-            sender.removeTarget(self, action: "onPhoneClick:", forControlEvents: UIControlEvents.TouchUpInside)
-            sender.addTarget(self, action: "onPhoneFindClick", forControlEvents: UIControlEvents.TouchUpInside)
+            sender.removeTarget(self, action: #selector(FindViewController.onPhoneClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            sender.addTarget(self, action: #selector(FindViewController.onPhoneFindClick), forControlEvents: UIControlEvents.TouchUpInside)
         }
     }
     
@@ -261,7 +261,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "weibo:", name: "weibo", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FindViewController.weibo(_:)), name: "weibo", object: nil)
     }
     
     func weibo(sender: NSNotification) {

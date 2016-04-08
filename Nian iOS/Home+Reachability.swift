@@ -9,7 +9,7 @@
 import Foundation
 extension HomeViewController {
     func setupReachability() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityChanged:", name: ReachabilityChangedNotification, object: reachability)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.reachabilityChanged(_:)), name: ReachabilityChangedNotification, object: reachability)
         reachability?.startNotifier()
         if let reachability = reachability {
             let status = reachability.currentReachabilityString

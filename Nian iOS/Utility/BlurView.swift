@@ -237,7 +237,7 @@ extension ILTranslucentView {
                 if view == self.nonExistentSubview {
                     break
                 }
-                index++
+                index += 1
             }
             
             if index < array.count {

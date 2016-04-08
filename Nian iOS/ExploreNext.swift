@@ -75,7 +75,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            self.page++
+                            self.page += 1
                             self.isLoading = false
                         }
                     }
@@ -96,7 +96,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            self.page++
+                            self.page += 1
                             self.isLoading = false
                         }
                     }
@@ -135,7 +135,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            self.page++
+                            self.page += 1
                             self.isLoading = false
                         }
                     }
@@ -156,7 +156,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
                             self.collectionView.footerEndRefreshing()
-                            self.page++
+                            self.page += 1
                             self.isLoading = false
                         }
                     }

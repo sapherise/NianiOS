@@ -50,7 +50,7 @@ class LetterCell: UITableViewCell {
         if let v = Int(id) {
             self.imageHead.tag = v
         }
-        self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserClick"))
+        self.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LetterCell.onUserClick)))
         self.labelTitle.text = title
         self.labelContent.text = content
         self.lastdate?.text = lastdate

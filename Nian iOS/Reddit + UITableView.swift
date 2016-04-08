@@ -46,13 +46,13 @@ extension RedditViewController {
         // 热门添加更多按钮
         let imageMoreEditor = UIImageView(frame: CGRectMake(globalWidth - 48 - 16, 8, 48, 48))
         imageMoreEditor.image = UIImage(named: "discover_more_48")
-        imageMoreEditor.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onEditor"))
+        imageMoreEditor.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(RedditViewController.onEditor)))
         imageMoreEditor.userInteractionEnabled = true
         imageMoreEditor.backgroundColor = UIColor.whiteColor()
         tableViewHot.addSubview(imageMoreEditor)
         let imageMoreNewest = UIImageView(frame: CGRectMake(globalWidth - 48 - 16, 8 + SIZE_EDITOR_TOTAL, 48, 48))
         imageMoreNewest.image = UIImage(named: "discover_more_48")
-        imageMoreNewest.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onNewest"))
+        imageMoreNewest.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(RedditViewController.onNewest)))
         imageMoreNewest.userInteractionEnabled = true
         imageMoreNewest.backgroundColor = UIColor.whiteColor()
         tableViewHot.addSubview(imageMoreNewest)
@@ -130,7 +130,7 @@ extension RedditViewController {
                     }
                 }
             }
-            Api.getExploreNewHot(page: "\(pageHot++)", callback: { json in
+            Api.getExploreNewHot(page: "\(pageHot)", callback: { json in
                 if json != nil {
                     let arr = json!.objectForKey("data") as! NSArray
                     if clear {
@@ -159,6 +159,7 @@ extension RedditViewController {
                     self.tableViewHot.footerEndRefreshing()
                     self.tableViewHot.reloadData()
                     self.isLoadingHot = false
+                    self.pageHot += 1
                 }
             })
         }

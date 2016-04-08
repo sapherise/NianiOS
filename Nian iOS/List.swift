@@ -41,7 +41,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         if type == ListType.Members {
             _setTitle("成员")
             if willShowInviteButton {
-                setBarButtonImage("addFriend", actionGesture: "onInvite")
+                setBarButtonImage("addFriend", actionGesture: #selector(List.onInvite))
             }
         } else if type == ListType.Invite {
             _setTitle("邀请")
@@ -152,7 +152,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                                     self.dataArray.addObject(item)
                                 }
                             }
-                            self.page++
+                            self.page += 1
                             self.tableView.reloadData()
                             self.tableView.headerEndRefreshing()
                             self.tableView.footerEndRefreshing()
@@ -175,7 +175,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                                     self.dataArray.addObject(item)
                                 }
                             }
-                            self.page++
+                            self.page += 1
                             self.tableView.reloadData()
                             self.tableView.headerEndRefreshing()
                             self.tableView.footerEndRefreshing()

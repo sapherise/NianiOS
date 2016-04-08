@@ -98,7 +98,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 self.tableView?.reloadData()
                 self.tableView?.headerEndRefreshing()
                 self.tableView?.footerEndRefreshing()
-                self.page++
+                self.page += 1
             }
         }
     }
@@ -122,7 +122,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         let index = indexPath.row
         let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
-        cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userclick:"))
+        cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MeNextViewController.userclick(_:))))
         if indexPath.row == self.dataArray.count - 1 {
             cell!.viewLine.hidden = true
         }else{

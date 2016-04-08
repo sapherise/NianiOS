@@ -61,7 +61,7 @@ extension ExploreViewController {
             page = 1
         }
         
-        Api.getExploreFollow("\(page++)", callback: { json in
+        Api.getExploreFollow("\(page)", callback: { json in
             if json != nil {
                 globalTabhasLoaded[0] = true
                 if clear {
@@ -94,6 +94,7 @@ extension ExploreViewController {
                     self.tableView.footerEndRefreshing()
                     self.tableView.reloadData()
                 }
+                self.page += 1
             }
         })
     }
@@ -102,7 +103,7 @@ extension ExploreViewController {
         if clear {
             pageDynamic = 1
         }
-        Api.getExploreDynamic("\(pageDynamic++)", callback: {
+        Api.getExploreDynamic("\(pageDynamic)", callback: {
             json in
             if json != nil {
                 globalTabhasLoaded[1] = true
@@ -130,6 +131,7 @@ extension ExploreViewController {
                     self.tableViewDynamic.footerEndRefreshing()
                     self.tableViewDynamic.reloadData()
                 }
+                self.pageDynamic += 1
             }
         })
     }

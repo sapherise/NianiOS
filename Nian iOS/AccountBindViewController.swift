@@ -68,8 +68,8 @@ class AccountBindViewController: SAViewController, UIActionSheetDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleBindWeibo:", name: "weibo", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleBindWechat:", name: "Wechat", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AccountBindViewController.handleBindWeibo(_:)), name: "weibo", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AccountBindViewController.handleBindWechat(_:)), name: "Wechat", object: nil)
     }
     
     

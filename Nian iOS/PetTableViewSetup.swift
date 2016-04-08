@@ -33,10 +33,11 @@ extension PetViewController: NIAlertDelegate {
         
         let viewHeader = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
         viewHeader.userInteractionEnabled = true
-        viewHeader.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo"))
+        viewHeader.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PetViewController.showPetInfo)))
+        
         let viewFooter = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
         viewFooter.userInteractionEnabled = true
-        viewFooter.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPetInfo"))
+        viewFooter.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PetViewController.showPetInfo)))
         tableViewPet.tableHeaderView = viewHeader
         tableViewPet.tableFooterView = viewFooter
         
@@ -47,7 +48,7 @@ extension PetViewController: NIAlertDelegate {
         
         self.btnUpgrade = NIButton(string: "升级", frame:  CGRectMake((globalWidth - 100)/2, 252, 100, 36))
         self.btnUpgrade.bgColor = BgColor.blue
-        self.btnUpgrade.addTarget(self, action: "toUpgrade", forControlEvents: UIControlEvents.TouchUpInside)
+        self.btnUpgrade.addTarget(self, action: #selector(PetViewController.toUpgrade), forControlEvents: UIControlEvents.TouchUpInside)
         tableView.addSubview(self.btnUpgrade)
         
         labelName = UILabel(frame: CGRectMake(globalWidth/2 - 160, 32, 320, 24))
@@ -118,11 +119,7 @@ extension PetViewController: NIAlertDelegate {
                 self.btnUpgrade.bgColor = BgColor.grey
             }
             labelLeft.text = "礼物：\(energy)"
-            labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onGift"))
-            
-            
-            
-            
+            labelLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onGift)))
             
             if owned == "1" {
                 imageView.setPet("http://img.nian.so/pets/\(image)!d")
@@ -142,7 +139,7 @@ extension PetViewController: NIAlertDelegate {
         let _plankton = Cookies.get("plankton") as? String
         let plankton = _plankton == nil ? "0" : _plankton!
         labelRight.text = "浮游：\(plankton)"
-        labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onPlankton"))
+        labelRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onPlankton)))
         
         Api.getPlankton() { json in
             if let j = json as? NSDictionary {

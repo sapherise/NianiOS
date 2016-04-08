@@ -44,7 +44,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onWechatResult:", name: "onWechatResult", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Product.onWechatResult(_:)), name: "onWechatResult", object: nil)
     }
     
     func setup() {
@@ -133,7 +133,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         btnMain.layer.cornerRadius = 24
         btnMain.layer.masksToBounds = true
         btnMain.titleLabel?.font = UIFont.systemFontOfSize(16)
-        btnMain.addTarget(self, action: "onClick", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.addTarget(self, action: #selector(Product.onClick), forControlEvents: UIControlEvents.TouchUpInside)
         scrollView.addSubview(btnMain)
         
         /* 根据是否拥有来设置按钮状态 */
@@ -297,6 +297,19 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         } else {
             btnMain.backgroundColor = UIColor.WindowColor()
             btnMain.setTitleColor(UIColor.secAuxiliaryColor(), forState: UIControlState())
+        }
+    }
+    
+    /* 微信购买会员回调 */
+    func onWechatResult(sender: NSNotification) {
+        if let object = sender.object as? String {
+            if object == "0" {
+                payMemberSuccess()
+            } else if object == "-1" {
+                payMemberFailed()
+            } else {
+                payMemberCancel()
+            }
         }
     }
 }

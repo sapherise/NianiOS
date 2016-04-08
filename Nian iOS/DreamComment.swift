@@ -73,7 +73,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         
         self.tableView.registerNib(UINib(nibName:"Comment", bundle: nil), forCellReuseIdentifier: "Comment")
         self.tableView.registerNib(UINib(nibName:"CommentEmoji", bundle: nil), forCellReuseIdentifier: "CommentEmoji")
-        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onCellTap:"))
+        self.tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCommentViewController.onCellTap(_:))))
         self.view.addSubview(self.tableView)
         
         self.viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 56))
@@ -181,7 +181,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                         if let _d = comment as? NSDictionary {
                             let d = self.dataDecode(_d)
                             self.dataArray.addObject(d)
-                            i++
+                            i += 1
                         }
                     }
                     
@@ -196,14 +196,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                             self.tableView.reloadData()
                             let h = self.tableView.contentSize.height - heightBefore - 2
                             self.tableView.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
-                            self.page++
+                            self.page += 1
                             self.isAnimating = false
                         })
                     } else {
                         self.tableView.reloadData()
                         let h = self.tableView.contentSize.height - self.tableView.height()
                         self.tableView.setContentOffset(CGPointMake(0, max(h, 0)), animated: false)
-                        self.page++
+                        self.page += 1
                         self.isAnimating = false
                     }
                 }
@@ -232,8 +232,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
-            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onBubbleClick:"))
-            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
+            c.labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCommentViewController.onBubbleClick(_:))))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(DreamCommentViewController.onMore(_:))))
             c.setup()
             return c
         } else {
@@ -241,7 +241,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             let c = tableView.dequeueReusableCellWithIdentifier("CommentEmoji", forIndexPath: indexPath) as! CommentEmoji
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
-            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "onMore:"))
+            c.labelHolder.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(DreamCommentViewController.onMore(_:))))
             c.setup()
             return c
         }
@@ -373,7 +373,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         return self.dataArray.count
     }
     
-    func keyboardWasShown(notification: NSNotification) {
+    override func keyboardWasShown(notification: NSNotification) {
         var info: Dictionary = notification.userInfo!
         let keyboardSize: CGSize = (info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         keyboardHeight = max(keyboardSize.height, keyboardHeight)
@@ -384,7 +384,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         keyboardView.labelPlaceHolder.hidden = true
     }
     
-    func keyboardWillBeHidden(notification: NSNotification){
+    override func keyboardWillBeHidden(notification: NSNotification){
         if !Locking {
             keyboardHeight = 0
             keyboardView.resizeTableView()

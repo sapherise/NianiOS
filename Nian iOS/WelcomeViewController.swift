@@ -47,7 +47,7 @@ class WelcomeViewController: UIViewController {
             button.titleLabel?.font = UIFont.systemFontOfSize(10)
             button.setTitle("QQ", forState: UIControlState())
             button.setTitleColor(UIColor.blackColor(), forState: UIControlState())
-            button.addTarget(self, action: "qq", forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(WelcomeViewController.qq), forControlEvents: UIControlEvents.TouchUpInside)
             self.view.addSubview(button)
             
             let imageSize = button.imageView?.frame.size
@@ -85,8 +85,8 @@ class WelcomeViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWeibo:", name: "weibo", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleLogInViaWechat:", name: "Wechat", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WelcomeViewController.handleLogInViaWeibo(_:)), name: "weibo", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WelcomeViewController.handleLogInViaWechat(_:)), name: "Wechat", object: nil)
         
     }
     

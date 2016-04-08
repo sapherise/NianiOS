@@ -33,7 +33,7 @@ class CommentImage: UITableViewCell {
         imageHead.setY(heightCell - 32 - 4)
         labelName.setY(heightCell - 22)
         
-        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onHead"))
+        imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CommentImage.onHead)))
         
         
         if uid == SAUid() {
@@ -63,7 +63,7 @@ class CommentImage: UITableViewCell {
             }
         }
         
-        labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onImage"))
+        labelHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CommentImage.onImage)))
     }
     
     override func prepareForReuse() {

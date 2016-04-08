@@ -25,7 +25,7 @@ extension Recharge {
         c.numMax = dataArray.count
         c.setup()
         c.btnMain.tag = indexPath.row
-        c.btnMain.addTarget(self, action: "onClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        c.btnMain.addTarget(self, action: #selector(self.onClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         return c
     }
     

@@ -82,7 +82,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
 //        var safeshell = uidKey.objectForKey(kSecValueData) as! String
         
         if self.Id != safeuid {
-            let moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: "userMore")
+            let moreButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(PlayerViewController.userMore))
             moreButton.image = UIImage(named:"more")
             self.navigationItem.rightBarButtonItems = [ moreButton ]
             self.dreamowner = 0
@@ -112,8 +112,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         self.tableViewStep.showsVerticalScrollIndicator = false
         self.tableViewStep.hidden = true
         
-        self.topCell.labelMenuLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))
-        self.topCell.labelMenuRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onMenuClick:"))
+        self.topCell.labelMenuLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.onMenuClick(_:))))
+        self.topCell.labelMenuRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.onMenuClick(_:))))
         self.view.addSubview(self.tableViewStep)
         self.view.addSubview(self.tableViewDream)
         self.view.addSubview(self.topCell)
@@ -259,7 +259,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 }
                 self.tableViewDream.reloadData()
                 self.tableViewStep.footerEndRefreshing()
-                self.page++
+                self.page += 1
             }
         }
     }
@@ -295,7 +295,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 self.currentDataArray = self.dataArrayStep
                 self.tableViewStep.reloadData()
                 self.tableViewStep.footerEndRefreshing()
-                self.pageStep++
+                self.pageStep += 1
             }
         }
     }
@@ -318,19 +318,19 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 let index = indexPath.row * 3
                 if index<self.dataArray.count {
                     c!.data1 = self.dataArray[index] as! NSDictionary
-                    c!.img1?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
+                    c!.img1?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.dreamclick(_:))))
                 }else{
                     c!.data1 = dictionary
                 }
                 if index+1<self.dataArray.count {
                     c!.data2 = self.dataArray[index + 1] as! NSDictionary
-                    c!.img2?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
+                    c!.img2?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.dreamclick(_:))))
                 }else{
                     c!.data2 = dictionary
                 }
                 if index+2<self.dataArray.count {
                     c!.data3 = self.dataArray[index + 2] as! NSDictionary
-                    c!.img3?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dreamclick:"))
+                    c!.img3?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.dreamclick(_:))))
                 }else{
                     c!.data3 = dictionary
                 }
@@ -418,7 +418,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 self.topCell.UserFo.setWidth(foWidth)
                 self.topCell.UserFoed.setWidth(foedWidth)
                 self.topCell.UserHead.setHead("\(theUid)")
-                self.topCell.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onUserHeadClick:"))
+                self.topCell.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.onUserHeadClick(_:))))
                 let vip = data.stringAttributeForKey("vip")
                 self.topCell.imageBadge.setType(vip)
                 
@@ -430,16 +430,16 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 }else{
                     self.navView.setCover(AllCoverURL)
                 }
-                self.topCell.UserFo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoClick"))
-                self.topCell.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onFoedClick"))
+                self.topCell.UserFo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.onFoClick)))
+                self.topCell.UserFoed.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PlayerViewController.onFoedClick)))
                 if isfo == "1" {
-                    self.topCell.btnMain.addTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
+                    self.topCell.btnMain.addTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                     self.topCell.btnMain.setTitle("已关注", forState: UIControlState.Normal)
                 }else{
-                    self.topCell.btnMain.addTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
+                    self.topCell.btnMain.addTarget(self, action: #selector(PlayerViewController.SAfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                     self.topCell.btnMain.setTitle("关注", forState: UIControlState.Normal)
                 }
-                self.topCell.btnLetter.addTarget(self, action: "SALetter:", forControlEvents: UIControlEvents.TouchUpInside)
+                self.topCell.btnLetter.addTarget(self, action: #selector(PlayerViewController.SALetter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 self.topCell.btnLetter.setTitle("写信", forState: UIControlState.Normal)
                 
                 let safeuid = SAUid()
@@ -448,9 +448,9 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.topCell.btnLetter.hidden = true
                     self.topCell.btnMain.setTitle("设置", forState: UIControlState())
                     self.topCell.btnMain.setX(globalWidth/2 - 50)
-                    self.topCell.btnMain.removeTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
-                    self.topCell.btnMain.removeTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
-                    self.topCell.btnMain.addTarget(self, action: "SASettings", forControlEvents: UIControlEvents.TouchUpInside)
+                    self.topCell.btnMain.removeTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                    self.topCell.btnMain.removeTarget(self, action: #selector(PlayerViewController.SAfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                    self.topCell.btnMain.addTarget(self, action: #selector(PlayerViewController.SASettings), forControlEvents: UIControlEvents.TouchUpInside)
                 }
                 if cover == "" {
                     self.topCell.BGImage.contentMode = UIViewContentMode.ScaleAspectFill
@@ -538,8 +538,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     
     func SAfo(sender:UIButton){
         sender.setTitle("已关注", forState: UIControlState.Normal)
-        sender.removeTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
-        sender.addTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
+        sender.removeTarget(self, action: #selector(PlayerViewController.SAfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        sender.addTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         let textFoed = SAReplace(self.topCell.UserFoed.text!, before: " 听众", after: "") as String
         if let num = Int(textFoed) {
             self.topCell.UserFoed.text = "\(num + 1) 听众"
@@ -550,8 +550,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
     
     func SAunfo(sender:UIButton){
         sender.setTitle("关注", forState: UIControlState.Normal)
-        sender.removeTarget(self, action: "SAunfo:", forControlEvents: UIControlEvents.TouchUpInside)
-        sender.addTarget(self, action: "SAfo:", forControlEvents: UIControlEvents.TouchUpInside)
+        sender.removeTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        sender.addTarget(self, action: #selector(PlayerViewController.SAfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         let textFoed = SAReplace(self.topCell.UserFoed.text!, before: " 听众", after: "") as String
         if let num = Int(textFoed) {
             self.topCell.UserFoed.text = "\(num - 1) 听众"
