@@ -46,7 +46,7 @@ class SettingModel: NSObject {
     /**
      绑定第三方账号
      */
-    class func bindThirdAccount(id: String, name: String, nameFrom3rd: String, type: String, callback: NetworkClosure) {
+    class func bindThirdAccount(id: String, nameFrom3rd: String, type: String, callback: NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.post("oauth/auth/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
                                                 content: ["nickname": "\(nameFrom3rd)", "auth_id": "\(id)", "type": "\(type)"],
                                                 callback: callback)

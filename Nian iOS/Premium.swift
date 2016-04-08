@@ -9,10 +9,14 @@
 import Foundation
 import UIKit
 
-class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource {
+class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIAlertDelegate {
     
     var tableView: UITableView!
     var dataArray = NSMutableArray()
+    var alert: NIAlert!
+    var alertError: NIAlert!
+    var alertErrorWechat: NIAlert!
+    var price: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +25,8 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func setup() {
-        dataArray = [["title": "购买优惠", "content": "念币商店表情、主题 30% 的折扣。", "image": "vip_discount"], ["title": "身份标识", "content": "每条进展都有好看的会员标识。", "image": "vip_mark"], ["title": "表达你的喜爱", "content": "蟹蟹你对念的支持 :))", "image": "vip_love"]]
+        dataArray = [["title": "关于奖励", "content": "创造好内容时，好友会以奖励的方式支持你。", "image": "vip_discount"], ["title": "关于提现", "content": "你可以把奖励以人民币的方式取出。", "image": "vip_mark"], ["title": "提现规则", "content": "提现金额不小于 20 元，手续费为 20%。", "image": "vip_love"]]
+        price = 301.56
         
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         tableView.delegate = self
@@ -38,8 +43,10 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource {
             let c: CoinProductTop! = tableView.dequeueReusableCellWithIdentifier("CoinProductTop", forIndexPath: indexPath) as? CoinProductTop
             c.setup()
             c.labelTitle.text = "余额"
-            c.labelContent.text = "¥ 301.41"
+            c.labelContent.text = "¥\(price)"
             c.btn.setTitle("提现", forState: UIControlState())
+            c.btn.removeTarget(nil, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+            c.btn.addTarget(self, action: #selector(self.withdraw), forControlEvents: UIControlEvents.TouchUpInside)
             c.viewLine.setX(40)
             c.viewLine.setWidth(globalWidth - 80)
             return c
@@ -48,6 +55,70 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource {
             c.data = dataArray[indexPath.row] as! NSDictionary
             c.setup()
             return c
+        }
+    }
+    
+    func withdraw() {
+        print("提现")
+        alert = NIAlert()
+        alert.delegate = self
+        alert.dict = ["img": UIImage(named: "pay_wallet")!, "title": "提现", "content": "要将所有余额\n提现到微信账号吗？", "buttonArray": [" 嗯！", " 不！"]]
+        alert.showWithAnimation(showAnimationStyle.flip)
+    }
+    
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        if niAlert == alert {
+            if didselectAtIndex == 0 {
+                /* 提现，判断是否超过 20 */
+                if price >= 20 {
+                    /* 获取 */
+                    SettingModel.getUserAllOauth({ (task, json, error) in
+                        if let _ = error {
+                            self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            if json != nil {
+                                if let data = json!.objectForKey("data") as? NSDictionary {
+                                    let wechatUserName = data.stringAttributeForKey("wechat_username")
+                                    if wechatUserName == "" {
+                                        print("未绑定微信，去前往绑定")
+                                        self.alertErrorWechat = NIAlert()
+                                        self.alertErrorWechat.delegate = self
+                                        self.alertErrorWechat.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "需要绑定一个微信\n才能提现", "buttonArray": ["去绑定"]]
+                                        self.alert.dismissWithAnimationSwtich(self.alertErrorWechat)
+                                    } else {
+                                        print("将提现到 \(wechatUserName) 账号，确定吗")
+                                    }
+                                }
+                            }
+                        }
+                    })
+                } else {
+                    /* 如果余额小于 20 */
+                    alertError = NIAlert()
+                    alertError.delegate = self
+                    alertError.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "余额要不小于 20 元\n才能提出", "buttonArray": ["哦"]]
+                    alert.dismissWithAnimationSwtich(alertError)
+                }
+            } else {
+                alert.dismissWithAnimation(.normal)
+            }
+        } else if niAlert == alertError {
+            alert.dismissWithAnimation(.normal)
+            alertError.dismissWithAnimation(.normal)
+        } else if niAlert == alertErrorWechat {
+            alert.dismissWithAnimation(.normal)
+            alertErrorWechat.dismissWithAnimation(.normal)
+            let vc = AccountBindViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        if niAlert == alert {
+            alert.dismissWithAnimation(.normal)
+        } else if niAlert == alertError {
+            alert.dismissWithAnimation(.normal)
+            alertError.dismissWithAnimation(.normal)
         }
     }
     

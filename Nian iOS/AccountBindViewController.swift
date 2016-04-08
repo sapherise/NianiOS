@@ -20,7 +20,6 @@ class AccountBindViewController: SAViewController, UIActionSheetDelegate {
     var bindDict: Dictionary<String, AnyObject> = Dictionary()
     
     var userEmail: String = ""
-    var userName: String = ""
     var delegate: UpdateUserDictDelegate?
     
     var oauth: TencentOAuth?
@@ -460,7 +459,7 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
                         let _name = json["nickname"].stringValue
                         
                         if _name.characters.count > 0 {
-                            self.bind3rdAccount(openid, name: self.userName, nameFrom3rd: _name, type: "QQ")
+                            self.bind3rdAccount(openid, nameFrom3rd: _name, type: "QQ")
                         }
                     }
                 }
@@ -515,7 +514,7 @@ extension AccountBindViewController {
                             let _name = json["name"].stringValue
                             
                             if _name.characters.count > 0 {
-                                self.bind3rdAccount(weiboUid!, name: self.userName, nameFrom3rd: _name, type: "weibo")
+                                self.bind3rdAccount(weiboUid!, nameFrom3rd: _name, type: "weibo")
                             }
                         }
                     }
@@ -549,7 +548,7 @@ extension AccountBindViewController {
                             let _name = json["nickname"].stringValue
                             
                             if openid.characters.count > 0 {
-                                self.bind3rdAccount(openid, name: self.userName, nameFrom3rd: _name, type: "wechat")
+                                self.bind3rdAccount(openid, nameFrom3rd: _name, type: "wechat")
                             }
                         }
                     }
@@ -563,9 +562,9 @@ extension AccountBindViewController {
     }
     
     
-    func bind3rdAccount(id: String, name: String, nameFrom3rd: String, type: String) {
+    func bind3rdAccount(id: String, nameFrom3rd: String, type: String) {
     
-        SettingModel.bindThirdAccount(id, name: name, nameFrom3rd: nameFrom3rd, type: type) {
+        SettingModel.bindThirdAccount(id, nameFrom3rd: nameFrom3rd, type: type) {
             (task, responseObject, error) -> Void in
             
             if let _ = error {

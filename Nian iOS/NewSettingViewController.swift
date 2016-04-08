@@ -526,8 +526,6 @@ extension NewSettingViewController {
      */
     @IBAction func setAccountBind(sender: UITapGestureRecognizer) {
         let accountBindVC = AccountBindViewController(nibName: "AccountBindView", bundle: nil)
-        
-        accountBindVC.userName = self.userDefaults.objectForKey("user") as! String
         accountBindVC.delegate = self
         if let _email = self.userDict!["email"] as? String {
             if _email != "0" {

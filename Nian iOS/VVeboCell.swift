@@ -31,7 +31,33 @@ protocol delegateSAStepCell {
 
 
 
-class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, NIAlertDelegate {
+    
+    var drawed = false
+    var label: VVeboLabel?
+    var drawColorFlag: UInt32?
+    var postBGView: UIImageView!
+    var imageHead: UIImageView!
+    var imageHolder: UIImageView!
+    var labelComment: UILabel!
+    var labelLike: UILabel!
+    var btnPremium: UIButton!
+    var btnMore: UIButton!
+    var btnNoLike: UIButton!
+    var btnLike: UIButton!
+    var num = -1
+    var viewLine: UIView!
+    var type = 0    // 0 为关注，1 为记本，2 为动态
+    var actionSheetDelete: UIActionSheet!
+    var activityViewController: UIActivityViewController!
+    var editStepRow:Int = -1
+    var editStepData:NSDictionary?
+    var delegate: delegateSAStepCell?
+    var collectionView: UICollectionView!
+    var pro: UIImageView!
+    var viewPremium: UIView!
+    var alert: NIAlert!
+    var alertPurchase: NIAlert!
     
     var data: NSDictionary! {
         didSet {
@@ -107,30 +133,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             }
         }
     }
-    
-    var drawed = false
-    var label: VVeboLabel?
-    var drawColorFlag: UInt32?
-    var postBGView: UIImageView!
-    var imageHead: UIImageView!
-    var imageHolder: UIImageView!
-    var labelComment: UILabel!
-    var labelLike: UILabel!
-    var btnPremium: UIButton!
-    var btnMore: UIButton!
-    var btnNoLike: UIButton!
-    var btnLike: UIButton!
-    var num = -1
-    var viewLine: UIView!
-    var type = 0    // 0 为关注，1 为记本，2 为动态
-    var actionSheetDelete: UIActionSheet!
-    var activityViewController: UIActivityViewController!
-    var editStepRow:Int = -1
-    var editStepData:NSDictionary?
-    var delegate: delegateSAStepCell?
-    var collectionView: UICollectionView!
-    var pro: UIImageView!
-    var viewPremium: UIView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -517,11 +519,48 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             let y = i >= 3 ? padding : padding + wImage + padding2
             let image = UIImageView(frame: CGRectMake(x, y, wImage, wImage))
             image.backgroundColor = UIColor.yellowColor()
+            image.userInteractionEnabled = true
+            image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.reward)))
             viewHolder.addSubview(image)
             i += 1
         }
         
         self.window?.addSubview(viewPremium)
+    }
+    
+    /* 奖励功能 */
+    func reward() {
+        onViewPremiumClose()
+        alert = NIAlert()
+        alert.delegate = self
+        alert.dict = ["img": UIImage(named: "coin")!, "title": "奖励", "content": "要支付 ¥ 0.5 来\n奖励对方一杯咖啡吗？", "buttonArray": [" 嗯！"]]
+        alert.showWithAnimation(showAnimationStyle.flip)
+    }
+    
+    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+        if niAlert == alert {
+            if didselectAtIndex == 0 {
+                alertPurchase = NIAlert()
+                alertPurchase.delegate = self
+                alertPurchase.dict = ["img": UIImage(named: "coin")!, "title": "支付奖励", "content": "选择一种支付方式", "buttonArray": ["微信支付", "支付宝支付"]]
+                alert.dismissWithAnimationSwtich(alertPurchase)
+            }
+        } else if niAlert == alertPurchase {
+            if didselectAtIndex == 0 {
+                // 微信支付
+                print("微信支付")
+            } else if didselectAtIndex == 1 {
+                // 支付宝支付
+                print("支付宝支付")
+            }
+        }
+    }
+    
+    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        if niAlert == alertPurchase {
+            alertPurchase.dismissWithAnimation(dismissAnimationStyle.normal)
+            alert.dismissWithAnimation(dismissAnimationStyle.normal)
+        }
     }
     
     /* 关闭奖励浮层 */
