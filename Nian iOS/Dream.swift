@@ -404,23 +404,37 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let percent = data.stringAttributeForKey("percent")
         let title = data.stringAttributeForKey("title").decode()
         let content = data.stringAttributeForKey("content").decode()
+        let step = "进展 \(data.stringAttributeForKey("step"))"
+        var like = ""
+        if let likeDream = Int(data.stringAttributeForKey("like")) {
+            if let likeStep = Int(data.stringAttributeForKey("like_step")) {
+                let likeNum = likeDream + likeStep
+                like = "赞 \(likeNum)"
+            }
+        }
+        let followers = "关注 \(data.stringAttributeForKey("followers"))"
         var _title = ""
         if thePrivate == "1" {
             _title = "\(title)（私密）"
         } else if percent == "1" {
             _title = "\(title)（完成）"
+        } else {
+            _title = title
         }
-        let hTitle = _title.stringHeightBoldWith(18, width: 240)
+        let hTitle = _title.stringHeightBoldWith(18, width: globalWidth - SIZE_PADDING * 2)
         var hContent: CGFloat = 0
         if content != "" {
-            hContent = content.stringHeightWith(12, width: 240)
-            let h4Lines = "\n\n\n".stringHeightWith(12, width: 240)
+            hContent = content.stringHeightWith(12, width: globalWidth - SIZE_PADDING * 2)
+            let h4Lines = "\n\n\n".stringHeightWith(12, width: globalWidth - SIZE_PADDING * 2)
             hContent = min(hContent, h4Lines)
         }
         var heightCell = 306 + hTitle + 8 + hContent
         if content == "" {
             heightCell = 306 + hTitle
         }
+        let wStep = step.stringWidthWith(12, height: 32)
+        let wLike = like.stringWidthWith(12, height: 32)
+        let wFollowers = followers.stringWidthWith(12, height: 32)
         heightCell = SACeil(heightCell, dot: 0, isCeil: true)
         let mutableData = NSMutableDictionary(dictionary: data)
         mutableData.setValue(hTitle, forKey: "heightTitle")
@@ -428,6 +442,13 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue(heightCell, forKey: "heightCell")
         mutableData.setValue(content, forKey: "content")
         mutableData.setValue(title, forKey: "title")
+        mutableData.setValue(step, forKey: "step")
+        mutableData.setValue(like, forKey: "like")
+        mutableData.setValue(followers, forKey: "followers")
+        mutableData.setValue(wStep, forKey: "widthStep")
+        mutableData.setValue(wLike, forKey: "widthLike")
+        mutableData.setValue(wFollowers, forKey: "widthFollowers")
+        print(hTitle)
         return NSDictionary(dictionary: mutableData)
     }
 }

@@ -22,19 +22,15 @@ class DreamCellTop: UITableViewCell {
     @IBOutlet var labelDes:UILabel!
     @IBOutlet var btnMain:UIButton!
     @IBOutlet var scrollView: UIScrollView!
-    
-    @IBOutlet var numLeft:UIView!
-    @IBOutlet var numMiddle:UIView!
-    @IBOutlet var numRight: UIView!
-    
-    @IBOutlet var numLeftNum:UILabel!
-    @IBOutlet var numMiddleNum:UILabel!
-    @IBOutlet var numRightNum: UILabel!
-    
-    @IBOutlet var viewLineLeft: UIView!
-    @IBOutlet var viewLineRight: UIView!
-    @IBOutlet var viewHolder: UIView!
     @IBOutlet var viewLineTop: UIView!
+    @IBOutlet var labelStep: UILabel!
+    @IBOutlet var labelLike: UILabel!
+    @IBOutlet var labelFollow: UILabel!
+    @IBOutlet var dot1: UIView!
+    @IBOutlet var dot2: UIView!
+    @IBOutlet var viewHolder: UIView!
+    @IBOutlet var viewHeaders: UIView!
+    @IBOutlet var viewLineBottom: UIView!
     
     var delegate: topDelegate?
     
@@ -45,38 +41,35 @@ class DreamCellTop: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        self.viewLineTop.setWidth(globalWidth - 40)
-        viewLineLeft.setWidth(globalHalf)
-        viewLineRight.setWidth(globalHalf)
-        viewLineTop.setHeight(globalHalf)
-        scrollView.setTag()
+        scrollView.setWidth(globalWidth)
         btnMain.backgroundColor = UIColor.HighlightColor()
         contentView.backgroundColor = UIColor.BackgroundColor()
-        viewHolder.backgroundColor = UIColor.BackgroundColor()
         labelTitle.backgroundColor = UIColor.BackgroundColor()
-        numLeft.backgroundColor = UIColor.BackgroundColor()
-        numMiddle.backgroundColor = UIColor.BackgroundColor()
-        numRight.backgroundColor = UIColor.BackgroundColor()
         labelDes.backgroundColor = UIColor.BackgroundColor()
     }
     
     func setup() {
         /* 解析数据 */
+        print(data)
         var title = data.stringAttributeForKey("title")
         let content = data.stringAttributeForKey("content")
         let user = data.stringAttributeForKey("user")
         let img = data.stringAttributeForKey("image")
         let step = data.stringAttributeForKey("step")
-        let likeDream = data.stringAttributeForKey("like")
-        let likeStep = data.stringAttributeForKey("like_step")
-        let like = Int(likeDream)! + Int(likeStep)!
+        let followers = data.stringAttributeForKey("followers")
+        let like = data.stringAttributeForKey("like")
         let thePrivate = data.stringAttributeForKey("private")
         let percent = data.stringAttributeForKey("percent")
         let uid = data.stringAttributeForKey("uid")
         tagArray = data.objectForKey("tags") as! Array
         let heightTitle = data.objectForKey("heightTitle") as! CGFloat
         let heightContent = data.objectForKey("heightContent") as! CGFloat
-        let totalUsers = data.stringAttributeForKey("total_users")
+        
+        
+        let widthStep = data.objectForKey("widthStep") as! CGFloat
+        let widthLike = data.objectForKey("widthLike") as! CGFloat
+        let widthFollowers = data.objectForKey("widthFollowers") as! CGFloat
+        
         let heightCell = data.objectForKey("heightCell") as! CGFloat
         
         /* 判断是否加入该记本了，0 未加入，1 已加入，2 邀请中 */
@@ -88,7 +81,30 @@ class DreamCellTop: UITableViewCell {
         /* 封面图 */
         imageDream.setImage("http://img.nian.so/dream/\(img)!dream")
         imageDream.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.onImage)))
-        imageDream.setX((globalWidth - imageDream.width())/2)
+        imageDream.setX(SIZE_PADDING)
+        
+        /* 三个数字 */
+        let p: CGFloat = 6
+        let widthDot: CGFloat = dot1.width()
+        viewHolder.setY(labelTitle.bottom())
+        viewHolder.setWidth(globalWidth - SIZE_PADDING * 2)
+        labelStep.textColor = UIColor.secAuxiliaryColor()
+        labelLike.textColor = UIColor.secAuxiliaryColor()
+        labelFollow.textColor = UIColor.secAuxiliaryColor()
+        dot1.backgroundColor = UIColor.secAuxiliaryColor()
+        dot2.backgroundColor = UIColor.secAuxiliaryColor()
+        labelStep.setWidth(widthStep)
+        labelLike.setWidth(widthLike)
+        labelFollow.setWidth(widthFollowers)
+        labelStep.setX(0)
+        labelLike.setX(labelStep.right() + widthDot + p * 2)
+        labelFollow.setX(labelLike.right() + widthDot + p * 2)
+        labelStep.text = step
+        labelLike.text = like
+        labelFollow.text = followers
+        dot1.setX(labelStep.right() + p)
+        dot2.setX(labelLike.right() + p)
+        
         
         /* 标题 */
         if thePrivate == "1" {
@@ -108,34 +124,21 @@ class DreamCellTop: UITableViewCell {
         } else {
             labelTitle.text = title
         }
+        labelTitle.setWidth(globalWidth - SIZE_PADDING * 2)
         labelTitle.setHeight(heightTitle)
-        labelTitle.setX(globalWidth/2 - 120)
+        labelTitle.setX(SIZE_PADDING)
         
         /* 简介 */
         if content != "" {
-            labelDes.frame = CGRectMake(globalWidth/2 - 120, labelTitle.bottom() + 8, 240, heightContent)
+            labelDes.frame = CGRectMake(SIZE_PADDING, viewHolder.bottom(), globalWidth - SIZE_PADDING * 2, heightContent)
             labelDes.text = content
             labelDes.hidden = false
         } else {
             labelDes.hidden = true
         }
         
-        /* 更多信息 */
-        let yViewHolder = content == "" ? labelTitle.bottom() + 8 : labelDes.bottom() + 8
-        viewHolder.setY(yViewHolder)
-        viewHolder.setX(globalWidth/2 - 160)
-        numLeftNum.text = "\(like)"
-        numMiddleNum.text = step
-        numRightNum.text = totalUsers
-        numLeft.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.onLike)))
-        numRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.onMembers)))
-        
         /* 按钮 */
-        btnMain.setY(viewHolder.bottom() + 16)
-        btnMain.setX((globalWidth - btnMain.width())/2)
-        
-        /* 分割线 */
-        viewLineTop.setY(heightCell - globalHalf - globalHalf/2)
+        btnMain.setX(globalWidth - SIZE_PADDING - btnMain.width())
         
         /* 如果已经加入 */
         if isJoined == "1" || SAUid() == uid {
@@ -154,6 +157,7 @@ class DreamCellTop: UITableViewCell {
         
         /* 标签行 */
         scrollView.contentSize =  CGSizeMake(8, 0)
+        scrollView.setY(labelDes.bottom())
         let views: NSArray = scrollView.subviews
         for view: AnyObject in views {
             if view is UILabel {
@@ -174,7 +178,7 @@ class DreamCellTop: UITableViewCell {
             }
             
             label.frame.origin.x = scrollView.contentSize.width + 8
-            label.frame.origin.y = 11
+            label.frame.origin.y = 16
             scrollView.addSubview(label)
             scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
         } else {
@@ -186,15 +190,27 @@ class DreamCellTop: UITableViewCell {
                 label.text = content
                 self.labelWidthWithItsContent(label, content: content)
                 label.frame.origin.x = scrollView.contentSize.width + 8
-                label.frame.origin.y = 11
+                label.frame.origin.y = 16
                 label.tag = 12000 + i
                 label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DreamCellTop.toSearch(_:))))
                 scrollView.addSubview(label)
                 scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + 8 + label.frame.width , scrollView.frame.height)
             }
-            
             scrollView.contentSize = CGSizeMake(scrollView.contentSize.width + CGFloat(16), scrollView.frame.height)
         }
+        
+        /* 分割线 */
+        viewLineTop.frame = CGRectMake(SIZE_PADDING, scrollView.bottom(), globalWidth - SIZE_PADDING * 2, globalHalf)
+        
+        /* 成员 */
+        viewHeaders.setY(viewLineTop.bottom())
+        viewHeaders.setX(SIZE_PADDING)
+        viewHeaders.setWidth(globalWidth - SIZE_PADDING * 2)
+        viewHeaders.backgroundColor = UIColor.yellowColor()
+        
+        /* 分割线 */
+        viewLineBottom.backgroundColor = UIColor.LineColor()
+        viewLineBottom.frame = CGRectMake(SIZE_PADDING, viewHeaders.bottom(), globalWidth - SIZE_PADDING * 2, globalHalf)
     }
     
     func toEdit() {
@@ -270,21 +286,6 @@ class DreamCellTop: UITableViewCell {
     }
 }
 
-extension UIScrollView {
-    func setTag() {
-        self.setWidth(globalWidth)
-        self.setY(0)
-        self.backgroundColor = UIColor.C98()
-        let viewTop = UIView(frame: CGRectMake(0, 0, globalWidth, 0.5))
-        let viewBottom = UIView(frame: CGRectMake(0, 51.5, globalWidth, 0.5))
-        viewTop.backgroundColor = UIColor.f0()
-        viewBottom.backgroundColor = UIColor.f0()
-        self.superview?.addSubview(viewTop)
-        self.superview?.addSubview(viewBottom)
-//        self.exclusiveTouch = true
-    }
-}
-
 extension UILabel {
     func setTagLabel(content: String) {
         self.numberOfLines = 1
@@ -295,9 +296,9 @@ extension UILabel {
         self.layer.cornerRadius = 4.0
         self.layer.masksToBounds = true
         self.textColor = UIColor.b3()
-        self.backgroundColor = UIColor.whiteColor()
-        let width = content.stringWidthWith(12, height: 30)
-        self.frame = CGRectMake(0, 11, width + 16, 30)
+        self.backgroundColor = UIColor.WindowColor()
+        let width = content.stringWidthWith(12, height: 24)
+        self.frame = CGRectMake(0, 11, width + 16, 24)
         self.text = content
     }
 }
