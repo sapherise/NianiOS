@@ -13,9 +13,9 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
     
     var tableView: UITableView!
     var dataArray = NSMutableArray()
-    var alert: NIAlert!
-    var alertError: NIAlert!
-    var alertErrorWechat: NIAlert!
+    var alert: NIAlert?
+    var alertError: NIAlert?
+    var alertErrorWechat: NIAlert?
     var price: CGFloat = 0
     
     override func viewDidLoad() {
@@ -25,8 +25,8 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
     }
     
     func setup() {
-        dataArray = [["title": "关于奖励", "content": "创造好内容时，好友会以奖励的方式支持你。", "image": "vip_discount"], ["title": "关于提现", "content": "你可以把奖励以人民币的方式取出。", "image": "vip_mark"], ["title": "提现规则", "content": "提现金额不小于 20 元，手续费为 20%。", "image": "vip_love"]]
-        price = 301.56
+        dataArray = [["title": "关于奖励", "content": "当你创造好内容时，好友可以以奖励的方式支持你。奖励可兑换为等值的人民币。", "image": "vip_discount"], ["title": "关于提现", "content": "绑定微信账号后，你可以把奖励以人民币的方式取出至微信零钱。", "image": "vip_mark"], ["title": "提现规则", "content": "每次提现的金额不小于 20 元，手续费为每次提现总额的 20%。", "image": "vip_love"]]
+        price = 36
         
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         tableView.delegate = self
@@ -61,9 +61,9 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
     func withdraw() {
         print("提现")
         alert = NIAlert()
-        alert.delegate = self
-        alert.dict = ["img": UIImage(named: "pay_wallet")!, "title": "提现", "content": "要将所有余额\n提现到微信账号吗？", "buttonArray": [" 嗯！", " 不！"]]
-        alert.showWithAnimation(showAnimationStyle.flip)
+        alert!.delegate = self
+        alert!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "提现", "content": "要将所有余额\n提现到微信账号吗？", "buttonArray": [" 嗯！", " 不！"]]
+        alert!.showWithAnimation(showAnimationStyle.flip)
     }
     
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
@@ -71,8 +71,11 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
             if didselectAtIndex == 0 {
                 /* 提现，判断是否超过 20 */
                 if price >= 20 {
-                    /* 获取 */
+                    /* 获取是否绑定微信 */
                     SettingModel.getUserAllOauth({ (task, json, error) in
+                        if let btn = self.alert?.niButtonArray[0] as? NIButton {
+                            btn.startAnimating()
+                        }
                         if let _ = error {
                             self.showTipText("网络有点问题，等一会儿再试")
                         } else {
@@ -82,9 +85,9 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
                                     if wechatUserName == "" {
                                         print("未绑定微信，去前往绑定")
                                         self.alertErrorWechat = NIAlert()
-                                        self.alertErrorWechat.delegate = self
-                                        self.alertErrorWechat.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "需要绑定一个微信\n才能提现", "buttonArray": ["去绑定"]]
-                                        self.alert.dismissWithAnimationSwtich(self.alertErrorWechat)
+                                        self.alertErrorWechat!.delegate = self
+                                        self.alertErrorWechat!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "需要绑定一个微信\n才能提现", "buttonArray": ["现在绑定"]]
+                                        self.alert!.dismissWithAnimationSwtich(self.alertErrorWechat!)
                                     } else {
                                         print("将提现到 \(wechatUserName) 账号，确定吗")
                                     }
@@ -95,38 +98,50 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
                 } else {
                     /* 如果余额小于 20 */
                     alertError = NIAlert()
-                    alertError.delegate = self
-                    alertError.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "余额要不小于 20 元\n才能提出", "buttonArray": ["哦"]]
-                    alert.dismissWithAnimationSwtich(alertError)
+                    alertError!.delegate = self
+                    alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "余额要不小于 20 元\n才能提出", "buttonArray": ["哦"]]
+                    alert!.dismissWithAnimationSwtich(alertError!)
                 }
             } else {
-                alert.dismissWithAnimation(.normal)
+                alert!.dismissWithAnimation(.normal)
             }
         } else if niAlert == alertError {
-            alert.dismissWithAnimation(.normal)
-            alertError.dismissWithAnimation(.normal)
+            alert!.dismissWithAnimation(.normal)
+            alertError!.dismissWithAnimation(.normal)
         } else if niAlert == alertErrorWechat {
-            alert.dismissWithAnimation(.normal)
-            alertErrorWechat.dismissWithAnimation(.normal)
-            let vc = AccountBindViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            alert!.dismissWithAnimation(.normal)
+            alertErrorWechat!.dismissWithAnimation(.normal)
+//            let vc = AccountBindViewController()
+//            self.navigationController?.pushViewController(vc, animated: true)
+            
+            if WXApi.isWXAppInstalled() {
+                let req = SendAuthReq()
+                req.scope = "snsapi_userinfo"
+                
+                WXApi.sendReq(req)
+            } else {
+                self.showTipText("手机未安装微信")
+            }
         }
     }
     
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
         if niAlert == alert {
-            alert.dismissWithAnimation(.normal)
+            alert!.dismissWithAnimation(.normal)
         } else if niAlert == alertError {
-            alert.dismissWithAnimation(.normal)
-            alertError.dismissWithAnimation(.normal)
+            alert!.dismissWithAnimation(.normal)
+            alertError!.dismissWithAnimation(.normal)
+        } else if niAlert == alertErrorWechat {
+            alert!.dismissWithAnimation(.normal)
+            alertErrorWechat!.dismissWithAnimation(.normal)
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 261
+            return 281
         } else {
-            return 72
+            return 80
         }
     }
     

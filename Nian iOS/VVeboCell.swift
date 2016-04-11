@@ -510,6 +510,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         viewHolder.backgroundColor = UIColor.NavColor()
         viewHolder.layer.masksToBounds = true
         viewHolder.layer.cornerRadius = 6
+        viewHolder.userInteractionEnabled = true
         viewPremium.addSubview(viewHolder)
         
         let items = ["1", "2" , "3" , "4", "5", "6"]
@@ -557,7 +558,9 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
-        if niAlert == alertPurchase {
+        if niAlert == alert {
+            alert.dismissWithAnimation(dismissAnimationStyle.normal)
+        } else if niAlert == alertPurchase {
             alertPurchase.dismissWithAnimation(dismissAnimationStyle.normal)
             alert.dismissWithAnimation(dismissAnimationStyle.normal)
         }

@@ -14,6 +14,7 @@ class PremiumCell: UITableViewCell {
     @IBOutlet var imageHead: UIImageView!
     @IBOutlet var labelTitle: UILabel!
     @IBOutlet var labelContent: UILabel!
+    @IBOutlet var viewHolder: UIView!
     
     func setup() {
         self.selectionStyle = .None
@@ -25,5 +26,6 @@ class PremiumCell: UITableViewCell {
         labelContent.text = content
         labelTitle.textColor = UIColor.MainColor()
         labelContent.textColor = UIColor.secAuxiliaryColor()
+        viewHolder.setX(globalWidth/2 - 160)
     }
 }
