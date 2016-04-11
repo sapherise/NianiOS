@@ -25,7 +25,11 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
     }
     
     func setup() {
-        dataArray = [["title": "关于奖励", "content": "当你创造好内容时，好友可以以奖励的方式支持你。奖励可兑换为等值的人民币。", "image": "vip_discount"], ["title": "关于提现", "content": "绑定微信账号后，你可以把奖励以人民币的方式取出至微信零钱。", "image": "vip_mark"], ["title": "提现规则", "content": "每次提现的金额不小于 20 元，手续费为每次提现总额的 20%。", "image": "vip_love"]]
+        dataArray = [
+            ["title": "关于奖励", "content": "当你创造好内容时，好友可以以奖励的方式支持你。奖励可兑换为等值的人民币。", "image": "vip_discount"],
+            ["title": "关于提现", "content": "绑定微信账号后，你可以把奖励以人民币的方式取出至微信零钱。", "image": "vip_mark"],
+            ["title": "提现规则", "content": "每次提现的金额不小于 20 元，手续费为每次提现总额的 20%。", "image": "vip_love"]
+        ]
         price = 36
         
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))

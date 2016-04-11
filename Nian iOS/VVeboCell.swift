@@ -58,6 +58,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var viewPremium: UIView!
     var alert: NIAlert!
     var alertPurchase: NIAlert!
+    var items = NSMutableArray()
     
     var data: NSDictionary! {
         didSet {
@@ -105,7 +106,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 btnLike.setImage(UIImage(named: "like"), forState: UIControlState())
                 btnLike.backgroundColor = UIColor.clearColor()
                 btnLike.layer.borderColor = UIColor.LineColor().CGColor
-                btnLike.layer.borderWidth = 1
+                btnLike.layer.borderWidth = 0.5
             } else {
                 btnLike.setImage(UIImage(named: "liked"), forState: UIControlState())
                 btnLike.backgroundColor = UIColor.HighlightColor()
@@ -195,16 +196,16 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         btnMore.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
         btnMore.layer.masksToBounds = true
         btnMore.layer.borderColor = UIColor.LineColor().CGColor
-        btnMore.layer.borderWidth = 1
+        btnMore.layer.borderWidth = 0.5
         contentView.addSubview(btnMore)
         
         // 奖励
         btnPremium = UIButton(frame: CGRectMake(0, 0, SIZE_LABEL_HEIGHT, SIZE_LABEL_HEIGHT))
-//        btnPremium.setImage(UIImage(named: "btnmore"), forState: UIControlState())
+        btnPremium.setImage(UIImage(named: "btncoffee"), forState: UIControlState())
         btnPremium.layer.cornerRadius = SIZE_LABEL_HEIGHT / 2
         btnPremium.layer.masksToBounds = true
         btnPremium.layer.borderColor = UIColor.LineColor().CGColor
-        btnPremium.layer.borderWidth = 1
+        btnPremium.layer.borderWidth = 0.5
         contentView.addSubview(btnPremium)
         
         
@@ -494,47 +495,97 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     /* 添加奖励浮层 */
     func onPremiumClick() {
-        let wHolder: CGFloat = 120
-        let hHolder: CGFloat = 120
         let wImage: CGFloat = 32
         let padding: CGFloat = 8
-        let padding2: CGFloat = 4
+        
+        /* 食物之间的间距 */
+        let pa: CGFloat = 0
+        
+        /* 食物的高度与整个浮层的高度差除以 2 */
+        let pah: CGFloat = 8
+        
         viewPremium = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight))
         viewPremium.userInteractionEnabled = true
         viewPremium.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.onViewPremiumClose)))
         viewPremium.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(VVeboCell.onViewPremiumClose)))
         
         /* 食物的层 */
+        items = [
+            ["name": "棒棒糖", "emoji": "🍭", "price": "0.5"],
+            ["name": "布丁", "emoji": "🍮", "price": "1"],
+            ["name": "咖啡", "emoji": "☕️", "price": "5"],
+            ["name": "啤酒", "emoji": "🍺", "price": "10"],
+            ["name": "刨冰", "emoji": "🍧", "price": "50"],
+            ["name": "巧克力蛋糕", "emoji": "💩", "price": "200"]
+        ]
         let p = btnPremium.convertPoint(CGPointZero, fromView: self.window)
-        let viewHolder = UIView(frame: CGRectMake(-p.x - wHolder - padding, max(-p.y + btnPremium.height() - hHolder, 64 + padding), wHolder, hHolder))
-        viewHolder.backgroundColor = UIColor.NavColor()
-        viewHolder.layer.masksToBounds = true
-        viewHolder.layer.cornerRadius = 6
+        let num = CGFloat(items.count)
+        let wHolder = wImage * num + pa * (num - 1) + pah * 2
+        let hHolder = wImage + pah * 2
+        let y = max(-p.y - padding - hHolder, 64 + padding)
+        let viewHolder = UIView(frame: CGRectMake(globalWidth - SIZE_PADDING - wHolder, y + 30, wHolder, hHolder))
+        viewHolder.backgroundColor = UIColor(white: 1, alpha: 0.95)
+        viewHolder.layer.cornerRadius = hHolder * 0.5
         viewHolder.userInteractionEnabled = true
+        viewHolder.layer.borderWidth = 0.5
+        viewHolder.layer.borderColor = UIColor.LineColor().CGColor
+        viewHolder.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.nofunction)))
+        viewHolder.alpha = 0
+        
         viewPremium.addSubview(viewHolder)
         
-        let items = ["1", "2" , "3" , "4", "5", "6"]
+        UIView.animateWithDuration(0.4, animations: {
+            viewHolder.alpha = 1
+            viewHolder.setY(y - 5)
+        }) { (Bool) in
+            UIView.animateWithDuration(0.2, animations: {
+                viewHolder.setY(y)
+            })
+        }
+        
         var i = 0
         for _ in items {
-            let x = padding + (wImage + padding2) * CGFloat(i % 3)
-            let y = i >= 3 ? padding : padding + wImage + padding2
-            let image = UIImageView(frame: CGRectMake(x, y, wImage, wImage))
-            image.backgroundColor = UIColor.yellowColor()
+            let x = pah + (wImage + pa) * CGFloat(i)
+            let y = pah
+            let image = UILabel(frame: CGRectMake(x, y + 30, wImage, wImage))
+            image.text = (items[i] as! NSDictionary).stringAttributeForKey("emoji")
+            image.textAlignment = .Center
+            image.font = UIFont.systemFontOfSize(23)
             image.userInteractionEnabled = true
-            image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.reward)))
+            image.layer.masksToBounds = true
+            image.layer.cornerRadius = wImage * 0.5
+            image.tag = i
+            image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(VVeboCell.reward(_:))))
+            image.alpha = 0
             viewHolder.addSubview(image)
+            UIView.animateWithDuration(Double(i + 2) * 0.06, delay: 0.15, options: UIViewAnimationOptions(), animations: {
+                image.setY(y - 5)
+                image.alpha = 1
+                }, completion: { (Bool) in
+                    UIView.animateWithDuration(0.2, animations: {
+                        image.setY(y)
+                    })
+            })
             i += 1
         }
         
         self.window?.addSubview(viewPremium)
     }
     
+    func nofunction() {
+    }
+    
     /* 奖励功能 */
-    func reward() {
+    func reward(sender: UIGestureRecognizer) {
         onViewPremiumClose()
+        let tag = sender.view!.tag
         alert = NIAlert()
         alert.delegate = self
-        alert.dict = ["img": UIImage(named: "coin")!, "title": "奖励", "content": "要支付 ¥ 0.5 来\n奖励对方一杯咖啡吗？", "buttonArray": [" 嗯！"]]
+        let data = items[tag] as! NSDictionary
+        let name = data.stringAttributeForKey("name")
+        let emoji = data.stringAttributeForKey("emoji")
+        let price = data.stringAttributeForKey("price")
+        alert.dict = ["img": UIImage(named: "coin")!, "title": "奖励", "content": "要支付 ¥\(price) 来\n奖励对方一个 \(emoji) \(name)吗？", "buttonArray": [" 嗯！"]]
         alert.showWithAnimation(showAnimationStyle.flip)
     }
     

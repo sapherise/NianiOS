@@ -184,12 +184,21 @@ extension AddStep {
                         self.field2.text = ""
                         
                         if isfirst == "1" {
+                            /* 更新后将新增加的念币加入缓存 */
+                            if let coinBefore = Cookies.get("coin") as? String {
+                                if let _coin = Int(coin) {
+                                    let coinAfter = _coin + Int(coinBefore)!
+                                    Cookies.set("\(coinAfter)", forKey: "coin")
+                                }
+                            }
                             Nian.saegg(coin, totalCoin: totalCoin)
                         }
                         let vc = DreamViewController()
                         vc.Id = self.idDream
                         vc.willBackToRootViewController = true
                         self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        
                     } else {
                         self.showTipText("服务器坏了")
                     }
