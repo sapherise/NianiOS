@@ -212,17 +212,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.scrollView.delegate = self
         
-//        if UIScreen.mainScreen().bounds.height > 480 {
-//            self.field2.frame.size.height = 120
-//        } else {
-//            self.field2.frame.size.height = 96
-//        }
-        
-        if isPrivate == 0 {
-            setPrivate.image = UIImage(named: "unlock")
-        } else {
-            setPrivate.image = UIImage(named: "lock")
-        }
+        setPrivate.image = UIImage(named: "dream_settings")
         
         uploadWait.transform = CGAffineTransformMakeScale(0.7, 0.7)
         uploadWait.center = imageDreamHead.center
@@ -266,19 +256,10 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.uploadWait!.hidden = true
     }
     
+    /* 添加或修改记本的更多设置 */
     func setDream(){
-        self.dismissKeyboard()
-        self.setDreamActionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        
-        if self.isPrivate == 0 {
-            self.setDreamActionSheet!.addButtonWithTitle("设为私密")
-        } else if self.isPrivate == 1 {
-            self.setDreamActionSheet!.addButtonWithTitle("设为公开")
-        }
-        
-        self.setDreamActionSheet!.addButtonWithTitle("取消")
-        self.setDreamActionSheet!.cancelButtonIndex = 1
-        self.setDreamActionSheet!.showInView(self.view)
+        let vc = AddDreamMore()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func dismissKeyboard(sender: UISwipeGestureRecognizer){

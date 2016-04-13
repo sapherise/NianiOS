@@ -8,13 +8,13 @@
 
 import UIKit
 
-class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, editDreamDelegate, topDelegate, ShareDelegate {
+class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, editDreamDelegate, topDelegate, ShareDelegate, coverDelegate {
     
     var page: Int = 1
     var Id: String = "1"
     var deleteDreamSheet:UIActionSheet?
     var quitSheet: UIActionSheet!
-    var navView:UIView!
+    var navView: UIImageView!
     
     //editStepdelegate
     var editStepRow:Int = 0
@@ -31,12 +31,12 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var willBackToRootViewController = false
     
     var removeSheet: UIActionSheet?
+    var dreamCellTop: DreamCellTop?
     
     override func viewDidLoad(){
         super.viewDidLoad()
         setupViews()
-        setupRefresh()
-        SATableView.headerBeginRefreshing()
+        load()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -65,15 +65,11 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     func setupViews() {
         self.viewBack()
         
-        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
-        self.navView.backgroundColor = UIColor.NavColor()
-        self.view.addSubview(self.navView)
-        self.view.backgroundColor = UIColor.BackgroundColor()
-        
-        self.SATableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
+        self.SATableView = VVeboTableView(frame:CGRectMake(0, 0, globalWidth, globalHeight))
         self.SATableView.delegate = self
         self.SATableView.dataSource = self
         self.SATableView.separatorStyle = .None
+        self.automaticallyAdjustsScrollViewInsets = false
         
         let nib = UINib(nibName:"DreamCell", bundle: nil)
         let nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
@@ -90,6 +86,12 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         titleLabel.textAlignment = NSTextAlignment.Center
         self.navigationItem.titleView = titleLabel
         
+        /* 添加导航栏 */
+        navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView.backgroundColor = UIColor.NavColor()
+        navView.hidden = true
+        navView.layer.masksToBounds = true
+        self.SATableView.addSubview(navView)
     }
     
     func load(clear: Bool = true){
@@ -113,20 +115,18 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     let data: AnyObject? = json!.objectForKey("data")
                     if clear {
                         self.dataArrayTop = self.DataDecode(data!.objectForKey("dream") as! NSDictionary)
-                        let uid = self.dataArrayTop.stringAttributeForKey("uid")
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
                         let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(DreamViewController.setupNavBtn))
                         btnMore.image = UIImage(named: "more")
-                        let btnInvite = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(DreamViewController.onInvite))
-                        btnInvite.image = UIImage(named: "addFriend")
+                        self.navigationItem.rightBarButtonItems = [btnMore]
                         
-                        /* 当当前用户是记本主人时，提供邀请入口 */
-                        if uid == SAUid() {
-                            self.navigationItem.rightBarButtonItems = [btnMore, btnInvite]
-                        } else {
-                            self.navigationItem.rightBarButtonItems = [btnMore]
-                        }
+                        /* 导航栏填充背景 */
+//                        let cover = self.dataArrayTop.stringAttributeForKey("cover")
+//                        self.navView.setImage("http://img.nian.so/cover/\(cover)!cover")
+                        
+                        /* 第一页加载成功后，才建立上拉加载 */
+                        self.setupRefresh()
                     } else {
                         globalVVeboReload = false
                     }
@@ -143,14 +143,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                 }
             }
         }
-    }
-    
-    /* 当点击了邀请后 */
-    func onInvite() {
-        let vc = List()
-        vc.type = ListType.Invite
-        vc.id = Id
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func setupNavBtn() {
@@ -261,11 +253,17 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             let c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
             c.data = dataArrayTop
             c.delegate = self
+            c.delegateCover = self
             c.setup()
+            dreamCellTop = c
             return c
         } else {
             return getCell(indexPath, dataArray: dataArray, type: 1)
         }
+    }
+    
+    func changeCover() {
+        print("哈哈")
     }
     
     func onFo() {
@@ -293,7 +291,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     return h
                 }
             }
-            return 0
+            return 100
         }else{
             return getHeight(indexPath, dataArray: dataArray)
         }
@@ -301,7 +299,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return dataArrayTop == nil ? 0 : 1
+            return 1
         }else{
             return self.dataArray.count
         }
@@ -314,9 +312,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     }
 
     func setupRefresh(){
-        self.SATableView!.addHeaderWithCallback({
-            self.load()
-        })
         self.SATableView!.addFooterWithCallback({
             self.load(false)
         })
@@ -399,6 +394,19 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.presentViewController(avc, animated: true, completion: nil)
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == SATableView {
+            let y = SATableView.contentOffset.y
+            dreamCellTop?.scroll(y)
+            if y > 32 {
+                navView.hidden = false
+                navView.setY(y)
+            } else {
+                navView.hidden = true
+            }
+        }
+    }
+    
     func DataDecode(data: NSDictionary) -> NSDictionary {
         let thePrivate = data.stringAttributeForKey("private")
         let percent = data.stringAttributeForKey("percent")
@@ -428,9 +436,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             let h4Lines = "\n\n\n".stringHeightWith(12, width: globalWidth - SIZE_PADDING * 2)
             hContent = min(hContent, h4Lines)
         }
-        var heightCell = 306 + hTitle + 8 + hContent
+        var heightCell = 314 + hTitle + hContent
         if content == "" {
-            heightCell = 306 + hTitle
+            heightCell = 314 - 8 + hTitle
         }
         let wStep = step.stringWidthWith(12, height: 32)
         let wLike = like.stringWidthWith(12, height: 32)
@@ -448,7 +456,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue(wStep, forKey: "widthStep")
         mutableData.setValue(wLike, forKey: "widthLike")
         mutableData.setValue(wFollowers, forKey: "widthFollowers")
-        print(hTitle)
         return NSDictionary(dictionary: mutableData)
     }
 }

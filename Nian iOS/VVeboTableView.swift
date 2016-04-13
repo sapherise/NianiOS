@@ -87,32 +87,33 @@ class VVeboTableView: UITableView {
     func loadIfNeed(velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let arr = NSMutableArray()
         if let rowTarget = self.indexPathForRowAtPoint(targetContentOffset.memory)?.row {
-            let rowFirst = (self.indexPathsForVisibleRows?.first?.row)!     // 可见的第一行
-            let rowLast = (self.indexPathsForVisibleRows?.last?.row)!      // 可见的最后一行
-            if let temp = self.indexPathsForRowsInRect(CGRectMake(0, targetContentOffset.memory.y, self.width(), self.height())) {
-                for i in temp {
-                    let row = i.row
-                    arr.addObject(row)
+            if let rowFirst = self.indexPathsForVisibleRows?.first?.row {   // 可见的第一行
+                let rowLast = (self.indexPathsForVisibleRows?.last?.row)!      // 可见的最后一行
+                if let temp = self.indexPathsForRowsInRect(CGRectMake(0, targetContentOffset.memory.y, self.width(), self.height())) {
+                    for i in temp {
+                        let row = i.row
+                        arr.addObject(row)
+                    }
+                }   // 目标行的整屏
+                
+                var shouldClear = false
+                
+                // 向上滚动时，加载目标行下几行
+                if velocity.y < 0 && rowLast - rowTarget > 8 {
+                    shouldClear = true
+                    arr.addObject(rowTarget + 1)
+                    arr.addObject(rowTarget + 2)
+                    arr.addObject(rowTarget + 3)
+                    // 向下滚动时，加载目标行上几行
+                } else if rowTarget - rowFirst > 8 {
+                    shouldClear = true
+                    arr.addObject(rowTarget - 1)
+                    arr.addObject(rowTarget - 2)
+                    arr.addObject(rowTarget - 3)
                 }
-            }   // 目标行的整屏
-            
-            var shouldClear = false
-            
-            // 向上滚动时，加载目标行下几行
-            if velocity.y < 0 && rowLast - rowTarget > 8 {
-                shouldClear = true
-                arr.addObject(rowTarget + 1)
-                arr.addObject(rowTarget + 2)
-                arr.addObject(rowTarget + 3)
-                // 向下滚动时，加载目标行上几行
-            } else if rowTarget - rowFirst > 8 {
-                shouldClear = true
-                arr.addObject(rowTarget - 1)
-                arr.addObject(rowTarget - 2)
-                arr.addObject(rowTarget - 3)
-            }
-            if shouldClear {
-                needLoadArr.addObjectsFromArray(arr as [AnyObject])
+                if shouldClear {
+                    needLoadArr.addObjectsFromArray(arr as [AnyObject])
+                }
             }
         }
     }

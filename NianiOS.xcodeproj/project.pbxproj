@@ -74,6 +74,7 @@
 		126FDBD51C37B1BE00DECA80 /* AddStepImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126FDBD41C37B1BE00DECA80 /* AddStepImageCell.xib */; };
 		126FDBD71C37B1EF00DECA80 /* AddStepImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */; };
 		126FDBEC1C382DA900DECA80 /* UpyunOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FDBEB1C382DA900DECA80 /* UpyunOperation.swift */; };
+		12722E9D1CBE4BB300DA55C9 /* AddDreamMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12722E9C1CBE4BB300DA55C9 /* AddDreamMore.swift */; };
 		127497F21B92DF480046B440 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497F11B92DF480046B440 /* QuartzCore.framework */; };
 		127497F41B92DF540046B440 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127497F31B92DF540046B440 /* ImageIO.framework */; };
 		127497F51B92DF640046B440 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4548A611B8AD4FB00EAB6AD /* SystemConfiguration.framework */; };
@@ -364,6 +365,7 @@
 		126FDBD61C37B1EF00DECA80 /* AddStepImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStepImageCell.swift; sourceTree = "<group>"; };
 		126FDBEB1C382DA900DECA80 /* UpyunOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpyunOperation.swift; sourceTree = "<group>"; };
 		12711EB619C09CC1007F98BB /* Nian iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Nian iOS-Bridging-Header.h"; path = "../Nian iOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		12722E9C1CBE4BB300DA55C9 /* AddDreamMore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamMore.swift; sourceTree = "<group>"; };
 		127497F11B92DF480046B440 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		127497F31B92DF540046B440 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		127497F61B92DF750046B440 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -764,6 +766,7 @@
 			children = (
 				C401132D1B11CD8600CA6503 /* AddDreamController.swift */,
 				126593F119CD5CE500884947 /* AddDreamController.xib */,
+				12722E9C1CBE4BB300DA55C9 /* AddDreamMore.swift */,
 			);
 			name = "更新梦想";
 			sourceTree = "<group>";
@@ -1942,6 +1945,7 @@
 				C472F7631AE74E2C00ECC011 /* ExploreNewHotCell.swift in Sources */,
 				C4C885531B5F7E8600D9B8CA /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				C488B47F1BFD9E8D00C735EC /* WelcomeViewController.swift in Sources */,
+				12722E9D1CBE4BB300DA55C9 /* AddDreamMore.swift in Sources */,
 				C486FD551C04430A009F1F90 /* Priority.swift in Sources */,
 				1234FDAA1A1B33E900AF8A50 /* NianCell.swift in Sources */,
 				C4C9AB0D1C13FACB00B99B8C /* VVImageCollectionView.swift in Sources */,
