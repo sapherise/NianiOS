@@ -936,6 +936,47 @@ extension Api {
         V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
     }
     
+    /* 微信支付奖励 */
+    static func postWechatPremium(price: String, stepId: String, receiver: String, callback: V.JsonCallback) {
+        var coins = "0"
+        if price == "0.50" {
+            coins = "0"
+        } else if price == "1.00" {
+            coins = "1"
+        } else if price == "5.00" {
+            coins = "2"
+        } else if price == "10.00" {
+            coins = "3"
+        } else if price == "50.00" {
+            coins = "4"
+        } else if price == "200.00" {
+            coins = "5"
+        }
+        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order/test2?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "reward", "price": price, "stepid": stepId, "receiver": receiver, "coins": coins], callback: callback)
+    }
+    
+    /* 支付宝支付奖励 */
+    static func postAlipayPremium(price: String, stepId: String, receiver: String, callback: V.JsonCallback) {
+        var coins = "0"
+        if price == "0.50" {
+            coins = "0"
+        } else if price == "1.00" {
+            coins = "1"
+        } else if price == "5.00" {
+            coins = "2"
+        } else if price == "10.00" {
+            coins = "3"
+        } else if price == "50.00" {
+            coins = "4"
+        } else if price == "200.00" {
+            coins = "5"
+        }
+        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order/test?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "reward", "price": price, "stepid": stepId, "receiver": receiver, "coins": coins], callback: callback)
+    }
+    
+    
+//    POST /payment/alipay/order/test 测试地址
+    
     /* 获取表情列表 */
     static func getEmoji(callback: V.JsonCallback) {
         loadCookies()

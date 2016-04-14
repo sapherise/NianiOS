@@ -73,6 +73,13 @@ class Comment: UITableViewCell {
             imageBubble.setX(60)
             imageBubble.image = UIImage(named: "bubble")
         }
+        
+        if data.stringAttributeForKey("type") == "2" {
+            labelHolder.backgroundColor = UIColor(red: 0xff/255.0, green: 0xe2/255.0, blue: 0x7e/255.0, alpha: 1)
+            imageBubble.hidden = true
+        } else {
+            imageBubble.hidden = false
+        }
     }
     
     func onHead(){

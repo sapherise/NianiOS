@@ -173,6 +173,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             let heightBefore = self.tableView.contentSize.height
             Api.getDreamStepComment("\(stepID)", page: page) { json in
                 if json != nil {
+                    print(json)
                     self.viewLoadingHide()
                     let data = json!.objectForKey("data") as! NSDictionary
                     let comments = data.objectForKey("comments") as! NSArray
@@ -227,8 +228,8 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         let index = indexPath.row
         let data = self.dataArray[dataArray.count - 1 - index] as! NSDictionary
         let type = data.stringAttributeForKey("type")
-        if type == "0" {
-            /* 文本 */
+        if type == "0" || type == "2" {
+            /* 文本或奖励 */
             let c = tableView.dequeueReusableCellWithIdentifier("Comment", forIndexPath: indexPath) as! Comment
             c.data = data
             c.labelHolder.tag = dataArray.count - 1 - index
@@ -402,9 +403,26 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     /* 将数据转码 */
     func dataDecode(data: NSDictionary) -> NSDictionary {
         let mutableData = NSMutableDictionary(dictionary: data)
-        let content = data.stringAttributeForKey("content").decode()
-        let h = content.stringHeightWith(15, width: 208)
+        var content = data.stringAttributeForKey("content").decode()
         let type = data.stringAttributeForKey("type")
+        if type == "2" {
+            var _content = ""
+            if content == "棒棒糖" {
+                _content = "我送了一个 🍭 给你！"
+            } else if content == "布丁" {
+                _content = "我送了一个 🍮 给你！"
+            } else if content == "咖啡" {
+                _content = "我送了一个 ☕️ 给你！"
+            } else if content == "啤酒" {
+                _content = "我送了一个 🍺 给你！"
+            } else if content == "刨冰" {
+                _content = "我送了一个 🍧 给你！"
+            } else if content == "巧克力蛋糕" {
+                _content = "我送了一个 💩 给你！"
+            }
+            content = _content
+        }
+        let h = content.stringHeightWith(15, width: 208)
         var time = data.stringAttributeForKey("lastdate")
         if time != "sending" {
             time = V.relativeTime(time)
@@ -413,7 +431,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var hImage: CGFloat = 72
         var wContent: CGFloat = 0
         var heightCell: CGFloat = 0
-        if type == "0" {
+        if type == "0" || type == "2" {
             if h == "".stringHeightWith(15, width: 208) {
                 wContent = content.stringWidthWith(15, height: h)
                 wImage = wContent + 27

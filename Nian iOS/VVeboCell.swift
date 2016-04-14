@@ -58,7 +58,9 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     var viewPremium: UIView!
     var alert: NIAlert!
     var alertPurchase: NIAlert!
+    var alertResult: NIAlert!
     var items = NSMutableArray()
+    var typePremium: Int = -1
     
     var data: NSDictionary! {
         didSet {
@@ -236,6 +238,49 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         labelComment.userInteractionEnabled = true
         labelLike.userInteractionEnabled = true
         pro.userInteractionEnabled = true
+    }
+    
+    /* 微信购买会员回调 */
+    func onWechatResult(sender: NSNotification) {
+        if let object = sender.object as? String {
+            if object == "0" {
+                payPremiumSuccess()
+            } else if object == "-1" {
+                payPremiumFailed()
+            } else {
+                payPremiumCancel()
+            }
+            removeWechatNotification()
+        }
+    }
+    
+    /* 奖励成功 */
+    func payPremiumSuccess() {
+        print("奖励成功")
+        alertResult = NIAlert()
+        alertResult.delegate = self
+        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "成功送出！", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+        alertPurchase.dismissWithAnimationSwtich(alertResult)
+    }
+    
+    /* 奖励失败 */
+    func payPremiumFailed() {
+        print("奖励失败")
+        alertResult = NIAlert()
+        alertResult.delegate = self
+        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+        alertPurchase.dismissWithAnimationSwtich(alertResult)
+    }
+    
+    /* 奖励取消 */
+    func payPremiumCancel() {
+        print("取消")
+        if let btn = alertPurchase.niButtonArray.firstObject as? NIButton {
+            btn.stopAnimating()
+        }
+        if let btn = alertPurchase.niButtonArray.lastObject as? NIButton {
+            btn.stopAnimating()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -511,12 +556,12 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
         /* 食物的层 */
         items = [
-            ["name": "棒棒糖", "emoji": "🍭", "price": "0.5"],
-            ["name": "布丁", "emoji": "🍮", "price": "1"],
-            ["name": "咖啡", "emoji": "☕️", "price": "5"],
-            ["name": "啤酒", "emoji": "🍺", "price": "10"],
-            ["name": "刨冰", "emoji": "🍧", "price": "50"],
-            ["name": "巧克力蛋糕", "emoji": "💩", "price": "200"]
+            ["name": "棒棒糖", "emoji": "🍭", "price": "0.50"],
+            ["name": "布丁", "emoji": "🍮", "price": "1.00"],
+            ["name": "咖啡", "emoji": "☕️", "price": "5.00"],
+            ["name": "啤酒", "emoji": "🍺", "price": "10.00"],
+            ["name": "刨冰", "emoji": "🍧", "price": "50.00"],
+            ["name": "巧克力蛋糕", "emoji": "💩", "price": "200.00"]
         ]
         let p = btnPremium.convertPoint(CGPointZero, fromView: self.window)
         let num = CGFloat(items.count)
@@ -577,6 +622,8 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     /* 奖励功能 */
     func reward(sender: UIGestureRecognizer) {
+        print("注册通知")
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.onWechatResult(_:)), name: "onWechatResult", object: nil)
         onViewPremiumClose()
         let tag = sender.view!.tag
         alert = NIAlert()
@@ -585,6 +632,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         let name = data.stringAttributeForKey("name")
         let emoji = data.stringAttributeForKey("emoji")
         let price = data.stringAttributeForKey("price")
+        typePremium = tag
         alert.dict = ["img": UIImage(named: "coin")!, "title": "奖励", "content": "要支付 ¥\(price) 来\n奖励对方一个 \(emoji) \(name)吗？", "buttonArray": [" 嗯！"]]
         alert.showWithAnimation(showAnimationStyle.flip)
     }
@@ -600,20 +648,96 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         } else if niAlert == alertPurchase {
             if didselectAtIndex == 0 {
                 // 微信支付
-                print("微信支付")
+                if let btn = alertPurchase.niButtonArray.firstObject as? NIButton {
+                    btn.startAnimating()
+                }
+                if typePremium >= 0 {
+                    if let d = items[typePremium] as? NSDictionary {
+                        let price = d.stringAttributeForKey("price")
+                        let stepId = self.data.stringAttributeForKey("sid")
+                        let receiver = self.data.stringAttributeForKey("uid")
+                        Api.postWechatPremium(price, stepId: stepId, receiver: receiver) { json in
+                            if json != nil {
+                                if let j = json as? NSDictionary {
+                                    let data = NSData(base64EncodedString: j.stringAttributeForKey("data"), options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+                                    let base64Decoded = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                                    let jsonString = base64Decoded?.dataUsingEncoding(NSASCIIStringEncoding)
+                                    if let dataResult = try? NSJSONSerialization.JSONObjectWithData(jsonString!, options: NSJSONReadingOptions.AllowFragments) {
+                                        let request = PayReq()
+                                        request.partnerId = dataResult.stringAttributeForKey("partnerid")
+                                        request.prepayId = dataResult.stringAttributeForKey("prepayid")
+                                        request.package = dataResult.stringAttributeForKey("package")
+                                        request.nonceStr = dataResult.stringAttributeForKey("noncestr")
+                                        let b = dataResult.stringAttributeForKey("timestamp")
+                                        let c = UInt32(b)
+                                        request.timeStamp = c!
+                                        request.sign = dataResult.stringAttributeForKey("sign")
+                                        WXApi.sendReq(request)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             } else if didselectAtIndex == 1 {
-                // 支付宝支付
+                /* 支付宝支付奖励 */
                 print("支付宝支付")
+                if let btn = alertPurchase.niButtonArray.lastObject as? NIButton {
+                    btn.startAnimating()
+                }
+                if typePremium >= 0 {
+                    if let d = items[typePremium] as? NSDictionary {
+                        let price = d.stringAttributeForKey("price")
+                        let stepId = self.data.stringAttributeForKey("sid")
+                        let receiver = self.data.stringAttributeForKey("uid")
+                        Api.postAlipayPremium(price, stepId: stepId, receiver: receiver) { json in
+                            if json != nil {
+                                if let j = json as? NSDictionary {
+                                    let data = j.stringAttributeForKey("data")
+                                    AlipaySDK.defaultService().payOrder(data, fromScheme: "nianalipay") { (resultDic) -> Void in
+                                        let data = resultDic as NSDictionary
+                                        let resultStatus = data.stringAttributeForKey("resultStatus")
+                                        if resultStatus == "9000" {
+                                            /* 支付宝：支付成功 */
+                                            print("支付成功")
+                                            self.payPremiumSuccess()
+                                        } else {
+                                            /* 支付宝：支付失败 */
+                                            print("支付失败")
+                                            self.payPremiumCancel()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
+        } else if niAlert == alertResult {
+            alertResult.dismissWithAnimation(.normal)
+            alert.dismissWithAnimation(.normal)
+            alertPurchase.dismissWithAnimation(.normal)
         }
     }
     
+    // todo: 颜色不对
+    
+    /* 移除通知中心的微信回调，防止多次调用导致 UI 混乱 */
+    func removeWechatNotification() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "onWechatResult", object: nil)
+    }
+    
     func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+        removeWechatNotification()
         if niAlert == alert {
             alert.dismissWithAnimation(dismissAnimationStyle.normal)
         } else if niAlert == alertPurchase {
             alertPurchase.dismissWithAnimation(dismissAnimationStyle.normal)
             alert.dismissWithAnimation(dismissAnimationStyle.normal)
+        } else if niAlert == alertResult {
+            alertResult.dismissWithAnimation(.normal)
+            alert.dismissWithAnimation(.normal)
+            alertPurchase.dismissWithAnimation(.normal)
         }
     }
     
