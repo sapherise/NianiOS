@@ -39,6 +39,10 @@ extension UIColor {
         return UIColor(red: 0x6c/255.0, green: 0xc5/255.0, blue: 0xee/255.0, alpha: 1)
     }
     
+    class func PremiumColor() -> UIColor {
+        return UIColor(red: 0xff/255.0, green: 0xe2/255.0, blue: 0x7e/255.0, alpha: 1)
+    }
+    
     /* 背景颜色*/
     class func BackgroundColor() -> UIColor {
         if theme == 1 {

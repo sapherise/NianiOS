@@ -13,6 +13,7 @@ enum ListType {
     /* 从记本页面进来，想要 */
     case Members
     case Invite
+    case Like
 }
 
 class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDelegate, UIActionSheetDelegate {
@@ -34,7 +35,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        load(true)
+        tableView.headerBeginRefreshing()
     }
     
     func setup() {
@@ -45,6 +46,8 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
             }
         } else if type == ListType.Invite {
             _setTitle("邀请")
+        } else if type == ListType.Like {
+            _setTitle("赞过")
         }
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         tableView.delegate = self
@@ -164,6 +167,30 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
             }
         } else if type == ListType.Members {
             Api.getMultiDreamList(id, page: page) { json in
+                if json != nil {
+                    if let err = json!.objectForKey("error") as? NSNumber {
+                        if err == 0 {
+                            if let items = json!.objectForKey("data") as? NSArray {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
+                                for item in items {
+                                    self.dataArray.addObject(item)
+                                }
+                            }
+                            self.page += 1
+                            self.tableView.reloadData()
+                            self.tableView.headerEndRefreshing()
+                            self.tableView.footerEndRefreshing()
+                        } else {
+                            self.showTipText("服务器坏了")
+                        }
+                    }
+                }
+            }
+        } else if type == ListType.Like {
+            Api.getLike(page, stepId: id) { json in
+                print(json)
                 if json != nil {
                     if let err = json!.objectForKey("error") as? NSNumber {
                         if err == 0 {

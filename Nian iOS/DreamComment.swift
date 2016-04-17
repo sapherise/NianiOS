@@ -406,18 +406,18 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         var content = data.stringAttributeForKey("content").decode()
         let type = data.stringAttributeForKey("type")
         if type == "2" {
-            var _content = ""
-            if content == "棒棒糖" {
+            var _content = "奖励了你！"
+            if content == "奖励了棒棒糖" {
                 _content = "我送了一个 🍭 给你！"
-            } else if content == "布丁" {
+            } else if content == "奖励了布丁" {
                 _content = "我送了一个 🍮 给你！"
-            } else if content == "咖啡" {
+            } else if content == "奖励了咖啡" {
                 _content = "我送了一个 ☕️ 给你！"
-            } else if content == "啤酒" {
+            } else if content == "奖励了啤酒" {
                 _content = "我送了一个 🍺 给你！"
-            } else if content == "刨冰" {
+            } else if content == "奖励了刨冰" {
                 _content = "我送了一个 🍧 给你！"
-            } else if content == "巧克力蛋糕" {
+            } else if content == "奖励了巧克力蛋糕" {
                 _content = "我送了一个 💩 给你！"
             }
             content = _content

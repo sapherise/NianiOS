@@ -75,7 +75,7 @@ class Comment: UITableViewCell {
         }
         
         if data.stringAttributeForKey("type") == "2" {
-            labelHolder.backgroundColor = UIColor(red: 0xff/255.0, green: 0xe2/255.0, blue: 0x7e/255.0, alpha: 1)
+            labelHolder.backgroundColor = UIColor.PremiumColor()
             imageBubble.hidden = true
         } else {
             imageBubble.hidden = false

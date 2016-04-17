@@ -74,6 +74,22 @@ class MeCell: UITableViewCell {
             content = "「\(dreamtitle)」"
         case "20": word = "关注了你的记本"
             content = "「\(dreamtitle)」"
+        case "21": word = "奖励了你"
+            var _content = "奖励了你！"
+            if content == "奖励了棒棒糖" {
+                _content = "我送了一个 🍭 给你！"
+            } else if content == "奖励了布丁" {
+                _content = "我送了一个 🍮 给你！"
+            } else if content == "奖励了咖啡" {
+                _content = "我送了一个 ☕️ 给你！"
+            } else if content == "奖励了啤酒" {
+                _content = "我送了一个 🍺 给你！"
+            } else if content == "奖励了刨冰" {
+                _content = "我送了一个 🍧 给你！"
+            } else if content == "奖励了巧克力蛋糕" {
+                _content = "我送了一个 💩 给你！"
+            }
+            content = _content
         default: word = "与你互动了"
         }
         

@@ -383,9 +383,9 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     func onLike() {
-        let sid = data.stringAttributeForKey("sid")
-        let vc = LikeViewController()
-        vc.Id = sid
+        let vc = List()
+        vc.type = ListType.Like
+        vc.id = data.stringAttributeForKey("sid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

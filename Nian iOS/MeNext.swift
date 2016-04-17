@@ -88,6 +88,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         Api.getNotify(self.msgType, page: page) { json in
             if json != nil {
+                print(json)
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
@@ -232,6 +233,10 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         } else if type == "20" {    // 关注了你的记本
             DreamVC.Id = dream
             self.navigationController?.pushViewController(DreamVC, animated: true)
+        } else if type == "21" {    // 奖励了你
+            StepVC.Id = step
+            StepVC.name = name
+            self.navigationController!.pushViewController(StepVC, animated: true)
         }
     }
     

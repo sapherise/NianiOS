@@ -1001,7 +1001,27 @@ extension Api {
     
     /* 推广 */
     static func postPromo(id: String, callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/shop/promote/buy?uid=\(s_uid)&shell=\(s_shell)", content: ["dream": id], callback: callback)
+    }
+    
+    /* 获取用户奖励余额 */
+    static func getBalance(callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/user/\(s_uid)/balance?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 提取用户奖励余额 */
+    static func postExchange(balance: CGFloat, callback: V.JsonCallback) {
+        loadCookies()
+        let _b = balance * 100
+        V.httpPostForJson_AFN("http://api.nian.so/user/\(s_uid)/exchange?uid=\(s_uid)&shell=\(s_shell)", content: ["balance": _b], callback: callback)
+    }
+    
+    /* 获取赞列表 */
+    static func getLike(page: Int, stepId: String, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/v2/step/\(stepId)/like/users?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
 }
 

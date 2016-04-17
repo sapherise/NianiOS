@@ -244,8 +244,10 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                         if imageCache == nil {
                             imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey("http://img.nian.so/step/\(path)!200x")
                         }
-                        imageArray.append(imageCache)
-                        hasUploadedArray.append(i)
+                        if imageCache != nil {
+                            imageArray.append(imageCache)
+                            hasUploadedArray.append(i)
+                        }
                     }
                 }
             }

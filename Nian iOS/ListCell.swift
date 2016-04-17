@@ -53,7 +53,7 @@ class ListCell: UITableViewCell {
         
         if type == ListType.Members {
             labelButton.hidden = true
-        } else {
+        } else if type == ListType.Invite {
             labelButton.layer.borderColor = UIColor.HighlightColor().CGColor
             labelButton.layer.borderWidth = 1
             labelButton.setX(globalWidth - 15 - labelButton.width())
@@ -70,18 +70,78 @@ class ListCell: UITableViewCell {
                 labelButton.text = "已邀请"
                 labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onUnSelect)))
             }
+        } else {
+            labelTitle.text = data.stringAttributeForKey("username")
+            
+            /* 赞的类型 */
+            let type = data.stringAttributeForKey("type")
+            let rewardType = data.stringAttributeForKey("rewardtype")
+            
+            if type == "0" || type == "1" {
+                labelButton.setWidth(70)
+                labelButton.layer.borderColor = UIColor.HighlightColor().CGColor
+                labelButton.layer.borderWidth = 1
+                labelButton.setX(globalWidth - 15 - labelButton.width())
+                
+                let hasFollowed = data.stringAttributeForKey("follow") == "1"
+                if hasFollowed {
+                    labelButton.backgroundColor = UIColor.HighlightColor()
+                    labelButton.textColor = UIColor.whiteColor()
+                    labelButton.text = "已关注"
+                    labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onUnSelect)))
+                } else {
+                    labelButton.backgroundColor = UIColor.whiteColor()
+                    labelButton.textColor = UIColor.HighlightColor()
+                    labelButton.text = "关注"
+                    labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onSelect)))
+                }
+                labelButton.layer.cornerRadius = 15
+            } else {
+                /* 奖励的赞 */
+                labelButton.setWidth(labelButton.height())
+                labelButton.layer.borderColor = UIColor.PremiumColor().CGColor
+                labelButton.layer.borderWidth = 1
+                labelButton.setX(globalWidth - 15 - labelButton.width())
+                labelButton.backgroundColor = UIColor.PremiumColor()
+                labelButton.layer.cornerRadius = 4
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onPremium)))
+                if let _rewardType = Int(rewardType) {
+                    let arr = ["🍭", "🍮", "☕️", "🍺", "🍧", "💩"]
+                    let premium = arr[_rewardType]
+                    labelButton.text = premium
+                }
+            }
         }
+    }
+    
+    func onPremium() {
+        let vc = Premium()
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func onSelect() {
         let uid = data.stringAttributeForKey("uid")
-        delegate?.update(num, key: "inviting", value: "1")
-        Api.getInvite(id, uid: uid) { json in
+        if type == ListType.Invite {
+            delegate?.update(num, key: "inviting", value: "1")
+            Api.getInvite(id, uid: uid) { json in
+                print(json)
+            }
+        } else if type == ListType.Like {
+            delegate?.update(num, key: "follow", value: "1")
+            Api.getFollow(uid) { json in
+                print(json)
+            }
         }
     }
     
     func onUnSelect() {
-//        delegate?.update(num, key: "inviting", value: "0")
+        let uid = data.stringAttributeForKey("uid")
+        if type == ListType.Like {
+            delegate?.update(num, key: "follow", value: "0")
+            Api.getUnfollow(uid) { json in
+                print(json)
+            }
+        }
     }
     
     func onHead() {
