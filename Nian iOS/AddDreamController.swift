@@ -9,10 +9,10 @@
 import UIKit
 
 protocol editDreamDelegate {
-    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>)
+    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int)
 }
 
-class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
+class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, delegatePrivate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -44,6 +44,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     var keyboardShown: Bool = false
     
     var isPrivate: Int = 0  // 0: 公开；1：私密
+    /* 0 为只接受邀请，1 为好友加入，2 为所有人可加入 */
+    var permission: Int = 0
     
     var swipeGesuture: UISwipeGestureRecognizer?
     
@@ -90,6 +92,15 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     self.setPrivate.image = UIImage(named: "unlock")
                 }
             }
+        }
+    }
+    
+    func update(key: String, value: Int) {
+        print("key", key, "value", value)
+        if key == "private" {
+            isPrivate = value
+        } else if key == "permission" {
+            permission = value
         }
     }
     
@@ -259,6 +270,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     /* 添加或修改记本的更多设置 */
     func setDream(){
         let vc = AddDreamMore()
+        vc.permission = permission
+        vc.isPrivate = isPrivate
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -280,7 +294,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let tags = self.tokenView.tokenTitles
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            Api.postAddDream(title, content: content, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!) {
+            Api.postAddDream(title, content: content, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!, permission: "\(permission)") {
                 json in
                 let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
@@ -325,7 +339,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             title = SAEncode(SAHtml(title!))
             content = SAEncode(SAHtml(content!))
             
-            Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString){
+            Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString, permission: "\(permission)"){
                 json in
                 let error = json!.objectForKey("error") as! NSNumber
                 if error == 0 {
@@ -349,7 +363,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         }
                     }
                     
-                    self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray)
+                    self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray, editPermission: self.permission)
                     self.navigationController?.popViewControllerAnimated(true)
                 }
             }

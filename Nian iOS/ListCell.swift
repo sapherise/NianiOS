@@ -70,7 +70,7 @@ class ListCell: UITableViewCell {
                 labelButton.text = "已邀请"
                 labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onUnSelect)))
             }
-        } else {
+        } else if type == ListType.Like {
             labelTitle.text = data.stringAttributeForKey("username")
             
             /* 赞的类型 */
@@ -111,6 +111,42 @@ class ListCell: UITableViewCell {
                     labelButton.text = premium
                 }
             }
+        } else if type == ListType.Followers {
+            labelTitle.text = data.stringAttributeForKey("user")
+            labelButton.layer.borderColor = UIColor.HighlightColor().CGColor
+            labelButton.layer.borderWidth = 1
+            labelButton.setX(globalWidth - 15 - labelButton.width())
+            
+            /* 通过判断 hasSelected 来显示按钮与绑定动作 */
+            if data.stringAttributeForKey("follow") == "0" {
+                labelButton.backgroundColor = UIColor.whiteColor()
+                labelButton.textColor = UIColor.HighlightColor()
+                labelButton.text = "关注"
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onSelect)))
+            } else {
+                labelButton.backgroundColor = UIColor.HighlightColor()
+                labelButton.textColor = UIColor.whiteColor()
+                labelButton.text = "已关注"
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onUnSelect)))
+            }
+        } else if type == ListType.DreamLikes {
+            labelTitle.text = data.stringAttributeForKey("user")
+            labelButton.layer.borderColor = UIColor.HighlightColor().CGColor
+            labelButton.layer.borderWidth = 1
+            labelButton.setX(globalWidth - 15 - labelButton.width())
+            
+            /* 通过判断 hasSelected 来显示按钮与绑定动作 */
+            if data.stringAttributeForKey("follow") == "0" {
+                labelButton.backgroundColor = UIColor.whiteColor()
+                labelButton.textColor = UIColor.HighlightColor()
+                labelButton.text = "关注"
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onSelect)))
+            } else {
+                labelButton.backgroundColor = UIColor.HighlightColor()
+                labelButton.textColor = UIColor.whiteColor()
+                labelButton.text = "已关注"
+                labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onUnSelect)))
+            }
         }
     }
     
@@ -124,12 +160,18 @@ class ListCell: UITableViewCell {
         if type == ListType.Invite {
             delegate?.update(num, key: "inviting", value: "1")
             Api.getInvite(id, uid: uid) { json in
-                print(json)
             }
         } else if type == ListType.Like {
             delegate?.update(num, key: "follow", value: "1")
             Api.getFollow(uid) { json in
-                print(json)
+            }
+        } else if type == ListType.DreamLikes {
+            delegate?.update(num, key: "follow", value: "1")
+            Api.getFollow(uid) { json in
+            }
+        } else if type == ListType.Followers {
+            delegate?.update(num, key: "follow", value: "1")
+            Api.getFollow(uid) { json in
             }
         }
     }
@@ -139,7 +181,14 @@ class ListCell: UITableViewCell {
         if type == ListType.Like {
             delegate?.update(num, key: "follow", value: "0")
             Api.getUnfollow(uid) { json in
-                print(json)
+            }
+        } else if type == ListType.DreamLikes {
+            delegate?.update(num, key: "follow", value: "0")
+            Api.getUnfollow(uid) { json in
+            }
+        } else if type == ListType.Followers {
+            delegate?.update(num, key: "follow", value: "0")
+            Api.getUnfollow(uid) { json in
             }
         }
     }

@@ -81,13 +81,7 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
     func load() {
         Api.getBalance() { json in
             if json != nil {
-                print(json)
                 if let data = json!.objectForKey("data") as? NSDictionary {
-//                    if let balance = data.stringAttributeForKey("balance") {
-//                        print(balance)
-//                        print(data.stringAttributeForKey("balance"))
-//                        self.price = CGFloat(balance) * 0.01
-//                    }
                     let balance = data.stringAttributeForKey("balance")
                     if let _balance = Int(balance) {
                         self.price = CGFloat(_balance) * 0.01
@@ -149,13 +143,25 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
                     } else {
                         if let btn = self.alert?.niButtonArray.firstObject as? NIButton {
                             btn.startAnimating()
-                            Api.postExchange(price) { json in
-                                    print(json)
-                                    // todo: 确实成功提现了，但是没有返回 json
-                                    self.alertError = NIAlert()
-                                    self.alertError!.delegate = self
-                                    self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "提现好了", "content": "在 24 小时内奖励会提现到微信零钱里！", "buttonArray": [" 嗯！"]]
-                                    self.alert!.dismissWithAnimationSwtich(self.alertError!)
+                            Api.getExchange() { json in
+                                self.alertError = NIAlert()
+                                self.alertError!.delegate = self
+                                if let _json = json as? NSDictionary {
+                                    let status = _json.stringAttributeForKey("status")
+                                    if status == "1003" {
+                                        self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "念的实验室没有这么多钱！\n去联系下 @Sa 试试！", "buttonArray": ["哦"]]
+                                        self.alert!.dismissWithAnimationSwtich(self.alertError!)
+                                    } else if status == "1001" {
+                                        self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "余额要不小于 20 元\n才能提出", "buttonArray": ["哦"]]
+                                        self.alert!.dismissWithAnimationSwtich(self.alertError!)
+                                    } else if status == "200" {
+                                        self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "提现好了", "content": "在 24 小时内奖励会提现到微信零钱里！", "buttonArray": [" 嗯！"]]
+                                        self.alert!.dismissWithAnimationSwtich(self.alertError!)
+                                    } else {
+                                        self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "遇到一个奇怪的错误\n去联系下 @Sa 试试！", "buttonArray": ["哦"]]
+                                        self.alert!.dismissWithAnimationSwtich(self.alertError!)
+                                    }
+                                }
                             }
                         }
                     }

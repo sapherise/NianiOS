@@ -173,7 +173,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             let heightBefore = self.tableView.contentSize.height
             Api.getDreamStepComment("\(stepID)", page: page) { json in
                 if json != nil {
-                    print(json)
                     self.viewLoadingHide()
                     let data = json!.objectForKey("data") as! NSDictionary
                     let comments = data.objectForKey("comments") as! NSArray

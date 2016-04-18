@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, editDreamDelegate, topDelegate, ShareDelegate, coverDelegate {
+class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, editDreamDelegate, topDelegate, ShareDelegate {
     
     var page: Int = 1
     var Id: String = "1"
@@ -65,6 +65,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     func setupViews() {
         self.viewBack()
         
+        self.view.backgroundColor = UIColor.BackgroundColor()
+        
         self.SATableView = VVeboTableView(frame:CGRectMake(0, 0, globalWidth, globalHeight))
         self.SATableView.delegate = self
         self.SATableView.dataSource = self
@@ -102,12 +104,11 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             if json != nil {
                 if json!.objectForKey("error") as! NSNumber != 0 {
                     let status = json!.objectForKey("status") as! NSNumber
-                    self.SATableView.hidden = true
                     self.navigationItem.rightBarButtonItems = []
                     if status == 404 {
-                        self.view.addGhost("这个记本\n不见了")
+                        self.SATableView.addGhost("这个记本\n不见了")
                     } else if status == 403 {
-                        self.view.addGhost("你发现了\n一个私密的记本\n里面记着什么？")
+                        self.SATableView.addGhost("你发现了\n一个私密的记本\n里面记着什么？")
                     } else {
                         self.showTipText("遇到了一个奇怪的错误，代码是 \(status)")
                     }
@@ -251,19 +252,14 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
-            c.data = dataArrayTop
+            c.data = dataArrayTop != nil ? NSMutableDictionary(dictionary: dataArrayTop) : nil
             c.delegate = self
-            c.delegateCover = self
             c.setup()
             dreamCellTop = c
             return c
         } else {
             return getCell(indexPath, dataArray: dataArray, type: 1)
         }
-    }
-    
-    func changeCover() {
-        print("哈哈")
     }
     
     func onFo() {
@@ -349,25 +345,45 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let content = dataArrayTop.stringAttributeForKey("content")
         let img = dataArrayTop.stringAttributeForKey("image")
         let thePrivate = Int(dataArrayTop.stringAttributeForKey("private"))!
+        print(dataArrayTop)
         editdreamVC.editId = id
         editdreamVC.editTitle = title.decode()
         editdreamVC.editContent = content.decode()
         editdreamVC.editImage = img
         editdreamVC.isPrivate = thePrivate
+        if let permission = Int(dataArrayTop.stringAttributeForKey("permission")) {
+            editdreamVC.permission = permission
+        }
         let tags: Array<String> = dataArrayTop.objectForKey("tags") as! Array
         editdreamVC.tagsArray = tags
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags:Array<String>) {
+    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int) {
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue(editPrivate, forKey: "private")
         mutableData.setValue(editTitle, forKey: "title")
         mutableData.setValue(editDes, forKey: "content")
         mutableData.setValue(editImage, forKey: "image")
         mutableData.setValue(editTags, forKey: "tags")
+        mutableData.setValue("\(editPermission)", forKey: "permission")
         dataArrayTop = DataDecode(mutableData)
         self.SATableView.reloadData()
+    }
+    
+    func Join() {
+        let d = NSMutableDictionary(dictionary: dataArrayTop)
+        d.setValue("1", forKey: "joined")
+        if let totalUser = Int(dataArrayTop.stringAttributeForKey("total_users")) {
+            let t = totalUser + 1
+            d.setValue("\(t)", forKey: "total_users")
+        }
+        if let editors = dataArrayTop.objectForKey("editors") as? NSArray {
+            let arr = NSMutableArray(array: editors)
+            arr.addObject(SAUid())
+            d.setValue(arr, forKey: "editors")
+        }
+        dataArrayTop = d
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -440,6 +456,20 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         if content == "" {
             heightCell = 314 - 8 + hTitle
         }
+        
+        /* 当不在记本中，没有加入的权限，编辑者只有作者一个人，且当前用户不是作者本人 */
+        var willHeadersHidden = "0"
+        if data.stringAttributeForKey("joined") == "0" {
+            if data.stringAttributeForKey("permission") == "0" {
+                if data.stringAttributeForKey("total_users") == "1" {
+                    if data.stringAttributeForKey("uid") != SAUid() {
+                        heightCell = heightCell - 64 + 16
+                        willHeadersHidden = "1"
+                    }
+                }
+            }
+        }
+        
         let wStep = step.stringWidthWith(12, height: 32)
         let wLike = like.stringWidthWith(12, height: 32)
         let wFollowers = followers.stringWidthWith(12, height: 32)
@@ -450,12 +480,13 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         mutableData.setValue(heightCell, forKey: "heightCell")
         mutableData.setValue(content, forKey: "content")
         mutableData.setValue(title, forKey: "title")
-        mutableData.setValue(step, forKey: "step")
-        mutableData.setValue(like, forKey: "like")
-        mutableData.setValue(followers, forKey: "followers")
+//        mutableData.setValue(step, forKey: "step")
+//        mutableData.setValue(like, forKey: "like")
+//        mutableData.setValue(followers, forKey: "followers")
         mutableData.setValue(wStep, forKey: "widthStep")
         mutableData.setValue(wLike, forKey: "widthLike")
         mutableData.setValue(wFollowers, forKey: "widthFollowers")
+        mutableData.setValue(willHeadersHidden, forKey: "willHeadersHidden")
         return NSDictionary(dictionary: mutableData)
     }
 }

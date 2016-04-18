@@ -10,10 +10,20 @@ import Foundation
 import UIKit
 
 enum ListType {
-    /* 从记本页面进来，想要 */
+    /* 查看记本成员 */
     case Members
+    
+    /* 邀请 */
     case Invite
+    
+    /* 赞过进展的人 */
     case Like
+    
+    /* 关注记本的人 */
+    case Followers
+    
+    /* 赞过记本的人 */
+    case DreamLikes
 }
 
 class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDelegate, UIActionSheetDelegate {
@@ -48,6 +58,10 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
             _setTitle("邀请")
         } else if type == ListType.Like {
             _setTitle("赞过")
+        } else if type == ListType.DreamLikes {
+            _setTitle("赞过记本")
+        } else if type == ListType.Followers {
+            _setTitle("记本听众")
         }
         tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         tableView.delegate = self
@@ -190,7 +204,6 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
             }
         } else if type == ListType.Like {
             Api.getLike(page, stepId: id) { json in
-                print(json)
                 if json != nil {
                     if let err = json!.objectForKey("error") as? NSNumber {
                         if err == 0 {
@@ -200,6 +213,56 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                                 }
                                 for item in items {
                                     self.dataArray.addObject(item)
+                                }
+                            }
+                            self.page += 1
+                            self.tableView.reloadData()
+                            self.tableView.headerEndRefreshing()
+                            self.tableView.footerEndRefreshing()
+                        } else {
+                            self.showTipText("服务器坏了")
+                        }
+                    }
+                }
+            }
+        } else if type == ListType.Followers {
+            Api.getDreamFollow(id, page: page) { json in
+                if json != nil {
+                    if let err = json!.objectForKey("error") as? NSNumber {
+                        if err == 0 {
+                            if let data = json!.objectForKey("data") as? NSDictionary {
+                                if let users = data.objectForKey("users") as? NSArray {
+                                        if clear {
+                                            self.dataArray.removeAllObjects()
+                                        }
+                                        for item in users {
+                                            self.dataArray.addObject(item)
+                                        }
+                                }
+                            }
+                            self.page += 1
+                            self.tableView.reloadData()
+                            self.tableView.headerEndRefreshing()
+                            self.tableView.footerEndRefreshing()
+                        } else {
+                            self.showTipText("服务器坏了")
+                        }
+                    }
+                }
+            }
+        } else if type == ListType.DreamLikes {
+            Api.getDreamLike(id, page: page) { json in
+                if json != nil {
+                    if let err = json!.objectForKey("error") as? NSNumber {
+                        if err == 0 {
+                            if let data = json!.objectForKey("data") as? NSDictionary {
+                                if let users = data.objectForKey("users") as? NSArray {
+                                    if clear {
+                                        self.dataArray.removeAllObjects()
+                                    }
+                                    for item in users {
+                                        self.dataArray.addObject(item)
+                                    }
                                 }
                             }
                             self.page += 1

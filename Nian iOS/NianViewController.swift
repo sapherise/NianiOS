@@ -238,6 +238,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         return true
     }
     
+    // todo: 自由加入某个记本后立刻退出，结果发现首页上还有
+    
     func setupUserTop(willRefreshCover: Bool = true){
         let safeuid = SAUid()
         if let uid = Int(safeuid) {
@@ -357,12 +359,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-    }
-    
-    func NianReload(sender: UIButton) {
-        sender.setTitle("加载中", forState: UIControlState())
-        self.load()
-        self.setupUserTop()
     }
     
     override func viewWillDisappear(animated: Bool) {

@@ -8,10 +8,18 @@
 
 import Foundation
 
+protocol delegatePrivate {
+    func update(key: String, value: Int)
+}
+
 class AddDreamMore: SAViewController, UIActionSheetDelegate {
     var alert: UIActionSheet?
     var data: [String]!
     var labelInviteMember: UILabel!
+    var permission = 0
+    var isPrivate = 0
+    var btn: UISwitch!
+    var delegate: delegatePrivate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +31,7 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
         let h: CGFloat = 44
         let marginTop: CGFloat = 16
         let paddingLeft: CGFloat = 16
-        data = ["没有人", "所有人", "我关注的人"]
+        data = ["没有人", "我关注的人", "所有人"]
         
         let scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
         self.view.addSubview(scrollView)
@@ -39,7 +47,7 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
         labelPrivate.font = UIFont.systemFontOfSize(16)
         viewPrivate.addSubview(labelPrivate)
         /* 私密开关 */
-        let btn = UISwitch()
+        btn = UISwitch()
         btn.setX(globalWidth - btn.width() - paddingLeft)
         btn.setY((h - btn.height())/2)
         btn.onTintColor = UIColor.HighlightColor()
@@ -74,6 +82,9 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
         viewInvite.addLine(false)
         viewPrivate.backgroundColor = UIColor.BackgroundColor()
         viewInvite.backgroundColor = UIColor.BackgroundColor()
+        
+        setPrivate()
+        setPermission()
     }
     
     /* 邀请弹窗 */
@@ -91,22 +102,33 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
     func setPrivate(sender: UISwitch) {
         if sender.on {
             print("设置为私密")
+            delegate?.update("private", value: 1)
         } else {
             print("设置为公开")
+            delegate?.update("private", value: 0)
         }
     }
     
+    func setPrivate() {
+        if isPrivate == 0 {
+            btn.setOn(false, animated: false)
+        } else {
+            btn.setOn(true, animated: false)
+        }
+    }
+    
+    func setPermission() {
+        labelInviteMember.text = data[permission]
+    }
+    
+    // todo: 记本主人不能有加入的按钮
+    
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == alert {
-            if buttonIndex == 0 {
-                print(data[0])
-                labelInviteMember.text = data[buttonIndex]
-            } else if buttonIndex == 1 {
-                print(data[1])
-                labelInviteMember.text = data[buttonIndex]
-            } else if buttonIndex == 2 {
-                print(data[2])
-                labelInviteMember.text = data[buttonIndex]
+            if buttonIndex < 3 {
+                permission = buttonIndex
+                setPermission()
+                delegate?.update("permission", value: buttonIndex)
             }
         }
     }

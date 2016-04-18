@@ -13,10 +13,7 @@ import UIKit
     optional func onAddStep()
     optional func onFo()
     optional func onUnFo()
-}
-
-protocol coverDelegate {
-    func changeCover()
+    optional func Join()
 }
 
 class DreamCellTop: UITableViewCell {
@@ -37,15 +34,19 @@ class DreamCellTop: UITableViewCell {
     @IBOutlet var viewLineBottom: UIView!
     @IBOutlet var viewNav: UIImageView!
     
-    var delegate: topDelegate?
-    var delegateCover: coverDelegate?
+    /* 当加入记本时，创建一个头像出来，但 setup() 时要移除 */
+    var imageJoin: UIImageView?
     
-    var data: NSDictionary!
+    var delegate: topDelegate?
+    
+    var data: NSMutableDictionary!
     var toggle:Int = 0
     var tagArray: Array<String> = []  // 加 tag
     
     func setup() {
         /* 解析数据 */
+        imageJoin?.removeFromSuperview()
+        
         self.selectionStyle = UITableViewCellSelectionStyle.None
         scrollView.setWidth(globalWidth)
         btnMain.backgroundColor = UIColor.HighlightColor()
@@ -61,7 +62,6 @@ class DreamCellTop: UITableViewCell {
         imageDream.backgroundColor = UIColor.GreyBackgroundColor()
         
         if data != nil {
-            print(data)
             var title = data.stringAttributeForKey("title")
             let content = data.stringAttributeForKey("content")
             let user = data.stringAttributeForKey("user")
@@ -136,11 +136,23 @@ class DreamCellTop: UITableViewCell {
             labelStep.setX(0)
             labelLike.setX(labelStep.right() + widthDot + p * 2)
             labelFollow.setX(labelLike.right() + widthDot + p * 2)
-            labelStep.text = step
-            labelLike.text = like
-            labelFollow.text = followers
+            
+            
+            if let likeDream = Int(data.stringAttributeForKey("like")) {
+                if let likeStep = Int(data.stringAttributeForKey("like_step")) {
+                    let like = likeDream + likeStep
+                    labelLike.text = "赞 \(like)"
+                }
+            }
+            
+            labelStep.text = "进展 \(step)"
+            labelFollow.text = "关注 \(followers)"
             dot1.setX(labelStep.right() + p)
             dot2.setX(labelLike.right() + p)
+            labelLike.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onLike)))
+            labelLike.userInteractionEnabled = true
+            labelFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onFollowers)))
+            labelFollow.userInteractionEnabled = true
             
             /* 简介 */
             if content != "" {
@@ -223,6 +235,20 @@ class DreamCellTop: UITableViewCell {
             viewHeaders.setX(SIZE_PADDING)
             viewHeaders.setWidth(globalWidth - SIZE_PADDING * 2)
             
+            /* 显示加入的按钮 */
+            /* 如果未加入该记本 */
+            if isJoined == "0" {
+                let permission = data.stringAttributeForKey("permission")
+                let isFriend = data.stringAttributeForKey("is_friend")
+                /* 如果 permission = 1 同时 isFriend = 1，显示加入 */
+                /* 如果 permission = 2，显示加入 */
+                if permission == "1" && isFriend == "1" {
+                    showJoinButton()
+                } else if permission == "2" {
+                    showJoinButton()
+                }
+            }
+            
             if let editors = data.objectForKey("editors") as? NSArray {
                 for i in 0 ..< editors.count {
                     let head = UIImageView(frame: CGRectMake(CGFloat(i) * (32 + 8), 16, 32, 32))
@@ -255,8 +281,8 @@ class DreamCellTop: UITableViewCell {
                         count += 1
                     }
                     
-                    /* 当用户是记本主人时候，添加邀请的入口 */
-                    if uid == SAUid() {
+                    /* 当用户是记本主人或是成员时，添加邀请的入口 */
+                    if uid == SAUid() || isJoined == "1" {
                         let join = UILabel(frame: CGRectMake(CGFloat(count) * (32 + 8), 16, 32, 32))
                         join.backgroundColor = UIColor.WindowColor()
                         join.text = "+"
@@ -284,12 +310,15 @@ class DreamCellTop: UITableViewCell {
             labelTitle.hidden = false
             labelDes.hidden = false
             scrollView.hidden = false
-            delay(3) {
-                let a = self.viewLineBottom.bottom()
-                print(a)
-                let heightCell = self.data.stringAttributeForKey("heightCell")
-                print(heightCell)
+            
+            /* 当不在记本中，没有加入的权限，编辑者只有作者一个人 */
+            let willHeadersHidden = data.stringAttributeForKey("willHeadersHidden")
+            if willHeadersHidden == "1" {
+                viewHeaders.hidden = true
+                viewLineBottom.hidden = true
+                viewLineTop.setY(viewLineTop.y() + 16)
             }
+            print(data)
         } else {
             viewLineBottom.hidden = true
             viewLineTop.hidden = true
@@ -299,7 +328,64 @@ class DreamCellTop: UITableViewCell {
             labelDes.hidden = true
             scrollView.hidden = true
         }
+    }
+    
+    /* 显示加入按钮 */
+    func showJoinButton() {
+        let btnJoin = UIButton(frame: CGRectMake(viewHeaders.width() - btnMain.width(), (viewHeaders.height() - btnMain.height())/2, btnMain.width(), btnMain.height()))
+        btnJoin.setTitle("加入", forState: UIControlState())
+        btnJoin.titleLabel?.font = UIFont.systemFontOfSize(13)
+        btnJoin.setTitleColor(UIColor.HighlightColor(), forState: UIControlState())
+        btnJoin.layer.borderWidth = 1
+        btnJoin.layer.borderColor = UIColor.HighlightColor().CGColor
+        btnJoin.layer.cornerRadius = btnMain.height() * 0.5
+        viewHeaders.addSubview(btnJoin)
+        btnJoin.addTarget(self, action: #selector(self.join), forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    func join(sender: UIButton) {
+        let w: CGFloat = 32
+        imageJoin = UIImageView(frame: CGRectMake(SIZE_PADDING - 8 - w, viewHeaders.y() + (viewHeaders.height() - w) / 2, w, w))
+        imageJoin!.setHead(SAUid())
+        imageJoin!.layer.cornerRadius = w * 0.5
+        imageJoin!.layer.masksToBounds = true
+        imageJoin!.userInteractionEnabled = true
+        imageJoin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onHeadMe)))
+        self.addSubview(imageJoin!)
+        sender.userInteractionEnabled = false
+        delegate?.Join!()
         
+        UIView.animateWithDuration(0.3, animations: {
+            self.viewHeaders.setX(SIZE_PADDING + 8 + w)
+            self.imageJoin!.setX(SIZE_PADDING)
+            sender.alpha = 0
+            }) { (Bool) in
+                sender.hidden = true
+        }
+        
+        btnMain.removeTarget(nil, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
+        btnMain.setTitle("加入中..", forState: UIControlState())
+        
+        /* 网络请求 */
+        let id = data.stringAttributeForKey("id")
+        Api.postJoin(id, cuid: "a") { json in
+            if json != nil {
+                if let d = json!.objectForKey("data") as? NSDictionary {
+                    let id = d.stringAttributeForKey("id")
+                    let img = d.stringAttributeForKey("image")
+                    let title = d.stringAttributeForKey("title").decode()
+                    Nian.addDreamCallback(id, img: img, title: title)
+                    self.btnMain.setTitle("更新", forState: UIControlState())
+                    self.btnMain.addTarget(self, action: #selector(DreamCellTop.onAdd), forControlEvents: UIControlEvents.TouchUpInside)
+                }
+            }
+        }
+    }
+    
+    func onHeadMe() {
+        let vc = PlayerViewController()
+        vc.Id = SAUid()
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func invite() {
@@ -319,7 +405,6 @@ class DreamCellTop: UITableViewCell {
     }
     
     func scroll(y: CGFloat) {
-        print("Y: \(y)")
         let marginTop: CGFloat = 8
         let widthBefore: CGFloat = 72
         let widthAfter: CGFloat = 48
@@ -379,9 +464,16 @@ class DreamCellTop: UITableViewCell {
     
     /* 查看按赞 */
     func onLike() {
-        let vc = LikeViewController()
-        vc.Id = data!.stringAttributeForKey("id")
-        vc.urlIdentify = 3
+        let vc = List()
+        vc.type = ListType.DreamLikes
+        vc.id = data.stringAttributeForKey("id")
+        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onFollowers() {
+        let vc = List()
+        vc.type = ListType.Followers
+        vc.id = data.stringAttributeForKey("id")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

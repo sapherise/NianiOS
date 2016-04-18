@@ -417,22 +417,23 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/news.php", callback: callback)
     }
     
-    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, callback: V.JsonCallback) {
+    static func postAddDream(title: String, content: String, uploadUrl: String, isPrivate: Int, tags: NSArray, permission: String, callback: V.JsonCallback) {
         loadCookies()
         if tags == "" {
             V.httpPostForJson_AFN("http://api.nian.so/v2/dream?uid=\(s_uid)&shell=\(s_shell)",
-                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)" ],
+                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "permission": permission],
                 callback: callback)
         } else {
             V.httpPostForJson_AFN("http://api.nian.so/v2/dream?uid=\(s_uid)&shell=\(s_shell)",
-                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags],
+                content: ["content": "\(content)", "title": "\(title)", "img": "\(uploadUrl)", "private": "\(isPrivate)", "tags": tags, "permission": permission],
                 callback: callback)
         }
     }
     
-    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tags: String, callback: V.JsonCallback) {
+    static func postEditDream(id: String, title: String, content: String, uploadUrl: String, editPrivate: Int, tags: String, permission: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&image=\(uploadUrl)&private=\(editPrivate)&\(tags)", callback: callback)
+        V.httpPostForJson("http://api.nian.so/dream/\(id)/edit?uid=\(s_uid)&shell=\(s_shell)", content: "content=\(content)&title=\(title)&image=\(uploadUrl)&private=\(editPrivate)&permission=\(permission)&\(tags)", callback: callback)
+        
     }
     
     static func postEditStep(sid: String, content: String, uploadUrl: String, uploadWidth: Int, uploadHeight: Int, callback: V.StringCallback) {
@@ -559,13 +560,6 @@ struct Api {
         V.httpGetForJson("http://nian.so/api/user_foed_list2.php?page=\(page)&uid=\(uid)&myuid=\(s_uid)", callback: callback)
     }
     
-    
-    static func getDreamLike(uid: String, page: Int, callback: V.JsonCallback) {
-        loadCookies()
-        V.httpGetForJson("http://nian.so/api/like_dream.php?page=\(page)&id=\(uid)&myuid=\(s_uid)", callback: callback)
-    }
-    
-    
     static func postUsername(uid: String, callback: V.StringCallback) {
         loadCookies()
         V.httpPostForString("http://nian.so/api/username.php", content: "uid=\(uid)", callback: callback)
@@ -678,6 +672,7 @@ extension  Api {
     - parameter callback: <#callback description#>
     */
     static func postPetLottery(tag: Int, callback: V.JsonCallback) {
+        loadCookies()
         let _sha256String = ((s_uid + s_shell) as NSString).SHA256()
         V.httpPostForJson_AFN("http://api.nian.so/pet/extract?uid=\(s_uid)&&shell=\(s_shell)&tag=\(tag)", content: ["luckcode": _sha256String], callback: callback)
     }
@@ -694,6 +689,7 @@ extension  Api {
     }
     
     static func getPetUpgrade(pet: String, callback: V.JsonCallback) {
+        loadCookies()
         V.httpGetForJson("http://api.nian.so/pet/\(pet)/upgrade?uid=\(s_uid)&&shell=\(s_shell)", callback: callback)
     }
     
@@ -895,6 +891,7 @@ extension Api {
     
     /* 接受邀请 */
     static func postJoin(id: String, cuid: String, callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/multidream/join/dream/\(id)?uid=\(s_uid)&shell=\(s_shell)", content: ["cuid": cuid], callback: callback)
     }
     
@@ -918,26 +915,31 @@ extension Api {
     
     /* 微信支付获取订单 */
     static func postWechatPay(price: String, coins: String, callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
     }
     
     /* 支付宝支付获取订单 */
     static func postAlipayPay(price: String, coins: String, callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["price": price, "coins": coins], callback: callback)
     }
     
     /* 微信支付购买会员 */
     static func postWechatMember(callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
     }
     
     /* 支付宝支付购买会员 */
     static func postAlipayMember(callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "member"], callback: callback)
     }
     
     /* 微信支付奖励 */
     static func postWechatPremium(price: String, stepId: String, receiver: String, callback: V.JsonCallback) {
+        loadCookies()
         var coins = "0"
         if price == "0.50" {
             coins = "0"
@@ -952,11 +954,12 @@ extension Api {
         } else if price == "200.00" {
             coins = "5"
         }
-        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order/test2?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "reward", "price": price, "stepid": stepId, "receiver": receiver, "coins": coins], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/payment/wxpay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "reward", "price": price, "stepid": stepId, "receiver": receiver, "coins": coins], callback: callback)
     }
     
     /* 支付宝支付奖励 */
     static func postAlipayPremium(price: String, stepId: String, receiver: String, callback: V.JsonCallback) {
+        loadCookies()
         var coins = "0"
         if price == "0.50" {
             coins = "0"
@@ -971,7 +974,7 @@ extension Api {
         } else if price == "200.00" {
             coins = "5"
         }
-        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order/test?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "reward", "price": price, "stepid": stepId, "receiver": receiver, "coins": coins], callback: callback)
+        V.httpPostForJson_AFN("http://api.nian.so/payment/alipay/order?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "reward", "price": price, "stepid": stepId, "receiver": receiver, "coins": coins], callback: callback)
     }
     
     
@@ -985,11 +988,13 @@ extension Api {
     
     /* 购买表情 */
     static func postEmojiBuy(code: String, callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/shop/buy?uid=\(s_uid)&shell=\(s_shell)", content: ["code": code], callback: callback)
     }
     
     /* 请假 */
     static func postLeave(callback: V.JsonCallback) {
+        loadCookies()
         V.httpPostForJson_AFN("http://api.nian.so/exchange?uid=\(s_uid)&shell=\(s_shell)", content: ["type": "leave"], callback: callback)
     }
     
@@ -1012,16 +1017,27 @@ extension Api {
     }
     
     /* 提取用户奖励余额 */
-    static func postExchange(balance: CGFloat, callback: V.JsonCallback) {
+    static func getExchange(callback: V.JsonCallback) {
         loadCookies()
-        let _b = balance * 100
-        V.httpPostForJson_AFN("http://api.nian.so/user/\(s_uid)/exchange?uid=\(s_uid)&shell=\(s_shell)", content: ["balance": _b], callback: callback)
+        V.httpGetForJson("http://api.nian.so/user/\(s_uid)/exchange?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    /* 获取赞列表 */
+    /* 获取进展中的赞列表 */
     static func getLike(page: Int, stepId: String, callback: V.JsonCallback) {
         loadCookies()
         V.httpGetForJson("http://api.nian.so/v2/step/\(stepId)/like/users?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 获取记本中的关注列表 */
+    static func getDreamFollow(dreamId: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/\(dreamId)/followers?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
+    }
+    
+    /* 获取记本中的关注列表 */
+    static func getDreamLike(dreamId: String, page: Int, callback: V.JsonCallback) {
+        loadCookies()
+        V.httpGetForJson("http://api.nian.so/multidream/\(dreamId)/likes?page=\(page)&uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
 }
 

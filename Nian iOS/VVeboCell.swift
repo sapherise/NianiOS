@@ -256,7 +256,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     /* 奖励成功 */
     func payPremiumSuccess() {
-        print("奖励成功")
         alertResult = NIAlert()
         alertResult.delegate = self
         alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "成功送出！", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
@@ -265,7 +264,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     /* 奖励失败 */
     func payPremiumFailed() {
-        print("奖励失败")
         alertResult = NIAlert()
         alertResult.delegate = self
         alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
@@ -274,7 +272,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     /* 奖励取消 */
     func payPremiumCancel() {
-        print("取消")
         if let btn = alertPurchase.niButtonArray.firstObject as? NIButton {
             btn.stopAnimating()
         }
@@ -622,7 +619,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     
     /* 奖励功能 */
     func reward(sender: UIGestureRecognizer) {
-        print("注册通知")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.onWechatResult(_:)), name: "onWechatResult", object: nil)
         onViewPremiumClose()
         let tag = sender.view!.tag
@@ -681,7 +677,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                 }
             } else if didselectAtIndex == 1 {
                 /* 支付宝支付奖励 */
-                print("支付宝支付")
                 if let btn = alertPurchase.niButtonArray.lastObject as? NIButton {
                     btn.startAnimating()
                 }
@@ -699,11 +694,9 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
                                         let resultStatus = data.stringAttributeForKey("resultStatus")
                                         if resultStatus == "9000" {
                                             /* 支付宝：支付成功 */
-                                            print("支付成功")
                                             self.payPremiumSuccess()
                                         } else {
                                             /* 支付宝：支付失败 */
-                                            print("支付失败")
                                             self.payPremiumCancel()
                                         }
                                     }
@@ -721,6 +714,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     // todo: 颜色不对
+    // todo: 倒叙查看
     
     /* 移除通知中心的微信回调，防止多次调用导致 UI 混乱 */
     func removeWechatNotification() {
