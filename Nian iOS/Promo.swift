@@ -73,7 +73,6 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
     func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self.alert {
             if didselectAtIndex == 0 {
-                // todo loding
                 if let btn = alert.niButtonArray.firstObject as? NIButton {
                     btn.startAnimating()
                 }

@@ -50,7 +50,6 @@ class Comment: UITableViewCell {
             labelName.text = time
             labelName.textColor = UIColor.secAuxiliaryColor()
             labelName.textAlignment = NSTextAlignment.Right
-//            imageContent.image = UIImage(named: "bubble_me")
             labelHolder.setX(globalWidth - labelHolder.width() - 60)
             labelContent.setX(globalWidth - labelContent.width() - 73)
             labelContent.textColor = UIColor.MainColor()
@@ -67,7 +66,6 @@ class Comment: UITableViewCell {
             labelHolder.setX(60)
             labelContent.setX(73)
             labelName.setX(64)
-//            imageContent.image = UIImage(named: "bubble")
             imageHead.setX(16)
             labelHolder.backgroundColor = UIColor.HighlightColor()
             imageBubble.setX(60)
@@ -76,9 +74,11 @@ class Comment: UITableViewCell {
         
         if data.stringAttributeForKey("type") == "2" {
             labelHolder.backgroundColor = UIColor.PremiumColor()
-            imageBubble.hidden = true
-        } else {
-            imageBubble.hidden = false
+            if uid == SAUid() {
+                imageBubble.image = UIImage(named: "bubble_premium_me")
+            } else {
+                imageBubble.image = UIImage(named: "bubble_premium")
+            }
         }
     }
     

@@ -714,7 +714,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     // todo: 颜色不对
-    // todo: 倒叙查看
     
     /* 移除通知中心的微信回调，防止多次调用导致 UI 混乱 */
     func removeWechatNotification() {

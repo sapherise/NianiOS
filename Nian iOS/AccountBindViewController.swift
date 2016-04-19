@@ -566,7 +566,6 @@ extension AccountBindViewController {
     
         SettingModel.bindThirdAccount(id, nameFrom3rd: nameFrom3rd, type: type) {
             (task, responseObject, error) -> Void in
-            // todo
             if let _ = error {
                 self.showTipText("网络有点问题，等一会儿再试")
             } else {

@@ -90,7 +90,6 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         let data = dataArray[indexPath.row] as! NSDictionary
         c.data = data
         c.type = type
-        c.hasSelected = data.stringAttributeForKey("inviting") != "0"
         c.num = indexPath.row
         c.id = id
         c.setup()

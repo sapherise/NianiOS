@@ -96,7 +96,6 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func update(key: String, value: Int) {
-        print("key", key, "value", value)
         if key == "private" {
             isPrivate = value
         } else if key == "permission" {

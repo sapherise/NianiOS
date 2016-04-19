@@ -21,19 +21,20 @@ class ExploreNewHotCell: UITableViewCell {
     @IBOutlet var viewLeft: UIView!
     @IBOutlet var viewRight: UIView!
     @IBOutlet var viewHolder: UIView!
+    @IBOutlet var labelFollow: UILabel!
     
     var data :NSDictionary!
     var indexPath: NSIndexPath?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         self.selectionStyle = .None
         self.setWidth(globalWidth)
-        self.labelTag.setX(globalWidth-66)
+        self.labelTag.setX(globalWidth - labelFollow.width() - 16)
         self.viewLine.setWidth(globalWidth - 32)
         self.viewHolder.setX(globalWidth/2-160)
         viewLine.setHeight(globalHalf)
+        labelFollow.hidden = true
     }
     
     func _layoutSubviews() {
@@ -49,6 +50,7 @@ class ExploreNewHotCell: UITableViewCell {
             }
             
             self.labelTag.setRadius(4, isTop: false)
+            self.labelFollow.setRadius(4, isTop: false)
             
             let heightTitle = data.objectForKey("heightTitle") as! CGFloat
             let heightContent = data.objectForKey("heightContent") as! CGFloat
@@ -79,6 +81,14 @@ class ExploreNewHotCell: UITableViewCell {
             }
             self.viewLine.setY(self.viewLeft.bottom() + 32)
         }
+        
+        labelFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreNewHotCell.onFollow)))
+    }
+    
+    func onFollow() {
+        labelFollow.hidden = true
+        let id = data.stringAttributeForKey("id")
+        Api.getFollowDream(id) { json in }
     }
     
     class func cellHeight(data: NSDictionary) -> NSArray {

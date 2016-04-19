@@ -15,6 +15,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     var deleteDreamSheet:UIActionSheet?
     var quitSheet: UIActionSheet!
     var navView: UIImageView!
+    var isDesc = true
     
     //editStepdelegate
     var editStepRow:Int = 0
@@ -100,7 +101,11 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         if clear {
             self.page = 1
         }
-        Api.getDreamStep(Id, page: page) { json in
+        var sort = "asc"
+        if isDesc {
+            sort = "desc"
+        }
+        Api.getDreamStep(Id, page: page, sort: sort) { json in
             if json != nil {
                 if json!.objectForKey("error") as! NSNumber != 0 {
                     let status = json!.objectForKey("status") as! NSNumber
@@ -221,11 +226,22 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             self.quitSheet.showInView(self.view)
         }
         
-        var arr = [acLike, acReport]
+        let acTime = SAActivity()
+        acTime.saActivityTitle = "颠倒排序"
+        acTime.saActivityType = "颠倒排序"
+        acTime.saActivityImage = UIImage(named: "av_time")
+        acTime.saActivityFunction = {
+            let vc = DreamViewController()
+            vc.Id = self.Id
+            vc.isDesc = !self.isDesc
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        var arr = [acLike, acReport, acTime]
         if uid == SAUid() {
-            arr = [acDone, acEdit, acDelete]
+            arr = [acDone, acEdit, acDelete, acTime]
         } else if joined == "1" {
-            arr = [acQuit, acLike, acReport]
+            arr = [acQuit, acLike, acReport, acTime]
         }
         let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
         self.presentViewController(avc, animated: true, completion: nil)
@@ -329,7 +345,25 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 Api.getQuit(self.Id) { json in
                     self.navigationItem.rightBarButtonItems = []
-                    self.delegateDelete?.deleteDreamCallback(self.Id)
+//                    self.delegateDelete?.deleteDreamCallback(self.Id)
+                    //
+                    
+                    
+                    if Nian.dataArray.count > 0 {
+                        for i in 0...(Nian.dataArray.count - 1) {
+                            let data = Nian.dataArray[i] as! NSDictionary
+                            let _id = data.stringAttributeForKey("id")
+                            if _id == self.Id {
+                                Nian.dataArray.removeObjectAtIndex(i)
+                                Nian.reloadFromDataArray()
+                                Cookies.set(Nian.dataArray, forKey: "NianDreams")
+                                break
+                            }
+                        }
+                    }
+                    //
+                    
+                    
                     self.navigationController?.popViewControllerAnimated(true)
                 }
             }
@@ -345,7 +379,6 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let content = dataArrayTop.stringAttributeForKey("content")
         let img = dataArrayTop.stringAttributeForKey("image")
         let thePrivate = Int(dataArrayTop.stringAttributeForKey("private"))!
-        print(dataArrayTop)
         editdreamVC.editId = id
         editdreamVC.editTitle = title.decode()
         editdreamVC.editContent = content.decode()
@@ -460,11 +493,17 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         /* 当不在记本中，没有加入的权限，编辑者只有作者一个人，且当前用户不是作者本人 */
         var willHeadersHidden = "0"
         if data.stringAttributeForKey("joined") == "0" {
-            if data.stringAttributeForKey("permission") == "0" {
-                if data.stringAttributeForKey("total_users") == "1" {
-                    if data.stringAttributeForKey("uid") != SAUid() {
-                        heightCell = heightCell - 64 + 16
+            if data.stringAttributeForKey("total_users") == "1" {
+                if data.stringAttributeForKey("uid") != SAUid() {
+                    if data.stringAttributeForKey("permission") == "0" {
+                        heightCell = heightCell - 64 + 8
                         willHeadersHidden = "1"
+                    } else if data.stringAttributeForKey("permission") == "1" {
+                        /* 当是好友可加入时，但是不是好友的话，也隐藏 */
+                        if data.stringAttributeForKey("is_friend") == "0" {
+                            heightCell = heightCell - 64 + 8
+                            willHeadersHidden = "1"
+                        }
                     }
                 }
             }

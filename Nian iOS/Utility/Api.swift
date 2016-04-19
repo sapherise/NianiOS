@@ -222,9 +222,9 @@ struct Api {
         V.httpGetForJson("http://api.nian.so/user/\(uid)?uid=\(s_uid)&shell=\(s_shell)", callback: callback)
     }
     
-    static func getDreamStep(id: String, page: Int, callback: V.JsonCallback) {
+    static func getDreamStep(id: String, page: Int, sort: String, callback: V.JsonCallback) {
         loadCookies()
-        V.httpGetForJson("http://api.nian.so/v2/multidream/\(id)?uid=\(s_uid)&sort=desc&page=\(page)&shell=\(s_shell)", callback: callback)
+        V.httpGetForJson("http://api.nian.so/v2/multidream/\(id)?uid=\(s_uid)&sort=\(sort)&page=\(page)&shell=\(s_shell)", callback: callback)
     }
     
     /* 获取我的所有进展 */

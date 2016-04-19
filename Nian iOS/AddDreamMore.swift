@@ -101,10 +101,8 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
     /* 设置私密或公开 */
     func setPrivate(sender: UISwitch) {
         if sender.on {
-            print("设置为私密")
             delegate?.update("private", value: 1)
         } else {
-            print("设置为公开")
             delegate?.update("private", value: 0)
         }
     }
@@ -120,8 +118,6 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
     func setPermission() {
         labelInviteMember.text = data[permission]
     }
-    
-    // todo: 记本主人不能有加入的按钮
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == alert {

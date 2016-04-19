@@ -68,7 +68,6 @@ class DreamCellTop: UITableViewCell {
             let img = data.stringAttributeForKey("image")
             let step = data.stringAttributeForKey("step")
             let followers = data.stringAttributeForKey("followers")
-            let like = data.stringAttributeForKey("like")
             let thePrivate = data.stringAttributeForKey("private")
             let percent = data.stringAttributeForKey("percent")
             let uid = data.stringAttributeForKey("uid")
@@ -237,7 +236,7 @@ class DreamCellTop: UITableViewCell {
             
             /* 显示加入的按钮 */
             /* 如果未加入该记本 */
-            if isJoined == "0" {
+            if isJoined == "0" && uid != SAUid() {
                 let permission = data.stringAttributeForKey("permission")
                 let isFriend = data.stringAttributeForKey("is_friend")
                 /* 如果 permission = 1 同时 isFriend = 1，显示加入 */
@@ -292,7 +291,7 @@ class DreamCellTop: UITableViewCell {
                         join.layer.cornerRadius = 16
                         join.layer.masksToBounds = true
                         join.userInteractionEnabled = true
-                        join.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.invite)))
+                        join.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onMembers)))
                         viewHeaders.addSubview(join)
                     }
                 }
@@ -316,9 +315,8 @@ class DreamCellTop: UITableViewCell {
             if willHeadersHidden == "1" {
                 viewHeaders.hidden = true
                 viewLineBottom.hidden = true
-                viewLineTop.setY(viewLineTop.y() + 16)
+                viewLineTop.setY(viewLineTop.y() + 8)
             }
-            print(data)
         } else {
             viewLineBottom.hidden = true
             viewLineTop.hidden = true
@@ -385,13 +383,6 @@ class DreamCellTop: UITableViewCell {
     func onHeadMe() {
         let vc = PlayerViewController()
         vc.Id = SAUid()
-        self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func invite() {
-        let vc = List()
-        vc.type = ListType.Invite
-        vc.id = data.stringAttributeForKey("id")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     

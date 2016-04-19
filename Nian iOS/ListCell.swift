@@ -23,9 +23,6 @@ class ListCell: UITableViewCell {
     var data: NSDictionary!
     var type: ListType!
     
-    /* 判断是否已经激活按钮 */
-    var hasSelected = false
-    
     /* List 的代理协议 */
     var delegate: ListDelegate?
     
@@ -57,9 +54,8 @@ class ListCell: UITableViewCell {
             labelButton.layer.borderColor = UIColor.HighlightColor().CGColor
             labelButton.layer.borderWidth = 1
             labelButton.setX(globalWidth - 15 - labelButton.width())
-            
-            /* 通过判断 hasSelected 来显示按钮与绑定动作 */
-            if !hasSelected {
+            let inviting = data.stringAttributeForKey("inviting")
+            if inviting == "0" {
                 labelButton.backgroundColor = UIColor.whiteColor()
                 labelButton.textColor = UIColor.HighlightColor()
                 labelButton.text = "邀请"
