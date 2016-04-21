@@ -41,7 +41,6 @@ class MeCell: UITableViewCell {
         let dreamtitle = self.data.stringAttributeForKey("dreamtitle").decode()
         var content = self.data.stringAttributeForKey("content").decode()
         let type = self.data.stringAttributeForKey("type")
-        let isread = self.data.stringAttributeForKey("isread")
         let isConfirm = self.data.stringAttributeForKey("isConfirm")
         var word:String = ""
         
@@ -96,14 +95,10 @@ class MeCell: UITableViewCell {
         self.nickLabel!.text = user
         self.wordLabel!.text = word
         self.lastdate!.text = lastdate
-        if isread == "1" {
-            self.nickLabel!.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-        }else{
-            self.nickLabel!.textColor = UIColor.HighlightColor()
-        }
+        self.nickLabel!.textColor = UIColor.HighlightColor()
         self.avatarView?.setHead(uid)
         self.avatarView!.tag = Int(uid)!
-        let height = content.stringHeightWith(16,width:globalWidth-30)
+        let height = content.stringHeightWith(16, width: globalWidth - 40)
         
         self.contentLabel!.setHeight(height)
         self.contentLabel!.text = content
@@ -150,10 +145,18 @@ class MeCell: UITableViewCell {
         let dreamtitle = data.stringAttributeForKey("dreamtitle").decode()
         var content = data.stringAttributeForKey("content").decode()
         let type = data.stringAttributeForKey("type")
-        if type == "8" {
+        
+        if type == "2" || type == "7" || type == "10" || type == "18" || type == "19" || type == "20" {
+            content = "「\(dreamtitle)」"
+        } else if type == "3" {
+            content = "去看看对方"
+        } else if type == "8" {
             content = dreamtitle
+        } else if type == "21" {
+            content = "我送了一个 🍭 给你！"
         }
-        let height = content.stringHeightWith(16,width:globalWidth-30)
+        
+        let height = content.stringHeightWith(16,width:globalWidth - 40)
         if type == "9" || type == "18" {
             return 159 + height
         }else{

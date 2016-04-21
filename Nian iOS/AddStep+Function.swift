@@ -15,10 +15,14 @@ extension AddStep {
         field2.resignFirstResponder()
         LSYAlbum.sharedAlbum().setupAlbumGroups { (groups) -> () in
             let albumPicker = LSYAlbumPicker()
-            albumPicker.group = groups[0] as! ALAssetsGroup
-            albumPicker.maxminumNumber = 9 - self.imageArray.count
-            albumPicker.delegate = self
-            self.navigationController?.pushViewController(albumPicker, animated: true)
+            if groups.count > 0 {
+                albumPicker.group = groups[0] as! ALAssetsGroup
+                albumPicker.maxminumNumber = 9 - self.imageArray.count
+                albumPicker.delegate = self
+                self.navigationController?.pushViewController(albumPicker, animated: true)
+            } else {
+                self.showTipText("念没有访问照片的权限 >_<")
+            }
         }
     }
     

@@ -148,10 +148,11 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
                                 self.alertError!.delegate = self
                                 if let _json = json as? NSDictionary {
                                     let status = _json.stringAttributeForKey("status")
-                                    if status == "1003" {
+                                    let error = _json.stringAttributeForKey("error")
+                                    if error == "1003" {
                                         self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "念的实验室没有这么多钱！\n去联系下 @Sa 试试！", "buttonArray": ["哦"]]
                                         self.alert!.dismissWithAnimationSwtich(self.alertError!)
-                                    } else if status == "1001" {
+                                    } else if error == "1001" {
                                         self.alertError!.dict = ["img": UIImage(named: "pay_wallet")!, "title": "失败了", "content": "余额要不小于 20 元\n才能提出", "buttonArray": ["哦"]]
                                         self.alert!.dismissWithAnimationSwtich(self.alertError!)
                                     } else if status == "200" {

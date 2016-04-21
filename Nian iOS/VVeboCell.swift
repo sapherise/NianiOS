@@ -629,7 +629,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         let emoji = data.stringAttributeForKey("emoji")
         let price = data.stringAttributeForKey("price")
         typePremium = tag
-        alert.dict = ["img": UIImage(named: "coin")!, "title": "奖励", "content": "要支付 ¥\(price) 来\n奖励对方一个 \(emoji) \(name)吗？", "buttonArray": [" 嗯！"]]
+        alert.dict = ["img": UIImage(named: "pay_wallet")!, "title": "奖励", "content": "要支付 ¥\(price) 来\n奖励对方一个 \(emoji) \(name)吗？", "buttonArray": [" 嗯！"]]
         alert.showWithAnimation(showAnimationStyle.flip)
     }
     
@@ -638,7 +638,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             if didselectAtIndex == 0 {
                 alertPurchase = NIAlert()
                 alertPurchase.delegate = self
-                alertPurchase.dict = ["img": UIImage(named: "coin")!, "title": "支付奖励", "content": "选择一种支付方式", "buttonArray": ["微信支付", "支付宝支付"]]
+                alertPurchase.dict = ["img": UIImage(named: "pay_wallet")!, "title": "支付奖励", "content": "选择一种支付方式", "buttonArray": ["微信支付", "支付宝支付"]]
                 alert.dismissWithAnimationSwtich(alertPurchase)
             }
         } else if niAlert == alertPurchase {

@@ -201,8 +201,10 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             return cell!
         }else{
             let c: LetterCell! = tableView.dequeueReusableCellWithIdentifier("LetterCell", forIndexPath: indexPath) as? LetterCell
-            c.data = dataArray[indexPath.row] as! NSDictionary
-            c.setup()
+            if dataArray.count > indexPath.row {
+                c.data = dataArray[indexPath.row] as! NSDictionary
+                c.setup()
+            }
             return c
         }
     }
