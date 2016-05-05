@@ -204,10 +204,16 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
         if images.count > 0 {
             for i in 0...(images.count - 1) {
                 if let data = images[i] as? NSDictionary {
-                    let width = data.stringAttributeForKey("width").toCGFloat()
+                    var width = data.stringAttributeForKey("width").toCGFloat()
                     let height = data.stringAttributeForKey("height").toCGFloat()
                     let path = data.stringAttributeForKey("path")
-                    let heightNew = globalWidth * height / width
+                    var heightNew: CGFloat = 320
+                    if width == 0 {
+                        width = 320
+                    } else {
+                        heightNew = globalWidth * height / width
+                    }
+                    // todo: 测试图片功能
                     let y = (globalHeight - heightNew)/2
                     var v = UIImageView()
                     

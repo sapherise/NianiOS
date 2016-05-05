@@ -63,25 +63,27 @@ class VVeboTableView: UITableView {
     }
     
     func drawCell(cell: VVeboCell, indexPath: NSIndexPath, dataArray: NSMutableArray) {
-        let data = dataArray[indexPath.row] as! NSDictionary
-        cell.selectionStyle = .None
-        // 复用时，清除原有内容
-        if cell.num != indexPath.row || globalVVeboReload {
-            cell.num = indexPath.row
-            cell.clear()
+        if indexPath.row < dataArray.count {
+            let data = dataArray[indexPath.row] as! NSDictionary
+            cell.selectionStyle = .None
+            // 复用时，清除原有内容
+            if cell.num != indexPath.row || globalVVeboReload {
+                cell.num = indexPath.row
+                cell.clear()
+            }
+            cell.data = data
+            
+            // 当快速滚动时，判断绘制的 cell 在不在 needLoadArr 数组内
+            // 如果不存在，就 clear
+            if needLoadArr.count > 0 && needLoadArr.indexOfObject(indexPath.row) >= needLoadArr.count {
+                cell.clear()
+                return
+            }
+            if scrollToToping {
+                return
+            }
+            cell.draw()
         }
-        cell.data = data
-        
-        // 当快速滚动时，判断绘制的 cell 在不在 needLoadArr 数组内
-        // 如果不存在，就 clear
-        if needLoadArr.count > 0 && needLoadArr.indexOfObject(indexPath.row) >= needLoadArr.count {
-            cell.clear()
-            return
-        }
-        if scrollToToping {
-            return
-        }
-        cell.draw()
     }
     
     func loadIfNeed(velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

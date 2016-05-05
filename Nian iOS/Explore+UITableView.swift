@@ -79,7 +79,8 @@ extension ExploreViewController {
                     }
                     
                     /* 当是第一页时，缓存到本地 */
-                    if self.page == 2 {
+                    if self.page == 1 {
+                        print("添加缓存！")
                         Cookies.set(self.dataArray, forKey: "explore_follow")
                     }
                     self.currentDataArray = self.dataArray

@@ -726,10 +726,12 @@ func setCacheImage(url: String, img: UIImage, width: CGFloat) {
 }
 
 func SAUpdate(dataArray: NSMutableArray, index: Int, key: String, value: AnyObject, tableView: UITableView) {
-    let data = dataArray[index] as! NSDictionary
-    let mutableItem = NSMutableDictionary(dictionary: data)
-    mutableItem.setValue(value, forKey: key)
-    dataArray.replaceObjectAtIndex(index, withObject: mutableItem)
+    if dataArray.count > index {
+        let data = dataArray[index] as! NSDictionary
+        let mutableItem = NSMutableDictionary(dictionary: data)
+        mutableItem.setValue(value, forKey: key)
+        dataArray.replaceObjectAtIndex(index, withObject: mutableItem)
+    }
 }
 
 func SAUpdate(dataArray: NSMutableArray, index: Int, data: NSDictionary, tableView: UITableView) {

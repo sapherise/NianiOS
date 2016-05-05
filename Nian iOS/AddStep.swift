@@ -212,14 +212,16 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
             }
             
             if count == 0 {
-                let data = dataArray[0] as! NSDictionary
-                let id = data.stringAttributeForKey("id")
-                let title = data.stringAttributeForKey("title")
-                let image = data.stringAttributeForKey("image")
-                let userImageURL = "http://img.nian.so/dream/\(image)!dream"
-                self.imageDream.setImage(userImageURL)
-                self.idDream = id
-                self.labelDream.text = title.decode()
+                if dataArray.count > 0 {
+                    let data = dataArray[0] as! NSDictionary
+                    let id = data.stringAttributeForKey("id")
+                    let title = data.stringAttributeForKey("title")
+                    let image = data.stringAttributeForKey("image")
+                    let userImageURL = "http://img.nian.so/dream/\(image)!dream"
+                    self.imageDream.setImage(userImageURL)
+                    self.idDream = id
+                    self.labelDream.text = title.decode()
+                }
             }
         }
         
