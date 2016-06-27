@@ -7,7 +7,8 @@
 //#import "Reachability.h"
 #import "WeiboSDK.h"
 #import "WXApi.h"
-#import "MobClick.h"
+//#import "MobClick.h"
+#import <UMMobClick/MobClick.h>
 #import "sqlite3.h"
 #import "NSObject+Swift.h"
 #import "AFNetworking.h"
@@ -48,7 +49,8 @@
  *
  *  @brief  加入 SDWebImage
  */
-#import "SDWebImage.h"
+//#import "SDWebImage.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 /**
  *  @author Sa, 15-12-23 11:33:56

@@ -31,7 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
-        MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
+        
+        
+        let config = UMAnalyticsConfig();
+        config.appKey = "54b48fa8fd98c59154000ff2";
+        MobClick.startWithConfigure(config);
+//        MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
         
         application.clearBadge()
         
