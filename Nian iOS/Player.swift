@@ -249,7 +249,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
             if json != nil {
                 self.tableViewDream.tableFooterView = UIView()
                 let d = json!.object(forKey: "data")
-                let arr = d!.object(forKey: "dreams") as! NSArray
+                let arr = (d! as AnyObject).object(forKey: "dreams") as! NSArray
                 
                 if isClear {
                     self.dataArray.removeAllObjects()

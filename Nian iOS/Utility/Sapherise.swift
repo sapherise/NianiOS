@@ -100,7 +100,7 @@ func SAHtml(_ content:String) -> String {
     r.length = CFStringGetLength(s)
     CFStringFindAndReplace(s, "\n" as CFString!, "<br>" as CFString!, r, CFStringCompareFlags())
     
-    return s as String
+    return "\(s)" as String
 }
 
 func SAEncode(_ content:String) -> String {
@@ -299,10 +299,6 @@ extension UIViewController: UIGestureRecognizerDelegate {
         self.navigationController?.pushViewController(DreamVC, animated: true)
     }
     
-    func SAXib(_ named: String) -> AnyObject {
-        return (Bundle.main.loadNibNamed(named, owner: self, options: nil) as NSArray).object(at: 0)
-    }
-    
     func showTipText(_ text: String, delayTime: Double = 2.0) {
         let v: UIView? = UIView()
         v!.frame = CGRect(x: 0, y: -64, width: globalWidth, height: 64)
@@ -478,9 +474,10 @@ class SAActivity: UIActivity {
     var saActivityImage: UIImage?
     var saActivityFunction: (() -> Void)?
     var saActivityType: String = ""
-    override var activityType : String {
-        return saActivityType
-    }
+    // todo
+//    override var activityType : String {
+//        return saActivityType
+//    }
     override var activityTitle : String  {
         return saActivityTitle
     }
@@ -680,9 +677,9 @@ extension UIButton {
     }
     func endLoading(_ text: String) {
         let views:NSArray = self.subviews as NSArray
-        for view:AnyObject in views {
-            if NSStringFromClass(view.classForCoder) == "UIActivityIndicatorView"  {
-                view.removeFromSuperview()
+        for view in views {
+            if NSStringFromClass((view as AnyObject).classForCoder) == "UIActivityIndicatorView"  {
+                (view as AnyObject).removeFromSuperview()
             }
         }
         let imageView = UIImageView(frame: CGRect(x: self.width()/2 - 12, y: self.height()/2 - 12, width: 24, height: 24))

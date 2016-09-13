@@ -42,7 +42,7 @@ class LevelView: UIView {
             Api.getUserTop(uid) { json in
                 if json != nil {
                     if let data = json!.object(forKey: "data") {
-                        if let user = data.object(forKey: "user") as? NSDictionary {
+                        if let user = (data as AnyObject).object(forKey: "user") as? NSDictionary {
                             let likes = user.stringAttributeForKey("likes")
                             let steps = user.stringAttributeForKey("step")
                             let followed = user.stringAttributeForKey("followed")

@@ -11,14 +11,14 @@ import UIKit
 
 extension InputView {
     /* 提交回应 */
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    @objc(textView:shouldChangeTextInRange:replacementText:) func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             let content = textView.text
             if content == "" {
                 return true
             }
             let type = inputType == inputTypeEnum.comment ? "0" : "1"
-            delegate?.send(content, type: type)
+            delegate?.send(content!, type: type)
             let h = resize()
             resizeView(h)
             return false
@@ -37,7 +37,7 @@ extension InputView {
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc(tableView:cellForRowAtIndexPath:) func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let c: EmojiCell! = tableView.dequeueReusableCell(withIdentifier: "EmojiCell", for: indexPath) as? EmojiCell
         c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         c.setup()
@@ -46,7 +46,7 @@ extension InputView {
     }
     
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
@@ -54,7 +54,7 @@ extension InputView {
         return dataArray.count
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc(tableView:didSelectRowAtIndexPath:) func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dataArray.count > 0 {
             for i in 0...(dataArray.count - 1) {
                 current = (indexPath as NSIndexPath).row
@@ -92,7 +92,7 @@ extension InputView {
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let c: EmojiCollectionCell! = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCollectionCell", for: indexPath) as? EmojiCollectionCell
         if dataArray.count > current {
             let data = dataArray[current] as! NSDictionary

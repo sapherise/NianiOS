@@ -268,7 +268,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
                         let vip = data.stringAttributeForKey("vip")
                         let member = data.stringAttributeForKey("member")
-                        Cookies.set(member, forKey: "member")
+                        Cookies.set(member as AnyObject?, forKey: "member")
                         let deadLine = data.stringAttributeForKey("deadline")
                         self.coinButton.setTitle("念币 \(coin)", for: UIControlState())
                         self.levelButton.setTitle("宠物 \(petCount)", for: UIControlState())
@@ -290,9 +290,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                                 self.imageBG.setCover(AllCoverURL)
                             }
                         }
-                        Cookies.set(name, forKey: "user")
-                        Cookies.set(AllCoverURL, forKey: "coverUrl")
-                        Cookies.set(coin, forKey: "coin")
+                        Cookies.set(name as AnyObject?, forKey: "user")
+                        Cookies.set(AllCoverURL as AnyObject?, forKey: "coverUrl")
+                        Cookies.set(coin as AnyObject?, forKey: "coin")
                     } else {
                         self.SAlogout()
                     }
@@ -425,7 +425,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         let NianDreams = Cookies.get("NianDreams") as? NSMutableArray
         if NianDreams != nil {
             let mutableArrayLocal = NSMutableArray()
-            for data: AnyObject in NianDreams! {
+            for data in NianDreams! {
                 mutableArrayLocal.add(data)
             }
             self.dataArray = mutableArrayLocal
@@ -454,7 +454,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     var idArrayRemote: [Int] = []
                     
                     // 创建远程记本数组，以及记本的编号数组
-                    for data: AnyObject  in arr {
+                    for data  in arr {
                         mutableArray.add(data)
                         let d = data as! NSDictionary
                         if let id = Int(d.stringAttributeForKey("id")) {
@@ -463,7 +463,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     }
                     
                     // 创建本地记本数组，以及记本的编号数组
-                    for data: AnyObject in self.dataArray {
+                    for data in self.dataArray {
                         let d = data as! NSDictionary
                         if let id = Int(d.stringAttributeForKey("id")) {
                             idArrayLocal.append(id)

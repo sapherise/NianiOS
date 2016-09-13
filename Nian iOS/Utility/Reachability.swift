@@ -27,7 +27,9 @@ import Foundation
 public let ReachabilityChangedNotification = "ReachabilityChangedNotification"
 
 func callback(_ reachability:SCNetworkReachability, flags: SCNetworkReachabilityFlags, info: UnsafeMutableRawPointer) {
-    let reachability = Unmanaged<Reachability>.fromOpaque(OpaquePointer(info)).takeUnretainedValue()
+//    let reachability = Unmanaged<Reachability>.fromOpaque(OpaquePointer(info)).takeUnretainedValue()
+    
+    let reachability = Unmanaged<Reachability>.fromOpaque(info).takeUnretainedValue()
     
     DispatchQueue.main.async {
         reachability.reachabilityChanged(flags)
@@ -100,11 +102,13 @@ open class Reachability: NSObject {
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
-        let ref = withUnsafePointer(to: &zeroAddress) {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+        let ref = withUnsafePointer(to: &zeroAddress) {_ in
+//            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+            // todo
         }
         
-        return Reachability(reachabilityRef: ref)
+//        return Reachability(reachabilityRef: ref)
+        return nil
     }
     
     open class func reachabilityForLocalWiFi() -> Reachability? {
@@ -117,10 +121,11 @@ open class Reachability: NSObject {
         let address: UInt32 = 0xA9FE0000
         localWifiAddress.sin_addr.s_addr = in_addr_t(address.bigEndian)
         
-        let ref = withUnsafePointer(to: &localWifiAddress) {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-        }
-        return Reachability(reachabilityRef: ref)
+//        let ref = withUnsafePointer(to: &localWifiAddress) {
+//            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+//        }
+//        return Reachability(reachabilityRef: ref)
+         return nil
     }
     
     // MARK: - *** Notifier methods ***
@@ -128,15 +133,16 @@ open class Reachability: NSObject {
         
         if notifierRunning { return true }
         
-        var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
-        context.info = UnsafeMutablePointer(Unmanaged.passUnretained(self).toOpaque())
-        
-        if SCNetworkReachabilitySetCallback(reachabilityRef!, callback, &context) {
-            if SCNetworkReachabilitySetDispatchQueue(reachabilityRef!, reachabilitySerialQueue) {
-                notifierRunning = true
-                return true
-            }
-        }
+        // todo
+//        var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
+//        context.info = UnsafeMutablePointer(Unmanaged.passUnretained(self).toOpaque())
+//        
+//        if SCNetworkReachabilitySetCallback(reachabilityRef!, callback, &context) {
+//            if SCNetworkReachabilitySetDispatchQueue(reachabilityRef!, reachabilitySerialQueue) {
+//                notifierRunning = true
+//                return true
+//            }
+//        }
         
         stopNotifier()
         

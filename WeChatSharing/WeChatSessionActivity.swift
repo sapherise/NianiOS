@@ -14,9 +14,10 @@ class WeChatSessionActivity: WeChatActivityGeneral {
         return UIActivityCategory.share
     }
     
-    override var activityType : String? {
-        return Bundle.main.bundleIdentifier! + ".WeChatSessionActivity"
-    }
+    // todo
+//    override var activityType : String? {
+//        return Bundle.main.bundleIdentifier! + ".WeChatSessionActivity"
+//    }
     
     override var activityTitle : String? {
         isSessionScene = true

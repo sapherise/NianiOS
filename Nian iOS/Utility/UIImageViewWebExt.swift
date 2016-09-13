@@ -106,11 +106,12 @@ extension UIImageView {
         if (saveMode == "on") && (networkStatus == 1) {
             self.loadCacheImage(urlString, placeholderImage: self.image)
         } else {
-            self.sd_setImage(with: url, placeholderImage: UIImage(named: "head"), completed: { (image, err, type, url) -> Void in
-                if image != nil {
-                    self.image = image
-                }
-            })
+            // todo
+//            self.sd_setImage(with: url, placeholderImage: UIImage(named: "head"), completed: { (image, err, type, url) -> Void in
+//                if image != nil {
+//                    self.image = image
+//                }
+//            })
         }
     }
     

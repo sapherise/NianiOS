@@ -27,10 +27,11 @@ class AddStepModel: NSObject {
         let jsonString = try! JSONSerialization.data(withJSONObject: images, options: JSONSerialization.WritingOptions.prettyPrinted)
         let imagesString = NSString(data: jsonString, encoding: String.Encoding.utf8.rawValue)!
         
-        NianNetworkClient.sharedNianNetworkClient.post(
-            "multidream/\(dreamId)/update?uid=\(_uid)&shell=\(_shell)",
-            content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
-            callback: callback)
+        // todo
+//        NianNetworkClient.sharedNianNetworkClient.post(
+//            "multidream/\(dreamId)/update?uid=\(_uid)&shell=\(_shell)",
+//            content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
+//            callback: callback)
     }
     
     class func postEditStep(content: String, stepType: Int, images: NSArray, sid: String, callback: NetworkClosure) {
@@ -39,11 +40,11 @@ class AddStepModel: NSObject {
     
         let jsonString = try! JSONSerialization.data(withJSONObject: images, options: JSONSerialization.WritingOptions.prettyPrinted)
         let imagesString = NSString(data: jsonString, encoding: String.Encoding.utf8.rawValue)!
-    
-        NianNetworkClient.sharedNianNetworkClient.post(
-            "v2/step/\(sid)/edit?uid=\(_uid)&shell=\(_shell)",
-            content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
-            callback: callback)
+        // todo
+//        NianNetworkClient.sharedNianNetworkClient.post(
+//            "v2/step/\(sid)/edit?uid=\(_uid)&shell=\(_shell)",
+//            content: ["content": content, "type": "\(stepType)", "images": "\(imagesString)"],
+//            callback: callback)
     }
     
     

@@ -38,14 +38,15 @@ class ContactsHelper {
             return self.createAddressBook()
         case .notDetermined:
             var ok = false
-            ABAddressBookRequestAccessWithCompletion(nil) {
-                (granted:Bool, err:CFError!) in
-                DispatchQueue.main.async {
-                    if granted {
-                        ok = self.createAddressBook()
-                    }
-                }
-            }
+//            ABAddressBookRequestAccessWithCompletion(nil) {
+//                (granted:Bool, err:CFError!) in
+//                DispatchQueue.main.async {
+//                    if granted {
+//                        ok = self.createAddressBook()
+//                    }
+//                }
+//            }
+            // todo
             if ok == true {
                 return true
             }

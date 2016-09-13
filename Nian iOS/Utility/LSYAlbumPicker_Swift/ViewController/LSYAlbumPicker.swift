@@ -46,7 +46,7 @@ class LSYAlbumPicker: SAViewController {
         flowLayout.sectionInset = UIEdgeInsets(top: padding, left: 0, bottom: padding, right: 0)
         
         self.albumView = UICollectionView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64), collectionViewLayout: flowLayout)
-        LSYAlbum.sharedAlbum().setupAlbumAssets(self.group, albumAssets: { (assets) -> () in
+        LSYAlbum.sharedAlbum().setupAlbumAssets(group: self.group, albumAssets: { (assets) -> () in
             self.albumAssets = assets
             self.albumView.reloadData()
         })

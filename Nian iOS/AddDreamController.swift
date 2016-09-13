@@ -113,21 +113,22 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
         let uy = UpYun()
-        uy.successBlocker = ({(data: AnyObject!) in
-            self.uploadWait!.isHidden = true
-            self.uploadUrl = data.object(forKey: "url") as! String
-            self.uploadUrl = SAReplace(self.uploadUrl, before: "/dream/", after: "") as String
-            let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            self.imageDreamHead.contentMode = .scaleToFill
-            self.imageDreamHead.image = img
-            setCacheImage(url, img: img, width: (globalWidth - 40) * globalScale)
-            self.uploadWait!.stopAnimating()
-        })
-        uy.failBlocker = ({(error: NSError!) in
-            self.uploadWait!.isHidden = true
-            self.uploadWait!.stopAnimating()
-            self.imageDreamHead.image = UIImage(named: "add_plus")
-        })
+        // todo
+//        uy.successBlocker = ({(data: AnyObject!) in
+//            self.uploadWait!.isHidden = true
+//            self.uploadUrl = data.object(forKey: "url") as! String
+//            self.uploadUrl = SAReplace(self.uploadUrl, before: "/dream/", after: "") as String
+//            let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+//            self.imageDreamHead.contentMode = .scaleToFill
+//            self.imageDreamHead.image = img
+//            setCacheImage(url, img: img, width: (globalWidth - 40) * globalScale)
+//            self.uploadWait!.stopAnimating()
+//        })
+//        uy.failBlocker = ({(error: NSError!) in
+//            self.uploadWait!.isHidden = true
+//            self.uploadWait!.stopAnimating()
+//            self.imageDreamHead.image = UIImage(named: "add_plus")
+//        })
         uy.uploadImage(resizedImage(img, newWidth: 260), savekey: getSaveKey("dream", png: "png") as String)
     }
     
@@ -403,8 +404,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         if field2.isFirstResponder {
             let _rect = field2.caretRect(for: (field2.selectedTextRange?.end)!)
-            
-            if ((_rect.origin.y + UIFont.systemFont(ofSize: 14).lineHeight + 78 + keyboardHeight) > (UIScreen.main.bounds.height - 64)) {
+            let a = (_rect.origin.y + UIFont.systemFont(ofSize: 14).lineHeight + 78 + keyboardHeight)
+            if (a > (UIScreen.main.bounds.height - 64)) {
                 let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFont(ofSize: 14).lineHeight
                 let heightExcludeNavbar = UIScreen.main.bounds.height - 64
                 let extraScrollOffset = extraHeight - heightExcludeNavbar
@@ -449,8 +450,8 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func textViewDidChange(_ textView: UITextView) {
         if textView.tag == 16555 {
             let _rect = field2.caretRect(for: (field2.selectedTextRange?.end)!)
-            
-            if ((_rect.origin.y + UIFont.systemFont(ofSize: 14).lineHeight + 78 + keyboardHeight) > (UIScreen.main.bounds.height - 64)) {
+            let a = (_rect.origin.y + UIFont.systemFont(ofSize: 14).lineHeight + 78 + keyboardHeight)
+            if (a > (UIScreen.main.bounds.height - 64)) {
                 let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFont(ofSize: 14).lineHeight
                 let heightExcludeNavbar = UIScreen.main.bounds.height - 64
                 let extraScrollOffset = extraHeight - heightExcludeNavbar
@@ -514,7 +515,8 @@ extension AddDreamController: TITokenFieldDelegate {
                         }
                     }
                 }
-                completionHandler(data)
+//                completionHandler(data)
+                // todo
             })
         }
     }

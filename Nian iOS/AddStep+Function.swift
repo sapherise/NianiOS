@@ -179,7 +179,7 @@ extension AddStep {
                                     card.widthImage = image.stringAttributeForKey("width")
                                     card.heightImage = image.stringAttributeForKey("height")
                                 }
-                                card.content = contentCard
+                                card.content = contentCard!
                                 card.onCardSave()
                             }
                         }

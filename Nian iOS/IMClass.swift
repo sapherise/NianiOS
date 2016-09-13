@@ -24,7 +24,7 @@ class IMClass: AnyObject {
                 if json != nil {
                     if let j = json as? NSDictionary {
                         let token = j.stringAttributeForKey("data")
-                        Cookies.set(token, forKey: "token")
+                        Cookies.set(token as AnyObject?, forKey: "token")
                         RCIMClient.shared().connect(withToken: token, success: { (string) -> Void in
                             /* 登录成功 */
                             }, error: { (err) -> Void in
@@ -49,7 +49,7 @@ class IMClass: AnyObject {
             
             /* 发起者的昵称 */
             let nameSender = extra[1]
-            return NSDictionary(objects: [text.content, messageid, lastdate, senderUserid, nameSender, "1", "", "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+            return NSDictionary(objects: [text.content, messageid, lastdate, senderUserid, nameSender, "1", "", "0"], forKeys: ["content" as NSCopying, "id" as NSCopying, "lastdate", "uid", "user","type","title","cid"])
         } else if let text = message.content as? RCImageMessage {
             let time = ("\(message.sentTime / 1000)" as NSString).doubleValue
             let lastdate = V.absoluteTime(time)
@@ -59,7 +59,7 @@ class IMClass: AnyObject {
             
             /* 发起者的昵称 */
             let nameSender = extra[1]
-            return NSDictionary(objects: [text.imageUrl, messageid, lastdate, senderUserid, nameSender, "2", "", "0"], forKeys: ["content", "id", "lastdate", "uid", "user","type","title","cid"])
+            return NSDictionary(objects: [text.imageUrl, messageid, lastdate, senderUserid, nameSender, "2", "", "0"], forKeys: ["content" as NSCopying, "id" as NSCopying, "lastdate", "uid", "user","type","title","cid"])
         } else {
             return NSDictionary()
         }

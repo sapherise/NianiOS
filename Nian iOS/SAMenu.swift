@@ -48,7 +48,7 @@ class SAMenu: UIView {
         arrView[tab]?.textColor = UIColor.HighlightColor()
         let x = arrView[tab]?.x()
         UIView.animate(withDuration: 0.2, animations: { () -> Void in
-            self.viewLine.setX(x + 15)
+            self.viewLine.setX(x! + 15)
         })
     }
 }

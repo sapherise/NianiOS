@@ -44,8 +44,8 @@ open class Context {
 
         for i in 0..<from.properties.count {
             let n: Coefficients = coefficients?[i] ?? Coefficients()
-
-            results.append(addConstraint(from.properties[i] as! Compound, coefficients: n, to: to?.properties[i], relation: relation))
+            // todo
+//            results.append(addConstraint(from.properties[i] as! Compound, coefficients: n, to: to?.properties[i], relation: relation))
         }
 
         return results

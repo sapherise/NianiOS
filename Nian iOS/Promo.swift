@@ -88,7 +88,7 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
                                 if let coin = Cookies.get("coin") as? String {
                                     if let _coin = Int(coin) {
                                         let coinNew = _coin - 20
-                                        Cookies.set("\(coinNew)", forKey: "coin")
+                                        Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
                                     }
                                 }
                             } else {

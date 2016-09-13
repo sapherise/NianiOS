@@ -76,11 +76,11 @@ class LogOrRegModel: NSObject {
      :param: type     <#type description#>
      :param: callback <#callback description#>
      */
-    class func logInVia3rd(_ id: String, type: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("oauth/login",
-                                                content: ["auth_id": "\(id)", "type": "\(type)"],
-                                                callback: callback)
-    }
+//    class func logInVia3rd(_ id: String, type: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("oauth/login",
+//                                                content: ["auth_id": "\(id)", "type": "\(type)"],
+//                                                callback: callback)
+//    }
     
     
     /**
@@ -89,10 +89,10 @@ class LogOrRegModel: NSObject {
      :param: name     <#name description#>
      :param: callback <#callback description#>
      */
-    class func checkNameAvailability(name: String, callback: @escaping NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.get("user/check" + "?username=\(SAEncode(SAHtml(name)))",
-                                                  callback: callback)
-    }
+//    class func checkNameAvailability(name: String, callback: @escaping NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.get("user/check" + "?username=\(SAEncode(SAHtml(name)))",
+//                                                  callback: callback)
+//    }
 
     /**
     <#Description#>
@@ -101,19 +101,19 @@ class LogOrRegModel: NSObject {
     :param: openid      <#openid description#>
     :param: callback    <#callback description#>
     */
-    class func getWechatName(_ accessToken: String, openid: String, callback: @escaping NetworkClosure) {
-        let manager = AFHTTPSessionManager()
-        manager.responseSerializer = AFJSONResponseSerializer()
-        
-        manager.get("https://api.weixin.qq.com/sns/userinfo?access_token=\(accessToken)&openid=\(openid)&lang=zh_CN",
-            parameters: nil,			
-            success: { (task, id) in
-                callback(task, id, nil)
-            },
-            failure: { (task, error) in
-                callback(task: task, responseObject: nil, error: error)
-        })
-    }
+//    class func getWechatName(_ accessToken: String, openid: String, callback: @escaping NetworkClosure) {
+//        let manager = AFHTTPSessionManager()
+//        manager.responseSerializer = AFJSONResponseSerializer()
+//        
+//        manager.get("https://api.weixin.qq.com/sns/userinfo?access_token=\(accessToken)&openid=\(openid)&lang=zh_CN",
+//            parameters: nil,			
+//            success: { (task, id) in
+//                callback(task, id, nil)
+//            },
+//            failure: { (task, error) in
+//                callback(task: task, responseObject: nil, error: error)
+//        })
+//    }
     
     /**
      <#Description#>
@@ -122,19 +122,19 @@ class LogOrRegModel: NSObject {
      :param: openid      <#openid description#>
      :param: callback    <#callback description#>
      */
-    class func getWeiboName(_ accessToken: String, openid: String, callback: @escaping NetworkClosure) {
-        let manager = AFHTTPSessionManager()
-        manager.responseSerializer = AFJSONResponseSerializer()
-        
-        manager.get("https://api.weibo.com/2/users/show.json?access_token=\(accessToken)&uid=\(openid)",
-            parameters: nil,
-            success: { (task, id) in
-                callback(task, id, nil)
-            },
-            failure: { (task, error) in
-                callback(task: task, responseObject: nil, error: error)
-        })
-    }
+//    class func getWeiboName(_ accessToken: String, openid: String, callback: @escaping NetworkClosure) {
+//        let manager = AFHTTPSessionManager()
+//        manager.responseSerializer = AFJSONResponseSerializer()
+//        
+//        manager.get("https://api.weibo.com/2/users/show.json?access_token=\(accessToken)&uid=\(openid)",
+//            parameters: nil,
+//            success: { (task, id) in
+//                callback(task, id, nil)
+//            },
+//            failure: { (task, error) in
+//                callback(task: task, responseObject: nil, error: error)
+//        })
+//    }
     
     /**
      <#Description#>
@@ -144,20 +144,21 @@ class LogOrRegModel: NSObject {
      :param: appid       <#appid description#>
      :param: callback    <#callback description#>
      */
-    class func getQQName(_ accessToken: String, openid: String, appid: String, callback: @escaping NetworkClosure) {
-        let manager = AFHTTPSessionManager()
-        manager.responseSerializer = AFJSONResponseSerializer()
-        
-        manager.get("https://graph.qq.com/user/get_user_info?oauth_consumer_key=\(appid)&access_token=\(accessToken)&openid=\(openid)",
-            parameters: nil,
-            success: { (task: URLSessionDataTask?, id: Any?) in
-                callback(task!, id, nil)
-            },
-            failure: { (task, error) in
-                callback(task: task, responseObject: nil, error: error)
-        })
-    }
+//    class func getQQName(_ accessToken: String, openid: String, appid: String, callback: @escaping NetworkClosure) {
+//        let manager = AFHTTPSessionManager()
+//        manager.responseSerializer = AFJSONResponseSerializer()
+//        
+//        manager.get("https://graph.qq.com/user/get_user_info?oauth_consumer_key=\(appid)&access_token=\(accessToken)&openid=\(openid)",
+//            parameters: nil,
+//            success: { (task: URLSessionDataTask?, id: Any?) in
+//                callback(task!, id, nil)
+//            },
+//            failure: { (task, error) in
+//                callback(task: task, responseObject: nil, error: error)
+//        })
+//    }
 
+    // todo: 上面一大段
     
 }
 

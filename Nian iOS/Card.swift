@@ -48,7 +48,7 @@ class Card: UIView {
         }
         let heightLine = "".stringHeightWith(12, width: self.widthCard - self.num * 4)
         var heightContent = self.content.stringHeightWith(12, width: self.widthCard - self.num * 4)
-        if SAstrlen(self.content) > 200 {
+        if SAstrlen(self.content as NSString) > 200 {
             heightContent = self.content.stringHeightWith(12, width: self.widthCard - self.num * 2)
             self.labelContent.setX(self.num)
             self.labelContent.setWidth(self.widthCard - self.num * 2)

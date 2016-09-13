@@ -165,7 +165,7 @@ extension RedditViewController {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == self.tableViewHot {
             let data = dataArrayHot[(indexPath as NSIndexPath).row] as! NSDictionary
             let heightCell = data.object(forKey: "heightCell") as! CGFloat
@@ -193,7 +193,7 @@ extension RedditViewController {
         return d.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc(tableView:cellForRowAtIndexPath:) func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.tableViewHot {
             let c = tableView.dequeueReusableCell(withIdentifier: "ExploreNewHotCell", for: indexPath) as? ExploreNewHotCell
             c!.data = self.dataArrayHot[(indexPath as NSIndexPath).row] as! NSDictionary
@@ -227,7 +227,7 @@ extension RedditViewController {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc(tableView:didSelectRowAtIndexPath:) func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DreamViewController()
         if tableView == self.tableViewHot {
             let data = dataArrayHot[(indexPath as NSIndexPath).row] as! NSDictionary
@@ -248,7 +248,7 @@ extension RedditViewController {
     func updateData(_ index: Int, key: String, value: String, section: Int) {
         let d = dataArrayHot
         let t = tableViewHot
-        SAUpdate(d, index: index, key: key, value: value, tableView: t)
+        SAUpdate(d, index: index, key: key, value: value as AnyObject, tableView: t)
     }
     
     func updateTable() {

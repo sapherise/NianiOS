@@ -51,31 +51,31 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         if let data = notification.object as? NSDictionary {
             let openid = data.stringAttributeForKey("openid")
             let accessToken = data.stringAttributeForKey("access_token")
-            LogOrRegModel.getWechatName(accessToken, openid: openid) {
-                (task, responseObject, error) in
-                if let _ = error {
-                    self.showTipText("网络有点问题，等一会儿再试")
-                } else {
-                    // todo
-//                    let json = JSON(responseObject!)
-//                    if let _ = json["errcode"].number {
-//                        self.showTipText("微信授权不成功...")
-//                    } else {
-//                        let _name = json["nickname"].stringValue
-//                        if openid.characters.count > 0 {
-//                            SettingModel.bindThirdAccount(openid, nameFrom3rd: _name, type: "wechat") {
-//                                (task, responseObject, error) -> Void in
-//                                if let _ = error {
-//                                    self.showTipText("网络有点问题，等一会儿再试")
-//                                } else {
-//                                    self.hasWechat = true
-//                                    self.wechatName = _name
-//                                }
-//                            }
-//                        }
-//                    }
-                }
-            }
+//            LogOrRegModel.getWechatName(accessToken, openid: openid) {
+//                (task, responseObject, error) in
+//                if let _ = error {
+//                    self.showTipText("网络有点问题，等一会儿再试")
+//                } else {
+//                    // todo
+////                    let json = JSON(responseObject!)
+////                    if let _ = json["errcode"].number {
+////                        self.showTipText("微信授权不成功...")
+////                    } else {
+////                        let _name = json["nickname"].stringValue
+////                        if openid.characters.count > 0 {
+////                            SettingModel.bindThirdAccount(openid, nameFrom3rd: _name, type: "wechat") {
+////                                (task, responseObject, error) -> Void in
+////                                if let _ = error {
+////                                    self.showTipText("网络有点问题，等一会儿再试")
+////                                } else {
+////                                    self.hasWechat = true
+////                                    self.wechatName = _name
+////                                }
+////                            }
+////                        }
+////                    }
+//                }
+//            }
         }
     }
     

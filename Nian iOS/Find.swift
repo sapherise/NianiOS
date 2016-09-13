@@ -275,7 +275,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 if json != nil {
                     let arr = json!.object(forKey: "items") as! NSArray
                     self.dataArray.removeAllObjects()
-                    for data : AnyObject  in arr{
+                    for data  in arr{
                         self.dataArray.add(data)
                     }
                     self.tableView!.reloadData()

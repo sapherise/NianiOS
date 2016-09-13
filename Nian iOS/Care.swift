@@ -80,9 +80,11 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         let min = comp.minute
         let sec = comp.second
         if hour! < self.startTime {
-            self.delayTime = (( self.startTime - hour ) * 60 * 60 - min * 60 - sec )
+            let a = (self.startTime - hour!) * 60 * 60
+            self.delayTime = (a - min! * 60 - sec! )
         }else{
-            self.delayTime = (( 24 - hour + self.startTime ) * 60 * 60 - min * 60 - sec )
+            let a = (24 - hour! + self.startTime) * 60 * 60
+            self.delayTime = (a - min! * 60 - sec! )
         }
         
         if self.startTime < 1 {
@@ -99,7 +101,7 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             self.Greetings = "晚安。"
         }
         thepush("记得更新念。\(Greetings)", dateSinceNow: TimeInterval(delayTime), willReapt: true, id: "dailyPush")
-        Cookies.set("on", forKey: "pushMode")
+        Cookies.set("on" as AnyObject?, forKey: "pushMode")
         self.navigationController?.popViewController(animated: true)
     }
 }

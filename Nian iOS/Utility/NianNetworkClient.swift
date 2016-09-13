@@ -52,10 +52,10 @@ class NianNetworkClient: AFHTTPSessionManager {
     func get(_ string: String, callback: @escaping NetworkClosure) -> URLSessionDataTask {
         return  self.get(baseURLString + string,
                     parameters: nil,
-                    success: { (task, id) in
+                    success: { (task: URLSessionDataTask?, id: Any?) in
                         callback(task, id, nil)
                     },
-                    failure: { (task, error) in
+                    failure: { (task: URLSessionDataTask?, error) in
                         callback(task: task, responseObject: nil, error: error)
                 })
     }
@@ -70,7 +70,7 @@ class NianNetworkClient: AFHTTPSessionManager {
     func post(_ string: String, content: AnyObject, callback: @escaping NetworkClosure) -> URLSessionDataTask {
         return  self.post(baseURLString + string,
                     parameters: content,
-                    success: { (task, id) in
+                    success: { (task: URLSessionDataTask?, id: Any?) in
                         callback(task, id, nil)
                     },
                     failure: { (task, error) in
@@ -90,15 +90,11 @@ class NianNetworkClient: AFHTTPSessionManager {
     func put(_ string: String, content: AnyObject, callback: @escaping NetworkClosure) -> URLSessionDataTask {
         return self.put(baseURLString + string,
                     parameters: content,
-                    success: { (task, id) -> Void in
+                    success: { (task: URLSessionDataTask?, id: Any?) -> Void in
                         callback(task, id, nil)
                     }, failure: { (task, error) -> Void in
                         callback(task: task, responseObject: nil, error: error)
                 })
-        
-        
-        
-        
     }
     
     

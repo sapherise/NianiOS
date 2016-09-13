@@ -211,26 +211,26 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
         
         if openid.characters.count > 0 && appid.characters.count > 0 && accessToken.characters.count > 0 {
             
-            LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
-                (task, responseObject, error) in
-                
-                if let _ = error {
-                    self.showTipText("网络有点问题，等一会儿再试")
-                } else {
-                    let json = JSON(responseObject!)
-                    
-                    if json["ret"].numberValue != 0 {
-                        self.showTipText("QQ 授权不成功...")
-                    } else {
-                        let _name = json["nickname"].stringValue
-                        
-                        if _name.characters.count > 0 {
-                            self.logInVia3rdHelper(openid, nameFrom3rd: _name, type: "QQ")
-                        }
-                    }
-                }
-            }
-            
+//            LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
+//                (task, responseObject, error) in
+//                
+//                if let _ = error {
+//                    self.showTipText("网络有点问题，等一会儿再试")
+//                } else {
+//                    let json = JSON(responseObject!)
+//                    
+//                    if json["ret"].numberValue != 0 {
+//                        self.showTipText("QQ 授权不成功...")
+//                    } else {
+//                        let _name = json["nickname"].stringValue
+//                        
+//                        if _name.characters.count > 0 {
+//                            self.logInVia3rdHelper(openid, nameFrom3rd: _name, type: "QQ")
+//                        }
+//                    }
+//                }
+//            }
+            // todo
         } else {
             self.showTipText("QQ 授权不成功...")
         }
@@ -271,26 +271,26 @@ extension WelcomeViewController {
             let accessToken = (notiObject as! NSArray)[1] as? String
             
             if weiboUid != nil && accessToken != nil {
-                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
-                   (task, responseObject, error) in
-                    
-                    if let _ = error {
-                        self.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        let json = JSON(responseObject!)
-                        
-                        if let _ = json["error"].string {
-                            self.showTipText("微博授权不成功...")
-                        } else {
-                            let _name = json["name"].stringValue
-                            
-                            if _name.characters.count > 0 {
-                                self.logInVia3rdHelper(weiboUid!, nameFrom3rd: _name, type: "weibo")
-                            }
-                        }
-                    }
-                }
-                
+//                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
+//                   (task, responseObject, error) in
+//                    
+//                    if let _ = error {
+//                        self.showTipText("网络有点问题，等一会儿再试")
+//                    } else {
+//                        let json = JSON(responseObject!)
+//                        
+//                        if let _ = json["error"].string {
+//                            self.showTipText("微博授权不成功...")
+//                        } else {
+//                            let _name = json["name"].stringValue
+//                            
+//                            if _name.characters.count > 0 {
+//                                self.logInVia3rdHelper(weiboUid!, nameFrom3rd: _name, type: "weibo")
+//                            }
+//                        }
+//                    }
+//                }
+                // todo
                 
             }
             
@@ -313,26 +313,27 @@ extension WelcomeViewController {
         
         if let openid = (notiObject as! NSDictionary)["openid"] as? String {
             if let accessToken = (notiObject as! NSDictionary)["access_token"] as? String {
-                LogOrRegModel.getWechatName(accessToken, openid: openid) {
-                    (task, responseObject, error) in
-                    
-                    if let _ = error {
-                        self.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        let json = JSON(responseObject!)
-                        
-                        if let _ = json["errcode"].number {
-                            self.showTipText("微信授权不成功...")
-                        } else {
-                            let _name = json["nickname"].stringValue
-                            
-                            if openid.characters.count > 0 {
-                                self.logInVia3rdHelper(openid, nameFrom3rd: _name, type: "wechat")
-                            }
-                        }
-                    }
-                    
-                }
+//                LogOrRegModel.getWechatName(accessToken, openid: openid) {
+//                    (task, responseObject, error) in
+//                    
+//                    if let _ = error {
+//                        self.showTipText("网络有点问题，等一会儿再试")
+//                    } else {
+//                        let json = JSON(responseObject!)
+//                        
+//                        if let _ = json["errcode"].number {
+//                            self.showTipText("微信授权不成功...")
+//                        } else {
+//                            let _name = json["nickname"].stringValue
+//                            
+//                            if openid.characters.count > 0 {
+//                                self.logInVia3rdHelper(openid, nameFrom3rd: _name, type: "wechat")
+//                            }
+//                        }
+//                    }
+//                    
+//                }
+                // todo
             }
         } else {
             self.showTipText("微信授权不成功...")
@@ -346,62 +347,62 @@ extension WelcomeViewController {
         
         
         
-        LogOrRegModel.check3rdOauth(id, type: type) {
-            (task, responseObject, error) in
-            self.viewLoadingHide()
-            if let _ = error {
-                self.showTipText("网络有点问题，等一会儿再试")
-            } else {
-                let json = JSON(responseObject!)
-                
-                if json["data"] == "0" {
-                    self.hasRegistered = false
-                } else if json["data"] == "1" {
-                    self.hasRegistered = true
-                }
-                
-                if self.hasRegistered == false {
-                    self.thirdPartyID = id
-                    self.thirdPartyType = type
-                    self.thirdPartyName = nameFrom3rd
-                    self.performSegue(withIdentifier: "toConfirm3rdLogIn", sender: nil)
-                } else {
-                    LogOrRegModel.logInVia3rd(id, type: type) {
-                        (task, responseObject, error) in
-                        
-                        if let _ = error {
-                            self.showTipText("网络有点问题，等一会儿再试")
-                        } else {
-                            let json = JSON(responseObject!)
-                            
-                            if json["error"] != 0 {
-                                self.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                let shell = json["data"]["shell"].stringValue
-                                let uid = json["data"]["uid"].stringValue
-                                
-                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                                uidKey.setObject(uid, forKey: kSecAttrAccount)
-                                uidKey.setObject(shell, forKey: kSecValueData)
-                                
-                                CurrentUser.sharedCurrentUser.uid = uid
-                                CurrentUser.sharedCurrentUser.shell = shell
-                                
-                                Api.requestLoad()
-                                
-                                /* 使用第三方来登录 */
-                                self.launch(0)
-                            }  // if json["error"] != 0
-                        } // if let _error = error
-                        
-                    } // LogOrRegModel.logInVia3rd(id, type: type)
-                    
-                } // if self.hasRegistered == false
-                
-            } // if let _error = error
-            
-        } //  LogOrRegModel.check3rdOauth(id, type: type)
-        
+//        LogOrRegModel.check3rdOauth(id, type: type) {
+//            (task, responseObject, error) in
+//            self.viewLoadingHide()
+//            if let _ = error {
+//                self.showTipText("网络有点问题，等一会儿再试")
+//            } else {
+//                let json = JSON(responseObject!)
+//                
+//                if json["data"] == "0" {
+//                    self.hasRegistered = false
+//                } else if json["data"] == "1" {
+//                    self.hasRegistered = true
+//                }
+//                
+//                if self.hasRegistered == false {
+//                    self.thirdPartyID = id
+//                    self.thirdPartyType = type
+//                    self.thirdPartyName = nameFrom3rd
+//                    self.performSegue(withIdentifier: "toConfirm3rdLogIn", sender: nil)
+//                } else {
+//                    LogOrRegModel.logInVia3rd(id, type: type) {
+//                        (task, responseObject, error) in
+//                        
+//                        if let _ = error {
+//                            self.showTipText("网络有点问题，等一会儿再试")
+//                        } else {
+//                            let json = JSON(responseObject!)
+//                            
+//                            if json["error"] != 0 {
+//                                self.showTipText("网络有点问题，等一会儿再试")
+//                            } else {
+//                                let shell = json["data"]["shell"].stringValue
+//                                let uid = json["data"]["uid"].stringValue
+//                                
+//                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                                uidKey.setObject(uid, forKey: kSecAttrAccount)
+//                                uidKey.setObject(shell, forKey: kSecValueData)
+//                                
+//                                CurrentUser.sharedCurrentUser.uid = uid
+//                                CurrentUser.sharedCurrentUser.shell = shell
+//                                
+//                                Api.requestLoad()
+//                                
+//                                /* 使用第三方来登录 */
+//                                self.launch(0)
+//                            }  // if json["error"] != 0
+//                        } // if let _error = error
+//                        
+//                    } // LogOrRegModel.logInVia3rd(id, type: type)
+//                    
+//                } // if self.hasRegistered == false
+//                
+//            } // if let _error = error
+//            
+//        } //  LogOrRegModel.check3rdOauth(id, type: type)
+        // todo
     } // func logInVia3rdHelper(id: String, nameFrom3rd: String, type: String)
     
     

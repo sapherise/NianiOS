@@ -79,16 +79,17 @@ class VVImageCollectionView: UICollectionView {
                 _imageURL = URL(string: _imageURLString + "!large", relativeTo: self._imagesBaseURL)!
             }
             
-            sd_manager.downloadImage(with: _imageURL,
+            sd_manager?.downloadImage(with: _imageURL,
                 options: SDWebImageOptions(rawValue: 0),
                 progress: { (receivedSize, expectedSize) -> Void in
                     
                 }, completed: { (image, error, cacheType, finished, imageURL) -> Void in
-                    if let _ = error {
-                        callback(image: self.placeholderImage!, url: URL())
-                    } else {
-                        callback(image: image, url: imageURL)
-                    }
+//                    if let _ = error {
+//                        callback(self.placeholderImage!, URL())
+//                    } else {
+//                        callback(image!, imageURL)
+//                    }
+                    // todo
             })
         }
     }

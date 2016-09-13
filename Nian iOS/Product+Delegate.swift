@@ -103,7 +103,7 @@ extension Product {
                             if let j = json as? NSDictionary {
                                 let data = j.stringAttributeForKey("data")
                                 AlipaySDK.defaultService().payOrder(data, fromScheme: "nianalipay") { (resultDic) -> Void in
-                                    let data = resultDic as NSDictionary
+                                    let data = resultDic! as NSDictionary
                                     let resultStatus = data.stringAttributeForKey("resultStatus")
                                     if resultStatus == "9000" {
                                         /* 支付宝：支付成功 */

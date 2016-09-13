@@ -154,7 +154,7 @@ struct V {
             var json: AnyObject? = nil
             if data != nil {
                 do {
-                    json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
+                    json = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject?
                 } catch _ as NSError {
                     json = nil
                 } catch {
@@ -316,14 +316,15 @@ struct V {
 
 extension UIView {
     func findRootViewController() -> UIViewController? {
-        var view: UIView?
-        for view = self; view != nil; view = view!.superview {
-            if let responder = view?.next {
-                if responder is UIViewController {
-                    return responder as? UIViewController
-                }
-            }
-        }
+//        var view: UIView?
+//        for view = self; view != nil; view = view!.superview {
+//            if let responder = view?.next {
+//                if responder is UIViewController {
+//                    return responder as? UIViewController
+//                }
+//            }
+//        }
+         // todo
         return nil
     }
 }

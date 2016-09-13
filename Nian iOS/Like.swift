@@ -65,7 +65,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
                 let arr = data.object(forKey: "items") as! NSArray
-                for data : AnyObject  in arr{
+                for data in arr{
                     self.dataArray.add(data)
                 }
                 self.tableView!.reloadData()
@@ -88,7 +88,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 }
                 let arr = data.object(forKey: "items") as! NSArray
                 self.dataArray.removeAllObjects()
-                for data : AnyObject  in arr{
+                for data in arr{
                     self.dataArray.add(data)
                 }
                 self.tableView!.reloadData()

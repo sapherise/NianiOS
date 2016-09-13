@@ -138,9 +138,9 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                         self.showTipText("遇到了一个奇怪的错误，代码是 \(status)")
                     }
                 } else {
-                    let data: AnyObject? = json!.object(forKey: "data")
+                    let data = json!.object(forKey: "data")
                     if clear {
-                        self.dataArrayTop = self.DataDecode(data!.object(forKey: "dream") as! NSDictionary)
+                        self.dataArrayTop = self.DataDecode((data! as AnyObject).object(forKey: "dream") as! NSDictionary)
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
                         let btnMore = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(DreamViewController.setupNavBtn))
@@ -156,7 +156,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     } else {
                         globalVVeboReload = false
                     }
-                    let steps = data!.object(forKey: "steps") as! NSArray
+                    let steps = (data! as AnyObject).object(forKey: "steps") as! NSArray
                     for d in steps {
                         let data = VVeboCell.SACellDataRecode(d as! NSDictionary)
                         self.dataArray.add(data)
@@ -263,7 +263,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         } else if joined == "1" {
             arr = [acQuit, acLike, acReport, acTime]
         }
-        let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", URL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+        let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念" as AnyObject, URL(string: "http://nian.so/m/dream/\(self.Id)")! as AnyObject], applicationActivities: arr)
         self.present(avc, animated: true, completion: nil)
     }
     

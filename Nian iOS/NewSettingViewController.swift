@@ -418,7 +418,7 @@ extension NewSettingViewController {
         
     }
     
-    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
+    @objc(actionSheet:clickedButtonAtIndex:) func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {
                 self.coverImagePicker = UIImagePickerController()
@@ -621,35 +621,36 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             beginLoading()
             
             let uy = UpYun()
-            uy.successBlocker = ({ (data: AnyObject!) in
-                var uploadURL = data.object(forKey: "url") as! String
-                uploadURL = SAReplace(uploadURL, before: "/cover/", after: "") as String
-                
-                let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
-                let userDefaults = UserDefaults.standard
-                userDefaults.set(uploadURL, forKey: "coverUrl")
-                userDefaults.synchronize()
-                
-                SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
-                    (task, responseObject, error) in
-                    self.endLoading()
-                    
-                    if let _ = error {
-                        self.showTipText("上传不成功...")
-                    } else {
-                        setCacheImage(coverImageURL, img: image, width: 500 * globalScale)
-                        // 上传成功后，本地显示新的封面
-                        self.coverImageView.image = image
-                        self.coverImageModified = true
-                    }
-                })
-            })
+            // todo
+//            uy.successBlocker = ({ (data: AnyObject!) in
+//                var uploadURL = data.object(forKey: "url") as! String
+//                uploadURL = SAReplace(uploadURL, before: "/cover/", after: "") as String
+//                
+//                let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
+//                let userDefaults = UserDefaults.standard
+//                userDefaults.set(uploadURL, forKey: "coverUrl")
+//                userDefaults.synchronize()
+//                
+//                SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
+//                    (task, responseObject, error) in
+//                    self.endLoading()
+//                    
+//                    if let _ = error {
+//                        self.showTipText("上传不成功...")
+//                    } else {
+//                        setCacheImage(coverImageURL, img: image, width: 500 * globalScale)
+//                        // 上传成功后，本地显示新的封面
+//                        self.coverImageView.image = image
+//                        self.coverImageModified = true
+//                    }
+//                })
+//            })
             
-            
-            uy.failBlocker = ({ (error: NSError!) in
-                self.endLoading()
-                self.showTipText("上传不成功...")
-            })
+            // todo
+//            uy.failBlocker = ({ (error: NSError!) in
+//                self.endLoading()
+//                self.showTipText("上传不成功...")
+//            })
             
             uy.uploadImage(resizedImage(image, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
             

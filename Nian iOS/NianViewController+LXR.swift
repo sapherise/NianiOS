@@ -13,7 +13,7 @@ extension NianViewController {
         return self.dataArray.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell:UICollectionViewCell
         let index = (indexPath as NSIndexPath).row
         let c = collectionView.dequeueReusableCell(withReuseIdentifier: "NianCell", for: indexPath) as! NianCell
@@ -38,40 +38,40 @@ extension NianViewController {
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    @objc(collectionView:didSelectItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let index = (indexPath as NSIndexPath).row
         let data = self.dataArray[index] as! NSDictionary
         let id = data.stringAttributeForKey("id")
         self.onDreamClick(id)
     }
     
-    func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, willMoveTo toIndexPath: IndexPath!) {
+    @objc(collectionView:itemAtIndexPath:willMoveToIndexPath:) func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, willMoveTo toIndexPath: IndexPath!) {
         let object = dataArray.object(at: fromIndexPath.item)
         dataArray.removeObject(at: fromIndexPath.item)
         dataArray.insert(object, at: toIndexPath.item)
     }
     
-    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+    @objc(collectionView:canMoveItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, canMoveTo toIndexPath: IndexPath!) -> Bool {
+    @objc(collectionView:itemAtIndexPath:canMoveToIndexPath:) func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, canMoveTo toIndexPath: IndexPath!) -> Bool {
         return true
     }
     
     //
     
-    func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didBeginDraggingItemAt indexPath: IndexPath!) {
+    @objc(collectionView:layout:didBeginDraggingItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didBeginDraggingItemAt indexPath: IndexPath!) {
     }
     
-    func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didEndDraggingItemAt indexPath: IndexPath!) {
+    @objc(collectionView:layout:didEndDraggingItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, didEndDraggingItemAt indexPath: IndexPath!) {
         // 将移动后的记本排序保存到缓存中
         Cookies.set(self.dataArray, forKey: "NianDreams")
     }
     
-    func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willBeginDraggingItemAt indexPath: IndexPath!) {
+    @objc(collectionView:layout:willBeginDraggingItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willBeginDraggingItemAt indexPath: IndexPath!) {
     }
     
-    func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAt indexPath: IndexPath!) {
+    @objc(collectionView:layout:willEndDraggingItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, willEndDraggingItemAt indexPath: IndexPath!) {
     }
 }

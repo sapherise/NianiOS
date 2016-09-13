@@ -156,7 +156,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     /* 插入新回应并在 UI 上显示 */
     func newInsert(_ content: String, id: Int, type: String) {
         if let name = Cookies.get("user") as? String {
-            let newinsert = NSDictionary(objects: [content, "\(id)" , V.now(), "\(SAUid())", "\(name)", type], forKeys: ["content" as NSCopying, "id", "lastdate", "uid", "user", "type"])
+            let newinsert = NSDictionary(objects: [content, "\(id)" , V.now(), "\(SAUid())", "\(name)", type], forKeys: ["content" as NSCopying, "id" as NSCopying, "lastdate" as NSCopying, "uid" as NSCopying, "user" as NSCopying, "type" as NSCopying])
             self.tableView.beginUpdates()
             self.dataArray.replaceObject(at: 0, with: self.dataDecode(newinsert))
             self.tableView.reloadData()
@@ -375,13 +375,14 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     
     override func keyboardWasShown(_ notification: Notification) {
         var info: Dictionary = (notification as NSNotification).userInfo!
-        let keyboardSize: CGSize = ((info[UIKeyboardFrameEndUserInfoKey]? as AnyObject).cgRectValue.size)
-        keyboardHeight = max(keyboardSize.height, keyboardHeight)
-        
-        /* 移除表情界面，修改按钮样式 */
-        keyboardView.resignEmoji()
-        keyboardView.resizeTableView()
-        keyboardView.labelPlaceHolder.isHidden = true
+        // todo
+//        let keyboardSize: CGSize = ((info[UIKeyboardFrameEndUserInfoKey]? as AnyObject).cgRectValue.size)
+//        keyboardHeight = max(keyboardSize.height, keyboardHeight)
+//        
+//        /* 移除表情界面，修改按钮样式 */
+//        keyboardView.resignEmoji()
+//        keyboardView.resizeTableView()
+//        keyboardView.labelPlaceHolder.isHidden = true
     }
     
     override func keyboardWillBeHidden(_ notification: Notification){

@@ -202,7 +202,7 @@ extension HandleForShorCutItem {
     }
     
     /// Calls - user selects a Home screen quick action for app
-    @available(iOS 9.0, *)
+    @objc(application:performActionForShortcutItem:completionHandler:) @available(iOS 9.0, *)
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         // perform action for shortcut item selected
         QuickActionsForItem(shortcutItem)

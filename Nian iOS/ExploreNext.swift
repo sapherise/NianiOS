@@ -69,7 +69,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             }
                             let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
-                                let data = self.getDataEncode(d)
+                                let data = self.getDataEncode(d as AnyObject)
                                 self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
@@ -90,7 +90,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             }
                             let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
-                                let data = self.getDataEncode(d)
+                                let data = self.getDataEncode(d as AnyObject)
                                 self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
@@ -129,7 +129,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             }
                             let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
-                                let data = self.getDataEncode(d)
+                                let data = self.getDataEncode(d as AnyObject)
                                 self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
@@ -150,7 +150,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             }
                             let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
-                                let data = self.getDataEncode(d)
+                                let data = self.getDataEncode(d as AnyObject)
                                 self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()

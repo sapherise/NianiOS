@@ -38,7 +38,7 @@ extension PetViewController {
                 content += "\n\n（还没获得这个宠物...）"
             }
             petDetailView?.dict = NSMutableDictionary(objects: [self.imageView, name, content, [titleButton]],
-                                                      forKeys: ["img", "title", "content", "buttonArray"])
+                                                      forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
             petDetailView?.showWithAnimation(.flip)
         }
     }
